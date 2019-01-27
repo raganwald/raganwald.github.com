@@ -553,8 +553,8 @@ And now we can implement one last thing, a static factory method for making `Sli
 class Slice {
   static of(object, from = 0, to = Infinity) {
     if (object instanceof this) {
-      from = normalizedFrom(this, from, length);
-      to = normalizedTo(this, from, to);
+      from = normalizedFrom(object, from, length);
+      to = normalizedTo(object, from, to);
 
       return new Slice(object.array, object.from + from, to - from);
     }

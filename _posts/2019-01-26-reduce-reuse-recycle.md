@@ -4,7 +4,9 @@ title: "Structural Sharing and Copy-on-Write Semantics, Part II: Reduce-Reuse-Re
 tags: [allonge, recursion, mermaid, noindex]
 ---
 
-This is Part II of an essay that takes a highly informal look at two related techniques for achieving high performance when using large data structures: _Structural Sharing_, and _Copy-on-Write Semantics_. In [Part I], we used recursive functions that operate on lists to explore how we could use _Structural Sharing_ to write code that avoids making copies of objects while still retaining the semantics of code that makes copies.
+This is Part II of an essay that takes a highly informal look at two related techniques for achieving high performance when using large data structures: _Structural Sharing_, and _Copy-on-Write Semantics_.
+
+In [Part I], we used recursive functions that operate on lists to explore how we could use _Structural Sharing_ to write code that avoids making copies of objects while still retaining the semantics of code that makes copies.
 
 [Part I]: /2019/01/14/structural-sharing-and-copy-on-write.html "Exploring Structural Sharing and Copy-on-Write Semantics, Part I"
 
@@ -105,13 +107,13 @@ function normalizedTo(arrayIsh, from, to) {
 class Slice {
   static of(object, from = 0, to = Infinity) {
     if (object instanceof this) {
-      from = normalizedFrom(this, from, length);
-      to = normalizedTo(this, from, to);
+      from = normalizedFrom(object, from);
+      to = normalizedTo(object, from, to);
 
       return new Slice(object.array, object.from + from, to - from);
     }
     if (object instanceof Array) {
-      from = normalizedFrom(object, from, length);
+      from = normalizedFrom(object, from);
       to = normalizedTo(object, from, to);
 
       return new this(object, from, to - from);
@@ -123,7 +125,7 @@ class Slice {
 
   constructor(array, from, length) {
     this.array = array;
-    this.from = normalizedFrom(array, from, length);
+    this.from = normalizedFrom(array, from);
     this.length = normalizedLength(array, from, length);
 
     return new Proxy(this, SliceHandler);
@@ -157,11 +159,11 @@ class Slice {
     return this.join();
   }
 
-  slice(from, to = Infinity) {
-    from = normalizedFrom(this, from, length);
+  slice (from, to = Infinity) {
+    from = normalizedFrom(this, from);
     to = normalizedTo(this, from, to);
 
-    return new Slice(this.array, this.from + from, to - from);
+    return Slice.of(this.array, this.from + from, this.from + to);
   }
 
   has(i) {
@@ -208,7 +210,7 @@ function sum (array) {
   }
 }
 ```
-Now that we've covered the basics, let's step back for a moment. In pure functional programming, data is [immutable]. This makes it much easier for humans and machines to reason about programs. We never have a pesky problem like passing an array to a `sum` function and having `sum` modify the array out from under us.
+This covers the basics, but let's step back for a moment. In pure functional programming, data is [immutable]. This makes it much easier for humans and machines to reason about programs. We never have a pesky problem like passing an array to a `sum` function and having `sum` modify the array out from under us.
 
 [immutable]: https://en.wikipedia.org/wiki/Immutable_object
 
@@ -259,7 +261,7 @@ const SliceHandler = {
 
   // ...
 
-  set (slice, property, value) {
+  set(slice, property, value) {
     if (typeof property === 'string') {
       const matchInt = property.match(/^\d+$/);
       if (matchInt != null) {
@@ -276,7 +278,7 @@ class Slice {
 
   // ...
 
-  atPut(i, value) {
+  atPut (i, value) {
     const { array, from, length } = this;
 
     this.array = array.slice(from, length);
@@ -336,7 +338,6 @@ We need to mediate other objects accessing our array with this scheme, so we'll 
 So here is an updated version that only makes copies when necessary:
 
 ```javascript
-const unsafeSymbol = Symbol('unsafe');
 const arraySymbol = Symbol('array');
 
 class Slice {
@@ -345,31 +346,11 @@ class Slice {
 
   constructor(array, from, length) {
     this[arraySymbol] = array;
-    this.from = normalizedFrom(array, from, length);
+    this.from = normalizedFrom(array, from);
     this.length = normalizedLength(array, from, length);
     this.makeUnsafe();
 
     return new Proxy(this, SliceHandler);
-  }
-
-  * [Symbol.iterator]() {
-    const { [arraySymbol]: array, from, length } = this;
-
-    for (let i = 0; i < length; i++) {
-      yield array[i + from];
-    }
-  }
-
-  toString() {
-    return [...this].join(',');
-  }
-
-  has(i) {
-    if (i >= 0 && i < this.length) {
-      return (this.from + i) in this[arraySymbol];
-    } else {
-      return false;
-    }
   }
 
   get array() {
@@ -378,29 +359,22 @@ class Slice {
     return this[arraySymbol];
   }
 
-  at(i) {
-    if (i >= 0 && i < this.length) {
-      return this[arraySymbol][this.from + i];
-    }
-  }
-
   makeUnsafe () {
-    this[unsafeSymbol] = true;
+    this.safe = false;
   }
 
   makeSafe () {
-    const { [arraySymbol]: array, from, length, [unsafeSymbol]: unsafe } = this;
+    const { [arraySymbol]: array, from, length, [safeSymbol]: safe } = this;
 
-    if (unsafe) {
+    if (!safe) {
       this[arraySymbol] = array.slice(from, length);
       this.from = 0;
       this.length = this[arraySymbol].length;
-
-      this[unsafeSymbol] = false;
+      this.safe = true;
     }
   }
 
-  atPut(i, value) {
+  atPut (i, value) {
     this.makeSafe();
 
     const { [arraySymbol]: array, from, length } = this;
@@ -412,23 +386,13 @@ class Slice {
     return this[arraySymbol][i] = value;
   }
 
-  slice(from, length) {
+  slice (from, to = Infinity) {
     this.makeUnsafe();
 
-    from = normalizedFrom(this, from, length);
-    length = normalizedLength(this, from, length);
+    from = normalizedFrom(this, from);
+    to = normalizedTo(this, from, to);
 
-    return new Slice(this[arraySymbol], this.from + from, length);
-  }
-
-  concat(...args) {
-    const { [arraySymbol]: array, from, length } = this;
-
-    return Slice.of(array.slice(from, length).concat(...args));
-  }
-
-  get [Symbol.isConcatSpreadable]() {
-    return true;
+    return Slice.of(this.array, this.from + from, this.from + to);
   }
 }
 
@@ -526,11 +490,236 @@ We could go on implementing other array-ish methods for our `Slice` class, but l
 
 ### resource ownership
 
-*blah, blah, blah.*
+Our implementation of copy-on-write semantics is written as if the primary issue is whether it is safe for an instance of `Slice` to mutate its underlying array. Which is the case. But how do we decide?
+
+- The slice's underlying array is safe to mutate if _The current slice is the only piece of code that could possibly own a reference to that array_.
+- The slice's underlying array is not safe to mutate if _Other pieces of code that could share references to that array with the current slice_.
+
+Another way to look at this is to ask whether the current slice *owns* the underlying array:
+
+- If the slice doesn't share references to the underlying array, the slice owns the underlying array.
+- If the slice might share references to the underlying array, the slice does not own the underlying array.
+
+We don't have to rename all of our methods, but let's keep this concept in mind. In a structural sharing environment:
+
+> A piece of code is safe to mutate a data structure if that piece of code owns the data structure.
+
+Our code follows this thinking with respect to modifying the slice's underlying array after the slice has been constructed. But hang on! Recall that when we construct a new slice, we always begin with it being unsafe, meaning that we may share a reference to the array being passed in.
+
+But what if we knew that we were the only ones with a reference to the array? This is extremely difficult to guarantee mechanically, but if we rely on the code that creates an instance of `Slice` to tell us whether the array being passed is ours to own, we take that into account when creating a new instance.
+
+So our new version of the constructor will take a parameter, `safe`, indicating whether the slice is safe. Our first pass at our existing `of` static method will always indicate that the array being passed is unsafe, just as we do now.
+
+```javascript
+class Slice {
+  static of(object, from = 0, to = Infinity) {
+    if (object instanceof this) {
+      const safe = false;
+
+      from = normalizedFrom(object, from);
+      to = normalizedTo(object, from, to);
+
+      return new Slice(object.array, object.from + from, to - from, safe);
+    }
+    if (object instanceof Array) {
+      const safe = false;
+
+      from = normalizedFrom(object, from);
+      to = normalizedTo(object, from, to);
+
+      return new this(object, from, to - from, safe);
+    }
+    if (typeof object[Symbol.iterator] === 'function') {
+      return this.of([...object], from, to);
+    }
+  }
+
+  constructor(array, from, length, safe = false) {
+    this[arraySymbol] = array;
+    this.from = normalizedFrom(array, from);
+    this.length = normalizedLength(array, from, length);
+    this.safe = safe;
+
+    return new Proxy(this, SliceHandler);
+  }
+}
+```
+
+Wait, what happens when we call `Slice.of` with an object that is not an array and not another instance of slice? If it's iterable, we make a new array using `[...object]`, and then pass that to the constructor to make a new slice.
+
+Well, if we're making an array with ]`[...object]`, and we don't do anything else with the array, the new array we're passing to `Slice.of` is one that won't be used anywhere else, so it is safe:
+
+```javascript
+class Slice {
+  static of(object, from = 0, to = Infinity) {
+    if (object instanceof this) {
+      const safe = false;
+
+      from = normalizedFrom(object, from);
+      to = normalizedTo(object, from, to);
+
+      return new Slice(object.array, object.from + from, to - from, safe);
+    }
+    if (object instanceof Array) {
+      const safe = false;
+
+      from = normalizedFrom(object, from);
+      to = normalizedTo(object, from, to);
+
+      return new this(object, from, to - from, safe);
+    }
+    if (typeof object[Symbol.iterator] === 'function') {
+      const safe = true;
+      const array = [...object];
+
+      from = normalizedFrom(array, from);
+      to = normalizedTo(array, from, to);
+
+      return new Slice(array, from, to, safe);
+    }
+  }
+
+  // ...
+
+}
+
+function * countTo (n) {
+  let i = 1;
+  while (i <= n) {
+    yield i++;
+  }
+}
+
+const arrayToTen = Slice.of([...countTo(10)]);
+const oneToTen = Slice.of(countTo(10));
+
+arrayToTen.safe
+  //=> false
+
+oneToTen.safe
+  //=> true
+```
+
+There will be other times that a piece of code will want to create a slice of an object, but know that the object is no longer owned. In effect, and object is being given to the `Slice` glass. To represent this, we'll create a new static method. `.given`:
+
+```javascript
+class Slice {
+  static given(object, from = 0, to = Infinity) {
+    if (object instanceof this) {
+      const safe = object.safe;
+
+      from = normalizedFrom(object, from);
+      to = normalizedTo(object, from, to);
+
+      return new Slice(object[arraySymbol], object.from + from, to - from, safe);
+    }
+    if (object instanceof Array) {
+      const safe = true;
+
+      from = normalizedFrom(object, from);
+      to = normalizedTo(object, from, to);
+
+      return new this(object, from, to - from, safe);
+    }
+    if (typeof object[Symbol.iterator] === 'function') {
+      return this.given([...object], from, to);
+    }
+  }
+
+  // ...
+
+}
+
+const unsafeTen = Slice.of([...countTo(10)]);
+const safeTen = Slice.given([...countTo(10)]);
+
+unsafeTen.safe
+  //=> false
+
+safeTen.safe
+  //=> true
+
+const givenUnsafeTen = Slice.of(unsafeTen);
+const givenSafeTen = Slice.given(safeTen]);
+
+givenUnsafeTen.safe
+  //=> false
+
+givenSafeTen.safe
+  //=> true
+
+givenUnsafeTen === unsafeTen
+  //=> false
+
+givenSafeTen === safeTen
+  //=> false
+```
+
+When `Slice.given` is passed another slice, the slice it returns is safe if the object passed was safe. If that object owned its array, and that object will not be accessed again, then the array is safe for the newly created slice. In effect, we are given the slice, but necessarily the array backing it.
+
+Hmmmm... If that slice is no longer needed, why are we creating another instance of `Slice`? We can reuse the one that already exists:
+
+```javascript
+class Slice {
+  static given(object, from = 0, to = Infinity) {
+    if (object instanceof this) {
+      from = normalizedFrom(object, from);
+      to = normalizedTo(object, from, to);
+
+      object.from = object.from + from;
+      object.length = to - from;
+
+      return object;
+    }
+    if (object instanceof Array) {
+      const safe = true;
+
+      from = normalizedFrom(object, from);
+      to = normalizedTo(object, from, to);
+
+      return new this(object, from, to - from, safe);
+    }
+    if (typeof object[Symbol.iterator] === 'function') {
+      return this.given([...object], from, to);
+    }
+  }
+
+  // ...
+
+}
+
+const unsafeTen = Slice.of([...countTo(10)]);
+const safeTen = Slice.given([...countTo(10)]);
+
+unsafeTen.safe
+  //=> false
+
+safeTen.safe
+  //=> true
+
+const givenUnsafeTen = Slice.of(unsafeTen);
+const givenSafeTen = Slice.given(safeTen]);
+
+givenUnsafeTen.safe
+  //=> false
+
+givenSafeTen.safe
+  //=> true
+
+givenUnsafeTen === unsafeTen
+  //=> true
+
+givenSafeTen === safeTen
+  //=> true
+```
 
 ---
 
 # The Complete Code
+
+```javascript
+
+```
 
 <script src="https://gist.github.com/raganwald/373af7dfbcc43862b088094af2cbbc7f.js"></script>
 
