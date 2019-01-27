@@ -14,9 +14,9 @@ Here in Part II, we'll consider **resource ownership**, starting with using copy
 
 [![The Canonization of Blessed John XXIII and Blessed John Paul II](/assets/images/slice/canonicalization.jpg)](https://www.flickr.com/photos/113018453@N05/14002510232)
 
-### a brief review of structural sharing
-
 ---
+
+### a brief review of structural sharing
 
 In [Part I], we created the `Slice` class, with its static method `Slice.of(...)`. Instances of `slice` implement slices of JS arrays, but use structural sharing to keep the cost of creating a slice constant, rather than order-n.:
 
@@ -413,7 +413,7 @@ class Slice {
   }
 
   atPut(i, value) {
-    this.makeUnsafe();
+    this.makeSafe();
 
     const { [arraySymbol]: array, from, length } = this;
 
@@ -483,7 +483,7 @@ We then invoked `oneToFive.slice(3)`. We didn't make a copy, but we noted that w
 
 The result is identical to the behaviour of making a copy every time we slice, or every time we write, but we're stingier about making copies when we don't need them.
 
-And now, other destructive methods are literally a doddle:
+And now, emulating other `Array.prototype` methods that modify the underlying array is easy. For example:
 
 ```javascript
 class Slice {
@@ -528,117 +528,17 @@ class Slice {
 }
 ```
 
-We could go on implementing other array-ish methods for our `Slice` class, but we've implemented a few major concepts that are worth revisiting.
+We could go on implementing other array-ish methods for our `Slice` class, but let's reëxamine what we have been doing.
 
 ---
 
-[![ideas](/assets/images/slice/ideas.jpg)](https://www.flickr.com/photos/lilivanili/6182926356)
+[![Arenberg Mine](/assets/images/slice/arenberg.jpg)](https://www.flickr.com/photos/torsten_frank/26481614736/)
 
 ---
 
-### wrapping up
+### resource ownership
 
-We set out with the purpose of writing some code that would allow us to use JavaScript arrays in a Lisp-like style, without the heavy penalty of making lots and lots of copies. To do that, we implemented **structural sharing**. We added a `Proxy` to give our new class indexed access to the elements of our `Slice` class, and then we then moved on the implement **[copy on write]** semantics, with an optimization of only performing the copy when our underlying array is "unsafe."
-
-While these techniques are far too heavyweight for a simple task like writing a `sum` function in the style favoured by Lisp programmers of the 1960s and 1970s, that task was small enough and simple enough to allow us to focus on the implementation of these techniques, rather than on the problem of the domain.
-
-These techniques may seem exotic at first, but they form the basis for high-performance implementation of large data structures. And many other languages, such as [Clojure], bake these semantics right in. If JavaScript worked like Clojure, there would be no need to implement a `Slice` class, because arrays would already have structural sharing and copy-on-write semantics. So calling `.slice` would be inexpensive, right out of the box.
-
-Until the day that JavaScript gets such data structures in its standard library, we'll have to Greenspun the functionality ourselves, or use a library such as David Nolen's [Mori].
-
-[Mori]: http://swannodette.github.io/mori/
-
-*(discuss on [hacker news](https://news.ycombinator.com/item?id=18903109) and [reddit](https://www.reddit.com/r/javascript/comments/afw0wu/structural_sharing_and_copyonwrite_semantics_in/); portions of this essay have previously appeared in the book [JavaScript Allongé][ja])*
-
-[ja]: https://leanpub.com/javascriptallongesix
-
----
-
-# Bonus Hack!
-
-Lisp programmers used `car` and `cdr` in intricate ways. Although we've only looked at simple lists, cons cells could be used to make trees of arbitrary complexity, and the right sequence of `car` and `cdr` invocations could navigate a path to any element or sub-tree.
-
-To facilitate this, Lisp had a system where any function name that started with `c`, ended with `r`, and had one or more `a` or `d` characters in between was automatically also a function, and it was implemented as if the functions `car` and `cdr` were composed in order.
-
-For example, `(cadr list)` was equivalent to `(car (cdr list))`, which is the second element. If we wanted to really get Lisp-y, we would implement the same scheme...
-
-This being JavaScript, we'll hack this idea with a proxy and synthetic properties. That way, we can destructure slices, like this:
-
-```javascript
-const SliceHandler = {
-  has (slice, property) {
-    if (property in slice) {
-      return true;
-    }
-
-    if (typeof property === 'symbol') {
-      return false;
-    }
-
-    const matchInt = property.match(/^\d+$/);
-    if (matchInt != null) {
-      const i = parseInt(property);
-
-      return slice.has(i);
-    }
-
-    const matchCarCdr = property.match(/^c([ad]+)r$/);
-    if (matchCarCdr != null) {
-      return true;
-    }
-  },
-
-  get (slice, property) {
-    if (property in slice) {
-      return slice[property];
-    }
-
-    if (typeof property === 'symbol') {
-      return;
-    }
-
-    const matchInt = property.match(/^\d+$/);
-    if (matchInt != null) {
-      const i = parseInt(property);
-      return slice.at(i);
-    }
-
-    const matchCarCdr = property.match(/^c([ad]+)r$/);
-    if (matchCarCdr != null) {
-      const [, accessorString] = matchCarCdr;
-      const accessors = accessorString.split('').map(ad => `c${ad}r`);
-      return accessors.reduceRight(
-        (value, accessor) => Slice.of(value)[accessor],
-        slice);
-    }
-  }
-};
-
-class Slice {
-
-  // ...
-
-  get car() {
-    return this.at(0);
-  }
-
-  get cdr() {
-    return this.slice(1);
-  }
-
-}
-
-const oneToFive = Slice.of([1, 2, 3, 4, 5]);
-
-const { car: first, cadr: second, cddr: rest } = oneToFive;
-
-first
-  //=> 1
-second
-  //=> 2
-[...rest]
-  //=> [3, 4, 5]
-```
+*blah, blah, blah.*
 
 ---
 
