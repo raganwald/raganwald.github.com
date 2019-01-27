@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Structural Sharing and Copy-on-Write Semantics, Part II: Reduce-Reuse-Recycle"
-tags: [allonge, recursion, mermaid, noindex]
+tags: [allonge, recursion, mermaid]
 ---
 
 This is Part II of an essay that takes a highly informal look at two related techniques for achieving high performance when using large data structures: _Structural Sharing_, and _Copy-on-Write Semantics_.
@@ -728,11 +728,17 @@ givenSafeTen === safeTen
   //=> true
 ```
 
+Now when we call `Slice.given` and pass in another slice, `Slice.given` mutates the slice that was provided, much as our existing copy-on-write code can mutate the slice's array when it knows that it does not share it with any other code.
+
+---
+
+[![Connex Labyrinth](/assets/images/labyrinth.jpg)](https://www.flickr.com/photos/fdecomite/7060399989)
+
 ---
 
 ### given in action
 
-The recursive function `sum` was given above. It looks like this:
+The recursive function `sum` was provided above. It looks like this:
 
 ```javascript
 function sum (array) {
@@ -743,7 +749,7 @@ function sum (array) {
       return runningTotal;
     } else {
       const first = remaining[0];
-      const rest = Slice.given(remaining, 1);
+      const rest = Slice.of(remaining, 1);
 
       return sumOfSlice(rest, runningTotal + first);
     }
@@ -753,7 +759,7 @@ function sum (array) {
 
 When we invoke `sum([1, 2, 3, 4, 5, 6, 7])`, the outer function creates a new slice out of the original array, and then it calls `someOfSlice`, which calls itself 7 times, each time invoking `Slice.of` and creating a new instance of `Slice`. The net result is that eight slices are created. This may be much less memory than copying slices out of a long array, but it's unnecessary.
 
-In this formulation, `sumOfSlice` invokes `Slice.given` instead of `Slice.of`. The only objects passed to `sumOfSlice` are slices created for this function. And having created a slice, it is not used again after being passed to `sumOfSlice`. Therefore, we can use `.given`, and the code recycles the same slice over and over again.
+Here's how we can stop making all those temporary slices:
 
 ```javascript
 function sum (array) {
@@ -772,7 +778,32 @@ function sum (array) {
 }
 ```
 
+In this formulation, `sumOfSlice` invokes `Slice.given` instead of `Slice.of`. The only objects passed to `sumOfSlice` are slices created for this function. And having created a slice, it is not used again after being passed to `sumOfSlice`. Therefore, we can use `.given`, and the code recycles the same slice over and over again.
+
 Now when we invoke `sum([1, 2, 3, 4, 5, 6, 7])`, the outer function creates a new slice out of the original array as before, and then it calls `someOfSlice`, which calls itself 7 times as before. But now, each time it is called, it invokes `Slice.given`. That reuses the existing slice. The net result is that only one slice is created.
+
+---
+
+[![caution](/assets/images/slice.caution.jpg)](https://www.flickr.com/photos/mcclanahoochie/7585298992)
+
+---
+
+### caution
+
+We now have two different mechanisms that manage the mutability of a `Slice`. The original copy-on-write code is extremely conservative. In conjunction with `Slice.of`, it assumes that its array is shared with other code, and makes a copy the moment we try to mutate the slice with `[...] =` or one of the mutating methods like `.pop()`. Once it makes a copy, it knows that it owns the copy until we share the underlying array with other code via `get array()` or `.slice(...)`, at which point it becomes conservative again.
+
+Although it's possible to deliberately circumvent this copy-on-write protocol, for almost all purposes it can be trusted to "just work." No knowledge of the protocol is needed to understand how to use the `Slice` class, it is a full-encapsulated implementation detail.
+
+This is not the situation with our other mechanism, `Slice.given`. Using `Slice.given` requires that clients of the `Slice` class understand about resource ownership and the consequences of "aliasing" an array passed to `Slice.given`. In days of distant yore, programmers managed their own memory with `malloc` and `free`. A lot of debugging was devoted to finding places where memory was allocated, but not freed, or freed incorrectly when it was still in use.
+
+The `Slice.given` mechanism is a return to those days, when programmers would have to manage the ownership of data structures by hand. In general, it is a win that we no longer have to do this. There can be some times when the optimization offered by explicitly managing resource ownership is valuable.
+
+In this code, we have only considered the cost of creating and recycling objects. But sometimes there are other resources attached to an object, like an open web socket or file handle. Under such circumstances, protocols such as distinguishing between a resource being shared with an object, and a resource being given to an object can be useful.[^close]
+
+[^close]: If you scratch the surface of JavaScript's Iterator protocols, you get deep into the weeds of `.return()` and `.throw()` methods that exist to allow resource-backed iterators (like an iterator that iterates over lines in an open text file) perform resource cleanup (like closing the file). Abstractions like `.given` could be used to help keep track of which piece of code is responsible for telling the iterator to dispose of its resources when it's done.
+
+In sum, we have seen that we can create abstractions for data structures that use structural sharing to reduce copying. This is ridiculously easy when all data is immutable, but nevertheless, we can still write code that saves us from making copies, or even entire objects, until we need to.
+
 
 ---
 
