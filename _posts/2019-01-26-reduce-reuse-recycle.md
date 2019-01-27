@@ -804,6 +804,8 @@ In this code, we have only considered the cost of creating and recycling objects
 
 In sum, we have seen that we can create abstractions for data structures that use structural sharing to reduce copying. This is ridiculously easy when all data is immutable, but nevertheless, we can still write code that saves us from making copies, or even entire objects, until we need to.
 
+*the end*.
+
 
 ---
 
