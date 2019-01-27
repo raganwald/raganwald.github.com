@@ -303,13 +303,15 @@ class Slice {
   }
 
   join(separator = ",") {
-    if (this.length === 0) {
+    const { array, from, length } = this;
+
+    if (length === 0) {
       return '';
     } else {
-      let joined = this.array[this.from];
+      let joined = array[from];
 
       for (let i = 1; i < this.length; ++i) {
-        joined = joined + separator + this.array[this.from + i];
+        joined = joined + separator + array[from + i];
       }
 
       return joined;
@@ -385,13 +387,15 @@ class Slice {
   }
 
   join(separator = ",") {
-    if (this.length === 0) {
+    const { array, from, length } = this;
+
+    if (length === 0) {
       return '';
     } else {
-      let joined = this.array[this.from];
+      let joined = array[from];
 
       for (let i = 1; i < this.length; ++i) {
-        joined = joined + separator + this.array[this.from + i];
+        joined = joined + separator + array[from + i];
       }
 
       return joined;
@@ -511,16 +515,20 @@ class Slice {
   // ...
 
   has(i) {
-    if (i >= 0 && i < this.length) {
-      return (this.from + i) in this.array;
+    const { array, from, length } = this;
+
+    if (i >= 0 && i < length) {
+      return (from + i) in array;
     } else {
       return false;
     }
   }
 
   at(i) {
-    if (i >= 0 && i < this.length) {
-      return this.array[this.from + i];
+    const { array, from, length } = this;
+
+    if (i >= 0 && i < length) {
+      return array[from + i];
     }
   }
 }

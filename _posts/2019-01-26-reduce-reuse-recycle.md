@@ -18,10 +18,208 @@ Here in Part II, we'll consider **resource ownership**, starting with using copy
 
 ---
 
-This is a brief review of what we covered in [Part I] for those who read it recently. If you haven't read it yet, consider reading it in its entirety rather than trying to build on this incomplete explanation.
+In [Part I], we created the `Slice` class, with its static method `Slice.of(...)`. Instances of `slice` implement slices of JS arrays, but use structural sharing to keep the cost of creating a slice constant, rather than order-n.:
 
-(*coming soon*)
+```javascript
+//
+// http://raganwald.com/2019/01/14/structural-sharing-and-copy-on-write.html
+//
 
+const SliceHandler = {
+  has (slice, property) {
+    if (property in slice) {
+      return true;
+    }
+
+    if (typeof property === 'symbol') {
+      return false;
+    }
+
+    const matchInt = property.match(/^\d+$/);
+    if (matchInt != null) {
+      const i = parseInt(property);
+
+      return slice.has(i);
+    }
+
+    const matchCarCdr = property.match(/^c([ad]+)r$/);
+    if (matchCarCdr != null) {
+      return true;
+    }
+  },
+
+  get (slice, property) {
+    if (property in slice) {
+      return slice[property];
+    }
+
+    if (typeof property === 'symbol') {
+      return;
+    }
+
+    const matchInt = property.match(/^\d+$/);
+    if (matchInt != null) {
+      const i = parseInt(property);
+      return slice.at(i);
+    }
+
+    const matchCarCdr = property.match(/^c([ad]+)r$/);
+    if (matchCarCdr != null) {
+      const [, accessorString] = matchCarCdr;
+      const accessors = accessorString.split('').map(ad => `c${ad}r`);
+      return accessors.reduceRight(
+        (value, accessor) => Slice.of(value)[accessor],
+        slice);
+    }
+  },
+
+//   set (slice, property, value) {
+//     if (typeof property === 'string') {
+//       const matchInt = property.match(/^\d+$/);
+//       if (matchInt != null) {
+//         const i = parseInt(property);
+//         return slice.atPut(i, value);
+//       }
+//   	}
+
+//     return slice[property] = value;
+//   }
+};
+
+function normalizedFrom(arrayIsh, from = 0) {
+    if (from < 0) {
+      from = from + arrayIsh.length;
+    }
+    from = Math.max(from, 0);
+    from = Math.min(from, arrayIsh.length);
+
+    return from;
+}
+
+function normalizedLength(arrayIsh, from, length = arrayIsh.length) {
+    from = normalizedFrom(arrayIsh, from);
+
+    length = Math.max(length, 0);
+    length = Math.min(length, arrayIsh.length - from);
+
+    return length;
+}
+
+function normalizedTo(arrayIsh, from, to) {
+    from = normalizedFrom(arrayIsh, from);
+
+    to = Math.max(to, 0);
+    to = Math.min(arrayIsh.length, to);
+
+    return to;
+}
+
+class Slice {
+  static of(object, from = 0, to = Infinity) {
+    if (object instanceof this) {
+      from = normalizedFrom(this, from, length);
+      to = normalizedTo(this, from, to);
+
+      return new Slice(object.array, object.from + from, to - from);
+    }
+    if (object instanceof Array) {
+      from = normalizedFrom(object, from, length);
+      to = normalizedTo(object, from, to);
+
+      return new this(object, from, to - from);
+    }
+    if (typeof object[Symbol.iterator] === 'function') {
+      return this.of([...object], from, to);
+    }
+  }
+
+  constructor(array, from, length) {
+    this.array = array;
+    this.from = normalizedFrom(array, from, length);
+    this.length = normalizedLength(array, from, length);
+
+    return new Proxy(this, SliceHandler);
+  }
+
+  * [Symbol.iterator]() {
+    const { array, from, length } = this;
+
+    for (let i = 0; i < length; i++) {
+      yield array[i + from];
+    }
+  }
+
+  join(separator = ",") {
+    const { array, from, length } = this;
+
+    if (length === 0) {
+      return '';
+    } else {
+      let joined = array[from];
+
+      for (let i = 1; i < this.length; ++i) {
+        joined = joined + separator + array[from + i];
+      }
+
+      return joined;
+    }
+  }
+
+  toString() {
+    return this.join();
+  }
+
+  slice(from, to = Infinity) {
+    from = normalizedFrom(this, from, length);
+    to = normalizedTo(this, from, to);
+
+    return new Slice(this.array, this.from + from, to - from);
+  }
+
+  has(i) {
+    const { array, from, length } = this;
+
+    if (i >= 0 && i < length) {
+      return (from + i) in array;
+    } else {
+      return false;
+    }
+  }
+
+  at(i) {
+    const { array, from, length } = this;
+
+    if (i >= 0 && i < length) {
+      return array[from + i];
+    }
+  }
+
+  concat(...args) {
+    const { array, from, length } = this;
+
+    return Slice.of(array.slice(from, length).concat(...args));
+  }
+
+  get [Symbol.isConcatSpreadable]() {
+    return true;
+  }
+}
+
+function sum (array) {
+  return sumOfSlice(Slice.of(array), 0);
+
+  function sumOfSlice (remaining, runningTotal) {
+    if (remaining.length === 0) {
+      return runningTotal;
+    } else {
+      const first = remaining[0];
+      const rest = remaining.slice(1);
+
+      return sumOfSlice(rest, runningTotal + first);
+    }
+  }
+}
+```
 Now that we've covered the basics, let's step back for a moment. In pure functional programming, data is [immutable]. This makes it much easier for humans and machines to reason about programs. We never have a pesky problem like passing an array to a `sum` function and having `sum` modify the array out from under us.
 
 [immutable]: https://en.wikipedia.org/wiki/Immutable_object
@@ -91,7 +289,9 @@ class Slice {
   // ...
 
   atPut(i, value) {
-    this.array = this.array.slice(this.from, this.length);
+    const { array, from, length } = this;
+
+    this.array = array.slice(from, length);
     this.from = 0;
     this.length = this.array.length;
 
@@ -107,7 +307,7 @@ oneToFive[0] = 'uno';
 
 a1to5
   //=> [1, 2, 3, 4, 5]
-oneToFive
+[...oneToFive]
   //=> ['uno', 2, 'three', 4, 5]
 ```
 
@@ -152,20 +352,8 @@ const unsafeSymbol = Symbol('unsafe');
 const arraySymbol = Symbol('array');
 
 class Slice {
-  static of(object, from = 0, length = Infinity) {
-    if (object instanceof this) {
-      const adjustedFrom = normalizedFrom(object, from);
-      const adjustedLength = normalizedLength(object, from, length);
 
-      return new this(object.array, object.from + adjustedFrom, adjustedLength);
-    }
-    if (object instanceof Array) {
-      return new this(object, from, length);
-    }
-    if (typeof object[Symbol.iterator] === 'function') {
-      return this.of([...object], from, length);
-    }
-  }
+  // ...
 
   constructor(array, from, length) {
     this[arraySymbol] = array;
@@ -208,21 +396,30 @@ class Slice {
     }
   }
 
+  makeUnsafe () {
+    this[unsafeSymbol] = true;
+  }
+
   makeSafe () {
-    if (this.unsafe) {
-      this[arraySymbol] = this[arraySymbol].slice(this.from, this.length);
+    const { [arraySymbol]: array, from, length, [unsafeSymbol]: unsafe } = this;
+
+    if (unsafe) {
+      this[arraySymbol] = array.slice(from, length);
       this.from = 0;
       this.length = this[arraySymbol].length;
-      this.unsafe = false;
+
+      this[unsafeSymbol] = false;
     }
   }
 
-  makeUnsafe () {
-    this.unsafe = true;
-  }
-
   atPut(i, value) {
-    this.makeSafe();
+    this.makeUnsafe();
+
+    const { [arraySymbol]: array, from, length } = this;
+
+    this[arraySymbol] = array.slice(from, length);
+    this.from = 0;
+    this.length = this[arraySymbol].length;
 
     return this[arraySymbol][i] = value;
   }
