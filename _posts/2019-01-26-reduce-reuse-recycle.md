@@ -330,11 +330,21 @@ This pattern is called [copy on write]. In effect, when we took a slice of the o
 
 And if we never write to it, we win "bigly" by never making copies. Before we go on to implement other methods like `push`, `pop`, `unshift`, and `shift`, let's ask ourselves a question: *Must we always make a fresh copy on every write?*
 
-Well, the first time we write something, we *have* to make a copy. The array that was passed to `Slice` in the constructor belonged to someone else. Absent a type system that understands mutable and immutable arrays, we must be conservative and assume that we should not modify the original.[^freeze]
+---
+
+[![Parts](/assets/images/slice/parts.jpg)](https://www.flickr.com/photos/26524277@N04/6980652526)
+
+---
+
+### smarter copying on write
+
+Let's reason about when we need to make a copy.
+
+The first time we write something, we *have* to make a copy. The array that was passed to `Slice` in the constructor was provided by another piece of code. Given that we are emulating the protocol of `Array.prototype.slice`, that piece of code expects that we will not modify the array it passed to `Slice.of`. Absent a type system that understands mutable and immutable arrays, we must be conservative and assume that we should not modify the original.[^freeze]
 
 [^freeze]: JavaScript has the notion of a frozen object, so if we're passed a frozen array, we certainly don't need to worry about anyone else modifying the array ot from under us. but likewise, we can't modify a frozen array ourselves, so it doesn't help us know whether the array that is used to construct the slice is safe to modify or not. So we'll be paranoid and assume that it is not safe to modify.
 
-So the first time we write, we must copy.
+Absent any other finformation, the the first time we write to the array, we must make ourselves a copy.
 
 What about after that? Well, after the first write, we have a new array that no other code shares (yet). So we can actually mutate it with abandon. Only when we share it with another piece of code must we revert to making a copy on writes. When do we share that array? When `.slice` is called, and if another object does a `get` on our `array` property.
 
