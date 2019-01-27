@@ -562,7 +562,7 @@ class Slice {
 
 Wait, what happens when we call `Slice.of` with an object that is not an array and not another instance of slice? If it's iterable, we make a new array using `[...object]`, and then pass that to the constructor to make a new slice.
 
-Well, if we're making an array with ]`[...object]`, and we don't do anything else with the array, the new array we're passing to `Slice.of` is one that won't be used anywhere else, so it is safe:
+Well, if we're making an array with `[...object]`, and we don't do anything else with the array, the new array we're passing to `Slice.of` is one that won't be used anywhere else, so it is safe:
 
 ```javascript
 class Slice {
@@ -732,7 +732,7 @@ Now when we call `Slice.given` and pass in another slice, `Slice.given` mutates 
 
 ---
 
-[![Connex Labyrinth](/assets/images/labyrinth.jpg)](https://www.flickr.com/photos/fdecomite/7060399989)
+[![Connex Labyrinth](/assets/images/slice/labyrinth.jpg)](https://www.flickr.com/photos/fdecomite/7060399989)
 
 ---
 
@@ -784,7 +784,7 @@ Now when we invoke `sum([1, 2, 3, 4, 5, 6, 7])`, the outer function creates a ne
 
 ---
 
-[![caution](/assets/images/slice.caution.jpg)](https://www.flickr.com/photos/mcclanahoochie/7585298992)
+[![caution](/assets/images/slice/caution.jpg)](https://www.flickr.com/photos/mcclanahoochie/7585298992)
 
 ---
 
