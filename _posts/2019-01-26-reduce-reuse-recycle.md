@@ -71,19 +71,7 @@ const SliceHandler = {
         (value, accessor) => Slice.of(value)[accessor],
         slice);
     }
-  },
-
-//   set (slice, property, value) {
-//     if (typeof property === 'string') {
-//       const matchInt = property.match(/^\d+$/);
-//       if (matchInt != null) {
-//         const i = parseInt(property);
-//         return slice.atPut(i, value);
-//       }
-//   	}
-
-//     return slice[property] = value;
-//   }
+  }
 };
 
 function normalizedFrom(arrayIsh, from = 0) {
