@@ -207,7 +207,9 @@ follows(just('fu'), just('bar'))('fubar\'d')
 
 Next, we'll need a way to describe a pattern that is made out of other patterns, each of which represents one case.
 
-There are multiple ways to interpret the semantics of matching multiple cases. For example, if two or more cases match, we could take the first match, or the longest match. For this problem, two or more cases can easily both match, e.g. `()()` could match either the first or second cases. We're going to write our function such that when two or more cases match, it picks the longest match.
+There are multiple ways to interpret the semantics of matching multiple cases. For example, if two or more cases match, we could take the first match, or the longest match. For this problem, two or more cases can easily both match, e.g. `()()` could match either the first or second cases. We're going to write our function such that when two or more cases match, it picks the longest match.[^deterministic]
+
+[^deterministic]: A pattern matching engine that always handles cases like this the same way is called *deterministic*. Another way is to presume that when the engine encounters a case where a pattern could match a rule in multiple ways, it is allowed to pick any of the options in order that the entire input match. That is called a *non-deterministic* engine, and non-deterministic engines can handle a richer variety of possible inputs. For example, consider the regular expression `/a+b/`. It can match any number of `a`s followed by a single `b`. Our engine can handle that too. But what about `/a+ab/`? Our engine would fail, as it would greedily match all of the `a`s, and then the pattern `ab` would fail. Non-deterministic engines can choose to match fewer than all of the `a`s and succeed in that match.
 
 ```javascript
 const cases =
