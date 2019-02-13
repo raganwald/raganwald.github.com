@@ -39,7 +39,7 @@ Our name-matching expression above can be implemented with this finite state mac
     Regi-.->|d|Reginald
     Reginald-->|" "|ReginaldSpace["Reginald "]
     ReginaldSpace-->|B|B
-    B-->|end|end;
+    B-->|end|match;
 </div>
 
 We can implement state machines in many ways, but when we say that a particular state machine has a finite number of states, this means we cannot imple
