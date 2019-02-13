@@ -36,7 +36,8 @@ Our name-matching expression above can be implemented with this finite state mac
     Reg-->|i|Regi
     Reg-->|" "|RegSpace["Reg "]
     RegSpace-->B
-    Regi-.->|d|ReginaldldSpace["Reginald "]
+    Regi-.->|d|Reginald
+    Reginald-->|" "|ReginaldSpace["Reginald "]
     ReginaldSpace-->|B|B
     B-->|end|end;
 </div>
