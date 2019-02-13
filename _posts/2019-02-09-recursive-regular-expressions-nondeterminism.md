@@ -1,6 +1,6 @@
 ---
 title: "Recursive Regular Expressions and Nondeterminism"
-tags: [recursion,allonge]
+tags: [recursion,allonge, mermaid,noindex]
 ---
 
 As we discussed in both [Pattern Matching and Recursion], a popular programming "problem" is to determine whether a string of parentheses is "balanced:"[^dyck]
