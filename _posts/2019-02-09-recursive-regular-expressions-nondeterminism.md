@@ -30,7 +30,15 @@ Our name-matching expression above can be implemented with this finte state mach
 
 <div class="mermaid">
   graph TD
-    ((start))-->|R|R;
+    ((start))-.->|R|R;
+    R-->|e|Re
+    Re-->|g|Reg
+    Reg-->|i|Regi
+    Regi-->|n|Regin
+    Regin-->|a|Regina
+    Regina-->|l|Reginal
+    Reginal-->|d|-->Reginald
+    Reginald-.->|"<end>"|((Success))
 </div>
 
 
