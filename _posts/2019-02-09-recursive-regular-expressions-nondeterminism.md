@@ -30,7 +30,7 @@ Our name-matching expression above can be implemented with this finte state mach
 
 <div class="mermaid">
   graph TD
-    start((start))-->|R|R(R);
+    ((start))-->|R|R;
 </div>
 
 
