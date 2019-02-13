@@ -37,7 +37,7 @@ Our name-matching expression above can be implemented with this finte state mach
     Regi-->|n|Regin
     Regin-->|a|Regina
     Regina-->|l|Reginal
-    Reginal-->|d|-->Reginald
+    Reginal-->|d|Reginald
     Reginald-.->|"<end>"|Success;
 </div>
 
