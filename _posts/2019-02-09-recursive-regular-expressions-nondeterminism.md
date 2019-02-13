@@ -38,7 +38,7 @@ Our name-matching expression above can be implemented with this finite state mac
     Regin-->|a|Regina
     Regina-->|l|Reginal
     Reginal-->|d|Reginald
-    Reginald-.->|"<end>"|Success;
+    Reginald-.->|end|Success;
 </div>
 
 <div class="mermaid">
@@ -55,7 +55,7 @@ Our name-matching expression above can be implemented with this finite state mac
     Reginal-->|d|Reginald
     Reginal-->|" "|ReginaldSpace["Reginald "]
     ReginaldSpace-->|B|B
-    B-.->|"<end>"|Success;
+    B-.->|end|Success;
 </div>
 
 We can implement state machines in many ways, but when we say that a particular state machine has a finite number of states, this means we cannot imple
