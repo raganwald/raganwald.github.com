@@ -26,36 +26,19 @@ In formal computer science, a regular expression is a formal way to specific a p
 
 There are a couple of ways to define regular languages, but the one most pertinent to pattern matching is this: A regular language can be recognized by a Finite Automaton. Meaning, we can construct a simple state machine to recognize whether a string is valid in the language, and that state machine will have a finite number of states.
 
-Our name-matching expression above can be implemented with this finite state machine:
+Our name-matching expression above can be implemented with this finite state machine (dotted lines show places where we've elided obvious state transitions for compactness):
 
 <div class="mermaid">
   graph TD
-    start-.->|R|R
+    start-->|R|R
     R-->|e|Re
     Re-->|g|Reg
     Reg-->|i|Regi
-    Regi-->|n|Regin
-    Regin-->|a|Regina
-    Regina-->|l|Reginal
-    Reginal-->|d|Reginald
-    Reginald-.->|end|Success;
-</div>
-
-<div class="mermaid">
-  graph TD
-    start-.->|R|R
-    R-->|e|Re
-    Re-->|g|Reg
     Reg-->|" "|RegSpace["Reg "]
     RegSpace-->B
-    Reg-->|i|Regi
-    Regi-->|n|Regin
-    Regin-->|a|Regina
-    Regina-->|l|Reginal
-    Reginal-->|d|Reginald
-    Reginal-->|" "|ReginaldSpace["Reginald "]
+    Regi-.->|d|ReginaldldSpace["Reginald "]
     ReginaldSpace-->|B|B
-    B-.->|end|Success;
+    B-->|end|end;
 </div>
 
 We can implement state machines in many ways, but when we say that a particular state machine has a finite number of states, this means we cannot imple
