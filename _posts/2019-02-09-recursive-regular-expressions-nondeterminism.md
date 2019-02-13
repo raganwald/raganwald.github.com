@@ -30,18 +30,7 @@ Our name-matching expression above can be implemented with this finte state mach
 
 <div class="mermaid">
   graph TD
-    start((start))-->|R|R(R)
-    R-->|e|Re(Re)
-    Re-->|g|Re(Reg)
-    Reg-->|i|Regi(Regi)
-    Reg-->|" "|RegSpace("Reg ")
-    RegSpace-->|"B"|B(B)
-    Regi-->|n|Regin(Regin)
-    Regin-->|a|Regina(Regina)
-    Regina-->|l|Reginal(Reginal)
-    Reginal-->|l|Reginald(Reginald)
-    Reginald--> |" "|ReginaldSpace("Reginald ")
-    ReginaldSpace->B;
+    start((start))-->|R|R(R);
 </div>
 
 
