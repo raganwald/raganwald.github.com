@@ -45,6 +45,44 @@ Our name-matching expression above can be implemented with this finite state mac
     Braithwaite-->|"end"|match;
 </div>
 
+two
+
+<div class="mermaid">
+  graph TD
+    start-->|R|R
+    R-->|e|Re
+    Re-->|g|Reg
+    Reg-->|i|Regi
+    Reg-->|"&lt;space&gt;"|RegSpace["Regspace"]
+    RegSpace-->|B|B
+    Regi-.->|d|Reginald
+    Reginald-->|"space"|ReginaldSpace["Reginaldspace"]
+    ReginaldSpace-->|B|B
+
+    B-->|r|Br
+    Br-.->|e|Braithwaite
+    Braithwaite-->|"end"|match;
+</div>
+
+three
+
+<div class="mermaid">
+  graph TD
+    start-->|R|R
+    R-->|e|Re
+    Re-->|g|Reg
+    Reg-->|i|Regi
+    Reg-->|"space"|RegSpace["Reg&lt;space&gt;"]
+    RegSpace-->|B|B
+    Regi-.->|d|Reginald
+    Reginald-->|"space"|ReginaldSpace["Reginaldspace"]
+    ReginaldSpace-->|B|B
+
+    B-->|r|Br
+    Br-.->|e|Braithwaite
+    Braithwaite-->|"end"|match;
+</div>
+
 We can implement state machines in many ways, but when we say that if you can make a finite state machine to recognize every valid string in the language, the language is regular. It's quite obvious that if there a finite number of strings in a language, there must be a finite state machine that recognizes that language.[^exercise]
 
 [^exercise]: To demonstrate this, take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
