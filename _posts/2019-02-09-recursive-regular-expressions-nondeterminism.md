@@ -121,7 +121,7 @@ Contradiction! Therefore, our original assumption—that `B` exists—is false. 
 
 ---
 
-### The practical consequences of irregularity
+### balanced parentheses with explicit state
 
 Well, that is probably the most formal thing ever written on this blog. But what does it tell us? What practical thing do we know about recognizing balanced parentheses, now that we've proved that it is not a regular language?
 
@@ -217,7 +217,18 @@ function balanced (string) {
 }
 ```
 
-Depending upon way a particular JavaScript engine is implemented and the way arrays are stored on its heap, this may be able to st
+Depending upon way a particular JavaScript engine is implemented and the way arrays are stored on its heap, this may be able to handle larger numbers of unclosed parentheses, we might even find ourselves limited only by the size of the heap on our particular implementation. That may or may not be larger than using a counter or array as a stack.
+
+These three examples show that when we encounter a problem that we know is equivalent to recognizing a language that is not a regular language, we can anticipate that our solution will need to incorporate some form of state that grows with some aspect of the size of the input.
+
+In these cases, the state is explicit. But we can make the state implicit, too.
+
+---
+
+### balanced parentheses with implicit state
+
+
+
 ---
 
 In [Pattern Matching and Recursion], we used this problem as an excuse to explore functions that acted as *pattern matchers* (like `just`), and also functions acted as *pattern combinators* (like `follows` and `cases`).[^source]
