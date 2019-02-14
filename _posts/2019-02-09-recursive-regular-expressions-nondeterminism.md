@@ -121,10 +121,103 @@ Contradiction! Therefore, our original assumption—that `B` exists—is false. 
 
 ---
 
-### irregularity
+### The practical consequences of irregularity
+
+Well, that is probably the most formal thing ever written on this blog. But what does it tell us? What practical thing do we know about recognizing balanced parentheses, now that we've proved that it is not a regular language?
+
+Well, we know two things:
+
+1. It is not possible to write a standard regular expression that matches balanced parentheses. Standard regular expressions only match regular languages, and balanced parentheses are not a regular language.
+2. It is not possible to write any program that recognizes balanced parentheses in a constant amount of space.
 
 
+The second point is most useful for us writing, say, JavaScript or Ruby or Python or Elixir or whatever. Any function we write to recognize balanced parentheses cannot operate in a fixed amount of memory. In fact, we know a lower bound on the amount of memory that such a function requires: Any engine we build to recognize balanced parentheses will have to accomodate nested parentheses, and to do so, it must have at least as many states as there are opening parentheses.
 
+If it has fewer states than there are opening parentheses, it will fail for the same reason that a finite state machine cannot recognize balanced parentheses. We don't know how it will represent state: It might use a list, a counter, a stack, a tree, store state implicitly on a call stack, there are many possibilities.
+
+But we can guarantee that for recognizing nested parentheses, the machine itself must have at least as many states as opening parentheses, and to recognize all of the infinite number of balanced parentheses strings, it must grow to use an infinite amount of memory.
+
+This is true even if we devise a mechanism based on a simple counter. Here's one such implementation:
+
+```javascript
+function balanced (string) {
+  let unclosedParentheses = 0;
+
+  for (const c of string) {
+    if (c === '(') {
+      ++unclosedParentheses;
+    } else if (c === ')' && unclosedParentheses > 0) {
+      --unclosedParentheses;
+    } else {
+      return false;
+    }
+  }
+
+  return unclosedParentheses === 0;
+}
+
+function test (examples) {
+  for (const example of examples) {
+    console.log(`'${example}' => ${balanced(example)}`);
+  }
+}
+
+test(['', '()', '()()',
+  '((()())())', '())()',
+  '((())(())'
+]);
+  //=>
+    '' => true
+    '()' => true
+    '()()' => true
+    '((()())())' => true
+    '())()' => false
+    '((())(())' => false
+```
+
+This does not "feel" like it uses more memory proportional to the number of unclosed parentheses, but a counter is a way of representing different states. As it happens, this particular counter works up to `Number.MAX_SAFE_INTEGER` unclosed parentheses, and then it breaks, so it is a lot like our hypothetical finite state machine `B`. It may have a `2^53 - 1` states, but it's still a finite number of states and cannot recognize *every* balanced parenthesis string without rewriting it to use big numbers.
+
+But as we can see, the algorithm must have a way of representing the number of unclosed parentheses in some way. We could also use a stack:
+
+```javascript
+function balanced (string) {
+  let parenthesisStack = [];
+
+  for (const c of string) {
+    if (c === '(') {
+      parenthesisStack.push(c);
+    } else if (c === ')' && parenthesisStack.length > 0) {
+      parenthesisStack.pop();
+    } else {
+      return false;
+    }
+  }
+
+  return parenthesisStack.length === 0;
+}
+```
+
+This is trivially equivalent to the counter solution, although the limit of how many elements an array can hold in JavaScript is `2^32 - 1`, less than the counter. Mind you, there is no requirement that stacks be implemented as flat, linear arrays. Here's one based on linked nested arrays, which is a lightweight way to represent a kind of linked list:
+
+```javascript
+function balanced (string) {
+  let parenthesisList = [];
+
+  for (const c of string) {
+    if (c === '(') {
+      parenthesisList = [parenthesisList];
+    } else if (c === ')' && parenthesisList[0] !== undefined) {
+      parenthesisList = parenthesisList[0];
+    } else {
+      return false;
+    }
+  }
+
+  return parenthesisList[0] === undefined;
+}
+```
+
+Depending upon way a particular JavaScript engine is implemented and the way arrays are stored on its heap, this may be able to st
 ---
 
 In [Pattern Matching and Recursion], we used this problem as an excuse to explore functions that acted as *pattern matchers* (like `just`), and also functions acted as *pattern combinators* (like `follows` and `cases`).[^source]
