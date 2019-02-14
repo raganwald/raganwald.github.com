@@ -53,7 +53,7 @@ two
     R-->|e|Re
     Re-->|g|Reg
     Reg-->|i|Regi
-    Reg-->|"&lt;space&gt;"|RegSpace["Regspace"]
+    Reg-->|"<space>"|RegSpace["Regspace"]
     RegSpace-->|B|B
     Regi-.->|d|Reginald
     Reginald-->|"space"|ReginaldSpace["Reginaldspace"]
@@ -72,7 +72,7 @@ three
     R-->|e|Re
     Re-->|g|Reg
     Reg-->|i|Regi
-    Reg-->|"space"|RegSpace["Reg&lt;space&gt;"]
+    Reg-->|"space"|RegSpace["Reg<space>"]
     RegSpace-->|B|B
     Regi-.->|d|Reginald
     Reginald-->|"space"|ReginaldSpace["Reginaldspace"]
