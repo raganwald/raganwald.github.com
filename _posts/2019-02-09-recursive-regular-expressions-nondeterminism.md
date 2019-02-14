@@ -51,7 +51,9 @@ Our name-matching expression above can be implemented with this finite state mac
 
 It's quite obvious that if there are a finite number of strings in a language, there must be a finite state machine that recognizes that language. But what if there are an _infinite_ number of valid strings in the language?[^exercise]
 
-For some languages that have an infinite number of strings, we can still construct a finite state machine to recognize them. We've been talking about strings with balanced parentheses. What about a language where any number of parenthes—including zero—is acceptable?
+[^exercise]: To demonstrate that "If there are a finite number of strings in a language, there must be a finite state machine that recognizes that language," take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
+
+For some languages that have an infinite number of strings, we can still construct a finite state machine to recognize them. We've been talking about strings with balanced parentheses. What about a language where any number of parentheses—including zero—is acceptable?
 
 The finite state machine for this language is very compact:
 
@@ -61,9 +63,29 @@ The finite state machine for this language is very compact:
     start-->|"(end)"|recognized(recognized);
 </div>
 
-[^exercise]: To demonstrate that "If there are a finite number of strings in a language, there must be a finite state machine that recognizes that language," take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
+Despite being so compact, it recognizes an infinite number of strings. But despite the fact that the language has an infinite number of strings, and most of those strings are infinitely long, the recognizer has a fixed and finite size. It is a regular language.
 
-In [Pattern Matching and Recursion], we used this problem as an exc use to explore functions that acted as *pattern matchers* (like `just`), and also functions acted as *pattern combinators* (like `follows` and `cases`).[^source]
+Now let's consider a language where there are either no parenetheses, or there are one or more opening parentheses, and then one or more closing parentheses, such as `()`, `((((())`, and `())))))))))))))))))`. There are an infinite number of such strings, but again we can construct a finite state machine that recognizes this language:
+
+<div class="mermaid">
+  graph TD
+    start(start)-->|"(end)"|recognized(recognized);
+    start-->|"'('"|open
+    open-->|"'('"|open
+    open-->|"')'"|closed
+    closed-->|"')'"|closed
+    closed-->|"(end)"|recognized;
+</div>
+
+So a language that consists of one or more parene
+
+Amongst the infinite set of strings that contain one or more opening parentheses, followed by one or more closed parentheses, are strings that happen to contain exactly the same number of opening parentheses as closed parentheses, strings like `((()))`, '((((((((()))))))))', and the shortest, '()'.
+
+The strings that happen to contain exactly the same number of opening parentheses as closed parentheses can just as easily be described as follows: _A string belongs to the language if the string is `()`, or if the string is `(` and `)` wrappend around a string that belongs to the language._
+
+How would we make a finite state machine that recognizes
+
+In [Pattern Matching and Recursion], we used this problem as an excuse to explore functions that acted as *pattern matchers* (like `just`), and also functions acted as *pattern combinators* (like `follows` and `cases`).[^source]
 
 [^source]: The full source: <script src="https://gist.github.com/raganwald/d5005beb167f075f2c90898143f4e116.js"></script>
 
