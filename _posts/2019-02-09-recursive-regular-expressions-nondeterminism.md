@@ -45,25 +45,6 @@ Our name-matching expression above can be implemented with this finite state mac
     Braithwaite-->|"end"|match;
 </div>
 
-two
-
-<div class="mermaid">
-  graph TD
-    start-->|R|R
-    R-->|e|Re
-    Re-->|g|Reg
-    Reg-->|i|Regi
-    Reg-->|"<space>"|RegSpace["Regspace"]
-    RegSpace-->|B|B
-    Regi-.->|d|Reginald
-    Reginald-->|"space"|ReginaldSpace["Reginaldspace"]
-    ReginaldSpace-->|B|B
-
-    B-->|r|Br
-    Br-.->|e|Braithwaite
-    Braithwaite-->|"end"|match;
-</div>
-
 three
 
 <div class="mermaid">
