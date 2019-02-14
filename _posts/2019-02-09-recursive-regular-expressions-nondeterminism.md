@@ -37,17 +37,17 @@ Our name-matching expression above can be implemented with this finite state mac
     Reg-->|"&lt;space&gt;"|RegSpace["Reg&lt;space&gt;"]
     RegSpace-->|B|B
     Regi-.->|d|Reginald
-    Reginald-->|&lt;space&gt;|ReginaldSpace["Reginald&lt;space&gt;"]
+    Reginald-->|"&lt;space&gt;"|ReginaldSpace["Reginald&lt;space&gt;"]
     ReginaldSpace-->|B|B
 
     B-->|r|Br
     Br-.->|e|Braithwaite
-    Braithwaite-->|&lt;end&gt;|match;
+    Braithwaite-->|"&lt;end&gt;"|match;
 </div>
 
-We can implement state machines in many ways, but when we say that a particular state machine has a finite number of states, this means we cannot imple
+We can implement state machines in many ways, but when we say that if you can make a finite state machine to recognize every valid string in the language, the language is regular. It's quite obvious that if there a finite number of strings in a language, there must be a finite state machine that recognizes that language.[^exercise]
 
-
+[^exercise]
 
 In [Pattern Matching and Recursion], we used this problem as an exc use to explore functions that acted as *pattern matchers* (like `just`), and also functions acted as *pattern combinators* (like `follows` and `cases`).[^source]
 
