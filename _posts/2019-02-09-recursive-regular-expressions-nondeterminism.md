@@ -30,7 +30,7 @@ Our name-matching expression above can be implemented with this finite state mac
 
 <div class="mermaid">
   graph TD
-    start-->|R|R
+    start(start)-->|R|R
     R-->|e|Re
     Re-->|g|Reg
     Reg-->|i|Regi
@@ -46,7 +46,7 @@ Our name-matching expression above can be implemented with this finite state mac
     Bra-->|t|t
     Brai-->|t|t
     t-.->|hwaite|thwaite
-    thwaite-->|"end"|match;
+    thwaite-->|"(end)"|recognized(recognized);
 </div>
 
 We can implement state machines in many ways, but when we say that if you can make a finite state machine to recognize every valid string in the language, the language is regular. It's quite obvious that if there a finite number of strings in a language, there must be a finite state machine that recognizes that language.[^exercise]
