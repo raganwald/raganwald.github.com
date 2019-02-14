@@ -47,7 +47,7 @@ Our name-matching expression above can be implemented with this finite state mac
 
 We can implement state machines in many ways, but when we say that if you can make a finite state machine to recognize every valid string in the language, the language is regular. It's quite obvious that if there a finite number of strings in a language, there must be a finite state machine that recognizes that language.[^exercise]
 
-[^exercise]
+[^exercise]: To demonstrate this, take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
 
 In [Pattern Matching and Recursion], we used this problem as an exc use to explore functions that acted as *pattern matchers* (like `just`), and also functions acted as *pattern combinators* (like `follows` and `cases`).[^source]
 
