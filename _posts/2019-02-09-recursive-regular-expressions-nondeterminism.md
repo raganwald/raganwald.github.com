@@ -1,6 +1,6 @@
 ---
 title: "Recursive Regular Expressions and Nondeterminism"
-tags: [recursion,allonge, mermaid,noindex]
+tags: [recursion,allonge,mermaid,noindex]
 ---
 
 As we discussed in both [Pattern Matching and Recursion], a popular programming "problem" is to determine whether a string of parentheses is "balanced:"[^dyck]
@@ -9,11 +9,11 @@ As we discussed in both [Pattern Matching and Recursion], a popular programming 
 
 > Given a string that consists of open and closed parentheses, write a function that determines whether the parentheses in the string are **balanced**. "Balanced" parentheses means that each opening symbol has a corresponding closing symbol and the pairs of parentheses are properly nested.
 
-[^dyck]: We also discussed this problem in [Alice and Bobbie and Sharleen and Dyck], albeit in a different form that doesn't directly contribute to the subject of this essay. In that essay, we noted that strings of balanced parenetheses are known more formally as [Dyck Words](https://en.wikipedia.org/wiki/Walther_von_Dyck).
+[^dyck]: We also discussed this problem in [Alice and Bobbie and Sharleen and Dyck], albeit in a different form that doesn't directly contribute to the subject of this essay. In that essay, we noted that strings of balanced parentheses are known more formally as [Dyck Words](https://en.wikipedia.org/wiki/Walther_von_Dyck).
 
 [Alice and Bobbie and Sharleen and Dyck]: http://raganwald.com/2018/11/14/dyck-joke.html "Alice and Bobbie and Sharleen and Dyck"
 
-before we revist the code we wrote, let's mention "the elephant in the room:" Before we reach for JavaScript or any other general-purpose tool, there is already a specific text pattern-matching tool available, and it's built right into most popular lanuages.
+before we revisit the code we wrote, let's mention "the elephant in the room:" Before we reach for JavaScript or any other general-purpose tool, there is already a specific text pattern-matching tool available, and it's built right into most popular languages.
 
 The tool is a "regular expression," which informally refers to both a syntax for expressing a pattern, and an engine for applying regular expressions to a string. For example, `/Reg(?:inald)? Braithwai?te/` is a regular expression that matches various permutations of a name.
 
@@ -65,7 +65,7 @@ The finite state machine for this language is very compact:
 
 Despite being so compact, it recognizes an infinite number of strings. But despite the fact that the language has an infinite number of strings, and most of those strings are infinitely long, the recognizer has a fixed and finite size. It is a regular language.
 
-Now let's consider a language where there are either no parenetheses, or there are one or more opening parentheses, and then one or more closing parentheses, such as `()`, `((((())`, and `())))))))))))))))))`. There are an infinite number of such strings, but again we can construct a finite state machine that recognizes this language:
+Now let's consider a language where there are either no parentheses, or there are one or more opening parentheses, and then one or more closing parentheses, such as `()`, `((((())`, and `())))))))))))))))))`. There are an infinite number of such strings, but again we can construct a finite state machine that recognizes this language:
 
 <div class="mermaid">
   graph TD
@@ -77,13 +77,29 @@ Now let's consider a language where there are either no parenetheses, or there a
     closed-->|"(end)"|recognized;
 </div>
 
-So a language that consists of one or more parene
+So a language that consists of either no parentheses, or one or more opening parentheses followed by one or more closed parentheses is also a regular language.
 
-Amongst the infinite set of strings that contain one or more opening parentheses, followed by one or more closed parentheses, are strings that happen to contain exactly the same number of opening parentheses as closed parentheses, strings like `((()))`, '((((((((()))))))))', and the shortest, '()'.
+Now that we have some examples of regular languages, and we see that they can be recognized with finite state automata, we can think a little harder about the balanced parentheses problem. If "balanced parentheses" is a regular language, we could write a state machine to recognize it, or we could also write a regular expression to recognize it.
 
-The strings that happen to contain exactly the same number of opening parentheses as closed parentheses can just as easily be described as follows: _A string belongs to the language if the string is `()`, or if the string is `(` and `)` wrappend around a string that belongs to the language._
+Let's take a step closer to balanced parentheses.
 
-How would we make a finite state machine that recognizes
+---
+
+### recognizing nested parentheses
+
+But what about the language that consists of either no parentheses, or one or more opening parentheses followed by one or more closed parentheses, _and where the number of opening parentheses equals the number of closed parentheses_?
+
+Amongst the infinite set of strings that contain one or more opening parentheses, followed by one or more closed parentheses, are strings that happen to contain exactly the same number of opening parentheses as closed parentheses, strings like `((()))`, '((((((((()))))))))', '()', and of course the empty string.
+
+The strings that happen to contain exactly the same number of opening parentheses as closed parentheses can just as easily be described as follows: _A string belongs to the language if the string is `()`, or if the string is `(` and `)` wrapped around a string that belongs to the language._
+
+We call this language "nested parentheses," and it is related to balanced parentheses: _All nested parentheses strings are also balanced parentheses strings._
+
+This is very significant, for this reason: If we can show that it is impossible to recognize nested parentheses with a finite state machine, we will also know that it is impossible to recognize balanced parentheses with a finite state machine.[^intuition]
+
+[^intuition]: It is beyond the scope of this post to prove that if some subset of a language is not regular, than the entire language is also not regular.
+
+
 
 In [Pattern Matching and Recursion], we used this problem as an excuse to explore functions that acted as *pattern matchers* (like `just`), and also functions acted as *pattern combinators* (like `follows` and `cases`).[^source]
 
@@ -173,7 +189,7 @@ Extended syntax also allows comments:
     )*               # End the anonymous non-capturing group, and modify
                      # it so that it matches zero or more times.
 
-  )                  # End the named, noncapturing group 'balanced'
+  )                  # End the named, non-capturing group 'balanced'
 
   $                  # Match the end of the input
 
@@ -194,7 +210,7 @@ First, the regular expression syntax is more compact. That can sometimes be help
 
 And when something is so complex that the terse syntax gets in the way, extended syntax helps us tame its complexity. The function composition approach is always going to be bulkier than the equivalent regular expression.
 
-The second thing that stands out is that with functions, we don't need any special thing for recursion. They're just functions, and we implement recursion using the ordinary name-bdinding syntax.
+The second thing that stands out is that with functions, we don't need any special thing for recursion. They're just functions, and we implement recursion using the ordinary name-binding syntax.
 
 In regular expression engines that support recursion, we need one special thing to name a group (`(?'balanced' ... )`) and another special thing to refer to a named group (`\g'balanced' `). Thew regular expression engine must provide these things, and we must remember what they are above and beyond remembering how to name things in our normal programming language.
 
@@ -225,7 +241,7 @@ entirely(
   //=> '((())())'
 ```
 
-Or cast all caution to the wind and employ a recursive compbinator!
+Or cast all caution to the wind and employ a recursive combinator!
 
 ```javascript
 const why =
