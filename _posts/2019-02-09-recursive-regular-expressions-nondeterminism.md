@@ -57,9 +57,12 @@ The finite state machine for this language is very compact:
 
 <div class="mermaid">
   graph TD
-    start(start)-->|"end"|recognized(recognized)
-    start(start)-->|"("|start
-    start(start)-->|")"|start;
+    start(start)-->((end))
+    ((end))-->recognized(recognized)
+    start-->open(("("))
+    open-->start
+    start-->closed(("("))
+    closed--> start;
 </div>
 
 [^exercise]: To demonstrate that "If there are a finite number of strings in a language, there must be a finite state machine that recognizes that language," take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
