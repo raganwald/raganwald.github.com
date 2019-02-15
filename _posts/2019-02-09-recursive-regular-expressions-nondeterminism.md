@@ -1,6 +1,6 @@
 ---
-title: "Recursive Regular Expressions and Nondeterminism"
-tags: [recursion,allonge,mermaid,noindex]
+title: "Recognizing Balanced Parentheses, Under the Hood"
+tags: [recursion,allonge,mermaid]
 ---
 
 As we discussed in both [Pattern Matching and Recursion], a popular programming "problem" is to determine whether a string of parentheses is "balanced:"[^dyck]
@@ -13,7 +13,7 @@ As we discussed in both [Pattern Matching and Recursion], a popular programming 
 
 [Alice and Bobbie and Sharleen and Dyck]: http://raganwald.com/2018/11/14/dyck-joke.html "Alice and Bobbie and Sharleen and Dyck"
 
-before we revisit the code we wrote, let's mention "the elephant in the room:" Before we reach for JavaScript or any other general-purpose tool, there is already a specific text pattern-matching tool available, and it's built right into most popular languages.
+Before we reach for JavaScript or any other general-purpose tool, there is already a specific text pattern-matching tool available, and it's built right into most popular languages.
 
 The tool is a "regular expression," which informally refers to both a syntax for expressing a pattern, and an engine for applying regular expressions to a string. For example, `/Reg(?:inald)? Braithwai?te/` is a regular expression that matches various permutations of a name.
 
@@ -71,8 +71,6 @@ Now that we have some examples of regular languages. We see that they can be rec
 
 We can now think a little harder about the balanced parentheses problem. If "balanced parentheses" is a regular language, we could write a state machine to recognize it, or we could also write a regular expression to recognize it.
 
-Let's take a step closer to balanced parentheses.
-
 ---
 
 ### nested parentheses
@@ -81,9 +79,9 @@ Of all the strings that contain zero or more parentheses, there is a set that co
 
 The strings that happen to contain exactly the same number of opening parentheses as closed parentheses can just as easily be described as follows: _A string belongs to the language if the string is `()`, or if the string is `(` and `)` wrapped around a string that belongs to the language._
 
-We call these strings "nested parentheses," and it is related to balanced parentheses: _All nested parentheses strings are also balanced parentheses strings._
+We call these strings "nested parentheses," and it is related to balanced parentheses: _All nested parentheses strings are also balanced parentheses strings._ Our approach to determining whether balanced parentheses is a regular language will use nested parentheses.
 
-Our approach to determining whether balanced parentheses is a regular language will use nested parentheses. First, we will assume that there exists a finite state machine that can recognized balanced parentheses. Since nested parentheses are balanced parentheses, our machine must recognize nested parentheses. Next we will use nested parentheses strings to show that by presuming that such a machine has a finite number of states leads to a logical contradiction.
+First, we will assume that there exists a finite state machine that can recognized balanced parentheses. Since nested parentheses are balanced parentheses, our machine must recognize nested parentheses. Next, we will use nested parentheses strings to show that by presuming that such a machine has a finite number of states leads to a logical contradiction.
 
 This will establish that our assumption that there is a finite state machine that recognizes balanced parentheses is faulty, which in turn establishes that balanced parentheses is not a regular language.[^reductio]
 
@@ -219,7 +217,7 @@ function balanced (string) {
 
 Depending upon way a particular JavaScript engine is implemented and the way arrays are stored on its heap, this may be able to handle larger numbers of unclosed parentheses, we might even find ourselves limited only by the size of the heap on our particular implementation. That may or may not be larger than using a counter or array as a stack.
 
-These three examples show that when we encounter a problem that we know is equivalent to recognizing a language that is not a regular language, we can anticipate that our solution will need to incorporate some form of state that grows with some aspect of the size of the input.
+These three examples show that when we encounter a problem that we know is equivalent to recognizing a language that is not a regular language, we can anticipate that our solution will need to incorporate some form of state that grows with some aspect of the size of the input. Our language implementation or hardware may impose some limits on our implementation, but _in principle_ we are solving the problem.
 
 In these cases, the state is explicit. But we can make the state implicit, too.
 
@@ -227,21 +225,51 @@ In these cases, the state is explicit. But we can make the state implicit, too.
 
 ### balanced parentheses with implicit state
 
+We saw that we can encode state with an explicit stack. Almost all conventional programming languages have an _implicit_ stack, the call stack.[^implicit]
 
+[^implicit]: There may be other implicit stacks too, such as the stack that happens when a generator function uses `yield` or `yield *`.
+
+Here's an implicit implementation of balanced parentheses:
+
+```javascript
+function balanced (string) {
+  const iterator = string[Symbol.iterator]();
+
+  return balancedIterator(iterator) === true;
+}
+
+function balancedIterator(iterator) {
+  const { value: token, done } = iterator.next();
+
+  if (done) {
+    return true;
+  } else if (token === '(') {
+    const nextToken = balancedIterator(iterator);
+
+    if (nextToken === ')') {
+      return balancedIterator(iterator);
+    } else {
+      return false;
+    }
+  } else {
+    return token;
+  }
+}
+```
+
+The `balanced` function extracts an iterator from the string, and then invokes `balancedIterator`, which actually scans the string. When it encounters an open parenthesis, it then calls itself recursively to consume balanced parentheses before returning.
+
+There is no counter or stack or list, but we know that behind the scenes, JavaScript's call stack is tracking the depth of nested parentheses. The function thus only works for strings with unclosed parentheses up to the maximim allowable depth of the call stack, but again in principle the algorithm works on infinitely long strings.
 
 ---
 
-In [Pattern Matching and Recursion], we used this problem as an excuse to explore functions that acted as *pattern matchers* (like `just`), and also functions acted as *pattern combinators* (like `follows` and `cases`).[^source]
+### recursive pattern matching
 
-[^source]: The full source: <script src="https://gist.github.com/raganwald/d5005beb167f075f2c90898143f4e116.js"></script>
+But possibly the best way to use implicit state is to let something else handle all of the work. In [Pattern Matching and Recursion], we built pattern matchers out of JavaScript functions, and then combined them with combinators made out of javaScript functions.
 
----
+Making pattern matchers and combinators out of functions afforded us a number of advantages. First and foremost, we had access to the power of a fully operational <strike>battle station</strike> programming language.
 
-### functions as pattern matchers and combinators
-
-Making pattern matchers and combinators out of functions affords us a number of advantages. First and foremost, we have access to the power of a fully operational <strike>battle station</strike> programming language.
-
-Not counting the definitions of `just`, `follows`, `case`, and so forth, our solution to the balanced parentheses problem shows this:
+Not counting the definitions of `just`, `follows`, `case`, and so forth, our solution to the balanced parentheses problem showed this:
 
 ```javascript
 const balanced =
@@ -259,13 +287,14 @@ const entirelyBalanced = entirely(balanced);
 
 We can see one of the ways that it leverages being "native" JavaScript: It is a recursive pattern, and the recursion is implemented by referring to the name `balanced` that is bound in the current JavaScript scope.
 
-We didn't have to make a special feature for recursive patterns: We made our patterns by composing functions, and we got everything we can usually do with functions, "for free."
+Behind the scenes, it is using the JavaScript stack to track the state of unclosed parentheses, juts like out implicit solution above. But even though we don't explicitly have a stack anywhere, we are still using one.
 
----
+We noted above that formal regular expressions cannot handle balanced parentheses, because balanced parentheses are not a regular language.
 
-### recursive regular expressions
+But programmers being programmers, the regular expressions we find built into various programming languages have been expanded over the years, and some of them provide a way to specify recursive regular expressions (a formal oxymoron).
 
-Compare this to the usual way of matching patterns in text, [regular expressions]. Here's the same recursive pattern, written as a recursive regular expression in the Ruby programming language:
+JavaScript is not one of those languages, and PERL is not spoken here, but the Oniguruma regular expression engine used by Ruby (and PHP) does support recursion. Here's an implementation of balanced parentheses written in Ruby:
+
 
 ```ruby
 %r{
@@ -328,77 +357,48 @@ Extended syntax also allows comments:
                      # ignoring whitespace.
 ```
 
-How do the two approaches compare?
+Once again, something does all the work for us. In this case, it's a high-performance pattern-matching engine that is going to be faster and use less memory than our functional pattern matchers and functional combinators.
+
+And once again, even though we have no explicit stack, we are guaranteed that _somewhere_ in Oniguruma, there is a stack tracking the recursion, and thus tracking the state of the machine as it consumes characters.
 
 ---
 
-### comparing function composition to recursive regular expressions
+### what can we learn from the theory behind recognizing balanced parentheses?
 
-Comparing and contrasting the two solutions, a few things stand out.
+Let's review what we've just done:
 
-First, the regular expression syntax is more compact. That can sometimes be helpful for short patterns, especially one-liners.
+1. We worked our way up from the theory behind regular languages to proving that balanced parentheses could not be a regular language.
+2. Given that balanced parentheses is not a regular language, we knew that we would have to represent a state for each unclosed parenthesis. This provided a hint that we would need some kind of linear state, such as a counter, stack, or list.
+3. We implemented a couple of recognizers that had explicit state.
+4. We also implemented a recognizer that used the call stack to use implicit state.
+5. Finally, we returned to our recursive pattern from [Pattern Matching and Recursion], and also looked at a "recursive regular expression" implemented in Ruby. Both of these had implicit state as well.
 
-And when something is so complex that the terse syntax gets in the way, extended syntax helps us tame its complexity. The function composition approach is always going to be bulkier than the equivalent regular expression.
+The small takeaway is that one of the uses for recursion is to make state implicit, rather than explicit. That can aid clarity in some cases, but hide it in others. The implementations using patterns and regular expressions aid clarity, because the shape of the pattern is isomorphic to the shape of the strings being matched.
 
-The second thing that stands out is that with functions, we don't need any special thing for recursion. They're just functions, and we implement recursion using the ordinary name-binding syntax.
+The implicit state solution using iterators is compact and does not rely on external libraries or engines. On the other hand, it is not nearly as elegant.
 
-In regular expression engines that support recursion, we need one special thing to name a group (`(?'balanced' ... )`) and another special thing to refer to a named group (`\g'balanced' `). Thew regular expression engine must provide these things, and we must remember what they are above and beyond remembering how to name things in our normal programming language.
+> Starting from the most abstract principles is a good way to relearn something, but a bad way to learn something.—Paul Graham
 
-Which leads to the third thing. Some regular expression engines do not provide for recursive patterns. JavaScript's built-in regular expression engine, for example, does not support recursive regular expressions.
+But these are small learnings. There's a bigger one here that is tangental to the actual computer science. This problem is often given as a test during job interviews. Is it a good one?
 
-So if we're programming in JavaScript, and we want a recursive pattern, we roll our own or do without.
+We went from first principles to code in this essay. That is unrealistic for any normal human under the time pressure of an interview. Universities don't even ask you to do this in exams. Instead, they give problems like this as homework exercises, and then after you have worked them out for yourself, a test is given to see if you figured out the answers.
+
+If you haven't been exposed to the underlying math recently, coming up with a solution to balanced parentheses is going to be extremely difficult. It reminds one of Nabakov's line, "Genius is an African who dreams up snow."
+
+In most actual cases, what happens is that either a programmer is already familiar with  the general principles and shape of the problem and its solution, or they are going to have a hard time with the problem.
+
+Some programmers are very familiar with the problem. For example, if this problem is posed to computer science students who are seeking employment on work-terms, if the material is covered in their curriculum, they will know the basic idea, and they will spend most of their time writing the code to implement an idea they already understand.
+
+For certain schools, this is fine, and the problem could be useful for such students.
+
+But for other schools that have a different emphasis, or for working programmers who may have done a lot of good work but haven't had need to review the specifics of DFAs, context-free languages, and so forth recently...
+
+This problem is asking them to reinvent the basic research of people like Kleene and Dyck, extemporaneously. And then write code under the interviewer's watching eye. That is unlikely to show these candidates in their best light, and the results become very uneven.
+
+Outside of a special-case like certain CS students, this question is likely to give very inconsistent results, and those results are going to be dominated by a candidate's recent familiarity with the underlying problem, rather than their coding skills.
+
+In most cases, that makes for a bad interview question.
 
 ---
 
-### organizing our patterns
-
-There is a fourth thing, ways to organize our patterns. With functions, we have many ways to organize them. We can put libraries of pre-written patterns in modules. We can organize things in lexical scope.
-
-We can even name things inline as the regular expression does, using a named function expression, like this:
-
-```javascript
-entirely(
-  function balanced (input) {
-    return zeroOrMore(
-      cases(
-        follows(just('('), balanced, just(')')),
-        follows(just('['), balanced, just(']')),
-        follows(just('{'), balanced, just('}'))
-      )
-    )(input);
-  }
-)('((())())');
-  //=> '((())())'
-```
-
-Or cast all caution to the wind and employ a recursive combinator!
-
-```javascript
-const why =
-  fn =>
-    (
-      maker =>
-        (...args) =>
-          fn(maker(maker), ...args)
-    )(
-      maker =>
-        (...args) =>
-          fn(maker(maker), ...args)
-    );
-
-entirely(
-  why(
-    (balanced, input) =>
-      zeroOrMore(
-        cases(
-          follows(just('('), balanced, just(')')),
-          follows(just('['), balanced, just(']')),
-          follows(just('{'), balanced, just('}'))
-        )
-      )(input)
-  )
-)('((())())');
-  //=> '((())())'
-```
-
-Organizing code is more than just putting
+# Notes
