@@ -301,7 +301,7 @@ JavaScript is not one of those languages, and PERL is not spoken here, but the O
 
 
 ```ruby
-/^(?'balanced'(?: \(\g'balanced'\))*)$/x
+/^(?'balanced'(?:\(\g'balanced'\))*)$/x
 ```
 
 It is written using the standard syntax. Standard syntax is compact, but on more complex patterns can make the pattern difficult to read. "Extended" syntax ignores whitespace, which is very useful when a regular expression is complex and needs to be visually structured.
