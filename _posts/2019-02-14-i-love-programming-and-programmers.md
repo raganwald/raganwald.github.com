@@ -26,7 +26,7 @@ For example:
 
 Before we reach for JavaScript or any other general-purpose tool, there is already a specific text pattern-matching tool available, and it's built right into most popular languages.
 
-The tool is a regular expression (or "regex," plural "regexen" for historical reasons), which *informally* refers to both a syntax for expressing a pattern, and an engine for applying regular expressions to a string. For example, `/Reg(?:inald)? Braithwai?te/` is a regex that matches various permutations of a name.
+The tool is a regular expression (or "regex," plural "regexen" for historical reasons), which *informally* refers to both a syntax for expressing a pattern, and an engine for applying regular expressions to a string. For example, `/Reg(?:gie)?/` is a regex that matches two versions of a nickname.
 
 In formal computer science, a regular expression is a formal way to specific a pattern that matches valid strings in a formal [regular language]. In computer science, a "language" is some set of strings or sequences of tokens. Those strings that are in the set are considered members of the language.[^kleene]
 
@@ -49,7 +49,7 @@ A "formal language" is a defined set of strings (or tokens in a really formal ar
 
 "Balanced parentheses" is a formal language, there is an unambiguous specification for determining whether a string is or is not a member of the language. In computer science, strings containing balanced parentheses are called "Dyck Words," because they were first studied by [Walther von Dyck].
 
-[Walther_von_Dyck](https://en.wikipedia.org/wiki/Walther_von_Dyck)
+[Walther von Dyck](https://en.wikipedia.org/wiki/Walther_von_Dyck)
 
 We mentioned "unambiguously specifying whether a string belongs to a language." A computer scientist's favourite tool for unambiguously specifying anything is a computing device or machine. And indeed, for something to be a formal language, there must be a machine that acts as its specification.
 
@@ -61,28 +61,61 @@ There are a couple of ways to define regular languages, but the one most pertine
 
 [DFA]: https://en.wikipedia.org/wiki/Deterministic_finite_automaton
 
-Our name-matching expression above can be implemented with this finite state machine (dotted lines show places where we've elided obvious state transitions for compactness):
+Our name-matching expression above can be implemented with this finite state machine:
 
 <div class="mermaid">
   graph TD
     start(start)-->|R|R
     R-->|e|Re
     Re-->|g|Reg
-    Reg-->|i|Regi
-    Reg-->|"(space)"|RegSpace["Reg(space)"]
-    RegSpace-->|B|B
-    Regi-.->|nald|Reginald
-    Reginald-->|"(space)"|ReginaldSpace["Reginald(space)"]
-    ReginaldSpace-->|B|B
 
-    B-->|r|Br
-    Br-->|a|Bra
-    Bra-->|i|Brai
-    Bra-->|t|t
-    Brai-->|t|t
-    t-.->|hwaite|thwaite
-    thwaite-->|"(end)"|recognized(recognized);
+    Reg-->|end|recognized(recognized)
+
+    Reg-->|g|Regg
+    Regg-->|i|Reggi
+    Reggi-->|e|Reggie
+
+    Reggie-->|end|recognized;
 </div>
+
+And we can easily write it in JavaScript:
+
+```javascript
+function reginald (string) {
+  const END = Symbol('end');
+  const RECOGNIZED = Symbol('recognized');
+  const UNRECOGNIZED = Symbol('unrecognized');
+
+  const start = token => token === 'R' ? R : false;
+  const R = token => token === 'e' ? Re : false;
+  const Re = token => token === 'g' ? Reg : false;
+  const Reg = token => {
+    switch (token) {
+      case END:
+        return RECOGNIZED;
+      case 'g':
+        return Regg;
+  	}
+  }
+  const Regg = token => token === 'i' ? Reggi : false;
+  const Reggi = token => token === 'e' ? Reggie : false;
+  const Reggie = token => token === END ? RECOGNIZED : false;
+
+  let currentState = start;
+  for (const token of string) {
+    currentState = currentState(token) || UNRECOGNIZED;
+
+    if (currentState === RECOGNIZED) {
+      return true;
+    } else if (currentState === UNRECOGNIZED) {
+      return false;
+    }
+  }
+
+  const finalState = currentState(END);
+  return finalState === RECOGNIZED;
+}
+```
 
 Given that we can make a recognizer (either as a regular expression or a DFA) for our "name" language, it is safe to say that it is a formal language. It only has four strings, but that's fine, it's still a formal language.
 
@@ -104,43 +137,44 @@ The finite state machine for this "parentheses" language is very compact:
     start-->|"(end)"|recognized(recognized);
 </div>
 
-And we can easily write it in JavaScript:
+And we can also write this state machine it in JavaScript:
 
 ```javascript
 function parentheses (string) {
   const END = Symbol('end');
+  const RECOGNIZED = Symbol('recognized');
+  const UNRECOGNIZED = Symbol('unrecognized');
 
-  function start (token) {
+  const start = token => {
     switch(token) {
       case END:
-        return true;
+        return RECOGNIZED;
       case '(':
         return start;
       case ')':
         return start;
-      default:
-        return false;
     }
   }
 
   let currentState = start;
   for (const token of string) {
-    const nextState = currentState(token);
+    currentState = currentState(token) || UNRECOGNIZED;
 
-    if (nextState === true) {
+    if (currentState === RECOGNIZED) {
       return true;
-    } else if (nextState === false) {
+    } else if (currentState === UNRECOGNIZED) {
       return false;
     }
   }
 
-  return currentState(END);
+  const finalState = currentState(END);
+  return finalState === RECOGNIZED;
 }
 ```
 
 Our recognizer is very compact, yet it recognizes an infinite number of strings. And in theory, at least, it recognizes strings that are infinitely long. And since the recognizer has a fixed and finite size, our "parentheses" language is a regular language.
 
-Now that we have some examples of regular languages. We see that they can be recognized with finite state automata, and we also see that it is possible for regular languages too have an infinite number of strings, some of which are infinitely long. This does not, in principle, bar us from creating finite state machines to recognize them.
+Now that we have some examples of regular languages. We see that they can be recognized with finite state automata, and we also see that it is possible for regular languages to have an infinite number of strings, some of which are infinitely long. This does not, in principle, bar us from creating finite state machines to recognize them.
 
 We can now think a little harder about the balanced parentheses problem. If "balanced parentheses" is a regular language, we could write a state machine to recognize it, or we could also write a regular expression to recognize it.
 
@@ -201,12 +235,11 @@ Well, we know two things:
 1. It is not possible to write a standard regular expression that matches balanced parentheses. Standard regular expressions only match regular languages, and balanced parentheses are not a regular language.
 2. It is not possible to write any program that recognizes balanced parentheses in a constant amount of space.
 
+The second point is most useful for us writing, say, JavaScript or Ruby or Python or Elixir or whatever. Any function we write to recognize balanced parentheses cannot operate in a fixed amount of memory. In fact, we know a lower bound on the amount of memory that such a function requires: Any engine we build to recognize balanced parentheses will have to accomodate nested parentheses, and to do so, it must have at least as many states as there are unclosed parentheses.
 
-The second point is most useful for us writing, say, JavaScript or Ruby or Python or Elixir or whatever. Any function we write to recognize balanced parentheses cannot operate in a fixed amount of memory. In fact, we know a lower bound on the amount of memory that such a function requires: Any engine we build to recognize balanced parentheses will have to accomodate nested parentheses, and to do so, it must have at least as many states as there are opening parentheses.
+If it has fewer states than there are unclosed parentheses, it will fail for the same reason that a finite state machine cannot recognize balanced parentheses. We don't know how it will represent state: It might use a list, a counter, a stack, a tree, store state implicitly on a call stack, there are many possibilities.
 
-If it has fewer states than there are opening parentheses, it will fail for the same reason that a finite state machine cannot recognize balanced parentheses. We don't know how it will represent state: It might use a list, a counter, a stack, a tree, store state implicitly on a call stack, there are many possibilities.
-
-But we can guarantee that for recognizing nested parentheses, the machine itself must have at least as many states as opening parentheses, and to recognize all of the infinite number of balanced parentheses strings, it must grow to use an infinite amount of memory.
+But we can guarantee that for recognizing nested parentheses, the machine itself must have at least as many states as unclosed parentheses, and to recognize all of the infinite number of balanced parentheses strings, it must grow to use an infinite amount of memory.
 
 This is true even if we devise a mechanism based on a simple counter. Here's one such implementation:
 
