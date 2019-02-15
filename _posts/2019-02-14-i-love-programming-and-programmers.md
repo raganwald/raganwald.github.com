@@ -381,9 +381,15 @@ The small takeaway is that one of the uses for recursion is to make state implic
 
 The implicit state solution using iterators is compact and does not rely on external libraries or engines. On the other hand, it is not nearly as elegant.
 
-> Starting from the most abstract principles is a good way to relearn something, but a bad way to learn something.—Paul Graham
+> "Starting from the most abstract principles is a good way to relearn something, but a bad way to learn something."
+>
+> --Paul Graham
 
-But these are small learnings. There's a bigger one here that is tangental to the actual computer science. This problem is often given as a test during job interviews. Is it a good one?
+But these are small learnings. There's a bigger one here that is tangental to the actual computer science. This problem is often given as a test during job interviews. Is it a good test?
+
+---
+
+### is balanced parentheses a good interview question?
 
 We went from first principles to code in this essay. That is unrealistic for any normal human under the time pressure of an interview. Universities don't even ask you to do this in exams. Instead, they give problems like this as homework exercises, and then after you have worked them out for yourself, a test is given to see if you figured out the answers.
 
@@ -394,6 +400,10 @@ In most actual cases, what happens is that either a programmer is already famili
 Some programmers are very familiar with the problem. For example, if this problem is posed to computer science students who are seeking employment on work-terms, if the material is covered in their curriculum, they will know the basic idea, and they will spend most of their time writing the code to implement an idea they already understand.
 
 For certain schools, this is fine, and the problem could be useful for such students.
+
+> "Genius is an African who dreams up snow."
+>
+> --Nabakov
 
 But for other schools that have a different emphasis, or for working programmers who may have done a lot of good work but haven't had need to review the specifics of DFAs, context-free languages, and so forth recently...
 
