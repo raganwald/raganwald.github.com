@@ -391,7 +391,7 @@ For certain schools, this is fine, and the problem could be useful for such stud
 
 But for other schools that have a different emphasis, or for working programmers who may have done a lot of good work but haven't had need to review the specifics of DFAs, context-free languages, and so forth recently...
 
-This problem is asking them to reinvent the basic research of people like Kleene and Dyck, extemporaneously. And then write code under the interviewer's watching eye. That is unlikely to show these candidates in their best light, and the results become very uneven.
+This problem is asking them to reinvent the basic research of people like Kleene and von Dyck, extemporaneously. And then write code under the interviewer's watching eye. That is unlikely to show these candidates in their best light, and the results become very uneven.
 
 Outside of a special-case like certain CS students, this question is likely to give very inconsistent results, and those results are going to be dominated by a candidate's recent familiarity with the underlying problem, rather than their coding skills.
 
