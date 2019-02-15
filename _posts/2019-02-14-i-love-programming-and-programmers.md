@@ -39,7 +39,7 @@ In this essay we're going to look at some solutions to the "balanced parentheses
 
 We'll wrap it up with a critique of using this problem as an interview question.[^critique]
 
-[critique]: Because clickbait.
+[^critique]: Because clickbait.
 
 ---
 
