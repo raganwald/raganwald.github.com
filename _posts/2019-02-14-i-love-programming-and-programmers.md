@@ -289,6 +289,10 @@ We can see one of the ways that it leverages being "native" JavaScript: It is a 
 
 Behind the scenes, it is using the JavaScript stack to track the state of unclosed parentheses, juts like out implicit solution above. But even though we don't explicitly have a stack anywhere, we are still using one.
 
+---
+
+### recursive regular expressions
+
 We noted above that formal regular expressions cannot handle balanced parentheses, because balanced parentheses are not a regular language.
 
 But programmers being programmers, the regular expressions we find built into various programming languages have been expanded over the years, and some of them provide a way to specify recursive regular expressions (a formal oxymoron).
