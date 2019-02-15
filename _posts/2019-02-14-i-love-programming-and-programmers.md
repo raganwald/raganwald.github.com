@@ -309,40 +309,40 @@ It is written using the standard syntax. Standard syntax is compact, but on more
 Extended syntax also allows comments. Here's a version that can handle three kinds of parentheses:
 
 ```ruby
-%r{                  # Start of a Regular expression literal.
+%r{                    # Start of a Regular expression literal.
 
-  ^                  # Match the beginning of the input
+  ^                    # Match the beginning of the input
 
-  (?'balanced'       # Start a non-capturing group named 'balanced'
+  (?'balanced'         # Start a non-capturing group named 'balanced'
 
-    (?:              # Start an anonymous non-capturing group
+    (?:                # Start an anonymous non-capturing group
 
-      \(             # Match an open parenthesis, anything matching the 'balanced'
-        \g'balanced' # group, and a closed parenthesis. ( and ) are escaped
-      \)             # because they have special meanings in regular expressions.
+      \(\g'balanced'\) # Match an open parenthesis, anything matching the 'balanced'
+                       # group, and a closed parenthesis. ( and ) are escaped
+                       # because they have special meanings in regular expressions.
 
-      |              # ...or...
+      |                # ...or...
 
-      \[             # Match an open bracket, anything matching the 'balanced'
-        \g'balanced' # group, and a closed bracket. [ and ] are escaped
-      \]             # because they have special meanings in regular expressions.
+      \[\g'balanced'\] # Match an open bracket, anything matching the 'balanced'
+                       # group, and a closed bracket. [ and ] are escaped
+                      # because they have special meanings in regular expressions.
 
-      |              # ...or...
+      |                # ...or...
 
-      \{             # Match an open brace, anything matching the 'balanced'
-        \g'balanced' # group, and a closed bracket. { and } are escaped
-      \}             # because they have special meanings in regular expressions.
+      \{\g'balanced'\} # Match an open brace, anything matching the 'balanced'
+                       # group, and a closed bracket. { and } are escaped
+                       # because they have special meanings in regular expressions.
 
-    )*               # End the anonymous non-capturing group, and modify
-                     # it so that it matches zero or more times.
+    )*                 # End the anonymous non-capturing group, and modify
+                       # it so that it matches zero or more times.
 
-  )                  # End the named, non-capturing group 'balanced'
+  )                    # End the named, non-capturing group 'balanced'
 
-  $                  # Match the end of the input
+  $                    # Match the end of the input
 
-}x                   # End of the regular expression literal. x is a modifier
-                     # indicating "extended" syntax, allowing comments and
-                     # ignoring whitespace.
+}x                     # End of the regular expression literal. x is a modifier
+                       # indicating "extended" syntax, allowing comments and
+                       # ignoring whitespace.
 ```
 
 Once again, something does all the work for us. In this case, it's a high-performance pattern-matching engine that is going to be faster and use less memory than our functional pattern matchers and functional combinators.
