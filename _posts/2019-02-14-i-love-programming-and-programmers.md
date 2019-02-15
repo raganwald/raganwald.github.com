@@ -297,32 +297,16 @@ We noted above that formal regular expressions cannot handle balanced parenthese
 
 But programmers being programmers, the regular expressions we find built into various programming languages have been expanded over the years, and some of them provide a way to specify recursive regular expressions (a formal oxymoron).
 
-JavaScript is not one of those languages, and PERL is not spoken here, but the Oniguruma regular expression engine used by Ruby (and PHP) does support recursion. Here's an implementation of balanced parentheses written in Ruby:
+JavaScript is not one of those languages, and PERL is not spoken here, but the Oniguruma regular expression engine used by Ruby (and PHP) does support recursion. Here's an implementation of simple balanced parentheses, written in Ruby:
 
 
 ```ruby
-%r{
-  ^
-  (?'balanced'
-    (?:
-      \(
-        \g'balanced'
-      \) |
-      \[
-        \g'balanced'
-      \] |
-      \{
-        \g'balanced'
-      \}
-    )*
-  )
-  $
-}x
+/^(?'balanced'(?: \(\g'balanced'\))*)$/x
 ```
 
-It is written using "extended" syntax. Extended syntax ignores whitespace, which is very useful when a regular expression is complex and needs to be visually structured.
+It is written using the standard syntax. Standard syntax is compact, but on more complex patterns can make the pattern difficult to read. "Extended" syntax ignores whitespace, which is very useful when a regular expression is complex and needs to be visually structured.
 
-Extended syntax also allows comments:
+Extended syntax also allows comments. Here's a version that can handle three kinds of parentheses:
 
 ```ruby
 %r{                  # Start of a Regular expression literal.
