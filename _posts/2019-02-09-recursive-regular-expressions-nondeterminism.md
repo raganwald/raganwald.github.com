@@ -1,5 +1,5 @@
 ---
-title: "Recognizing Balanced Parentheses, Under the Hood"
+title: "Going Under the Hood with Balanced Parentheses"
 tags: [recursion,allonge,mermaid]
 ---
 
