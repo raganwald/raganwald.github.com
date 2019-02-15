@@ -93,7 +93,7 @@ Okay, we are ready to prove that a finite state machine cannot recognize nested 
 
 ### balanced parentheses is not a regular language
 
-Okay, let's start with the assumption that there is a finite state machine that can recognize balanced parentheses, we'll call this machine **B**. We don't know how many states B has, it might be a very large number, but we know that there are a finite number of these states.
+Let's start with the assumption that there is a finite state machine that can recognize balanced parentheses, we'll call this machine **B**. We don't know how many states B has, it might be a very large number, but we know that there are a finite number of these states.
 
 Now let's consider the set of all strings that begin with one or more open parentheses: `(`, `((`, `(((`, and so forth. Our state machine will always begin in the *start* state, and for each one of these strings, when B scans them, it will always end in some state.
 
