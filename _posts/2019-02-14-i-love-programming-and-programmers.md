@@ -3,26 +3,59 @@ title: "Going Under the Hood with Balanced Parentheses"
 tags: [recursion,allonge,mermaid]
 ---
 
-As we discussed in both [Pattern Matching and Recursion], a popular programming "problem" is to determine whether a string of parentheses is "balanced:"[^dyck]
+As we discussed in both [Pattern Matching and Recursion], a popular programming "problem" is to determine whether a string of parentheses is "balanced:"
 
 [Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
 
 > Given a string that consists of open and closed parentheses, write a function that determines whether the parentheses in the string are **balanced**. "Balanced" parentheses means that each opening symbol has a corresponding closing symbol and the pairs of parentheses are properly nested.
 
-[^dyck]: We also discussed this problem in [Alice and Bobbie and Sharleen and Dyck], albeit in a different form that doesn't directly contribute to the subject of this essay. In that essay, we noted that strings of balanced parentheses are known more formally as [Dyck Words](https://en.wikipedia.org/wiki/Walther_von_Dyck).
+For example:
 
-[Alice and Bobbie and Sharleen and Dyck]: http://raganwald.com/2018/11/14/dyck-joke.html "Alice and Bobbie and Sharleen and Dyck"
+|Input|Output|Comment|
+|:----|:-----|:------|
+|`'()'`|`true`||
+|`''`|`true`|the empty string is balanced|
+|`'(())'`|`true`|parentheses can nest|
+|`'()()'`|`true`|multiple pairs are acceptable|
+|`'(()()())()'`|`true`|multiple pairs can nest|
+|`'((()'`|`false`|missing closing parentheses|
+|`'()))'`|`false`|missing opening parentheses|
+|`')('`|`false`|close before open|
+
+<br/>
 
 Before we reach for JavaScript or any other general-purpose tool, there is already a specific text pattern-matching tool available, and it's built right into most popular languages.
 
-The tool is a "regular expression," which informally refers to both a syntax for expressing a pattern, and an engine for applying regular expressions to a string. For example, `/Reg(?:inald)? Braithwai?te/` is a regular expression that matches various permutations of a name.
+The tool is a regular expression (or "regex," plural "regexen" for historical reasons), which *informally* refers to both a syntax for expressing a pattern, and an engine for applying regular expressions to a string. For example, `/Reg(?:inald)? Braithwai?te/` is a regex that matches various permutations of a name.
 
-In formal computer science, a regular expression is a formal way to specific a pattern that matches valid strings in a formal [regular language].[^kleene]
+In formal computer science, a regular expression is a formal way to specific a pattern that matches valid strings in a formal [regular language]. In computer science, a "language" is some set of strings or sequences of tokens. Those strings that are in the set are considered members of the language.[^kleene]
 
 [^kleene]: Formal regular expressions were invented by [Stephen Kleene].
 
 [regular language]: https://en.wikipedia.org/wiki/Regular_language
 [Stephen Kleene]: https://en.wikipedia.org/wiki/Stephen_Cole_Kleene
+
+In this essay we're going to look at some solutions to the "balanced parentheses problem," but instead of thinking about which solution is the most elegant, or uses the least memory from the perspective of a high-level programming language, we're going to explore some of the theory behind formal languages, and see what it tells us about writing a recognizer for balanced parentheses.
+
+We'll wrap it up with a critique of using this problem as an interview question.[^critique]
+
+[critique]: Because clickbait.
+
+---
+
+### formal languages and recognizers
+
+A "formal language" is a defined set of strings (or tokens in a really formal argument). For something to be a formal language, there must be an unambiguous way of determining whether a string is or is not a member of the language.
+
+"Balanced parentheses" is a formal language, there is an unambiguous specification for determining whether a string is or is not a member of the language. In computer science, strings containing balanced parentheses are called "Dyck Words," because they were first studied by [Walther von Dyck].
+
+[Walther_von_Dyck](https://en.wikipedia.org/wiki/Walther_von_Dyck)
+
+We mentioned "unambiguously specifying whether a string belongs to a language." A computer scientist's favourite tool for unambiguously specifying anything is a computing device or machine. And indeed, for something to be a formal language, there must be a machine that acts as its specification.
+
+We call these machines _recognizers_. A recognizer takes as its input a string, and returns as its output whether it recognizes the string or not. If it does, that string is a member of the language. Computer scientists studying formal languages also study the recognizers for those languages.
+
+There are infinitely many formal languages, but there is an important family of formal languages called **regular languages**.
 
 There are a couple of ways to define regular languages, but the one most pertinent to pattern matching is this: A regular language can be recognized by a Deterministic Finite Automaton, or "[DFA]." Meaning, we can construct a simple state machine to recognize whether a string is valid in the language, and that state machine will have a finite number of states.
 
@@ -51,13 +84,19 @@ Our name-matching expression above can be implemented with this finite state mac
     thwaite-->|"(end)"|recognized(recognized);
 </div>
 
+Given that we can make a recognizer (either as a regular expression or a DFA) for our "name" language, it is safe to say that it is a formal language. It only has four strings, but that's fine, it's still a formal language.
+
+---
+
+### infinite regular languages
+
 It's quite obvious that if there are a finite number of strings in a language, there must be a finite state machine that recognizes that language. But what if there are an _infinite_ number of valid strings in the language?[^exercise]
 
 [^exercise]: To demonstrate that "If there are a finite number of strings in a language, there must be a finite state machine that recognizes that language," take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
 
 For some languages that have an infinite number of strings, we can still construct a finite state machine to recognize them. We've been talking about strings with balanced parentheses. What about a language where any number of parentheses—including zero—is acceptable?
 
-The finite state machine for this language is very compact:
+The finite state machine for this "parentheses" language is very compact:
 
 <div class="mermaid">
   graph TD
@@ -65,7 +104,41 @@ The finite state machine for this language is very compact:
     start-->|"(end)"|recognized(recognized);
 </div>
 
-Despite being so compact, it recognizes an infinite number of strings. But despite the fact that the language has an infinite number of strings, and most of those strings are infinitely long, the recognizer has a fixed and finite size. It is a regular language.
+And we can easily write it in JavaScript:
+
+```javascript
+function parentheses (string) {
+  const END = Symbol('end');
+
+  function start (token) {
+    switch(token) {
+      case END:
+        return true;
+      case '(':
+        return start;
+      case ')':
+        return start;
+      default:
+        return false;
+    }
+  }
+
+  let currentState = start;
+  for (const token of string) {
+    const nextState = currentState(token);
+
+    if (nextState === true) {
+      return true;
+    } else if (nextState === false) {
+      return false;
+    }
+  }
+
+  return currentState(END);
+}
+```
+
+Our recognizer is very compact, yet it recognizes an infinite number of strings. And in theory, at least, it recognizes strings that are infinitely long. And since the recognizer has a fixed and finite size, our "parentheses" language is a regular language.
 
 Now that we have some examples of regular languages. We see that they can be recognized with finite state automata, and we also see that it is possible for regular languages too have an infinite number of strings, some of which are infinitely long. This does not, in principle, bar us from creating finite state machines to recognize them.
 
@@ -235,19 +308,19 @@ Here's an implicit implementation of balanced parentheses:
 function balanced (string) {
   const iterator = string[Symbol.iterator]();
 
-  return balancedIterator(iterator) === true;
+  return balancedMachine(iterator) === true;
 }
 
-function balancedIterator(iterator) {
+function balancedMachine(iterator) {
   const { value: token, done } = iterator.next();
 
   if (done) {
     return true;
   } else if (token === '(') {
-    const nextToken = balancedIterator(iterator);
+    const nextToken = balancedMachine(iterator);
 
     if (nextToken === ')') {
-      return balancedIterator(iterator);
+      return balancedMachine(iterator);
     } else {
       return false;
     }
@@ -257,7 +330,7 @@ function balancedIterator(iterator) {
 }
 ```
 
-The `balanced` function extracts an iterator from the string, and then invokes `balancedIterator`, which actually scans the string. When it encounters an open parenthesis, it then calls itself recursively to consume balanced parentheses before returning.
+The `balanced` function extracts an iterator from the string, and then invokes `balancedMachine`, which actually scans the string. When it encounters an open parenthesis, it then calls itself recursively to consume balanced parentheses before returning.
 
 There is no counter or stack or list, but we know that behind the scenes, JavaScript's call stack is tracking the depth of nested parentheses. The function thus only works for strings with unclosed parentheses up to the maximim allowable depth of the call stack, but again in principle the algorithm works on infinitely long strings.
 
