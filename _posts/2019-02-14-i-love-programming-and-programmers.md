@@ -165,21 +165,23 @@ const END = Symbol('end');
 const RECOGNIZED = Symbol('recognized');
 const UNRECOGNIZED = Symbol('unrecognized');
 
-function recognizer (start) {
+function DFA (start) {
   return string => {
     let currentState = start;
     for (const token of string) {
-      currentState = currentState(token) || UNRECOGNIZED;
+      const action = currentState(token);
 
-      if (currentState === RECOGNIZED) {
+      if (typeof action === 'function') {
+        currentState = action;
+      } else if (action === RECOGNIZED) {
         return true;
-      } else if (currentState === UNRECOGNIZED) {
+      } else if (action === UNRECOGNIZED || action == null) {
         return false;
       }
     }
 
-    const finalState = currentState(END);
-    return finalState === RECOGNIZED;
+    const finalAction = currentState(END);
+    return finalAction === RECOGNIZED;
   }
 }
 
@@ -200,7 +202,7 @@ const Reggi = token => token === 'e' ? Reggie : false;
 const Reggie = token => token === END ? RECOGNIZED : false;
 
 // define our recognizer
-const reginald = recognizer(start);
+const reginald = DFA(start);
 
 test(reginald, [
   '', 'Scott', 'Reg', 'Reginald', 'Reggie'
@@ -249,7 +251,7 @@ const start = token => {
   }
 }
 
-const parentheses = recognizer(start);
+const parentheses = DFA(start);
 
 test(parentheses, [
   '', '()', '(){}', '(',
@@ -317,7 +319,67 @@ What about running `B` on string `qp'`? Let's pause after it reads the character
 
 But `state(B, start, p)` is the same state as `state(B, start, q)`! And by the rules of determinism, then `state(B, state(B, start, p), p')` must be the same as `state(B, state(B, start, q), p')`. But we have established that `state(B, state(B, start, p), p')` must be _recognized_ and that `state(B, state(B, start, p), p')` must **not** be recognized.
 
-Contradiction! Therefore, our original assumption—that `B` exists—is false. There is no deterministic finite state machine that recognizes balanced parentheses. And therefore, balanced parentheses is not a regular language.
+Contradiction! Therefore, our original assumption—that `B` exists—is false. There is no deterministic finite automaton that recognizes balanced parentheses. And therefore, balanced parentheses is not a regular language.
+
+---
+
+### pushdown automata
+
+We can, of course, write a recognizer for balanced parentheses in JavaScript, or a Turing Machine (don't worry, we won't write a Turing Machine today). But javaScript can do almost anything, write pattern matching engines, perform search-and-replace on strings...
+
+It is interesting to stay small, and ask ourselves, "What is the simplest form of machine that can recognize balanced parentheses?"
+
+Luckily, we don't have to work this out from first principles. Computer scientists have studied this and related problems, and there are a few ideal machines that are more powerful than a DFA, but less powerful than a Turing Machine.
+
+All of them have some mechanism for encoding an infinite number of states.[^inf]
+
+[^inf]: No matter how a machine is organized, if it has a finite number of states, it cannot recognized balanced parenthese by our proof above. Fr example, if we modify our DFA to allow an on/off flag for each state, and we have a finite number of states, our machine is not more powerful than a standard DFA, it is just more compact: Its definition is `log2` the size of a standard DFA, but it still has a finite number of possible different states.
+
+The simplest, which we might think of as being one step more powerful than a DFA, is a [Deterministic Pushdown Automaton][pa], or "DPA." A Pushdown Automaton is very much like our Deterministic Finite Automa, but it adds a stack.
+
+[pa]: https://en.wikipedia.org/wiki/Pushdown_automaton
+
+There are several classes of Pushdown Automata, depending upon what they are allowed to do with the stack. A Deterministic Pushdown Automaton has the simplest and least powerful capability:
+
+1. When deciding what to do, while a DFA matches only the current token, a DPA matches the current token, the value of the top of the stack, or both.
+2. The only thing a DFA can do as a result of examining the current token is halt or select the next state. A DPA can halt, choose the next state, push a symbol onto the top of the stack, or pop the current symbol off the top of the stack. (If the DPA attempts to pop a symbol off the top of an empty stack, it halts.)
+
+Let's write a recognizer that can implement DPAs. We'll write it in such a way that it works for DFAs too (it is "downwards compatible"):
+
+```javascript
+const POP = Symbol('pop');
+
+function DPA (start) {
+  return string => {
+    const stack = [];
+
+    let currentState = start;
+    for (const token of string) {
+      const top = stack[stack.length - 1];
+
+      const action = currentState(token, top);
+
+      if (typeof action === 'function') {
+        currentState = action;
+      } else if (action === POP && stack.length === 0) {
+        return false;
+      } else if (action === POP) {
+        stack.pop();
+      } else if (action === RECOGNIZED) {
+        return true;
+      } else if (action === UNRECOGNIZED || action == null) {
+        return false;
+      } else {
+        stack.push(action);
+      }
+    }
+
+    const finalTop = stack[stack.length - 1];
+    const finalAction = currentState(END, finalTop);
+    return finalAction === RECOGNIZED;
+  }
+}
+```
 
 ---
 
