@@ -78,7 +78,24 @@ Our name-matching expression above can be implemented with this finite state mac
     Reggie-->|end|recognized;
 </div>
 
-And we can easily write it in JavaScript:
+---
+
+### implementing a dfa in javascript
+
+There are many ways to write DFAs in JavaScript. in [How I Learned to Stop Worrying and ❤️ the State Machine], we built JavaScript programs using the [state pattern], but they were far more complex than a deterministic finite automaton. For example, those state machines could store information in properties, and those state machines had methods that could be called.
+
+[How I Learned to Stop Worrying and ❤️ the State Machine]: http://raganwald.com/2018/02/23/forde.html
+[state pattern]: https://en.wikipedia.org/wiki/State_pattern
+
+Those "state machines" are not "finite" state machines, because in principle they can have an infinite number of states. They have a finite number of defined states in the pattern, but their properties allow them to encode state in other ways, and thus they are not _finite_ state machines.
+
+A Deterministic Finite Automaton is the simplest of all possible state machines: It can only store information in its explicit state, there are no other variables such as counters or stacks, and there aer no methods that can be called.
+
+Since a DFA con only encode state by being in one of a finite number of states, and since a DFA has a finite number of possible states, we know that a DFA can only encode a finite amount of state.
+
+The only thing a DFA recognizer does is respond to tokens as it scans a string, and the only way to query it is to look at what state it is in, or detect whether it halted (which is computationally equivalent to being in a halted state).
+
+Here's a pattern for implementing the "name" recognizer DFA in JavaScript:
 
 ```javascript
 function reginald (string) {
@@ -86,6 +103,7 @@ function reginald (string) {
   const RECOGNIZED = Symbol('recognized');
   const UNRECOGNIZED = Symbol('unrecognized');
 
+  // state definition
   const start = token => token === 'R' ? R : false;
   const R = token => token === 'e' ? Re : false;
   const Re = token => token === 'g' ? Reg : false;
@@ -101,6 +119,7 @@ function reginald (string) {
   const Reggi = token => token === 'e' ? Reggie : false;
   const Reggie = token => token === END ? RECOGNIZED : false;
 
+  // token scanning engine
   let currentState = start;
   for (const token of string) {
     currentState = currentState(token) || UNRECOGNIZED;
@@ -115,15 +134,94 @@ function reginald (string) {
   const finalState = currentState(END);
   return finalState === RECOGNIZED;
 }
+
+function test (recognizer, examples) {
+  for (const example of examples) {
+    console.log(`'${example}' => ${recognizer(example)}`);
+  }
+}
+
+test(reginald, [
+  '', 'Scott', 'Reg', 'Reginald', 'Reggie'
+]);
+  //=>
+    '' => false
+    'Scott' => false
+    'Reg' => true
+    'Reginald' => false
+    'Reggie' => true
 ```
 
-Given that we can make a recognizer (either as a regular expression or a DFA) for our "name" language, it is safe to say that it is a formal language. It only has four strings, but that's fine, it's still a formal language.
+This DFA has some constants for its own internal use, a state definition consisting of a function for each possible state the DFA can reach, and then a very simple "token scanning machine." The recognizer function takes a string as an argument, and returns `true` if the machine reaches the `RECOGNIZED` state.
+
+Each state function takes a token and returns a state to transition to. If it does not return another state, the DFA halts and the recognizer returns false.
+
+If we can write a recognizer using this pattern for a language, we know it is a regular language. Our "name" language is thus a very small formal language, with just two recognized strings.
+
+We're going to move on to talk about infinite regular languages, but before we do, let's extract the state definitions from the recognizer pattern, for clarity:
+
+```javascript
+const END = Symbol('end');
+const RECOGNIZED = Symbol('recognized');
+const UNRECOGNIZED = Symbol('unrecognized');
+
+function recognizer (start) {
+  return string => {
+    let currentState = start;
+    for (const token of string) {
+      currentState = currentState(token) || UNRECOGNIZED;
+
+      if (currentState === RECOGNIZED) {
+        return true;
+      } else if (currentState === UNRECOGNIZED) {
+        return false;
+      }
+    }
+
+    const finalState = currentState(END);
+    return finalState === RECOGNIZED;
+  }
+}
+
+// state definitions
+const start = token => token === 'R' ? R : false;
+const R = token => token === 'e' ? Re : false;
+const Re = token => token === 'g' ? Reg : false;
+const Reg = token => {
+  switch (token) {
+    case END:
+      return RECOGNIZED;
+    case 'g':
+      return Regg;
+	}
+}
+const Regg = token => token === 'i' ? Reggi : false;
+const Reggi = token => token === 'e' ? Reggie : false;
+const Reggie = token => token === END ? RECOGNIZED : false;
+
+// define our recognizer
+const reginald = recognizer(start);
+
+test(reginald, [
+  '', 'Scott', 'Reg', 'Reginald', 'Reggie'
+]);
+  //=>
+    '' => false
+    'Scott' => false
+    'Reg' => true
+    'Reginald' => false
+    'Reggie' => true
+```
+
+On to infinite regular languages!
 
 ---
 
 ### infinite regular languages
 
-It's quite obvious that if there are a finite number of strings in a language, there must be a finite state machine that recognizes that language. But what if there are an _infinite_ number of valid strings in the language?[^exercise]
+If there are a finite number of finite strings in a language, there must be a DFA that recognizes that language.
+
+But what if there are an _infinite_ number of valid strings in the language?[^exercise]
 
 [^exercise]: To demonstrate that "If there are a finite number of strings in a language, there must be a finite state machine that recognizes that language," take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
 
@@ -140,36 +238,33 @@ The finite state machine for this "parentheses" language is very compact:
 And we can also write this state machine it in JavaScript:
 
 ```javascript
-function parentheses (string) {
-  const END = Symbol('end');
-  const RECOGNIZED = Symbol('recognized');
-  const UNRECOGNIZED = Symbol('unrecognized');
-
-  const start = token => {
-    switch(token) {
-      case END:
-        return RECOGNIZED;
-      case '(':
-        return start;
-      case ')':
-        return start;
-    }
+const start = token => {
+  switch(token) {
+    case END:
+      return RECOGNIZED;
+    case '(':
+      return start;
+    case ')':
+      return start;
   }
-
-  let currentState = start;
-  for (const token of string) {
-    currentState = currentState(token) || UNRECOGNIZED;
-
-    if (currentState === RECOGNIZED) {
-      return true;
-    } else if (currentState === UNRECOGNIZED) {
-      return false;
-    }
-  }
-
-  const finalState = currentState(END);
-  return finalState === RECOGNIZED;
 }
+
+const parentheses = recognizer(start);
+
+test(parentheses, [
+  '', '()', '(){}', '(',
+	'([()()]())', '([()())())',
+	'())()', '((())(())'
+]);
+  //=>
+    '' => true
+    '()' => true
+    '(){}' => false
+    '(' => true
+    '([()()]())' => false
+    '([()())())' => false
+    '())()' => true
+    '((())(())' => true
 ```
 
 Our recognizer is very compact, yet it recognizes an infinite number of strings. And in theory, at least, it recognizes strings that are infinitely long. And since the recognizer has a fixed and finite size, our "parentheses" language is a regular language.
