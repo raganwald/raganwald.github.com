@@ -331,20 +331,38 @@ It is interesting to stay small, and ask ourselves, "What is the simplest form o
 
 Luckily, we don't have to work this out from first principles. Computer scientists have studied this and related problems, and there are a few ideal machines that are more powerful than a DFA, but less powerful than a Turing Machine.
 
-All of them have some mechanism for encoding an infinite number of states.[^inf]
+All of them have some mechanism for encoding an infinite number of states by adding some form of "external state" to the machine's existing "internal state."[^inf] This is very much like a program in a von Neumann machine. Leaving out self-modifying code, the position of the program counter is a program's internal state, while memory that it reads and writes is its external state.
 
 [^inf]: No matter how a machine is organized, if it has a finite number of states, it cannot recognized balanced parenthese by our proof above. Fr example, if we modify our DFA to allow an on/off flag for each state, and we have a finite number of states, our machine is not more powerful than a standard DFA, it is just more compact: Its definition is `log2` the size of a standard DFA, but it still has a finite number of possible different states.
 
-The simplest, which we might think of as being one step more powerful than a DFA, is a [Deterministic Pushdown Automaton][pa], or "DPA." A Pushdown Automaton is very much like our Deterministic Finite Automa, but it adds a stack.
+The simplest machine that adds external state, which we might think of as being one step more powerful than a DFA, is a [Deterministic Pushdown Automaton][pa], or "DPA." A Pushdown Automaton is very much like our Deterministic Finite Automa, but it adds a potentially infinite stack as its external state.
 
 [pa]: https://en.wikipedia.org/wiki/Pushdown_automaton
 
 There are several classes of Pushdown Automata, depending upon what they are allowed to do with the stack. A Deterministic Pushdown Automaton has the simplest and least powerful capability:
 
 1. When deciding what to do, while a DFA matches only the current token, a DPA matches the current token, the value of the top of the stack, or both.
-2. The only thing a DFA can do as a result of examining the current token is halt or select the next state. A DPA can halt, choose the next state, push a symbol onto the top of the stack, or pop the current symbol off the top of the stack. (If the DPA attempts to pop a symbol off the top of an empty stack, it halts.)
+2. The only thing a DFA can do as a result of examining the current token is halt or select the next state. A DPA can halt, choose the next state, push a symbol onto the top of the stack, or pop the current symbol off the top of the stack.
 
-Let's write a recognizer that can implement DPAs. We'll write it in such a way that it works for DFAs too (it is "downwards compatible"):
+If a deterministic pushdown automata can recognize a language, the language is known as a [deterministic context-free language]. Is "balanced parentheses" a deterministic context-free language?
+
+[deterministic context-free language]: https://en.wikipedia.org/wiki/Deterministic_context-free_language
+
+Can we write a DPA to recognize balanced parentheses? DPAs have a finite number of internal states. Our proof that balanced parentheses was not a regular language rested on the fact that any DFA could not recognize balanced parentheses with a finite number of internal states.
+
+Does that apply to DPAs too? No.
+
+A DPA still has a finite number of internal states, but because of its external stack, it can encode an infinite number of possible states. With a DFA, we asserted that if it is in a particular internal state, and it reads a string of tokens, it will end up halting or reaching a state, and given that internal state and that series of tokens, the DFA will always end up halting or always end up reaching the same end state.
+
+This is not true of a DPA. A DPA can push tokens onto the stack, pop tokens off the stack, and make decisions based on the top token on the stack. As a result, we cannot determine the destiny of a DPA based on its internal state and sequence of tokens alone, we have to include the state of the stack.
+
+Therefore, our proof that a DFA with finite number of internal states cannot recognize balanced parentheses does not apply to DPAs. If we can write a DPA to recognize balanced parentheses, then "balanced parentheses" is a deterministic context-free language.
+
+---
+
+### balanced parentheses is a deterministic context-free language
+
+Let's start with  a recognizer that can implement DPAs. We'll write it in such a way that it works for DFAs too (it is "downwards compatible"):
 
 ```javascript
 const POP = Symbol('pop');
@@ -361,8 +379,6 @@ function DPA (start) {
 
       if (typeof action === 'function') {
         currentState = action;
-      } else if (action === POP && stack.length === 0) {
-        return false;
       } else if (action === POP) {
         stack.pop();
       } else if (action === RECOGNIZED) {
@@ -379,6 +395,95 @@ function DPA (start) {
     return finalAction === RECOGNIZED;
   }
 }
+```
+
+For simplicity, it relies on JavaScript's default behaviour of returning `undefined` for the top of an empty stack.[^undef]
+
+[^undef]: This implies that the DFAs we write cannot attempt to push `undefined` onto the stack.
+
+Now, a stack implemented in JavaScript cannot actually encode an infinite amount of information. The depth of the stack is limited to `2^32 -1`, and there are a finite number of different values we can push onto the stack. And then there are limitations like the the memory in our machines, or the number of clock ticks our CPUs will execute before the heat-death of the universe.
+
+But our implementation shows the basic principle, and it's good enough for any of the test strings we'll write by hand.
+
+Now how about a recognizer for balanced parentheses? It's astonishingly simple:
+
+```javascript
+const start = (token, top) => {
+  if (token === '(') {
+    return token; // pushes '('
+  } else if (token === ')' && top === '(') {
+    return POP;
+  } else if (token === END && top === undefined) {
+    return RECOGNIZED;
+  }
+};
+
+const balanced = DPA(start);
+
+test(balanced, [
+  '', '(', '()', '()()', '(())',
+	'([()()]())', '([()())())',
+	'())()', '((())(())'
+]);
+  //=>
+    '' => true
+    '(' => false
+    '()' => true
+    '()()' => true
+    '(())' => true
+    '([()()]())' => false
+    '([()())())' => false
+    '())()' => false
+    '((())(())' => false
+```
+
+**Balanced parentheses is a deterministic context-free language**.
+
+Our recognizer is so simple, we can give in to temptation and enhance it to recognize multiple types of parentheses:
+
+```javascript
+const start = (token, top) => {
+  // open parentheses
+  if (token === '(') {
+    return token; // pushes '('
+  } else if (token === '[') {
+    return token; // pushes '['
+  } else if (token === '{') {
+    return token; // pushes '{'
+  }
+
+  // closed parentheses
+  if (token === ')' && top === '(') {
+    return POP;
+  } else if (token === ']' && top === '[') {
+    return POP;
+  } else if (token === '}' && top === '{') {
+    return POP;
+  }
+
+  // end
+  if (token === END && top === undefined) {
+    return RECOGNIZED;
+  }
+};
+
+const balanced = DPA(start);
+
+test(balanced, [
+  '', '(', '()', '()()', '{()}',
+	'([()()]())', '([()())())',
+	'())()', '((())(())'
+]);
+  //=>
+    '' => true
+    '(' => false
+    '()' => true
+    '()()' => true
+    '{()}' => true
+    '([()()]())' => true
+    '([()())())' => false
+    '())()' => false
+    '((())(())' => false
 ```
 
 ---
