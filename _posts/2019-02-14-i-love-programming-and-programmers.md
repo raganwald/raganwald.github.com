@@ -486,7 +486,11 @@ test(balanced, [
     '((())(())' => false
 ```
 
+Balanced parentheses with a finite number of pairs of parentheses is also a deterministic context-free language.
 
+---
+
+### the significance of deterministic context-free languages
 
 ---
 
