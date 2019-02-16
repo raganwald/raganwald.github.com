@@ -486,6 +486,8 @@ test(balanced, [
     '((())(())' => false
 ```
 
+
+
 ---
 
 ### balanced parentheses with explicit state
