@@ -1,6 +1,6 @@
 ---
 title: "Going Under the Hood with Balanced Parentheses"
-tags: [recursion,allonge,mermaid]
+tags: [recursion,allonge,mermaid, noindex]
 ---
 
 As we discussed in both [Pattern Matching and Recursion], a popular programming "problem" is to determine whether a string of parentheses is "balanced:"
