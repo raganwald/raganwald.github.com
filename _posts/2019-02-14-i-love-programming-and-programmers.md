@@ -98,48 +98,48 @@ The only thing a DFA recognizer does is respond to tokens as it scans a string, 
 Here's a pattern for implementing the "name" recognizer DFA in JavaScript:
 
 ```javascript
-function reginald (string) {
-  const END = Symbol('end');
-  const RECOGNIZED = Symbol('recognized');
-  const UNRECOGNIZED = Symbol('unrecognized');
+const END = Symbol('end');
+const RECOGNIZED = Symbol('recognized');
+const UNRECOGNIZED = Symbol('unrecognized');
 
-  // state definition
-  const start = token => token === 'R' ? R : false;
-  const R = token => token === 'e' ? Re : false;
-  const Re = token => token === 'g' ? Reg : false;
-  const Reg = token => {
-    switch (token) {
-      case END:
-        return RECOGNIZED;
-      case 'g':
-        return Regg;
-  	}
-  }
-  const Regg = token => token === 'i' ? Reggi : false;
-  const Reggi = token => token === 'e' ? Reggie : false;
-  const Reggie = token => token === END ? RECOGNIZED : false;
+function DFA (start) {
+  return string => {
+    let currentState = start;
+    for (const token of string) {
+      const action = currentState(token);
 
-  // token scanning engine
-  let currentState = start;
-  for (const token of string) {
-    currentState = currentState(token) || UNRECOGNIZED;
-
-    if (currentState === RECOGNIZED) {
-      return true;
-    } else if (currentState === UNRECOGNIZED) {
-      return false;
+      if (action === RECOGNIZED) {
+        return true;
+      } else if (action === UNRECOGNIZED || action === undefined) {
+        return false;
+      } else {
+        currentState = action;
+      }
     }
-  }
 
-  const finalState = currentState(END);
-  return finalState === RECOGNIZED;
-}
-
-function test (recognizer, examples) {
-  for (const example of examples) {
-    console.log(`'${example}' => ${recognizer(example)}`);
+    const finalAction = currentState(END);
+    return finalAction === RECOGNIZED;
   }
 }
+
+// state definitions
+const start = token => token === 'R' ? R : UNRECOGNIZED;
+const R = token => token === 'e' ? Re : UNRECOGNIZED;
+const Re = token => token === 'g' ? Reg : UNRECOGNIZED;
+const Reg = token => {
+  switch (token) {
+    case END:
+      return RECOGNIZED;
+    case 'g':
+      return Regg;
+	}
+}
+const Regg = token => token === 'i' ? Reggi : UNRECOGNIZED;
+const Reggi = token => token === 'e' ? Reggie : UNRECOGNIZED;
+const Reggie = token => token === END ? RECOGNIZED : UNRECOGNIZED;
+
+// define our recognizer
+const reginald = DFA(start);
 
 test(reginald, [
   '', 'Scott', 'Reg', 'Reginald', 'Reggie'
@@ -157,63 +157,6 @@ This DFA has some constants for its own internal use, a state definition consist
 Each state function takes a token and returns a state to transition to. If it does not return another state, the DFA halts and the recognizer returns false.
 
 If we can write a recognizer using this pattern for a language, we know it is a regular language. Our "name" language is thus a very small formal language, with just two recognized strings.
-
-We're going to move on to talk about infinite regular languages, but before we do, let's extract the state definitions from the recognizer pattern, for clarity:
-
-```javascript
-const END = Symbol('end');
-const RECOGNIZED = Symbol('recognized');
-const UNRECOGNIZED = Symbol('unrecognized');
-
-function DFA (start) {
-  return string => {
-    let currentState = start;
-    for (const token of string) {
-      const action = currentState(token);
-
-      if (typeof action === 'function') {
-        currentState = action;
-      } else if (action === RECOGNIZED) {
-        return true;
-      } else if (action === UNRECOGNIZED || action == null) {
-        return false;
-      }
-    }
-
-    const finalAction = currentState(END);
-    return finalAction === RECOGNIZED;
-  }
-}
-
-// state definitions
-const start = token => token === 'R' ? R : false;
-const R = token => token === 'e' ? Re : false;
-const Re = token => token === 'g' ? Reg : false;
-const Reg = token => {
-  switch (token) {
-    case END:
-      return RECOGNIZED;
-    case 'g':
-      return Regg;
-	}
-}
-const Regg = token => token === 'i' ? Reggi : false;
-const Reggi = token => token === 'e' ? Reggie : false;
-const Reggie = token => token === END ? RECOGNIZED : false;
-
-// define our recognizer
-const reginald = DFA(start);
-
-test(reginald, [
-  '', 'Scott', 'Reg', 'Reginald', 'Reggie'
-]);
-  //=>
-    '' => false
-    'Scott' => false
-    'Reg' => true
-    'Reginald' => false
-    'Reggie' => true
-```
 
 On to infinite regular languages!
 
@@ -342,7 +285,7 @@ The simplest machine that adds external state, which we might think of as being 
 There are several classes of Pushdown Automata, depending upon what they are allowed to do with the stack. A Deterministic Pushdown Automaton has the simplest and least powerful capability:
 
 1. When deciding what to do, while a DFA matches only the current token, a DPA matches the current token, the value of the top of the stack, or both.
-2. The only thing a DFA can do as a result of examining the current token is halt or select the next state. A DPA can halt, choose the next state, push a symbol onto the top of the stack, or pop the current symbol off the top of the stack.
+2. The only thing a DFA can do as a result of examining the current token is halt or select the next state. A DPA can halt or choose the next state, and it can also push a symbol onto the top of the stack, pop the current symbol off the top of the stack, or replace the top symbol on the stack.
 
 If a deterministic pushdown automata can recognize a language, the language is known as a [deterministic context-free language]. Is "balanced parentheses" a deterministic context-free language?
 
@@ -362,36 +305,39 @@ Therefore, our proof that a DFA with finite number of internal states cannot rec
 
 ### balanced parentheses is a deterministic context-free language
 
-Let's start with  a recognizer that can implement DPAs. We'll write it in such a way that it works for DFAs too (it is "downwards compatible"):
+Let's start with  a recognizer that can implement DPAs. We'll write it in such a way that it works for DFAs too (it is "downwards compatible"). But we'll pass in some functions for optionally manipulating the stack:
 
 ```javascript
-const POP = Symbol('pop');
-
 function DPA (start) {
   return string => {
     const stack = [];
 
+    const push = token => {
+      stack.push(token);
+    };
+
+    const pop = () => {
+      stack.pop();
+    };
+
+    const replace = token => {
+      stack[stack.length - 1] = token;
+    };
+
     let currentState = start;
     for (const token of string) {
-      const top = stack[stack.length - 1];
+      const action = currentState(token, { push, pop, replace, top: stack[stack.length - 1] });
 
-      const action = currentState(token, top);
-
-      if (typeof action === 'function') {
-        currentState = action;
-      } else if (action === POP) {
-        stack.pop();
-      } else if (action === RECOGNIZED) {
+      if (action === RECOGNIZED) {
         return true;
       } else if (action === UNRECOGNIZED || action == null) {
         return false;
       } else {
-        stack.push(action);
+        currentState = action;
       }
     }
 
-    const finalTop = stack[stack.length - 1];
-    const finalAction = currentState(END, finalTop);
+    const finalAction = currentState(END, { push, pop, replace, top:  stack[stack.length - 1] });
     return finalAction === RECOGNIZED;
   }
 }
@@ -408,12 +354,18 @@ But our implementation shows the basic principle, and it's good enough for any o
 Now how about a recognizer for balanced parentheses? It's astonishingly simple:
 
 ```javascript
-const start = (token, top) => {
+const start = (token, { push, pop, top }) => {
   if (token === '(') {
-    return token; // pushes '('
-  } else if (token === ')' && top === '(') {
-    return POP;
-  } else if (token === END && top === undefined) {
+    push(token);
+    return start;
+  }
+
+  if (token === ')' && top === '(') {
+    pop();
+    return start;
+  }
+
+  if (token === END && top === undefined) {
     return RECOGNIZED;
   }
 };
@@ -442,26 +394,29 @@ test(balanced, [
 Our recognizer is so simple, we can give in to temptation and enhance it to recognize multiple types of parentheses:
 
 ```javascript
-const start = (token, top) => {
-  // open parentheses
+const start = (token, { push, pop, top }) => {
   if (token === '(') {
-    return token; // pushes '('
+    push(token);
+    return start;
   } else if (token === '[') {
-    return token; // pushes '['
+    push(token);
+    return start;
   } else if (token === '{') {
-    return token; // pushes '{'
+    push(token);
+    return start;
   }
 
-  // closed parentheses
   if (token === ')' && top === '(') {
-    return POP;
+    pop();
+    return start;
   } else if (token === ']' && top === '[') {
-    return POP;
+    pop();
+    return start;
   } else if (token === '}' && top === '{') {
-    return POP;
+    pop();
+    return start;
   }
 
-  // end
   if (token === END && top === undefined) {
     return RECOGNIZED;
   }
@@ -486,192 +441,17 @@ test(balanced, [
     '((())(())' => false
 ```
 
-Balanced parentheses with a finite number of pairs of parentheses is also a deterministic context-free language.
-
----
-
-### the significance of deterministic context-free languages
-
----
-
-### balanced parentheses with explicit state
-
-Well, that is probably the most formal thing ever written on this blog. But what does it tell us? What practical thing do we know about recognizing balanced parentheses, now that we've proved that it is not a regular language?
-
-Well, we know two things:
-
-1. It is not possible to write a standard regular expression that matches balanced parentheses. Standard regular expressions only match regular languages, and balanced parentheses are not a regular language.
-2. It is not possible to write any program that recognizes balanced parentheses in a constant amount of space.
-
-The second point is most useful for us writing, say, JavaScript or Ruby or Python or Elixir or whatever. Any function we write to recognize balanced parentheses cannot operate in a fixed amount of memory. In fact, we know a lower bound on the amount of memory that such a function requires: Any engine we build to recognize balanced parentheses will have to accomodate nested parentheses, and to do so, it must have at least as many states as there are unclosed parentheses.
-
-If it has fewer states than there are unclosed parentheses, it will fail for the same reason that a finite state machine cannot recognize balanced parentheses. We don't know how it will represent state: It might use a list, a counter, a stack, a tree, store state implicitly on a call stack, there are many possibilities.
-
-But we can guarantee that for recognizing nested parentheses, the machine itself must have at least as many states as unclosed parentheses, and to recognize all of the infinite number of balanced parentheses strings, it must grow to use an infinite amount of memory.
-
-This is true even if we devise a mechanism based on a simple counter. Here's one such implementation:
-
-```javascript
-function balanced (string) {
-  let unclosedParentheses = 0;
-
-  for (const c of string) {
-    if (c === '(') {
-      ++unclosedParentheses;
-    } else if (c === ')' && unclosedParentheses > 0) {
-      --unclosedParentheses;
-    } else {
-      return false;
-    }
-  }
-
-  return unclosedParentheses === 0;
-}
-
-function test (examples) {
-  for (const example of examples) {
-    console.log(`'${example}' => ${balanced(example)}`);
-  }
-}
-
-test(['', '()', '()()',
-  '((()())())', '())()',
-  '((())(())'
-]);
-  //=>
-    '' => true
-    '()' => true
-    '()()' => true
-    '((()())())' => true
-    '())()' => false
-    '((())(())' => false
-```
-
-This does not "feel" like it uses more memory proportional to the number of unclosed parentheses, but a counter is a way of representing different states. As it happens, this particular counter works up to `Number.MAX_SAFE_INTEGER` unclosed parentheses, and then it breaks, so it is a lot like our hypothetical finite state machine `B`. It may have a `2^53 - 1` states, but it's still a finite number of states and cannot recognize *every* balanced parenthesis string without rewriting it to use big numbers.
-
-But as we can see, the algorithm must have a way of representing the number of unclosed parentheses in some way. We could also use a stack:
-
-```javascript
-function balanced (string) {
-  let parenthesisStack = [];
-
-  for (const c of string) {
-    if (c === '(') {
-      parenthesisStack.push(c);
-    } else if (c === ')' && parenthesisStack.length > 0) {
-      parenthesisStack.pop();
-    } else {
-      return false;
-    }
-  }
-
-  return parenthesisStack.length === 0;
-}
-```
-
-This is trivially equivalent to the counter solution, although the limit of how many elements an array can hold in JavaScript is `2^32 - 1`, less than the counter. Mind you, there is no requirement that stacks be implemented as flat, linear arrays. Here's one based on linked nested arrays, which is a lightweight way to represent a kind of linked list:
-
-```javascript
-function balanced (string) {
-  let parenthesisList = [];
-
-  for (const c of string) {
-    if (c === '(') {
-      parenthesisList = [parenthesisList];
-    } else if (c === ')' && parenthesisList[0] !== undefined) {
-      parenthesisList = parenthesisList[0];
-    } else {
-      return false;
-    }
-  }
-
-  return parenthesisList[0] === undefined;
-}
-```
-
-Depending upon way a particular JavaScript engine is implemented and the way arrays are stored on its heap, this may be able to handle larger numbers of unclosed parentheses, we might even find ourselves limited only by the size of the heap on our particular implementation. That may or may not be larger than using a counter or array as a stack.
-
-These three examples show that when we encounter a problem that we know is equivalent to recognizing a language that is not a regular language, we can anticipate that our solution will need to incorporate some form of state that grows with some aspect of the size of the input. Our language implementation or hardware may impose some limits on our implementation, but _in principle_ we are solving the problem.
-
-In these cases, the state is explicit. But we can make the state implicit, too.
-
----
-
-### balanced parentheses with implicit state
-
-We saw that we can encode state with an explicit stack. Almost all conventional programming languages have an _implicit_ stack, the call stack.[^implicit]
-
-[^implicit]: There may be other implicit stacks too, such as the stack that happens when a generator function uses `yield` or `yield *`.
-
-Here's an implicit implementation of balanced parentheses:
-
-```javascript
-function balanced (string) {
-  const iterator = string[Symbol.iterator]();
-
-  return balancedMachine(iterator) === true;
-}
-
-function balancedMachine(iterator) {
-  const { value: token, done } = iterator.next();
-
-  if (done) {
-    return true;
-  } else if (token === '(') {
-    const nextToken = balancedMachine(iterator);
-
-    if (nextToken === ')') {
-      return balancedMachine(iterator);
-    } else {
-      return false;
-    }
-  } else {
-    return token;
-  }
-}
-```
-
-The `balanced` function extracts an iterator from the string, and then invokes `balancedMachine`, which actually scans the string. When it encounters an open parenthesis, it then calls itself recursively to consume balanced parentheses before returning.
-
-There is no counter or stack or list, but we know that behind the scenes, JavaScript's call stack is tracking the depth of nested parentheses. The function thus only works for strings with unclosed parentheses up to the maximim allowable depth of the call stack, but again in principle the algorithm works on infinitely long strings.
-
----
-
-### recursive pattern matching
-
-But possibly the best way to use implicit state is to let something else handle all of the work. In [Pattern Matching and Recursion], we built pattern matchers out of JavaScript functions, and then combined them with combinators made out of javaScript functions.
-
-Making pattern matchers and combinators out of functions afforded us a number of advantages. First and foremost, we had access to the power of a fully operational <strike>battle station</strike> programming language.
-
-Not counting the definitions of `just`, `follows`, `case`, and so forth, our solution to the balanced parentheses problem showed this:
-
-```javascript
-const balanced =
-  input =>
-    zeroOrMore(
-      cases(
-        follows(just('('), balanced, just(')')),
-        follows(just('['), balanced, just(']')),
-        follows(just('{'), balanced, just('}'))
-      )
-    )(input);
-
-const entirelyBalanced = entirely(balanced);
-```
-
-We can see one of the ways that it leverages being "native" JavaScript: It is a recursive pattern, and the recursion is implemented by referring to the name `balanced` that is bound in the current JavaScript scope.
-
-Behind the scenes, it is using the JavaScript stack to track the state of unclosed parentheses, juts like out implicit solution above. But even though we don't explicitly have a stack anywhere, we are still using one.
+Balanced parentheses with a finite number of pairs of parentheses is also a deterministic context-free language. We're going to combe back to deterministic context-free languages in a moment, but let's consider a slightly different way to recognize balanced parentheses first.
 
 ---
 
 ### recursive regular expressions
 
-We noted above that formal regular expressions cannot handle balanced parentheses, because balanced parentheses are not a regular language.
+We started this essay by mentioning regular expressions. We then showed that a *formal* regular expression cannot recognize balanced parentheses, in that formal regular expressions can only define regular languages.
 
-But programmers being programmers, the regular expressions we find built into various programming languages have been expanded over the years, and some of them provide a way to specify recursive regular expressions (a formal oxymoron).
+Regular expressions as implemented in programming languages--abbreviated rexen (singular regex)--are a different beast. Various features have been added to make them non-deterministic, and on some platforms, even recursive.
 
-JavaScript is not one of those languages, and PERL is not spoken here, but the Oniguruma regular expression engine used by Ruby (and PHP) does support recursion. Here's an implementation of simple balanced parentheses, written in Ruby:
+JavaScripts regexen do not support recursion, but the Oniguruma regular expression engine used by Ruby (and PHP) does support recursion. Here's an implementation of simple balanced parentheses, written in Ruby:
 
 
 ```ruby
@@ -719,9 +499,265 @@ Extended syntax also allows comments. Here's a version that can handle three kin
                         # ignoring whitespace.
 ```
 
-Once again, something does all the work for us. In this case, it's a high-performance pattern-matching engine that is going to be faster and use less memory than our functional pattern matchers and functional combinators.
+These recursive regular expressions specify a deterministic context-free language, and indeed we already have developed deterministic pushdown automata that perform the same recognizing.
 
-And once again, even though we have no explicit stack, we are guaranteed that _somewhere_ in Oniguruma, there is a stack tracking the recursion, and thus tracking the state of the machine as it consumes characters.
+We know that recognizing these languages requires some form of state that is equivalent to a stack with one level of depth for every unclosed parenthesis. That is handled for us by the engine, but we can be sure that somewhere behind the scenes, it is consuming the equivalent amount of memory.
+
+So we know that recursive regular expressions appear to be at least as powerful as deterministic pushdown automata. But are they more powerful? Meaning, is there a language that a recursive regular expression can match, but a DPA cannot?
+
+---
+
+### nested parentheses
+
+To demonstrate that recursive regular expressions are more powerful than DPAs, let's begin by simplifying our balanced parentheses language. Here's a three-state DPA that recognizes _nested_ parentheses only, not all balanced parentheses:
+
+```javascript
+const start = (token, { push, pop, top }) => {
+  if (token === '(') {
+    push(token);
+    return opening;
+  } else if (token === '[') {
+    push(token);
+    return opening;
+  } else if (token === '{') {
+    push(token);
+    return opening;
+  }
+
+  if (token === END) {
+    return RECOGNIZED;
+  }
+};
+
+const opening = (token, { push, pop, top }) => {
+  if (token === '(') {
+    push(token);
+    return opening;
+  } else if (token === '[') {
+    push(token);
+    return opening;
+  } else if (token === '{') {
+    push(token);
+    return opening;
+  }
+
+  if (token === ')' && top === '(') {
+    pop();
+    return closing;
+  } else if (token === ']' && top === '[') {
+    pop();
+    return closing;
+  } else if (token === '}' && top === '{') {
+    pop();
+    return closing;
+  }
+};
+
+const closing = (token, { push, pop, top }) => {
+  if (token === ')' && top === '(') {
+    pop();
+    return closing;
+  } else if (token === ']' && top === '[') {
+    pop();
+    return closing;
+  } else if (token === '}' && top === '{') {
+    pop();
+    return closing;
+  }
+
+  if (token === END && top === undefined) {
+    return RECOGNIZED;
+  }
+};
+
+const nested = DPA(start);
+
+test(nested, [
+  '', '(', '()', '()()', '{()}',
+	'([()])', '([))',
+	'(((((())))))'
+]);
+  //=>
+    '' => true
+    '(' => false
+    '()' => true
+    '()()' => false
+    '{()}' => true
+    '([()])' => true
+    '([))' => false
+    '(((((())))))' => true
+```
+
+And here is the equivalent recursive regular expression:
+
+```ruby
+nested = %r{
+    ^
+    (?'nested'
+      (?:
+        \(\g'nested'\)
+        |
+        \[\g'nested'\]
+        |
+        \{\g'nested'\}
+      )?
+    )
+    $
+  }x
+
+def test pattern, strings
+  strings.each do |string|
+    puts "'#{string}' => #{!(string =~ pattern).nil?}"
+  end
+end
+
+test nested, [
+  '', '(', '()', '()()', '{()}',
+	'([()])', '([))',
+	'(((((())))))'
+]
+  #=>
+    '' => true
+    '(' => false
+    '()' => true
+    '()()' => false
+    '{()}' => true
+    '([()])' => true
+    '([))' => false
+    '(((((())))))' => true
+```
+
+So far, so good. Of course they both work, nested parentheses is a subset of balanced parentheses, so we know that it's a deterministic context-free language.
+
+But now let's modify our program to help with documentation, rather than math. Let's make it work with quotes.
+
+---
+
+### non-deterministic context-free languages
+
+Instead of matching open and closed parentheses, we'll match quotes. Now just like open and closing parentheses, quotes have open and closing forms: 'single quotes' and "double quotes."
+
+But for this pattern, we are not interested in properly typeset quotation marks, we mean the single and double quotes that don't have a special form for opening and closing, the kind you find in programming languages that were designed to by reproducible by telegraph equipment: `'` and `"`.
+
+Our first crack is to just replace opening and closing parentheses with quotes. We'll only need two cases, not three:
+
+Here's our DPA:
+
+```javascript
+const start = (token, { push, pop, top }) => {
+  if (token === "'") {
+    push(token);
+    return opening;
+  } else if (token === '"') {
+    push(token);
+    return opening;
+  }
+
+  if (token === END) {
+    return RECOGNIZED;
+  }
+};
+
+const opening = (token, { push, pop, top }) => {
+  if (token === "'") {
+    push(token);
+    return opening;
+  } else if (token === '"') {
+    push(token);
+    return opening;
+  }
+
+  if (token === "'" && top === "'") {
+    pop();
+    return closing;
+  } else if (token === '"' && top === '"') {
+    pop();
+    return closing;
+  }
+};
+
+const closing = (token, { push, pop, top }) => {
+  if (token === "'" && top === "'") {
+    pop();
+    return closing;
+  } else if (token === '"' && top === '"') {
+    pop();
+    return closing;
+  }
+
+  if (token === END && top === undefined) {
+    return RECOGNIZED;
+  }
+};
+
+const quotes = DPA(start);
+
+test(quotes, [
+  ``, `'`, `''`, `""`, `'""'`,
+  `"''"`, `'"'"`, `"''"""`,
+  `'"''''''''''''''''"'`
+]);
+  //=>
+    '' => true
+    ''' => false
+    '''' => false
+    '""' => false
+    ''""'' => false
+    '"''"' => false
+    ''"'"' => false
+    '"''"""' => false
+    ''"''''''''''''''''"'' => false
+```
+
+Our DPA does not work. What if we modify our recursive regular expression to work with single and double quotes?
+
+```ruby
+quotes = %r{
+    ^
+    (?'balanced'
+      (?:
+        '\g'balanced''
+        |
+        "\g'balanced'"
+      )?
+    )
+    $
+  }x
+
+test quotes, [
+  %q{}, %q{'}, %q{''}, %q{""}, %q{'""'},
+  %q{"''"}, %q{'"'"}, %q{"''"""},
+  %q{'"''''''''''''''''"'}
+]
+  #=>
+    %q{} => true
+    %q{'} => false
+    %q{''} => true
+    %q{""} => true
+    %q{'""'} => true
+    %q{"''"} => true
+    %q{'"'"} => false
+    %q{"''"""} => false
+    %q{'"''''''''''''''''"'} => true
+```
+
+The recursive regular expression does work! Now, we may think that perhaps we went about writing our deterministic pushed automaton incorrectly, and there is a way to make it work, but no. It will never work on this particular problem.
+
+---
+
+### non-deterministic languages
+
+Why can't a deterministic pushdown automaton recognize our nested symmetrical quotes language?
+
+The problem is that every time it encounters a quote, that quote is ambiguous. It might be an opening quote, it might be a closing quote. And at the moment a DPA is consuming a quote, there is no way to decide the exact right thing to do based solely on the tokens already read.
+
+That is to say, the current internal state, and the state of the external stack, are insufficient information for deciding whether to treat a quote as an opening quote (and therefore pushing it onto the stack), or a closing quote (and therefore checking that the top of the stack matches before popping it off).
+
+But that is baked into the definition of a deterministic pushdown automaton! That given the current token, the current internal state, and the current state of the external stack, there is one unambiguous set of actions for the DPA to take.
+
+There's no "sometimes one, sometimes the other." For that reason, DPAs are insufficiently powerful to deal with nested single quotes.
+
+...
 
 ---
 
