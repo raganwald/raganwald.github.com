@@ -69,13 +69,13 @@ Our name-matching expression above can be implemented with this finite state mac
     R-->|e|Re
     Re-->|g|Reg
 
-    Reg-->|end|recognized(recognized)
+    Reg-.->|end|recognized(recognized)
 
     Reg-->|g|Regg
     Regg-->|i|Reggi
     Reggi-->|e|Reggie
 
-    Reggie-->|end|recognized;
+    Reggie-.->|end|recognized;
 </div>
 
 ---
@@ -177,7 +177,7 @@ The finite state machine for this "parentheses" language is very compact:
 <div class="mermaid">
   graph TD
     start(start)-->|"'(' or ')'"|start
-    start-->|"(end)"|recognized(recognized);
+    start-.->|"(end)"|recognized(recognized);
 </div>
 
 And we can also write this state machine it in JavaScript:
@@ -743,21 +743,31 @@ test quotes, [
 
 The recursive regular expression does work! Now, we may think that perhaps we went about writing our deterministic pushed automaton incorrectly, and there is a way to make it work, but no. It will never work on this particular problem.
 
+This particular language--single and double nested symmetrical quotes--is a very simple example of the "palindrome" problem. We cannot use a deterministic pushdown automaton to write a recognizer for palindromes that have at least two different kinds of tokens.
+
 ---
 
-### non-deterministic languages
+### why deterministic languages cannot recognize even length palindromes
 
 Why can't a deterministic pushdown automaton recognize our nested symmetrical quotes language?
 
-The problem is that every time it encounters a quote, that quote is ambiguous. It might be an opening quote, it might be a closing quote. And at the moment a DPA is consuming a quote, there is no way to decide the exact right thing to do based solely on the tokens already read.
+Let's consider a simple palindrome language. In this language, there are only two tokens, `0`, and `1`. In our language, any even-length palindrome is valid, such as `00`, `1001`, and `000011110000`. We aren't going to do a formal proof here, but let's imagine that there is a DPA that can recognize this language, we'll call this DPA `P`.[^readability]
 
-That is to say, the current internal state, and the state of the external stack, are insufficient information for deciding whether to treat a quote as an opening quote (and therefore pushing it onto the stack), or a closing quote (and therefore checking that the top of the stack matches before popping it off).
+[^readability]: The even-length palindrom language composes of `0`s and `1`s is 100% equivalent to the nested quotes language, we're just swapping `0` for `'`, and `1` for `"`, because they're easier for this author's eyes to read.
 
-But that is baked into the definition of a deterministic pushdown automaton! That given the current token, the current internal state, and the current state of the external stack, there is one unambiguous set of actions for the DPA to take.
+Let's review for a moment how DPAs (like FSAs) work. There can only be a finite number of internal states. And there can only be a finite set of symbols that it manipulates (there might be more symbols than tokens in the language it recognizes, but still only a finite set.)
 
-There's no "sometimes one, sometimes the other." For that reason, DPAs are insufficiently powerful to deal with nested single quotes.
+Now let's imagine we feed `P` a string that begins with the following pattern: It begins with a `1`, then a `0`, then a `1`, then two zeroes `00`, then a `1`, then three zeroes `000`, then a `1`, and so forth. Something like this:
 
-...
+```
+1010010001000010000010000001000000010000000010000000001 ...
+```
+
+At any moment reading such a string, we could be at the half-way point of a palindrome, or we might not. When we imagined a hypothetical FSA that could recognize nested parentheses, we showed that we required storage proportional to the length of the string up to the half-way point.
+
+The same applies, intuitively, here: We require storage proportional to the length of the string. We can't put it in internal state: There are only a finite number of internal states, and a finite number of symbols that the machine can work with, so no matter how many internal states it has and how many symbols it can use, we can always create a string long enough to exceed them and require the use of the external stack.
+
+So we know that as we consume symboles, we must grow the stack. And we can only push symbols onto the stack and read the top of the stack.
 
 ---
 
