@@ -305,41 +305,79 @@ Therefore, our proof that a DFA with finite number of internal states cannot rec
 
 ### balanced parentheses is a deterministic context-free language
 
-Let's start with  a recognizer that can implement DPAs. We'll write it in such a way that it works for DFAs too (it is "downwards compatible"). But we'll pass in some functions for optionally manipulating the stack:
+Let's start with a recognizer that can implement DPAs. Now that we have to track both the current internal state _and_ external state in the form of a stack, we'll add a little ceremony and write our recognizers as JavaScript classes.
 
 ```javascript
-function DPA (start) {
-  return string => {
-    const stack = [];
+const END = Symbol('end');
 
-    const push = token => {
-      stack.push(token);
-    };
-
-    const pop = () => {
-      stack.pop();
-    };
-
-    const replace = token => {
-      stack[stack.length - 1] = token;
-    };
-
-    let currentState = start;
-    for (const token of string) {
-      const action = currentState(token, { push, pop, replace, top: stack[stack.length - 1] });
-
-      if (action === RECOGNIZED) {
-        return true;
-      } else if (action === UNRECOGNIZED || action == null) {
-        return false;
-      } else {
-        currentState = action;
-      }
-    }
-
-    const finalAction = currentState(END, { push, pop, replace, top:  stack[stack.length - 1] });
-    return finalAction === RECOGNIZED;
+class DPA {
+  constructor(internal = 'start', external = []) {
+    this.internal = internal;
+    this.external = external.slice(0);
+    this.halted = false;
+    this.recognized = false;
   }
+
+  push(token) {
+    this.external.push(token);
+    return this;
+  }
+
+  pop() {
+    this.external.pop();
+    return this;
+  }
+
+  replace(token) {
+    this.external[this.external.length - 1] = token;
+    return this;
+  }
+
+  top() {
+    return this.external[this.external.length - 1];
+  }
+
+  hasEmptyStack() {
+    return this.external.length === 0;
+  }
+
+  transitionTo(internal) {
+    this.internal = internal;
+    return this;
+  }
+
+  recognize() {
+    this.recognized = true;
+    return this;
+  }
+
+  halt() {
+    this.halted = true;
+    return this;
+  }
+
+  consume(token) {
+    return this[this.internal](token);
+  }
+}
+
+function evaluate (clazz, string) {
+  let state = new clazz();
+
+  for (const token of string) {
+    const newState = state.consume(token);
+
+    if (newState === undefined || newState.halted) {
+      return false;
+    } else if (newState.recognized) {
+      return true;
+    } else {
+      state = newState;
+    }
+  }
+
+  const finalState = state.consume(END);
+  return !!(finalState && finalState.recognized);
 }
 ```
 
@@ -351,31 +389,25 @@ Now, a stack implemented in JavaScript cannot actually encode an infinite amount
 
 But our implementation shows the basic principle, and it's good enough for any of the test strings we'll write by hand.
 
-Now how about a recognizer for balanced parentheses? It's astonishingly simple:
+Now how about a recognizer for balanced parentheses?
 
 ```javascript
-const start = (token, { push, pop, top }) => {
-  if (token === '(') {
-    push(token);
-    return start;
+class BalancedParentheses extends DPA {
+  start(token) {
+    if (token === '(') {
+      return this.push(token);
+    } else if (token === ')' && this.top() === '(') {
+      return this.pop();
+    } else if (token === END && this.hasEmptyStack()) {
+        return this.recognize();
+    }
   }
+}
 
-  if (token === ')' && top === '(') {
-    pop();
-    return start;
-  }
-
-  if (token === END && top === undefined) {
-    return RECOGNIZED;
-  }
-};
-
-const balanced = DPA(start);
-
-test(balanced, [
-  '', '(', '()', '()()', '(())',
-	'([()()]())', '([()())())',
-	'())()', '((())(())'
+test(BalancedParentheses, [
+	'', '(', '()', '()()', '(())',
+'([()()]())', '([()())())',
+'())()', '((())(())'
 ]);
   //=>
     '' => true
@@ -394,37 +426,27 @@ test(balanced, [
 Our recognizer is so simple, we can give in to temptation and enhance it to recognize multiple types of parentheses:
 
 ```javascript
-const start = (token, { push, pop, top }) => {
-  if (token === '(') {
-    push(token);
-    return start;
-  } else if (token === '[') {
-    push(token);
-    return start;
-  } else if (token === '{') {
-    push(token);
-    return start;
+class BalancedParentheses extends DPA {
+  start(token) {
+    if (token === '(') {
+      return this.push(token);
+    } else if (token === '[') {
+      return this.push(token);
+    } else if (token === '{') {
+      return this.push(token);
+    } else if (token === ')' && this.top() === '(') {
+      return this.pop();
+    } else if (token === ']' && this.top() === '[') {
+      return this.pop();
+    } else if (token === '}' && this.top() === '{') {
+      return this.pop();
+    } else if (token === END && this.hasEmptyStack()) {
+        return this.recognize();
+    }
   }
+}
 
-  if (token === ')' && top === '(') {
-    pop();
-    return start;
-  } else if (token === ']' && top === '[') {
-    pop();
-    return start;
-  } else if (token === '}' && top === '{') {
-    pop();
-    return start;
-  }
-
-  if (token === END && top === undefined) {
-    return RECOGNIZED;
-  }
-};
-
-const balanced = DPA(start);
-
-test(balanced, [
+test(BalancedParentheses, [
   '', '(', '()', '()()', '{()}',
 	'([()()]())', '([()())())',
 	'())()', '((())(())'
@@ -441,7 +463,7 @@ test(balanced, [
     '((())(())' => false
 ```
 
-Balanced parentheses with a finite number of pairs of parentheses is also a deterministic context-free language. We're going to combe back to deterministic context-free languages in a moment, but let's consider a slightly different way to recognize balanced parentheses first.
+Balanced parentheses with a finite number of pairs of parentheses is also a deterministic context-free language. We're going to come back to deterministic context-free languages in a moment, but let's consider a slightly different way to recognize balanced parentheses first.
 
 ---
 
@@ -512,67 +534,62 @@ So we know that recursive regular expressions appear to be at least as powerful 
 To demonstrate that recursive regular expressions are more powerful than DPAs, let's begin by simplifying our balanced parentheses language. Here's a three-state DPA that recognizes _nested_ parentheses only, not all balanced parentheses:
 
 ```javascript
-const start = (token, { push, pop, top }) => {
-  if (token === '(') {
-    push(token);
-    return opening;
-  } else if (token === '[') {
-    push(token);
-    return opening;
-  } else if (token === '{') {
-    push(token);
-    return opening;
+class NestedParentheses extends DPA {
+  start(token) {
+    switch(token) {
+      case END:
+        return this.recognize();
+      case '(':
+        return this
+          .push(token)
+          .transitionTo('opening');
+      case '[':
+        return this
+          .push(token)
+          .transitionTo('opening');
+      case '{':
+        return this
+          .push(token)
+          .transitionTo('opening');
+    }
   }
 
-  if (token === END) {
-    return RECOGNIZED;
-  }
-};
-
-const opening = (token, { push, pop, top }) => {
-  if (token === '(') {
-    push(token);
-    return opening;
-  } else if (token === '[') {
-    push(token);
-    return opening;
-  } else if (token === '{') {
-    push(token);
-    return opening;
-  }
-
-  if (token === ')' && top === '(') {
-    pop();
-    return closing;
-  } else if (token === ']' && top === '[') {
-    pop();
-    return closing;
-  } else if (token === '}' && top === '{') {
-    pop();
-    return closing;
-  }
-};
-
-const closing = (token, { push, pop, top }) => {
-  if (token === ')' && top === '(') {
-    pop();
-    return closing;
-  } else if (token === ']' && top === '[') {
-    pop();
-    return closing;
-  } else if (token === '}' && top === '{') {
-    pop();
-    return closing;
+  opening(token) {
+    if (token === '(') {
+      return this.push(token);
+    } else if (token === '[') {
+      return this.push(token);
+    } else if (token === '{') {
+      return this.push(token);
+    } else if (token === ')' && this.top() === '(') {
+      return this
+        .pop()
+        .transitionTo('closing');
+    } else if (token === ']' && this.top() === '[') {
+      return this
+        .pop()
+        .transitionTo('closing');
+    } else if (token === '}' && this.top() === '{') {
+      return this
+        .pop()
+        .transitionTo('closing');
+    }
   }
 
-  if (token === END && top === undefined) {
-    return RECOGNIZED;
+  closing(token) {
+    if (token === ')' && this.top() === '(') {
+      return this.pop();
+    } else if (token === ']' && this.top() === '[') {
+      return this.pop();
+    } else if (token === '}' && this.top() === '{') {
+      return this.pop();
+    } else if (token === END && this.hasEmptyStack()) {
+      return this.recognize();
+    }
   }
-};
+}
 
-const nested = DPA(start);
-
-test(nested, [
+test(NestedParentheses, [
   '', '(', '()', '()()', '{()}',
 	'([()])', '([))',
 	'(((((())))))'
@@ -904,7 +921,7 @@ function evaluate (clazz, string) {
   }
 
   const finalState = state.consume(END);
-  return finalState && finalState.recognized;
+  return !!(finalState && finalState.recognized);
 }
 
 function test (recognizer, examples) {
@@ -944,7 +961,52 @@ test(Parentheses, [
     '((())(())' => true
 
 // A nested parentheses recognizer
+
+class NestedParentheses extends DPARecognizer {
+  start(token) {
+    switch(token) {
+      case END:
+        return this.recognize();
+      case '(':
+        return this
+          .push(token)
+          .transitionTo('opening');
+    }
+  }
+
+  opening(token) {
+    if (token === '(') {
+      return this.push(token);
+    } else if (token === ')' && this.top() === '(') {
+      return this
+        .pop()
+        .transitionTo('closing');
+    }
+  }
+
+  closing(token) {
+    if (token === ')' && this.top() === '(') {
+      return this.pop();
+    } else if (token === END && this.top() === undefined) {
+      return this.recognize();
+    }
+  }
+}
+
+test(NestedParentheses, [
+  '', '(', ')', '()', '(()', '())', '(())'
+]);
+  //=>
+    '' => true
+    '(' => false
+    ')' => false
+    '()' => true
+    '(()' => false
+    '())' => false
+    '(())' => true
 ```
+
+
 ---
 
 ### what can we learn from the theory behind recognizing balanced parentheses?
