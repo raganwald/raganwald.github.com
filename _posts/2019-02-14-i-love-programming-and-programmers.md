@@ -785,6 +785,166 @@ Since `P` is deterministic, meaning it always does exactly one thing in response
 
 ---
 
+### pushdown automata
+
+We said that there is no deterministic pushdown automaton that can recognize a palindrome language like our symmetrical quotes language. And to reiterate, we said that this is the case because a deterministic pushdown automaton cannot simultaneously remove information from its external storage and add information to its external storage. If we wanted to make a pushdown automaton that *could* recognize palindromes, we could go about it in one of two ways:
+
+1. We could relax the restrictions on what an automaton can do with the stack in one step. e.g. access any element or store a stack in an element of the stack. Machine that can do more with the stack than a single `push`, `pop`, or `replace` are called Stack Machines.
+2. We could relax the restriction that a deterministic pushdown automata must do one thing, or another, but not both.
+
+Let's consider the latter option. Deterministic machines must do one and only one thing in response to a token and the top of the stack. That's what makes them "deterministic." In effect, their logic always looks like this:
+
+```javascript
+function consume (token, top) {
+  if (token === top) {
+    pop();
+  } else if (token === '0' || token === '1') {
+    push(token);
+  } else if (token == END and top === undefined) {
+    recognize();
+  } else if (token == END and top !== undefined) {
+    halt();
+  }
+}
+```
+
+Such logic pops, recognizes, halts, or pushes the current token, but it cannot do more than one of these things simultaneously. But what if the logic looked like this?
+
+```javascript
+function * consume (token, top) {
+  if (token === top) {
+    yield pop();
+  }
+  if (token === '0' || token === '1') {
+    yield push(token);
+  }
+  if (token == END and top === undefined) {
+    yield recognize();
+  }
+  if (token == END and top !== undefined) {
+    yield halt();
+  }
+}
+```
+
+This logic is formulated as a generator that yields one or more outcomes. It can do more than one thing at a time. It expressly can both `pop` and `push` the current token when it matches the top of the stack. How will this work?
+
+---
+
+### an object-oriented deterministic pushdown automaton
+
+Let's begin by writing an "OOP" version of our DPA:
+
+
+```javascript
+// the infrastructure
+
+const END = Symbol('end');
+
+class DPARecognizer {
+  constructor(internal = 'start', external = []) {
+    this.internal = internal;
+    this.external = external.slice(0);
+    this.halted = false;
+    this.recognized = false;
+  }
+
+  push(token) {
+    this.external.push(token);
+    return this;
+  }
+
+  pop() {
+    this.pop();
+    return this;
+  }
+
+  replace(token) {
+    this.external[this.external.length - 1] = token;
+    return this;
+  }
+
+  top() {
+    return this.external[this.external.length - 1];
+  }
+
+  transitionTo(internal) {
+    this.internal = internal;
+    return this;
+  }
+
+  recognize() {
+    this.recognized = true;
+    return this;
+  }
+
+  halt() {
+    this.halted = true;
+    return this;
+  }
+
+  consume(token) {
+    return this[this.internal](token);
+  }
+}
+
+function evaluate (clazz, string) {
+  let state = new clazz();
+
+  for (const token of string) {
+    const newState = state.consume(token);
+
+    if (newState === undefined || newState.halted) {
+      return false;
+    } else if (newState.recognized) {
+      return true;
+    } else {
+      state = newState;
+    }
+  }
+
+  const finalState = state.consume(END);
+  return finalState && finalState.recognized;
+}
+
+function test (recognizer, examples) {
+  for (const example of examples) {
+    console.log(`'${example}' => ${evaluate(recognizer, example)}`);
+  }
+}
+
+// Our parentheses recognizer
+
+class Parentheses extends DPARecognizer {
+	start(token) {
+      switch(token) {
+        case END:
+          return this.recognize();
+        case '(':
+          return this.transitionTo('start');
+        case ')':
+          return this.transitionTo('start');
+      }
+    }
+}
+
+test(Parentheses, [
+  '', '()', '(){}', '(',
+	'([()()]())', '([()())())',
+	'())()', '((())(())'
+]);
+  //=>
+    '' => true
+    '()' => true
+    '(){}' => false
+    '(' => true
+    '([()()]())' => false
+    '([()())())' => false
+    '())()' => true
+    '((())(())' => true
+```
+---
+
 ### what can we learn from the theory behind recognizing balanced parentheses?
 
 Let's review what we've just done:
