@@ -855,7 +855,7 @@ class DPARecognizer {
   }
 
   pop() {
-    this.pop();
+    this.external.pop();
     return this;
   }
 
@@ -942,6 +942,8 @@ test(Parentheses, [
     '([()())())' => false
     '())()' => true
     '((())(())' => true
+
+// A nested parentheses recognizer
 ```
 ---
 
