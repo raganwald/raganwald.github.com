@@ -747,27 +747,41 @@ This particular language--single and double nested symmetrical quotes--is a very
 
 ---
 
-### why deterministic languages cannot recognize even length palindromes
+### why deterministic pushdown automata cannot recognize palindromes
 
-Why can't a deterministic pushdown automaton recognize our nested symmetrical quotes language?
+Why can't a deterministic pushdown automaton recognize our nested symmetrical quotes language? For the same reason that deterministic pushdown automata cannot recognize arbitrarily long palindromes.
 
 Let's consider a simple palindrome language. In this language, there are only two tokens, `0`, and `1`. In our language, any even-length palindrome is valid, such as `00`, `1001`, and `000011110000`. We aren't going to do a formal proof here, but let's imagine that there is a DPA that can recognize this language, we'll call this DPA `P`.[^readability]
 
-[^readability]: The even-length palindrom language composes of `0`s and `1`s is 100% equivalent to the nested quotes language, we're just swapping `0` for `'`, and `1` for `"`, because they're easier for this author's eyes to read.
+[^readability]: The even-length palindrome language composes of `0`s and `1`s is 100% equivalent to the nested quotes language, we're just swapping `0` for `'`, and `1` for `"`, because they're easier for this author's eyes to read.
 
 Let's review for a moment how DPAs (like FSAs) work. There can only be a finite number of internal states. And there can only be a finite set of symbols that it manipulates (there might be more symbols than tokens in the language it recognizes, but still only a finite set.)
 
-Now let's imagine we feed `P` a string that begins with the following pattern: It begins with a `1`, then a `0`, then a `1`, then two zeroes `00`, then a `1`, then three zeroes `000`, then a `1`, and so forth. Something like this:
+Now, depending upon how `P` is organized, it may push one symbol onto the stack for each token it reads, or it might push a token every so many tokens. For example, it could encode four bits of information about the tokens read as a single hexadecimal `0` through `F`. Or 256 bits as the hexadecimal pairs `00` through `FF`, and so on. or it might just store one bit of information per stack element, in which case it's "words" would only have one bit each.
 
-```
-1010010001000010000010000001000000010000000010000000001 ...
-```
+So the top-most element of the `P`'s external stack can contain an arbitrary, but finite amount of information. And `P`'s internal state can hold an arbitrary, but finite amount of information. There are fancy ways to get at elements below the topmost element, but to do so, we must either discard the top-most element's information, or store it in `P`'s finite internal state temporarily, and then push it back.
 
-At any moment reading such a string, we could be at the half-way point of a palindrome, or we might not. When we imagined a hypothetical FSA that could recognize nested parentheses, we showed that we required storage proportional to the length of the string up to the half-way point.
+That doesn't actually give `P` any more recollection than storing state on the top of the stack and in its internal state. We can store more information than can be held in `P`'s internal state and on the top of `P`'s external stack, but to access more information, we must permanently discard information from the top of the stack.[^dup]
 
-The same applies, intuitively, here: We require storage proportional to the length of the string. We can't put it in internal state: There are only a finite number of internal states, and a finite number of symbols that the machine can work with, so no matter how many internal states it has and how many symbols it can use, we can always create a string long enough to exceed them and require the use of the external stack.
+[^dup]: In [concatenative programming languages], such as PostScript, Forth, and Joy, there are `DUP` and `SWAP` operations that, when used in the right combination, can bring an element of the stack to the top, and then put it back where it came from. One could construct a DPA such that it has the equivalent of `DUP` and `SWAP` operations, but since a DPA can only perform one `push`, `pop`, or `replace` for each token it consumes, the depth of stack it can reach is limited by its ability to store the tokens it is consuming in its internal state, which is finite. For any DPA, there will always be some depth of stack that is unreachable without discarding information.
 
-So we know that as we consume symboles, we must grow the stack. And we can only push symbols onto the stack and read the top of the stack.
+[concatenative programming languages]: https://en.wikipedia.org/wiki/Concatenative_programming_language
+
+---
+
+So let's consider what happens when we feed `P` a long string of `0`s and `1`s that is "incompressible," or random in an information-theoretic sense. Each token in our vocabulary of `1`s and `0`s represents an additional bit of information. We construct a string long enough that `P` **must** store some of the string's information deep enough in the stack to be inaccessible without discarding information:
+
+Now we begin to feed it the inverse of the string read so far. What does `P` do?
+
+If `P` is to recognize a palindrome, it must eventually dig into the "inaccessible" information, which means discarding some information. So let's feed it enough information such that it discards some information. Now we give it a token that is no longer part of the inverse of the original string. What does `P` do now? We haven't encountered the `END`, so `P` cannot halt and declare that the string is not a palindrome. After all, this could be the beginning of an entirely new palindrome, we don't know yet.
+
+But since `P` has discarded some information in order to know whether to match an earlier possible palindrome, `P` does not now have enough information to match a larger palindrome. Ok, so maybe `P` shouldn't have discarded information to match the shorter possible palindrome. If it did not do so, `P` would have the information required to match the longer possible palindrome.
+
+But that breaks any time the shorter palindrome is the right thing to recognize.
+
+Now matter how we organize `P`, we can always construct a string large enough that `P` must discard information to correctly recognize one possible string, but not discard information in order to correctly recognize another possible string.
+
+Since `P` is deterministic, meaning it always does exactly one thing in response to any token given a particular state, `P` cannot both discard and not discaard information, therefore `P` cannot recognize languages composed of palindromes. And therefore no DPA can recognize languages composed of palindromes.
 
 ---
 
