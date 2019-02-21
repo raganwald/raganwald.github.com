@@ -49,7 +49,7 @@ A "formal language" is a defined set of strings (or tokens in a really formal ar
 
 "Balanced parentheses" is a formal language, there is an unambiguous specification for determining whether a string is or is not a member of the language. In computer science, strings containing balanced parentheses are called "Dyck Words," because they were first studied by [Walther von Dyck].
 
-[Walther von Dyck](https://en.wikipedia.org/wiki/Walther_von_Dyck)
+[Walther von Dyck]: https://en.wikipedia.org/wiki/Walther_von_Dyck
 
 We mentioned "unambiguously specifying whether a string belongs to a language." A computer scientist's favourite tool for unambiguously specifying anything is a computing device or machine. And indeed, for something to be a formal language, there must be a machine that acts as its specification.
 
