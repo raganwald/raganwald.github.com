@@ -42,6 +42,24 @@ That will lead us on an exploration of fundamental computing machines from deter
 
 ---
 
+[![Hurley Building, Boston, MA](/assets/images/pushdown/countours.jpg)](https://www.flickr.com/photos/pburka/27459401981)
+
+### table of contents
+
+*Coming RealSoonNow™️*
+
+.
+
+.
+
+.
+
+.
+
+.
+
+---
+
 [![Berkeley Art Museum](/assets/images/pushdown/art.jpg)](https://www.flickr.com/photos/threepwolfe/43985968644)
 
 ---
