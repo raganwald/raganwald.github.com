@@ -834,7 +834,7 @@ This particular language--nested single and double quotes quotes--is a very simp
 
 ---
 
-[![Night View of The Geisel Library, University of California San Diego](/assets/images/pushdown/geisel.jpg)](https://www.flickr.com/photos/opalsson/15163041049)
+[![brutalism 3 of 3](/assets/images/pushdown/brutalism3.jpg)](https://www.flickr.com/photos/27556454@N07/4328321198)
 
 ---
 
@@ -941,7 +941,27 @@ Let's begin by writing a recognizer for the "even-length binary palindrome" prob
 
 ```javascript
 class BinaryPalindrome extends PushdownAutomaton {
-  * start(token) {
+  * start (token) {
+    if (token === '0') {
+      yield this
+      	.fork()
+        .push(token)
+      	.transitionTo('opening');
+    }
+    if (token === '1') {
+      yield this
+      	.fork()
+        .push(token)
+      	.transitionTo('opening');
+    }
+    if (token === END) {
+      yield this
+      	.fork()
+        .recognize();
+    }
+  }
+
+  * opening (token) {
     if (token === '0') {
       yield this
       	.fork()
@@ -952,6 +972,21 @@ class BinaryPalindrome extends PushdownAutomaton {
       	.fork()
         .push(token);
     }
+    if (token === '0' && this.top() === '0') {
+      yield this
+      	.fork()
+        .pop()
+      	.transitionTo('closing');
+    }
+    if (token === '1' && this.top() === '1') {
+      yield this
+      	.fork()
+      	.pop()
+      	.transitionTo('closing');
+    }
+  }
+
+  * closing (token) {
     if (token === '0' && this.top() === '0') {
       yield this
       	.fork()
@@ -1024,9 +1059,9 @@ So does it work?
 
 ```javascript
 test(BinaryPalindrome, [
-  ``, `0`, `00`, `11`, `0110`,
-  `1001`, `0101`, `100111`,
-  `0100000000
+  '', '0', '00', '11', '0110',
+  '1001', '0101', '100111',
+  '01000000000000000010'
 ]);
   //=>
     '' => true
@@ -1036,67 +1071,22 @@ test(BinaryPalindrome, [
     '0110' => true
     '1001' => true
     '0101' => false
-    '100111' => true
+    '100111' => false
     '01000000000000000010' => true
 ```
 
-Indeed it does. And here's a version that a version that does single and double symmetrical quotes:
+Indeed it does, and we leave as "exercises for the reader" to perform either of these two modifications:
 
-```javascript
-class NestedQuotes extends PushdownAutomaton {
-  * start(token) {
-    if (token === "'") {
-      yield this
-      	.fork()
-        .push(token);
-    }
-    if (token === '"') {
-      yield this
-      	.fork()
-        .push(token);
-    }
-    if (token === "'" && this.top() === "'") {
-      yield this
-      	.fork()
-        .pop();
-    }
-    if (token === '"' && this.top() === '"') {
-      yield this
-      	.fork()
-      	.pop();
-    }
-    if (token === END && this.hasEmptyStack()) {
-      yield this
-      	.fork()
-        .recognize();
-    }
-  }
-}
+1. Modify `Binary Palindrome` to recognize both odd- and even-length palindromes, or;
+2. Modify `Binary Palindrome` so that it recognizes nested quotes instead of binary palindromes.
 
-test(NestedQuotes, [
-  ``, `'`, `''`, `""`, `'""'`,
-  `"''"`, `'"'"`, `"''"""`,
-  `'"''''''''''''''''"'`
-]);
-  //=>
-    `` => true
-    `'` => false
-    `''` => true
-    `""` => true
-    `'""'` => true
-    `"''"` => true
-    `'"'"` => false
-    `"''"""` => true
-    `'"''''''''''''''''"'` => true
-```
+Our pushdown automaton works because when it encounters a token, it both pushes the token onto the stack _and_ compares it to the top of the stack and pops it off if it matches. It forks itself each time, so it consumes exponential space and time. But it *does* work.
+
+And that shows us that pushdown automata are more powerful than deterministic pushdown automata, because they can recognize languages that deterministic pushdown automata cannot.
 
 ---
 
-### why our pushdown automaton works
-
-Our pushdown automaton works because when it encounters a quote, it both pushes the quote on the stack _and_ compares it to the top of the stack and pops it off. It forks itself each time, so it consumes exponential space and time. But it *does* work.
-
-And that shows us that pushdown automata are more powerful than deterministic pushdown automata, because they can recognize languages that deterministic pushdown automata cannot.
+[![Night View of The Geisel Library, University of California San Diego](/assets/images/pushdown/geisel.jpg)](https://www.flickr.com/photos/opalsson/15163041049)
 
 ---
 
