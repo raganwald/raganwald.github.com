@@ -266,7 +266,7 @@ Contradiction! Therefore, our original assumption—that `B` exists—is false. 
 
 ---
 
-### pushdown automata
+### deterministic pushdown automata
 
 We can, of course, write a recognizer for balanced parentheses in JavaScript, or a Turing Machine (don't worry, we won't write a Turing Machine today). But javaScript can do almost anything, write pattern matching engines, perform search-and-replace on strings...
 
@@ -278,7 +278,7 @@ All of them have some mechanism for encoding an infinite number of states by add
 
 [^inf]: No matter how a machine is organized, if it has a finite number of states, it cannot recognized balanced parenthese by our proof above. Fr example, if we modify our DFA to allow an on/off flag for each state, and we have a finite number of states, our machine is not more powerful than a standard DFA, it is just more compact: Its definition is `log2` the size of a standard DFA, but it still has a finite number of possible different states.
 
-The simplest machine that adds external state, which we might think of as being one step more powerful than a DFA, is a [Deterministic Pushdown Automaton][pa], or "DPA." A Pushdown Automaton is very much like our Deterministic Finite Automa, but it adds a potentially infinite stack as its external state.
+The simplest machine that adds external state, which we might think of as being one step more powerful than a DFA, is a [Deterministic Pushdown Automaton][pa], or "DPA." A DPA is very much like our Deterministic Finite Automa, but it adds a potentially infinite stack as its external state.
 
 [pa]: https://en.wikipedia.org/wiki/Pushdown_automaton
 
@@ -386,10 +386,6 @@ function test (recognizer, examples) {
   }
 }
 ```
-
-For simplicity, it relies on JavaScript's default behaviour of returning `undefined` for the top of an empty stack.[^undef]
-
-[^undef]: This implies that the DFAs we write cannot attempt to push `undefined` onto the stack.
 
 Now, a stack implemented in JavaScript cannot actually encode an infinite amount of information. The depth of the stack is limited to `2^32 -1`, and there are a finite number of different values we can push onto the stack. And then there are limitations like the the memory in our machines, or the number of clock ticks our CPUs will execute before the heat-death of the universe.
 
@@ -851,84 +847,46 @@ This logic is formulated as a generator that yields one or more outcomes. It can
 
 ### an object-oriented deterministic pushdown automaton
 
-Let's begin by rewriting `NestedQuotes` in generator style:
+Let's begin by writing a recognizer for the "even-length binary palindrome" problem. We'll use teh same general idea as our `NestedParentheses` language, but we'll make four changes:
+
+- We only need one state;
+- Our state method will be a generator;
+- We evaluate all the possible actions and `yield` each one's result;
+- We have added a call to `.fork()` for each result, which as we'll see below, means that we are cloning our state and making changes to the clone.
 
 ```javascript
-class NestedQuotes extends PushdownAutomaton {
+class BinaryPalindrome extends PushdownAutomaton {
   * start(token) {
-    if (token === '\'') {
+    if (token === '0') {
       yield this
-        .fork()
-        .push(token)
-        .transitionTo('opening');
-    }
-    if (token === '"') {
-      yield this
-        .fork()
-        .push(token)
-        .transitionTo('opening');
-    }
-    if (token === END) {
-      yield this
-        .fork()
-        .recognize();
-    }
-  }
-
-  * opening(token) {
-    if (token === '\'') {
-      yield this
-        .fork()
+      	.fork()
         .push(token);
     }
-    if (token === '"') {
+    if (token === '1') {
       yield this
-        .fork()
+      	.fork()
         .push(token);
     }
-    if (token === '\'' && this.top() === '\'') {
+    if (token === '0' && this.top() === '0') {
       yield this
-        .fork()
-        .pop()
-        .transitionTo('closing');
-    }
-    if (token === '"' && this.top() === '"') {
-      yield this
-        .fork()
-        .fork()
-
-        .pop()
-        .transitionTo('closing');
-    }
-  }
-
-  * closing(token) {
-    if (token === '\'' && this.top() === '\'') {
-      yield this
-        .fork()
+      	.fork()
         .pop();
     }
-    if (token === '"' && this.top() === '"') {
+    if (token === '1' && this.top() === '1') {
       yield this
-        .fork()
-        .pop();
+      	.fork()
+      	.pop();
     }
     if (token === END && this.hasEmptyStack()) {
       yield this
-        .fork()
+      	.fork()
         .recognize();
     }
   }
 }
 ```
 
-We've made three changes:
-
-- Our state methods are generators;
-- We evaluate all the possible actions and `yield` each one's result;
-- We have added a call to `.fork()` for each result, which as we'll see below, means that we are cloning our state and making changes to the clone.
-
-Now let's see how we've modified `DPA` to create `PushdownAutomaton`. We'll literall copy the code from `class DPA { ... }` and make the following changes:[^well-actually]
+Now let's modify `DPA` to create `PushdownAutomaton`. We'll literall copy the code from `class DPA { ... }` and make the following changes:[^well-actually]
 
 [^well-actually]: If we were really strict about OO and inheritance, we might have them both inherit from a common base class of `AbstractPushdownAutomaton`, but "Aint nobody got time for elaborate class hierarchies."
 
@@ -980,29 +938,29 @@ If we end up with no unhalted state, the machine fails to recognize the string. 
 So does it work?
 
 ```javascript
+test(BinaryPalindrome, [
+  ``, `0`, `00`, `11`, `0110`,
+  `1001`, `0101`, `100111`,
+  `0100000000
+]);
+  //=>
+    '' => true
+    '0' => false
+    '00' => true
+    '11' => true
+    '0110' => true
+    '1001' => true
+    '0101' => false
+    '100111' => true
+    '01000000000000000010' => true
+```
+
+Indeed it does. And here's a version that a version that does single and double symmetrical quotes:
+
+```javascript
 class NestedQuotes extends PushdownAutomaton {
   * start(token) {
-    if (token === '\'') {
-      yield this
-      	.fork()
-        .push(token)
-        .transitionTo('opening');
-    }
-    if (token === '"') {
-      yield this
-      	.fork()
-        .push(token)
-        .transitionTo('opening');
-    }
-    if (token === END) {
-      yield this
-      	.fork()
-        .recognize();
-    }
-  }
-
-  * opening(token) {
-    if (token === '\'') {
+    if (token === "'") {
       yield this
       	.fork()
         .push(token);
@@ -1012,24 +970,7 @@ class NestedQuotes extends PushdownAutomaton {
       	.fork()
         .push(token);
     }
-    if (token === '\'' && this.top() === '\'') {
-      yield this
-      	.fork()
-        .pop()
-        .transitionTo('closing');
-    }
-    if (token === '"' && this.top() === '"') {
-      yield this
-      	.fork()
-      	.fork()
-
-        .pop()
-        .transitionTo('closing');
-    }
-  }
-
-  * closing(token) {
-    if (token === '\'' && this.top() === '\'') {
+    if (token === "'" && this.top() === "'") {
       yield this
       	.fork()
         .pop();
@@ -1037,7 +978,7 @@ class NestedQuotes extends PushdownAutomaton {
     if (token === '"' && this.top() === '"') {
       yield this
       	.fork()
-        .pop();
+      	.pop();
     }
     if (token === END && this.hasEmptyStack()) {
       yield this
@@ -1060,47 +1001,8 @@ test(NestedQuotes, [
     `'""'` => true
     `"''"` => true
     `'"'"` => false
-    `"''"""` => false
+    `"''"""` => true
     `'"''''''''''''''''"'` => true
-```
-
-Indeed it does. And understanding the mechanism behind a pushdown automaton, we can simplify our recognizer. Here's a version that does even-length binary palindromes:
-
-```javascript
-class BinaryPalindrome extends PushdownAutomaton {
-  * start(token) {
-    if (token === '0') {
-      yield this
-      	.fork()
-        .push(token);
-    }
-    if (token === '1') {
-      yield this
-      	.fork()
-        .push(token);
-    }
-    if (token === '0' && this.top() === '0') {
-      yield this
-      	.fork()
-        .pop();
-    }
-    if (token === '1' && this.top() === '1') {
-      yield this
-      	.fork()
-      	.pop();
-    }
-    if (token === END && this.hasEmptyStack()) {
-      yield this
-      	.fork()
-        .recognize();
-    }
-  }
-}
-
-test(BinaryPalindrome, [
-  ``, `0`, `00`, `11`, `0110`,
-  `1001`, `0101`, `100111`,
-  `0100000000
 ```
 
 ---
