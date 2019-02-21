@@ -323,6 +323,10 @@ Contradiction! Therefore, our original assumption—that `B` exists—is false. 
 
 ---
 
+[![HUD Plaza](/assets/images/pushdown/hud.jpg)](https://www.flickr.com/photos/brownpau/29937123348)
+
+---
+
 ### deterministic pushdown automata
 
 We can, of course, write a recognizer for balanced parentheses in JavaScript, or a Turing Machine (don't worry, we won't write a Turing Machine today). But javaScript can do almost anything, write pattern matching engines, perform search-and-replace on strings...
