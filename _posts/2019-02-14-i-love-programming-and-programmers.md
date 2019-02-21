@@ -926,6 +926,10 @@ This logic is formulated as a generator that yields one or more outcomes. It can
 
 ---
 
+[![overhead brutalism](/assets/images/pushdown/overhead.jpg)](https://www.flickr.com/photos/juggernautco/3015994563)
+
+---
+
 ### an object-oriented deterministic pushdown automaton
 
 Let's begin by writing a recognizer for the "even-length binary palindrome" problem. We'll use the same general idea as our `NestedParentheses` language, but we'll make four changes:
