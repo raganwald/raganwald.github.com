@@ -530,6 +530,10 @@ Balanced parentheses with a finite number of pairs of parentheses is also a dete
 
 ---
 
+[![BNP Paribas Fortis, Brussels](/assets/images/pushdown/paribas.jpg)](https://www.flickr.com/photos/itmpa/33065919198)
+
+---
+
 ### recursive regular expressions
 
 We started this essay by mentioning regular expressions. We then showed that a *formal* regular expression cannot recognize balanced parentheses, in that formal regular expressions can only define regular languages.
@@ -589,6 +593,10 @@ These recursive regular expressions specify a deterministic context-free languag
 We know that recognizing these languages requires some form of state that is equivalent to a stack with one level of depth for every unclosed parenthesis. That is handled for us by the engine, but we can be sure that somewhere behind the scenes, it is consuming the equivalent amount of memory.
 
 So we know that recursive regular expressions appear to be at least as powerful as deterministic pushdown automata. But are they more powerful? Meaning, is there a language that a recursive regular expression can match, but a DPA cannot?
+
+---
+
+[![El CECUT, Centro Cultural Tijuana, la Bola.](/assets/images/pushdown/cecut.jpg)](https://www.flickr.com/photos/omaromar/28357989)
 
 ---
 
