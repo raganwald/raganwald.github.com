@@ -13,8 +13,8 @@ For example:
 
 |Input|Output|Comment|
 |:----|:-----|:------|
-|`'()'`|`true`||
 |`''`|`true`|the empty string is balanced|
+|`'()'`|`true`||
 |`'(())'`|`true`|parentheses can nest|
 |`'()()'`|`true`|multiple pairs are acceptable|
 |`'(()()())()'`|`true`|multiple pairs can nest|
@@ -24,20 +24,19 @@ For example:
 
 <br/>
 
-Before we reach for JavaScript or any other general-purpose tool, there is already a specific text pattern-matching tool available, and it's built right into most popular languages.
+This problem is amenable to all sorts of solutions, from the pedestrian to the fanciful. But it is also an entry point to exploring some of fundamental questions around computability.
 
-The tool is a regular expression (or "regex," plural "regexen" for historical reasons), which *informally* refers to both a syntax for expressing a pattern, and an engine for applying regular expressions to a string. For example, `/Reg(?:gie)?/` is a regex that matches two versions of a nickname.
+This problem is part of a class of problems that all have the same basic form:
 
-In formal computer science, a regular expression is a formal way to specific a pattern that matches valid strings in a formal [regular language]. In computer science, a "language" is some set of strings or sequences of tokens. Those strings that are in the set are considered members of the language.[^kleene]
+1. We have a language, by which we mean, we have a set of strings. Each string must be finite in length, although the set itself may have infnitely many members.
+2. We wish to construct a program that can "recognize" (sometimes called "accept") strings that are members of the language, while rejecting strings that are not.
+3. The "recognizer" is constrained to consume the symbols of each string one at a time.
 
-[^kleene]: Formal regular expressions were invented by [Stephen Kleene].
+Computer scientists study this problem by asking themselves, "Given a particular language, what is the simplest possible machine that can recognize that language?" We'll do the same thing.
 
-[regular language]: https://en.wikipedia.org/wiki/Regular_language
-[Stephen Kleene]: https://en.wikipedia.org/wiki/Stephen_Cole_Kleene
+Instead of asking ourselves, "What's the wildest, weirdest program for recognizing balanced parentheses," we'll ask, "What's the simplest possible computing machine that can recognize balanced parentheses?"
 
-In this essay we're going to look at some solutions to the "balanced parentheses problem," but instead of thinking about which solution is the most elegant, or uses the least memory from the perspective of a high-level programming language, we're going to explore some of the theory behind formal languages, and see what it tells us about writing a recognizer for balanced parentheses.
-
-We'll wrap it up with a critique of using this problem as an interview question.[^critique]
+That will lead us on an exploration of fundamental computing machines from deterministic finite automata to pushdown automata. We'll then wrap it up with a critique of using this problem as an interview question.[^critique]
 
 [^critique]: Because clickbait.
 
@@ -49,6 +48,8 @@ We'll wrap it up with a critique of using this problem as an interview question.
 
 ### formal languages and recognizers
 
+We'll start by defining a few terms.
+
 A "formal language" is a defined set of strings (or tokens in a really formal argument). For something to be a formal language, there must be an unambiguous way of determining whether a string is or is not a member of the language.
 
 "Balanced parentheses" is a formal language, there is an unambiguous specification for determining whether a string is or is not a member of the language. In computer science, strings containing balanced parentheses are called "Dyck Words," because they were first studied by [Walther von Dyck].
@@ -57,15 +58,20 @@ A "formal language" is a defined set of strings (or tokens in a really formal ar
 
 We mentioned "unambiguously specifying whether a string belongs to a language." A computer scientist's favourite tool for unambiguously specifying anything is a computing device or machine. And indeed, for something to be a formal language, there must be a machine that acts as its specification.
 
-We call these machines _recognizers_. A recognizer takes as its input a string, and returns as its output whether it recognizes the string or not. If it does, that string is a member of the language. Computer scientists studying formal languages also study the recognizers for those languages.
+As alluded to above, we call these machines _recognizers_. A recognizer takes as its input a seriesd of tokens making up a string, and returns as its output whether it recognizes the string or not. If it does, that string is a member of the language. Computer scientists studying formal languages also study the recognizers for those languages.
 
-There are infinitely many formal languages, but there is an important family of formal languages called **regular languages**.
+There are infinitely many formal languages, but there is an important family of formal languages called [regular languages][regular language].[^kleene]
+
+[^kleene]: Formal regular expressions were invented by [Stephen Kleene].
+
+[regular language]: https://en.wikipedia.org/wiki/Regular_language
+[Stephen Kleene]: https://en.wikipedia.org/wiki/Stephen_Cole_Kleene
 
 There are a couple of ways to define regular languages, but the one most pertinent to pattern matching is this: A regular language can be recognized by a Deterministic Finite Automaton, or "[DFA]." Meaning, we can construct a simple state machine to recognize whether a string is valid in the language, and that state machine will have a finite number of states.
 
 [DFA]: https://en.wikipedia.org/wiki/Deterministic_finite_automaton
 
-Our name-matching expression above can be implemented with this finite state machine:
+Consider the very simple language consisting of the strings `Reg` and `Reggie`. This language can be implemented with this finite state machine:
 
 <div class="mermaid">
   graph TD
@@ -84,6 +90,10 @@ Our name-matching expression above can be implemented with this finite state mac
 
 ---
 
+[![Concfrete Habour](/assets/images/pushdown/habour.jpg)](https://www.flickr.com/photos/djselbeck/30690354838)
+
+---
+
 ### implementing a dfa in javascript
 
 There are many ways to write DFAs in JavaScript. in [How I Learned to Stop Worrying and ❤️ the State Machine], we built JavaScript programs using the [state pattern], but they were far more complex than a deterministic finite automaton. For example, those state machines could store information in properties, and those state machines had methods that could be called.
@@ -91,13 +101,13 @@ There are many ways to write DFAs in JavaScript. in [How I Learned to Stop Worry
 [How I Learned to Stop Worrying and ❤️ the State Machine]: http://raganwald.com/2018/02/23/forde.html
 [state pattern]: https://en.wikipedia.org/wiki/State_pattern
 
-Those "state machines" are not "finite" state machines, because in principle they can have an infinite number of states. They have a finite number of defined states in the pattern, but their properties allow them to encode state in other ways, and thus they are not _finite_ state machines.
+Such "state machines" are not "finite" state machines, because in principle they can have an infinite number of states. They have a finite number of defined states in the pattern, but their properties allow them to encode state in other ways, and thus they are not _finite_ state machines.
 
-A Deterministic Finite Automaton is the simplest of all possible state machines: It can only store information in its explicit state, there are no other variables such as counters or stacks, and there aer no methods that can be called.
+A Deterministic Finite Automaton is the simplest of all possible state machines: It can only store information in its explicit state, there are no other variables such as counters or stacks.
 
 Since a DFA con only encode state by being in one of a finite number of states, and since a DFA has a finite number of possible states, we know that a DFA can only encode a finite amount of state.
 
-The only thing a DFA recognizer does is respond to tokens as it scans a string, and the only way to query it is to look at what state it is in, or detect whether it halted (which is computationally equivalent to being in a halted state).
+The only thing a DFA recognizer does is respond to tokens as it scans a string, and the only way to query it is to look at what state it is in, or detect whether it has halted.
 
 Here's a pattern for implementing the "name" recognizer DFA in JavaScript:
 
@@ -170,18 +180,19 @@ On to infinite regular languages!
 
 If there are a finite number of finite strings in a language, there must be a DFA that recognizes that language.
 
-But what if there are an _infinite_ number of valid strings in the language?[^exercise]
+But what if there are an _infinite_ number of finite strings in the language?[^exercise]
 
 [^exercise]: To demonstrate that "If there are a finite number of strings in a language, there must be a finite state machine that recognizes that language," take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
 
-For some languages that have an infinite number of strings, we can still construct a finite state machine to recognize them. We've been talking about strings with balanced parentheses. What about a language where any number of parentheses—including zero—is acceptable?
-
-The finite state machine for this "parentheses" language is very compact:
+For some languages that have an infinite number of strings, we can still construct a finite state machine to recognize them. For exampple, here is a finite state machine that recognizes binary numbers:
 
 <div class="mermaid">
   graph TD
-    start(start)-->|"'(' or ')'"|start
-    start-.->|"(end)"|recognized(recognized);
+    start(start)-->|0|zero
+    zero--.>|end|recognized(recognized)
+    start-->|1|one(1+)
+    one-->|0 or 1|one
+    one-.->|end|recognized;
 </div>
 
 And we can also write this state machine it in JavaScript:
@@ -216,7 +227,9 @@ test(parentheses, [
     '((())(())' => true
 ```
 
-Our recognizer is very compact, yet it recognizes an infinite number of strings. And in theory, at least, it recognizes strings that are infinitely long. And since the recognizer has a fixed and finite size, our "parentheses" language is a regular language.
+Our recognizer is very compact, yet it recognizes an infinite number of finite strings, including those that are improbably long. And since the recognizer has a fixed and finite size, it follows that our "parentheses" language is a regular language.
+
+Of course, "parentheses" is not a particularly useful language
 
 Now that we have some examples of regular languages. We see that they can be recognized with finite state automata, and we also see that it is possible for regular languages to have an infinite number of strings, some of which are infinitely long. This does not, in principle, bar us from creating finite state machines to recognize them.
 
