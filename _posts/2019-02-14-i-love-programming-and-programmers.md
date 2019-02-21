@@ -719,9 +719,9 @@ But now let's modify our program to help with documentation, rather than math. L
 
 ### non-deterministic context-free languages
 
-Instead of matching open and closed parentheses, we'll match quotes. Now just like open and closing parentheses, quotes have open and closing forms: 'single quotes' and "double quotes."
+Instead of matching open and closed parentheses, we'll match quotes. Now just like open and closing parentheses, quotes have open and closing forms: 'single quotes' and "double quotes."[^quotes]
 
-But for this pattern, we are not interested in properly typeset quotation marks, we mean the single and double quotes that don't have a special form for opening and closing, the kind you find in programming languages that were designed to by reproducible by telegraph equipment: `'` and `"`.
+[^quotes]: For this pattern, we are not interested in properly typeset quotation marks, we mean the single and double quotes that don't have a special form for opening and closing, the kind you find in programming languages that were designed to by reproducible by telegraph equipment: `'` and `"`. If we could use the proper "quotes," then our language would be a Dyck Language, equuivalent to balanced parentheses.
 
 Our first crack is to just replace opening and closing parentheses with quotes. We'll only need two cases, not three:
 
@@ -822,7 +822,11 @@ test quotes, [
 
 The recursive regular expression does work! Now, we may think that perhaps we went about writing our deterministic pushed automaton incorrectly, and there is a way to make it work, but no. It will never work on this particular problem.
 
-This particular language--single and double nested symmetrical quotes--is a very simple example of the "palindrome" problem. We cannot use a deterministic pushdown automaton to write a recognizer for palindromes that have at least two different kinds of tokens.
+This particular language--nested single and double quotes quotes--is a very simple example of the "palindrome" problem. We cannot use a deterministic pushdown automaton to write a recognizer for palindromes that have at least two different kinds of tokens.
+
+---
+
+[![Night View of The Geisel Library, University of California San Diego](/assets/images/pushdown/geisel.jpg)](https://www.flickr.com/photos/opalsson/15163041049)
 
 ---
 
@@ -861,6 +865,10 @@ But that breaks any time the shorter palindrome is the right thing to recognize.
 Now matter how we organize `P`, we can always construct a string large enough that `P` must discard information to correctly recognize one possible string, but not discard information in order to correctly recognize another possible string.
 
 Since `P` is deterministic, meaning it always does exactly one thing in response to any token given a particular state, `P` cannot both discard and not discaard information, therefore `P` cannot recognize languages composed of palindromes. And therefore no DPA can recognize languages composed of palindromes.
+
+---
+
+[![gottfried böhm, architect: maria königin des friedens pilgrimage church, neviges, germany 1963-1972](/assets/images/pushdown/neviges.jpg)](https://www.flickr.com/photos/seier/3165564453)
 
 ---
 
