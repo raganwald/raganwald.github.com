@@ -42,7 +42,7 @@ That will lead us on an exploration of fundamental computing machines from deter
 
 ---
 
-[![Hurley Building, Boston, MA](/assets/images/pushdown/countours.jpg)](https://www.flickr.com/photos/pburka/27459401981)
+[![Hurley Building, Boston, MA](/assets/images/pushdown/contours.jpg)](https://www.flickr.com/photos/pburka/27459401981)
 
 ### table of contents
 
