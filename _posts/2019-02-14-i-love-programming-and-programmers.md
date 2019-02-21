@@ -188,9 +188,9 @@ On to infinite regular languages!
 
 ### infinite regular languages
 
-If there are a finite number of finite strings in a language, there must be a DFA that recognizes that language.
+If there are a finite number of finite strings in a language, there must be a DFA that recognizes that language.[^exercise]
 
-But what if there are an _infinite_ number of finite strings in the language?[^exercise]
+But what if there are an _infinite_ number of finite strings in the language?
 
 [^exercise]: To demonstrate that "If there are a finite number of strings in a language, there must be a finite state machine that recognizes that language," take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
 
@@ -234,29 +234,36 @@ const oneOrMore = token => {
 
 const binary = DFA(start);
 
-test(binary, [
-  '', '()', '(){}', '(',
-	'([()()]())', '([()())())',
-	'())()', '((())(())'
+testDFA(binary, [
+  '', '0', '1', '00', '01', '10', '11',
+  '000', '001', '010', '011', '100',
+  '101', '110', '111',
+  '10100011011000001010011100101110111'
 ]);
   //=>
-    '' => true
-    '()' => true
-    '(){}' => false
-    '(' => true
-    '([()()]())' => false
-    '([()())())' => false
-    '())()' => true
-    '((())(())' => true
+    '' => false
+    '0' => true
+    '1' => true
+    '00' => false
+    '01' => false
+    '10' => true
+    '11' => true
+    '000' => false
+    '001' => false
+    '010' => false
+    '011' => false
+    '100' => true
+    '101' => true
+    '110' => true
+    '111' => true
+    '10100011011000001010011100101110111' => true
 ```
 
-Our recognizer is very compact, yet it recognizes an infinite number of finite strings, including those that are improbably long. And since the recognizer has a fixed and finite size, it follows that our "parentheses" language is a regular language.
+Our recognizer is finite, yet it recognizes an infinite number of finite strings, including those that are improbably long. And since the recognizer has a fixed and finite size, it follows that "binary numbers" is a regular language.
 
-Of course, "parentheses" is not a particularly useful language
+Now that we have some examples of regular languages. We see that they can be recognized with finite state automata, and we also see that it is possible for regular languages to have an infinite number of strings, some of which are arbitrarily long (but still finite). This does not, in principle, bar us from creating finite state machines to recognize them.
 
-Now that we have some examples of regular languages. We see that they can be recognized with finite state automata, and we also see that it is possible for regular languages to have an infinite number of strings, some of which are infinitely long. This does not, in principle, bar us from creating finite state machines to recognize them.
-
-We can now think a little harder about the balanced parentheses problem. If "balanced parentheses" is a regular language, we could write a state machine to recognize it, or we could also write a regular expression to recognize it.
+We can now think a little harder about the balanced parentheses problem. If "balanced parentheses" is a regular language, it must be possible to write a finite state machine to recognize a string with balanced parentheses. But if it is not possible to write a finite state machine to recognize balanced parentheses, then balanced parentheses must be a kind of language that is more complex than a regular language, and must require a more powerful machine for recognizing its strings.
 
 ---
 
