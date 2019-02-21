@@ -267,6 +267,10 @@ We can now think a little harder about the balanced parentheses problem. If "bal
 
 ---
 
+[![Orșova - biserica catolică "Neprihănita Zămislire"](/assets/images/pushdown/church.jpg)](https://www.flickr.com/photos/fusion_of_horizons/15562816916)
+
+---
+
 ### nested parentheses
 
 Of all the strings that contain zero or more parentheses, there is a set that contains zero or more opening parentheses followed by zero or more closed parentheses, _and where the number of opening parentheses exactly equals the number of closed parentheses_.
