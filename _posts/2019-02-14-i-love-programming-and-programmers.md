@@ -3,7 +3,7 @@ title: "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown 
 tags: [recursion,allonge,mermaid,noindex]
 ---
 
-As we discussed in both [Pattern Matching and Recursion], a popular programming "problem" is to determine whether a string of parentheses is "balanced:"
+As we discussed in both [Pattern Matching and Recursion], a well-known programming "problem" is to determine whether a string of parentheses is "balanced:"
 
 [Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
 
@@ -710,6 +710,10 @@ test nested, [
 So far, so good. Of course they both work, nested parentheses is a subset of balanced parentheses, so we know that it's a deterministic context-free language.
 
 But now let's modify our program to help with documentation, rather than math. Let's make it work with quotes.
+
+---
+
+[![Rezola cement factory, San Sebastian, Spain](/assets/images/pushdown/cement.jpg)](https://www.flickr.com/photos/23148289@N05/31697666668)
 
 ---
 
