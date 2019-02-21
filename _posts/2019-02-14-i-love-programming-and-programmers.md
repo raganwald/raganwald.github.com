@@ -96,7 +96,7 @@ Consider the very simple language consisting of the strings `Reg` and `Reggie`. 
 
 ### implementing a dfa in javascript
 
-There are many ways to write DFAs in JavaScript. in [How I Learned to Stop Worrying and ❤️ the State Machine], we built JavaScript programs using the [state pattern], but they were far more complex than a deterministic finite automaton. For example, those state machines could store information in properties, and those state machines had methods that could be called.
+There are many ways to write DFAs in JavaScript. In [How I Learned to Stop Worrying and ❤️ the State Machine], we built JavaScript programs using the [state pattern], but they were far more complex than a deterministic finite automaton. For example, those state machines could store information in properties, and those state machines had methods that could be called.
 
 [How I Learned to Stop Worrying and ❤️ the State Machine]: http://raganwald.com/2018/02/23/forde.html
 [state pattern]: https://en.wikipedia.org/wiki/State_pattern
@@ -189,8 +189,8 @@ For some languages that have an infinite number of strings, we can still constru
 <div class="mermaid">
   graph TD
     start(start)-->|0|zero
-    zero--.>|end|recognized(recognized)
-    start-->|1|one(1+)
+    zero-.->|end|recognized(recognized)
+    start-->|1|one(one or more)
     one-->|0 or 1|one
     one-.->|end|recognized;
 </div>
