@@ -90,7 +90,7 @@ Consider the very simple language consisting of the strings `Reg` and `Reggie`. 
 
 ---
 
-[![Concfrete Habour](/assets/images/pushdown/habour.jpg)](https://www.flickr.com/photos/djselbeck/30690354838)
+[![Brutalism](/assets/images/pushdown/brutalism.jpg)](https://www.flickr.com/photos/nagarjun/44124773002)
 
 ---
 
@@ -136,6 +136,12 @@ function DFA (start) {
   }
 }
 
+function testDFA (recognizer, examples) {
+  for (const example of examples) {
+    console.log(`'${example}' => ${recognizer(example)}`);
+  }
+}
+
 // state definitions
 const start = token => token === 'R' ? R : UNRECOGNIZED;
 const R = token => token === 'e' ? Re : UNRECOGNIZED;
@@ -155,7 +161,7 @@ const Reggie = token => token === END ? RECOGNIZED : UNRECOGNIZED;
 // define our recognizer
 const reginald = DFA(start);
 
-test(reginald, [
+testDFA(reginald, [
   '', 'Scott', 'Reg', 'Reginald', 'Reggie'
 ]);
   //=>
@@ -176,6 +182,10 @@ On to infinite regular languages!
 
 ---
 
+[![Concrete Habour](/assets/images/pushdown/habour.jpg)](https://www.flickr.com/photos/djselbeck/30690354838)
+
+---
+
 ### infinite regular languages
 
 If there are a finite number of finite strings in a language, there must be a DFA that recognizes that language.
@@ -184,7 +194,7 @@ But what if there are an _infinite_ number of finite strings in the language?[^e
 
 [^exercise]: To demonstrate that "If there are a finite number of strings in a language, there must be a finite state machine that recognizes that language," take any syntax for defining a finite state machine, such as a table. With a little thought, one can imagine an algorithm that takes as its input a finite list of acceptable strings, and generates the appropriate table.
 
-For some languages that have an infinite number of strings, we can still construct a finite state machine to recognize them. For exampple, here is a finite state machine that recognizes binary numbers:
+For some languages that have an infinite number of strings, we can still construct a finite state machine to recognize them. For example, here is a finite state machine that recognizes binary numbers:
 
 <div class="mermaid">
   graph TD
@@ -199,19 +209,32 @@ And we can also write this state machine it in JavaScript:
 
 ```javascript
 const start = token => {
-  switch(token) {
-    case END:
-      return RECOGNIZED;
-    case '(':
-      return start;
-    case ')':
-      return start;
+  if (token === '0') {
+    return zero;
+  } else if (token === '1') {
+    return oneOrMore;
   }
-}
+};
 
-const parentheses = DFA(start);
+const zero = token => {
+  if (token === END) {
+    return RECOGNIZED;
+  }
+};
 
-test(parentheses, [
+const oneOrMore = token => {
+  if (token === '0') {
+    return oneOrMore;
+  } else if (token === '1') {
+    return oneOrMore;
+  } else if (token === END) {
+    return RECOGNIZED;
+  }
+};
+
+const binary = DFA(start);
+
+test(binary, [
   '', '()', '(){}', '(',
 	'([()()]())', '([()())())',
 	'())()', '((())(())'
