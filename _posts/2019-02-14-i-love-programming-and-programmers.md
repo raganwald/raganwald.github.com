@@ -1,5 +1,5 @@
 ---
-title: "Going Under the Hood with Balanced Parentheses"
+title: "From Balanced Parentheses to Computing with Pushdown Automata"
 tags: [recursion,allonge,mermaid,noindex]
 ---
 
@@ -40,6 +40,10 @@ In this essay we're going to look at some solutions to the "balanced parentheses
 We'll wrap it up with a critique of using this problem as an interview question.[^critique]
 
 [^critique]: Because clickbait.
+
+---
+
+[![Berkeley Art Museum](/assets/images/pushdown/art.jpg)](https://www.flickr.com/photos/threepwolfe/43985968644)
 
 ---
 
