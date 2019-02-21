@@ -105,7 +105,7 @@ Such "state machines" are not "finite" state machines, because in principle they
 
 A Deterministic Finite Automaton is the simplest of all possible state machines: It can only store information in its explicit state, there are no other variables such as counters or stacks.
 
-Since a DFA con only encode state by being in one of a finite number of states, and since a DFA has a finite number of possible states, we know that a DFA can only encode a finite amount of state.
+Since a DFA can only encode state by being in one of a finite number of states, and since a DFA has a finite number of possible states, we know that a DFA can only encode a finite amount of state.
 
 The only thing a DFA recognizer does is respond to tokens as it scans a string, and the only way to query it is to look at what state it is in, or detect whether it has halted.
 
@@ -263,7 +263,9 @@ Our recognizer is finite, yet it recognizes an infinite number of finite strings
 
 Now that we have some examples of regular languages. We see that they can be recognized with finite state automata, and we also see that it is possible for regular languages to have an infinite number of strings, some of which are arbitrarily long (but still finite). This does not, in principle, bar us from creating finite state machines to recognize them.
 
-We can now think a little harder about the balanced parentheses problem. If "balanced parentheses" is a regular language, it must be possible to write a finite state machine to recognize a string with balanced parentheses. But if it is not possible to write a finite state machine to recognize balanced parentheses, then balanced parentheses must be a kind of language that is more complex than a regular language, and must require a more powerful machine for recognizing its strings.
+We can now think a little harder about the balanced parentheses problem. If "balanced parentheses" is a regular language, it must be possible to write a finite state machine to recognize a string with balanced parentheses.
+
+But if it is *not* possible to write a finite state machine to recognize balanced parentheses, then balanced parentheses must be a kind of language that is more complex than a regular language, and must require a more powerful machine for recognizing its strings.
 
 ---
 
@@ -279,9 +281,9 @@ The strings that happen to contain exactly the same number of opening parenthese
 
 We call these strings "nested parentheses," and it is related to balanced parentheses: _All nested parentheses strings are also balanced parentheses strings._ Our approach to determining whether balanced parentheses is a regular language will use nested parentheses.
 
-First, we will assume that there exists a finite state machine that can recognized balanced parentheses. Since nested parentheses are balanced parentheses, our machine must recognize nested parentheses. Next, we will use nested parentheses strings to show that by presuming that such a machine has a finite number of states leads to a logical contradiction.
+First, we will assume that there exists a finite state machine that can recognized balanced parentheses. Let's call this machine `B`. Since nested parentheses are also balanced parentheses, `B` must recognize nested parentheses. Next, we will use nested parentheses strings to show that by presuming that `B` has a finite number of states, we create a logical contradiction.
 
-This will establish that our assumption that there is a finite state machine that recognizes balanced parentheses is faulty, which in turn establishes that balanced parentheses is not a regular language.[^reductio]
+This will establish that our assumption that there is a finite state machine—'B'—that recognizes balanced parentheses is faulty, which in turn establishes that balanced parentheses is not a regular language.[^reductio]
 
 [^reductio]: This type of proof is known as "Reductio Ad Absurdum," and it is a favourite of logicians, because _quidquid Latine dictum sit altum videtur_.
 
@@ -289,11 +291,15 @@ Okay, we are ready to prove that a finite state machine cannot recognize nested 
 
 ---
 
+[![Mäusenbunker — Exploring Architectural Brutalism in #Berlin Lichterfelde](/assets/images/pushdown/bunker.jpg)](https://www.flickr.com/photos/gastaum/35146038250)
+
+---
+
 ### balanced parentheses is not a regular language
 
-Let's start with the assumption that there is a finite state machine that can recognize balanced parentheses, we'll call this machine **B**. We don't know how many states B has, it might be a very large number, but we know that there are a finite number of these states.
+Back to the assumption that there is a finite state machine that can recognize balanced parentheses, `B`. We don't know how many states `B` has, it might be a very large number, but we know that there are a finite number of these states.
 
-Now let's consider the set of all strings that begin with one or more open parentheses: `(`, `((`, `(((`, and so forth. Our state machine will always begin in the *start* state, and for each one of these strings, when B scans them, it will always end in some state.
+Now let's consider the set of all strings that begin with one or more open parentheses: `(`, `((`, `(((`, and so forth. Our state machine will always begin in the *start* state, and for each one of these strings, when `B` scans them, it will always end in some state.
 
 There are an infinite number of such strings of open parentheses, but there are only a finite number of states in B, so it follows that there are at least two different strings that when scanned, end up in the same state. Let's call those strings **p** and **q**..
 
@@ -309,7 +315,7 @@ Now we run `B` on string `pp'`, pausing after it has read the characters in `p`.
 
 Since `B` recognizes strings in the balanced parentheses language, and `pp'` is a string in the balanced parentheses language, we know that `state(B, start, pp')` is _recognized_. And since `state(B, start, pp')` equals `state(B, state(B, start, p), p')`, we are also saying that `state(B, state(B, start, p), p')` is *recognized*.
 
-What about running `B` on string `qp'`? Let's pause after it reads the characters in `q`. At that point, it will be in `state(B, start, q)`. It then reads the string `p'`, placing it in `state(B, state(B, start, q), p')`. Since B recognizes strings in the balanced parentheses language, and `qp'` is not a string in the balanced parentheses language, we know that `state(B, start, pq')` must **not** equal _recognized_, and that state `state(B, state(B, start, q), p')` must not equal recognized.
+What about running `B` on string `qp'`? Let's pause after it reads the characters in `q`. At that point, it will be in `state(B, start, q)`. It then reads the string `p'`, placing it in `state(B, state(B, start, q), p')`. Since `B` recognizes strings in the balanced parentheses language, and `qp'` is not a string in the balanced parentheses language, we know that `state(B, start, pq')` must **not** equal _recognized_, and that state `state(B, state(B, start, q), p')` must not equal recognized.
 
 But `state(B, start, p)` is the same state as `state(B, start, q)`! And by the rules of determinism, then `state(B, state(B, start, p), p')` must be the same as `state(B, state(B, start, q), p')`. But we have established that `state(B, state(B, start, p), p')` must be _recognized_ and that `state(B, state(B, start, p), p')` must **not** be recognized.
 
