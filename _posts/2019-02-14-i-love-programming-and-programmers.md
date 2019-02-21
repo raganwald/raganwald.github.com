@@ -484,7 +484,7 @@ test(BalancedParentheses, [
     '((())(())' => false
 ```
 
-**Balanced parentheses is a deterministic context-free language**.
+Aha! _Balanced parentheses is a deterministic context-free language._
 
 Our recognizer is so simple, we can give in to temptation and enhance it to recognize multiple types of parentheses:
 
@@ -1090,47 +1090,31 @@ And that shows us that pushdown automata are more powerful than deterministic pu
 
 ---
 
-### what can we learn from the theory behind recognizing balanced parentheses?
-
-Let's review what we've just done:
-
-1. We worked our way up from the theory behind regular languages to proving that balanced parentheses could not be a regular language.
-2. Given that balanced parentheses is not a regular language, we knew that we would have to represent a state for each unclosed parenthesis. This provided a hint that we would need some kind of linear state, such as a counter, stack, or list.
-3. We implemented a couple of recognizers that had explicit state.
-4. We also implemented a recognizer that used the call stack to use implicit state.
-5. Finally, we returned to our recursive pattern from [Pattern Matching and Recursion], and also looked at a "recursive regular expression" implemented in Ruby. Both of these had implicit state as well.
-
-The small takeaway is that one of the uses for recursion is to make state implicit, rather than explicit. That can aid clarity in some cases, but hide it in others. The implementations using patterns and regular expressions aid clarity, because the shape of the pattern is isomorphic to the shape of the strings being matched.
-
-The implicit state solution using iterators is compact and does not rely on external libraries or engines. On the other hand, it is not nearly as elegant.
-
-> "Starting from the most abstract principles is a good way to relearn something, but a bad way to learn something."
->
-> --Paul Graham
-
-But these are small learnings. There's a bigger one here that is tangental to the actual computer science. This problem is often given as a test during job interviews. Is it a good test?
-
----
-
 ### is balanced parentheses a good interview question?
 
-We went from first principles to code in this essay. That is unrealistic for any normal human under the time pressure of an interview. Universities don't even ask you to do this in exams. Instead, they give problems like this as homework exercises, and then after you have worked them out for yourself, a test is given to see if you figured out the answers.
+Let's return to the top of the essay. We began by saying that implementing a recognizer for "balanced parentheses" is a popular programming problem. It is often posed as an interview question.
+
+That suggests the question: Is balanced parenetheses a *good* interview question?[^begs]
+
+[^begs]: It **suggests** the question. "Begging" the question is to suggest the answer.
+
+Looking back at our essay, we used foundational computer science to come up with recognizers for balanced parentheses (and a few other formal languages, like binary palindromes). Knowing those principles, we could construct implementations of machines like pushdown automata.
+
+And if we wanted to use all the power of JavaScript, we could use our knowledge of languages and recognizers to know, for example, that any code recognizing balanced parentheses would need some kind of infinite storage, be it a counter or stack. Is it reasonable to know this?
+
+If you've taken a relevant computer science course in the last year, yes, it is more than reasonable to know these things, and an interview arond writing a recognizer would focus on the implementation and thradeoffs.
+
+But what if someone hasn't seen this stuff in a decade? Or learned to program without going through a formal CS education? Is it reasonable to expect them to work out the ideas in an interview?
+
+It seems unrealistic for any normal human under the time pressure of an interview. Universities don't even ask you to do this in exams. Instead, they give problems like this as homework exercises, and then after you have worked them out for yourself, a test is given to see if you figured out the answers.
 
 If you haven't been exposed to the underlying math recently, coming up with a solution to balanced parentheses is going to be extremely difficult. It reminds one of Nabakov's line, "Genius is an African who dreams up snow."
-
-In most actual cases, what happens is that either a programmer is already familiar with  the general principles and shape of the problem and its solution, or they are going to have a hard time with the problem.
-
-Some programmers are very familiar with the problem. For example, if this problem is posed to computer science students who are seeking employment on work-terms, if the material is covered in their curriculum, they will know the basic idea, and they will spend most of their time writing the code to implement an idea they already understand.
-
-For certain schools, this is fine, and the problem could be useful for such students.
 
 > "Genius is an African who dreams up snow."
 >
 > --Nabakov
 
-But for other schools that have a different emphasis, or for working programmers who may have done a lot of good work but haven't had need to review the specifics of DFAs, context-free languages, and so forth recently...
-
-This problem is asking them to reinvent the basic research of people like Kleene and von Dyck, extemporaneously. And then write code under the interviewer's watching eye. That is unlikely to show these candidates in their best light, and the results become very uneven.
+Asking someone who hasn't been recently exposed to computing theory to write a balanced parentheses recognizer is asking them to reinvent the basic research of people like Kleene and von Dyck, extemporaneously. And then write code under the interviewer's watching eye. That is unlikely to show these candidates in their best light, and the results become very uneven.
 
 Outside of a special-case like certain CS students, this question is likely to give very inconsistent results, and those results are going to be dominated by a candidate's recent familiarity with the underlying problem, rather than their coding skills.
 
