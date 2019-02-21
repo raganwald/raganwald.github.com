@@ -1,5 +1,5 @@
 ---
-title: "From Balanced Parentheses to Computing with Pushdown Automata"
+title: "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
 tags: [recursion,allonge,mermaid,noindex]
 ---
 
@@ -329,24 +329,20 @@ Contradiction! Therefore, our original assumption—that `B` exists—is false. 
 
 ### deterministic pushdown automata
 
-We can, of course, write a recognizer for balanced parentheses in JavaScript, or a Turing Machine (don't worry, we won't write a Turing Machine today). But javaScript can do almost anything, write pattern matching engines, perform search-and-replace on strings...
+We now know that "balanced parentheses" cannot be recognized with one of the simplest possible computing machines, a finite state automaton. This leads us to ask, "What is the simplest form of machine that can recognize balanced parentheses?" Computer scientists have studied this and related problems, and there are a few ideal machines that are more powerful than a DFA, but less powerful than a Turing Machine.
 
-It is interesting to stay small, and ask ourselves, "What is the simplest form of machine that can recognize balanced parentheses?"
-
-Luckily, we don't have to work this out from first principles. Computer scientists have studied this and related problems, and there are a few ideal machines that are more powerful than a DFA, but less powerful than a Turing Machine.
-
-All of them have some mechanism for encoding an infinite number of states by adding some form of "external state" to the machine's existing "internal state."[^inf] This is very much like a program in a von Neumann machine. Leaving out self-modifying code, the position of the program counter is a program's internal state, while memory that it reads and writes is its external state.
+All of them have some mechanism for encoding an infinite number of states by adding some form of "external state" to the machine's existing "internal state."This is very much like a program in a von Neumann machine. Leaving out self-modifying code, the position of the program counter is a program's internal state, while memory that it reads and writes is its external state.[^inf]
 
 [^inf]: No matter how a machine is organized, if it has a finite number of states, it cannot recognized balanced parenthese by our proof above. Fr example, if we modify our DFA to allow an on/off flag for each state, and we have a finite number of states, our machine is not more powerful than a standard DFA, it is just more compact: Its definition is `log2` the size of a standard DFA, but it still has a finite number of possible different states.
 
-The simplest machine that adds external state, which we might think of as being one step more powerful than a DFA, is a [Deterministic Pushdown Automaton][pa], or "DPA." A DPA is very much like our Deterministic Finite Automa, but it adds a potentially infinite stack as its external state.
+The simplest machine that adds external state, which we might think of as being one step more powerful than a DFA, is called a [Deterministic Pushdown Automaton][pa], or "DPA." A DPA is very much like our Deterministic Finite Automaton, but it adds an expandable stack as its external state.
 
 [pa]: https://en.wikipedia.org/wiki/Pushdown_automaton
 
 There are several classes of Pushdown Automata, depending upon what they are allowed to do with the stack. A Deterministic Pushdown Automaton has the simplest and least powerful capability:
 
-1. When deciding what to do, while a DFA matches only the current token, a DPA matches the current token, the value of the top of the stack, or both.
-2. The only thing a DFA can do as a result of examining the current token is halt or select the next state. A DPA can halt or choose the next state, and it can also push a symbol onto the top of the stack, pop the current symbol off the top of the stack, or replace the top symbol on the stack.
+1. When a DPA matches the current token, the value of the top of the stack, or both.
+2. A DPA can halt or choose the next state, and it can also push a symbol onto the top of the stack, pop the current symbol off the top of the stack, or replace the top symbol on the stack.
 
 If a deterministic pushdown automata can recognize a language, the language is known as a [deterministic context-free language]. Is "balanced parentheses" a deterministic context-free language?
 
@@ -361,6 +357,10 @@ A DPA still has a finite number of internal states, but because of its external 
 This is not true of a DPA. A DPA can push tokens onto the stack, pop tokens off the stack, and make decisions based on the top token on the stack. As a result, we cannot determine the destiny of a DPA based on its internal state and sequence of tokens alone, we have to include the state of the stack.
 
 Therefore, our proof that a DFA with finite number of internal states cannot recognize balanced parentheses does not apply to DPAs. If we can write a DPA to recognize balanced parentheses, then "balanced parentheses" is a deterministic context-free language.
+
+---
+
+[![Croydon Brutalism](/assets/images/pushdown/croydon.jpg)](https://www.flickr.com/photos/jontyfairless/40874170151)
 
 ---
 
