@@ -28,7 +28,7 @@ This problem is amenable to all sorts of solutions, from the pedestrian to the f
 
 This problem is part of a class of problems that all have the same basic form:
 
-1. We have a language, by which we mean, we have a set of strings. Each string must be finite in length, although the set itself may have infnitely many members.
+1. We have a language, by which we mean, we have a set of strings. Each string must be finite in length, although the set itself may have infinitely many members.
 2. We wish to construct a program that can "recognize" (sometimes called "accept") strings that are members of the language, while rejecting strings that are not.
 3. The "recognizer" is constrained to consume the symbols of each string one at a time.
 
@@ -58,7 +58,7 @@ A "formal language" is a defined set of strings (or tokens in a really formal ar
 
 We mentioned "unambiguously specifying whether a string belongs to a language." A computer scientist's favourite tool for unambiguously specifying anything is a computing device or machine. And indeed, for something to be a formal language, there must be a machine that acts as its specification.
 
-As alluded to above, we call these machines _recognizers_. A recognizer takes as its input a seriesd of tokens making up a string, and returns as its output whether it recognizes the string or not. If it does, that string is a member of the language. Computer scientists studying formal languages also study the recognizers for those languages.
+As alluded to above, we call these machines _recognizers_. A recognizer takes as its input a series of tokens making up a string, and returns as its output whether it recognizes the string or not. If it does, that string is a member of the language. Computer scientists studying formal languages also study the recognizers for those languages.
 
 There are infinitely many formal languages, but there is an important family of formal languages called [regular languages][regular language].[^kleene]
 
@@ -729,7 +729,7 @@ But now let's modify our program to help with documentation, rather than math. L
 
 Instead of matching open and closed parentheses, we'll match quotes. Now just like open and closing parentheses, quotes have open and closing forms: 'single quotes' and "double quotes."[^quotes]
 
-[^quotes]: For this pattern, we are not interested in properly typeset quotation marks, we mean the single and double quotes that don't have a special form for opening and closing, the kind you find in programming languages that were designed to by reproducible by telegraph equipment: `'` and `"`. If we could use the proper "quotes," then our language would be a Dyck Language, equuivalent to balanced parentheses.
+[^quotes]: For this pattern, we are not interested in properly typeset quotation marks, we mean the single and double quotes that don't have a special form for opening and closing, the kind you find in programming languages that were designed to by reproducible by telegraph equipment: `'` and `"`. If we could use the proper "quotes," then our language would be a Dyck Language, equivalent to balanced parentheses.
 
 Our first crack is to just replace opening and closing parentheses with quotes. We'll only need two cases, not three:
 
@@ -1094,7 +1094,7 @@ And that shows us that pushdown automata are more powerful than deterministic pu
 
 Let's return to the top of the essay. We began by saying that implementing a recognizer for "balanced parentheses" is a popular programming problem. It is often posed as an interview question.
 
-That suggests the question: Is balanced parenetheses a *good* interview question?[^begs]
+That suggests the question: Is balanced parentheses a *good* interview question?[^begs]
 
 [^begs]: It **suggests** the question. "Begging" the question is to suggest the answer.
 
@@ -1102,7 +1102,7 @@ Looking back at our essay, we used foundational computer science to come up with
 
 And if we wanted to use all the power of JavaScript, we could use our knowledge of languages and recognizers to know, for example, that any code recognizing balanced parentheses would need some kind of infinite storage, be it a counter or stack. Is it reasonable to know this?
 
-If you've taken a relevant computer science course in the last year, yes, it is more than reasonable to know these things, and an interview arond writing a recognizer would focus on the implementation and thradeoffs.
+If you've taken a relevant computer science course in the last year, yes, it is more than reasonable to know these things, and an interview around writing a recognizer would focus on the implementation and tradeoffs.
 
 But what if someone hasn't seen this stuff in a decade? Or learned to program without going through a formal CS education? Is it reasonable to expect them to work out the ideas in an interview?
 
