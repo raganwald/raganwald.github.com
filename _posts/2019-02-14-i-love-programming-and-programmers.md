@@ -1,6 +1,6 @@
 ---
 title: "Going Under the Hood with Balanced Parentheses"
-tags: [recursion,allonge,mermaid, noindex]
+tags: [recursion,allonge,mermaid,noindex]
 ---
 
 As we discussed in both [Pattern Matching and Recursion], a popular programming "problem" is to determine whether a string of parentheses is "balanced:"
@@ -313,7 +313,7 @@ const END = Symbol('end');
 class DPA {
   constructor(internal = 'start', external = []) {
     this.internal = internal;
-    this.external = external.slice(0);
+    this.external = external;
     this.halted = false;
     this.recognized = false;
   }
@@ -359,25 +359,31 @@ class DPA {
   consume(token) {
     return this[this.internal](token);
   }
+
+  static evaluate (string) {
+    let state = new this();
+
+    for (const token of string) {
+      const newState = state.consume(token);
+
+      if (newState === undefined || newState.halted) {
+        return false;
+      } else if (newState.recognized) {
+        return true;
+      } else {
+        state = newState;
+      }
+    }
+
+    const finalState = state.consume(END);
+    return !!(finalState && finalState.recognized);
+  }
 }
 
-function evaluate (clazz, string) {
-  let state = new clazz();
-
-  for (const token of string) {
-    const newState = state.consume(token);
-
-    if (newState === undefined || newState.halted) {
-      return false;
-    } else if (newState.recognized) {
-      return true;
-    } else {
-      state = newState;
-    }
+function test (recognizer, examples) {
+  for (const example of examples) {
+    console.log(`'${example}' => ${recognizer.evaluate(example)}`);
   }
-
-  const finalState = state.consume(END);
-  return !!(finalState && finalState.recognized);
 }
 ```
 
@@ -661,55 +667,50 @@ Our first crack is to just replace opening and closing parentheses with quotes. 
 Here's our DPA:
 
 ```javascript
-const start = (token, { push, pop, top }) => {
-  if (token === "'") {
-    push(token);
-    return opening;
-  } else if (token === '"') {
-    push(token);
-    return opening;
+class NestedQuotes extends DPA {
+  start(token) {
+    switch(token) {
+      case END:
+        return this.recognize();
+      case '\'':
+        return this
+          .push(token)
+          .transitionTo('opening');
+      case '"':
+        return this
+          .push(token)
+          .transitionTo('opening');
+    }
   }
 
-  if (token === END) {
-    return RECOGNIZED;
-  }
-};
-
-const opening = (token, { push, pop, top }) => {
-  if (token === "'") {
-    push(token);
-    return opening;
-  } else if (token === '"') {
-    push(token);
-    return opening;
-  }
-
-  if (token === "'" && top === "'") {
-    pop();
-    return closing;
-  } else if (token === '"' && top === '"') {
-    pop();
-    return closing;
-  }
-};
-
-const closing = (token, { push, pop, top }) => {
-  if (token === "'" && top === "'") {
-    pop();
-    return closing;
-  } else if (token === '"' && top === '"') {
-    pop();
-    return closing;
+  opening(token) {
+    if (token === '\'') {
+      return this.push(token);
+    } else if (token === '"') {
+      return this.push(token);
+    } else if (token === '\'' && this.top() === '\'') {
+      return this
+        .pop()
+        .transitionTo('closing');
+    } else if (token === '"' && this.top() === '"') {
+      return this
+        .pop()
+        .transitionTo('closing');
+    }
   }
 
-  if (token === END && top === undefined) {
-    return RECOGNIZED;
+  closing(token) {
+    if (token === '\'' && this.top() === '\'') {
+      return this.pop();
+    } else if (token === '"' && this.top() === '"') {
+      return this.pop();
+    } else if (token === END && this.hasEmptyStack()) {
+      return this.recognize();
+    }
   }
-};
+}
 
-const quotes = DPA(start);
-
-test(quotes, [
+test(NestedQuotes, [
   ``, `'`, `''`, `""`, `'""'`,
   `"''"`, `'"'"`, `"''"""`,
   `'"''''''''''''''''"'`
@@ -726,7 +727,7 @@ test(quotes, [
     ''"''''''''''''''''"'' => false
 ```
 
-Our DPA does not work. What if we modify our recursive regular expression to work with single and double quotes?
+`NestedQuotes` does not work. What if we modify our recursive regular expression to work with single and double quotes?
 
 ```ruby
 quotes = %r{
@@ -812,15 +813,15 @@ We said that there is no deterministic pushdown automaton that can recognize a p
 Let's consider the latter option. Deterministic machines must do one and only one thing in response to a token and the top of the stack. That's what makes them "deterministic." In effect, their logic always looks like this:
 
 ```javascript
-function consume (token, top) {
-  if (token === top) {
-    pop();
+start (token) {
+  if (token === this.top()) {
+    return this.pop();
   } else if (token === '0' || token === '1') {
-    push(token);
-  } else if (token == END and top === undefined) {
-    recognize();
-  } else if (token == END and top !== undefined) {
-    halt();
+    return this.push(token);
+  } else if (token == END and this.hasEmptyStack()) {
+    return this.recognize();
+  } else if (token == END and this.hasEmptyStack()) {
+    return this.halt();
   }
 }
 ```
@@ -828,18 +829,18 @@ function consume (token, top) {
 Such logic pops, recognizes, halts, or pushes the current token, but it cannot do more than one of these things simultaneously. But what if the logic looked like this?
 
 ```javascript
-function * consume (token, top) {
-  if (token === top) {
-    yield pop();
+* start (token) {
+  if (token === this.top()) {
+    yield this.pop();
   }
   if (token === '0' || token === '1') {
-    yield push(token);
+    yield this.push(token);
   }
-  if (token == END and top === undefined) {
-    yield recognize();
+  if (token == END and this.hasEmptyStack()) {
+    yield this.recognize();
   }
-  if (token == END and top !== undefined) {
-    yield halt();
+  if (token == END and this.hasEmptyStack()) {
+    yield this.halt();
   }
 }
 ```
@@ -850,162 +851,265 @@ This logic is formulated as a generator that yields one or more outcomes. It can
 
 ### an object-oriented deterministic pushdown automaton
 
-Let's begin by writing an "OOP" version of our DPA:
-
+Let's begin by rewriting `NestedQuotes` in generator style:
 
 ```javascript
-// the infrastructure
-
-const END = Symbol('end');
-
-class DPARecognizer {
-  constructor(internal = 'start', external = []) {
-    this.internal = internal;
-    this.external = external.slice(0);
-    this.halted = false;
-    this.recognized = false;
-  }
-
-  push(token) {
-    this.external.push(token);
-    return this;
-  }
-
-  pop() {
-    this.external.pop();
-    return this;
-  }
-
-  replace(token) {
-    this.external[this.external.length - 1] = token;
-    return this;
-  }
-
-  top() {
-    return this.external[this.external.length - 1];
-  }
-
-  transitionTo(internal) {
-    this.internal = internal;
-    return this;
-  }
-
-  recognize() {
-    this.recognized = true;
-    return this;
-  }
-
-  halt() {
-    this.halted = true;
-    return this;
-  }
-
-  consume(token) {
-    return this[this.internal](token);
-  }
-}
-
-function evaluate (clazz, string) {
-  let state = new clazz();
-
-  for (const token of string) {
-    const newState = state.consume(token);
-
-    if (newState === undefined || newState.halted) {
-      return false;
-    } else if (newState.recognized) {
-      return true;
-    } else {
-      state = newState;
+class NestedQuotes extends PushdownAutomaton {
+  * start(token) {
+    if (token === '\'') {
+      yield this
+        .fork()
+        .push(token)
+        .transitionTo('opening');
+    }
+    if (token === '"') {
+      yield this
+        .fork()
+        .push(token)
+        .transitionTo('opening');
+    }
+    if (token === END) {
+      yield this
+        .fork()
+        .recognize();
     }
   }
 
-  const finalState = state.consume(END);
-  return !!(finalState && finalState.recognized);
-}
-
-function test (recognizer, examples) {
-  for (const example of examples) {
-    console.log(`'${example}' => ${evaluate(recognizer, example)}`);
-  }
-}
-
-// Our parentheses recognizer
-
-class Parentheses extends DPARecognizer {
-	start(token) {
-      switch(token) {
-        case END:
-          return this.recognize();
-        case '(':
-          return this.transitionTo('start');
-        case ')':
-          return this.transitionTo('start');
-      }
+  * opening(token) {
+    if (token === '\'') {
+      yield this
+        .fork()
+        .push(token);
     }
-}
-
-test(Parentheses, [
-  '', '()', '(){}', '(',
-	'([()()]())', '([()())())',
-	'())()', '((())(())'
-]);
-  //=>
-    '' => true
-    '()' => true
-    '(){}' => false
-    '(' => true
-    '([()()]())' => false
-    '([()())())' => false
-    '())()' => true
-    '((())(())' => true
-
-// A nested parentheses recognizer
-
-class NestedParentheses extends DPARecognizer {
-  start(token) {
-    switch(token) {
-      case END:
-        return this.recognize();
-      case '(':
-        return this
-          .push(token)
-          .transitionTo('opening');
+    if (token === '"') {
+      yield this
+        .fork()
+        .push(token);
     }
-  }
+    if (token === '\'' && this.top() === '\'') {
+      yield this
+        .fork()
+        .pop()
+        .transitionTo('closing');
+    }
+    if (token === '"' && this.top() === '"') {
+      yield this
+        .fork()
+        .fork()
 
-  opening(token) {
-    if (token === '(') {
-      return this.push(token);
-    } else if (token === ')' && this.top() === '(') {
-      return this
         .pop()
         .transitionTo('closing');
     }
   }
 
-  closing(token) {
-    if (token === ')' && this.top() === '(') {
-      return this.pop();
-    } else if (token === END && this.top() === undefined) {
-      return this.recognize();
+  * closing(token) {
+    if (token === '\'' && this.top() === '\'') {
+      yield this
+        .fork()
+        .pop();
+    }
+    if (token === '"' && this.top() === '"') {
+      yield this
+        .fork()
+        .pop();
+    }
+    if (token === END && this.hasEmptyStack()) {
+      yield this
+        .fork()
+        .recognize();
+    }
+  }
+}
+```
+
+We've made three changes:
+
+- Our state methods are generators;
+- We evaluate all the possible actions and `yield` each one's result;
+- We have added a call to `.fork()` for each result, which as we'll see below, means that we are cloning our state and making changes to the clone.
+
+Now let's see how we've modified `DPA` to create `PushdownAutomaton`. We'll literall copy the code from `class DPA { ... }` and make the following changes:[^well-actually]
+
+[^well-actually]: If we were really strict about OO and inheritance, we might have them both inherit from a common base class of `AbstractPushdownAutomaton`, but "Aint nobody got time for elaborate class hierarchies."
+
+```javascript
+class PushdownAutomaton {
+
+   // ... copypasta from class DPA
+
+  consume(token) {
+    return [...this[this.internal](token)];
+  }
+
+  fork() {
+    return new this.constructor(this.internal, this.external.slice(0));
+  }
+
+  static evaluate (string) {
+    let states = [new this()];
+
+    for (const token of string) {
+      const newStates = states
+        .flatMap(state => state.consume(token))
+        .filter(state => state && !state.halted);
+
+      if (newStates.length === 0) {
+        return false;
+      } else if (newStates.some(state => state.recognized)) {
+        return true;
+      } else {
+        states = newStates;
+      }
+    }
+
+    return states
+      .flatMap(state => state.consume(END))
+      .some(state => state && state.recognized);
+  }
+}
+```
+
+The new `consume` method calls the internal state method as before, but then uses the array spread syntax to turn the elements it yields into an array. The `fork` method makes a deep copy of a state object.[^fork]
+
+[^fork]: This code makes a number of unneccesary copies of states, we could devise a scheme to use [structural sharing and copy-on-write semantics](http://raganwald.com/2019/01/14/structural-sharing-and-copy-on-write.html), but we don't want to clutter up the basic idea right now.
+
+The biggest change is to the `evaluate` static method. we now start with an array of one state. As we loop over the tokens in the string, we take the set of all states and `flatMap` them to the states they return, then filter out any state sthat halt.
+
+If we end up with no unhalted state, the machine fails to recognize the string. Whereas, if _any_ of the states lead to recognizing the string, the machine recognizes the string. If not, we move to the next token. When we finally pass in the `END` token, if any of the states returned recognize the string, then we recognize the string.
+
+So does it work?
+
+```javascript
+class NestedQuotes extends PushdownAutomaton {
+  * start(token) {
+    if (token === '\'') {
+      yield this
+      	.fork()
+        .push(token)
+        .transitionTo('opening');
+    }
+    if (token === '"') {
+      yield this
+      	.fork()
+        .push(token)
+        .transitionTo('opening');
+    }
+    if (token === END) {
+      yield this
+      	.fork()
+        .recognize();
+    }
+  }
+
+  * opening(token) {
+    if (token === '\'') {
+      yield this
+      	.fork()
+        .push(token);
+    }
+    if (token === '"') {
+      yield this
+      	.fork()
+        .push(token);
+    }
+    if (token === '\'' && this.top() === '\'') {
+      yield this
+      	.fork()
+        .pop()
+        .transitionTo('closing');
+    }
+    if (token === '"' && this.top() === '"') {
+      yield this
+      	.fork()
+      	.fork()
+
+        .pop()
+        .transitionTo('closing');
+    }
+  }
+
+  * closing(token) {
+    if (token === '\'' && this.top() === '\'') {
+      yield this
+      	.fork()
+        .pop();
+    }
+    if (token === '"' && this.top() === '"') {
+      yield this
+      	.fork()
+        .pop();
+    }
+    if (token === END && this.hasEmptyStack()) {
+      yield this
+      	.fork()
+        .recognize();
     }
   }
 }
 
-test(NestedParentheses, [
-  '', '(', ')', '()', '(()', '())', '(())'
+test(NestedQuotes, [
+  ``, `'`, `''`, `""`, `'""'`,
+  `"''"`, `'"'"`, `"''"""`,
+  `'"''''''''''''''''"'`
 ]);
   //=>
-    '' => true
-    '(' => false
-    ')' => false
-    '()' => true
-    '(()' => false
-    '())' => false
-    '(())' => true
+    `` => true
+    `'` => false
+    `''` => true
+    `""` => true
+    `'""'` => true
+    `"''"` => true
+    `'"'"` => false
+    `"''"""` => false
+    `'"''''''''''''''''"'` => true
 ```
 
+Indeed it does. And understanding the mechanism behind a pushdown automaton, we can simplify our recognizer. Here's a version that does even-length binary palindromes:
+
+```javascript
+class BinaryPalindrome extends PushdownAutomaton {
+  * start(token) {
+    if (token === '0') {
+      yield this
+      	.fork()
+        .push(token);
+    }
+    if (token === '1') {
+      yield this
+      	.fork()
+        .push(token);
+    }
+    if (token === '0' && this.top() === '0') {
+      yield this
+      	.fork()
+        .pop();
+    }
+    if (token === '1' && this.top() === '1') {
+      yield this
+      	.fork()
+      	.pop();
+    }
+    if (token === END && this.hasEmptyStack()) {
+      yield this
+      	.fork()
+        .recognize();
+    }
+  }
+}
+
+test(BinaryPalindrome, [
+  ``, `0`, `00`, `11`, `0110`,
+  `1001`, `0101`, `100111`,
+  `0100000000
+```
+
+---
+
+### why our pushdown automaton works
+
+Our pushdown automaton works because when it encounters a quote, it both pushes the quote on the stack _and_ compares it to the top of the stack and pops it off. It forks itself each time, so it consumes exponential space and time. But it *does* work.
+
+And that shows us that pushdown automata are more powerful than deterministic pushdown automata, because they can recognize languages that desterministic pushdown automata cannot.
 
 ---
 
