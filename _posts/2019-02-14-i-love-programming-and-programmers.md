@@ -847,7 +847,7 @@ This logic is formulated as a generator that yields one or more outcomes. It can
 
 ### an object-oriented deterministic pushdown automaton
 
-Let's begin by writing a recognizer for the "even-length binary palindrome" problem. We'll use teh same general idea as our `NestedParentheses` language, but we'll make four changes:
+Let's begin by writing a recognizer for the "even-length binary palindrome" problem. We'll use the same general idea as our `NestedParentheses` language, but we'll make four changes:
 
 - We only need one state;
 - Our state method will be a generator;
@@ -886,14 +886,14 @@ class BinaryPalindrome extends PushdownAutomaton {
 }
 ```
 
-Now let's modify `DPA` to create `PushdownAutomaton`. We'll literall copy the code from `class DPA { ... }` and make the following changes:[^well-actually]
+Now let's modify `DPA` to create `PushdownAutomaton`. We'll literally copy the code from `class DPA { ... }` and make the following changes:[^well-actually]
 
 [^well-actually]: If we were really strict about OO and inheritance, we might have them both inherit from a common base class of `AbstractPushdownAutomaton`, but "Aint nobody got time for elaborate class hierarchies."
 
 ```javascript
 class PushdownAutomaton {
 
-   // ... copypasta from class DPA
+   // ... copy-pasta from class DPA
 
   consume(token) {
     return [...this[this.internal](token)];
@@ -929,11 +929,11 @@ class PushdownAutomaton {
 
 The new `consume` method calls the internal state method as before, but then uses the array spread syntax to turn the elements it yields into an array. The `fork` method makes a deep copy of a state object.[^fork]
 
-[^fork]: This code makes a number of unneccesary copies of states, we could devise a scheme to use [structural sharing and copy-on-write semantics](http://raganwald.com/2019/01/14/structural-sharing-and-copy-on-write.html), but we don't want to clutter up the basic idea right now.
+[^fork]: This code makes a number of unnecessary copies of states, we could devise a scheme to use [structural sharing and copy-on-write semantics](http://raganwald.com/2019/01/14/structural-sharing-and-copy-on-write.html), but we don't want to clutter up the basic idea right now.
 
-The biggest change is to the `evaluate` static method. we now start with an array of one state. As we loop over the tokens in the string, we take the set of all states and `flatMap` them to the states they return, then filter out any state sthat halt.
+The biggest change is to the `evaluate` static method. we now start with an array of one state. As we loop over the tokens in the string, we take the set of all states and `flatMap` them to the states they return, then filter out any states that halt.
 
-If we end up with no unhalted state, the machine fails to recognize the string. Whereas, if _any_ of the states lead to recognizing the string, the machine recognizes the string. If not, we move to the next token. When we finally pass in the `END` token, if any of the states returned recognize the string, then we recognize the string.
+If we end up with no states that haven't halted, the machine fails to recognize the string. Whereas, if _any_ of the states lead to recognizing the string, the machine recognizes the string. If not, we move to the next token. When we finally pass in the `END` token, if any of the states returned recognize the string, then we recognize the string.
 
 So does it work?
 
@@ -1011,7 +1011,7 @@ test(NestedQuotes, [
 
 Our pushdown automaton works because when it encounters a quote, it both pushes the quote on the stack _and_ compares it to the top of the stack and pops it off. It forks itself each time, so it consumes exponential space and time. But it *does* work.
 
-And that shows us that pushdown automata are more powerful than deterministic pushdown automata, because they can recognize languages that desterministic pushdown automata cannot.
+And that shows us that pushdown automata are more powerful than deterministic pushdown automata, because they can recognize languages that deterministic pushdown automata cannot.
 
 ---
 
