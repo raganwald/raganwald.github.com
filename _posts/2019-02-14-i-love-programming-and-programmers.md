@@ -112,7 +112,7 @@ Consider the very simple language consisting of the strings `Reg` and `Reggie`. 
 
 ---
 
-### implementing a dfa in javascript
+### implementing a deterministic finite automaton in javascript
 
 There are many ways to write DFAs in JavaScript. In [How I Learned to Stop Worrying and ❤️ the State Machine], we built JavaScript programs using the [state pattern], but they were far more complex than a deterministic finite automaton. For example, those state machines could store information in properties, and those state machines had methods that could be called.
 
