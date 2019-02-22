@@ -1409,11 +1409,11 @@ We've seen that formal languages (those made up of unambiguously defined strings
 
 Here are the three families of languages and automata that we reviewed:
 
-| Language Family              | Automata Family        | Example Language     |
+| Language Family              | Automata Family        | Example Language(s)  |
 |:-----------------------------|:-----------------------|:---------------------|
-| *regular*                    | finite state           | Binary Numbers, LOL  |
-| *deterministic context-free* | deterministic pushdown | Balanced Parentheses |
-| *context-free*               | pushdown               | Palindromes          |
+| *Regular*                    | Finite State           | Binary Numbers, LOL  |
+| *Deterministic Context-free* | Deterministic Pushdown | Balanced Parentheses |
+| *Context-free*               | Pushdown               | Palindromes          |
 
 <br/>
 
