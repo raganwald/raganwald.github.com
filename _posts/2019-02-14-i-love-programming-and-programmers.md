@@ -124,7 +124,7 @@ There are infinitely many formal languages, but there is an important family of 
 [regular language]: https://en.wikipedia.org/wiki/Regular_language
 [Stephen Kleene]: https://en.wikipedia.org/wiki/Stephen_Cole_Kleene
 
-There are a couple of ways to define regular languages, but the one most pertinent to pattern matching is this: A regular language can be recognized by a Deterministic Finite Automaton, or "[DFA]." Meaning, we can construct a simple state machine to recognize whether a string is valid in the language, and that state machine will have a finite number of states.
+There are a couple of ways to define regular languages, but the one most pertinent to pattern matching is this: A regular language can be recognized by a Deterministic Finite Automaton, or "[DFA]." Meaning, we can construct a simple "state machine" to recognize whether a string is valid in the language, and that state machine will have a finite number of states.
 
 [DFA]: https://en.wikipedia.org/wiki/Deterministic_finite_automaton
 
@@ -260,7 +260,7 @@ For some languages that have an infinite number of strings, we can still constru
     one-.->|end|recognized;
 </div>
 
-And we can also write this state machine it in JavaScript:
+And we can also write this DFA in JavaScript:
 
 ```javascript
 const start = token => {
@@ -354,11 +354,11 @@ Okay, we are ready to prove that a deterministic finite automaton cannot recogni
 
 Back to the assumption that there is a deterministic finite automaton that can recognize balanced parentheses, `B`. We don't know how many states `B` has, it might be a very large number, but we know that there are a finite number of these states.
 
-Now let's consider the set of all strings that begin with one or more open parentheses: `(`, `((`, `(((`, and so forth. Our state machine will always begin in the *start* state, and for each one of these strings, when `B` scans them, it will always end in some state.
+Now let's consider the set of all strings that begin with one or more open parentheses: `(`, `((`, `(((`, and so forth. Our DFA will always begin in the *start* state, and for each one of these strings, when `B` scans them, it will always end in some state.
 
 There are an infinite number of such strings of open parentheses, but there are only a finite number of states in B, so it follows that there are at least two different strings that when scanned, end up in the same state. Let's call those strings **p** and **q**..
 
-We can make a pretend function called **state**. `state` takes a state machine, a start state, and a string, and returns the state the machine is in after reading a string, or it returns `halt` if the machine halted at some point while reading the string.
+We can make a pretend function called **state**. `state` takes a DFA, a start state, and a string, and returns the state the machine is in after reading a string, or it returns `halt` if the machine halted at some point while reading the string.
 
 We are saying that there is at least one pair of strings of open parentheses, `p` and `q`, such that `p ≠ q`, and `state(B, start, p) = state(B, start, q)`. (Actually, there are an infinite number of such pairs, but we don't need them all to prove a contradiction, a single pair will do.)
 
