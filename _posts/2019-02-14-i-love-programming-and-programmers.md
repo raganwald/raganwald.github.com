@@ -356,7 +356,9 @@ Back to the assumption that there is a deterministic finite automaton that can r
 
 Now let's consider the set of all strings that begin with one or more open parentheses: `(`, `((`, `(((`, and so forth. Our DFA will always begin in the *start* state, and for each one of these strings, when `B` scans them, it will always end in some state.
 
-There are an infinite number of such strings of open parentheses, but there are only a finite number of states in B, so it follows that there are at least two different strings that when scanned, end up in the same state. Let's call those strings **p** and **q**..
+There are an infinite number of such strings of open parentheses, but there are only a finite number of states in B, so it follows that there are at least two different strings of open parentheses that--when scanned--end up in the same state. Let's call the shorter of those two strings **p**, and the longer of those two strings **q**.[^loop]
+
+[^loop]: An interesting thing to note is for *any* DFA, there must be an infinite number of pairs of different strings that lead to the same state, this follows form the fact that the DFA has a finite number of states, but we can always find more finite strings than there are states in the DFA.<br/><br/>But for this particular case, where we are talking about strings that consist of a single symbol, and of different lengths, it follows that the DFA *must* contain at least one loop.
 
 We can make a pretend function called **state**. `state` takes a DFA, a start state, and a string, and returns the state the machine is in after reading a string, or it returns `halt` if the machine halted at some point while reading the string.
 
