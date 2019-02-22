@@ -1,6 +1,6 @@
 ---
 title: "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
-tags: [recursion,allonge,mermaid,noindex]
+tags: [recursion,allonge,mermaid]
 ---
 
 As we discussed in both [Pattern Matching and Recursion], a well-known programming "problem" is to determine whether a string of parentheses is "balanced:"
