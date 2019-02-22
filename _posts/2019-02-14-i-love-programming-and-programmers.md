@@ -48,6 +48,8 @@ That will lead us on an exploration of fundamental computing machines from deter
 
 # Table of Contents
 
+---
+
 [Regular Languages and Deterministic Finite Automata](#regular-languages-and-deterministic-finite-automata):
 
 - [formal languages and recognizers](#formal-languages-and-recognizers)
