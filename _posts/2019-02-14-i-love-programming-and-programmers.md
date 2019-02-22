@@ -252,7 +252,7 @@ But what if there are an _infinite_ number of finite strings in the language?
 For some languages that have an infinite number of strings, we can still construct a deterministic finite automaton to recognize them. For example, here is a deterministic finite automaton that recognizes binary numbers:
 
 <div class="mermaid">
-  graph TD
+  graph LR
     start(start)-->|0|zero
     zero-.->|end|recognized(recognized)
     start-->|1|one(one or more)
@@ -1163,7 +1163,7 @@ Pushdown automata are a more powerful generalization of deterministic pushdown a
 We can see this by writing a pushdown automaton to recognize a deterministic context-free language. Here is the state diagram:
 
 <div class="mermaid">
-  graph TD
+  graph LR
     start(L)-->|O|LO("L(OL)*O")
     LO-->|L|LOL("L(OL)+")
     LOL-->|O|LO
