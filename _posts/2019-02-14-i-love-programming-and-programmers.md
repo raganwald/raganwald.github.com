@@ -997,12 +997,11 @@ This logic is formulated as a generator that yields one or more outcomes. It can
 
 ### an object-oriented deterministic pushdown automaton
 
-We will now use this approach to write a recognizer for the "even-length binary palindrome" problem. We'll use the same general idea as our `NestedParentheses` language, but we'll make four changes:
+We will now use this approach to write a recognizer for the "even-length binary palindrome" problem. We'll use the same general idea as our `NestedParentheses` language, but we'll make three changes:
 
-- We only need one state;
-- Our state method will be a generator;
+- Our state methods will be generators;
 - We evaluate all the possible actions and `yield` each one's result;
-- We have added a call to `.fork()` for each result, which as we'll see below, means that we are cloning our state and making changes to the clone.
+- We add a call to `.fork()` for each result, which as we'll see below, means that we are cloning our state and making changes to the clone.
 
 ```javascript
 class BinaryPalindrome extends PushdownAutomaton {
