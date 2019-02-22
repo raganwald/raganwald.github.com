@@ -1431,6 +1431,8 @@ Outside of a special-case like certain CS students, this question is likely to g
 
 In most cases, that makes for a bad interview question.
 
+(discuss on [proggit](https://www.reddit.com/r/programming/comments/at7kmu/a_brutal_look_at_balanced_parentheses_computing/) and [/r/javascript](https://www.reddit.com/r/javascript/comments/atiap7/a_brutal_look_at_balanced_parentheses_computing/))
+
 ---
 
 # Notes
