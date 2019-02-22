@@ -42,6 +42,22 @@ That will lead us on an exploration of fundamental computing machines from deter
 
 ---
 
+[![Robarts Library, la biblioteca más grande de la UofT, parece un guajolote!](/assets/images/pushdown/robarts.jpg)](https://www.flickr.com/photos/ivanx/525621660)
+
+---
+
+### why is this a "brutal" look at balanced parentheses, computing machines, and pushdown automata?
+
+> [Brutalist architecture] flourished from 1951 to 1975, having descended from the modernist architectural movement of the early 20th century. Considered both an ethic and aesthetic, utilitarian designs are dictated by function over form with raw construction materials and mundane functions left exposed. Reinforced concrete is the most commonly recognized building material of Brutalist architecture but other materials such as brick, glass, steel, and rough-hewn stone may also be used.
+
+[Brutalist architecture]: https://en.wikipedia.org/wiki/Brutalist_architecture
+
+This essay focuses on the "raw" construction materials of formal languages and the idealized computing machines that recognize them. If JavaScript is ubiquitous aluminum siding, and if Elixir is gleaming steel and glass, pushdown automata are raw, exposed, and brutal concrete.
+
+Now let's move on.
+
+---
+
 [![Hurley Building, Boston, MA](/assets/images/pushdown/contours.jpg)](https://www.flickr.com/photos/pburka/27459401981)
 
 ---
