@@ -44,7 +44,9 @@ That will lead us on an exploration of fundamental computing machines from deter
 
 [![Hurley Building, Boston, MA](/assets/images/pushdown/contours.jpg)](https://www.flickr.com/photos/pburka/27459401981)
 
-### table of contents
+---
+
+# Table of Contents
 
 1. [Regular Languages and Deterministic Finite Automata](#regular-languages-and-deterministic-finite-automata)
   - [formal languages and recognizers](#formal-languages-and-recognizers)
