@@ -1419,7 +1419,10 @@ Here are the three families of languages and automata that we reviewed:
 
 An obvious question is, _Do you need to know the difference between a regular language and a context-free language if all you want to do is write some code that recognizes balanced parentheses?_
 
-The answer is, _Probably not_. Consider cooking. A food scientist knows all sorts of things about why certain recipes do what they do. A chef knows how to cook and improvise recipes. Good chefs end up acquiring a fair bit of food science in their careers, and they know how to apply it, but they spend most of their time cooking, not thinking about what is going on inside the food when it cooks.
+The answer is, _Probably not_. Consider cooking. A [food scientist][food science] knows all sorts of things about why certain recipes do what they do. A [chef de cuisine] (or "chef") knows how to cook and improvise recipes. Good chefs end up acquiring a fair bit of food science in their careers, and they know how to apply it, but they spend most of their time cooking, not thinking about what is going on inside the food when it cooks.
+
+[food science]: https://en.wikipedia.org/wiki/Food_science
+[chef de cuisine]: https://en.wikipedia.org/wiki/Chef
 
 There are some areas where at least a smattering of familiarity with this particular subject is helpful. Writing parsers, to give one example. Armed with this knowledge, and but little more, the practising programmer knows how to design a configuration file's syntax or a domain-specific language to be amenable to parsing by an [LR(k)][LR Parser] parser, and what implications deviating from a deterministic context-free language will have on the performance of the parser.
 
