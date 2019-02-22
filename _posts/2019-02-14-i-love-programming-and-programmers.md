@@ -790,11 +790,11 @@ But now let's modify our program to help with documentation, rather than math. L
 
 ### context-free languages
 
-Instead of matching open and closed parentheses, we'll match quotes. Now just like open and closing parentheses, quotes have open and closing forms: 'single quotes' and "double quotes."[^quotes]
+Instead of matching open and closed parentheses, we'll match quotes, both single quotes like `'` and double quotes like `""`.[^quotes]
 
 [^quotes]: For this pattern, we are not interested in properly typeset quotation marks, we mean the single and double quotes that don't have a special form for opening and closing, the kind you find in programming languages that were designed to by reproducible by telegraph equipment: `'` and `"`. If we could use the proper "quotes," then our language would be a Dyck Language, equivalent to balanced parentheses.
 
-Our first crack is to just replace opening and closing parentheses with quotes. We'll only need two cases, not three:
+Our first crack is to modify our existing DPA by replacing opening and closing parentheses with quotes. We'll only need two cases, not three:
 
 Here's our DPA:
 
