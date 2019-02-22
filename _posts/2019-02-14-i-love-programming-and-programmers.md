@@ -46,17 +46,28 @@ That will lead us on an exploration of fundamental computing machines from deter
 
 ### table of contents
 
-*Coming RealSoonNow™️*
+1. [Regular Languages and Deterministic Finite Automata](#regular-languages-and-deterministic-finite-automata)
+  - [formal languages and recognizers](#formal-languages-and-recognizers)
+  - [implementing a deterministic finite automaton in javascript](#implementing-a-deterministic-finite-automaton-in-javascript)
+  - [infinite regular languages](#infinite-regular-languages)
+  - [nested parentheses](#nested-parentheses)
+  - [balanced parentheses is not a regular language](#balanced-parentheses-is-not-a-regular-language)
+2. [Deterministic Context-free Languages and Deterministic Pushdown Automata](#deterministic-context-free-languages-and-deterministic-pushdown-automata)
+  - [deterministic pushdown automata](#deterministic-pushdown-automata)
+  - [balanced parentheses is a deterministic context-free language](#balanced-parentheses-is-a-deterministic-context-free-language)
+  - [recursive regular expressions](#recursive-regular-expressions)
+3. [Context-Free Languages and Pushdown Automata](#context-free-languages-and-pushdown-automata)
+  - [nested parentheses](#nested-parentheses)
+  - [context-free languages](#context-free-languages)
+  - [why deterministic pushdown automata cannot recognize palindromes](#why-deterministic-pushdown-automata-cannot-recognize-palindromes)
+  - [pushdown automata](#pushdown-automata)
+  - [an object-oriented deterministic pushdown automaton](#an-object-oriented-deterministic-pushdown-automaton)
+4. [The End](#the-end)
+- [is balanced parentheses a good interview question?](#is-balanced-parentheses-a-good-interview-question)
 
-.
+---
 
-.
-
-.
-
-.
-
-.
+# Regular Languages and Deterministic Finite Automata
 
 ---
 
@@ -339,6 +350,10 @@ Contradiction! Therefore, our original assumption—that `B` exists—is false. 
 
 ---
 
+# Deterministic Context-free Languages and Deterministic Pushdown Automata
+
+---
+
 [![HUD Plaza](/assets/images/pushdown/hud.jpg)](https://www.flickr.com/photos/brownpau/29937123348)
 
 ---
@@ -612,6 +627,10 @@ So we know that recursive regular expressions appear to be at least as powerful 
 
 ---
 
+# Context-Free Languages and Pushdown Automata
+
+---
+
 [![El CECUT, Centro Cultural Tijuana, la Bola.](/assets/images/pushdown/cecut.jpg)](https://www.flickr.com/photos/omaromar/28357989)
 
 ---
@@ -741,7 +760,7 @@ But now let's modify our program to help with documentation, rather than math. L
 
 ---
 
-### non-deterministic context-free languages
+### context-free languages
 
 Instead of matching open and closed parentheses, we'll match quotes. Now just like open and closing parentheses, quotes have open and closing forms: 'single quotes' and "double quotes."[^quotes]
 
@@ -848,6 +867,8 @@ The recursive regular expression does work! Now, we may think that perhaps we we
 
 This particular language--nested single and double quotes quotes--is a very simple example of the "palindrome" problem. We cannot use a deterministic pushdown automaton to write a recognizer for palindromes that have at least two different kinds of tokens.
 
+And that tells us that there is a class of languages that are more complex than deterministic context-free languages. The are [context-free languages](https://en.wikipedia.org/wiki/Context-free_language), and they are a superset of deterministic context-free languages.
+
 ---
 
 [![brutalism 3 of 3](/assets/images/pushdown/brutalism3.jpg)](https://www.flickr.com/photos/27556454@N07/4328321198)
@@ -948,7 +969,7 @@ This logic is formulated as a generator that yields one or more outcomes. It can
 
 ### an object-oriented deterministic pushdown automaton
 
-Let's begin by writing a recognizer for the "even-length binary palindrome" problem. We'll use the same general idea as our `NestedParentheses` language, but we'll make four changes:
+We will now use this approach to write a recognizer for the "even-length binary palindrome" problem. We'll use the same general idea as our `NestedParentheses` language, but we'll make four changes:
 
 - We only need one state;
 - Our state method will be a generator;
@@ -1098,7 +1119,13 @@ Indeed it does, and we leave as "exercises for the reader" to perform either of 
 
 Our pushdown automaton works because when it encounters a token, it both pushes the token onto the stack _and_ compares it to the top of the stack and pops it off if it matches. It forks itself each time, so it consumes exponential space and time. But it *does* work.
 
-And that shows us that pushdown automata are more powerful than deterministic pushdown automata, because they can recognize languages that deterministic pushdown automata cannot.
+And that shows us that pushdown automata are more powerful than deterministic pushdown automata, because they can recognize languages that deterministic pushdown automata cannot recognize: Context-free languages.
+
+And just as pushdown automata are a more powerful generalization of deterministic pushdown automata, context-fre languages (like palindromes) are a superset of deterministic context-free languages.
+
+---
+
+# The End
 
 ---
 
