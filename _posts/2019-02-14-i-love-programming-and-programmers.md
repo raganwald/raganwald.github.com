@@ -939,7 +939,9 @@ But that breaks any time the shorter palindrome is the right thing to recognize.
 
 Now matter how we organize `P`, we can always construct a string large enough that `P` must discard information to correctly recognize one possible string, but not discard information in order to correctly recognize another possible string.
 
-Since `P` is deterministic, meaning it always does exactly one thing in response to any token given a particular state, `P` cannot both *discard* and simultaneously *not discard* information, therefore `P` cannot recognize languages composed of palindromes. And therefore no DPA can recognize languages composed of palindromes.
+Since `P` is deterministic, meaning it always does exactly one thing in response to any token given a particular state, `P` cannot both *discard* and simultaneously *not discard* information, therefore `P` cannot recognize languages composed of palindromes.
+
+Therefore, no DPA can recognize languages composed of palindromes.
 
 ---
 
