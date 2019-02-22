@@ -71,6 +71,7 @@ That will lead us on an exploration of fundamental computing machines from deter
 - [why deterministic pushdown automata cannot recognize palindromes](#why-deterministic-pushdown-automata-cannot-recognize-palindromes)
 - [pushdown automata](#pushdown-automata)
 - [an object-oriented deterministic pushdown automaton](#an-object-oriented-deterministic-pushdown-automaton)
+- [deterministic context-free languages are context-free languages](#deterministic-context-free-languages-are-context-free-languages)
 
 [The End](#the-end):
 
@@ -1132,7 +1133,244 @@ Our pushdown automaton works because when it encounters a token, it both pushes 
 
 And that shows us that pushdown automata are more powerful than deterministic pushdown automata, because they can recognize languages that deterministic pushdown automata cannot recognize: Context-free languages.
 
-And just as pushdown automata are a more powerful generalization of deterministic pushdown automata, context-free languages (like palindromes) are a superset of deterministic context-free languages.
+---
+
+### deterministic context-free languages are context-free languages
+
+---
+
+Pushdown automata are a more powerful generalization of deterministic pushdown automata: They can recognize anything a deterministic pushdown automaton can recognize, and using the exact same diagram.
+
+We can see this by writing a pushdown automaton to recognize a deterministic context-free language. Here is the state diagram:
+
+<div class="mermaid">
+  graph TD
+    start(L)-->|O|LO("L(OL)*O")
+    LO-->|L|LOL("L(OL)+")
+    LOL-->|O|LO
+    LOL-.->|end|recognized
+</div>
+
+And here is our code. As noted before, in our implementation, it is almost identical to the implementation we would write for a DPA:
+
+```javascript
+class LOL extends PushdownAutomaton {
+  * start (token) {
+    if (token === 'L') {
+      yield this
+      	.fork()
+      	.transitionTo('l');
+    }
+  }
+
+  * l (token) {
+    if (token === 'O') {
+      yield this
+      	.fork()
+      	.transitionTo('lo');
+    }
+  }
+
+  * lo (token) {
+    if (token === 'L') {
+      yield this
+      	.fork()
+      	.transitionTo('lol');
+    }
+  }
+
+  * lol (token) {
+    if (token === 'O') {
+      yield this
+      	.fork()
+      	.transitionTo('lo');
+    }
+    if (token === END) {
+      yield this
+      	.fork()
+      	.recognize();
+    }
+  }
+}
+
+test(LOL, [
+  '', 'L', 'LO', 'LOL', 'LOLO',
+  'LOLOL', 'LOLOLOLOLOLOLOLOLOL',
+  'TROLOLOLOLOLOLOLOLO'
+]);
+  //=>
+    '' => false
+    'L' => false
+    'LO' => false
+    'LOL' => true
+    'LOLO' => false
+    'LOLOL' => true
+    'LOLOLOLOLOLOLOLOLOL' => true
+    'TROLOLOLOLOLOLOLOLO' => false
+```
+
+But we needn't ask anyone to "just trust us on this." Here's an implementation of `PushdownAutomaton` that works for both deterministic and general pushdown automata:
+
+```javascript
+class PushdownAutomaton {
+  constructor(internal = 'start', external = []) {
+    this.internal = internal;
+    this.external = external;
+    this.halted = false;
+    this.recognized = false;
+  }
+
+  isDeterministic () {
+    return false;
+  }
+
+  push(token) {
+    this.external.push(token);
+    return this;
+  }
+
+  pop() {
+    this.external.pop();
+    return this;
+  }
+
+  replace(token) {
+    this.external[this.external.length - 1] = token;
+    return this;
+  }
+
+  top() {
+    return this.external[this.external.length - 1];
+  }
+
+  hasEmptyStack() {
+    return this.external.length === 0;
+  }
+
+  transitionTo(internal) {
+    this.internal = internal;
+    return this;
+  }
+
+  recognize() {
+    this.recognized = true;
+    return this;
+  }
+
+  halt() {
+    this.halted = true;
+    return this;
+  }
+
+  consume(token) {
+    const states = [...this[this.internal](token)];
+    if (this.isDeterministic()) {
+      return states[0] || [];
+    } else {
+      return states;
+    }
+  }
+
+  fork() {
+    return new this.constructor(this.internal, this.external.slice(0));
+  }
+
+  static evaluate (string) {
+    let states = [new this()];
+
+    for (const token of string) {
+      const newStates = states
+        .flatMap(state => state.consume(token))
+        .filter(state => state && !state.halted);
+
+      if (newStates.length === 0) {
+        return false;
+      } else if (newStates.some(state => state.recognized)) {
+        return true;
+      } else {
+        states = newStates;
+      }
+    }
+
+    return states
+      .flatMap(state => state.consume(END))
+      .some(state => state && state.recognized);
+  }
+}
+```
+
+Now if we want to show that an automaton written in non-deterministic style has the same semantics as an automaton written for our original `DPA` class, we can write it like this:
+
+```javascript
+class LOL extends PushdownAutomaton {
+
+  isDeterministic () {
+    return true;
+  }
+
+  // rest of states remain exactly the same
+
+  ...
+}
+```
+
+We can even experiment with something like `BinaryPalindrome`. By implementing `isDeterministic()` and alternating between having it return `true` and `false`, we can see that the language it recognizes is context-free but not deterministically context-free:
+
+```javascript
+class BinaryPalindrome extends PushdownAutomaton {
+  isDeterministic () {
+    return true;
+  }
+
+  ...
+
+}
+
+test(BinaryPalindrome, [
+  '', '0', '00', '11', '0110',
+  '1001', '0101', '100111',
+  '01000000000000000010'
+]);
+  //=>
+    '' => true
+    '0' => false
+    '00' => false
+    '11' => false
+    '0110' => false
+    '1001' => false
+    '0101' => false
+    '100111' => false
+    '01000000000000000010' => false
+
+class BinaryPalindrome extends PushdownAutomaton {
+  isDeterministic () {
+    return false;
+  }
+
+  ...
+
+}
+
+test(BinaryPalindrome, [
+  '', '0', '00', '11', '0110',
+  '1001', '0101', '100111',
+  '01000000000000000010'
+]);
+  //=>
+    '' => true
+    '0' => false
+    '00' => true
+    '11' => true
+    '0110' => true
+    '1001' => true
+    '0101' => false
+    '100111' => false
+    '01000000000000000010' => true
+```
+
+Now, since context-free languages are the set of all languages that pushdown automata can recognize, and since pushdown automata can recognize all languages that deterministic pushdown automata can recognize, it follows that the set of all deterministic context-free languages is a subset of the set of all context-free languages.
+
+Which is implied by the name, but it's always worthwhile to explore some of the ways to demonstrate its truth.
 
 ---
 
