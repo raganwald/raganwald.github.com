@@ -1150,6 +1150,10 @@ And that shows us that pushdown automata are more powerful than deterministic pu
 
 ---
 
+[![Marseille - Cité Radieuse](/assets/images/pushdown/radieuse.jpg)](https://www.flickr.com/photos/129231073@N06/16421231812)
+
+---
+
 ### deterministic context-free languages are context-free languages
 
 ---
