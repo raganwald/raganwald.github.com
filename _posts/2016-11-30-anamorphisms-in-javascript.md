@@ -38,7 +38,7 @@ An integer is our object, and the array containing integers is our "structure co
 So we'll use the word "unfold" from now on.
 
 
-Unfolds (or anamorphisms) are the dual—a fancy word for _complement_—of [Catamorphisms][catamorphism], functions that map from some complex structure conating values down to values.
+Unfolds (or anamorphisms) are the dual—a fancy word for _complement_—of [Catamorphisms][catamorphism], functions that map from some complex structure containing values down to values.
 
 Here's a catamorphism:
 
