@@ -36,9 +36,7 @@ Computer scientists study this problem by asking themselves, "Given a particular
 
 Instead of asking ourselves, "What's the wildest, weirdest program for recognizing balanced parentheses," we'll ask, "What's the simplest possible computing machine that can recognize balanced parentheses?"
 
-That will lead us on an exploration of fundamental computing machines from deterministic finite automata to pushdown automata. We'll then wrap it up with a critique of using this problem as an interview question.[^critique]
-
-[^critique]: Because clickbait.
+That will lead us on an exploration of formal languages, from regular languages, to deterministic context-free languages, and finally to context-free languages. And as we go, we'll look at fundamental computing machines, from deterministic finite automata, to deterministic pushdown automata, and finally to pushdown automata.
 
 ---
 
@@ -1405,35 +1403,31 @@ Which is implied by the name, but it's always worthwhile to explore some of the 
 
 ---
 
-### is balanced parentheses a good interview question?
+### summary
 
-Let's return to the top of the essay. We began by saying that implementing a recognizer for "balanced parentheses" is a popular programming problem. It is often posed as an interview question.
+We've seen that formal languages (those made up of unambiguously defined strings of symbols) come in at least three increasingly complex families, and that one way to quantify that complexity is according to the capabilities of the machines (or "automata") capable of recognizing strings in the language.
 
-That suggests the question: Is balanced parentheses a *good* interview question?[^begs]
+Here are the three families of languages and automata that we reviewed:
 
-[^begs]: It **suggests** the question. "Begging" the question is to suggest the answer.
+| Language Family                | Automata Family        | Example Language     |
+|:-------------------------------|:-----------------------|:---------------------|
+| **regular**                    | finite state           | Binary Numbers, LOL  |
+| **deterministic context-free** | deterministic pushdown | Balanced Parentheses |
+| **context-free**               | pushdown               | Palindromes          |
 
-Looking back at our essay, we used foundational computer science to come up with recognizers for balanced parentheses (and a few other formal languages, like binary palindromes). Knowing those principles, we could construct implementations of machines like pushdown automata.
+An obvious question is, _Do you need to know the difference between a regular language and a context-free language if all you want to do is write some code that recognizes balanced parentheses?_
 
-And if we wanted to use all the power of JavaScript, we could use our knowledge of languages and recognizers to know, for example, that any code recognizing balanced parentheses would need some kind of infinite storage, be it a counter or stack. Is it reasonable to know this?
+The answer is, _Probably not_. Consider cooking. A food scientist knows all sorts of things about why certain recipes do what they do. A chef knows how to cook and improvise recipes. Good chefs end up acquiring a fair bit of food science in their careers, and they know how to apply it, but they spend most of their time cooking, not thinking about what is going on inside the food when it cooks.
 
-If you've taken a relevant computer science course in the last year, yes, it is more than reasonable to know these things, and an interview around writing a recognizer would focus on the implementation and tradeoffs.
+There are some areas where at least a smattering of familiarity with this particular subject is helpful. Writing parsers, to give one example. Armed with this knowledge, and but little more, the practising programmer knows how to design a configuration file's syntax or a domain-specific language to be amenable to parsing by an [LR(k)][LR Parser] parser, and what implications deviating from a deterministic context-free language will have on the performance of the parser.
 
-But what if someone hasn't seen this stuff in a decade? Or learned to program without going through a formal CS education? Is it reasonable to expect them to work out the ideas in an interview?
+[LR Parser]: https://en.wikipedia.org/wiki/LR_parser
 
-It seems unrealistic for any normal human under the time pressure of an interview. Universities don't even ask you to do this in exams. Instead, they give problems like this as homework exercises, and then after you have worked them out for yourself, a test is given to see if you figured out the answers.
+But on a day-to-day basis, if asked to recognize balanced parentheses?
 
-If you haven't been exposed to the underlying math recently, coming up with a solution to balanced parentheses is going to be extremely difficult. It reminds one of Nabakov's line, "Genius is an African who dreams up snow."
+The very best answer is probably `/^(?'balanced'(?:\(\g'balanced'\))*)$/x` for those whose tools support recursive regular expressions, and a simple loop with a counter or stack for those whose tools don't.
 
-> "Genius is an African who dreams up snow."
->
-> --Nabakov
-
-Asking someone who hasn't been recently exposed to computing theory to write a balanced parentheses recognizer is asking them to reinvent the basic research of people like Kleene and von Dyck, extemporaneously. And then write code under the interviewer's watching eye. That is unlikely to show these candidates in their best light, and the results become very uneven.
-
-Outside of a special-case like certain CS students, this question is likely to give very inconsistent results, and those results are going to be dominated by a candidate's recent familiarity with the underlying problem, rather than their coding skills.
-
-In most cases, that makes for a bad interview question.
+---
 
 (discuss on [hacker news](https://news.ycombinator.com/item?id=19225895), [proggit](https://www.reddit.com/r/programming/comments/at7kmu/a_brutal_look_at_balanced_parentheses_computing/) and [/r/javascript](https://www.reddit.com/r/javascript/comments/atiap7/a_brutal_look_at_balanced_parentheses_computing/))
 
