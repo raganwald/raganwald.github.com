@@ -1121,7 +1121,7 @@ Our pushdown automaton works because when it encounters a token, it both pushes 
 
 And that shows us that pushdown automata are more powerful than deterministic pushdown automata, because they can recognize languages that deterministic pushdown automata cannot recognize: Context-free languages.
 
-And just as pushdown automata are a more powerful generalization of deterministic pushdown automata, context-fre languages (like palindromes) are a superset of deterministic context-free languages.
+And just as pushdown automata are a more powerful generalization of deterministic pushdown automata, context-free languages (like palindromes) are a superset of deterministic context-free languages.
 
 ---
 
