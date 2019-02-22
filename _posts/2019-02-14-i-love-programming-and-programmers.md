@@ -1414,7 +1414,9 @@ Here are the three families of languages and automata that we reviewed:
 | *regular*                    | finite state           | Binary Numbers, LOL  |
 | *deterministic context-free* | deterministic pushdown | Balanced Parentheses |
 | *context-free*               | pushdown               | Palindromes          |
+
 <br/>
+
 An obvious question is, _Do you need to know the difference between a regular language and a context-free language if all you want to do is write some code that recognizes balanced parentheses?_
 
 The answer is, _Probably not_. Consider cooking. A food scientist knows all sorts of things about why certain recipes do what they do. A chef knows how to cook and improvise recipes. Good chefs end up acquiring a fair bit of food science in their careers, and they know how to apply it, but they spend most of their time cooking, not thinking about what is going on inside the food when it cooks.
