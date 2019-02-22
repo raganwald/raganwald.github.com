@@ -48,23 +48,30 @@ That will lead us on an exploration of fundamental computing machines from deter
 
 # Table of Contents
 
-1. [Regular Languages and Deterministic Finite Automata](#regular-languages-and-deterministic-finite-automata)
-  - [formal languages and recognizers](#formal-languages-and-recognizers)
-  - [implementing a deterministic finite automaton in javascript](#implementing-a-deterministic-finite-automaton-in-javascript)
-  - [infinite regular languages](#infinite-regular-languages)
-  - [nested parentheses](#nested-parentheses)
-  - [balanced parentheses is not a regular language](#balanced-parentheses-is-not-a-regular-language)
-2. [Deterministic Context-free Languages and Deterministic Pushdown Automata](#deterministic-context-free-languages-and-deterministic-pushdown-automata)
-  - [deterministic pushdown automata](#deterministic-pushdown-automata)
-  - [balanced parentheses is a deterministic context-free language](#balanced-parentheses-is-a-deterministic-context-free-language)
-  - [recursive regular expressions](#recursive-regular-expressions)
-3. [Context-Free Languages and Pushdown Automata](#context-free-languages-and-pushdown-automata)
-  - [nested parentheses](#nested-parentheses)
-  - [context-free languages](#context-free-languages)
-  - [why deterministic pushdown automata cannot recognize palindromes](#why-deterministic-pushdown-automata-cannot-recognize-palindromes)
-  - [pushdown automata](#pushdown-automata)
-  - [an object-oriented deterministic pushdown automaton](#an-object-oriented-deterministic-pushdown-automaton)
-4. [The End](#the-end)
+[Regular Languages and Deterministic Finite Automata](#regular-languages-and-deterministic-finite-automata):
+
+- [formal languages and recognizers](#formal-languages-and-recognizers)
+- [implementing a deterministic finite automaton in javascript](#implementing-a-deterministic-finite-automaton-in-javascript)
+- [infinite regular languages](#infinite-regular-languages)
+- [nested parentheses](#nested-parentheses)
+- [balanced parentheses is not a regular language](#balanced-parentheses-is-not-a-regular-language)
+
+[Deterministic Context-free Languages and Deterministic Pushdown Automata](#deterministic-context-free-languages-and-deterministic-pushdown-automata):
+
+- [deterministic pushdown automata](#deterministic-pushdown-automata)
+- [balanced parentheses is a deterministic context-free language](#balanced-parentheses-is-a-deterministic-context-free-language)
+- [recursive regular expressions](#recursive-regular-expressions)
+
+[Context-Free Languages and Pushdown Automata](#context-free-languages-and-pushdown-automata):
+
+- [nested parentheses](#nested-parentheses)
+- [context-free languages](#context-free-languages)
+- [why deterministic pushdown automata cannot recognize palindromes](#why-deterministic-pushdown-automata-cannot-recognize-palindromes)
+- [pushdown automata](#pushdown-automata)
+- [an object-oriented deterministic pushdown automaton](#an-object-oriented-deterministic-pushdown-automaton)
+
+[The End](#the-end):
+
 - [is balanced parentheses a good interview question?](#is-balanced-parentheses-a-good-interview-question)
 
 ---
