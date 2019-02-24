@@ -1432,7 +1432,7 @@ There are some areas where at least a smattering of familiarity with this partic
 
 But on a day-to-day basis, if asked to recognize balanced parentheses?
 
-The very best answer is probably `/^(?'balanced'(?:\(\g'balanced'\))*)$/x` for those whose tools support recursive regular expressions, and a simple loop with a counter or stack for those whose tools don't.
+The very best answer is probably `/^(?'balanced'(?:\(\g'balanced'\))*)$/x` for those whose tools support recursive regular expressions, or a simple loop with a counter or a stack.
 
 ---
 
