@@ -3,11 +3,9 @@ title: "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown 
 tags: [recursion,allonge,mermaid]
 ---
 
-As we discussed in both [Pattern Matching and Recursion], a well-known programming "problem" is to determine whether a string of parentheses is "balanced:"
+As discussed in [Pattern Matching and Recursion], a well-known programming puzzle is to write a function that determines whether a string of parentheses is "balanced," i.e. "Balanced" parentheses means that each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested.
 
 [Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
-
-> Given a string that consists of open and closed parentheses, write a function that determines whether the parentheses in the string are **balanced**. "Balanced" parentheses means that each opening symbol has a corresponding closing symbol and the pairs of parentheses are properly nested.
 
 For example:
 
