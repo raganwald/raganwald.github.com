@@ -90,6 +90,8 @@ Now let's move on.
 [The End](#the-end):
 
 - [summary](#summary)
+- [further reading](#further-reading)
+- [discussions](#discussions)
 
 ---
 
@@ -1434,7 +1436,33 @@ The very best answer is probably `/^(?'balanced'(?:\(\g'balanced'\))*)$/x` for t
 
 ---
 
-(discuss on [hacker news](https://news.ycombinator.com/item?id=19225895), [proggit](https://www.reddit.com/r/programming/comments/at7kmu/a_brutal_look_at_balanced_parentheses_computing/) and [/r/javascript](https://www.reddit.com/r/javascript/comments/atiap7/a_brutal_look_at_balanced_parentheses_computing/))
+[![Beinecke Rare Book & Manuscript Library Interior](/assets/images/pushdown/beinecke-interior.jpg)](https://www.flickr.com/photos/gnrklk/33574585673)
+
+---
+
+### further reading
+
+If you enjoyed reading this introduction to formal languages and automata that recognize them, here are some interesting avenues to pursue:
+
+- Formal languages are actually specified with [formal grammars][formal grammar], not with informal descriptions like "palindrome," or, "binary number." The most well-known formal grammar is the [regular grammar], which defines a regular language. Regular grammars begat the original regular expressions.
+- Balanced parentheses has been discussed in this blog before: [Pattern Matching and Recursion] discusses building a recognizer out of composeable pattern-matching functions, while [Alice and Bobbie and Sharleen and Dyck] discusses a cheeky little solution to the programming problem.
+- For those comfortable with code examples written in Ruby, general subject of ideal computing machines and the things they can compute is explained brilliantly and accessibly in Tom Stuart's book [Understanding Comnputation].
+
+[formal grammar]: https://en.wikipedia.org/wiki/Formal_grammar
+[regular grammar]: https://en.wikipedia.org/wiki/Formal_grammar#Regular_grammars
+[Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html
+[Alice and Bobbie and Sharleen and Dyck]: http://raganwald.com/2018/11/14/dyck-joke.html
+[Understanding Computation]: https://www.amazon.com/Understanding-Computation-Machines-Impossible-Programs/dp/1449329276/ref=as_li_ss_tl?ie=UTF8&linkCode=ll1&tag=raganwald001-20&linkId=89116d710802aa56a49fd2dde7e742fa&language=en_US
+
+---
+
+[![Birmingham Central Library](/assets/images/pushdown/birmingham.jpg)](https://www.flickr.com/photos/frmark/5308847783)
+
+---
+
+### discussions
+
+Discuss this essay on [hacker news](https://news.ycombinator.com/item?id=19225895), [proggit](https://www.reddit.com/r/programming/comments/at7kmu/a_brutal_look_at_balanced_parentheses_computing/), or [/r/javascript](https://www.reddit.com/r/javascript/comments/atiap7/a_brutal_look_at_balanced_parentheses_computing/).
 
 ---
 
