@@ -1,6 +1,6 @@
 ---
 title: "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
-tags: [recursion,allonge,mermaid]
+tags: [allonge,mermaid]
 ---
 
 As discussed in [Pattern Matching and Recursion], a well-known programming puzzle is to write a function that determines whether a string of parentheses is "balanced," i.e. "Balanced" parentheses means that each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested.
@@ -254,7 +254,7 @@ For some languages that have an infinite number of strings, we can still constru
   graph LR
     start(start)-->|0|zero
     zero-.->|end|recognized(recognized)
-    start-->|1|one(one or more)
+    start-->|1|one[one or more]
     one-->|0 or 1|one
     one-.->|end|recognized;
 </div>
@@ -1167,10 +1167,11 @@ We can see this by writing a pushdown automaton to recognize a deterministic con
 
 <div class="mermaid">
   graph LR
-    start(L)-->|O|LO("L(OL)*O")
-    LO-->|L|LOL("L(OL)+")
+    start(start)-->|L|L1[L]
+    L1-->|O|LO["L(OL)*O"]
+    LO-->|L|LOL["L(OL)+"]
     LOL-->|O|LO
-    LOL-.->|end|recognized
+    LOL-.->|end|recognized(recognized)
 </div>
 
 And here is our code. As noted before, in our implementation, it is almost identical to the implementation we would write for a DPA:
