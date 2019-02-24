@@ -1444,9 +1444,11 @@ The very best answer is probably `/^(?'balanced'(?:\(\g'balanced'\))*)$/x` for t
 
 If you enjoyed reading this introduction to formal languages and automata that recognize them, here are some interesting avenues to pursue:
 
-- Formal languages are actually specified with [formal grammars][formal grammar], not with informal descriptions like "palindrome," or, "binary number." The most well-known formal grammar is the [regular grammar], which defines a regular language. Regular grammars begat the original regular expressions.
-- Balanced parentheses has been discussed in this blog before: [Pattern Matching and Recursion] discusses building a recognizer out of composeable pattern-matching functions, while [Alice and Bobbie and Sharleen and Dyck] discusses a cheeky little solution to the programming problem.
-- For those comfortable with code examples written in Ruby, general subject of ideal computing machines and the things they can compute is explained brilliantly and accessibly in Tom Stuart's book [Understanding Comnputation].
+Formal languages are actually specified with [formal grammars][formal grammar], not with informal descriptions like "palindrome," or, "binary number." The most well-known formal grammar is the [regular grammar], which defines a regular language. Regular grammars begat the original regular expressions.
+
+Balanced parentheses has been discussed in this blog before: [Pattern Matching and Recursion] discusses building a recognizer out of composeable pattern-matching functions, while [Alice and Bobbie and Sharleen and Dyck] discusses a cheeky little solution to the programming problem.
+
+For those comfortable with code examples written in Ruby, general subject of ideal computing machines and the things they can compute is explained brilliantly and accessibly in Tom Stuart's book [Understanding Comnputation].
 
 [formal grammar]: https://en.wikipedia.org/wiki/Formal_grammar
 [regular grammar]: https://en.wikipedia.org/wiki/Formal_grammar#Regular_grammars
