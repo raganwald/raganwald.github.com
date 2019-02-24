@@ -91,6 +91,7 @@ Now let's move on.
 
 - [summary](#summary)
 - [further reading](#further-reading)
+- [a bonus problem](#a-bonus-problem)
 - [discussions](#discussions)
 
 ---
@@ -1464,7 +1465,7 @@ For those comfortable with code examples written in Ruby, the general subject of
 
 ---
 
-### bonus problem
+### a bonus problem
 
 Enthusiastic readers can try their hand at writing a function or generator that prints/generates all possible valid balanced parentheses strings. Yes, such a function will obviously run to infinity if left unchecked, a generator will be easier to work with.
 
