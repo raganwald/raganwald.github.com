@@ -1439,7 +1439,7 @@ The very best answer is probably `/^(?'balanced'(?:\(\g'balanced'\))*)$/x` for t
 
 [![Robarts](/assets/images/pushdown/hyfen.jpg)](https://www.flickr.com/photos/hyfen/206284953)
 
-*Detail of Robarts Library © 2006 [Andrew Louis](https://hyfen.net), [All Rights Reserved](https://help.flickr.com/en_us/change-your-photo's-license-in-flickr-B1SxTmjkX). Used by permission.*
+*Detail of Robarts Library © 2006 [Andrew Louis](https://hyfen.net).<br/><small>[All Rights Reserved](https://help.flickr.com/en_us/change-your-photo's-license-in-flickr-B1SxTmjkX). Used by permission.</small>*
 
 ---
 
