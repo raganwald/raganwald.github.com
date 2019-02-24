@@ -1436,7 +1436,9 @@ The very best answer is probably `/^(?'balanced'(?:\(\g'balanced'\))*)$/x` for t
 
 ---
 
-[![Beinecke Rare Book & Manuscript Library Interior](/assets/images/pushdown/beinecke-interior.jpg)](https://www.flickr.com/photos/gnrklk/33574585673)
+[![Robarts](/assets/images/pushdown/hyfen.jpg)](https://www.flickr.com/photos/hyfen/206284953)
+
+*Detail of Robarts Library © 2006 [Andrew Louis](https://hyfen.net), [All Rights Reserved](https://help.flickr.com/en_us/change-your-photo's-license-in-flickr-B1SxTmjkX). Used by permission.*
 
 ---
 
@@ -1455,6 +1457,32 @@ For those comfortable with code examples written in Ruby, the general subject of
 [Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html
 [Alice and Bobbie and Sharleen and Dyck]: http://raganwald.com/2018/11/14/dyck-joke.html
 [Understanding Computation]: https://www.amazon.com/Understanding-Computation-Machines-Impossible-Programs/dp/1449329276/ref=as_li_ss_tl?ie=UTF8&linkCode=ll1&tag=raganwald001-20&linkId=89116d710802aa56a49fd2dde7e742fa&language=en_US
+
+---
+
+[![Beinecke Rare Book & Manuscript Library Interior](/assets/images/pushdown/beinecke-interior.jpg)](https://www.flickr.com/photos/gnrklk/33574585673)
+
+---
+
+### bonus problem
+
+Enthusiastic readers can try their hand at writing a function or generator that prints/generates all possible valid balanced parentheses strings. Yes, such a function will obviously run to infinity if left unchecked, a generator will be easier to work with.
+
+The main thing to keep in mind is that such a generator must be arranged so that every finite balanced parentheses string must be output after a finite number of iterations. The following pseudo-code will not work:
+
+```javascript
+function * balanced () {
+  yield ''; // the only valid string with no top-level pairs
+
+  for (let p = 0, true; ++p) {
+    // yield every balanced parentheses string with p top-level parentheses
+  }
+}
+```
+
+A generator function written with this structure would first yield an infinite number of strings with a single top-level pair of balanced parentheses, e.g. `(), (()), ((())), (((()))), ...`. Therefore, strings like `()()` and `()()()`, which are both valid, would not appear within a finite number of iterations.
+
+It's an interesting exercise, and very much related to grammars and production rules.
 
 ---
 
