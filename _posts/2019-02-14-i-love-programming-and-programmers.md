@@ -3,7 +3,7 @@ title: "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown 
 tags: [allonge,mermaid]
 ---
 
-As discussed in [Pattern Matching and Recursion], a well-known programming puzzle is to write a function that determines whether a string of parentheses is "balanced," i.e. "Balanced" parentheses means that each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested.
+As discussed in [Pattern Matching and Recursion], a well-known programming puzzle is to write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested.
 
 [Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
 
@@ -512,7 +512,18 @@ Now, a stack implemented in JavaScript cannot actually encode an infinite amount
 
 But our implementation shows the basic principle, and it's good enough for any of the test strings we'll write by hand.
 
-Now how about a recognizer for balanced parentheses?
+Now how about a recognizer for balanced parentheses? Here is the state diagram:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|"(, [_] -> push ("|start
+    start-->|"), [(] -> pop"|start
+    start-.->|"end, []"|recognized(recognized)
+</div>
+
+Note that we have added some decoration to the arcs between internal states: Instead of just recognizing a single token, it recognizes a tuple of a token and the top of the stack. `[]` means it matches when the stack is empty, `[(]` means match when the top of the stack contains a `(`, and `_` is a wild-card that matches any non-empty token. We have also added two optional instructions for the stack: `-> push` and `-> pop`.
+
+And here's the code for the same DPA:
 
 ```javascript
 class BalancedParentheses extends DPA {
@@ -546,7 +557,7 @@ test(BalancedParentheses, [
 
 Aha! _Balanced parentheses is a deterministic context-free language._
 
-Our recognizer is so simple, we can give in to temptation and enhance it to recognize multiple types of parentheses:
+Our recognizer is so simple, we can give in to temptation and enhance it to recognize multiple types of parentheses (we won't bother with the diagram):
 
 ```javascript
 class BalancedParentheses extends DPA {
@@ -666,7 +677,26 @@ So we know that recursive regular expressions appear to be at least as powerful 
 
 ### nested parentheses
 
-To demonstrate that recursive regular expressions are more powerful than DPAs, let's begin by simplifying our balanced parentheses language. Here's a three-state DPA that recognizes _nested_ parentheses only, not all balanced parentheses:
+To demonstrate that recursive regular expressions are more powerful than DPAs, let's begin by simplifying our balanced parentheses language. Here's a three-state DPA that recognizes _nested_ parentheses only, not all balanced parentheses.
+
+Here's a simplified state diagram that just handles round parentheses:
+
+<div class="mermaid">
+  graph TD
+    start(start)-->|end|recognized(recognized)
+
+    start-->|"(, [] -> push ("|opening
+
+    opening-->|"(, [] -> push ("|opening
+
+    opening-->|"), [(] -> pop"|closing
+
+    closing-->|"), [(] -> pop"|closing
+
+    closing-.->|"end, []"|recognized
+</div>
+
+And gere's the full code handling all three kinds of parentheses:
 
 ```javascript
 class NestedParentheses extends DPA {
