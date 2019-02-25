@@ -516,12 +516,12 @@ Now how about a recognizer for balanced parentheses? Here is the state diagram:
 
 <div class="mermaid">
   graph LR
-    start(start)-->|"(, [_] -> push ("|start
-    start-->|"), [(] -> pop"|start
+    start(start)-->|"(, [_] v ("|start
+    start-->|"), [(] ^"|start
     start-.->|"end, []"|recognized(recognized)
 </div>
 
-Note that we have added some decoration to the arcs between internal states: Instead of just recognizing a single token, it recognizes a tuple of a token and the top of the stack. `[]` means it matches when the stack is empty, `[(]` means match when the top of the stack contains a `(`, and `_` is a wild-card that matches any non-empty token. We have also added two optional instructions for the stack: `-> push` and `-> pop`.
+Note that we have added some decoration to the arcs between internal states: Instead of just recognizing a single token, it recognizes a tuple of a token and the top of the stack. `[]` means it matches when the stack is empty, `[(]` means match when the top of the stack contains a `(`, and `_` is a wild-card that matches any non-empty token. We have also added two optional instructions for the stack: `v` to push, and `^` to pop.
 
 And here's the code for the same DPA:
 
@@ -685,13 +685,13 @@ Here's a simplified state diagram that just handles round parentheses:
   graph TD
     start(start)-->|end|recognized(recognized)
 
-    start-->|"(, [] -> push ("|opening
+    start-->|"(, [] v ("|opening
 
-    opening-->|"(, [] -> push ("|opening
+    opening-->|"(, [] v ("|opening
 
-    opening-->|"), [(] -> pop"|closing
+    opening-->|"), [(] ^"|closing
 
-    closing-->|"), [(] -> pop"|closing
+    closing-->|"), [(] ^"|closing
 
     closing-.->|"end, []"|recognized
 </div>
