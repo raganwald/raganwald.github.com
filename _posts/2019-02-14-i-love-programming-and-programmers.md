@@ -166,56 +166,110 @@ The only thing a DFA recognizer does is respond to tokens as it scans a string, 
 Here's a pattern for implementing the "name" recognizer DFA in JavaScript:
 
 ```javascript
+// infrastructure for writing deterministic finite automata
 const END = Symbol('end');
-const RECOGNIZED = Symbol('recognized');
-const UNRECOGNIZED = Symbol('unrecognized');
 
-function DFA (start) {
-  return string => {
-    let currentState = start;
+class DeterministicFiniteAutomaton {
+  constructor(internal = 'start') {
+    this.internal = internal;
+    this.halted = false;
+    this.recognized = false;
+  }
+
+  transitionTo(internal) {
+    this.internal = internal;
+    return this;
+  }
+
+  recognize() {
+    this.recognized = true;
+    return this;
+  }
+
+  halt() {
+    this.halted = true;
+    return this;
+  }
+
+  consume(token) {
+    return this[this.internal](token);
+  }
+
+  static evaluate (string) {
+    let state = new this();
+
     for (const token of string) {
-      const action = currentState(token);
+      const newState = state.consume(token);
 
-      if (action === RECOGNIZED) {
-        return true;
-      } else if (action === UNRECOGNIZED || action === undefined) {
+      if (newState === undefined || newState.halted) {
         return false;
+      } else if (newState.recognized) {
+        return true;
       } else {
-        currentState = action;
+        state = newState;
       }
     }
 
-    const finalAction = currentState(END);
-    return finalAction === RECOGNIZED;
+    const finalState = state.consume(END);
+    return !!(finalState && finalState.recognized);
   }
 }
 
-function testDFA (recognizer, examples) {
+function test (recognizer, examples) {
   for (const example of examples) {
-    console.log(`'${example}' => ${recognizer(example)}`);
+    console.log(`'${example}' => ${recognizer.evaluate(example)}`);
   }
 }
 
-// state definitions
-const start = token => token === 'R' ? R : UNRECOGNIZED;
-const R = token => token === 'e' ? Re : UNRECOGNIZED;
-const Re = token => token === 'g' ? Reg : UNRECOGNIZED;
-const Reg = token => {
-  switch (token) {
-    case END:
-      return RECOGNIZED;
-    case 'g':
-      return Regg;
-	}
+// our recognizer
+class Reginald extends DeterministicFiniteAutomaton {
+  start (token) {
+    if (token === 'R') {
+      return this.transitionTo('R');
+    }
+  }
+
+  R (token) {
+    if (token === 'e') {
+      return this.transitionTo('Re');
+    }
+  }
+
+  Re (token) {
+    if (token === 'g') {
+      return this.transitionTo('Reg');
+    }
+  }
+
+  Reg (token) {
+    if (token === 'g') {
+      return this.transitionTo('Regg');
+    }
+    if (token === END) {
+      return this.recognize();
+    }
+  }
+
+  Regg (token) {
+    if (token === 'i') {
+      return this.transitionTo('Reggi');
+    }
+  }
+
+  Reggi (token) {
+    if (token === 'e') {
+      return this.transitionTo('Reggie');
+    }
+  }
+
+  Reggie (token) {
+    if (token === END) {
+      return this.recognize();
+    }
+  }
 }
-const Regg = token => token === 'i' ? Reggi : UNRECOGNIZED;
-const Reggi = token => token === 'e' ? Reggie : UNRECOGNIZED;
-const Reggie = token => token === END ? RECOGNIZED : UNRECOGNIZED;
 
-// define our recognizer
-const reginald = DFA(start);
-
-testDFA(reginald, [
+test(Reginald, [
   '', 'Scott', 'Reg', 'Reginald', 'Reggie'
 ]);
   //=>
@@ -262,33 +316,36 @@ For some languages that have an infinite number of strings, we can still constru
 And we can also write this DFA in JavaScript:
 
 ```javascript
-const start = token => {
-  if (token === '0') {
-    return zero;
-  } else if (token === '1') {
-    return oneOrMore;
+class Binary extends DeterministicFiniteAutomaton {
+  start (token) {
+    if (token === '0') {
+      return this.transitionTo('zero');
+    }
+    if (token === '1') {
+      return this.transitionTo('oneOrMore');
+    }
   }
-};
 
-const zero = token => {
-  if (token === END) {
-    return RECOGNIZED;
+  zero (token) {
+    if (token === END) {
+      return this.recognize();
+    }
   }
-};
 
-const oneOrMore = token => {
-  if (token === '0') {
-    return oneOrMore;
-  } else if (token === '1') {
-    return oneOrMore;
-  } else if (token === END) {
-    return RECOGNIZED;
+  oneOrMore (token) {
+    if (token === '0') {
+      return this.transitionTo('oneOrMore');
+    }
+    if (token === '1') {
+      return this.transitionTo('oneOrMore');
+    }
+    if (token === END) {
+      return this.recognize();
+    }
   }
-};
+}
 
-const binary = DFA(start);
-
-testDFA(binary, [
+test(binary, [
   '', '0', '1', '00', '01', '10', '11',
   '000', '001', '010', '011', '100',
   '101', '110', '111',
@@ -426,12 +483,12 @@ Therefore, our proof that a DFA with finite number of internal states cannot rec
 
 ### balanced parentheses is a deterministic context-free language
 
-Let's start with a recognizer that can implement DPAs. Now that we have to track both the current internal state _and_ external state in the form of a stack, we'll add a little ceremony and write our recognizers as JavaScript classes.
+Let's start with a recognizer that can implement DPAs. Now that we have to track both the current internal state _and_ external state in the form of a stack.
 
 ```javascript
 const END = Symbol('end');
 
-class DPA {
+class DeterministicPushdownAutomaton {
   constructor(internal = 'start', external = []) {
     this.internal = internal;
     this.external = external;
@@ -526,7 +583,7 @@ Note that we have added some decoration to the arcs between internal states: Ins
 And here's the code for the same DPA:
 
 ```javascript
-class BalancedParentheses extends DPA {
+class BalancedParentheses extends DeterministicPushdownAutomaton {
   start(token) {
     if (token === '(') {
       return this.push(token);
@@ -560,7 +617,7 @@ Aha! _Balanced parentheses is a deterministic context-free language._
 Our recognizer is so simple, we can give in to temptation and enhance it to recognize multiple types of parentheses (we won't bother with the diagram):
 
 ```javascript
-class BalancedParentheses extends DPA {
+class BalancedParentheses extends DeterministicPushdownAutomaton {
   start(token) {
     if (token === '(') {
       return this.push(token);
@@ -699,7 +756,7 @@ Here's a simplified state diagram that just handles round parentheses:
 And gere's the full code handling all three kinds of parentheses:
 
 ```javascript
-class NestedParentheses extends DPA {
+class NestedParentheses extends DeterministicPushdownAutomaton {
   start(token) {
     switch(token) {
       case END:
@@ -830,7 +887,7 @@ Our first crack is to modify our existing DPA by replacing opening and closing p
 Here's our DPA:
 
 ```javascript
-class NestedQuotes extends DPA {
+class NestedQuotes extends DeterministicPushdownAutomaton {
   start(token) {
     switch(token) {
       case END:
@@ -1103,14 +1160,14 @@ class BinaryPalindrome extends PushdownAutomaton {
 }
 ```
 
-Now let's modify `DPA` to create `PushdownAutomaton`. We'll literally copy the code from `class DPA { ... }` and make the following changes:[^well-actually]
+Now let's modify `DPA` to create `PushdownAutomaton`. We'll literally copy the code from `class DeterministicPushdownAutomaton { ... }` and make the following changes:[^well-actually]
 
 [^well-actually]: If we were really strict about OO and inheritance, we might have them both inherit from a common base class of `AbstractPushdownAutomaton`, but "Aint nobody got time for elaborate class hierarchies."
 
 ```javascript
 class PushdownAutomaton {
 
-   // ... copy-pasta from class DPA
+   // ... copy-pasta from class DeterministicPushdownAutomaton
 
   consume(token) {
     return [...this[this.internal](token)];
