@@ -82,7 +82,7 @@ Now let's move on.
 - [context-free languages](#context-free-languages)
 - [why deterministic pushdown automata cannot recognize palindromes](#why-deterministic-pushdown-automata-cannot-recognize-palindromes)
 - [pushdown automata](#pushdown-automata)
-- [an object-oriented deterministic pushdown automaton](#an-object-oriented-deterministic-pushdown-automaton)
+- [implementing pushdown automata](#implementing-pushdown-automata)
 - [deterministic context-free languages are context-free languages](#deterministic-context-free-languages-are-context-free-languages)
 
 [The End](#the-end):
@@ -1085,7 +1085,7 @@ This logic is formulated as a generator that yields one or more outcomes. It can
 
 ---
 
-### an object-oriented deterministic pushdown automaton
+### implementing pushdown automata
 
 We will now use this approach to write a recognizer for the "even-length binary palindrome" problem. We'll use the same general idea as our `NestedParentheses` language, but we'll make three changes:
 
@@ -1160,7 +1160,7 @@ class BinaryPalindrome extends PushdownAutomaton {
 }
 ```
 
-Now let's modify `DPA` to create `PushdownAutomaton`. We'll literally copy the code from `class DeterministicPushdownAutomaton { ... }` and make the following changes:[^well-actually]
+Now let's modify `DeterministicPushdownAutomaton` to create `PushdownAutomaton`. We'll literally copy the code from `class DeterministicPushdownAutomaton { ... }` and make the following changes:[^well-actually]
 
 [^well-actually]: If we were really strict about OO and inheritance, we might have them both inherit from a common base class of `AbstractPushdownAutomaton`, but "Aint nobody got time for elaborate class hierarchies."
 
@@ -1409,7 +1409,7 @@ class PushdownAutomaton {
 }
 ```
 
-Now if we want to show that an automaton written in non-deterministic style has the same semantics as an automaton written for our original `DPA` class, we can write it like this:
+Now if we want to show that an automaton written in non-deterministic style has the same semantics as an automaton written for our original `DeterministicPushdownAutomaton` class, we can write it like this:
 
 ```javascript
 class LOL extends PushdownAutomaton {
