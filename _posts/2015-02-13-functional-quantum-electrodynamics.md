@@ -43,7 +43,7 @@ They established that arbitrary computations could be represented a small set of
 [To Mock a Mockingbird]: http://www.amazon.com/gp/product/0192801422/ref=as_li_ss_tl?ie=UTF8&tag=raganwald001-20&linkCode=as2&camp=1789&creative=390957&creativeASIN=0192801422
 [oscin.es]: https://github.com/raganwald/oscin.es
 
-Let's start with some of the building blocks of combinatory logic, the K, I, and V combinators, nicknamed the "Kestrel", the "Idiot Bird", and the "Vireo:"
+Let's start with some of the building blocks of combinatory logic, the K, I, and V combinators, nicknamed the "Kestrel," the "Idiot Bird," and the "Vireo:"
 
 ```javascript
 const K = (x) => (y) => x;
