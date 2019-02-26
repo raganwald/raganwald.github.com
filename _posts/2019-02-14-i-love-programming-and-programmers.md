@@ -50,7 +50,7 @@ That will lead us on an exploration of formal languages, from regular languages,
 
 This essay focuses on the "raw" construction materials of formal languages and the idealized computing machines that recognize them. If JavaScript is ubiquitous aluminum siding, and if Elixir is gleaming steel and glass, pushdown automata are raw, exposed, and brutal concrete.
 
-Now let's move on.
+Let's get started.
 
 ---
 
