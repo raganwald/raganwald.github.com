@@ -753,7 +753,7 @@ Here's a simplified state diagram that just handles round parentheses:
     closing-.->|"end, []"|recognized
 </div>
 
-And gere's the full code handling all three kinds of parentheses:
+And here's the full code handling all three kinds of parentheses:
 
 ```javascript
 class NestedParentheses extends DeterministicPushdownAutomaton {
