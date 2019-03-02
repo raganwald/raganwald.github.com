@@ -169,9 +169,9 @@ function merge (...generators) {
   }
 }
 
-const wholeNumbers = upTo(0, Infinity);
-const negativeIntegers = downTo(-1, -Infinity);
-const integers = merge(wholeNumbers, negativeIntegers);
+const naturals = upTo(0, Infinity);
+const negatives = downTo(-1, -Infinity);
+const integers = merge(naturals, negatives);
 
 for (const i of integers()) {
   console.log(i);
@@ -190,10 +190,58 @@ for (const i of integers()) {
     ...
 ```
 
-We're going to make some more enumerations, and some tools for composing them, but before we do, let;'s talk about why writing enumerations is interesting.
+And another that zips generators together to make a new generator:
+
+```javascript
+function zip (...generators) {
+  return function * zipped () {
+    const iterables = generators.map(g => g());
+
+    while (true) {
+      const values =
+        iterables
+      	 .map(i => i.next())
+         .filter(({done}) => !done)
+         .map(({value}) => value)
+      if (values.length === 0) break;
+      yield values;
+    }
+  }
+}
+
+function * a () {
+  let a = '';
+
+  while (true) {
+    yield a;
+    a = `${a}a`;
+  }
+}
+
+for (const s of zip(a, naturals)()) {
+  console.log(s);
+}
+  //=>
+    ["", 0]
+    ["a", 1]
+    ["aa", 2]
+    ["aaa", 3]
+    ["aaaa", 4]
+
+    ...
+```
+
+We're going to make some more enumerations, and some tools for composing them, but before we do, let's talk about why writing enumerations is interesting.
 
 ### denumerables
 
+A [countable set]) is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumnerables][countable set] are countable sets with an infinite number of elements.
+
+[countable set]: https://en.wikipedia.org/wiki/Countable_set
+
+As programmers, we experiment with such ideas by writing code. So instead of coming up with an elaborate proof that such-and-such a set is countable, we write an enumeration for it. If we can enumerate a set, we can put it into a 1-to-1 correspeondance with a subset of the natural numbers.
+
+In the example above, zipping an enumeration of strings (`''`, `'a'`, `'aa'`, ...) with the natural numbers clearly puts them in a one-to-one correspondance with the natural numbers. Since that is possible with any enumeration, if we can enumerate a set, it is a countable set. If we can enumerate a sset and it has an infinite number of elements, it is denumerable.
 
 - enumerating a set proves that it is countable/cardinality one
 
