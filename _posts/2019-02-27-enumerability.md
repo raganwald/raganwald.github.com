@@ -649,9 +649,38 @@ for (const product of products(naturals)()) {
     ...
 ```
 
-It will take a good long while, but this generator will work its way diagonal by diagonal through all of the finite exponents of a denumerable, which shows that not only is the set of any one exponent of a denumerable denumerable, but so is the set of all exponents of a denumerable.
+It will take a good long while, but this generator will work its way diagonal by diagonal through all of the finite positive exponents of a denumerable, which shows that not only is the set of any one exponent of a denumerable denumerable, but so is the set of all exponents of a denumerable.
 
+Of course, we are omitting one very important exponent, `0`. This only produces one product, `[]`. We will fix our `product` to include it:
 
+```javascript
+function cons (head, generator) {
+  return function * () {
+    yield head;
+    yield * generator();
+  }
+}
+const products =
+  generator =>
+	cons(
+      [],
+      mapGeneratorWith(
+          ([exponent, column]) => at(exponent, column),
+          prod2(exponentsOf(generator), naturals)
+      )
+    );
+
+for (const product of products(naturals)()) {
+  console.log(product);
+}
+  //=>
+    [0]
+    [1]
+    [0, 0]
+    [2]
+
+    ...
+```
 
 - enumerating a set proves that it is countable/cardinality one
 
