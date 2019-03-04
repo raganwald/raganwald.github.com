@@ -1,13 +1,13 @@
 ---
 title: "Enumerations, Denumerables, and Cardinals"
-tags: [allonge,mermaid,noindex]
+tags: [allonge,noindex]
 ---
 
-### enumeables and enumerations
+### enumerables and enumerations
 
 In programming language jargon, an _enumerable_ is a value that can be accessed sequentially, or iterated over. Different languages use the term in slightly different ways, although they all have some relation to its basic definition.
 
-In JavaScript, objects (including collections like arrays) can have [enumerable properties]. For example, the array `['one', 'two', 'three', 'infinity']` has three enumberable properties, `0`, `1`, `2`, and `3`. It also has a non-enumerable property, `length`.
+In JavaScript, objects (including collections like arrays) can have [enumerable properties]. For example, the array `['one', 'two', 'three', 'infinity']` has three enumerable properties, `0`, `1`, `2`, and `3`. It also has a non-enumerable property, `length`.
 
 [enumerable properties]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties
 
@@ -44,7 +44,7 @@ for (const n in dictionary) {
   '∞'
 ```
 
-In JavaScript, we do not say that the elements of an array or the values of an object are enumerable, we just say that some of the properties of any objct (including arrays) are enumerable.
+In JavaScript, we do not say that the elements of an array or the values of an object are enumerable, we just say that some of the properties of any object (including arrays) are enumerable.
 
 Ruby uses the word slightly differently. In Ruby, [`Enumerable`][ruby-enumerable] is a `module` that is used as other languages would use a mixin. It applies to collections like arrays, and for a collection that provides a way to access the elements sequentially with a `.each` method, the `Enumerable` module adds a number of useful methods.
 
@@ -54,7 +54,7 @@ In Ruby, we would say that a class or object that "mixes in" the module `Enumera
 
 So which is it? Are collections enumerable? The indices of the collections? Or their elements?
 
-Informally speaking, the line we will take in this essay is that the term is imprecise in programming jargon, and that it is the elements of a collection that are enumerable. When we say "This array is enumerable," that is a shorthand in programming jargon for saying that its elements are enumerable, and some interafce is provided for acessing its elements in sequence.
+Informally speaking, the line we will take in this essay is that the term is imprecise in programming jargon, and that it is the elements of a collection that are enumerable. When we say "This array is enumerable," that is a shorthand in programming jargon for saying that its elements are enumerable, and some interafce is provided for accessing its elements in sequence.
 
 That conflicts with the technial way that JavaScript uses the word, but we will shrug and say that iterating over the indices of an object is one particular interface for accessing the elements of a collection, as are other ways like using an actual iterator.
 
@@ -102,9 +102,9 @@ for (const i of anEnumerationOfIntegers()) {
     ...
 ```
 
-We can also make simple enumerations and find ways to compose them. We are going to use a very consistent style. Unless otherwise noted, we are going to work with the very simplest kind of generator, a geneator function that takes no arguments, like `anEnumerationOfIntegers` above.
+We can also make simple enumerations and find ways to compose them. We are going to use a very consistent style. Unless otherwise noted, we are going to work with the very simplest kind of generator, a generator function that takes no arguments, like `anEnumerationOfIntegers` above.
 
-Sometimes, we want to paramaterize a generator. Instead of writing a generator that takes parameters, we will consistently write functions that take parameters and return simple generators. So instead of writing timething like:
+Sometimes, we want to parameterize a generator. Instead of writing a generator that takes parameters, we will consistently write functions that take parameters and return simple generators. So instead of writing timething like:
 
 ```javascript
 function * upTo (i, limit, by = 1) {
@@ -238,25 +238,25 @@ We're going to make some more enumerations, and some tools for composing them, b
 
 ### denumerables and verification
 
-*way too long. simoply and possibly split in two after simplifying*
+*way too long. simply and possibly split in two after simplifying*
 
-A [countable set] is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumnerables][countable set] are countable sets with an infinite number of elements.
+A [countable set] is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumerables][countable set] are countable sets with an infinite number of elements.
 
 [countable set]: https://en.wikipedia.org/wiki/Countable_set
 
-As programmers, we experiment with such ideas by writing code. So instead of coming up with an elaborate proof that such-and-such a set is countable, we write an enumeration for it. If we can enumerate a set, we can put it into a 1-to-1 correspeondance with a subset of the natural numbers.
+As programmers, we experiment with such ideas by writing code. So instead of coming up with an elaborate proof that such-and-such a set is countable, we write an enumeration for it. If we can enumerate a set, we can put it into a 1-to-1 correspondence with a subset of the natural numbers.
 
 In the example above, zipping an enumeration of strings (`''`, `'a'`, `'aa'`, ...) with the natural numbers clearly puts them in a one-to-one correspondance with the natural numbers. Since that is possible with any enumeration, if we can enumerate a set, it is a countable set. If we can enumerate a set, and it has an infinite number of elements, it is denumerable.
 
 Before we look at other examples of denumerable sets, let's point out a few things about enumerations. First, if we say we have an enumeration of a finite countable set, it is easy to verify that the enumeration is correct. We inspect its output, and verify that it outputs every element of the set, no more, and no less.
 
-If it outputs an element that is not in the set, or fails to output an element that is in the set, it is not an enumertaion of the set. That is straightforward with finite sets (although the inspection may take a while with really big enumerations, like enumerating all of the stars in the night sky).
+If it outputs an element that is not in the set, or fails to output an element that is in the set, it is not an enumeration of the set. That is straightforward with finite sets (although the inspection may take a while with really big enumerations, like enumerating all of the stars in the night sky).
 
-But what about enumerating a denumnerable set? How do we know that an enumeration is correct? There are two ways, one formal, one empirical. In the formal verification, we examine the algorithm for the enumeration itself, and use formal methods prove that it must eventually output every element of the set, and that it never outputs an element not in the set.
+But what about enumerating a denumerable set? How do we know that an enumeration is correct? There are two ways, one formal, one empirical. In the formal verification, we examine the algorithm for the enumeration itself, and use formal methods prove that it must eventually output every element of the set, and that it never outputs an element not in the set.
 
 Or do we? If the set is denumerable, it has an infinite number of elements. No enumeration can eventually output all of its elements: A correct enumeration must run forever. Instead, what we say is that we wish to prove that the enumeration never outputs an element that is not in the set, and for any element we choose, the enumeration will output that element in a finite number of iterations.
 
-The empirical method has a similar flavour, but replaces the rigorous proof with testing. In the empirical method, we come up with elements of the set, run the enumeratioon, and verify through observation that first, none of the elements output by the enumeration are not in the set, and second, that the elements we chose are eventually output by the enumeration.
+The empirical method has a similar flavour, but replaces the rigorous proof with testing. In the empirical method, we come up with elements of the set, run the enumeration, and verify through observation that first, none of the elements output by the enumeration are not in the set, and second, that the elements we chose are eventually output by the enumeration.
 
 The relationship between the formal and empirical methods are isomorphic to the relationship between formal verification of program behaviour and writing tests.
 
@@ -264,7 +264,7 @@ The relationship between the formal and empirical methods are isomorphic to the 
 
 ### cardinality
 
-The cardinality of a set is a measure of its size. Two sets have the same cardinality if their elements can be put into a one-to-one correspeondance with each other. Cardinalities can also be compared. If the elements of set A can be put into a one-to-one correspondance with a subset of the elements of set B, but the elements of set B cannot be put into a one-to-one correspoondance with set A, we say that A has a lower cardinality than B.
+The cardinality of a set is a measure of its size. Two sets have the same cardinality if their elements can be put into a one-to-one correspondence with each other. Cardinalities can also be compared. If the elements of set A can be put into a one-to-one correspondance with a subset of the elements of set B, but the elements of set B cannot be put into a one-to-one correspondence with set A, we say that A has a lower cardinality than B.
 
 Obviously, the cardinalities of finite sets are natural numbers. For example, the cardinality of `[0, 1, 2, 3, Infinity]` is `4`, the same as its length.
 
@@ -357,7 +357,7 @@ for (const fraction of twelveRationals()) {
     3/3
 ```
 
-The näive approach iterates through all of the denominators members for each of the numerator's members. This is fast and simple, and works just fine for generators that only yield a finite number of elements. However, if we apply this to denumerables, it doesn't work:
+The naïve approach iterates through all of the denominators members for each of the numerator's members. This is fast and simple, and works just fine for generators that only yield a finite number of elements. However, if we apply this to denumerables, it doesn't work:
 
 ```javascript
 const naturals = upTo(0, Infinity);
@@ -389,19 +389,19 @@ for (const s of rationals()) {
     ...
 ```
 
-A näive product of two or more sets, where at least one of the sets is denumnerable, is not an enumeration of the product of the sets. An enumeration of a denumerable guarantees that every element of the set appears in a finite number of outputs. Or likewise, that it puts the elements of the denumerable set into a one-to-one correspondance with teh natural numbers.
+A naïve product of two or more sets, where at least one of the sets is denumerable, is not an enumeration of the product of the sets. An enumeration of a denumerable guarantees that every element of the set appears in a finite number of outputs. Or likewise, that it puts the elements of the denumerable set into a one-to-one correspondance with the natural numbers.
 
 The naïve product approach to enumerating the rationals does not output any element with a numerator greater than zero in a finite number of outputs. `14/6`, `19/62`, ... All of the fractions we can think of greater than zero never appear. They cannot be put into a one-to-one correspondance with the natural numbers.
 
 This can be proven by assuming the contrary and then deriving a contradiction. Let us take a fraction greater than zero, `1962/614`. We are assuming that fractions with a non-zero numerator appear after a finite number of outputs, so there is some finite number, **n**, that represents the position of `1962/614` in the enumeration.
 
-Let us scroll down the output looking for `n`. According to our algorithm, at position `n`, we will find `0/n`. But our assertion is that we will find `1962/614`. We can't find both, therefore the assumption that `1962/614` appears in a finite number of outputs is false, and the näive product cannot enumerate denumerables.
+Let us scroll down the output looking for `n`. According to our algorithm, at position `n`, we will find `0/n`. But our assertion is that we will find `1962/614`. We can't find both, therefore the assumption that `1962/614` appears in a finite number of outputs is false, and the naïve product cannot enumerate denumerables.
 
 ---
 
 ### enumerating the product of denumerables
 
-To enumerate the näive product of two denumerables, we took the elements "row by row," to use the table visualization. This did not work, and neither would taking the elements column by column. What does work, is to take the elements _diagonal by diagonal_.
+To enumerate the naïve product of two denumerables, we took the elements "row by row," to use the table visualization. This did not work, and neither would taking the elements column by column. What does work, is to take the elements _diagonal by diagonal_.
 
 Here's our table again:
 
@@ -415,9 +415,9 @@ Here's our table again:
 
 If we take the elements diagonal by diagonal, we will output: `0/1`, `0/2`, `1/1`, `0/3`, `1/2`, `2/1`, ...
 
-Because of the order in which we access the elements of the generators, we cannot rely on iterating through the generators in order. We will build a random-access abstraction, `at()`. There is a simple schlemiel implementation:[^schlemeil]
+Because of the order in which we access the elements of the generators, we cannot rely on iterating through the generators in order. We will build a random-access abstraction, `at()`. There is a simple schlemiel implementation:[^schlemiel]
 
-[^schlemeil]: This is called a "schlemeil" implementation, because every time we wish to access a generator's element, we enumerate all of the elements of the generator from the beginning. This requires very little memory, but is wasteful of time. A memoized varsion is listed below.
+[^schlemiel]: This is called a "schlemiel" implementation, because every time we wish to access a generator's element, we enumerate all of the elements of the generator from the beginning. This requires very little memory, but is wasteful of time. A memoized version is listed below.
 
 ```javascript
 function at (generator, index) {
@@ -479,13 +479,13 @@ for (const rational of rationals()) {
 
 As the product is output row-by-row, we can now say with certainty that no matter which element we care to name, it has appeared as the nth element for some finite value of n.
 
-At the enormous cost of computing resources, we have an enumeration that enumerates the product of two denumerable sets, and we used it to enumeration rational numbers. This demonstrates that the ratttional numbers have the same cardinality of the natural numbers, and that any product of two denumerable sets is also denumerable.
+At the enormous cost of computing resources, we have an enumeration that enumerates the product of two denumerable sets, and we used it to enumeration rational numbers. This demonstrates that the rational numbers have the same cardinality of the natural numbers, and that any product of two denumerable sets is also denumerable.
 
 ---
 
 ### flattening denumerables
 
-We previously looked at `merge`, a function that would merge a finite number of denumerables. It would not work for a denumerable number of denumerables, as it takes the elements "column-by-column," like a näive product.
+We previously looked at `merge`, a function that would merge a finite number of denumerables. It would not work for a denumerable number of denumerables, as it takes the elements "column-by-column," like a naïve product.
 
 Consider this generator that generates exponents of natural numbers:
 
@@ -517,7 +517,7 @@ for (const powerOfTwo of twos()) {
     ...
 ```
 
-If we compose it with a mapping, we can get a generator that generates generaors that generate powers of natural numbers:
+If we compose it with a mapping, we can get a generator that generates generators that generate powers of natural numbers:
 
 ```javascript
 const naturalPowers = mapGeneratorWith(exp, naturals);
@@ -602,9 +602,9 @@ for (const triple of threeD()) {
 
 We now have `prod`, a function that enumerates the product of any number of denumerables.
 
-In aritmatic, exponentiation is the multiplying of a number by itself a certain number of times. For example, three to the power of 4 (`3^4`), is equivalent to three multiplied by three mulitplied by three multiplied by three (`3*3*3*3`). Or we might say that it is the product of four threes.
+In arithmetic, exponentiation is the multiplying of a number by itself a certain number of times. For example, three to the power of 4 (`3^4`), is equivalent to three multiplied by three multiplied by three multiplied by three (`3*3*3*3`). Or we might say that it is the product of four threes.
 
-We can take the exponent of denumerables as well. Here is the absolutely näive implementation:
+We can take the exponent of denumerables as well. Here is the absolutely naïve implementation:
 
 ```javascript
 function exponent (generator, n) {
@@ -728,31 +728,9 @@ The direct way to establish this is to write the enumeration we want. Let's star
 
 The set of all finite products of the natural numbers contains entries like `[]`, `[0]`, `[0, 0]`, `[0, 1]`, `[1, 0]`, `[0, 0, 0]`, `[0, 0, 1]`, `[0, 1, 0]`, `[1, 0, 0]`, `[0, 1, 1]`, &c. However for the purpose of enumerating the set of all finite subsets of a denumerable, the only sets that matter are `{}`, `{0}`, `{0, 1}`, .... The ordering of elements is irrelevant, as are duplicate elements.
 
-*establish sliceFrom and a denumerable of chocies.*
-
-```javascript
-const balanced =
-  mapGeneratorWith(
-    product =>
-      product.map(i => `(${at(balanced, i)})`).join(''),
-      products(naturals)
-  );
-```
-
-- enumerating a set proves that it is countable/cardinality one
-
-- simple examples of subsets of integers being equal in cardinality to integers
-  - integers equal to whole numbers
-
-- tuples
-  - why "counting" doesn't work.
-  - rational numbers
-
-- generalized n-ples
-
-- the set of all n-ples
+*establish sliceFrom and a denumerable of choices.*
 
 ---
 
-- self-reference
+### trees
 
