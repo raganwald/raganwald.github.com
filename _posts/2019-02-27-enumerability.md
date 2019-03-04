@@ -152,7 +152,7 @@ for (const i of thunderbirds()) {
     0
 ```
 
-Just as functions can return generators, functions can also take generators as arguments. Here's a function that merges generators into a single enumeration:
+Just as functions can return generators, functions can also take generators as arguments. Here's a function that merges a finite number of generators into a single enumeration:
 
 ```javascript
 function merge (...generators) {
@@ -477,11 +477,89 @@ for (const rational of rationals()) {
     ...
 ```
 
-As theproduct is output row-byrow, we can now say with certainty that no matter which element we care to name, it has appeared as the nth element for some finite value of n.
+As the product is output row-by-row, we can now say with certainty that no matter which element we care to name, it has appeared as the nth element for some finite value of n.
 
 At the enormous cost of computing resources, we have an enumeration that enumerates the product of two denumerable sets, and we used it to enumeration rational numbers. This demonstrates that the ratttional numbers have the same cardinality of the natural numbers, and that any product of two denumerable sets is also denumerable.
 
-By inference, the product of three or more infinite sets is also enumerable, because the denumerability of the product operation is transitive. Take denumerable sets `a`, `b`, `c`, and `d`. `a` and `b` are denumerable, and we know that `prod2(a, b)` is denumerable. Therefore `prod2(prod2(a, b), c)` is denumerable, and so is `prod2(prod2(prod2(a, b), c), d)`.
+---
+
+### flattening denumerables
+
+We previously looked at `merge`, a function that would merge a finite number of denumerables. It would not work for a denumerable number of denumerables, as it takes the elements "column-by-column," like a näive product.
+
+Consider this generator that generates exponents of natural numbers:
+
+```javascript
+const exp =
+  n =>
+    mapGeneratorWith(
+      p => Math.pow(n, p),
+      upTo(1, Infinity)
+    );
+
+const twos = exp(2);
+
+for (const powerOfTwo of twos()) {
+  console.log(powerOfTwo);
+}
+  //=>
+    2
+    4
+    8
+    16
+    32
+    64
+    128
+    256
+    512
+    1024
+
+    ...
+```
+
+If we compose it with a mapping, we can get a generator that generates generaors that generate powers of natural numbers:
+
+```javascript
+const naturalPowers = mapGeneratorWith(exp, naturals);
+
+naturalPowers
+  //=>
+    0, 0, 0, 0, 0, ...
+    1, 1, 1, 1, 1, ...
+    2, 4, 8, 16, 32, ...
+    3, 9, 27, 81, 243, ...
+    4, 16, 64, 256, 1024, ...
+    5, 25, 125, 625, 3125, ...
+    6, 36, 216, 1296, 7776, ...
+    7, 49, 343, 2401, 16807, ...
+
+    ...
+```
+
+We now wish to merge all of these values into a single generator. We can use `prod2` to merge a denumerable number of denumerables with a little help from `at`.
+
+We will call our function `flatten`:
+
+```javascript
+const flatten =
+  denumerableOfDenumerables =>
+    mapGeneratorWith(
+      ([denumerables, index]) => at(denumerables, index),
+      prod2(denumerableOfDenumerables, naturals)
+    );
+
+flatten(naturalPowers)
+```
+
+This verifies for us that the sum of a denumerable number of denumerables is also denumerable.
+
+---
+
+### exponentiation
+
+Back to products. The product of two denumerables in denumerable.
+
+By inference, the product of three or more denumerables is also denumerable, because the denumerability of the product operation is transitive. Take denumerable sets `a`, `b`, `c`, and `d`. `a` and `b` are denumerable, and we know that `prod2(a, b)` is denumerable. Therefore `prod2(prod2(a, b), c)` is denumerable, and so is `prod2(prod2(prod2(a, b), c), d)`.
 
 We can build `prod` on this basis:
 
@@ -524,10 +602,6 @@ for (const triple of threeD()) {
 
 We now have `prod`, a function that enumerates the product of any number of denumerables.
 
----
-
-### exponentiation
-
 In aritmatic, exponentiation is the multiplying of a number by itself a certain number of times. For example, three to the power of 4 (`3^4`), is equivalent to three multiplied by three mulitplied by three multiplied by three (`3*3*3*3`). Or we might say that it is the product of four threes.
 
 We can take the exponent of denumerables as well. Here is the absolutely näive implementation:
@@ -559,37 +633,9 @@ for (const triple of threeD()) {
     ...
 ```
 
-`exponent` works for any finite exponent of a denumerable set. Consider now a generator that generates exponents:
+`exponent` works for any finite exponent of a denumerable set. When we were looking at flatten, we made a function, `exp`, that generates the exponents of a natural number.
 
-```javascript
-const exponentsOfNumber =
-      n =>
-		mapGeneratorWith(
-          p => Math.pow(n, p),
-          upTo(1, Infinity)
-        );
-
-const twos = exponentsOfNumber(2);
-
-for (const powerOfTwo of twos()) {
-  console.log(powerOfTwo);
-}
-  //=>
-    2
-    4
-    8
-    16
-    32
-    64
-    128
-    256
-    512
-    1024
-
-    ...
-```
-
-What happens if we make a generator that is the exponents of denumerables? We get a generator that gives us generators:
+We can do a similar thing with the exponents of a denumerable:
 
 ```javascript
 const exponentsOf =
@@ -611,19 +657,12 @@ exponentsOf(naturals)
 
 It seems very extravagant to start thinking about an enumeration of enumerations of elements of a single denumerable (like the natural numbers), but we could look at all those elements another way: We are looking at all of the possible products of a denumerable.
 
-We know that any one product of a denumerable with itself any finite number of times is denumerable. Are all of those finite products denumerable in aggregate? Yes, and we can demonstrate this by taking the product of `exponentsOf(naturals)` and the `naturals`, and using the naturals to index the products:
+We can flatten them into a single denumerable, of course:
 
 ```javascript
-const products =
-  generator =>
-  	mapGeneratorWith(
-  		([exponent, column]) => at(exponent, column),
-  		prod2(exponentsOf(generator), naturals)
-    );
+const products = generator => flatten(exponentsOf(generator));
 
-for (const product of products(naturals)()) {
-  console.log(product);
-}
+products(naturals)
   //=>
     [0]
     [1]
@@ -660,26 +699,30 @@ function cons (head, generator) {
     yield * generator();
   }
 }
-const products =
-  generator =>
-	cons(
-      [],
-      mapGeneratorWith(
-          ([exponent, column]) => at(exponent, column),
-          prod2(exponentsOf(generator), naturals)
-      )
-    );
+
+const products = generator => cons([], flatten(exponentsOf(generator)));
 
 for (const product of products(naturals)()) {
   console.log(product);
 }
   //=>
+    []
     [0]
     [1]
     [0, 0]
     [2]
+    [0, 1]
 
     ...
+```
+
+```javascript
+const balanced =
+  mapGeneratorWith(
+    product =>
+      product.map(i => `(${at(balanced, i)})`).join(''),
+      products(naturals)
+  );
 ```
 
 - enumerating a set proves that it is countable/cardinality one
