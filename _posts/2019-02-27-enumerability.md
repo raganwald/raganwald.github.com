@@ -555,7 +555,7 @@ This verifies for us that the sum of a denumerable number of denumerables is als
 
 ---
 
-### exponentiation
+### exponentiation of denumerables
 
 Back to products. The product of two denumerables in denumerable.
 
@@ -715,6 +715,20 @@ for (const product of products(naturals)()) {
 
     ...
 ```
+
+And now we have shown that the set containing all of the finite products (including what we might call the zeroth product) of a denumerable is also denumerable, by dint of having written an enumeration for it.
+
+---
+
+### the set of all finite subsets of a denumerable
+
+The set of all finite products of a denumerable is interesting for several reasons. One of them is that the set of all finite products of a denumerable is a superset of the set of all finite subsets of a denumerable. Intuitively, it would sem that if we know that if we can enumerate the finite products of a denumerable, then the set of all finite subsets of a denumerable must also be enumerable.
+
+The direct way to establish this is to write the enumeration we want. Let's start by establishing our requirement.
+
+The set of all finite products of the natural numbers contains entries like `[]`, `[0]`, `[0, 0]`, `[0, 1]`, `[1, 0]`, `[0, 0, 0]`, `[0, 0, 1]`, `[0, 1, 0]`, `[1, 0, 0]`, `[0, 1, 1]`, &c. However for the purpose of enumerating the set of all finite subsets of a denumerable, the only sets that matter are `{}`, `{0}`, `{0, 1}`, .... The ordering of elements is irrelevant, as are duplicate elements.
+
+*establish sliceFrom and a denumerable of chocies.*
 
 ```javascript
 const balanced =
