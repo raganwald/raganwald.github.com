@@ -72,6 +72,8 @@ It is very interesting and useful that an enumeration is a separate entity from 
 
 ### enumerations in javascript
 
+*awkward, mixes describing our style with discussing composition*
+
 In JavaScript, we can use generators as enumerations. We can write almost anything we want in a generator, e.g.
 
 ```javascript
@@ -106,38 +108,26 @@ Sometimes, we want to paramaterize a generator. Instead of writing a generator t
 
 ```javascript
 function * upTo (i, limit, by = 1) {
-	while (i <= limit) {
-    yield i;
-    i += by;
-  }
+	for (let i = start; i <= limit; i += by) yield i;
 }
 
 function * downTo (i, limit, by = 1) {
-	while (i >= limit) {
-    yield i;
-    i -= by;
-  }
+	for (let i = start; i >= limit; i -= by) yield i;
 }
 ```
 
 We shall instead write:
 
 ```javascript
-function upTo (i, limit, by = 1) {
+function upTo (start, limit, by = 1) {
   return function * upTo () {
-  	while (i <= limit) {
-      yield i;
-      i += by;
-    }
+    for (let i = start; i <= limit; i += by) yield i;
   };
 }
 
-function downTo (i, limit, by = 1) {
+function downTo (start, limit, by = 1) {
   return function * downTo () {
-  	while (i >= limit) {
-      yield i;
-      i -= by;
-    }
+    for (let i = start; i >= limit; i -= by) yield i;
   }
 }
 ```
@@ -248,7 +238,9 @@ We're going to make some more enumerations, and some tools for composing them, b
 
 ### denumerables and verification
 
-A [countable set]) is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumnerables][countable set] are countable sets with an infinite number of elements.
+*way too long. simoply and possibly split in two after simplifying*
+
+A [countable set] is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumnerables][countable set] are countable sets with an infinite number of elements.
 
 [countable set]: https://en.wikipedia.org/wiki/Countable_set
 
@@ -305,15 +297,359 @@ The even numbers have the same cardinality as the natural numbers.
 
 ### products of enumerables
 
-Sets can be created from the product of two or more enumerables. For example, the set of all rational numbers is the product of the set of all natural numbers and the set of all positive natural numbers. The product of two sets can be visualized with a table:
+Sets can be created from the [Cartesian product] (or simply "product") of two or more enumerables. For example, the set of all rational numbers is the product of the set of all natural numbers and the set of all positive natural numbers: A rational number can be expressed as a natural number numerator, divided by a positive natural number denominator.
 
-| |1|2|3| |
-|-|-|-|-|---|
-|0|0|0|0|...
-|1|1|1/2|1/3|...|
-|2|2|1|2/3|...|
-|3|3|3/2|1|...|
-|&vellip;|&vellip;|&vellip;|&vellip;| |
+The product of two sets can be visualized with a table. Here we are visualizing the rational numbers:
+
+[Cartesian product]: https://en.wikipedia.org/wiki/Cartesian_product
+
+|-----|--1|--2|--3|...|
+|-----|---|---|---|---|
+|**0**|0/1|0/2|0/3|...|
+|**1**|1/1|1/2|1/3|...|
+|**2**|2/1|2/2|2/3|...|
+|**3**|3/1|3/2|3/3|...|
+|<strong>&vellip;</strong>|&vellip;|&vellip;|&vellip;| |
+
+There are plenty of naïve product functions. Here's one that operates on generators:
+
+```javascript
+function mapGeneratorWith (fn, g) {
+  return function * () {
+    for (const e of g()) yield fn(e);
+  }
+}
+
+function nprod2 (g1, g2) {
+  return function * () {
+  	for (const e1 of g1()) {
+      console.log('1');
+      for (const e2 of g2()) {
+        yield [e1, e2];
+      }
+    }
+  }
+}
+
+const zeroOneTwoThree = upTo(0, 3);
+const oneTwoThree = upTo(1, 3);
+
+const twelveRationals = mapGeneratorWith(
+  ([numerator, denominator]) => `${numerator}/${denominator}`,
+  nprod2(zeroOneTwoThree, oneTwoThree)
+);
+
+for (const fraction of twelveRationals()) {
+  console.log(fraction);
+}
+  //=>
+    0/1
+    0/2
+    0/3
+    1/1
+    1/2
+    1/3
+    2/1
+    2/2
+    2/3
+    3/1
+    3/2
+    3/3
+```
+
+The näive approach iterates through all of the denominators members for each of the numerator's members. This is fast and simple, and works just fine for generators that only yield a finite number of elements. However, if we apply this to denumerables, it doesn't work:
+
+```javascript
+const naturals = upTo(0, Infinity);
+const positives = upTo(1, Infinity);
+
+const rationals =
+      mapGeneratorWith(
+        ([numerator, denominator]) => `${numerator}/${denominator}`,
+      	nprod2(naturals, positives)
+	);
+
+for (const s of rationals()) {
+  console.log(s);
+}
+  //=>
+    0/1
+    0/2
+    0/3
+    0/4
+    0/5
+    0/6
+    0/7
+    0/8
+    0/9
+    0/10
+    0/11
+    0/12
+
+    ...
+```
+
+A näive product of two or more sets, where at least one of the sets is denumnerable, is not an enumeration of the product of the sets. An enumeration of a denumerable guarantees that every element of the set appears in a finite number of outputs. Or likewise, that it puts the elements of the denumerable set into a one-to-one correspondance with teh natural numbers.
+
+The naïve product approach to enumerating the rationals does not output any element with a numerator greater than zero in a finite number of outputs. `14/6`, `19/62`, ... All of the fractions we can think of greater than zero never appear. They cannot be put into a one-to-one correspondance with the natural numbers.
+
+This can be proven by assuming the contrary and then deriving a contradiction. Let us take a fraction greater than zero, `1962/614`. We are assuming that fractions with a non-zero numerator appear after a finite number of outputs, so there is some finite number, **n**, that represents the position of `1962/614` in the enumeration.
+
+Let us scroll down the output looking for `n`. According to our algorithm, at position `n`, we will find `0/n`. But our assertion is that we will find `1962/614`. We can't find both, therefore the assumption that `1962/614` appears in a finite number of outputs is false, and the näive product cannot enumerate denumerables.
+
+---
+
+### enumerating the product of denumerables
+
+To enumerate the näive product of two denumerables, we took the elements "row by row," to use the table visualization. This did not work, and neither would taking the elements column by column. What does work, is to take the elements _diagonal by diagonal_.
+
+Here's our table again:
+
+|-----|--1|--2|--3|...|
+|-----|---|---|---|---|
+|**0**|0/1|0/2|0/3|...|
+|**1**|1/1|1/2|1/3|...|
+|**2**|2/1|2/2|2/3|...|
+|**3**|3/1|3/2|3/3|...|
+|<strong>&vellip;</strong>|&vellip;|&vellip;|&vellip;| |
+
+If we take the elements diagonal by diagonal, we will output: `0/1`, `0/2`, `1/1`, `0/3`, `1/2`, `2/1`, ...
+
+Because of the order in which we access the elements of the generators, we cannot rely on iterating through the generators in order. We will build a random-access abstraction, `at()`. There is a simple schlemiel implementation:[^schlemeil]
+
+[^schlemeil]: This is called a "schlemeil" implementation, because every time we wish to access a generator's element, we enumerate all of the elements of the generator from the beginning. This requires very little memory, but is wasteful of time. A memoized varsion is listed below.
+
+```javascript
+function at (generator, index) {
+  let i = 0;
+
+  for (const element of generator()) {
+    if (i++ === index) return element;
+  }
+}
+
+function * a () {
+  let a = '';
+
+  while (true) {
+    yield a;
+    a = `${a}a`;
+  }
+}
+
+at(a, 42)
+  //=> "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+```
+
+With `at` in hand, our `prod2` function looks like this:
+
+```javascript
+function prod2 (g1, g2) {
+  return function * () {
+  	for (const sum of naturals()) {
+      for (const [i1, i2] of zip(upTo(0, sum), downTo(sum, 0))()) {
+        yield [at(g1, i1), at(g2, i2)];
+      }
+    }
+  }
+}
+
+const rationals = mapGeneratorWith(
+  ([numerator, denominator]) => `${numerator}/${denominator}`,
+  prod2(naturals, positives)
+);
+
+for (const rational of rationals()) {
+  console.log(rational);
+}
+  //=>
+    0/1
+    0/2
+    1/1
+    0/3
+    1/2
+    2/1
+    0/4
+    1/3
+    2/2
+    3/1
+
+    ...
+```
+
+As theproduct is output row-byrow, we can now say with certainty that no matter which element we care to name, it has appeared as the nth element for some finite value of n.
+
+At the enormous cost of computing resources, we have an enumeration that enumerates the product of two denumerable sets, and we used it to enumeration rational numbers. This demonstrates that the ratttional numbers have the same cardinality of the natural numbers, and that any product of two denumerable sets is also denumerable.
+
+By inference, the product of three or more infinite sets is also enumerable, because the denumerability of the product operation is transitive. Take denumerable sets `a`, `b`, `c`, and `d`. `a` and `b` are denumerable, and we know that `prod2(a, b)` is denumerable. Therefore `prod2(prod2(a, b), c)` is denumerable, and so is `prod2(prod2(prod2(a, b), c), d)`.
+
+We can build `prod` on this basis:
+
+```javascript
+function prod (first, ...rest) {
+  if (rest.length === 0) {
+    return mapGeneratorWith(
+    	e => [e],
+    	first
+      );
+  } else {
+    return mapGeneratorWith(
+      ([eFirst, eRests]) => [eFirst].concat(eRests),
+      prod2(first, prod(...rest))
+    );
+  }
+}
+
+const threeD = prod(naturals, naturals, naturals);
+
+for (const triple of threeD()) {
+  console.log(triple);
+}
+  //=>
+    [0, 0, 0]
+    [0, 0, 1]
+    [1, 0, 0]
+    [0, 1, 0]
+    [1, 0, 1]
+    [2, 0, 0]
+    [0, 0, 2]
+    [1, 1, 0]
+    [2, 0, 1]
+    [3, 0, 0]
+    [0, 1, 1]
+    [1, 0, 2]
+
+    ...
+```
+
+We now have `prod`, a function that enumerates the product of any number of denumerables.
+
+---
+
+### exponentiation
+
+In aritmatic, exponentiation is the multiplying of a number by itself a certain number of times. For example, three to the power of 4 (`3^4`), is equivalent to three multiplied by three mulitplied by three multiplied by three (`3*3*3*3`). Or we might say that it is the product of four threes.
+
+We can take the exponent of denumerables as well. Here is the absolutely näive implementation:
+
+```javascript
+function exponent (generator, n) {
+  return prod(...new Array(n).fill(generator));
+}
+
+const threeD = exponent(naturals, 3);
+
+for (const triple of threeD()) {
+  console.log(triple);
+}
+  //=>
+    [0, 0, 0]
+    [0, 0, 1]
+    [1, 0, 0]
+    [0, 1, 0]
+    [1, 0, 1]
+    [2, 0, 0]
+    [0, 0, 2]
+    [1, 1, 0]
+    [2, 0, 1]
+    [3, 0, 0]
+    [0, 1, 1]
+    [1, 0, 2]
+
+    ...
+```
+
+`exponent` works for any finite exponent of a denumerable set. Consider now a generator that generates exponents:
+
+```javascript
+const exponentsOfNumber =
+      n =>
+		mapGeneratorWith(
+          p => Math.pow(n, p),
+          upTo(1, Infinity)
+        );
+
+const twos = exponentsOfNumber(2);
+
+for (const powerOfTwo of twos()) {
+  console.log(powerOfTwo);
+}
+  //=>
+    2
+    4
+    8
+    16
+    32
+    64
+    128
+    256
+    512
+    1024
+
+    ...
+```
+
+What happens if we make a generator that is the exponents of denumerables? We get a generator that gives us generators:
+
+```javascript
+const exponentsOf =
+  generator =>
+		mapGeneratorWith(
+      p => exponent(generator, p),
+      upTo(1, Infinity)
+    );
+
+exponentsOf(naturals)
+  //=>
+    [0], [1], [2], [3], [4], [5], ...
+    [0, 0], [0, 1], [1, 0], [0, 2], [1, 1], [2, 0], ...
+    [0, 0, 0], [0, 0, 1], [1, 0, 0], [0, 1, 0], [1, 0, 1], [2, 0, 0], ...
+    [0, 0, 0, 0], [0, 0, 0, 1], [1, 0, 0, 0], [0, 1, 0, 0], [1, 0, 0, 1], [2, 0, 0, 0], ...
+    [0, 0, 0, 0, 0], [0, 0, 0, 0, 1], [1, 0, 0, 0, 0], [0, 1, 0, 0, 0], [1, 0, 0, 0, 1], [2, 0, 0, 0, 0], ...
+    ...
+````
+
+It seems very extravagant to start thinking about an enumeration of enumerations of elements of a single denumerable (like the natural numbers), but we could look at all those elements another way: We are looking at all of the possible products of a denumerable.
+
+We know that any one product of a denumerable with itself any finite number of times is denumerable. Are all of those finite products denumerable in aggregate? Yes, and we can demonstrate this by taking the product of `exponentsOf(naturals)` and the `naturals`, and using the naturals to index the products:
+
+```javascript
+const products =
+  generator =>
+  	mapGeneratorWith(
+  		([exponent, column]) => at(exponent, column),
+  		prod2(exponentsOf(generator), naturals)
+    );
+
+for (const product of products(naturals)()) {
+  console.log(product);
+}
+  //=>
+    [0]
+    [1]
+    [0, 0]
+    [2]
+    [0, 1]
+    [0, 0, 0]
+    [3]
+    [1, 0]
+    [0, 0, 1]
+    [0, 0, 0, 0]
+    [4]
+    [0, 2]
+    [1, 0, 0]
+    [0, 0, 0, 1]
+    [0, 0, 0, 0, 0]
+    [5]
+    [1, 1]
+    [0, 1, 0]
+    [1, 0, 0, 0]
+    [0, 0, 0, 0, 1]
+
+    ...
+```
+
+It will take a good long while, but this generator will work its way diagonal by diagonal through all of the finite exponents of a denumerable, which shows that not only is the set of any one exponent of a denumerable denumerable, but so is the set of all exponents of a denumerable.
 
 
 
