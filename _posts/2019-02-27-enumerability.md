@@ -105,27 +105,39 @@ We can also make simple enumerations and find ways to compose them. We are going
 Sometimes, we want to paramaterize a generator. Instead of writing a generator that takes parameters, we will consistently write functions that take parameters and return simple generators. So instead of writing timething like:
 
 ```javascript
-function * upTo (i, limit) {
-  while (i <= limit) yield i++;
+function * upTo (i, limit, by = 1) {
+	while (i <= limit) {
+    yield i;
+    i += by;
+  }
 }
 
-function * downTo (i, limit) {
-  while (i >= limit) yield i--;
+function * downTo (i, limit, by = 1) {
+	while (i >= limit) {
+    yield i;
+    i -= by;
+  }
 }
 ```
 
 We shall instead write:
 
 ```javascript
-function upTo (i, limit) {
+function upTo (i, limit, by = 1) {
   return function * upTo () {
-  	while (i <= limit) yield i++;
+  	while (i <= limit) {
+      yield i;
+      i += by;
+    }
   };
 }
 
-function downTo (i, limit) {
+function downTo (i, limit, by = 1) {
   return function * downTo () {
-  	while (i >= limit) yield i--;
+  	while (i >= limit) {
+      yield i;
+      i -= by;
+    }
   }
 }
 ```
@@ -171,6 +183,7 @@ function merge (...generators) {
 
 const naturals = upTo(0, Infinity);
 const negatives = downTo(-1, -Infinity);
+
 const integers = merge(naturals, negatives);
 
 for (const i of integers()) {
@@ -233,7 +246,7 @@ for (const s of zip(a, naturals)()) {
 
 We're going to make some more enumerations, and some tools for composing them, but before we do, let's talk about why writing enumerations is interesting.
 
-### denumerables
+### denumerables and verification
 
 A [countable set]) is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumnerables][countable set] are countable sets with an infinite number of elements.
 
@@ -241,7 +254,68 @@ A [countable set]) is any set (or collection) for which we can construct at leas
 
 As programmers, we experiment with such ideas by writing code. So instead of coming up with an elaborate proof that such-and-such a set is countable, we write an enumeration for it. If we can enumerate a set, we can put it into a 1-to-1 correspeondance with a subset of the natural numbers.
 
-In the example above, zipping an enumeration of strings (`''`, `'a'`, `'aa'`, ...) with the natural numbers clearly puts them in a one-to-one correspondance with the natural numbers. Since that is possible with any enumeration, if we can enumerate a set, it is a countable set. If we can enumerate a sset and it has an infinite number of elements, it is denumerable.
+In the example above, zipping an enumeration of strings (`''`, `'a'`, `'aa'`, ...) with the natural numbers clearly puts them in a one-to-one correspondance with the natural numbers. Since that is possible with any enumeration, if we can enumerate a set, it is a countable set. If we can enumerate a set, and it has an infinite number of elements, it is denumerable.
+
+Before we look at other examples of denumerable sets, let's point out a few things about enumerations. First, if we say we have an enumeration of a finite countable set, it is easy to verify that the enumeration is correct. We inspect its output, and verify that it outputs every element of the set, no more, and no less.
+
+If it outputs an element that is not in the set, or fails to output an element that is in the set, it is not an enumertaion of the set. That is straightforward with finite sets (although the inspection may take a while with really big enumerations, like enumerating all of the stars in the night sky).
+
+But what about enumerating a denumnerable set? How do we know that an enumeration is correct? There are two ways, one formal, one empirical. In the formal verification, we examine the algorithm for the enumeration itself, and use formal methods prove that it must eventually output every element of the set, and that it never outputs an element not in the set.
+
+Or do we? If the set is denumerable, it has an infinite number of elements. No enumeration can eventually output all of its elements: A correct enumeration must run forever. Instead, what we say is that we wish to prove that the enumeration never outputs an element that is not in the set, and for any element we choose, the enumeration will output that element in a finite number of iterations.
+
+The empirical method has a similar flavour, but replaces the rigorous proof with testing. In the empirical method, we come up with elements of the set, run the enumeratioon, and verify through observation that first, none of the elements output by the enumeration are not in the set, and second, that the elements we chose are eventually output by the enumeration.
+
+The relationship between the formal and empirical methods are isomorphic to the relationship between formal verification of program behaviour and writing tests.
+
+---
+
+### cardinality
+
+The cardinality of a set is a measure of its size. Two sets have the same cardinality if their elements can be put into a one-to-one correspeondance with each other. Cardinalities can also be compared. If the elements of set A can be put into a one-to-one correspondance with a subset of the elements of set B, but the elements of set B cannot be put into a one-to-one correspoondance with set A, we say that A has a lower cardinality than B.
+
+Obviously, the cardinalities of finite sets are natural numbers. For example, the cardinality of `[0, 1, 2, 3, Infinity]` is `4`, the same as its length.
+
+The cardinality of infinite sets was studied by [Georg Cantor][Cantor]. As has been noted many times, the cardinality of infinite sets can be surprising to those thinking about it for the first time. For example, all infinite subsets of the natural numbers have the same cardinality as the natural numbers.
+
+[Cantor]: https://en.m.wikipedia.org/wiki/Georg_Cantor
+
+We can demonstrate that by putting them into a one-one-correspondance with the natural numbers:
+
+```javascript
+const naturals = upTo(0, Infinity);
+const evens = upTo(0, Infinity, 2);
+
+for (const s of zip(evens, naturals)()) {
+  console.log(s);
+}
+  //=>
+    [0, 0]
+    [2, 1]
+    [4, 2]
+    [6, 3]
+    [8, 4]
+
+    ...
+```
+
+The even numbers have the same cardinality as the natural numbers.
+
+---
+
+### products of enumerables
+
+Sets can be created from the product of two or more enumerables. For example, the set of all rational numbers is the product of the set of all natural numbers and the set of all positive natural numbers. The product of two sets can be visualized with a table:
+
+| |1|2|3| |
+|-|-|-|-|---|
+|0|0|0|0|...
+|1|1|1/2|1/3|...|
+|2|2|1|2/3|...|
+|3|3|3/2|1|...|
+|&vellip;|&vellip;|&vellip;|&vellip;| |
+
+
 
 - enumerating a set proves that it is countable/cardinality one
 
