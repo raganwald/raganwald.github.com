@@ -303,13 +303,13 @@ The product of two sets can be visualized with a table. Here we are visualizing 
 
 [Cartesian product]: https://en.wikipedia.org/wiki/Cartesian_product
 
-|-----|--1|--2|--3|...|
+|     |  1|  2|  3|...|
 |-----|---|---|---|---|
 |**0**|0/1|0/2|0/3|...|
 |**1**|1/1|1/2|1/3|...|
 |**2**|2/1|2/2|2/3|...|
 |**3**|3/1|3/2|3/3|...|
-|<strong>&vellip;</strong>|&vellip;|&vellip;|&vellip;| |
+|<strong>&vellip;</strong>|&vellip;|&vellip;|&vellip;| |<br/><br/>
 
 There are plenty of naïve product functions. Here's one that operates on generators:
 
@@ -405,13 +405,13 @@ To enumerate the naïve product of two denumerables, we took the elements "row b
 
 Here's our table again:
 
-|-----|--1|--2|--3|...|
+|     |  1|  2|  3|...|
 |-----|---|---|---|---|
 |**0**|0/1|0/2|0/3|...|
 |**1**|1/1|1/2|1/3|...|
 |**2**|2/1|2/2|2/3|...|
 |**3**|3/1|3/2|3/3|...|
-|<strong>&vellip;</strong>|&vellip;|&vellip;|&vellip;| |
+|<strong>&vellip;</strong>|&vellip;|&vellip;|&vellip;| |<br/><br/>
 
 If we take the elements diagonal by diagonal, we will output: `0/1`, `0/2`, `1/1`, `0/3`, `1/2`, `2/1`, ...
 
