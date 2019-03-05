@@ -9,57 +9,6 @@ tags: [allonge,mermaid]
 
 In programming language jargon, an _enumerable_ is a value that can be accessed sequentially, or iterated over. Different languages use the term in slightly different ways, although they all have some relation to its basic definition.
 
-In JavaScript, objects (including collections like arrays) can have [enumerable properties]. For example, the array `['one', 'two', 'three', 'infinity']` has three enumerable properties, `0`, `1`, `2`, and `3`. It also has a non-enumerable property, `length`.
-
-[enumerable properties]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Enumerability_and_ownership_of_properties
-
-```javascript
-const gamow = ['one', 'two', 'three', '∞'];
-
-for (const n in gamow) {
-  console.log(n);
-}
-  //=>
-    0
-    1
-    2
-    3
-```
-
-Notice that when JavaScript talks about properties being enumerable, it refers to what we would call the indices of the properties, not the values bound to those indices. You can see this as well when we enumerate the properties of a Plain Old JavaScript Object:
-
-```javascript
-const dictionary = {
-  'one': 1,
-  'two': 2,
-  'three': 3,
-  '∞': Infinity
-};
-
-for (const n in dictionary) {
-  console.log(n);
-}
-  //=>
-  'one'
-  'two'
-  'three'
-  '∞'
-```
-
-In JavaScript, we do not say that the elements of an array or the values of an object are enumerable, we just say that some of the properties of any object (including arrays) are enumerable.
-
-Ruby uses the word slightly differently. In Ruby, [`Enumerable`][ruby-enumerable] is a `module` that is used as other languages would use a mixin. It applies to collections like arrays, and for a collection that provides a way to access the elements sequentially with a `.each` method, the `Enumerable` module adds a number of useful methods.
-
-[ruby-enumerable]: http://ruby-doc.org/core/Enumerable.html
-
-In Ruby, we would say that a class or object that "mixes in" the module `Enumerable`, is "enumerable."
-
-So which is it? Are collections enumerable? The indices of the collections? Or their elements?
-
-Informally speaking, the line we will take in this essay is that the term is imprecise in programming jargon, and that it is the elements of a collection that are enumerable. When we say "This array is enumerable," that is a shorthand in programming jargon for saying that its elements are enumerable, and some interafce is provided for accessing its elements in sequence.
-
-That conflicts with the technial way that JavaScript uses the word, but we will shrug and say that iterating over the indices of an object is one particular interface for accessing the elements of a collection, as are other ways like using an actual iterator.
-
 In Mathematics, an [enumeration] is a complete, ordered list of all of the elements of a set or collection. There can be more than one enumeration for the same collection, and the collections need not have a finite number of elements.
 
 [enumeration]: https://en.wikipedia.org/wiki/Enumeration
@@ -74,9 +23,7 @@ It is very interesting and useful that an enumeration is a separate entity from 
 
 ### enumerations in javascript
 
-*awkward, mixes describing our style with discussing composition*
-
-In JavaScript, we can use generators as enumerations. We can write almost anything we want in a generator, e.g.
+In JavaScript, we can use generators as enumerations, e.g.
 
 ```javascript
 function * anEnumerationOfIntegers () {
@@ -88,9 +35,7 @@ function * anEnumerationOfIntegers () {
   }
 }
 
-for (const i of anEnumerationOfIntegers()) {
-  console.log(i);
-}
+anEnumerationOfIntegers()
   //=>
     0
     -1
@@ -101,12 +46,15 @@ for (const i of anEnumerationOfIntegers()) {
     3
     -4
     4
+
     ...
 ```
 
-We can also make simple enumerations and find ways to compose them. We are going to use a very consistent style. Unless otherwise noted, we are going to work with the very simplest kind of generator, a generator function that takes no arguments, like `anEnumerationOfIntegers` above.
+In this essay, we will write the simplest possible enumerations, and build more complex enumerations using composition.
 
-Sometimes, we want to parameterize a generator. Instead of writing a generator that takes parameters, we will consistently write functions that take parameters and return simple generators. So instead of writing timething like:
+Sometimes, we want to parameterize a generator. Instead of writing a generator that takes parameters, we will consistently write functions that take parameters as arguments, and return simple generators that take no arguments.
+
+So instead of writing:
 
 ```javascript
 function * upTo (i, limit, by = 1) {
@@ -137,24 +85,22 @@ function downTo (start, limit, by = 1) {
 These are functions that return generators, so we can write things like:
 
 ```javascript
-const thunderbirds = downTo(10, 0);
+const positives = upTo(1, Infinity);
 
-for (const i of thunderbirds()) {
+for (const i of positives()) {
   console.log(i);
 }
   //=>
-    10
-    9
+    1
+    2
+    3
+    4
+    5
 
     ...
-
-    3
-    2
-    1
-    0
 ```
 
-Just as functions can return generators, functions can also take generators as arguments. Here's a function that merges a finite number of generators into a single enumeration:
+Just as functions can return generators, functions can also take generators as arguments and return new generators. Here's a function that merges a finite number of generators into a single enumeration:
 
 ```javascript
 function merge (...generators) {
@@ -195,7 +141,7 @@ for (const i of integers()) {
     ...
 ```
 
-And another that zips generators together to make a new generator:
+And here's another that zips generators together to make a new generator:
 
 ```javascript
 function zip (...generators) {
