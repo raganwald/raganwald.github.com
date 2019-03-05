@@ -1,7 +1,9 @@
 ---
 title: "Enumerations, Denumerables, and Cardinals"
-tags: [allonge,noindex]
+tags: [allonge,mermaid]
 ---
+
+*Warning: This is an unfinished work. Feel free to share it on Twitter or other conventional social media, but I ask you not to post it on Hacker News or Reddit until it is finished.*
 
 ### enumerables and enumerations
 
@@ -827,7 +829,7 @@ And now we have shown that the set of all finite subsets of a denumerable, is al
 
 ---
 
-### trees
+### taking the products of products
 
 Back to `products`. To recap:
 
@@ -886,10 +888,188 @@ products(naturals)()
     ...
 ```
 
-We can enumerate the products of any enumerable. So what happens if we enumerate the products... Of `products` itself?
+If we put this enumeration of `products(naturals)` into an explicit 1-to-1 correspondence with the natural numbers, we will see something interesting:
+
+```
+ 0, []
+ 1, [0]
+ 2, [1]
+ 3, [0, 0]
+ 4, [2]
+ 5, [0, 1]
+ 6, [0, 0, 0]
+ 7, [3]
+ 8, [1, 0]
+ 9, [0, 0, 1]
+10, [0, 0, 0, 0]
+11, [4]
+12, [0, 2]
+13, [1, 0, 0]
+14, [0, 0, 0, 1]
+15, [0, 0, 0, 0, 0]
+16, [5]
+17, [1, 1]
+18, [0, 1, 0]
+19, [1, 0, 0, 0]
+
+...
+```
+
+No number appearing within a product is greater than or equal to the ordinal of the product. For example, product `0` doesn't have any numbers. Product `1` contains a `0`. Product `2` contains a `1`. Product `3` contains two zeroes. And so forth. The products of an denumerable always outpace the elements of the denumerable.
+
+Let's think of the numbers appearing within the products as indices. `0` is the first element of some denumerable, `1` is the second element, and so forth. We could substitute any denumerable for the natural numbers in `products(naturals)` by writing `products(someOtherDenumerable)`, but let's try an experiment:
+
+What happens if we substitute the elements of the above output for the numbers... In itself?
+
+Starting from the top, `[]` des not need any substitution, as it has no numbers:
+
+```
+ 0, []
+```
+
+`[0]` becomes `[[]]`, because the `0th` element of the output is `[]`:
+
+```
+ 0, []
+ 1, [[]]
+```
+
+Now `[1]` becomes `[[[]]]`:
+
+```
+ 0, []
+ 1, [[]]
+ 2, [[[]]]
+```
+
+And `[0, 0]` becomes `[[], []]`:
+
+```
+ 0, []
+ 1, [[]]
+ 2, [[[]]]
+ 3, [[], []]
+```
+
+Continuing this substitution from top to bottom, we get:
+
+```
+[]
+[[]]
+[[[]]]
+[[], []]
+[[[[]]]]
+[[], [[]]]
+[[], [], []]
+[[[], []]]
+[[[]], []]
+[[], [], [[]]]
+[[], [], [], []]
+[[[[[]]]]]
+[[], [[[]]]]
+[[[]], [], []]
+[[], [], [], [[]]]
+[[], [], [], [], []]
+[[[], [[]]]]
+[[[]], [[]]]
+[[], [[]], []]
+[[[]], [], [], []]
+
+...
+```
+
+Fortunately, we can create this enumeration without manually replacing elements or faffing about with `at` and `mapGeneratorWith`, by writing a recursive generator:
 
 ```javascript
-function * tree () {
-  yield * products(tree)();
+function * productsOfProducts () {
+  yield * products(productsOfProducts)();
 }
+
+productsOfProducts()
+  //=>
+    []
+    [[]]
+    [[[]]]
+    [[], []]
+    [[[[]]]]
+
+    ...
 ```
+
+`productsOfProducts` is very interesting: If we think of each array as a node, and its children as arcs to other nodes, each element of this enumeration describes a finite tree, for example:
+
+<div class="mermaid">
+graph LR
+  0(( ))
+</div>
+
+<div class="mermaid">
+graph LR
+  0(( ))-->1(( ))
+</div>
+
+<div class="mermaid">
+graph LR
+  0(( ))-->1(( ))
+  1-->2(( ))
+</div>
+
+<div class="mermaid">
+graph LR
+  0(( ))-->1(( ))
+  0-->2(( ))
+</div>
+
+<div class="mermaid">
+graph LR
+  0(( ))-->1(( ))
+  1-->2(( ))
+  2-->3(( ))
+</div>
+
+We have now established that `productsOfProducts` is an enumeration of every possible finite tree, and thus we know that the set of all finite trees is denumerable. It has the same cardinality as the set of all natural numbers.
+
+---
+
+### bonus
+
+JavaScript happens to print arrays using `[` and `]` and `,`. But we could write our own "pretty printer" code. We could output the instructions for drawing graphs in SVG. Or we could output the arrays in a Lisp style:
+
+```javascript
+function prettyPrint(array) {
+  function pp (array) {
+    return `(${array.map(pp).join('')})`;
+  }
+
+  return array.map(pp).join('');
+}
+
+mapGeneratorWith(pp, tree)()
+  //=>
+    ""
+    "()"
+    "(())"
+    "()()"
+    "((()))"
+    "()(())"
+    "()()()"
+    "(()())"
+    "(())()"
+    "()()(())"
+    "()()()()"
+    "(((())))"
+    "()((()))"
+    "(())()()"
+    "()()()(())"
+    "()()()()()"
+    "(()(()))"
+    "(())(())"
+    "()(())()"
+    "(())()()()"
+
+    ...
+```
+
+We are enumerating every finite [balanced parentheses][brutal] string.
+
+[brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
