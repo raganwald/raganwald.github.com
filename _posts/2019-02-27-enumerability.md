@@ -5,6 +5,8 @@ tags: [allonge,mermaid]
 
 *Warning: This is an unfinished work. Feel free to share it on Twitter or other conventional social media, but I ask you not to post it on Hacker News or Reddit until it is finished.*
 
+---
+
 ### enumerables and enumerations
 
 In programming language jargon, an _enumerable_ is a value that can be accessed sequentially, or iterated over. Different languages use the term in slightly different ways, although they all have some relation to its basic definition.
@@ -26,7 +28,7 @@ It is very interesting and useful that an enumeration is a separate entity from 
 In JavaScript, we can use generators as enumerations, e.g.
 
 ```javascript
-function * anEnumerationOfIntegers () {
+function * integers () {
   yield 0;
   let i = 1;
   while (true) {
@@ -35,7 +37,7 @@ function * anEnumerationOfIntegers () {
   }
 }
 
-anEnumerationOfIntegers()
+integers()
   //=>
     0
     -1
@@ -141,7 +143,7 @@ for (const i of integers()) {
     ...
 ```
 
-And here's another that zips generators together to make a new generator:
+Thanks to composing simple parts, we wrote `const integers = merge(naturals, negatives)` instead of writing `function * integers () { ... }`. Here's another function that zips generators together. It has many uses, one of which is to put the output of a generator into a 1-to-1 correspondance with the natural numbers:
 
 ```javascript
 function zip (...generators) {
@@ -182,7 +184,9 @@ for (const s of zip(a, naturals)()) {
     ...
 ```
 
-We're going to make some more enumerations, and some tools for composing them, but before we do, let's talk about why writing enumerations is interesting.
+We're going to make some more enumerations, and some tools for composing them, but before we do, let's talk about why  enumerations are interesting.
+
+--
 
 ### denumerables and verification
 
