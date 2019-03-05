@@ -89,9 +89,7 @@ These are functions that return generators, so we can write things like:
 ```javascript
 const positives = upTo(1, Infinity);
 
-for (const i of positives()) {
-  console.log(i);
-}
+positives()
   //=>
     1
     2
@@ -126,9 +124,7 @@ const negatives = downTo(-1, -Infinity);
 
 const integers = merge(naturals, negatives);
 
-for (const i of integers()) {
-  console.log(i);
-}
+integers()
   //=>
     0
     -1
@@ -171,9 +167,7 @@ function * a () {
   }
 }
 
-for (const s of zip(a, naturals)()) {
-  console.log(s);
-}
+zip(a, naturals)()
   //=>
     ["", 0]
     ["a", 1]
@@ -205,9 +199,7 @@ As we will see in more detail below, this sometimes means we must be careful how
 ```javascript
 const integers = merge(naturals, negatives);
 
-for (const i of integers()) {
-  console.log(i);
-}
+integers()
   //=>
     0
     -1
@@ -288,9 +280,7 @@ We can demonstrate that by putting them into a one-one-correspondance with the n
 const naturals = upTo(0, Infinity);
 const evens = upTo(0, Infinity, 2);
 
-for (const s of zip(evens, naturals)()) {
-  console.log(s);
-}
+zip(evens, naturals)()
   //=>
     [0, 0]
     [2, 1]
@@ -333,7 +323,6 @@ function mapWith (fn, g) {
 function nprod2 (g1, g2) {
   return function * () {
   	for (const e1 of g1()) {
-      console.log('1');
       for (const e2 of g2()) {
         yield [e1, e2];
       }
@@ -349,9 +338,7 @@ const twelveRationals = mapWith(
   nprod2(zeroOneTwoThree, oneTwoThree)
 );
 
-for (const fraction of twelveRationals()) {
-  console.log(fraction);
-}
+twelveRationals()
   //=>
     0/1
     0/2
@@ -379,9 +366,7 @@ const rationals =
       	nprod2(naturals, positives)
 	);
 
-for (const s of rationals()) {
-  console.log(s);
-}
+rationals()
   //=>
     0/1
     0/2
@@ -467,9 +452,7 @@ const rationals = mapWith(
   prod2(naturals, positives)
 );
 
-for (const rational of rationals()) {
-  console.log(rational);
-}
+rationals()
   //=>
     0/1
     0/2
@@ -507,9 +490,7 @@ const exp =
 
 const twos = exp(2);
 
-for (const powerOfTwo of twos()) {
-  console.log(powerOfTwo);
-}
+twos()
   //=>
     2
     4
@@ -601,9 +582,7 @@ function prod (first, ...rest) {
 
 const threeD = prod(naturals, naturals, naturals);
 
-for (const triple of threeD()) {
-  console.log(triple);
-}
+threeD()
   //=>
     [0, 0, 0]
     [0, 0, 1]
@@ -634,9 +613,7 @@ function exponent (generator, n) {
 
 const threeD = exponent(naturals, 3);
 
-for (const triple of threeD()) {
-  console.log(triple);
-}
+threeD()
   //=>
     [0, 0, 0]
     [0, 0, 1]
