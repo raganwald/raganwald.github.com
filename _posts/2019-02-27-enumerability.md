@@ -400,17 +400,15 @@ for (const s of rationals()) {
     ...
 ```
 
-A naïve product of two or more sets, where at least one of the sets is denumerable, is not an enumeration of the product of the sets. An enumeration of a denumerable guarantees that every element of the set appears in a finite number of outputs. Or likewise, that it puts the elements of the denumerable set into a one-to-one correspondance with the natural numbers.
+A naïve product of two or more sets, where at least one of the sets is denumerable, is not an enumeration of the product of the sets. It doesn't work for the exact same reason that concatenating multiple infinite enumerations does not produce a valid infinite enumeration.
 
-The naïve product approach to enumerating the rationals does not output any element with a numerator greater than zero in a finite number of outputs. `14/6`, `19/62`, ... All of the fractions we can think of greater than zero never appear. They cannot be put into a one-to-one correspondance with the natural numbers.
+We can use the same proof. If we zip the output with the natural numbers, we'll get `[0, '0/1']`, `[1, '0/2']`, `[2, '0/3']`, ...
 
-This can be proven by assuming the contrary and then deriving a contradiction. Let us take a fraction greater than zero, `1962/614`. We are assuming that fractions with a non-zero numerator appear after a finite number of outputs, so there is some finite number, **n**, that represents the position of `1962/614` in the enumeration.
-
-Let us scroll down the output looking for `n`. According to our algorithm, at position `n`, we will find `0/n`. But our assertion is that we will find `1962/614`. We can't find both, therefore the assumption that `1962/614` appears in a finite number of outputs is false, and the naïve product cannot enumerate denumerables.
+If this is a valid enumeration, every rational number appears in a finite number of iterations, so we should be able to find `[n, '1962/614']` in a finite number of outputs. Whatever `n` is, we will actually find `[n, '0/n+1']`, not `[n, '1962/614']`. Therefore the naïve product cannot enumerate denumerables.
 
 ---
 
-### enumerating the product of denumerables
+### correctly enumerating the product of denumerables
 
 To enumerate the naïve product of two denumerables, we took the elements "row by row," to use the table visualization. This did not work, and neither would taking the elements column by column. What does work, is to take the elements _diagonal by diagonal_.
 
@@ -1082,3 +1080,7 @@ mapWith(pp, tree)()
 We are enumerating every finite [balanced parentheses][brutal] string.
 
 [brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
+
+---
+
+# Notes
