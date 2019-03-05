@@ -715,9 +715,7 @@ function cons (head, generator) {
 
 const products = generator => cons([], flatten(exponentsOf(generator)));
 
-for (const product of products(naturals)()) {
-  console.log(product);
-}
+products(naturals)()
   //=>
     []
     [0]
@@ -831,3 +829,67 @@ And now we have shown that the set of all finite subsets of a denumerable, is al
 
 ### trees
 
+Back to `products`. To recap:
+
+```javascript
+const products = generator => cons([], flatten(exponentsOf(generator)));
+
+products(naturals)()
+  //=>
+    []
+    [0]
+    [1]
+    [0, 0]
+    [2]
+    [0, 1]
+    [0, 0, 0]
+    [3]
+    [1, 0]
+    [0, 0, 1]
+    [0, 0, 0, 0]
+    [4]
+    [0, 2]
+    [1, 0, 0]
+    [0, 0, 0, 1]
+    [0, 0, 0, 0, 0]
+    [5]
+    [1, 1]
+    [0, 1, 0]
+    [1, 0, 0, 0]
+    [0, 0, 0, 0, 1]
+    [0, 0, 0, 0, 0, 0]
+    [6]
+    [2, 0]
+    [1, 0, 1]
+    [0, 1, 0, 0]
+    [1, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 1]
+    [0, 0, 0, 0, 0, 0, 0]
+    [7]
+    [0, 3]
+    [2, 0, 0]
+    [1, 0, 0, 1]
+    [0, 1, 0, 0, 0]
+    [1, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 1]
+    [0, 0, 0, 0, 0, 0, 0, 0]
+    [8]
+    [1, 2]
+    [0, 0, 2]
+    [2, 0, 0, 0]
+    [1, 0, 0, 0, 1]
+    [0, 1, 0, 0, 0, 0]
+    [1, 0, 0, 0, 0, 0, 0]
+    [0, 0, 0, 0, 0, 0, 0, 1]
+    [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+    ...
+```
+
+We can enumerate the products of any enumerable. So what happens if we enumerate the products... Of `products` itself?
+
+```javascript
+function * tree () {
+  yield * products(tree)();
+}
+```
