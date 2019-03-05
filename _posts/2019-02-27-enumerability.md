@@ -549,6 +549,19 @@ const flatten =
     );
 
 flatten(naturalPowers)
+  //=>
+    0
+    0
+    1
+    0
+    1
+    2
+    0
+    1
+    4
+    3
+
+    ...
 ```
 
 This verifies for us that the sum of a denumerable number of denumerables is also denumerable.
@@ -557,11 +570,11 @@ This verifies for us that the sum of a denumerable number of denumerables is als
 
 ### exponentiation of denumerables
 
-Back to products. The product of two denumerables in denumerable.
+Back to products. The product of two denumerables is denumerable.
 
 By inference, the product of three or more denumerables is also denumerable, because the denumerability of the product operation is transitive. Take denumerable sets `a`, `b`, `c`, and `d`. `a` and `b` are denumerable, and we know that `prod2(a, b)` is denumerable. Therefore `prod2(prod2(a, b), c)` is denumerable, and so is `prod2(prod2(prod2(a, b), c), d)`.
 
-We can build `prod` on this basis:
+We can build `prod` on this basis. It's a function that takes a finite number of denumerables, and returns an enumeration over their elements, by using `prod2`:
 
 ```javascript
 function prod (first, ...rest) {
@@ -640,7 +653,7 @@ We can do a similar thing with the exponents of a denumerable:
 ```javascript
 const exponentsOf =
   generator =>
-		mapGeneratorWith(
+    mapGeneratorWith(
       p => exponent(generator, p),
       upTo(1, Infinity)
     );
@@ -728,7 +741,91 @@ The direct way to establish this is to write the enumeration we want. Let's star
 
 The set of all finite products of the natural numbers contains entries like `[]`, `[0]`, `[0, 0]`, `[0, 1]`, `[1, 0]`, `[0, 0, 0]`, `[0, 0, 1]`, `[0, 1, 0]`, `[1, 0, 0]`, `[0, 1, 1]`, &c. However for the purpose of enumerating the set of all finite subsets of a denumerable, the only sets that matter are `{}`, `{0}`, `{0, 1}`, .... The ordering of elements is irrelevant, as are duplicate elements.
 
-*establish sliceFrom and a denumerable of choices.*
+We start with `combination`. Given a generator and a number of elements `k`, `combination` enumerates over all the ways that `k` elements can be selected from the generator's elements. Obviously, the k-combinations of a denumerable are also denumerable.
+
+```javascript
+function combination (generator, k) {
+  if (k === 1) {
+    return mapGeneratorWith(
+      e => [e],
+      generator
+    )
+  } else {
+    return flatten(
+      mapGeneratorWith(
+        index => {
+          const element = at(generator, index);
+          const rest = slice(generator, index + 1);
+
+          return mapGeneratorWith(
+            arr => (arr.unshift(element), arr),
+            combination(rest, k - 1)
+          );
+        },
+        naturals
+      )
+    );
+  }
+}
+
+combination(naturals, 3)()
+  //=>
+    [0, 1, 2]
+    [0, 1, 3]
+    [1, 2, 3]
+    [0, 2, 3]
+    [1, 2, 4]
+    [2, 3, 4]
+    [0, 1, 4]
+    [1, 3, 4]
+    [2, 3, 5]
+    [3, 4, 5]
+    [0, 2, 4]
+    [1, 2, 5]
+    [2, 4, 5]
+    [3, 4, 6]
+    [4, 5, 6]
+    [0, 3, 4]
+    [1, 3, 5]
+    [2, 3, 6]
+    [3, 5, 6]
+    [4, 5, 7]
+
+    ...
+```
+
+Now what about all finite subsets? Well, that's very similar to `products`. We want a denumerable of denumerables, the first being all the subsets of size `1`, the next all the subsets of size `2`, then `3`, and so on. We flatten all those together, and cons the empty set onto the front:
+
+```javascript
+const subsets =
+  generator =>
+    cons(
+      [],
+      flatten(
+        mapGeneratorWith(
+          k => combination(generator, k),
+          naturals
+        )
+      )
+    );
+
+subsets(naturals)
+  //=>
+    []
+    [0]
+    [1]
+    [0, 1]
+    [2]
+    [0, 2]
+    [0, 1, 2]
+    [3]
+    [1, 2]
+    [0, 1, 3]
+
+    ...
+```
+
+And now we have shown that the set of all finite subsets of a denumerable, is also denumerable.
 
 ---
 
