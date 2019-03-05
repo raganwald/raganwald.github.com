@@ -192,25 +192,84 @@ We're going to make some more enumerations, and some tools for composing them, b
 
 *way too long. simply and possibly split in two after simplifying*
 
-A [countable set] is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumerables][countable set] are countable sets with an infinite number of elements.
+A [countable set] is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumerables][countable set] are countable sets with an infinite number of elements, meaning they can be put into a 1-to-1 correspondance with the entire set of natural numbers.
 
 [countable set]: https://en.wikipedia.org/wiki/Countable_set
 
-As programmers, we experiment with such ideas by writing code. So instead of coming up with an elaborate proof that such-and-such a set is countable, we write an enumeration for it. If we can enumerate a set, we can put it into a 1-to-1 correspondence with a subset of the natural numbers.
 
-In the example above, zipping an enumeration of strings (`''`, `'a'`, `'aa'`, ...) with the natural numbers clearly puts them in a one-to-one correspondance with the natural numbers. Since that is possible with any enumeration, if we can enumerate a set, it is a countable set. If we can enumerate a set, and it has an infinite number of elements, it is denumerable.
+When dealing with enumerating infinite sets, things can sometimes be tricky. If we say that an enumeration puts the elements of a denumerable into a 1-to-1 correspondance with the natural numbers, we must provide the following guarantee: **Every element of the enumeration correspondes to a finite natural number.** And in the case of an enumeration we write on a computer, it follows that for any member of the set, there is a natural number `n`, such that the member of the set appears as the `nth` element output by the enumeration.
 
-Before we look at other examples of denumerable sets, let's point out a few things about enumerations. First, if we say we have an enumeration of a finite countable set, it is easy to verify that the enumeration is correct. We inspect its output, and verify that it outputs every element of the set, no more, and no less.
+So in our example of `function * a { ... }` above, we know that we can name any element, such as `aaaaaaaaaa`, and indeed, it will appear as the tenth output of the enumeration (and corresponds to the natural number `0`).
 
-If it outputs an element that is not in the set, or fails to output an element that is in the set, it is not an enumeration of the set. That is straightforward with finite sets (although the inspection may take a while with really big enumerations, like enumerating all of the stars in the night sky).
+As we will see in more detail below, this sometimes means we must be careful how we arrange our enumerations. Recall `merge` from above.
 
-But what about enumerating a denumerable set? How do we know that an enumeration is correct? There are two ways, one formal, one empirical. In the formal verification, we examine the algorithm for the enumeration itself, and use formal methods prove that it must eventually output every element of the set, and that it never outputs an element not in the set.
+```javascript
+const integers = merge(naturals, negatives);
 
-Or do we? If the set is denumerable, it has an infinite number of elements. No enumeration can eventually output all of its elements: A correct enumeration must run forever. Instead, what we say is that we wish to prove that the enumeration never outputs an element that is not in the set, and for any element we choose, the enumeration will output that element in a finite number of iterations.
+for (const i of integers()) {
+  console.log(i);
+}
+  //=>
+    0
+    -1
+    1
+    -2
+    2
+    -3
+    3
+    -4
+    4
 
-The empirical method has a similar flavour, but replaces the rigorous proof with testing. In the empirical method, we come up with elements of the set, run the enumeration, and verify through observation that first, none of the elements output by the enumeration are not in the set, and second, that the elements we chose are eventually output by the enumeration.
+    ...
+```
 
-The relationship between the formal and empirical methods are isomorphic to the relationship between formal verification of program behaviour and writing tests.
+Merge yields alternate elements from its constituent enumerations. But what if we had written this:
+
+```javascript
+function concatenate (...generators) {
+  return function * concatenated () {
+    for (const generator of generators) {
+      yield * generator();
+    }
+  }
+}
+
+const notAllIntegers = concatenate(naturals, negatives);
+
+notAllIntegers()
+  //=>
+    0
+    1
+    2
+    3
+    4
+    5
+
+    ...
+```
+
+As written, `concatenate` does **not** provide a correct enumeration over the integers, because we can name an integer, `-1`, that will not appear after a finite number of outputs. We can prove that, and the way we prove it helps get into the correct mindset for dealing with infinite enumerations:
+
+Let's assume that `-1` does appear after a finite number of outputs. If we can show this leads to a contradiction, then we will know that our assumption is wrong, and that `-1` does not appear after a finite number of outputs.
+
+We'll start by zipping `notAllIntegers` with the natural numbers:
+
+```javascript
+zip(naturals, notAllIntegers)()
+  //=>
+    [0, 0]
+    [1, 1]
+    [2, 2]
+    [3, 3]
+    [4, 4]
+    [5, 5]
+
+    ...
+```
+
+The proposition is that eventually, the enumeration outputs something like `[n, -1]`, where `n` is a natural number. What is `n`? As we can see, for any `n`, the actual output will be `[n, n]`, not `[n, -1]`. So concatenating the naturals with the negatives does **not** enumerate the integers.
+
+Merging the naturals with the negatives does enumerate the integers, and we will use this idea repeatedly: When we want to enumerate the elements of multiple enumerations, we must find a way to interleave their elements.
 
 ---
 
@@ -243,13 +302,13 @@ for (const s of zip(evens, naturals)()) {
     ...
 ```
 
-The even numbers have the same cardinality as the natural numbers.
+The even numbers have the same cardinality as the natural numbers. That is the paradox of infinity: The set of all even natural numbers is a proper subset of the set of all natural numbers, but nevertheless, they are the same size.
 
 ---
 
 ### products of enumerables
 
-Sets can be created from the [Cartesian product] (or simply "product") of two or more enumerables. For example, the set of all rational numbers is the product of the set of all natural numbers and the set of all positive natural numbers: A rational number can be expressed as a natural number numerator, divided by a positive natural number denominator.
+Sets can be created from the [cartesian product] (or simply "product") of two or more enumerables. For example, the set of all rational numbers is the product of the set of all natural numbers and the set of all positive natural numbers: A rational number can be expressed as a natural number numerator, divided by a positive natural number denominator.
 
 The product of two sets can be visualized with a table. Here we are visualizing the rational numbers:
 
