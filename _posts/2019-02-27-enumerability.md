@@ -186,18 +186,17 @@ for (const s of zip(a, naturals)()) {
 
 We're going to make some more enumerations, and some tools for composing them, but before we do, let's talk about why  enumerations are interesting.
 
---
+---
 
-### denumerables and verification
-
-*way too long. simply and possibly split in two after simplifying*
+### enumerating denumerables
 
 A [countable set] is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumerables][countable set] are countable sets with an infinite number of elements, meaning they can be put into a 1-to-1 correspondance with the entire set of natural numbers.
 
 [countable set]: https://en.wikipedia.org/wiki/Countable_set
 
+In our examples above, `naturals`, `negatives`, `positives`, and `a` are all enumerations of denumerable sets.
 
-When dealing with enumerating infinite sets, things can sometimes be tricky. If we say that an enumeration puts the elements of a denumerable into a 1-to-1 correspondance with the natural numbers, we must provide the following guarantee: **Every element of the enumeration correspondes to a finite natural number.** And in the case of an enumeration we write on a computer, it follows that for any member of the set, there is a natural number `n`, such that the member of the set appears as the `nth` element output by the enumeration.
+When enumerating denumerables, things can sometimes be tricky. If we say that an enumeration puts the elements of a denumerable into a 1-to-1 correspondance with the natural numbers, we must provide the following guarantee: **Every element of the enumeration correspondes to a finite natural number.** And in the case of an enumeration we write on a computer, it follows that for any member of the set, there is a natural number `n`, such that the member of the set appears as the `nth` element output by the enumeration.
 
 So in our example of `function * a { ... }` above, we know that we can name any element, such as `aaaaaaaaaa`, and indeed, it will appear as the tenth output of the enumeration (and corresponds to the natural number `0`).
 
@@ -742,7 +741,7 @@ And now we have shown that the set containing all of the finite products (includ
 
 ### the set of all finite subsets of a denumerable
 
-The set of all finite products of a denumerable is interesting for several reasons. One of them is that the set of all finite products of a denumerable is a superset of the set of all finite subsets of a denumerable. Intuitively, it would sem that if we know that if we can enumerate the finite products of a denumerable, then the set of all finite subsets of a denumerable must also be enumerable.
+The set of all finite products of a denumerable is interesting for several reasons. One of them is that the set of all finite products of a denumerable is a superset of the set of all finite subsets of a denumerable. Intuitively, it would seem that if we know that if we can enumerate the finite products of a denumerable, then the set of all finite subsets of a denumerable must also be enumerable.
 
 The direct way to establish this is to write the enumeration we want. Let's start by establishing our requirement.
 
@@ -1038,7 +1037,7 @@ We have now established that `productsOfProducts` is an enumeration of every pos
 
 ---
 
-### bonus
+### bonus/afterword
 
 JavaScript happens to print arrays using `[` and `]` and `,`. But we could write our own "pretty printer" code. We could output the instructions for drawing graphs in SVG. Or we could output the arrays in a Lisp style:
 
