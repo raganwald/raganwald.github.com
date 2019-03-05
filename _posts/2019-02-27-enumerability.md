@@ -325,7 +325,7 @@ The product of two sets can be visualized with a table. Here we are visualizing 
 There are plenty of naïve product functions. Here's one that operates on generators:
 
 ```javascript
-function mapGeneratorWith (fn, g) {
+function mapWith (fn, g) {
   return function * () {
     for (const e of g()) yield fn(e);
   }
@@ -345,7 +345,7 @@ function nprod2 (g1, g2) {
 const zeroOneTwoThree = upTo(0, 3);
 const oneTwoThree = upTo(1, 3);
 
-const twelveRationals = mapGeneratorWith(
+const twelveRationals = mapWith(
   ([numerator, denominator]) => `${numerator}/${denominator}`,
   nprod2(zeroOneTwoThree, oneTwoThree)
 );
@@ -375,7 +375,7 @@ const naturals = upTo(0, Infinity);
 const positives = upTo(1, Infinity);
 
 const rationals =
-      mapGeneratorWith(
+      mapWith(
         ([numerator, denominator]) => `${numerator}/${denominator}`,
       	nprod2(naturals, positives)
 	);
@@ -465,7 +465,7 @@ function prod2 (g1, g2) {
   }
 }
 
-const rationals = mapGeneratorWith(
+const rationals = mapWith(
   ([numerator, denominator]) => `${numerator}/${denominator}`,
   prod2(naturals, positives)
 );
@@ -503,7 +503,7 @@ Consider this generator that generates exponents of natural numbers:
 ```javascript
 const exp =
   n =>
-    mapGeneratorWith(
+    mapWith(
       p => Math.pow(n, p),
       upTo(1, Infinity)
     );
@@ -531,7 +531,7 @@ for (const powerOfTwo of twos()) {
 If we compose it with a mapping, we can get a generator that generates generators that generate powers of natural numbers:
 
 ```javascript
-const naturalPowers = mapGeneratorWith(exp, naturals);
+const naturalPowers = mapWith(exp, naturals);
 
 naturalPowers
   //=>
@@ -554,7 +554,7 @@ We will call our function `flatten`:
 ```javascript
 const flatten =
   denumerableOfDenumerables =>
-    mapGeneratorWith(
+    mapWith(
       ([denumerables, index]) => at(denumerables, index),
       prod2(denumerableOfDenumerables, naturals)
     );
@@ -590,12 +590,12 @@ We can build `prod` on this basis. It's a function that takes a finite number of
 ```javascript
 function prod (first, ...rest) {
   if (rest.length === 0) {
-    return mapGeneratorWith(
+    return mapWith(
     	e => [e],
     	first
       );
   } else {
-    return mapGeneratorWith(
+    return mapWith(
       ([eFirst, eRests]) => [eFirst].concat(eRests),
       prod2(first, prod(...rest))
     );
@@ -664,7 +664,7 @@ We can do a similar thing with the exponents of a denumerable:
 ```javascript
 const exponentsOf =
   generator =>
-    mapGeneratorWith(
+    mapWith(
       p => exponent(generator, p),
       upTo(1, Infinity)
     );
@@ -755,18 +755,18 @@ We start with `combination`. Given a generator and a number of elements `k`, `co
 ```javascript
 function combination (generator, k) {
   if (k === 1) {
-    return mapGeneratorWith(
+    return mapWith(
       e => [e],
       generator
     )
   } else {
     return flatten(
-      mapGeneratorWith(
+      mapWith(
         index => {
           const element = at(generator, index);
           const rest = slice(generator, index + 1);
 
-          return mapGeneratorWith(
+          return mapWith(
             arr => (arr.unshift(element), arr),
             combination(rest, k - 1)
           );
@@ -811,7 +811,7 @@ const subsets =
     cons(
       [],
       flatten(
-        mapGeneratorWith(
+        mapWith(
           k => combination(generator, k),
           naturals
         )
@@ -987,7 +987,7 @@ Continuing this substitution from top to bottom, we get:
 ...
 ```
 
-Fortunately, we can create this enumeration without manually replacing elements or faffing about with `at` and `mapGeneratorWith`, by writing a recursive generator:
+Fortunately, we can create this enumeration without manually replacing elements or faffing about with `at` and `mapWith`, by writing a recursive generator:
 
 ```javascript
 function * productsOfProducts () {
@@ -1053,7 +1053,7 @@ function prettyPrint(array) {
   return array.map(pp).join('');
 }
 
-mapGeneratorWith(pp, tree)()
+mapWith(pp, tree)()
   //=>
     ""
     "()"
