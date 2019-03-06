@@ -988,41 +988,48 @@ Here are the first few graphs:
 
 ---
 
-graph LR
-  subgraph zero
+<div class="mermaid">
+  graph LR
     0.0((0))
-  end
-  subgraph one
+</div>
+<div class="mermaid">
+  graph LR
     1.1((1))-->1.0((0))
-  end
-  subgraph two
+</div>
+<div class="mermaid">
+  graph LR
     2.2((2))-->2.1((1))
     2.1-->2.0((0))
-  end
-  subgraph three
+</div>
+<div class="mermaid">
+  graph LR
     3.3((3))-->3.0((0))
     3.3-->3.0
-  end
-  subgraph four
+</div>
+<div class="mermaid">
+  graph LR
     4.4((4))-->4.2((2))
     4.2((2))-->4.1((1))
     4.1-->4.0((0))
-  end
-  subgraph five
+</div>
+<div class="mermaid">
+  graph LR
     5.5((5))-->5.0((0))
     5.5-->5.1((1))
     5.1-->5.0((0))
-  end
-  subgraph six
+</div>
+<div class="mermaid">
+  graph LR
     6.6((6))-->6.0((0))
     6.6-->6.0((0))
     6.6-->6.0((0))
-  end
-  subgraph seven
+</div>
+<div class="mermaid">
+  graph LR
     7.7((7))-->7.3((3))
     7.3-->7.0((0))
     7.3-->7.0
-  end
+</div>
 
 ---
 
@@ -1030,41 +1037,48 @@ graph LR
 
 ---
 
-graph LR
-  subgraph zero
+<div class="mermaid">
+  graph LR
     0.0((0))
-  end
-  subgraph one
+</div>
+<div class="mermaid">
+  graph LR
     1.1((1))-->1.0((0))
-  end
-  subgraph two
+</div>
+<div class="mermaid">
+  graph LR
     2.2((2))-->2.1((1))
     2.1-->2.0((0))
-  end
-  subgraph three
+</div>
+<div class="mermaid">
+  graph LR
     3.3((3))-->3.0a((0))
     3.3-->3.0b((0))
-  end
-  subgraph four
+</div>
+<div class="mermaid">
+  graph LR
     4.4((4))-->4.2((2))
     4.2((2))-->4.1((1))
     4.1-->4.0((0))
-  end
-  subgraph five
+</div>
+<div class="mermaid">
+  graph LR
     5.5((5))-->5.0a((0))
     5.5-->5.1((1))
     5.1-->5.0b((0))
-  end
-  subgraph six
+</div>
+<div class="mermaid">
+  graph LR
     6.6((6))-->6.0a((0))
     6.6-->6.0b((0))
     6.6-->6.0c((0))
-  end
-  subgraph seven
+</div>
+<div class="mermaid">
+  graph LR
     7.7((7))-->7.3((3))
     7.3-->7.0a((0))
     7.3-->7.0b((0))
-  end
+</div>
 
 ---
 
