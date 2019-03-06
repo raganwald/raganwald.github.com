@@ -975,42 +975,100 @@ productsOfProducts()
     [[[]]]
     [[], []]
     [[[[]]]]
+    [[], [[]]]
+    [[], [], []]
+    [[[], []]]
 
     ...
 ```
 
-`productsOfProducts` is very interesting: If we think of each array as a node, and its children as arcs to other nodes, each element of this enumeration describes a finite tree, for example:
+`productsOfProducts` is very interesting: If we think of each array as a node, and its children as arcs to other nodes, each element of this enumeration describes a very particular kind of directed ayclic graph (or "DAG"), that has a single root (a node with no inbound arcs), and a single leaf (a node with no outbound arcs). The most degenerate graph has a single node that has neither inbound nor outbound arcs.
 
-<div class="mermaid">
+Here are the first few graphs:
+
+---
+
 graph LR
-  0(( ))
-</div>
+  subgraph zero
+    0.0((0))
+  end
+  subgraph one
+    1.1((1))-->1.0((0))
+  end
+  subgraph two
+    2.2((2))-->2.1((1))
+    2.1-->2.0((0))
+  end
+  subgraph three
+    3.3((3))-->3.0((0))
+    3.3-->3.0
+  end
+  subgraph four
+    4.4((4))-->4.2((2))
+    4.2((2))-->4.1((1))
+    4.1-->4.0((0))
+  end
+  subgraph five
+    5.5((5))-->5.0((0))
+    5.5-->5.1((1))
+    5.1-->5.0((0))
+  end
+  subgraph six
+    6.6((6))-->6.0((0))
+    6.6-->6.0((0))
+    6.6-->6.0((0))
+  end
+  subgraph seven
+    7.7((7))-->7.3((3))
+    7.3-->7.0((0))
+    7.3-->7.0
+  end
 
-<div class="mermaid">
+---
+
+`productOfProducts` enumerates every possible finite graph of this form. It is also possible to "de-canonicalize" these graphs and turn them into trees:
+
+---
+
 graph LR
-  0(( ))-->1(( ))
-</div>
+  subgraph zero
+    0.0((0))
+  end
+  subgraph one
+    1.1((1))-->1.0((0))
+  end
+  subgraph two
+    2.2((2))-->2.1((1))
+    2.1-->2.0((0))
+  end
+  subgraph three
+    3.3((3))-->3.0a((0))
+    3.3-->3.0b((0))
+  end
+  subgraph four
+    4.4((4))-->4.2((2))
+    4.2((2))-->4.1((1))
+    4.1-->4.0((0))
+  end
+  subgraph five
+    5.5((5))-->5.0a((0))
+    5.5-->5.1((1))
+    5.1-->5.0b((0))
+  end
+  subgraph six
+    6.6((6))-->6.0a((0))
+    6.6-->6.0b((0))
+    6.6-->6.0c((0))
+  end
+  subgraph seven
+    7.7((7))-->7.3((3))
+    7.3-->7.0a((0))
+    7.3-->7.0b((0))
+  end
 
-<div class="mermaid">
-graph LR
-  0(( ))-->1(( ))
-  1-->2(( ))
-</div>
+---
 
-<div class="mermaid">
-graph LR
-  0(( ))-->1(( ))
-  0-->2(( ))
-</div>
-
-<div class="mermaid">
-graph LR
-  0(( ))-->1(( ))
-  1-->2(( ))
-  2-->3(( ))
-</div>
-
-We have now established that `productsOfProducts` is an enumeration of every possible finite tree, and thus we know that the set of all finite trees is denumerable. It has the same cardinality as the set of all natural numbers.
+`productsOfProducts` also enumerates of every possible finite tree, and thus we know that the set of all finite trees is denumerable.
 
 ---
 
