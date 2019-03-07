@@ -178,7 +178,7 @@ zip(a, naturals)()
     ...
 ```
 
-We're going to make some more enumerations, and some tools for composing them, but before we do, let's talk about why  enumerations are interesting.
+We're going to make some more enumerations, and some tools for composing them, but before we do, let's talk about why enumerations are interesting.
 
 ---
 
@@ -280,13 +280,17 @@ As we saw, merging the naturals with the negatives does enumerate the integers, 
 
 The cardinality of a set is a measure of its size. Two sets have the same cardinality if their elements can be put into a one-to-one correspondence with each other. Cardinalities can also be compared. If the elements of set A can be put into a one-to-one correspondance with a subset of the elements of set B, but the elements of set B cannot be put into a one-to-one correspondence with set A, we say that A has a lower cardinality than B.
 
-Obviously, the cardinalities of finite sets are natural numbers. For example, the cardinality of `[0, 1, 2, 3, Infinity]` is `4`, the same as its length.
+Obviously, the cardinalities of finite sets are natural numbers. For example, the cardinality of `[0, 1, 2, 3, Infinity]` is `5`, the same as its length.
 
-The cardinality of infinite sets was studied by [Georg Cantor][Cantor]. As has been noted many times, the cardinality of infinite sets can be surprising to those thinking about it for the first time. For example, all infinite subsets of the natural numbers have the same cardinality as the natural numbers.
+The cardinality of infinite sets was studied by [Georg Cantor][Cantor]. As has been noted many times, the cardinality of infinite sets can be surprising to those thinking about it for the first time. As we saw above, a set that is a proper superset of the natural numbers can still have the same cardinality as the natural numbers.
+
+Despite there being an infinite number of negative numbers that are integers but are not natural numbers, the set of all integers is not larger than the set of natural numbers. The two sets have exactly the same cardinality.
+
+In addition to there being infinitely large supersets of the natural numbers, there are also infinitely large subsets of the natural numbers, and they also have the same cardinality as the natural numbers.
 
 [Cantor]: https://en.m.wikipedia.org/wiki/Georg_Cantor
 
-We can demonstrate that by putting them into a one-one-correspondance with the natural numbers:
+We can demonstrate that by putting an example enumeration of even numbers into a one-one-correspondance with the natural numbers:
 
 ```javascript
 const naturals = upTo(0, Infinity);
@@ -311,9 +315,11 @@ The even numbers have the same cardinality as the natural numbers. That is the p
 
 Sets can be created from the [cartesian product] (or simply "product") of two or more enumerables. For example, the set of all rational numbers is the product of the set of all natural numbers and the set of all positive natural numbers: A rational number can be expressed as a natural number numerator, divided by a positive natural number denominator.
 
-The product of two sets can be visualized with a table. Here we are visualizing the rational numbers:
-
 [Cartesian product]: https://en.wikipedia.org/wiki/Cartesian_product
+
+The product of two sets can be visualized with a table. Here we are visualizing the rational numbers:[^terms]
+
+[^terms]: These rational numbers are not reduced to the lowest terms: Thus, this enumeration produces `1/2`, `2/4`, `3/6`, and so forth. There are other enumerations that do produce the rationals in lowest terms, but we will use this one because it demonstrates taking the product of two enumerations.
 
 |     |  1|  2|  3|...|
 |-----|---|---|---|---|
@@ -366,7 +372,7 @@ twelveRationals()
     3/3
 ```
 
-The naïve approach iterates through all of the denominators members for each of the numerator's members. This is fast and simple, and works just fine for generators that only yield a finite number of elements. However, if we apply this to denumerables, it doesn't work:
+The naïve approach iterates through all of the denominators members for each of the numerator's members. This is fast and simple, and works just fine for generators that only yield a finite number of elements. However, if we apply this to enumerations of denumerable sets, it doesn't work:
 
 ```javascript
 const naturals = upTo(0, Infinity);
@@ -396,17 +402,17 @@ rationals()
     ...
 ```
 
-A naïve product of two or more sets, where at least one of the sets is denumerable, is not an enumeration of the product of the sets. It doesn't work for the exact same reason that concatenating multiple infinite enumerations does not produce a valid infinite enumeration.
+A naïve product of two or more enumerations, where at least one of the sets is denumerable, is not an enumeration of the product of the sets. It doesn't work for the exact same reason that concatenating multiple infinite enumerations does not produce a valid infinite enumeration.
 
-We can use the same proof. If we zip the output with the natural numbers, we'll get `[0, '0/1']`, `[1, '0/2']`, `[2, '0/3']`, ...
+We can prove this with the same logic as above: If we zip the output with the natural numbers, we'll get `[0, '0/1']`, `[1, '0/2']`, `[2, '0/3']`, ...
 
-If this is a valid enumeration, every rational number appears in a finite number of iterations, so we should be able to find `[n, '1962/614']` in a finite number of outputs. Whatever `n` is, we will actually find `[n, '0/n+1']`, not `[n, '1962/614']`. Therefore the naïve product cannot enumerate denumerables.
+If this was a valid enumeration, every rational number would appear in a finite number of iterations, so we should be able to find `[n, '1962/614']` in a finite number of outputs. Whatever `n` is, we will actually find `[n, '0/n+1']`, not `[n, '1962/614']`. Therefore the naïve product cannot enumerate denumerables.
 
 ---
 
 ### correctly enumerating the product of denumerables
 
-To enumerate the naïve product of two denumerables, we took the elements "row by row," to use the table visualization. This did not work, and neither would taking the elements column by column. What does work, is to take the elements _diagonal by diagonal_.
+To enumerate the naïve product of two denumerables, we took the elements of two enumerations "row by row," to use the table visualization. This did not work, and neither would taking the elements column by column. What does work, is to take the elements of the enumerations _diagonal by diagonal_.
 
 Here's our table again:
 
@@ -486,7 +492,7 @@ At the enormous cost of computing resources, we have an enumeration that enumera
 
 ---
 
-### flattening denumerables
+### enumerating a denumerable number of denumerables
 
 We previously looked at `merge`, a function that would merge a finite number of denumerables. It would not work for a denumerable number of denumerables, as it takes the elements "column-by-column," like a naïve product.
 
@@ -518,10 +524,10 @@ twos()
     ...
 ```
 
-If we compose it with a mapping, we can get a generator that generates generators that generate powers of natural numbers:
+If we compose it with a mapping, we can get a generator, that generates generators, that generate powers of natural numbers:
 
 ```javascript
-const naturalPowers = mapWith(exp, naturals);
+const naturalPowersEnumerations = mapWith(exp, naturals);
 
 naturalPowers
   //=>
@@ -549,6 +555,8 @@ const flatten =
       prod2(denumerableOfDenumerables, naturals)
     );
 
+const naturalPowers = flatten(naturalPowersEnumerations);
+
 flatten(naturalPowers)
   //=>
     0
@@ -565,15 +573,68 @@ flatten(naturalPowers)
     ...
 ```
 
-This verifies for us that the sum of a denumerable number of denumerables is also denumerable.
+This verifies that the sum of a denumerable number of infinite enumerations, is also an enumeraation, and therefore that the sum of a denumerable number of denumerables is also denumerable.
+
+---
+
+### de-deuplication
+
+`flatten(naturalPowersEnumerations)` is not an emeration of a set, it is an enumeration of a bag. The set of all natural powers is a proper subset of the bag of all natural numbers, so we can infer that the set of all natural numbers is denumerable. But if we want to be pedantic, we should construct an enumeration of the natural powers without duplicates.
+
+One way to do that is to filter out the ones we;'ve already seen:
+
+```javascript
+function uniq (generator) {
+  return function * uniqued () {
+    const seen = new Set();
+
+    for (const element of generator()) {
+      if (seen.has(element)) {
+        continue;
+      } else {
+        seen.add(element);
+        yield element;
+      }
+    }
+  }
+}
+
+const powers =
+  uniq(
+    flatten(
+      mapWith(exp, naturals)
+    )
+  );
+
+powers()
+  //=>
+    0
+    1
+    2
+    4
+    3
+    8
+    9
+    16
+    27
+    5
+    32
+    81
+
+    ...
+```
+
+Of course, `uniq` requires memory equal to the number of unique element seen so far, and this we know that it would requqire an infinite amount of space to enumerate the infinite set of natural powes. But then again, it would also reqquire an infinite amont of time, so we are worrying about whether we run out of space in teh Universe before or after we encounter the heat-death of teh Universe.
+
+As long as we knwo that an enumeration will output every finite element in a finite amount of time *and requires no more than a finite amount of space*, that is sufficient for our purposes today. And our purpose here was to demonstrate definitely that the set of natural powers, like every proper subset of the set of natural numbers, is denumerable.[^heh]
+
+[^heh]: Actually, the set of all natural powers is identical to the set of all natural numbers, but enumerating it as powers gives us a different enumeration than enumerating the natural numbers in order.
 
 ---
 
 ### exponentiation of denumerables
 
-Back to products. The product of two denumerables is denumerable.
-
-By inference, the product of three or more denumerables is also denumerable, because the denumerability of the product operation is transitive. Take denumerable sets `a`, `b`, `c`, and `d`. `a` and `b` are denumerable, and we know that `prod2(a, b)` is denumerable. Therefore `prod2(prod2(a, b), c)` is denumerable, and so is `prod2(prod2(prod2(a, b), c), d)`.
+Back to products. The product of two denumerables is denumerable. Take denumerable sets `a`, `b`, `c`, and `d`. `a` and `b` are denumerable, and we know that `prod2(a, b)` is denumerable. Therefore `prod2(prod2(a, b), c)` is denumerable, and so is `prod2(prod2(prod2(a, b), c), d)`.
 
 We can build `prod` on this basis. It's a function that takes a finite number of denumerables, and returns an enumeration over their elements, by using `prod2`:
 
@@ -619,9 +680,7 @@ In arithmetic, exponentiation is the multiplying of a number by itself a certain
 We can take the exponent of denumerables as well. Here is the absolutely naïve implementation:
 
 ```javascript
-function exponent (generator, n) {
-  return prod(...new Array(n).fill(generator));
-}
+const exponent = (generator, n) => prod(...new Array(n).fill(generator));
 
 const threeD = exponent(naturals, 3);
 
@@ -739,6 +798,19 @@ The set of all finite products of the natural numbers contains entries like `[]`
 We start with `combination`. Given a generator and a number of elements `k`, `combination` enumerates over all the ways that `k` elements can be selected from the generator's elements. Obviously, the k-combinations of a denumerable are also denumerable.
 
 ```javascript
+function slice (generator, n, limit = Infinity) {
+  return function * sliced () {
+    let i = 0;
+
+    for (const element of generator()) {
+      if (i++ < n) continue;
+      if (i > limit) break;
+
+      yield element;
+    }
+  }
+}
+
 function combination (generator, k) {
   if (k === 1) {
     return mapWith(
