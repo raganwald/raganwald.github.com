@@ -214,7 +214,17 @@ integers()
     ...
 ```
 
-Merge yields alternate elements from its constituent enumerations. But what if we had written this:
+Merge yields alternate elements from its constituent enumerations. Is the `merge` of two enumerations also an enumeration? If that were so, we could take any finite integer and show that it can be put into a one-to-one correspondance with the integers. Consider `zip(naturals, integers)`. Its ouput will be `[0, 0]`, `[1, -1]`, `[2, 1]`, `[3, -2]`, `[4, 2]` ...
+
+If `integers` is an enumeration, then for any finite integer `i`, there will be some output `[n, i]` where `n` is a natural number. This is the case: If `i` is zero or a positive number, then `zip(naturals, integers)` will output `[i * 2, i]`. And if `i` is a negative number, then `zip(naturals, integers)` will output `[Math.abs(i * 2) - 1, i]`.
+
+---
+
+### false enumerations
+
+Every finite integer is assocaiated with a natural number, and the existance of `merge(naturals, negatives)` proves that the natural numbers and the integers have the exact same cardinality, despite the natural numbers being a proper subset of the integers.
+
+But what if we had written this:
 
 ```javascript
 function concatenate (...generators) {
@@ -258,9 +268,11 @@ zip(naturals, notAllIntegers)()
     ...
 ```
 
-The proposition is that eventually, the enumeration outputs something like `[n, -1]`, where `n` is a natural number. What is `n`? As we can see, for any `n`, the actual output will be `[n, n]`, not `[n, -1]`. So concatenating the naturals with the negatives does **not** enumerate the integers.
+If `notAllIntegers` is an enumeration of the integers, then after a finite number of outputs, the enumeration will produce `[n, -1]`, where `n` is a natural number. However, after `n + 1` outputs, `zip(naturals, notAllIntegers)` will output `[n, n]`, not `[n, -1]`. And this is true for *any* finite `n`, no matter how large. Since the enumeration cannot output both `[n, -1]` and `[n, n]`, it follows that our asssumption that `-1` appears after a finite number of outputs, must be incorrect.
 
-Merging the naturals with the negatives does enumerate the integers, and we will use this idea repeatedly: When we want to enumerate the elements of multiple enumerations, we must find a way to interleave their elements.
+`notAllIntegers` is not an enumeration of the integers, and therefore `concatenate` is not a function that takes two enumerations and returns an enumeration over the union of its inputs.
+
+As we saw, merging the naturals with the negatives does enumerate the integers, and we will use this idea repeatedly: *When we want to enumerate the elements of multiple enumerations, we must find a way to interleave their elements, not concatenate them.*
 
 ---
 
