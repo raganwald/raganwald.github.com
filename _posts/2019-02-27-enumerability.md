@@ -896,6 +896,158 @@ And now we have shown that the set of all finite subsets of a denumerable, is al
 
 ---
 
+### recursive enumerables
+
+A common example of recursion is to output the [fibonacci sequence][fib]. Here's an iterative enumeration:
+
+[fib]: https://en.wikipedia.org/wiki/Fibonacci_number
+
+```javascript
+function * simpleFib () {
+  const two = [0, 1];
+
+  while (true) {
+    yield two[0];
+
+    two.push(two[0] + two[1]);
+    two.shift();
+  }
+}
+
+simpleFib()
+  //=>
+    0
+    1
+    1
+    2
+    3
+    5
+    8
+    13
+    21
+    34
+
+    ...
+```
+
+It can also be expressed recursively using `at`, but we will will take a different approach. Let's start with a function that takes any enumeration, and sums pairs of its elements:
+
+```javascript
+const pairSum =
+  generator =>
+    mapWith(
+      ([a, b]) => a + b,
+      zip(generator, slice(generator, 1))
+    );
+
+pairSum(naturals)
+  //=>
+    1
+    3
+    5
+    7
+    9
+    11
+    13
+    15
+    17
+    19
+
+    ...
+```
+
+In this case, it is outputting `0 + 1`, `1 + 2`, `2 + 3`, and so on. We can cons a couple of numbers onto the front:
+
+```javascript
+const pairSumStartingWithZeroAndOne =
+  generator =>
+    cons(0,
+      cons(1,
+        mapWith(
+          ([a, b]) => a + b,
+          zip(generator, slice(generator, 1))
+        )
+      )
+    );
+
+pairSumStartingWithZeroAndOne(naturals)
+  //=>
+    0
+    1
+    1
+    3
+    5
+    7
+    9
+    11
+    13
+    15
+    17
+    19
+
+    ...
+```
+
+And now to pull the rabbit out of the hat:
+
+```javascript
+function * fibonacci () {
+  yield *
+    cons(0,
+      cons(1,
+        mapWith(
+          ([a, b]) => a + b,
+          zip(fibonacci, slice(fibonacci, 1))
+        )
+      )
+    )();
+}
+
+fibonacci()
+  //=>
+    0
+    1
+    1
+    2
+    3
+    5
+    8
+    13
+    21
+    34
+```
+
+We now have an enumeration of the fibonacci sequence that is defined in terms of itself. What makes it work is that it is "seeded" with the first two elements, and thereafter every element we return is computed in terms of the sum of the previous two elements.
+
+This is a general pattern for making recursive enumerations: If they can be defined in terms of a previous element of themselves, they can be expressed as a recursive generator.
+
+Here's a much simpler example:
+
+```javascript
+function * rnaturals () {
+  yield * cons(0,
+    mapWith(
+      n => n + 1,
+      rnaturals
+    )
+  )();
+}
+
+rnaturals()
+  //=>
+    0
+    1
+    2
+    3
+    4
+
+    ...
+```
+
+We're going to use this pattern with `products` to get an interesting enumeration.
+
+---
+
 ### taking the products of products
 
 Back to `products`. To recap:
