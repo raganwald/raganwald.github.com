@@ -214,7 +214,7 @@ integers()
     ...
 ```
 
-Merge yields alternate elements from its constituent enumerations. Is the `merge` of two enumerations also an enumeration? If that were so, we could take any finite integer and show that it can be put into a one-to-one correspondance with the integers. Consider `zip(naturals, integers)`. Its ouput will be `[0, 0]`, `[1, -1]`, `[2, 1]`, `[3, -2]`, `[4, 2]` ...
+Merge yields alternate elements from its constituent enumerations. Is the `merge` of two enumerations also an enumeration? If that were so, we could take any finite integer and show that it can be put into a one-to-one correspondance with the integers. Consider `zip(naturals, integers)`. Its output will be `[0, 0]`, `[1, -1]`, `[2, 1]`, `[3, -2]`, `[4, 2]` ...
 
 If `integers` is an enumeration, then for any finite integer `i`, there will be some output `[n, i]` where `n` is a natural number. This is the case: If `i` is zero or a positive number, then `zip(naturals, integers)` will output `[i * 2, i]`. And if `i` is a negative number, then `zip(naturals, integers)` will output `[Math.abs(i * 2) - 1, i]`.
 
@@ -222,7 +222,7 @@ If `integers` is an enumeration, then for any finite integer `i`, there will be 
 
 ### false enumerations
 
-Every finite integer is assocaiated with a natural number, and the existance of `merge(naturals, negatives)` proves that the natural numbers and the integers have the exact same cardinality, despite the natural numbers being a proper subset of the integers.
+Every finite integer is associated with a natural number, and the existence of `merge(naturals, negatives)` proves that the natural numbers and the integers have the exact same cardinality, despite the natural numbers being a proper subset of the integers.
 
 But what if we had written this:
 
@@ -268,7 +268,7 @@ zip(naturals, notAllIntegers)()
     ...
 ```
 
-If `notAllIntegers` is an enumeration of the integers, then after a finite number of outputs, the enumeration will produce `[n, -1]`, where `n` is a natural number. However, after `n + 1` outputs, `zip(naturals, notAllIntegers)` will output `[n, n]`, not `[n, -1]`. And this is true for *any* finite `n`, no matter how large. Since the enumeration cannot output both `[n, -1]` and `[n, n]`, it follows that our asssumption that `-1` appears after a finite number of outputs, must be incorrect.
+If `notAllIntegers` is an enumeration of the integers, then after a finite number of outputs, the enumeration will produce `[n, -1]`, where `n` is a natural number. However, after `n + 1` outputs, `zip(naturals, notAllIntegers)` will output `[n, n]`, not `[n, -1]`. And this is true for *any* finite `n`, no matter how large. Since the enumeration cannot output both `[n, -1]` and `[n, n]`, it follows that our assumption that `-1` appears after a finite number of outputs, must be incorrect.
 
 `notAllIntegers` is not an enumeration of the integers, and therefore `concatenate` is not a function that takes two enumerations and returns an enumeration over the union of its inputs.
 
@@ -573,13 +573,13 @@ flatten(naturalPowers)
     ...
 ```
 
-This verifies that the sum of a denumerable number of infinite enumerations, is also an enumeraation, and therefore that the sum of a denumerable number of denumerables is also denumerable.
+This verifies that the sum of a denumerable number of infinite enumerations, is also an enumeration, and therefore that the sum of a denumerable number of denumerables is also denumerable.
 
 ---
 
-### de-deuplication
+### de-duplication
 
-`flatten(naturalPowersEnumerations)` is not an emeration of a set, it is an enumeration of a bag. The set of all natural powers is a proper subset of the bag of all natural numbers, so we can infer that the set of all natural numbers is denumerable. But if we want to be pedantic, we should construct an enumeration of the natural powers without duplicates.
+`flatten(naturalPowersEnumerations)` is not an enumeration of a set, it is an enumeration of a bag. The set of all natural powers is a proper subset of the bag of all natural numbers, so we can infer that the set of all natural numbers is denumerable. But if we want to be pedantic, we should construct an enumeration of the natural powers without duplicates.
 
 One way to do that is to filter out the ones we;'ve already seen:
 
@@ -624,9 +624,9 @@ powers()
     ...
 ```
 
-Of course, `uniq` requires memory equal to the number of unique element seen so far, and this we know that it would requqire an infinite amount of space to enumerate the infinite set of natural powes. But then again, it would also reqquire an infinite amont of time, so we are worrying about whether we run out of space in teh Universe before or after we encounter the heat-death of teh Universe.
+Of course, `uniq` requires memory equal to the number of unique element seen so far, and this we know that it would require an infinite amount of space to enumerate the infinite set of natural powers. But then again, it would also require an infinite amount of time, so we are worrying about whether we run out of space in the Universe before or after we encounter the heat-death of the Universe.
 
-As long as we knwo that an enumeration will output every finite element in a finite amount of time *and requires no more than a finite amount of space*, that is sufficient for our purposes today. And our purpose here was to demonstrate definitely that the set of natural powers, like every proper subset of the set of natural numbers, is denumerable.[^heh]
+As long as we know that an enumeration will output every finite element in a finite amount of time *and requires no more than a finite amount of space*, that is sufficient for our purposes today. And our purpose here was to demonstrate definitely that the set of natural powers, like every proper subset of the set of natural numbers, is denumerable.[^heh]
 
 [^heh]: Actually, the set of all natural powers is identical to the set of all natural numbers, but enumerating it as powers gives us a different enumeration than enumerating the natural numbers in order.
 
@@ -1066,7 +1066,7 @@ productsOfProducts()
     ...
 ```
 
-`productsOfProducts` is very interesting: If we think of each array as a node, and its children as arcs to other nodes, each element of this enumeration describes a very particular kind of directed ayclic graph (or "DAG"), that has a single root (a node with no inbound arcs), and a single leaf (a node with no outbound arcs). The most degenerate graph has a single node that has neither inbound nor outbound arcs.
+`productsOfProducts` is very interesting: If we think of each array as a node, and its children as arcs to other nodes, each element of this enumeration describes a very particular kind of directed acyclic graph (or "DAG"), that has a single root (a node with no inbound arcs), and a single leaf (a node with no outbound arcs). The most degenerate graph has a single node that has neither inbound nor outbound arcs.
 
 Here are the first few graphs:
 
