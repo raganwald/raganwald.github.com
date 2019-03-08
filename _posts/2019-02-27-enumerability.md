@@ -1,5 +1,5 @@
 ---
-title: "Enumerations, Denumerables, and Cardinals"
+title: "Enumerations, Denumerables, Recursion, and Infinity"
 tags: [allonge,mermaid,recursion]
 ---
 
