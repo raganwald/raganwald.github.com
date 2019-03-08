@@ -512,6 +512,10 @@ At the enormous cost of computing resources, we have an enumeration that enumera
 
 ---
 
+[![braided recursion](/assets/images/enumerations/braided.png)](https://www.flickr.com/photos/martinlatter/2203634579)
+
+---
+
 ### enumerating a denumerable number of denumerables
 
 We previously looked at `merge`, a function that would merge a finite number of denumerables. It would not work for a denumerable number of denumerables, as it takes the elements "column-by-column," like a naïve product.
@@ -594,6 +598,10 @@ flatten(naturalPowers)
 ```
 
 This verifies that the sum of a denumerable number of infinite enumerations, is also an enumeration, and therefore that the sum of a denumerable number of denumerables is also denumerable.
+
+---
+
+[![twin](/assets/images/enumerations/twin.jpg)](https://www.flickr.com/photos/fabiovenni/2399016990)
 
 ---
 
