@@ -932,6 +932,10 @@ And now we have shown that the set of all finite subsets of a denumerable, is al
 
 ---
 
+[![biUnderside of Blackfriars Bridge on Southbank, Londong_blue](/assets/images/enumerations/bridge.jpg)](https://www.flickr.com/photos/mikedixson/16156585425)
+
+---
+
 ### recursive enumerables
 
 A common example of recursion is to output the [fibonacci sequence][fib]. Here's an iterative enumeration:
