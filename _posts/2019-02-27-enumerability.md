@@ -323,6 +323,10 @@ The even numbers have the same cardinality as the natural numbers. That is the p
 
 ---
 
+[![multiplication machine](/assets/images/enumerations/multiplication.jpg)](https://www.flickr.com/photos/ideonexus/2556802769)
+
+---
+
 ### products of enumerables
 
 Sets can be created from the [cartesian product] (or simply "product") of two or more enumerables. For example, the set of all rational numbers is the product of the set of all natural numbers and the set of all positive natural numbers: A rational number can be expressed as a natural number numerator, divided by a positive natural number denominator.
@@ -419,6 +423,10 @@ A naïve product of two or more enumerations, where at least one of the sets is 
 We can prove this with the same logic as above: If we zip the output with the natural numbers, we'll get `[0, '0/1']`, `[1, '0/2']`, `[2, '0/3']`, ...
 
 If this was a valid enumeration, every rational number would appear in a finite number of iterations, so we should be able to find `[n, '1962/614']` in a finite number of outputs. Whatever `n` is, we will actually find `[n, '0/n+1']`, not `[n, '1962/614']`. Therefore the naïve product cannot enumerate denumerables.
+
+---
+
+[![Sunset on the roof. ](/assets/images/enumerations/roof.jpg)](https://www.flickr.com/photos/volvob12b/14284648729)
 
 ---
 
