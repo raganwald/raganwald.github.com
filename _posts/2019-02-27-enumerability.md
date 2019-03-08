@@ -5,21 +5,17 @@ tags: [allonge,mermaid,noindex]
 
 *Warning: This is an unfinished work. Feel free to share it on Twitter or other conventional social media, but I ask you not to post it on Hacker News or Reddit until it is finished.*
 
----
-
-### enumerables and enumerations
-
 In programming language jargon, an _enumerable_ is a value that can be accessed sequentially, or iterated over. Different languages use the term in slightly different ways, although they all have some relation to its basic definition.
 
 In Mathematics, an [enumeration] is a complete, ordered list of all of the elements of a set or collection. There can be more than one enumeration for the same collection, and the collections need not have a finite number of elements.
 
 [enumeration]: https://en.wikipedia.org/wiki/Enumeration
 
-For example, here are two slightly different enumerations for the integers: `0, -1, 1, -2, 2, -3, 3, -4, 4, ...` and `0, -1, 1, 2, -2, -3, 3, 4, -4 ...`. We have no way to write out the complete enumeration, because although each integer is of finite size, there are an infinite number of them.
+For example, here are two slightly different enumerations for the integers: `0, -1, 1, -2, 2, -3, 3, -4, 4, ...` and `0, -1, 1, 2, -2, -3, 3, 4, -4 ...`. We have no way to write out the complete enumeration, because although each integer is of finite size, there are an infinite number of them.[^finite]
 
-Naturally, not all enumerations are infinite in size. Here are two enumerations of the set ("whole numbers less than or equal to four"): `0, 1, 2, 3, 4` and `4, 3, 2, 1, 0`.
+[^finite]: Nat all enumerations are infinite in size. Here are two enumerations of the set ("whole numbers less than or equal to four"): `0, 1, 2, 3, 4` and `4, 3, 2, 1, 0`.
 
-It is very interesting and useful that an enumeration is a separate entity from the collection it enumerates. We are going to work with enumerations in this essay.
+In this essay, we are going focus on enumerations over infinite sets. We will examine a number of ways to compose enumerations, including recursive enumerations that are composed with themselves.
 
 ---
 
@@ -182,6 +178,10 @@ We're going to make some more enumerations, and some tools for composing them, b
 
 ---
 
+[![numbers](/assets/images/enumerations/numbers.jpg)](https://www.flickr.com/photos/morebyless/9423385629)
+
+---
+
 ### enumerating denumerables
 
 A [countable set] is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumerables][countable set] are countable sets with an infinite number of elements, meaning they can be put into a 1-to-1 correspondance with the entire set of natural numbers.
@@ -217,6 +217,10 @@ integers()
 Merge yields alternate elements from its constituent enumerations. Is the `merge` of two enumerations also an enumeration? If that were so, we could take any finite integer and show that it can be put into a one-to-one correspondance with the integers. Consider `zip(naturals, integers)`. Its output will be `[0, 0]`, `[1, -1]`, `[2, 1]`, `[3, -2]`, `[4, 2]` ...
 
 If `integers` is an enumeration, then for any finite integer `i`, there will be some output `[n, i]` where `n` is a natural number. This is the case: If `i` is zero or a positive number, then `zip(naturals, integers)` will output `[i * 2, i]`. And if `i` is a negative number, then `zip(naturals, integers)` will output `[Math.abs(i * 2) - 1, i]`.
+
+---
+
+[![sinkhole](/assets/images/enumerations/sinkhole.jpg)](https://www.flickr.com/photos/salim/6066739796/9423385629)
 
 ---
 
@@ -273,6 +277,10 @@ If `notAllIntegers` is an enumeration of the integers, then after a finite numbe
 `notAllIntegers` is not an enumeration of the integers, and therefore `concatenate` is not a function that takes two enumerations and returns an enumeration over the union of its inputs.
 
 As we saw, merging the naturals with the negatives does enumerate the integers, and we will use this idea repeatedly: *When we want to enumerate the elements of multiple enumerations, we must find a way to interleave their elements, not concatenate them.*
+
+---
+
+[![clay](/assets/images/enumerations/clay.jpg)](https://www.flickr.com/photos/deanhochman/45731896564)
 
 ---
 
