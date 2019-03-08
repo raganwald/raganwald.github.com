@@ -660,6 +660,10 @@ As long as we know that an enumeration will output every finite element in a fin
 
 ---
 
+[!recursive(/assets/images/enumerations/recursive.jpg)](https://www.flickr.com/photos/lamenta3/5410914893)
+
+---
+
 ### exponentiation of denumerables
 
 Back to products. The product of two denumerables is denumerable. Take denumerable sets `a`, `b`, `c`, and `d`. `a` and `b` are denumerable, and we know that `prod2(a, b)` is denumerable. Therefore `prod2(prod2(a, b), c)` is denumerable, and so is `prod2(prod2(prod2(a, b), c), d)`.
