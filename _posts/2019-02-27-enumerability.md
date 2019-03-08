@@ -956,7 +956,7 @@ pairSum(naturals)
     ...
 ```
 
-In this case, it is outputting `0 + 1`, `1 + 2`, `2 + 3`, and so on. We can cons a couple of numbers onto the front:
+In this case, it is outputting `0 + 1`, `1 + 2`, `2 + 3`, and so on. We can `cons` a couple of numbers onto the front:
 
 ```javascript
 const pairSumStartingWithZeroAndOne =
@@ -1024,16 +1024,16 @@ This is a general pattern for making recursive enumerations: If they can be defi
 Here's a much simpler example:
 
 ```javascript
-function * rnaturals () {
+function * naturals () {
   yield * cons(0,
     mapWith(
       n => n + 1,
-      rnaturals
+      naturals
     )
   )();
 }
 
-rnaturals()
+naturals()
   //=>
     0
     1
@@ -1044,7 +1044,9 @@ rnaturals()
     ...
 ```
 
-We're going to use this pattern with `products` to get an interesting enumeration.
+Once again we have a patern where we 'seed' an enumeration with an initial value, and thereafter the remaining values are computed from the enumeration itself. Since it always stays "one step ahead of itself," we get an infinite enumeration.
+
+Now let's keep this pattern in mind as we revisit `products`.
 
 ---
 
@@ -1079,129 +1081,17 @@ products(naturals)()
     [1, 0, 0, 0]
     [0, 0, 0, 0, 1]
     [0, 0, 0, 0, 0, 0]
-    [6]
-    [2, 0]
-    [1, 0, 1]
-    [0, 1, 0, 0]
-    [1, 0, 0, 0, 0]
-    [0, 0, 0, 0, 0, 1]
-    [0, 0, 0, 0, 0, 0, 0]
-    [7]
-    [0, 3]
-    [2, 0, 0]
-    [1, 0, 0, 1]
-    [0, 1, 0, 0, 0]
-    [1, 0, 0, 0, 0, 0]
-    [0, 0, 0, 0, 0, 0, 1]
-    [0, 0, 0, 0, 0, 0, 0, 0]
-    [8]
-    [1, 2]
-    [0, 0, 2]
-    [2, 0, 0, 0]
-    [1, 0, 0, 0, 1]
-    [0, 1, 0, 0, 0, 0]
-    [1, 0, 0, 0, 0, 0, 0]
-    [0, 0, 0, 0, 0, 0, 0, 1]
-    [0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     ...
 ```
 
-If we put this enumeration of `products(naturals)` into an explicit 1-to-1 correspondence with the natural numbers, we will see something interesting:
-
-```
- 0, []
- 1, [0]
- 2, [1]
- 3, [0, 0]
- 4, [2]
- 5, [0, 1]
- 6, [0, 0, 0]
- 7, [3]
- 8, [1, 0]
- 9, [0, 0, 1]
-10, [0, 0, 0, 0]
-11, [4]
-12, [0, 2]
-13, [1, 0, 0]
-14, [0, 0, 0, 1]
-15, [0, 0, 0, 0, 0]
-16, [5]
-17, [1, 1]
-18, [0, 1, 0]
-19, [1, 0, 0, 0]
-
-...
-```
-
-No number appearing within a product is greater than or equal to the ordinal of the product. For example, product `0` doesn't have any numbers. Product `1` contains a `0`. Product `2` contains a `1`. Product `3` contains two zeroes. And so forth. The products of an denumerable always outpace the elements of the denumerable.
-
-Let's think of the numbers appearing within the products as indices. `0` is the first element of some denumerable, `1` is the second element, and so forth. We could substitute any denumerable for the natural numbers in `products(naturals)` by writing `products(someOtherDenumerable)`, but let's try an experiment:
-
-What happens if we substitute the elements of the above output for the numbers... In itself?
-
-Starting from the top, `[]` des not need any substitution, as it has no numbers:
-
-```
- 0, []
-```
-
-`[0]` becomes `[[]]`, because the `0th` element of the output is `[]`:
-
-```
- 0, []
- 1, [[]]
-```
-
-Now `[1]` becomes `[[[]]]`:
-
-```
- 0, []
- 1, [[]]
- 2, [[[]]]
-```
-
-And `[0, 0]` becomes `[[], []]`:
-
-```
- 0, []
- 1, [[]]
- 2, [[[]]]
- 3, [[], []]
-```
-
-Continuing this substitution from top to bottom, we get:
-
-```
-[]
-[[]]
-[[[]]]
-[[], []]
-[[[[]]]]
-[[], [[]]]
-[[], [], []]
-[[[], []]]
-[[[]], []]
-[[], [], [[]]]
-[[], [], [], []]
-[[[[[]]]]]
-[[], [[[]]]]
-[[[]], [], []]
-[[], [], [], [[]]]
-[[], [], [], [], []]
-[[[], [[]]]]
-[[[]], [[]]]
-[[], [[]], []]
-[[[]], [], [], []]
-
-...
-```
-
-Fortunately, we can create this enumeration without manually replacing elements or faffing about with `at` and `mapWith`, by writing a recursive generator:
+The definition of `products` looks familiar: `generator => cons([], flatten(exponentsOf(generator)))`. Once again, we have a generator that is defined as a seed value cons'd onto an operation we perform with another enumeration. What if we make `products` recursive? What if we define it in terms of itself?
 
 ```javascript
 function * productsOfProducts () {
-  yield * products(productsOfProducts)();
+  yield * cons([],
+    flatten(exponentsOf(productsOfProducts))
+  )();
 }
 
 productsOfProducts()
@@ -1218,60 +1108,7 @@ productsOfProducts()
     ...
 ```
 
-`productsOfProducts` is very interesting: If we think of each array as a node, and its children as arcs to other nodes, each element of this enumeration describes a very particular kind of directed acyclic graph (or "DAG"), that has a single root (a node with no inbound arcs), and a single leaf (a node with no outbound arcs). The most degenerate graph has a single node that has neither inbound nor outbound arcs.
-
-Here are the first few graphs:
-
----
-
-<div class="mermaid">
-  graph LR
-    0.0((0))
-</div>
-<div class="mermaid">
-  graph LR
-    1.1((1))-->1.0((0))
-</div>
-<div class="mermaid">
-  graph LR
-    2.2((2))-->2.1((1))
-    2.1-->2.0((0))
-</div>
-<div class="mermaid">
-  graph LR
-    3.3((3))-->3.0((0))
-    3.3-->3.0
-</div>
-<div class="mermaid">
-  graph LR
-    4.4((4))-->4.2((2))
-    4.2((2))-->4.1((1))
-    4.1-->4.0((0))
-</div>
-<div class="mermaid">
-  graph LR
-    5.5((5))-->5.0((0))
-    5.5-->5.1((1))
-    5.1-->5.0((0))
-</div>
-<div class="mermaid">
-  graph LR
-    6.6((6))-->6.0((0))
-    6.6-->6.0((0))
-    6.6-->6.0((0))
-</div>
-<div class="mermaid">
-  graph LR
-    7.7((7))-->7.3((3))
-    7.3-->7.0((0))
-    7.3-->7.0
-</div>
-
----
-
-`productOfProducts` enumerates every possible finite graph of this form. It is also possible to "de-canonicalize" these graphs and turn them into trees:
-
----
+`productsOfProducts` is very interesting: The seed value is an empty array, and every value thereafter represents one of the products of `products` with itself. If we "de-duplicate" the result, what we have is an enumeration of every finite topology of a tree:
 
 <div class="mermaid">
   graph LR
@@ -1316,9 +1153,7 @@ Here are the first few graphs:
     7.3-->7.0b(( ))
 </div>
 
----
-
-`productsOfProducts` also enumerates of every possible finite tree, and thus we know that the set of all finite trees is denumerable.
+...
 
 ---
 
