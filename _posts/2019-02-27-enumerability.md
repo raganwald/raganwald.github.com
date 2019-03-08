@@ -932,7 +932,7 @@ And now we have shown that the set of all finite subsets of a denumerable, is al
 
 ---
 
-[![biUnderside of Blackfriars Bridge on Southbank, Londong_blue](/assets/images/enumerations/bridge.jpg)](https://www.flickr.com/photos/mikedixson/16156585425)
+[![Underside of Blackfriars Bridge on Southbank, London](/assets/images/enumerations/bridge.jpg)](https://www.flickr.com/photos/mikedixson/16156585425)
 
 ---
 
@@ -1090,6 +1090,10 @@ Now let's keep this pattern in mind as we revisit `products`.
 
 ---
 
+[![tree](/assets/images/enumerations/tree.jpg)](https://www.flickr.com/photos/cluczkow/4405669180)
+
+---
+
 ### taking the products of products
 
 Back to `products`. To recap:
@@ -1194,6 +1198,10 @@ productsOfProducts()
 </div>
 
 ...
+
+---
+
+[![brackets](/assets/images/enumerations/brackets.jpg)](https://www.flickr.com/photos/tomek_niedzwiedz/33136033302)
 
 ---
 
