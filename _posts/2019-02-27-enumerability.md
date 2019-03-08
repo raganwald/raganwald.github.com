@@ -660,7 +660,7 @@ As long as we know that an enumeration will output every finite element in a fin
 
 ---
 
-[!recursive(/assets/images/enumerations/recursive.jpg)](https://www.flickr.com/photos/lamenta3/5410914893)
+[![recursive](/assets/images/enumerations/recursive.jpg)](https://www.flickr.com/photos/lamenta3/5410914893)
 
 ---
 
@@ -816,6 +816,10 @@ products(naturals)()
 ```
 
 And now we have shown that the set containing all of the finite products (including what we might call the zeroth product) of a denumerable is also denumerable, by dint of having written an enumeration for it.
+
+---
+
+[![big_blue](/assets/images/enumerations/big-blue.jpg)](https://www.flickr.com/photos/49250831@N07/4515391074)
 
 ---
 
