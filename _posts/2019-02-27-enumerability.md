@@ -1,6 +1,6 @@
 ---
 title: "Enumerations, Denumerables, and Cardinals"
-tags: [allonge,mermaid,noindex]
+tags: [allonge,mermaid,recursion]
 ---
 
 *Warning: This is an unfinished work. Feel free to share it on Twitter or other conventional social media, but I ask you not to post it on Hacker News or Reddit until it is finished.*
