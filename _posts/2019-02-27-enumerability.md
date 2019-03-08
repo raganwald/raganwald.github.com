@@ -19,6 +19,10 @@ In this essay, we are going focus on enumerations over infinite sets. We will ex
 
 ---
 
+[![code.close()](/assets/images/enumerations/code.close().jpg)](https://www.flickr.com/photos/ruiwen/3260095534)
+
+---
+
 ### enumerations in javascript
 
 In JavaScript, we can use generators as enumerations, e.g.
