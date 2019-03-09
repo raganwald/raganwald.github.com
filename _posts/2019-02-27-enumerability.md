@@ -1623,7 +1623,9 @@ As discussed in [Cardinality](#cardinality) above, if two sets can be put into a
 
 This, even though there are clearly an infinite number of negative numbers that are members of the set of all integers, and none of those numbers are members of the set of all natural numbers, the set of all intergers has the same cardinality as the set of natural numbers. As do the sets of even numbers, positive numbers, finite subsets of natural numbers, products of natural numbers, topologies of finite trees, and balanced parentheses strings.
 
-All of these are [countable sets][countable set], and we demonstrated that they are countable by writing enumerations for them. We have been bandying the words "infinite" and "infinity" around informally, but now we are gong to be more precise. The cardinality of a countable set is known as [aleph null]
+All of these are [countable sets][countable set], and we demonstrated that they are countable by writing enumerations for them. We have been bandying the words "infinite" and "infinity" around informally, but now we are gong to be more precise. The cardinality of a countable set is known as [aleph null], usually written as ℵ<sub>0</sub>.
+
+[aleph null]: https://en.wikipedia.org/wiki/Aleph_number#Aleph-null
 
 ---
 
