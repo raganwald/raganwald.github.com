@@ -1084,7 +1084,7 @@ naturals()
     ...
 ```
 
-Once again we have a patern where we 'seed' an enumeration with an initial value, and thereafter the remaining values are computed from the enumeration itself. Since it always stays "one step ahead of itself," we get an infinite enumeration.
+Once again we have a pattern where we 'seed' an enumeration with an initial value, and thereafter the remaining values are computed from the enumeration itself. Since it always stays "one step ahead of itself," we get an infinite enumeration.
 
 Now let's keep this pattern in mind as we revisit `products`.
 
@@ -1152,7 +1152,7 @@ productsOfProducts()
     ...
 ```
 
-`productsOfProducts` is very interesting: The seed value is an empty array, and every value thereafter represents one of the products of `products` with itself. If we "de-duplicate" the result, what we have is an enumeration of every finite topology of a tree:
+`productsOfProducts` is very interesting: The seed value is an empty array, and every value thereafter represents one of the products of `products` with itself. The result is a series of ways to nest arrays. Another way to look at these nested arrays is to visualize them as tree topologies:
 
 <div class="mermaid">
   graph LR
@@ -1197,7 +1197,211 @@ productsOfProducts()
     7.3-->7.0b(( ))
 </div>
 
-...
+`productsOfProducts` enumerates every finite tree topology!
+
+---
+
+[![Night by Aristide Maillol French](/assets/images/enumerations/night.jpg)](https://www.flickr.com/photos/rverc/9744043168)
+
+---
+
+### two caveats about enumerating trees with `productsOfProducts`
+
+`productsOfProducts` does appear to enumerate all of the topologies of finite trees, but with two important caveats.
+
+First, Although the printed representation of `productOfProduct`'s elements look like trees, in actual fact each element uses structure sharing, so although thr output `[[], [[]]]` may look like it respresents:
+
+<div class="mermaid">
+  graph LR
+    5.5(( ))-->5.0a(( ))
+    5.5-->5.1(( ))
+    5.1-->5.0b(( ))
+</div>
+
+Internally, because it uses structure sharing, it's not a tree, it's internall a directed acyclic graph that looks like this:
+
+<div class="mermaid">
+  graph LR
+    5.5(( ))-->0(( ))
+    5.5-->5.1(( ))
+    5.1-->0(( ))
+</div>
+
+We will develope an enumeration of trees that are internally trees as well.
+
+The second caveat is a little more subtle. Our recursive version of the Fibonacci sequence outputs the elements in order. This has many advantages. One of them is that the Fibonacci sequence is constantly increasting in magnitude. If we pair the Fibonacci sequence with the natural numbers, for any two pairs `n1, f1` and `n2, f2`, we know that if `n1 < n2`, then `f1 < f2`.
+
+This is very a very useful quality for an enumeration, as it means that for any finite number `n`, we only need to enumerate a finite number of elements of the Fibonacci sequence to determine whether `n` is a member of the sequence:
+
+```javascript
+function whileWith (predicate, generator) {
+  return function * whiled () {
+    for (const element of generator()) {
+      if (predicate(element)) {
+        yield element;
+      } else {
+        break;
+      }
+    }
+  }
+}
+
+function isFib (n) {
+  const fibsUpToN = whileWith(x => x <= n, fibonacci);
+
+  for (const f of fibsUpToN()) {
+    if (f === n) return true;
+  }
+
+  return false;
+}
+
+isFib(5)
+  //=> true
+
+isFib(42)
+  //=> false
+```
+
+Unfortunately, `productsOfProducts` doesn't have the same quality, although the number of nodes in each tree does grow over time, it does not do so monotonically. Sometimes, the number of nodes output is fewer than the previous number of nodes.
+
+We'll now develop an enumeration of trees that does not share structures, and never outputs a tree with fewer nodes than any of its predecessors.
+
+---
+
+[![Ocean Light](/assets/images/enumerations/ocean-light.jpg)](https://www.flickr.com/photos/orijoy/8738209580)
+
+---
+
+### enumerating trees
+
+We begin with a function that, given a tree expressed as nested arrays, returns an enumeration over all the ways we can add one node to the tree:
+
+```javascript
+function plusOne (tree) {
+  const deepClone = tree => tree.map(deepClone);
+
+  return function * plused () {
+  	yield deepClone(tree).concat([[]]);
+
+    for (let index = 0; index < tree.length; ++index) {
+      const child = tree[index];
+
+      for (const plussedChild of plusOne(child)()) {
+        yield tree.slice(0, index)
+          .concat([ plussedChild ])
+          .concat(tree.slice(index + 1));
+      }
+    };
+  }
+}
+
+plusOne([[], [[]]])
+  //=>
+    [[], [[]], []]
+    [[[]], [[]]]
+    [[], [[], []]]
+    [[], [[[]]]]
+```
+
+This is equivalent to taking this tree:
+
+<div class="mermaid">
+  graph LR
+    5.5(( ))-->5.0a(( ))
+    5.5-->5.1(( ))
+    5.1-->5.0b(( ))
+</div>
+
+And returning these trees:
+
+<div class="mermaid">
+  graph LR
+    5.5(( ))-->5.0a(( ))
+    5.5-->5.1(( ))
+    5.1-->5.0b(( ))
+    5.5-->new[ ]
+</div>
+
+<div class="mermaid">
+  graph LR
+    5.5(( ))-->5.0a(( ))
+    5.5-->5.1(( ))
+    5.1-->5.0b(( ))
+    5.0a-->new[ ]
+</div>
+
+<div class="mermaid">
+  graph LR
+    5.5(( ))-->5.0a(( ))
+    5.5-->5.1(( ))
+    5.1-->5.0b(( ))
+    5.1-->new[ ]
+</div>
+
+<div class="mermaid">
+  graph LR
+    5.5(( ))-->5.0a(( ))
+    5.5-->5.1(( ))
+    5.1-->5.0b(( ))
+    5.0b-->new[ ]
+</div>
+
+Now, given `plusOne`, we can take a generator of trees and return all of the ways that all of those trees could have a node added to them:
+
+```javascript
+function concat (generatorOfGenerators) {
+  return function * concated () {
+    for (const generator of generatorOfGenerators()) {
+      yield * generator();
+    }
+  }
+}
+
+const plusOneAll = generator =>
+  concat(mapWith(plusOne, generator));
+```
+
+`concat` is very much like `concatenate` from above, but it operates on a generator of generators. As we saw with `concatenate`, this is only going to work if the generators it is "concat-ing" are finite in length. We can have an infinite number of finite generators, but we can't try to `concat` any infinite generators with each other.
+
+Now we can use recursion to make an infinite generator of generators. The first generator returns all of the ways to make a tree with a single node. The next generator will return all of the ways to add one to `[]`, so it will return `[[]]`, which is all of the trees with two nodes. The next generator returns all of teh ways to add a single node to that, so we get `[[], []]` and `[[[]]]`, all of the trees with two node.
+
+Every successive generator returns all of the trees with one additional node. So in essence, we have put the positive numbers into a one-to-one correspondance with the ways to enumerate trees with that number of nodes. When we `concat` all those together, we get the an enumeratipon of all finite trees, in such an order that the number of nodes never descreases:
+
+```javascript
+function just (...elements) {
+  return function * () {
+    yield * elements;
+  }
+}
+
+function * treesBySize () {
+  yield * cons(just([]),
+    mapWith(plusOneAll, treesBySize)
+  )();
+}
+
+const trees = concat(treesBySize);
+
+trees()
+  //=>
+    []
+    [[]]
+    [[], []]
+    [[[]]]
+    [[], [], []]
+    [[[]], []]
+    [[], [[]]]
+    [[[]], []]
+    [[[], []]]
+    [[[[]]]]
+
+    ...
+
+```
+
+Now let's take advantage of the ordering property just as we did with `isFib`.
+
 
 ---
 
@@ -1205,48 +1409,78 @@ productsOfProducts()
 
 ---
 
-### bonus/afterword
+### recognizing strings of balanced parentheses
 
-JavaScript happens to print arrays using `[` and `]` and `,`. But we could write our own "pretty printer" code. We could output the instructions for drawing graphs in SVG. Or we could output the arrays in a Lisp style:
+JavaScript happens to print arrays using `[` and `]` and `,`. But it's not the only way to represent nested arrays as strings. We could use the Lisp convention, which uses `(` and `)`, and since whitespace is optional in Lisp, let's leave it out:
 
 ```javascript
-function prettyPrint(array) {
-  function pp (array) {
-    return `(${array.map(pp).join('')})`;
-  }
-
-  return array.map(pp).join('');
+function pp (array) {
+  return `(${array.map(pp).join('')})`;
 }
 
-mapWith(pp, tree)()
+const balanced = mapWith(pp, trees);
+
+balanced()
   //=>
-    ""
-    "()"
-    "(())"
-    "()()"
-    "((()))"
-    "()(())"
-    "()()()"
-    "(()())"
-    "(())()"
-    "()()(())"
-    "()()()()"
-    "(((())))"
-    "()((()))"
-    "(())()()"
-    "()()()(())"
-    "()()()()()"
-    "(()(()))"
-    "(())(())"
-    "()(())()"
-    "(())()()()"
+    ()
+
+    (())
+
+    (()())
+    ((()))
+
+    (()()())
+    ((())())
+    (()(()))
+    ((())())
+    ((()()))
+    (((())))
+
+    (()()()())
+    ((())()())
+    (()(())())
+    (()()(()))
+    ((())()())
+    ((()())())
+    (((()))())
+    ((())(()))
+    (()(())())
+    ((())(()))
+    (()(()()))
+    (()((())))
+    ((())()())
+    ((()())())
+    (((()))())
+    ((())(()))
+    ((()())())
+    ((()()()))
+    (((())()))
+    ((()(())))
+    (((()))())
+    (((())()))
+    (((()())))
+    ((((()))))
 
     ...
 ```
 
-We are enumerating every finite [balanced parentheses][brutal] string.
+We are enumerating every finite [balanced parentheses][brutal] string, and because our enumeration is ordered by number of nodes, and each node has two characters, our strings are also ordered by length. Which allows us to write a recognizer for whether a string representes balanced parentheses:
 
 [brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
+
+```javascript
+function isBalanced (str) {
+  const balancedUpToStrLength = whileWith(b => b.length <= str.length, balanced);
+
+  for (const b of balancedUpToStrLength()) {
+    if (b === str) return true;
+  }
+
+  return false;
+}
+```
+
+It requires exponential time to return an answer, but we are not concerned with such petty engineering considerations today :-)
 
 ---
 
