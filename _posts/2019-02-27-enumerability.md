@@ -19,6 +19,8 @@ For example, here are two slightly different enumerations for the integers: `0, 
 
 In this essay, we are going focus on enumerations over infinite sets. We will examine a number of ways to compose enumerations, including recursive enumerations that are composed with themselves.
 
+We'll finish up by enumerating all of the topologies of trees, connecting them to the catalan numbers and the Dyck Words in the form of balanced parentheses strings.
+
 ---
 
 [![constellation](/assets/images/enumerations/constellation.jpg)](https://www.flickr.com/photos/tudoazul/1287458062)
