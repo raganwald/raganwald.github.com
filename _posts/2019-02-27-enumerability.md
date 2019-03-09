@@ -1265,7 +1265,7 @@ First, Although the printed representation of `productOfProduct`'s elements look
     5.1-->5.0b(( ))
 </div>
 
-Internally, because it uses structure sharing, it's not a tree, it's internally a directed acyclic graph that looks like this:
+Internally, because it uses structure sharing, it's not a tree, it's a directed acyclic graph like this:
 
 <div class="mermaid">
   graph LR
@@ -1274,7 +1274,7 @@ Internally, because it uses structure sharing, it's not a tree, it's internally 
     5.1-->0(( ))
 </div>
 
-To fix this discrepancy, ww will develop an enumeration of trees that are represented internally as trees without structure sharing.
+To fix this discrepancy, we will develop an enumeration of trees that are represented internally as trees without structure sharing.
 
 The second caveat is a little more subtle. Our recursive version of the Fibonacci sequence outputs the elements in order. This has many advantages. One of them is that the Fibonacci sequence is constantly increasing in magnitude. If we pair the Fibonacci sequence with the natural numbers, for any two pairs `n1, f1` and `n2, f2`, we know that if `n1 < n2`, then `f1 < f2`.
 
