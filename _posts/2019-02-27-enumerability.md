@@ -1609,7 +1609,21 @@ It requires exponential time to return an answer, but we are not concerned with 
 
 ---
 
-# To ℵ<sub>0</sub>... And beyond!
+# To ℵ<sub>0</sub>... and beyond!
+
+---
+
+[![infinity](/assets/images/enumerations/infinity.jpg)](https://www.flickr.com/photos/mtboswell/4321379834)
+
+---
+
+### the cardinality of denumerable enumerations
+
+As discussed in [Cardinality](#cardinality) above, if two sets can be put into a 1-to-1 correspondence with each other, they are considered to have the same cardinality, and be of the same size, regardless of whether either of the sets is a proper subset of the other.
+
+This, even though there are clearly an infinite number of negative numbers that are members of the set of all integers, and none of those numbers are members of the set of all natural numbers, the set of all intergers has the same cardinality as the set of natural numbers. As do the sets of even numbers, positive numbers, finite subsets of natural numbers, products of natural numbers, topologies of finite trees, and balanced parentheses strings.
+
+All of these are [countable sets][countable set], and we demonstrated that they are countable by writing enumerations for them. We have been bandying the words "infinite" and "infinity" around informally, but now we are gong to be more precise. The cardinality of a countable set is known as [aleph null]
 
 ---
 
