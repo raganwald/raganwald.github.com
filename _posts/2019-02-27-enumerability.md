@@ -609,18 +609,20 @@ This verifies that the sum of a denumerable number of infinite enumerations, is 
 
 `flatten(naturalPowersEnumerations)` is not an enumeration of a set, it is an enumeration of a bag. The set of all natural powers is a proper subset of the bag of all natural numbers, so we can infer that the set of all natural numbers is denumerable. But if we want to be pedantic, we should construct an enumeration of the natural powers without duplicates.
 
-One way to do that is to filter out the ones we;'ve already seen:
+One way to do that is to filter out the ones we've already seen:
 
 ```javascript
-function uniq (generator) {
+function uniq (generator, keyFn = x => x) {
   return function * uniqued () {
     const seen = new Set();
 
     for (const element of generator()) {
-      if (seen.has(element)) {
+      const key = keyFn(element);
+
+      if (seen.has(key)) {
         continue;
       } else {
-        seen.add(element);
+        seen.add(key);
         yield element;
       }
     }
@@ -1227,7 +1229,7 @@ Internally, because it uses structure sharing, it's not a tree, it's internally 
     5.1-->0(( ))
 </div>
 
-We will develop an enumeration of trees that are internally trees as well.
+To fix this discrepancy, ww will develop an enumeration of trees that are represented internally as trees without structure sharing.
 
 The second caveat is a little more subtle. Our recursive version of the Fibonacci sequence outputs the elements in order. This has many advantages. One of them is that the Fibonacci sequence is constantly increasing in magnitude. If we pair the Fibonacci sequence with the natural numbers, for any two pairs `n1, f1` and `n2, f2`, we know that if `n1 < n2`, then `f1 < f2`.
 
@@ -1347,7 +1349,7 @@ And returning these trees:
     5.0b-->new[ ]
 </div>
 
-Now, given `plusOne`, we can take a generator of trees and return all of the ways that all of those trees could have a node added to them:
+Now, given `plusOne`, we can take a generator of trees and return an enumeration over the set of of the ways that all of those trees could have a node added to them:
 
 ```javascript
 function concat (generatorOfGenerators) {
@@ -1359,12 +1361,15 @@ function concat (generatorOfGenerators) {
 }
 
 const plusOneAll = generator =>
-  concat(mapWith(plusOne, generator));
+  uniq(
+    concat(mapWith(plusOne, generator)),
+    JSON.stringify
+  );
 ```
 
 `concat` is very much like `concatenate` from above, but it operates on a generator of generators. As we saw with `concatenate`, this is only going to work if the generators it is "concat-ing" are finite in length. We can have an infinite number of finite generators, but we can't try to `concat` any infinite generators with each other.
 
-Now we can use recursion to make an infinite generator of generators. The first generator returns all of the ways to make a tree with a single node. The next generator will return all of the ways to add one to `[]`, so it will return `[[]]`, which is all of the trees with two nodes. The next generator returns all of the ways to add a single node to that, so we get `[[], []]` and `[[[]]]`, all of the trees with two node.
+Now we can use recursion to make an infinite generator of generators. The first generator returns all of the ways to make a tree with a single node. The next generator will return all of the ways to add one to `[]`, so it will return `[[]]`, which is all of the trees with two nodes. The next generator returns all of the ways to add a single node to that, so we get `[[], []]` and `[[[]]]`, all of the trees with two nodes.
 
 Every successive generator returns all of the trees with one additional node. So in essence, we have put the positive numbers into a one-to-one correspondance with the ways to enumerate trees with that number of nodes. When we `concat` all those together, we get the an enumeration of all finite trees, in such an order that the number of nodes never decreases:
 
@@ -1386,13 +1391,15 @@ const trees = concat(treesBySize);
 trees()
   //=>
     []
+
     [[]]
+
     [[], []]
     [[[]]]
+
     [[], [], []]
     [[[]], []]
     [[], [[]]]
-    [[[]], []]
     [[[], []]]
     [[[[]]]]
 
@@ -1400,8 +1407,38 @@ trees()
 
 ```
 
-Now let's take advantage of the ordering property just as we did with `isFib`.
+Looking at the enumeration grouped by number of nodes, we can see that the number of trees for a given number of nodes increases as the number of nodes increases. We can write a generator for this sequence:
 
+```javascript
+function count (generator) {
+  let i = 0;
+
+  for (const element of generator()) ++i;
+
+  return i;
+}
+
+const catalans = mapWith(count, treesBySize);
+
+catalans()
+  //=>
+    1
+    1
+    2
+    5
+    14
+    42
+    132
+    429
+    1430
+    4862
+
+    ...
+```
+
+We have rediscovered the [Catalan Numbers].
+
+[Catalan Numbers]: https://en.wikipedia.org/wiki/Catalan_number
 
 ---
 
@@ -1418,48 +1455,59 @@ function pp (array) {
   return `(${array.map(pp).join('')})`;
 }
 
-const balanced = mapWith(pp, trees);
+const lispy = mapWith(pp, trees);
 
-balanced()
+lispy()
   //=>
     ()
-
     (())
-
     (()())
     ((()))
-
     (()()())
     ((())())
     (()(()))
-    ((())())
     ((()()))
     (((())))
 
-    (()()()())
-    ((())()())
-    (()(())())
-    (()()(()))
-    ((())()())
-    ((()())())
-    (((()))())
-    ((())(()))
-    (()(())())
-    ((())(()))
-    (()(()()))
-    (()((())))
-    ((())()())
-    ((()())())
-    (((()))())
-    ((())(()))
-    ((()())())
-    ((()()()))
-    (((())()))
-    ((()(())))
-    (((()))())
-    (((())()))
-    (((()())))
-    ((((()))))
+    ...
+```
+
+Now, trees only have one root. But if we take only the children of all the possible trees, we get all the possible forests, that is, finite orderings of trees. We can write a pretty printer for forests:
+
+```javascript
+const asForest = array => array.map(pp).join('')
+
+const balanced = mapWith(asForest, trees);
+
+balanced()
+  //=>
+    ''
+
+    '()'
+
+    '()()'
+    '(())'
+
+    '()()()'
+    '(())()'
+    '()(())'
+    '(()())'
+    '((()))'
+
+    '()()()()'
+    '(())()()'
+    '()(())()'
+    '()()(())'
+    '(()())()'
+    '((()))()'
+    '(())(())'
+    '()(()())'
+    '()((()))'
+    '(()()())'
+    '((())())'
+    '(()(()))'
+    '((()()))'
+    '(((())))'
 
     ...
 ```
@@ -1478,9 +1526,33 @@ function isBalanced (str) {
 
   return false;
 }
+
+function test (recognizer, examples) {
+  for (const example of examples) {
+    console.log(`'${example}' => ${recognizer(example)}`);
+  }
+}
+
+test(isBalanced, [
+	'', '(', '()', '()()', '(())',
+  '([()()]())', '([()())())',
+  '())()', '((())(())',
+  '(())((()))()'
+]);
+  //=>
+    '' => true
+    '(' => false
+    '()' => true
+    '()()' => true
+    '(())' => true
+    '([()()]())' => false
+    '([()())())' => false
+    '())()' => false
+    '((())(())' => false
+    '(())((()))()' => true
 ```
 
-It requires exponential time to return an answer, but we are not concerned with such petty engineering considerations today :-)
+It requires exponential time to return an answer, but we are not concerned with petty engineering considerations today.
 
 ---
 
