@@ -1205,11 +1205,11 @@ productsOfProducts()
 
 ---
 
-### two caveats about enumerating trees with `productsOfProducts`
+### two caveats about enumerating trees with productsOfProducts
 
 `productsOfProducts` does appear to enumerate all of the topologies of finite trees, but with two important caveats.
 
-First, Although the printed representation of `productOfProduct`'s elements look like trees, in actual fact each element uses structure sharing, so although thr output `[[], [[]]]` may look like it respresents:
+First, Although the printed representation of `productOfProduct`'s elements look like trees, in actual fact each element uses structure sharing. Although the output `[[], [[]]]` may look like it represents:
 
 <div class="mermaid">
   graph LR
@@ -1218,7 +1218,7 @@ First, Although the printed representation of `productOfProduct`'s elements look
     5.1-->5.0b(( ))
 </div>
 
-Internally, because it uses structure sharing, it's not a tree, it's internall a directed acyclic graph that looks like this:
+Internally, because it uses structure sharing, it's not a tree, it's internally a directed acyclic graph that looks like this:
 
 <div class="mermaid">
   graph LR
@@ -1227,9 +1227,9 @@ Internally, because it uses structure sharing, it's not a tree, it's internall a
     5.1-->0(( ))
 </div>
 
-We will develope an enumeration of trees that are internally trees as well.
+We will develop an enumeration of trees that are internally trees as well.
 
-The second caveat is a little more subtle. Our recursive version of the Fibonacci sequence outputs the elements in order. This has many advantages. One of them is that the Fibonacci sequence is constantly increasting in magnitude. If we pair the Fibonacci sequence with the natural numbers, for any two pairs `n1, f1` and `n2, f2`, we know that if `n1 < n2`, then `f1 < f2`.
+The second caveat is a little more subtle. Our recursive version of the Fibonacci sequence outputs the elements in order. This has many advantages. One of them is that the Fibonacci sequence is constantly increasing in magnitude. If we pair the Fibonacci sequence with the natural numbers, for any two pairs `n1, f1` and `n2, f2`, we know that if `n1 < n2`, then `f1 < f2`.
 
 This is very a very useful quality for an enumeration, as it means that for any finite number `n`, we only need to enumerate a finite number of elements of the Fibonacci sequence to determine whether `n` is a member of the sequence:
 
@@ -1364,9 +1364,9 @@ const plusOneAll = generator =>
 
 `concat` is very much like `concatenate` from above, but it operates on a generator of generators. As we saw with `concatenate`, this is only going to work if the generators it is "concat-ing" are finite in length. We can have an infinite number of finite generators, but we can't try to `concat` any infinite generators with each other.
 
-Now we can use recursion to make an infinite generator of generators. The first generator returns all of the ways to make a tree with a single node. The next generator will return all of the ways to add one to `[]`, so it will return `[[]]`, which is all of the trees with two nodes. The next generator returns all of teh ways to add a single node to that, so we get `[[], []]` and `[[[]]]`, all of the trees with two node.
+Now we can use recursion to make an infinite generator of generators. The first generator returns all of the ways to make a tree with a single node. The next generator will return all of the ways to add one to `[]`, so it will return `[[]]`, which is all of the trees with two nodes. The next generator returns all of the ways to add a single node to that, so we get `[[], []]` and `[[[]]]`, all of the trees with two node.
 
-Every successive generator returns all of the trees with one additional node. So in essence, we have put the positive numbers into a one-to-one correspondance with the ways to enumerate trees with that number of nodes. When we `concat` all those together, we get the an enumeratipon of all finite trees, in such an order that the number of nodes never descreases:
+Every successive generator returns all of the trees with one additional node. So in essence, we have put the positive numbers into a one-to-one correspondance with the ways to enumerate trees with that number of nodes. When we `concat` all those together, we get the an enumeration of all finite trees, in such an order that the number of nodes never decreases:
 
 ```javascript
 function just (...elements) {
