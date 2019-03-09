@@ -184,7 +184,9 @@ integers()
     ...
 ```
 
-Thanks to composing simple parts, we wrote `const integers = merge(naturals, negatives)` instead of writing `function * integers () { ... }`. Here's another function that zips generators together. It has many uses, one of which is to put the output of a generator into a 1-to-1 correspondance with the natural numbers:
+Thanks to composing simple parts, we wrote `const integers = merge(naturals, negatives)` instead of writing `function * integers () { ... }`. Here's another function that zips generators together. It has many uses, one of which is to put the output of a generator into a 1-to-1 correspondance with the [^natural numbers]:
+
+[^natural numbers]: In some definitions of the [natural numbers](https://en.wikipedia.org/wiki/Natural_number), they begin with `0`. In others, they begin with `1`, and the numbers beginning with `0` are called either the "whole" numbers or the "non-negative numbers." We will use the definition of the natural numbers as beginning with `0` in this essay, and call the numbers beginning with `1` the "positive" numbers.<br/><br/>Those that prefer natural numbers beginning with `1` can easily fork this essay in GitHub and perform an easy search-and-replace.
 
 ```javascript
 function zip (...generators) {
@@ -1607,9 +1609,13 @@ It requires exponential time to return an answer, but we are not concerned with 
 
 ---
 
+# To ℵ<sub>0</sub>... And beyond!
+
+---
+
 # The Complete Code
 
-<script src="https://gist.github.com/raganwald/84d1f98571a82c7fb624084a8f08ffda.js"></script>
+<br/><script src="https://gist.github.com/raganwald/84d1f98571a82c7fb624084a8f08ffda.js"></script>
 
 ---
 
