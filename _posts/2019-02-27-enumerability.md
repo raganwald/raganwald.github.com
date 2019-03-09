@@ -54,6 +54,10 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 - [enumerating trees](#enumerating-trees)
 - [recognizing strings of balanced parentheses](#recognizing-strings-of-balanced-parentheses)
 
+[The Complete Code](#the-complete-code)
+
+[Notes](#notes)
+
 ---
 
 # Enumerating Denumerables
@@ -1603,4 +1607,11 @@ It requires exponential time to return an answer, but we are not concerned with 
 
 ---
 
+# The Complete Code
+
+<script src="https://gist.github.com/raganwald/84d1f98571a82c7fb624084a8f08ffda.js"></script>
+
+---
+
 # Notes
+
