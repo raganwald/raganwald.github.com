@@ -15,7 +15,7 @@ In Mathematics, an [enumeration] is a complete, ordered list of all of the eleme
 
 For example, here are two slightly different enumerations for the integers: `0, -1, 1, -2, 2, -3, 3, -4, 4, ...` and `0, -1, 1, 2, -2, -3, 3, 4, -4 ...`. We have no way to write out the complete enumeration, because although each integer is of finite size, there are an infinite number of them.[^finite]
 
-[^finite]: Nat all enumerations are infinite in size. Here are two enumerations of the set ("whole numbers less than or equal to four"): `0, 1, 2, 3, 4` and `4, 3, 2, 1, 0`.
+[^finite]: Not all enumerations are infinite in size. Here are two enumerations of the set ("whole numbers less than or equal to four"): `0, 1, 2, 3, 4` and `4, 3, 2, 1, 0`.
 
 In this essay, we are going focus on enumerations over infinite sets. We will examine a number of ways to compose enumerations, including recursive enumerations that are composed with themselves.
 
@@ -1515,7 +1515,7 @@ lispy()
     ...
 ```
 
-Now, trees only have one root. But if we take only the children of all the possible trees, we get all the possible forests, that is, finite orderings of trees. We can write a pretty printer for forests:
+Trees only have one root. But if we take only the children of all the possible trees, we get all the possible forests, that is, finite orderings of trees. We can write a pretty printer for forests:
 
 ```javascript
 const asForest = array => array.map(pp).join('')
@@ -1555,7 +1555,9 @@ balanced()
     ...
 ```
 
-We are enumerating every finite [balanced parentheses][brutal] string, and because our enumeration is ordered by number of nodes, and each node has two characters, our strings are also ordered by length. Which allows us to write a recognizer for whether a string representes balanced parentheses:
+We are enumerating every finite [balanced parentheses][brutal] string, and because our enumeration is ordered by number of nodes, and each node has two characters, our strings are also ordered by length.
+
+This allows us to write a recognizer for whether a string representes balanced parentheses:
 
 [brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
 
