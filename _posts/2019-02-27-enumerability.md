@@ -147,13 +147,9 @@ function zip (...generators) {
     const iterables = generators.map(g => g());
 
     while (true) {
-      const values =
-        iterables
-      	 .map(i => i.next())
-         .filter(({done}) => !done)
-         .map(({value}) => value)
-      if (values.length === 0) break;
-      yield values;
+      const values = iterables.map(i => i.next());
+      if (values.some(({done}) => done)) break;
+      yield values.map(({value}) => value);
     }
   }
 }
