@@ -46,6 +46,12 @@ In this essay, we are going focus on enumerations over infinite sets. We will ex
 
 [Recursion, Trees, and Recognizing Balanced Parentheses](#recursion-trees-and-recognizing-balanced-parentheses)
 
+- [recursive enumerables](#recursive-enumerables)
+- [taking the products of products](#taking-the-products-of-products)
+- [two caveats about enumerating trees with products of products](#two-caveats-about-enumerating-trees-with-products-of-products)
+- [enumerating trees](#enumerating-trees)
+- [recognizing strings of balanced parentheses](#recognizing-strings-of-balanced-parentheses)
+
 ---
 
 # Enumerating Denumerables
@@ -1244,7 +1250,7 @@ productsOfProducts()
 
 ---
 
-### two caveats about enumerating trees with productsOfProducts
+### two caveats about enumerating trees with products of products
 
 `productsOfProducts` does appear to enumerate all of the topologies of finite trees, but with two important caveats.
 
