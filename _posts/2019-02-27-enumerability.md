@@ -5,6 +5,8 @@ tags: [allonge,mermaid,recursion]
 
 *Warning: This is an unfinished work. Feel free to share it on Twitter or other conventional social media, but I ask you not to post it on Hacker News or Reddit until it is finished.*
 
+---
+
 In programming language jargon, an _enumerable_ is a value that can be accessed sequentially, or iterated over. Different languages use the term in slightly different ways, although they all have some relation to its basic definition.
 
 In Mathematics, an [enumeration] is a complete, ordered list of all of the elements of a set or collection. There can be more than one enumeration for the same collection, and the collections need not have a finite number of elements.
@@ -16,6 +18,37 @@ For example, here are two slightly different enumerations for the integers: `0, 
 [^finite]: Nat all enumerations are infinite in size. Here are two enumerations of the set ("whole numbers less than or equal to four"): `0, 1, 2, 3, 4` and `4, 3, 2, 1, 0`.
 
 In this essay, we are going focus on enumerations over infinite sets. We will examine a number of ways to compose enumerations, including recursive enumerations that are composed with themselves.
+
+---
+
+[![constellation](/assets/images/enumerations/constellation.jpg)](https://www.flickr.com/photos/tudoazul/1287458062)
+
+---
+
+# Table of Contents
+
+---
+
+[Enumerations and Denumerables](#enumerating-denumerables):
+
+- [enumerations in javascript](#enumerations-in-javascript)
+- [enumerating denumerables](#enumerating-denumerables)
+- [false enumerations](#false-enumerations)
+- [cardinality](#cardinality)
+
+[Even Higher Order Denumerables](#even-higher-order-denumerables)
+
+- [products of enumerables](#products-of-enumerables)
+- [correctly enumerating the product of denumerables](#correctly-enumerating-the-product-of-denumerables)
+- [enumerating a denumerable number of denumerables](#enumerating-a-denumerable-number-of-denumerables)
+- [de-duplication](#de-duplication)
+- [exponentiation of denumerables](#exponentiation-of-denumerables)
+
+[Recursion, Trees, and Recognizing Balanced Parentheses](#recursion-trees-and-recognizing-balanced-parentheses)
+
+---
+
+# Enumerating Denumerables
 
 ---
 
@@ -316,6 +349,10 @@ zip(evens, naturals)()
 ```
 
 The even numbers have the same cardinality as the natural numbers. That is the paradox of infinity: The set of all even natural numbers is a proper subset of the set of all natural numbers, but nevertheless, they are the same size.
+
+---
+
+# Even Higher Order Denumerables
 
 ---
 
@@ -927,6 +964,10 @@ subsets(naturals)
 ```
 
 And now we have shown that the set of all finite subsets of a denumerable, is also denumerable.
+
+---
+
+# Recursion, Trees, and Recognizing Balanced Parentheses
 
 ---
 
