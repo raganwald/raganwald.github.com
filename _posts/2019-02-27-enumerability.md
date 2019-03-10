@@ -1758,6 +1758,143 @@ They might, for example, claim that the set containing the number one trillion i
 
 ### is the set of all denumerable sets of natural numbers... denumerable?
 
+The set of all finite sets is one this, but not all sets of natural numbers are finite. For example, the set of all even numbers is denumerable, not finite. So is the set of all positive numbers, the set of all prime numbers, the set of numbers that appear in the Fibonacci sequence, the set of numbers that appear in the Catalan numbers...
+
+None of those sets are finite, and our `setofAllFiniteSets` will never generate them. Which provokes the question: Can we make an enumeration that will enumerate all denumerable sets of natural numbers?
+
+To do this, we'll need to start with a representation of denumerable sets of natural numbers. We have one we've been using, enumerations. But instead of writing enumerations that enumerate the numbers directly, like this:
+
+| Enumeration |   |   |   |   |   |   |   |
+|:------------|--:|--:|--:|--:|--:|--:|:--|
+| empty.      |   |   |   |   |   |   |...|
+| naturals    |  0|  1|  2|  3|  4|  5|...|
+| evens       |  0|  2|  4|  6|  8| 10|...|
+| primes      |  2|  3|  5|  7| 11| 13|...|
+| fibonacci   |  0|  1|  2|  3|  5|  8|...|
+| catalans    |  1|  2|  5| 14| 42|132|...|
+
+<br/>We will use enumerations of `0`s and `1`s using the binary encoding scheme. The first element output will be a `0` if `0` is not in the denumerable set, `1` if it is. The next element output will be a `0` if `1` is not in the denumerable set, `1` if it is, and so on, like this:
+
+| Enumeration | 0?| 1?| 2?| 3?| 4?| 5?|   |
+|:------------|--:|--:|--:|--:|--:|--:|:--|
+| empty       |  0|  0|  0|  0|  0|  0|...|
+| naturals    |  1|  1|  1|  1|  1|  1|...|
+| evens       |  1|  0|  1|  0|  1|  0|...|
+| primes      |  0|  0|  1|  1|  0|  1|...|
+| fibonacci   |  1|  1|  1|  1|  0|  1|...|
+| catalans    |  0|  1|  1|  0|  0|  1|...|
+
+<br/>The question becomes, _Can we construct an enumeration of all the possible denumerable enumerations of binary strings._ If we can, we can enumerate all the denumerable sets of natural numbers. If it is impossible to construct an enumeration of denumerable binary strings, then it is impossible to enumerate the denumerable sets of natural numbers.
+
+In 1974, [Georg Cantor][Cantor] proved that this was impossible, and that the cardinality of the set of all denumerable sets of natural numbers was greater than the cardinality of the set of all natural numbers. In doing so, he proved that there was a number larger than infinity as mathematicians knew it.
+
+This caused an uproar, and many mathematicians did everything in their power to dismiss his work, ranging from calling it meaningless and of no value to mathematics, to bickering with his proof. In 1891, he proved it again, using the transformation to denumerably long binary numbers that we have just shown above, and an ingenious [diagonal argument].
+
+[diagonal argument]: https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument
+
+We shall use that argument now. Let's construct, as a straw-man, an enumeration of denumerable enumerations of binary numbers:
+
+```javascript
+const naturalToFiniteEnumeration =
+  n =>
+    just(...reverse(n.toString(2)).split(''));
+
+const naturalToInfiniteEnumeration =
+  n =>
+  	concatenate(
+      naturalToFiniteEnumeration(n),
+      repeat(0)
+    );
+
+const strawman = mapWith(naturalToInfiniteEnumeration, naturals);
+
+strawman()
+  //=>
+    0, 0, 0, 0, 0, 0, ...
+    1, 0, 0, 0, 0, 0, ...
+    0, 1, 0, 0, 0, 0, ...
+    1, 1, 0, 0, 0, 0, ...
+    0, 0, 1, 0, 0, 0, ...
+    1, 0, 1, 0, 0, 0, ...
+    0, 1, 1, 0, 0, 0, ...
+    1, 1, 1, 0, 0, 0, ...
+    0, 0, 0, 1, 0, 0, ...
+    1, 0, 0, 1, 0, 0, ...
+
+    ...
+```
+
+If this is an enumeration of every infinite enumeration of binary numbers, we can name **any** enumeration of binary numbers, and it will appear after a finite number of outputs. For example, if we name the enumeration that has a trillion zeroes, a one, and then a denumerable number of zeroes... That appears after two to the power of a trillion plus one outputs.
+
+However, although we have an infinite number of elements in each enumeration, the way we've constructed this we only have a finite number of `1`s in each enumeration. So any enumeration with an infinite number of `1`s will not appear after a finite number of outputs. That follows from the fact that we've simply found another way to represent the set of all finite sets, not the set of all infinite sets.
+
+But let's look at Cantor's argument instead. He offered the following construction: Arrange the binary numbers as a matrix, and extract the diagonal of the matrix, like this:
+
+|**0**|0|0|0|0|0|...|
+|1|**0**|0|0|0|0|...|
+|0|1|**0**|0|0|0|...|
+|1|1|0|**0**|0|0|...|
+|0|0|1|0|**0**|0|...|
+|1|0|1|0|0|**0**|...|
+|&vellip;|&vellip;|&vellip;|&vellip;|&vellip;|&vellip;| |
+
+For our strawman, the diagonal gives all zeroes, but for other enumerations it might give a different number. We can write a function to take the diagonal of an enumeration of denumerable enumerations:
+
+```javascript
+const diagonal =
+  generator =>
+    mapWith(
+      ([i, e]) => at(e, i),
+      zip(naturals, generator)
+    );
+
+diagonal(strawman)
+  //=> 0, 0, 0, 0, ...
+```
+
+Now we invert each of the elements:
+
+```javascript
+const impossible =
+  generator =>
+    mapWith(d => 1 -d, diagonal(generator));
+
+impossible(strawman)()
+  //=> 1, 1, 1, 1, ...
+```
+
+If our strawman is an enumeration of the denumerable sets of the natural numbers, than the enumeration `impossible(strawman)` must appear after a finite number of outputs. Cantor's proof that it does not is as follows:
+
+Take _any_ natural number, `n`. Let's compare the `nth` element of `strawman` to `impossible(strawman)`. We know that the `nth` element of strawman has an `nth` element. And we know that the `nth` element of the `nth` element of `strawman` is not equal to the `nth` element of `impossible(strawman)`, because we constructed `impossible(strawman)` on that basis.
+
+And this can't be fixed! `impossible(strawman)` is all `1`s. We can try adding that to `strawman`:
+
+```javascript
+const strawman2 = cons(impossible(strawman), strawman);
+
+impossible(strawman2)()
+  //=> 0, 1, 1, 1, 1, ...
+```
+
+Now we have `impossible(strawman2)`, and it gets around `impossible(strawman)` by having a `0` in the position where we put `impossible(strawman)`. Resistance is futile:
+
+```javascript
+const strawman3 = cons(impossible(strawman2), strawman2);
+
+impossible(strawman3)()
+  //=> 1, 0, 1, 1, 1, 1, ...
+```
+
+Our `impossible` function always returns an enumeration representing a denumerable set of natural numbers that is not in our strawman. And Cantor's genius was in discovering that `impossible` works for _any_ enumeration we can try to come up with.
+
+No matter what enumeration we have, we can construct an impossible enumeration, and ask "Where does this appear?" If it is alleged to appear after `n` enumerations, we know that this cannot be, because it differs from enumeration `n` in the `nth` place.
+
+If we think of them as binary numbers, `impossible` is a function that enumerates an infinite binary number that differs from every denumerably long binary number appearing in a denumerable list of denumerably long binary numbers. And since denumerably long binary numbers can be placed into a direct correspondence with denumerable sets of natural numbers, it follows that the set of all denumerable sets of natural numbers cannot be placed into a one-to-one correspondance with the natural numbers.
+
+In other words, the cardinality of the set of all denumerable sets of natural numbers is larger than the cardinality of natural numbers.
+
+
+
 ---
 
 # The Complete Code
