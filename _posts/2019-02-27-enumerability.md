@@ -54,6 +54,8 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 - [enumerating trees](#enumerating-trees)
 - [recognizing strings of balanced parentheses](#recognizing-strings-of-balanced-parentheses)
 
+[To ℵ<sub>0</sub>... and beyond!](#to-ℵ0-and-beyond)
+
 [The Complete Code](#the-complete-code)
 
 [Notes](#notes)
@@ -1626,6 +1628,17 @@ This, even though there are clearly an infinite number of negative numbers that 
 All of these are [countable sets][countable set], and we demonstrated that they are countable by writing enumerations for them. We have been bandying the words "infinite" and "infinity" around informally, but now we are gong to be more precise. The cardinality of a countable set is known as [aleph null], usually written as ℵ<sub>0</sub>.
 
 [aleph null]: https://en.wikipedia.org/wiki/Aleph_number#Aleph-null
+
+
+---
+
+### a proof(?) that set of all finite sets of natural numbers is not denumerable
+
+We claimed above that the set of all finite sets of natural numbers is denumerable, by claiming that we had written an enumeration that would output every finite set in a finite number of outputs, or equivalently, that every finite set could be associated with a unique natural number.
+
+If we wished to prove that this was not the case, the method we've used elsewhere was to construct an element of the set and show that it could not be associated with any natural number. Let's try that.
+
+For ease of writing code, we will start with an equivalence: The set of all finite sets of natural numbers has the same cardinality as the set of all finite binary numbers. THis is easy to grasp if we
 
 ---
 
