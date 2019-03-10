@@ -56,6 +56,8 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 
 [To ℵ<sub>0</sub>... and beyond!](#to-ℵ0-and-beyond)
 
+- [the cardinality of denumerable enumerations](#the-cardinality-of-denumerable-enumerations)
+
 [The Complete Code](#the-complete-code)
 
 [Notes](#notes)
@@ -1635,7 +1637,7 @@ All of these are [countable sets][countable set], and we demonstrated that they 
 
 ---
 
-### a proof that the set of all finite sets of natural numbers is denumerable
+### a proof that the set of all finite sets of natural numbers... is denumerable
 
 We claimed above that the set of all finite sets of natural numbers is denumerable, by claiming that we had written an enumeration that would output every finite set in a finite number of outputs, or equivalently, that every finite set could be associated with a unique natural number.
 
@@ -1715,8 +1717,6 @@ test([], [0], [1], [0, 1], [6, 14])
     { 6, 14 } -> 16448 -> { 6, 14 }
 ```
 
-This proves abstractly that the set of all finite sets can be put into a one-to-one correspondance with the natural numbers: Every natural number corresponds to a unique finite set of natural numbers, every finite set of natural numbers corresponds to a unique natural number.
-
 And here's an enumeration of finite sets along those lines:
 
 ```javascript
@@ -1744,7 +1744,17 @@ setofAllFiniteSets()
     ...
 ```
 
-With this enumeration in hand, we can name _any_ finite set and know that it appears after a finite number of outputs, or equivalentl
+With this enumeration in hand, we can name _any_ finite set and know that it appears after a finite number of outputs. So if someone claims they have a finite set of natural numbers that is not in our enumeration, we can ask them for the set, convert it to a natural number `n`, and explain that their set is the `(n + 1)`th set output.
+
+They might, for example, claim that the set containing the number one trillion is not in our enumeration, but we can state with confidence that after two to the power of one trillion outputs, their set will be output. It might take a while if they insist, and we'll need a lot of storage, but it will eventually be output.
+
+---
+
+[![Natural Math](/assets/images/enumerations/natural-math.jpg)](https://www.flickr.com/photos/26208371@N06/14402877003)
+
+---
+
+### is the set of all denumerable sets of natural numbers... denumerable?
 
 ---
 
