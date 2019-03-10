@@ -107,11 +107,11 @@ So instead of writing:
 
 ```javascript
 function * upTo (i, limit, by = 1) {
-	for (let i = start; i <= limit; i += by) yield i;
+  for (let i = start; i <= limit; i += by) yield i;
 }
 
 function * downTo (i, limit, by = 1) {
-	for (let i = start; i >= limit; i -= by) yield i;
+  for (let i = start; i >= limit; i -= by) yield i;
 }
 ```
 
@@ -157,7 +157,7 @@ function merge (...generators) {
     while (true) {
       const values =
         iterables
-      	 .map(i => i.next())
+         .map(i => i.next())
          .filter(({done}) => !done)
          .map(({value}) => value)
       if (values.length === 0) break;
@@ -186,7 +186,7 @@ integers()
     ...
 ```
 
-Thanks to composing simple parts, we wrote `const integers = merge(naturals, negatives)` instead of writing `function * integers () { ... }`. Here's another function that zips generators together. It has many uses, one of which is to put the output of a generator into a 1-to-1 correspondance with the [^natural numbers]:
+Thanks to composing simple parts, we wrote `const integers = merge(naturals, negatives)` instead of writing `function * integers () { ... }`. Here's another function that zips generators together. It has many uses, one of which is to put the output of a generator into a one-to-one correspondance with the [^natural numbers]:
 
 [^natural numbers]: In some definitions of the [natural numbers](https://en.wikipedia.org/wiki/Natural_number), they begin with `0`. In others, they begin with `1`, and the numbers beginning with `0` are called either the "whole" numbers or the "non-negative numbers." We will use the definition of the natural numbers as beginning with `0` in this essay, and call the numbers beginning with `1` the "positive" numbers.<br/><br/>Those that prefer natural numbers beginning with `1` can easily fork this essay in GitHub and perform an easy search-and-replace.
 
@@ -233,13 +233,13 @@ We're going to make some more enumerations, and some tools for composing them, b
 
 ### enumerating denumerables
 
-A [countable set] is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumerables][countable set] are countable sets with an infinite number of elements, meaning they can be put into a 1-to-1 correspondance with the entire set of natural numbers.
+A [countable set] is any set (or collection) for which we can construct at least one enumeration. Or to put it in more formal terms, we can put the elements of the set into a one-to-one correspondance with some subset of the natural numbers. [Denumerables][countable set] are countable sets with an infinite number of elements, meaning they can be put into a one-to-one correspondance with the entire set of natural numbers.
 
 [countable set]: https://en.wikipedia.org/wiki/Countable_set
 
 In our examples above, `naturals`, `negatives`, `positives`, and `a` are all enumerations of denumerable sets.
 
-When enumerating denumerables, things can sometimes be tricky. If we say that an enumeration puts the elements of a denumerable into a 1-to-1 correspondance with the natural numbers, we must provide the following guarantee: **Every element of the enumeration correspondes to a finite natural number.** And in the case of an enumeration we write on a computer, it follows that for any member of the set, there is a natural number `n`, such that the member of the set appears as the `nth` element output by the enumeration.
+When enumerating denumerables, things can sometimes be tricky. If we say that an enumeration puts the elements of a denumerable into a one-to-one correspondance with the natural numbers, we must provide the following guarantee: **Every element of the enumeration correspondes to a finite natural number.** And in the case of an enumeration we write on a computer, it follows that for any member of the set, there is a natural number `n`, such that the member of the set appears as the `nth` element output by the enumeration.
 
 So in our example of `function * a { ... }` above, we know that we can name any element, such as `aaaaaaaaaa`, and indeed, it will appear as the tenth output of the enumeration (and corresponds to the natural number `0`).
 
@@ -405,7 +405,7 @@ function mapWith (fn, g) {
 
 function nprod2 (g1, g2) {
   return function * () {
-  	for (const e1 of g1()) {
+    for (const e1 of g1()) {
       for (const e2 of g2()) {
         yield [e1, e2];
       }
@@ -446,8 +446,8 @@ const positives = upTo(1, Infinity);
 const rationals =
       mapWith(
         ([numerator, denominator]) => `${numerator}/${denominator}`,
-      	nprod2(naturals, positives)
-	);
+        nprod2(naturals, positives)
+  );
 
 rationals()
   //=>
@@ -526,7 +526,7 @@ With `at` in hand, our `prod2` function looks like this:
 ```javascript
 function prod2 (g1, g2) {
   return function * () {
-  	for (const sum of naturals()) {
+    for (const sum of naturals()) {
       for (const [i1, i2] of zip(upTo(0, sum), downTo(sum, 0))()) {
         yield [at(g1, i1), at(g2, i2)];
       }
@@ -725,8 +725,8 @@ We can build `prod` on this basis. It's a function that takes a finite number of
 function prod (first, ...rest) {
   if (rest.length === 0) {
     return mapWith(
-    	e => [e],
-    	first
+      e => [e],
+      first
       );
   } else {
     return mapWith(
@@ -1337,7 +1337,7 @@ function plusOne (tree) {
   const deepClone = tree => tree.map(deepClone);
 
   return function * plused () {
-  	yield deepClone(tree).concat([[]]);
+    yield deepClone(tree).concat([[]]);
 
     for (let index = 0; index < tree.length; ++index) {
       const child = tree[index];
@@ -1621,7 +1621,7 @@ It requires exponential time to return an answer, but we are not concerned with 
 
 ### the cardinality of denumerable enumerations
 
-As discussed in [Cardinality](#cardinality) above, if two sets can be put into a 1-to-1 correspondence with each other, they are considered to have the same cardinality, and be of the same size, regardless of whether either of the sets is a proper subset of the other.
+As discussed in [Cardinality](#cardinality) above, if two sets can be put into a one-to-one correspondence with each other, they have the same cardinality, and be of the same size, regardless of whether either of the sets is a proper subset of the other.
 
 This, even though there are clearly an infinite number of negative numbers that are members of the set of all integers, and none of those numbers are members of the set of all natural numbers, the set of all intergers has the same cardinality as the set of natural numbers. As do the sets of even numbers, positive numbers, finite subsets of natural numbers, products of natural numbers, topologies of finite trees, and balanced parentheses strings.
 
@@ -1629,16 +1629,122 @@ All of these are [countable sets][countable set], and we demonstrated that they 
 
 [aleph null]: https://en.wikipedia.org/wiki/Aleph_number#Aleph-null
 
+---
+
+[![mathematics](/assets/images/enumerations/mathematics.jpg)](https://www.flickr.com/photos/robert_scarth/401067121)
 
 ---
 
-### a proof(?) that set of all finite sets of natural numbers is not denumerable
+### a proof that the set of all finite sets of natural numbers is denumerable
 
 We claimed above that the set of all finite sets of natural numbers is denumerable, by claiming that we had written an enumeration that would output every finite set in a finite number of outputs, or equivalently, that every finite set could be associated with a unique natural number.
 
 If we wished to prove that this was not the case, the method we've used elsewhere was to construct an element of the set and show that it could not be associated with any natural number. Let's try that.
 
-For ease of writing code, we will start with an equivalence: The set of all finite sets of natural numbers has the same cardinality as the set of all finite binary numbers. THis is easy to grasp if we
+For ease of writing code, we will start with an equivalence: The set of all finite sets of natural numbers has the same cardinality as the set of all finite binary numbers. This is easy to grasp if we think of an encoding scheme: The digits of a binary number encode whether a particular number is in a set or not.
+
+For example, the set `{ 1, 2, 3, 6, 14 }` would be represented by the fifteen-digit binary number `100000001001110`. Each digit from the right to left corresponds to a natural number, where `0` means the number is not in the set, `1` means the number is in the set, and all the numbers larger than fourteen are not in the set.
+
+Here is a function for creating binary strings, this demonstrates the idea in a visual way:
+
+```javascript
+const set2string =
+  setOfNumbers =>
+    [...setOfNumbers]
+      .reduce(
+        (arr, n) => {
+          if (n >= arr.length) {
+            arr = new Array(n - arr.length + 1).fill('0').concat(arr);
+          }
+          arr[arr.length - (n + 1)] = '1';
+          return arr;
+        },
+        [])
+      .join('');
+
+set2string(new Set([1, 2, 3, 6, 14]))
+  //=>
+    100000001001110
+```
+
+We can use the same principle to functions that convert finite sets of natural numbers to natural numbers, and natural numbers to finite sets:
+
+```javascript
+function reverse (s) {
+  if (s === '') {
+    return s;
+  } else {
+    const h = s[0];
+    const t = s.slice(1);
+    return reverse(t) + h;
+  }
+}
+
+const set2natural =
+  setOfNumbers =>
+    [...setOfNumbers]
+      .reduce(
+        (natural, element) =>
+          natural + Math.pow(2, element),
+        0);
+
+const naturalToSet =
+  natural =>
+    new Set(
+      reverse(natural.toString(2))
+        .split('')
+        .map((d, index) => parseInt(d, 2) * (index + 1))
+        .filter(x => x !== 0)
+        .map(element => element - 1)
+      );
+
+function test (...cases) {
+  for (const c of cases) {
+    const set = new Set(c);
+
+    console.log(`{ ${c.join(', ')} } -> ${set2natural(set)} -> { ${[...naturalToSet(set2natural(set))].join(', ')} }`);
+  }
+}
+
+test([], [0], [1], [0, 1], [6, 14])
+  //=>
+    {  } -> 0 -> {  }
+    { 0 } -> 1 -> { 0 }
+    { 1 } -> 2 -> { 1 }
+    { 0, 1 } -> 3 -> { 0, 1 }
+    { 6, 14 } -> 16448 -> { 6, 14 }
+```
+
+This proves abstractly that the set of all finite sets can be put into a one-to-one correspondance with the natural numbers: Every natural number corresponds to a unique finite set of natural numbers, every finite set of natural numbers corresponds to a unique natural number.
+
+And here's an enumeration of finite sets along those lines:
+
+```javascript
+const setofAllFiniteSets = mapWith(naturalToSet, naturals);
+
+setofAllFiniteSets()
+  //=>
+    {  }
+    { 0 }
+    { 1 }
+    { 0, 1 }
+    { 2 }
+    { 0, 2 }
+    { 1, 2 }
+    { 0, 1, 2 }
+    { 3 }
+    { 0, 3 }
+    { 1, 3 }
+    { 0, 1, 3 }
+    { 2, 3 }
+    { 0, 2, 3 }
+    { 1, 2, 3 }
+    { 0, 1, 2, 3 }
+
+    ...
+```
+
+With this enumeration in hand, we can name _any_ finite set and know that it appears after a finite number of outputs, or equivalentl
 
 ---
 
