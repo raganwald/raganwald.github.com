@@ -3,7 +3,7 @@ title: "Enumerations, Denumerables, Recursion, and Infinity"
 tags: [allonge,mermaid,recursion]
 ---
 
-### introduction
+# Introduction
 
 In programming language jargon, an _enumerable_ is a value that can be accessed sequentially, or iterated over. Different languages use the term in slightly different ways, although they all have some relation to its basic definition.
 
@@ -29,7 +29,7 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 
 ---
 
-[introduction](#introduction)
+[Introduction](#introduction)
 
 [Enumerations and Denumerables](#enumerating-denumerables):
 
@@ -40,7 +40,7 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 
 [Even Higher Order Denumerables](#even-higher-order-denumerables)
 
-- [products of enumerables](#products-of-enumerables)
+- [products of denumerables](#products-of-denumerables)
 - [correctly enumerating the product of denumerables](#correctly-enumerating-the-product-of-denumerables)
 - [enumerating a denumerable number of denumerables](#enumerating-a-denumerable-number-of-denumerables)
 - [de-duplication](#de-duplication)
@@ -48,7 +48,7 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 
 [Recursion, Trees, and Recognizing Balanced Parentheses](#recursion-trees-and-recognizing-balanced-parentheses)
 
-- [recursive enumerables](#recursive-enumerables)
+- [recursive enumerations](#recursive-enumerations)
 - [taking the products of products](#taking-the-products-of-products)
 - [two caveats about enumerating trees with products of products](#two-caveats-about-enumerating-trees-with-products-of-products)
 - [enumerating trees](#enumerating-trees)
@@ -191,7 +191,7 @@ integers()
     ...
 ```
 
-Thanks to composing simple parts, we wrote `const integers = merge(naturals, negatives)` instead of writing `function * integers () { ... }`. Here's another function that zips generators together. It has many uses, one of which is to put the output of a generator into a one-to-one correspondance with the [^natural numbers]:
+Thanks to composing simple parts, we wrote `const integers = merge(naturals, negatives)` instead of writing `function * integers () { ... }`. Here's another function that zips generators together. It has many uses, one of which is to put an enumeration into a one-to-one correspondance with the [^natural numbers]:
 
 [^natural numbers]: In some definitions of the [natural numbers](https://en.wikipedia.org/wiki/Natural_number), they begin with `0`. In others, they begin with `1`, and the numbers beginning with `0` are called either the "whole" numbers or the "non-negative numbers." We will use the definition of the natural numbers as beginning with `0` in this essay, and call the numbers beginning with `1` the "positive" numbers.<br/><br/>Those that prefer natural numbers beginning with `1` can easily fork this essay in GitHub and perform an easy search-and-replace.
 
@@ -244,9 +244,9 @@ A [countable set] is any set (or collection) for which we can construct at least
 
 In our examples above, `naturals`, `negatives`, `positives`, and `a` are all enumerations of denumerable sets.
 
-When enumerating denumerables, things can sometimes be tricky. If we say that an enumeration puts the elements of a denumerable into a one-to-one correspondance with the natural numbers, we must provide the following guarantee: **Every element of the enumeration correspondes to a finite natural number.** And in the case of an enumeration we write on a computer, it follows that for any member of the set, there is a natural number `n`, such that the member of the set appears as the `nth` element output by the enumeration.
+When enumerating denumerables, things can sometimes be tricky. If we say that an enumeration puts the elements of a denumerable into a one-to-one correspondance with the natural numbers, we must provide the following guarantee: **Every element of the enumeration correspondes to a finite natural number.** And in the case of an enumeration we write on a computer, it follows that for any member of the set, there is a natural number `n`, such that the member of the set appears as the `nth` element yielded by the enumeration.
 
-So in our example of `function * a { ... }` above, we know that we can name any element, such as `aaaaaaaaaa`, and indeed, it will appear as the tenth output of the enumeration (and corresponds to the natural number `0`).
+So in our example of `function * a { ... }` above, we know that we can name any element, such as `aaaaaaaaaa`, and indeed, it will appear as the tenth value yielded of the enumeration (and corresponds to the natural number `0`).
 
 As we will see in more detail below, this sometimes means we must be careful how we arrange our enumerations. Recall `merge` from above.
 
@@ -268,9 +268,9 @@ integers()
     ...
 ```
 
-Merge yields alternate elements from its constituent enumerations. Is the `merge` of two enumerations also an enumeration? If that were so, we could take any finite integer and show that it can be put into a one-to-one correspondance with the integers. Consider `zip(naturals, integers)`. Its output will be `[0, 0]`, `[1, -1]`, `[2, 1]`, `[3, -2]`, `[4, 2]` ...
+Merge yields alternate elements from its constituent enumerations. Is the `merge` of two enumerations also an enumeration? If that were so, we could take any finite integer and show that it can be put into a one-to-one correspondance with the integers. Consider `zip(naturals, integers)`. It will yield `[0, 0]`, `[1, -1]`, `[2, 1]`, `[3, -2]`, `[4, 2]` ...
 
-If `integers` is an enumeration, then for any finite integer `i`, there will be some output `[n, i]` where `n` is a natural number. This is the case: If `i` is zero or a positive number, then `zip(naturals, integers)` will output `[i * 2, i]`. And if `i` is a negative number, then `zip(naturals, integers)` will output `[Math.abs(i * 2) - 1, i]`.
+If `integers` is an enumeration, then for any finite integer `i`, there will be some value yielded `[n, i]` where `n` is a natural number. This is the case: If `i` is zero or a positive number, then `zip(naturals, integers)` will yield `[i * 2, i]`. And if `i` is a negative number, then `zip(naturals, integers)` will yield `[Math.abs(i * 2) - 1, i]`.
 
 ---
 
@@ -307,9 +307,9 @@ notAllIntegers()
     ...
 ```
 
-As written, `concatenate` does **not** provide a correct enumeration over the integers, because we can name an integer, `-1`, that will not appear after a finite number of outputs. We can prove that, and the way we prove it helps get into the correct mindset for dealing with infinite enumerations:
+As written, `concatenate` does **not** provide a correct enumeration over the integers, because we can name an integer, `-1`, that will not appear after a finite number of values yielded. We can prove that, and the way we prove it helps get into the correct mindset for dealing with infinite enumerations:
 
-Let's assume that `-1` does appear after a finite number of outputs. If we can show this leads to a contradiction, then we will know that our assumption is wrong, and that `-1` does not appear after a finite number of outputs.
+Let's assume that `-1` does appear after a finite number of values yielded. If we can show this leads to a contradiction, then we will know that our assumption is wrong, and that `-1` does not appear after a finite number of vales yielded.
 
 We'll start by zipping `notAllIntegers` with the natural numbers:
 
@@ -326,7 +326,7 @@ zip(naturals, notAllIntegers)()
     ...
 ```
 
-If `notAllIntegers` is an enumeration of the integers, then after a finite number of outputs, the enumeration will produce `[n, -1]`, where `n` is a natural number. However, after `n + 1` outputs, `zip(naturals, notAllIntegers)` will output `[n, n]`, not `[n, -1]`. And this is true for *any* finite `n`, no matter how large. Since the enumeration cannot output both `[n, -1]` and `[n, n]`, it follows that our assumption that `-1` appears after a finite number of outputs, must be incorrect.
+If `notAllIntegers` is an enumeration of the integers, then after a finite number of values yielded, the enumeration will produce `[n, -1]`, where `n` is a natural number. However, after `n + 1` values yielded, `zip(naturals, notAllIntegers)` will yield `[n, n]`, not `[n, -1]`. And this is true for *any* finite `n`, no matter how large. Since the enumeration cannot yield both `[n, -1]` and `[n, n]`, it follows that our assumption that `-1` appears after a finite number of values yielded, must be incorrect.
 
 `notAllIntegers` is not an enumeration of the integers, and therefore `concatenate` is not a function that takes two enumerations and returns an enumeration over the union of its inputs.
 
@@ -381,9 +381,9 @@ The even numbers have the same cardinality as the natural numbers. That is the p
 
 ---
 
-### products of enumerables
+### products of denumerables
 
-Sets can be created from the [cartesian product] (or simply "product") of two or more enumerables. For example, the set of all rational numbers is the product of the set of all natural numbers and the set of all positive natural numbers: A rational number can be expressed as a natural number numerator, divided by a positive natural number denominator.
+Sets can be created from the [cartesian product] (or simply "product") of two or more denumerables. For example, the set of all rational numbers is the product of the set of all natural numbers and the set of all positive natural numbers: A rational number can be expressed as a natural number numerator, divided by a positive natural number denominator.
 
 [Cartesian product]: https://en.wikipedia.org/wiki/Cartesian_product
 
@@ -474,9 +474,9 @@ rationals()
 
 A naïve product of two or more enumerations, where at least one of the sets is denumerable, is not an enumeration of the product of the sets. It doesn't work for the exact same reason that concatenating multiple infinite enumerations does not produce a valid infinite enumeration.
 
-We can prove this with the same logic as above: If we zip the output with the natural numbers, we'll get `[0, '0/1']`, `[1, '0/2']`, `[2, '0/3']`, ...
+We can prove this with the same logic as above: If we zip the enumeration with the natural numbers, we'll get `[0, '0/1']`, `[1, '0/2']`, `[2, '0/3']`, ...
 
-If this was a valid enumeration, every rational number would appear in a finite number of iterations, so we should be able to find `[n, '1962/614']` in a finite number of outputs. Whatever `n` is, we will actually find `[n, '0/n+1']`, not `[n, '1962/614']`. Therefore the naïve product cannot enumerate denumerables.
+If this was a valid enumeration, every rational number would appear in a finite number of iterations, so we should be able to find `[n, '1962/614']` in a finite number of values yielded. Whatever `n` is, we will actually find `[n, '0/n+1']`, not `[n, '1962/614']`. Therefore the naïve product cannot enumerate denumerables.
 
 ---
 
@@ -498,7 +498,7 @@ Here's our table again:
 |**3**|3/1|3/2|3/3|...|
 |<strong>&vellip;</strong>|&vellip;|&vellip;|&vellip;| |<br/><br/>
 
-If we take the elements diagonal by diagonal, we will output: `0/1`, `0/2`, `1/1`, `0/3`, `1/2`, `2/1`, ...
+If we take the elements diagonal by diagonal, we will yield: `0/1`, `0/2`, `1/1`, `0/3`, `1/2`, `2/1`, ...
 
 Because of the order in which we access the elements of the generators, we cannot rely on iterating through the generators in order. We will build a random-access abstraction, `at()`. There is a simple schlemiel implementation:[^schlemiel]
 
@@ -560,7 +560,7 @@ rationals()
     ...
 ```
 
-As the product is output row-by-row, we can now say with certainty that no matter which element we care to name, it has appeared as the nth element for some finite value of n.
+As the product is yielded row-by-row, we can now say with certainty that no matter which element we care to name, it has appeared as the nth element for some finite value of n.
 
 At the enormous cost of computing resources, we have an enumeration that enumerates the product of two denumerable sets, and we used it to enumeration rational numbers. This demonstrates that the rational numbers have the same cardinality of the natural numbers, and that any product of two denumerable sets is also denumerable.
 
@@ -710,7 +710,7 @@ powers()
 
 Of course, `uniq` requires memory equal to the number of unique element seen so far, and this we know that it would require an infinite amount of space to enumerate the infinite set of natural powers. But then again, it would also require an infinite amount of time, so we are worrying about whether we run out of space in the Universe before or after we encounter the heat-death of the Universe.
 
-As long as we know that an enumeration will output every finite element in a finite amount of time *and requires no more than a finite amount of space*, that is sufficient for our purposes today. And our purpose here was to demonstrate definitely that the set of natural powers, like every proper subset of the set of natural numbers, is denumerable.[^heh]
+As long as we know that an enumeration will yield every finite element in a finite amount of time *and requires no more than a finite amount of space*, that is sufficient for our purposes today. And our purpose here was to demonstrate definitely that the set of natural powers, like every proper subset of the set of natural numbers, is denumerable.[^heh]
 
 [^heh]: Actually, the set of all natural powers is identical to the set of all natural numbers, but enumerating it as powers gives us a different enumeration than enumerating the natural numbers in order.
 
@@ -996,9 +996,9 @@ And now we have shown that the set of all finite subsets of a denumerable, is al
 
 ---
 
-### recursive enumerables
+### recursive enumerations
 
-A common example of recursion is to output the [fibonacci sequence][fib]. Here's an iterative enumeration:
+A common example of recursion is to yield the [fibonacci sequence][fib]. Here's an iterative enumeration:
 
 [fib]: https://en.wikipedia.org/wiki/Fibonacci_number
 
@@ -1056,7 +1056,7 @@ pairSum(naturals)
     ...
 ```
 
-In this case, it is outputting `0 + 1`, `1 + 2`, `2 + 3`, and so on. We can `cons` a couple of numbers onto the front:
+In this case, it is yielding `0 + 1`, `1 + 2`, `2 + 3`, and so on. We can `cons` a couple of numbers onto the front:
 
 ```javascript
 const pairSumStartingWithZeroAndOne =
@@ -1269,7 +1269,7 @@ productsOfProducts()
 
 `productsOfProducts` does appear to enumerate all of the topologies of finite trees, but with two important caveats.
 
-First, Although the printed representation of `productOfProduct`'s elements look like trees, in actual fact each element uses structure sharing. Although the output `[[], [[]]]` may look like it represents:
+First, Although the printed representation of `productOfProduct`'s elements look like trees, in actual fact each element uses structure sharing. Although the printed representation `[[], [[]]]` may look like it represents:
 
 <div class="mermaid">
   graph LR
@@ -1289,7 +1289,7 @@ Internally, because it uses structure sharing, it's not a tree, it's a directed 
 
 To fix this discrepancy, we will develop an enumeration of trees that are represented internally as trees without structure sharing.
 
-The second caveat is a little more subtle. Our recursive version of the Fibonacci sequence outputs the elements in order. This has many advantages. One of them is that the Fibonacci sequence is constantly increasing in magnitude. If we pair the Fibonacci sequence with the natural numbers, for any two pairs `n1, f1` and `n2, f2`, we know that if `n1 < n2`, then `f1 < f2`.
+The second caveat is a little more subtle. Our recursive version of the Fibonacci sequence yields the elements in order. This has many advantages. One of them is that the Fibonacci sequence is constantly increasing in magnitude. If we pair the Fibonacci sequence with the natural numbers, for any two pairs `n1, f1` and `n2, f2`, we know that if `n1 < n2`, then `f1 < f2`.
 
 This is very a very useful quality for an enumeration, as it means that for any finite number `n`, we only need to enumerate a finite number of elements of the Fibonacci sequence to determine whether `n` is a member of the sequence:
 
@@ -1323,9 +1323,9 @@ isFib(42)
   //=> false
 ```
 
-Unfortunately, `productsOfProducts` doesn't have the same quality, although the number of nodes in each tree does grow over time, it does not do so monotonically. Sometimes, the number of nodes output is fewer than the previous number of nodes.
+Unfortunately, `productsOfProducts` doesn't have the same quality. The first sixteen values yielded have a steadily increasing number of nodes, with values 13 and 14 having six nodes. But then values 15, 16, and 17 have five nodes. Value 18 has six nodes, 19 and 20 have seven nodes, and then values 21 and 22 have five nodes again.
 
-We'll now develop an enumeration of trees that does not share structures, and never outputs a tree with fewer nodes than any of its predecessors.
+We'll now develop an enumeration of trees that does not share structures, and never yields a tree with fewer nodes than any of its predecessors.
 
 ---
 
@@ -1642,7 +1642,7 @@ All of these are [countable sets][countable set], and we demonstrated that they 
 
 ### a proof that the set of all finite sets of natural numbers... is denumerable
 
-We claimed above that the set of all finite sets of natural numbers is denumerable, by claiming that we had written an enumeration that would output every finite set in a finite number of outputs, or equivalently, that every finite set could be associated with a unique natural number.
+We claimed above that the set of all finite sets of natural numbers is denumerable, by claiming that we had written an enumeration that would yield every finite set in a finite number of yields, or equivalently, that every finite set could be associated with a unique natural number.
 
 If we wished to prove that this was not the case, the method we've used elsewhere was to construct an element of the set and show that it could not be associated with any natural number. Let's try that.
 
@@ -1747,9 +1747,9 @@ setofAllFiniteSets()
     ...
 ```
 
-With this enumeration in hand, we can name _any_ finite set and know that it appears after a finite number of outputs. So if someone claims they have a finite set of natural numbers that is not in our enumeration, we can ask them for the set, convert it to a natural number `n`, and explain that their set is the `(n + 1)th` set output.
+With this enumeration in hand, we can name _any_ finite set and know that it appears after a finite number of yields. So if someone claims they have a finite set of natural numbers that is not in our enumeration, we can ask them for the set, convert it to a natural number `n`, and explain that their set is the `(n + 1)th` set yielded.
 
-They might, for example, claim that the set containing the number one trillion is not in our enumeration, but we can state with confidence that after two to the power of one trillion outputs, their set will be output. It might take a while if they insist, and we'll need a lot of storage, but it will eventually be output.
+They might, for example, claim that the set containing the number one trillion is not in our enumeration, but we can state with confidence that after two to the power of one trillion yields, their set will be yielded. It might take a while if they insist, and we'll need a lot of storage, but it will eventually be yielded.
 
 ---
 
@@ -1775,7 +1775,7 @@ To do this, we'll need to start with a representation of denumerable sets of nat
 | catalans    |  1|  2|  5| 14| 42|132| ...|
 | &vellip;    |&vellip;|&vellip;|&vellip;|&vellip;|&vellip;|&vellip;|   |
 
-<br/>We will use enumerations of `0`s and `1`s using the binary encoding scheme. The first element output will be a `0` if `0` is not in the denumerable set, `1` if it is. The next element output will be a `0` if `1` is not in the denumerable set, `1` if it is, and so on, like this:
+<br/>We will use enumerations of `0`s and `1`s using the binary encoding scheme. The first element yielded will be a `0` if `0` is not in the denumerable set, `1` if it is. The next element yielded will be a `0` if `1` is not in the denumerable set, `1` if it is, and so on, like this:
 
 | Enumeration | 0?| 1?| 2?| 3?| 4?| 5?|    |
 |:------------|--:|--:|--:|--:|--:|--:|---:|
@@ -1837,7 +1837,7 @@ strawman()
 
 There are other ways to prove that this enumeration does not put the set of denumerable subsets of the natural numbers into a one-to-one correspondance with the natural numbers, but let's look at Cantor's argument instead.[^other]
 
-[^other]:If this is an enumeration of every infinite enumeration of binary numbers, we can name **any** enumeration of binary numbers, and it will appear after a finite number of outputs. For example, if we name the enumeration that has a trillion zeroes, a one, and then a denumerable number of zeroes... That appears after two to the power of a trillion plus one outputs.<br/><br/>However, although we have an infinite number of elements in each enumeration, the way we've constructed this we only have a finite number of `1`s in each enumeration. So any enumeration with an infinite number of `1`s will not appear after a finite number of outputs. That follows from the fact that we've simply found another way to represent the set of all finite sets, not the set of all infinite sets.
+[^other]:If this is an enumeration of every infinite enumeration of binary numbers, we can name **any** enumeration of binary numbers, and it will appear after a finite number of yields. For example, if we name the enumeration that has a trillion zeroes, a one, and then a denumerable number of zeroes... That appears after two to the power of a trillion plus one yields.<br/><br/>However, although we have an infinite number of elements in each enumeration, the way we've constructed this we only have a finite number of `1`s in each enumeration. So any enumeration with an infinite number of `1`s will not appear after a finite number of yields. That follows from the fact that we've simply found another way to represent the set of all finite sets, not the set of all infinite sets.
 
 Cantor offered the following construction: Arrange the binary numbers as a matrix, and extract the diagonal of the matrix, like this:[^zeroes]
 
@@ -1876,7 +1876,7 @@ impossible(strawman)()
   //=> 1, 1, 1, 1, ...
 ```
 
-If our strawman is an enumeration of the denumerable sets of the natural numbers, than the enumeration `impossible(strawman)` must appear after a finite number of outputs. Cantor's proof that it does not is as follows:
+If our strawman is an enumeration of the denumerable sets of the natural numbers, than the enumeration `impossible(strawman)` must appear after a finite number of yields. Cantor's proof that it does not is as follows:
 
 Take _any_ natural number, `n`. Let's compare the `nth` element of `strawman` to `impossible(strawman)`. We know that the `nth` element of strawman has an `nth` element. And we know that the `nth` element of the `nth` element of `strawman` is not equal to the `nth` element of `impossible(strawman)`, because we constructed `impossible(strawman)` on that basis.
 
