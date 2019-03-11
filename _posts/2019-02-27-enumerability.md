@@ -13,9 +13,13 @@ For example, here are two slightly different enumerations for the integers: `0, 
 
 [^finite]: Not all enumerations are infinite in size. Here are two enumerations of the set ("whole numbers less than or equal to four"): `0, 1, 2, 3, 4` and `4, 3, 2, 1, 0`.
 
-In this essay, we are going focus on enumerations over infinite sets. We will examine a number of ways to compose enumerations, including recursive enumerations that are composed with themselves.
+In this essay, we are going focus on enumerations over infinite sets. We will examine a number of ways to compose enumerations, including taking the product of enumerations, exponents of enumerations, and making recursive enumerations that are composed with themselves.
 
-We'll finish up by enumerating all of the topologies of trees, connecting them to the catalan numbers and the Dyck Words in the form of balanced parentheses strings.
+We'll use these tools to enumerate all of the topologies of trees, connecting them to the catalan numbers and the Dyck Words in the form of balanced parentheses strings. And finally, we'll examine sets that can't be enumerated, like the set of all infinitely long binary strings.
+
+When we have finished, we'll have explored some of the foundational ideas behind [Georg Cantor's][Cantor] theory of [transfinite numbers], and along the way, developed a collection of tools for composing generators.
+
+[transfinite numbers]: https://en.wikipedia.org/wiki/Transfinite_number
 
 ---
 
@@ -60,7 +64,7 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 - [cantor's diagonal argument](#cantors-diagonal-argument)
 - [ℵ<sub>1</sub>](#ℵ1)
 
-[Beyond Computation](#beyond-computation)
+[Beyond the Computable](#beyond-the-computable)
 
 [The Complete Code](#the-complete-code)
 
@@ -192,9 +196,9 @@ integers()
     ...
 ```
 
-Thanks to composing simple parts, we wrote `const integers = merge(naturals, negatives)` instead of writing `function * integers () { ... }`. Here's another function that zips generators together. It has many uses, one of which is to put an enumeration into a one-to-one correspondance with the [^natural numbers]:
+Thanks to composing simple parts, we wrote `const integers = merge(naturals, negatives)` instead of writing `function * integers () { ... }`. Here's another function that zips generators together. It has many uses, one of which is to put an enumeration into a one-to-one correspondance with the natural numbers:[^naturals]
 
-[^natural numbers]: In some definitions of the [natural numbers](https://en.wikipedia.org/wiki/Natural_number), they begin with `0`. In others, they begin with `1`, and the numbers beginning with `0` are called either the "whole" numbers or the "non-negative numbers." We will use the definition of the natural numbers as beginning with `0` in this essay, and call the numbers beginning with `1` the "positive" numbers.<br/><br/>Those that prefer natural numbers beginning with `1` can easily fork this essay in GitHub and perform an easy search-and-replace.
+[^naturals]: In some definitions of the [natural numbers](https://en.wikipedia.org/wiki/Natural_number), they begin with `0`. In others, they begin with `1`, and the numbers beginning with `0` are called either the "whole" numbers or the "non-negative numbers." We will use the definition of the natural numbers as beginning with `0` in this essay, and call the numbers beginning with `1` the "positive" numbers.<br/><br/>Those that prefer natural numbers beginning with `1` can easily fork this essay in GitHub and perform an easy search-and-replace.
 
 ```javascript
 function zip (...generators) {
@@ -1929,9 +1933,11 @@ No set of cardinality ℵ<sub>1</sub> can be put into a one-to-one correspondenc
 
 ---
 
-# Beyond Computation
+# Beyond the Computable
 
-With ℵ<sub>1</sub>, our exploration today comes to an end. From here, we can go on to explore [power sets][power set], the [continuum hypothesis], and many other fascinating topics to do with sets and transfinite cardinalities. But before we go, there is one more idea we can sample.
+With ℵ<sub>1</sub>, our exploration today comes to an end. We've explored the foundational ideas behind [Cantor's][Cantor] [transfinite numbers], and along the way, we've developed a number of useful tools for building generators with composition, such as `just`, `cons`, `merge`, `flatten`, and `mapWith`.
+
+From here, we can go on to explore [power sets][power set], the [continuum hypothesis], and many other fascinating topics to do with sets and transfinite cardinalities. But before we go, there is one more idea we can sample.
 
 [power set]: https://en.wikipedia.org/wiki/Power_set
 [continuum hypothesis]: https://en.wikipedia.org/wiki/Continuum_hypothesis
