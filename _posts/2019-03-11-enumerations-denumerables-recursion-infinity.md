@@ -1960,7 +1960,7 @@ But the cardinality of all the reals (both computable and not) is ℵ<sub>1</sub
 
 One million monkeys typing on one million typewriters may produce the finite works of Shakespeare, but there are infinitely many works that neither they nor any other mechanism can ever produce.
 
-(discuss on [reddit](https://www.reddit.com/r/javascript/comments/azu2co/enumerations_denumerables_recursion_and_infinity/) and [hacker news](https://news.ycombinator.com/item?id=19359196))
+(discuss on [hacker news](https://news.ycombinator.com/item?id=19359196))
 
 ---
 
