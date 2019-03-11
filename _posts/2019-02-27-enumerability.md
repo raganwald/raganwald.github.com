@@ -58,6 +58,9 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 - [a proof that the set of all finite sets of natural numbers… is denumerable](#a-proof-that-the-set-of-all-finite-sets-of-natural-numbers-is-denumerable)
 - [is the set of all denumerable sets of natural numbers… denumerable?](#is-the-set-of-all-denumerable-sets-of-natural-numbers-denumerable)
 - [cantor's diagonal argument](#cantors-diagonal-argument)
+- [ℵ<sub>1</sub>](#ℵ1)
+
+[Beyond Computation](#beyond-computation)
 
 [The Complete Code](#the-complete-code)
 
@@ -1910,7 +1913,7 @@ In other words, the cardinality of the set of all denumerable sets of natural nu
 
 ---
 
-### ℵ<sub>1</sub> and beyond
+### ℵ<sub>1</sub>
 
 Cantor had discovered a cardinality greater than the cardinality of the set of all natural numbers. He created the concept of transfinite cardinalities, which he notated using the aleph ("ℵ") character, and a subscript to indicate the degree of cardinality.
 
@@ -1922,12 +1925,36 @@ No set of cardinality ℵ<sub>1</sub> can be put into a one-to-one correspondenc
 
 ---
 
-Unfortunately, our exploration has coming to an end. The domain of programs is in the world of finite things. We can write things like enumerations to demonstrate the finite properties of denumerable things, but ultimately, the almost all of the territory of higher orders of transfinite cardinalities are out of the reach of these tools.
+[![Beyond the Lake](/assets/images/enumerations/beyond.jpg)](https://www.flickr.com/photos/ryancadby/8254207910)
 
-From here, we can go on to explore [power sets][power set], the [continuum hypothesis], and many other fascinating topics to do with sets and transfinite cardinalities, but before we go, there is idea we can sample.
+---
+
+# Beyond Computation
+
+With ℵ<sub>1</sub>, our exploration today comes to an end. From here, we can go on to explore [power sets][power set], the [continuum hypothesis], and many other fascinating topics to do with sets and transfinite cardinalities. But before we go, there is one more idea we can sample.
 
 [power set]: https://en.wikipedia.org/wiki/Power_set
 [continuum hypothesis]: https://en.wikipedia.org/wiki/Continuum_hypothesis
+
+The domain of programs is in the world of finite things. We can write things like enumerations to demonstrate the finite properties of denumerable things, but ultimately, the almost all of the territory of higher orders of transfinite cardinalities are out of the reach of these tools.
+
+Computing machines, whether mechanical, electronic, or even our own brains, are finite. The set of all possible computing machines is denumerable. If we reduce it down to the very basics, the set of all possible Turing Machines is denumerable.
+
+Each Turing Machine has an infinite tape, and Turing Machines that do not halt can output an infinite number of symbols on their tape. Although Turing Machines can output any set of symbols, The output can always be encoded into binary, so a countable number of Turing machines writing a countable string of symbols on their tapes is in principle no different than an enumeration of enumerations of ones and zeroes, just like our enumeration of infinite binary numbers.
+
+But we know that the cardinality of the set of infinite binary numbers is larger than the cardinality of the set of all possible Turing Machines. Which raises the question: _Are there binary numbers that no Turing Machine can output?_
+
+The answer is that yes, there are numbers that no Turing Machine can output. The numbers that Turing Machines can output are the [computable reals][computable], and the cardinality of the computable reals is ℵ<sub>0</sub>, it's a countable set.[^precision]
+
+[^precision]: We will not address it here, but given when we speak of Turing Machines generating infinite numbers, the technique evaluating what they can and cannot compute rests on calculating a number to a specified precision in a finite time. So instead of asking whether there exists a Turing Machine that outputs π, we ask whether there is a Turing Machine that outputs π to any arbitrary precision in a finite amount of time. In this manner, there can be irrational numbers that are nevertheless computable.
+
+[computable]: https://en.wikipedia.org/wiki/Computable_number
+
+But the cardinality of all the reals (both computable and not) is ℵ<sub>1</sub>, which means that there are not only infinitely many numbers that cannot and never will be computed, but the cardinality of the set of uncomputable numbers is ℵ<sub>1</sub>. So not only are there infinitely many uncomputable numbers, but the set of uncomputable numbers is infinitely larger than the set of computable numbers.
+
+One million monkeys typing on one million typewriters may produce the finite works of Shakespeare, but there are infinitely many works that neither they nor any other mechanism can ever produce.
+
+(end)
 
 ---
 
