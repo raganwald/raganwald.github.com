@@ -1834,11 +1834,11 @@ strawman()
     ...
 ```
 
-If this is an enumeration of every infinite enumeration of binary numbers, we can name **any** enumeration of binary numbers, and it will appear after a finite number of outputs. For example, if we name the enumeration that has a trillion zeroes, a one, and then a denumerable number of zeroes... That appears after two to the power of a trillion plus one outputs.
+There are other ways to prove that this enumeration does not put the set of denumerable subsets of the natural numbers into a one-to-one correspondance with the natural numbers, but let's look at Cantor's argument instead.[^other]
 
-However, although we have an infinite number of elements in each enumeration, the way we've constructed this we only have a finite number of `1`s in each enumeration. So any enumeration with an infinite number of `1`s will not appear after a finite number of outputs. That follows from the fact that we've simply found another way to represent the set of all finite sets, not the set of all infinite sets.
+[^other]:If this is an enumeration of every infinite enumeration of binary numbers, we can name **any** enumeration of binary numbers, and it will appear after a finite number of outputs. For example, if we name the enumeration that has a trillion zeroes, a one, and then a denumerable number of zeroes... That appears after two to the power of a trillion plus one outputs.<br/><br/>However, although we have an infinite number of elements in each enumeration, the way we've constructed this we only have a finite number of `1`s in each enumeration. So any enumeration with an infinite number of `1`s will not appear after a finite number of outputs. That follows from the fact that we've simply found another way to represent the set of all finite sets, not the set of all infinite sets.
 
-But let's look at Cantor's argument instead. He offered the following construction: Arrange the binary numbers as a matrix, and extract the diagonal of the matrix, like this:
+Cantor offered the following construction: Arrange the binary numbers as a matrix, and extract the diagonal of the matrix, like this:[^zeroes]
 
 |**0**|0|0|0|0|0|...|
 |1|**0**|0|0|0|0|...|
@@ -1848,7 +1848,9 @@ But let's look at Cantor's argument instead. He offered the following constructi
 |1|0|1|0|0|**0**|...|
 |&vellip;|&vellip;|&vellip;|&vellip;|&vellip;|&vellip;| |
 
-For our strawman, the diagonal gives all zeroes, but for other enumerations it might give a different number. We can write a function to take the diagonal of an enumeration of denumerable enumerations:
+[^zeroes]: For our strawman enumeration, the diagonal gives all zeroes, but for other enumerations the diagonal will give a different sequence of ones and zeroes.
+
+We can write a function to take the diagonal of an enumeration of denumerable enumerations:
 
 ```javascript
 const diagonal =
@@ -1899,11 +1901,9 @@ Our `impossible` function always returns an enumeration representing a denumerab
 
 No matter what enumeration we have, we can construct an impossible enumeration, and ask "Where does this appear?" If it is alleged to appear after `n` enumerations, we know that this cannot be, because it differs from enumeration `n` in the `nth` place.
 
-If we think of them as binary numbers, `impossible` is a function that enumerates an infinite binary number that differs from every denumerably long binary number appearing in a denumerable list of denumerably long binary numbers. And since denumerably long binary numbers can be placed into a direct correspondence with denumerable sets of natural numbers, it follows that the set of all denumerable sets of natural numbers cannot be placed into a one-to-one correspondance with the natural numbers.
+If we think of them as binary numbers, `impossible` is a function that enumerates a denumerably long binary number that differs from every denumerably long binary number appearing in a denumerable list of denumerably long binary numbers. And since denumerably long binary numbers can be placed into a direct correspondence with denumerable sets of natural numbers, it follows that the set of all denumerable sets of natural numbers cannot be placed into a one-to-one correspondance with the natural numbers.
 
-In other words, the cardinality of the set of all denumerable sets of natural numbers is larger than the cardinality of natural numbers.
-
-
+In other words, the cardinality of the set of all denumerable sets of natural numbers is larger than the cardinality of natural numbers. And therefore, the set of all denumerable sets of natural numbers is not denumerable
 
 ---
 
