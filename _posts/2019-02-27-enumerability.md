@@ -59,6 +59,7 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 - [the cardinality of denumerable enumerations](#the-cardinality-of-denumerable-enumerations)
 - [a proof that the set of all finite sets of natural numbers… is denumerable](#a-proof-that-the-set-of-all-finite-sets-of-natural-numbers-is-denumerable)
 - [is the set of all denumerable sets of natural numbers… denumerable?](#is-the-set-of-all-denumerable-sets-of-natural-numbers-denumerable)
+- [cantor's diagonal argument](#cantors-diagonal-argument)
 
 [The Complete Code](#the-complete-code)
 
