@@ -9,11 +9,11 @@ An [enumeration] is a complete, ordered list of all of the elements of a set or 
 
 [enumeration]: https://en.wikipedia.org/wiki/Enumeration
 
-For example, here are two slightly different enumerations for the integers: `0, -1, 1, -2, 2, -3, 3, -4, 4, ...` and `0, -1, 1, 2, -2, -3, 3, 4, -4 ...`. We have no way to write out the complete enumeration, because although each integer is of finite size, there are an infinite number of them.[^finite]
+For example, here are two slightly different enumerations for the integers: `0, -1, 1, -2, 2, -3, 3, -4, 4, ...` and `0, 1, -1, 2, -2, -3, 3, 4, -4 ...`. We have no way to write out the complete enumeration, because although each integer is of finite size, there are an infinite number of them.[^finite]
 
 [^finite]: Not all enumerations are infinite in size. Here are two enumerations of the set ("whole numbers less than or equal to four"): `0, 1, 2, 3, 4` and `4, 3, 2, 1, 0`.
 
-In this essay, we are going focus on enumerations over infinite sets, expressed in JavaScript. We will examine a number of ways to compose enumerations, including taking the product of enumerations, exponents of enumerations, and making recursive enumerations that are composed with themselves.
+In this essay, we will focus on enumerations over infinite sets, expressed in JavaScript. We will examine a number of ways to compose enumerations, including taking the product of enumerations, exponents of enumerations, and making recursive enumerations that are composed with themselves.
 
 We'll use these tools to enumerate all of the topologies of trees, connecting them to the catalan numbers and the Dyck Words in the form of balanced parentheses strings. And finally, we'll examine sets that can't be enumerated, like the set of all infinitely long binary strings.
 
