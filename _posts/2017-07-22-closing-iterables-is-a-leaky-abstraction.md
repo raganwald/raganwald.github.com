@@ -117,8 +117,8 @@ function lines (path) {
   return {
     [Symbol.iterator]() {
       return {
-        done: false;
-        fileDescriptor: File.open(path);
+        done: false,
+        fileDescriptor: File.open(path),
         next() {
           if (this.done) return { done: true };
           const line = this.fileDescriptor.readLine();
@@ -183,7 +183,7 @@ Let's take a look at the mechanism.
 
 We've seen that the interface for iterators includes a mandatory `.next()` method. It also includes an optional `.return()` method. The contract for `.return(optionalReturnValue)` is that when invoked:
 
-- it should return `{ done: true }` is no optional return value is provided, or `{ done: true, value: optionalReturnValue }` if an optional return value is provided.
+- it should return `{ done: true }` if no optional return value is provided, or `{ done: true, value: optionalReturnValue }` if an optional return value is provided.
 - thereafter, the iterator should permanently return `{ done: true }` should `.next()` be called.
 - as a consequence of the above, the iterator can and should dispose of any resources it is holding.
 
