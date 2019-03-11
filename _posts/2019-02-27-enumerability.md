@@ -1747,7 +1747,7 @@ setofAllFiniteSets()
     ...
 ```
 
-With this enumeration in hand, we can name _any_ finite set and know that it appears after a finite number of outputs. So if someone claims they have a finite set of natural numbers that is not in our enumeration, we can ask them for the set, convert it to a natural number `n`, and explain that their set is the `(n + 1)`th set output.
+With this enumeration in hand, we can name _any_ finite set and know that it appears after a finite number of outputs. So if someone claims they have a finite set of natural numbers that is not in our enumeration, we can ask them for the set, convert it to a natural number `n`, and explain that their set is the `(n + 1)th` set output.
 
 They might, for example, claim that the set containing the number one trillion is not in our enumeration, but we can state with confidence that after two to the power of one trillion outputs, their set will be output. It might take a while if they insist, and we'll need a lot of storage, but it will eventually be output.
 
@@ -1904,7 +1904,32 @@ No matter what enumeration we have, we can construct an impossible enumeration, 
 
 If we think of them as binary numbers, `impossible` is a function that enumerates a denumerably long binary number that differs from every denumerably long binary number appearing in a denumerable list of denumerably long binary numbers. And since denumerably long binary numbers can be placed into a direct correspondence with denumerable sets of natural numbers, it follows that the set of all denumerable sets of natural numbers cannot be placed into a one-to-one correspondance with the natural numbers.
 
-In other words, the cardinality of the set of all denumerable sets of natural numbers is larger than the cardinality of natural numbers. And therefore, the set of all denumerable sets of natural numbers is not denumerable
+In other words, the cardinality of the set of all denumerable sets of natural numbers is larger than the cardinality of the set of all natural numbers. And therefore, the set of all denumerable sets of natural numbers is not denumerable.
+
+---
+
+[![El Castillo by Dennis Jarvis](/assets/images/enumerations/el-castillo.jpg)](https://www.flickr.com/photos/archer10/4638337253)
+
+---
+
+### ℵ<sub>1</sub> and beyond
+
+Cantor had discovered a cardinality greater than the cardinality of the set of all natural numbers. He created the concept of transfinite cardinalities, which he notated using the aleph ("ℵ") character, and a subscript to indicate the degree of cardinality.
+
+Aleph null, aleph zero, or simply ℵ<sub>0</sub> denoted the cardinality of the set of all finite subsets of the natural numbers. ℵ<sub>0</sub> is also the cardinality of everything else that can be put in a one-to-one correspondance with the natural numbers, including everything we can describe by way of writing an enumeration.
+
+Aleph one, or ℵ<sub>1</sub>, denotes the cardinality of the set of all denumerable subsets of the natural numbers, and everything that can be put into a one-to-one correspondence with them, including the real numbers, and as we've seen, the denumerably long binary numbers.
+
+No set of cardinality ℵ<sub>1</sub> can be put into a one-to-one correspondence with the natural numbers or any other set of cardinality ℵ<sub>0</sub>. This is why the set of denumerably long binary numbers could not be enumerated: The cardinality of the set of all denumerably long binary numbers is ℵ<sub>1</sub>, but the set of things that can be enumerated is ℵ<sub>0</sub>.
+
+---
+
+Unfortunately, our exploration has coming to an end. The domain of programs is in the world of finite things. We can write things like enumerations to demonstrate the finite properties of denumerable things, but ultimately, the almost all of the territory of higher orders of transfinite cardinalities are out of the reach of these tools.
+
+From here, we can go on to explore [power sets][power set], the [continuum hypothesis], and many other fascinating topics to do with sets and transfinite cardinalities, but before we go, there is idea we can sample.
+
+[power set]: https://en.wikipedia.org/wiki/Power_set
+[continuum hypothesis]: https://en.wikipedia.org/wiki/Continuum_hypothesis
 
 ---
 
