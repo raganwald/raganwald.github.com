@@ -36,7 +36,7 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 - [false enumerations](#false-enumerations)
 - [cardinality](#cardinality)
 
-[Even Higher Order Denumerables](#even-higher-order-denumerables)
+[Higher Order Denumerables](#higher-order-denumerables)
 
 - [products of denumerables](#products-of-denumerables)
 - [correctly enumerating the product of denumerables](#correctly-enumerating-the-product-of-denumerables)
@@ -371,7 +371,7 @@ The even numbers have the same cardinality as the natural numbers. That is the p
 
 ---
 
-# Even Higher Order Denumerables
+# Higher Order Denumerables
 
 ---
 
