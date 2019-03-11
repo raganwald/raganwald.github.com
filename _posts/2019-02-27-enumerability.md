@@ -31,7 +31,7 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 
 [Introduction](#introduction)
 
-[Enumerations and Denumerables](#enumerating-denumerables):
+[Enumerations and Denumerables](#enumerations-and-denumerables):
 
 - [enumerations in javascript](#enumerations-in-javascript)
 - [enumerating denumerables](#enumerating-denumerables)
@@ -67,7 +67,7 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 
 ---
 
-# Enumerating Denumerables
+# Enumerations and Denumerables
 
 ---
 
