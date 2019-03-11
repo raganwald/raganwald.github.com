@@ -5,9 +5,7 @@ tags: [allonge,mermaid,recursion]
 
 # Introduction
 
-In programming language jargon, an _enumerable_ is a value that can be accessed sequentially, or iterated over. Different languages use the term in slightly different ways, although they all have some relation to its basic definition.
-
-In Mathematics, an [enumeration] is a complete, ordered list of all of the elements of a set or collection. There can be more than one enumeration for the same collection, and the collections need not have a finite number of elements.
+An [enumeration] is a complete, ordered list of all of the elements of a set or collection. There can be more than one enumeration for the same collection, and the collections need not have a finite number of elements.
 
 [enumeration]: https://en.wikipedia.org/wiki/Enumeration
 
