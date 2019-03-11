@@ -1764,25 +1764,27 @@ None of those sets are finite, and our `setofAllFiniteSets` will never generate 
 
 To do this, we'll need to start with a representation of denumerable sets of natural numbers. We have one we've been using, enumerations. But instead of writing enumerations that enumerate the numbers directly, like this:
 
-| Enumeration |   |   |   |   |   |   |   |
-|:------------|--:|--:|--:|--:|--:|--:|:--|
-| empty.      |   |   |   |   |   |   |...|
-| naturals    |  0|  1|  2|  3|  4|  5|...|
-| evens       |  0|  2|  4|  6|  8| 10|...|
-| primes      |  2|  3|  5|  7| 11| 13|...|
-| fibonacci   |  0|  1|  2|  3|  5|  8|...|
-| catalans    |  1|  2|  5| 14| 42|132|...|
+| Enumeration |   |   |   |   |   |   |    |
+|:------------|--:|--:|--:|--:|--:|--:|---:|
+| empty       |   |   |   |   |   |   | ...|
+| naturals    |  0|  1|  2|  3|  4|  5| ...|
+| evens       |  0|  2|  4|  6|  8| 10| ...|
+| primes      |  2|  3|  5|  7| 11| 13| ...|
+| fibonacci   |  0|  1|  2|  3|  5|  8| ...|
+| catalans    |  1|  2|  5| 14| 42|132| ...|
+| &vellip;    |&vellip;|&vellip;|&vellip;|&vellip;|&vellip;|&vellip;|   |
 
 <br/>We will use enumerations of `0`s and `1`s using the binary encoding scheme. The first element output will be a `0` if `0` is not in the denumerable set, `1` if it is. The next element output will be a `0` if `1` is not in the denumerable set, `1` if it is, and so on, like this:
 
-| Enumeration | 0?| 1?| 2?| 3?| 4?| 5?|   |
-|:------------|--:|--:|--:|--:|--:|--:|:--|
-| empty       |  0|  0|  0|  0|  0|  0|...|
-| naturals    |  1|  1|  1|  1|  1|  1|...|
-| evens       |  1|  0|  1|  0|  1|  0|...|
-| primes      |  0|  0|  1|  1|  0|  1|...|
-| fibonacci   |  1|  1|  1|  1|  0|  1|...|
-| catalans    |  0|  1|  1|  0|  0|  1|...|
+| Enumeration | 0?| 1?| 2?| 3?| 4?| 5?|    |
+|:------------|--:|--:|--:|--:|--:|--:|---:|
+| empty       |  0|  0|  0|  0|  0|  0| ...|
+| naturals    |  1|  1|  1|  1|  1|  1| ...|
+| evens       |  1|  0|  1|  0|  1|  0| ...|
+| primes      |  0|  0|  1|  1|  0|  1| ...|
+| fibonacci   |  1|  1|  1|  1|  0|  1| ...|
+| catalans    |  0|  1|  1|  0|  0|  1| ...|
+| &vellip;    |&vellip;|&vellip;|&vellip;|&vellip;|&vellip;|&vellip;|   |
 
 <br/>The question becomes, _Can we construct an enumeration of all the possible denumerable enumerations of binary strings._ If we can, we can enumerate all the denumerable sets of natural numbers. If it is impossible to construct an enumeration of denumerable binary strings, then it is impossible to enumerate the denumerable sets of natural numbers.
 
@@ -1792,7 +1794,15 @@ This caused an uproar, and many mathematicians did everything in their power to 
 
 [diagonal argument]: https://en.wikipedia.org/wiki/Cantor%27s_diagonal_argument
 
-We shall use that argument now. Let's construct, as a straw-man, an enumeration of denumerable enumerations of binary numbers:
+---
+
+[![The Esplanade Building, Singapore](/assets/images/enumerations/esplanade.jpg)](https://www.flickr.com/photos/volvob12b/16929850314)
+
+---
+
+### cantor's diagonal argument
+
+We shall use the diagonal argument now. Let's construct, as a straw-man, an enumeration of denumerable enumerations of binary numbers:
 
 ```javascript
 const naturalToFiniteEnumeration =
