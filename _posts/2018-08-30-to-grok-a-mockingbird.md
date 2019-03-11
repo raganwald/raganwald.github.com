@@ -287,7 +287,7 @@ const isEven =
     if (n === 0) {
       return true;
     } else {
-      return !IsEven(n - 1);
+      return !isEven(n - 1);
     }
   };
 
