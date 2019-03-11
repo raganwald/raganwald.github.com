@@ -3,9 +3,7 @@ title: "Enumerations, Denumerables, Recursion, and Infinity"
 tags: [allonge,mermaid,recursion]
 ---
 
-*Warning: This is an unfinished work. Feel free to share it on Twitter or other conventional social media, but I ask you not to post it on Hacker News or Reddit until it is finished.*
-
----
+### introduction
 
 In programming language jargon, an _enumerable_ is a value that can be accessed sequentially, or iterated over. Different languages use the term in slightly different ways, although they all have some relation to its basic definition.
 
@@ -30,6 +28,8 @@ We'll finish up by enumerating all of the topologies of trees, connecting them t
 # Table of Contents
 
 ---
+
+[introduction](#introduction)
 
 [Enumerations and Denumerables](#enumerating-denumerables):
 
