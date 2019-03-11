@@ -227,7 +227,7 @@ Well, it now takes a very long time to run, but it is going to get us the proper
 
 And the implementation did not require much modification. This is good, converting to tail-call form was much more intrusive.
 
-What we've done we've done is:
+What we've done is:
 
 1. Rewrite our function in tail-recursive form, and;
 2. Instead of returning the result of calling a ourselves, we've;
