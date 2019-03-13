@@ -1,6 +1,6 @@
 ---
-title: "Enumerations, Denumerables, Recursion, and Infinity"
-tags: [allonge,mermaid,recursion]
+title: "A JavaScript Exploration of Enumerations, Denumerables, Recursion, and Infinity"
+tags: [recursion,allonge,mermaid]
 ---
 
 # Introduction
