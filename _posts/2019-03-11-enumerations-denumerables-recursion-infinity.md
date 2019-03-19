@@ -1,5 +1,5 @@
 ---
-title: "A JavaScript Exploration of Enumerations, Denumerables, Recursion, and Infinity"
+title: "A JavaScript Exploration of Enumerations, Countable Sets, and Infinity"
 tags: [recursion,allonge,mermaid,wip]
 ---
 
