@@ -1,5 +1,5 @@
 ---
 layout: tagpage
-title: "Tag: noindex"
+title: Posts tagged "noindex"
 tag: noindex
 ---

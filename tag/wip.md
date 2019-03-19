@@ -1,5 +1,5 @@
 ---
 layout: tagpage
-title: "Tag: wip"
+title: Posts tagged "wip"
 tag: wip
 ---
