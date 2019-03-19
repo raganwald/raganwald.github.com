@@ -15,11 +15,21 @@
 
           {% include book.html %}
 
+          {% if page.tags contains 'noindex' %}
+            <p title="This essay is unpublished">
+              <span class="fas fa-exclamation-triangle"></span>
+              <i>This is an unpublished work. It contains errors and/or omissions. Please
+              do not share it with others.</i>
+            <p>
+            <hr/>
+          {% endif %}
+
           {% if page.tags contains 'wip' %}
             <p title="This essay is a work in progress"><i>
               <span class="fas fa-edit"></span>
-              This essay is a work in progress. Please check back for updates.
-            </i><p>
+              <i>This essay is a work in progress. Please check back for updates. If you choose to share it,
+              please mention that it is unfinished at this time.</i>
+            <p>
             <hr/>
           {% endif %}
 
