@@ -18,7 +18,7 @@ older: ["2013", "2012", "2011", "2010", "2009", "2008"]
 * books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
 * talks: <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
 
-<p><span class="fas fa-igloo"></span> I'm working on a new book, <a href="https://leanpub.com/recursion"><strong>Functions all the way down</strong></a>, a recreational exploration of recursion <i>...in JavaScript</i>. <a href="https://leanpub.com/recursion">Sign up here</a> to be notified when it's available to read online for free.</p>
+<p>I'm working on a new book, <a href="https://leanpub.com/recursion"><strong>Functions all the way down</strong></a>, a recreational exploration of recursion and other fundamental ideas in computing <i>...in JavaScript</i>. <a href="https://leanpub.com/recursion">Sign up here</a> to be notified when it's available to read online for free.</p>
 
 ---
 
@@ -32,7 +32,7 @@ older: ["2013", "2012", "2011", "2010", "2009", "2008"]
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != sectionyear %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>
+          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
       {% endunless %}
     {% endfor %}
