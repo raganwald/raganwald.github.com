@@ -19,7 +19,7 @@ We then went a step further and considered the palindrome problem, and saw that 
 
 [Pushdown Automaton]: https://en.wikipedia.org/wiki/Pushdown_automaton
 
-Here is the pushdown automaton we wrote:
+Here is the pushdown automaton class we wrote:
 
 ```javascript
 const END = Symbol('end');
@@ -109,13 +109,11 @@ class PushdownAutomaton {
       .some(state => state && state.recognized);
   }
 }
+```
 
-function test (recognizer, examples) {
-  for (const example of examples) {
-    console.log(`'${example}' => ${recognizer.evaluate(example)}`);
-  }
-}
+And hgere is an example recognzer using the class:
 
+```javascript
 class BinaryPalindrome extends PushdownAutomaton {
   * start (token) {
     if (token === '0') {
@@ -178,6 +176,12 @@ class BinaryPalindrome extends PushdownAutomaton {
       	.fork()
         .recognize();
     }
+  }
+}
+
+function test (recognizer, examples) {
+  for (const example of examples) {
+    console.log(`'${example}' => ${recognizer.evaluate(example)}`);
   }
 }
 
