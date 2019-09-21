@@ -310,11 +310,11 @@ We start with the definition of a _transition_. A transition defines a change in
  - `q` is the state the automaton will be in after completing this transition. It can be the same as `q`, meaning that it might perform some action with the input and/or stack and remain in the same state.
  - `⍺` is a symbol to push onto the stack. This can be empty, meaning that the machine does not have to push a symbol onto the stack to perform this transition.
 
- We can represent this with POJOs. For readability by those unfamiliar with the formal notation, we will use the words `from` for `p`, `consume` for `a`, `pop` for `A`, `to` for `q`, and `push` for `⍺`. This may feel like a lot of typing compared to the formal symbols, but we'll get the computer do do our writing for us, and it doesn't care.
+ We can represent this with POJOs. For readability by those unfamiliar with the formal notation, we will use the words `from`, `consume`, `pop`, `to`, and `push`. This may feel like a lot of typing compared to the formal symbols, but we'll get the computer do do our writing for us, and it doesn't care.
 
  An automaton is a set of such transitions, along with:
 
- - A start state,
+ - A *start state*,
  - A set of _accepting states_.
  - A starting symbol for the stack.
 
@@ -327,8 +327,6 @@ First, we can presume that there is just one accepting state, not a set of accep
 Second, we can have our automata assume that the stack is empty when the automaton begins. This does not reduce the power of our automata, as given a desired starting symbol, we can rewrite an automaton such that its start state pushes the desired symbol onto the stack before continuing with the rest of its logic.
 
 This reduces our definition to only requiring a start state, and accepting state, and a set of transitions, like this: `{ start, accepting, transitions }`.
-
-We can also make a small adjustment to our original Pushdown Automata
 
 ### an example automaton
 
@@ -360,7 +358,7 @@ And here is how we would represent it with data:
 }
 ```
 
-As an aside, any definition that does not include any `pop` elements is equivalent to a finite automaton, even if it is being interpreted by a framework that supports pushdown automata.
+(As an aside, any definition that does not include any `pop` elements is equivalent to a finite automaton, even if it is being interpreted by a framework that supports pushdown automata.)
 
 ### implementing our example automaton
 
