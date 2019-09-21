@@ -23,6 +23,8 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 [pushdown.oop.es6]: https://gist.github.com/raganwald/41ae26b93243405136b786298bafe8e9#file-pushdown-oop-es6
 
+---
+
 # Composeable Recognizers
 
 One of programming's "superpowers" is _composition_, the ability to build things out of smaller things, and especially, to reuse those smaller things to build other things. Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
@@ -33,7 +35,7 @@ If we want to build a recognizer for JSON, it would be ideal to build smaller re
 
 This is the motivation for the first part of our exploration: We want to make simple recognizers, and then use composition to make more complex recognizers from the simple recognizers.
 
-### functional composition
+### a few words about functional composition
 
 We explored this exact idea in [Pattern Matching and Recursion]. We used functions as recognizers, and then we used functional composition to compose more complex recognizers from simpler recognizers.
 
@@ -111,7 +113,9 @@ If we use a function like `follows` to catenate two FSAs together, is the result
 
 But for the sake of exploring the computational consequences of composing recognizers, we're going to explore a different technique. We'll start by refactoring our Pushdown Automation.
 
-### refactoring functions to data
+---
+
+## Refactoring OO Recognizers into Data
 
 We're going to perform one of the more interesting types of refactoring, refactoring functions into data. Of course, functions in JavaScript are first-class entities, which means they are already data in a certain way, namely, they are _values_. Data of the sort you'd find in a classical database like strings, booleans, numbers, and so forth are also values.
 
@@ -126,6 +130,8 @@ Why do we want to do this? Let's consider our design for Pushdown Automata. Each
 Consider a different design. Let's say we had a format for defining the states of a Pushdown Automaton in data, pure data. We could hand this to `PushdownAutomata`, and it could give us back a recognizer function, instead of extending a class. What does this give us? Well, the data that defines the states is fully transparent. We can inspect it, we can write functions that modify it, and most especially, we can explore whether given the data for two different recognizers, we can compute the data for a recognizer that composes the recognizers.
 
 But let's not get ahead of ourselves. Let's start with our refactoring:
+
+---
 
 ### a data format for automata
 
@@ -159,6 +165,8 @@ Second, we can have our automata assume that the stack is empty when the automat
 
 This reduces our definition to only requiring a start state, and accepting state, and a set of transitions, like this: `{ start, accepting, transitions }`.
 
+---
+
 ### an example automaton
 
 Here is a deterministic finite automaton that recognizes binary numbers:
@@ -190,6 +198,8 @@ And here is how we would represent it with data:
 ```
 
 (As an aside, any definition that does not include any `pop` elements is equivalent to a finite automaton, even if it is being interpreted by a framework that supports pushdown automata.)
+
+---
 
 ### implementing our example automaton
 
@@ -402,6 +412,9 @@ test(palindrome, [
 
 We now have a function, `automate`, that takes a data description of a finite state automaton, deterministic pushdown automaton, or pushdown automaton, and returns a recognizer function.
 
+---
+
+## Composing Recognizers
 
 ---
 
