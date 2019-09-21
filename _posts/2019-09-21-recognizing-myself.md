@@ -305,7 +305,7 @@ We don't need to invent a brand-new format, there is already an accepted [formal
 We start with the definition of a _transition_. A transition defines a change in the automaton's state. Transitions are formally defined as tuples of the form `(p,a,A,q,⍺)`:
 
  - `p` is the state the automaton is currently in.
- - `a` is the input symbol being consumed. This can be empty, meaning that the machine does not have to consume an input symbol to perform this transition.
+ - `a` is the input symbol being consumed. This can be empty, meaning that the machine does not have to consume an input symbol to perform this transition. To indicate that the transition is to succeed when there ar eno more symbols, we will use the empty string, `''`. (In our previous implementation, we used a special symbol called END).
  - `A` is the topmost stack symbol, which is popped off the stack. This can be empty, meaning that the machine does not have to pop a symbol from the stack to perform this transition.
  - `q` is the state the automaton will be in after completing this transition. It can be the same as `q`, meaning that it might perform some action with the input and/or stack and remain in the same state.
  - `⍺` is a symbol to push onto the stack. This can be empty, meaning that the machine does not have to push a symbol onto the stack to perform this transition.
@@ -328,6 +328,8 @@ Second, we can have our automata assume that the stack is empty when the automat
 
 This reduces our definition to only requiring a start state, and accepting state, and a set of transitions, like this: `{ start, accepting, transitions }`.
 
+We can also make a small adjustment to our original Pushdown Automata
+
 ### an example automaton
 
 Here is a deterministic finite automaton that recognizes binary numbers:
@@ -349,19 +351,143 @@ And here is how we would represent it with data:
   "accepting": "RECOGNIZED",
   "transitions": [
     { "from": "START", "consume": "0", "to": "zero" },
-    { "from": "zero", "consume": "END", "to": "RECOGNIZED" },
+    { "from": "zero", "consume": "", "to": "RECOGNIZED" },
     { "from": "START", "consume": "1", "to": "one-or-more" },
     { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
     { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-    { "from": "one-or-more", "consume": "END", "to": "RECOGNIZED" }
+    { "from": "one-or-more", "consume": "", "to": "RECOGNIZED" }
   ]
 }
 ```
+
 As an aside, any definition that does not include any `pop` elements is equivalent to a finite automaton, even if it is being interpreted by a framework that supports pushdown automata.
 
 ### implementing our example automaton
 
+Here is a function that takes as its input the definition of an automaton, and returns a recognizer function:
 
+```javascript
+function automate ({ start, accepting, transitions }) {
+  // map from from states to the transitions defined for that from state
+  const stateMap =
+    transitions
+      .reduce(
+        (acc, transition) => {
+          const { from } = transition;
+
+          if (!acc.has(from)) {
+            acc.set(from, []);
+          }
+          acc.get(from).push(transition);
+
+          return acc;
+        },
+        new Map()
+      );
+
+      // given a starting state defined by { internal, external, string },
+      // returns a set of next states
+  function performTransition ({ string, external, internal }) {
+    const transitionsForThisState = stateMap.get(internal);
+
+    if (transitionsForThisState == null) {
+      console.log(`Missing state ${internal}. This is probably an error in the automaton definition.`);
+
+      return [];
+    }
+
+    return transitionsForThisState
+      .reduce(
+        (acc, {consume, pop, push, to}) => {
+
+          let string2 = string;
+          if (consume === '') {
+            if (string !== '') return acc; // not a match
+          } else if (consume != null) {
+            if (string === '') return acc; // not a match
+            if (string[0] !== consume) return acc; // not a match
+
+            string2 = string.substring(1); // match and consume
+          }
+
+          const external2 = external.slice(0);
+          if (pop != null) {
+            if (external2.pop() !== pop) return acc; // not a match
+          }
+          if (push != null) {
+            external2.push(push);
+          }
+
+          const internal2 = (to != null) ? to : internal;
+
+          acc.push({
+            string: string2, external: external2, internal: internal2
+          });
+
+          return acc;
+        },
+        []
+      );
+  }
+
+  return function (string) {
+    let currentStates = [
+      { string, external: [], internal: start }
+    ];
+
+    while (currentStates.length > 0) {
+      currentStates = currentStates.flatMap(performTransition);
+
+      if (currentStates.some( ({ internal }) => internal === accepting )) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+}
+```
+
+And here we are using it with our definition for recognizing binary numbers:
+
+```javascript
+const binary = automate({
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "consume": "0", "to": "zero" },
+    { "from": "zero", "consume": "", "to": "RECOGNIZED" },
+    { "from": "START", "consume": "1", "to": "one-or-more" },
+    { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
+    { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
+    { "from": "one-or-more", "consume": "", "to": "RECOGNIZED" }
+  ]
+});
+
+test(binary, [
+  '', '0', '1', '00', '01', '10', '11',
+  '000', '001', '010', '011', '100',
+  '101', '110', '111',
+  '10100011011000001010011100101110111'
+]);
+  //=>
+    '' => false
+    '0' => true
+    '1' => true
+    '00' => false
+    '01' => false
+    '10' => true
+    '11' => true
+    '000' => false
+    '001' => false
+    '010' => false
+    '011' => false
+    '100' => true
+    '101' => true
+    '110' => true
+    '111' => true
+    '10100011011000001010011100101110111' => true
+```
 
 ---
 
