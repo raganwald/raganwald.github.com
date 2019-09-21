@@ -448,7 +448,7 @@ function automate ({ start, accepting, transitions }) {
 }
 ```
 
-And here we are using it with our definition for recognizing binary numbers:
+And here we are using it with our definition for recognizing binary numbers. Note that it does not `pop` anything from the stack, which means that it is a finite-state automaton:
 
 ```javascript
 const binary = automate({
@@ -488,6 +488,91 @@ test(binary, [
     '111' => true
     '10100011011000001010011100101110111' => true
 ```
+
+And another for balanced parentheses. This does `push` and `pop` things from the stack, so we know it is a pushdown automaton. Is it deterministic? If we look at the description carefully, we can see that every transition is guaranteed to be unambiguous. It can only ever follow one path through the states for any input. Therefore, it is a deterministic pushdown automaton:
+
+```javascript
+const balanced = automate({
+  "start": "PUSH ANCHOR",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "PUSH ANCHOR", "push": "⚓︎", "to": "read" },
+    { "from": "read", "consume": "(", "push": "(", "to": "read" },
+    { "from": "read", "consume": ")", "pop": "(", "to": "read" },
+    { "from": "read", "consume": "[", "push": "[", "to": "read" },
+    { "from": "read", "consume": "]", "pop": "[", "to": "read" },
+    { "from": "read", "consume": "{", "push": "{", "to": "read" },
+    { "from": "read", "consume": "}", "pop": "{", "to": "read" },
+    { "from": "read", "consume": "", "pop": "⚓︎", "to": "RECOGNIZED" }
+  ]
+});
+
+test(balanced, [
+  '', '(', '()', ')(', '()()', '{()}',
+	'([()()]())', '([()())())',
+	'())()', '((())(())'
+]);
+  //=>
+    '' => true
+    '(' => false
+    '()' => true
+    ')(' => false
+    '()()' => true
+    '{()}' => true
+    '([()()]())' => true
+    '([()())())' => false
+    '())()' => false
+    '((())(())' => false
+```
+
+Finally, even- and odd-length binary palindromes. Not only does it `push` and `pop`, but it has more than one state transition for every input it consumes, making it a non-deterministic pushdown automaton. We call these just pushdown automatons:
+
+```javascript
+const palindrome = automate({
+  "start": "start",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "start", "push": "⚓︎", "to": "first" },
+    { "from": "first", "consume": "0", "push": "0", "to": "left" },
+    { "from": "first", "consume": "1", "push": "1", "to": "left" },
+    { "from": "first", "consume": "0", "to": "right" },
+    { "from": "first", "consume": "1", "to": "right" },
+    { "from": "left", "consume": "0", "push": "0" },
+    { "from": "left", "consume": "1", "push": "1" },
+    { "from": "left", "consume": "0", "to": "right" },
+    { "from": "left", "consume": "1", "to": "right" },
+    { "from": "left", "consume": "0", "pop": "0", "to": "right" },
+    { "from": "left", "consume": "1", "pop": "1", "to": "right" },
+    { "from": "right", "consume": "0", "pop": "0" },
+    { "from": "right", "consume": "1", "pop": "1" },
+    { "from": "right", "consume": "", "pop": "⚓︎", to: "RECOGNIZED" }
+  ]
+});
+
+test(palindrome, [
+  '', '0', '00', '11', '111', '0110',
+  '10101', '10001', '100111',
+  '1001', '0101', '100111',
+  '01000000000000000010'
+]);
+  //=>
+    '' => false
+    '0' => true
+    '00' => true
+    '11' => true
+    '111' => true
+    '0110' => true
+    '10101' => true
+    '10001' => true
+    '100111' => false
+    '1001' => true
+    '0101' => false
+    '100111' => false
+    '01000000000000000010' => true
+```
+
+We now have a function, `automate`, that takes a data description of a finite state automaton, deterministic pushdown automaton, or pushdown automaton, and returns a recognizer function.
+
 
 ---
 
