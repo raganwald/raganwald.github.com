@@ -1,6 +1,7 @@
 ---
 title: "A JavaScript Exploration of Enumerations, Countable Sets, and Infinity"
 tags: [recursion,allonge,mermaid,wip]
+published: false
 ---
 
 # Introduction
