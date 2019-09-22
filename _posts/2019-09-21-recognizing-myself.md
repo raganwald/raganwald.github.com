@@ -41,8 +41,8 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 [Catenating Descriptions](#catenating-descriptions)
 
-  - [catenateFSA(first, second)]
-  - [catenate(first, second)]
+  - [catenateFSA(first, second)](#catenatefsafirst-second)
+  - [catenate(first, second)](#catenatefirst-second)
   - [what we have learned from catenating descriptions](#what-we-have-learned-from-catenating-descriptions)
 
 [Alternating Descriptions](#alternating-descriptions)
