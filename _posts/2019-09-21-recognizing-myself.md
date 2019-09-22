@@ -1076,6 +1076,10 @@ If it is possible, our `catenate` function doesn't tell us that it's possible. M
 
 ## Alternating Descriptions
 
+Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenate(A, B)` recognizes sentences of the form "`A` followed by `B`," `alternate(A, B)` would recognize sentences of `A` or of `B`.
+
+Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts.
+
 ---
 
 # Notes
