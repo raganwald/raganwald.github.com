@@ -598,7 +598,7 @@ const transformedFraction = transformSecond(binary, fraction)
     }
 ```
 
-Unlike our hand modifications, `renameConflicts` naïvely renames `RECOGNIZED` to `RECOGNIZED-2`, as it has no idea that we will later eliminate the `RECOGNIZED` state from the first description. But this is good enough, let's move on and transform the first description.
+Unlike our hand modifications, `transformSecond` naïvely renames `RECOGNIZED` to `RECOGNIZED-2`, as it has no idea that we will later eliminate the `RECOGNIZED` state from the first description. But this is good enough, let's move on and transform the first description.
 
 As discussed above, we will eliminate `"consume": ""` and rename transitions to the first description's accepting state into the second description's start state:
 
