@@ -27,6 +27,28 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 ---
 
+# Table of Contents
+
+[Composeable Recognizers](#composeable-recognizers)
+
+- [a few words about functional composition](#a-few-words-about-functional-composition)
+
+[Refactoring OO Recognizers into Data](#refactoring-oo-recognizers-into-data)
+
+  - [a data format for automata](#a-data-format-for-automata)
+  - [an example automaton](#an-example-automaton)
+  - [implementing our example automaton](#implementing-our-example-automaton)
+
+[Catenating Descriptions](#catenating-descriptions)
+
+  - [catenateFSA(first, second)]
+  - [catenate(first, second)]
+  - [what we have learned from catenating descriptions](#what-we-have-learned-from-catenating-descriptions)
+
+[Alternating Descriptions](#alternating-descriptions)
+
+---
+
 # Composeable Recognizers
 
 One of programming's "superpowers" is _composition_, the ability to build things out of smaller things, and especially, to reuse those smaller things to build other things. Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
@@ -416,15 +438,13 @@ We now have a function, `automate`, that takes a data description of a finite st
 
 ---
 
-## Composing Recognizers
+---
+
+## Catenating Descriptions
 
 We could, of course, use functional composition to compose the recognizers that we build with our data descriptions, but as noted above, that would make it difficult to reason about the characteristics of a recognizer we compose from two or more other recognizers. So instead, as planned, we'll work on _composing the data descriptions_.
 
----
-
-### catenating descriptions
-
-Consider these two recognizers. The first recognizes a binary number:
+We'll begin by catenating descriptions. Consider these two recognizers. The first recognizes a binary number:
 
 ```JSON
 const binary = {
@@ -514,7 +534,7 @@ Third, wherever we had a `"consume": ""` in the first recognizer, we removed it 
 
 ---
 
-### catenateFiniteStateAutomata(first, second)
+### catenateFSA(first, second)
 
 Let's start by writing a function to catenate any two finite state automaton recognizer descriptions. First, we'll need to rename states in the second description so that they don't conflict with the first description.
 
@@ -659,7 +679,7 @@ transformFirst(binary, transformedFraction)
 Stitching them together, we get:
 
 ```javascript
-function catenateFiniteStateAutomata (first, second) {
+function catenateFSA (first, second) {
   const transformedSecond = transformSecond(first, second);
   const transformedFirst = transformFirst(first, transformedSecond);
 
@@ -672,7 +692,7 @@ function catenateFiniteStateAutomata (first, second) {
   };
 }
 
-catenateFiniteStateAutomata(binary, fraction)
+catenateFSA(binary, fraction)
   //=>
     {
       "start": "START",
@@ -703,7 +723,7 @@ catenateFiniteStateAutomata(binary, fraction)
 We can try it:
 
 ```javascript
-const binaryWithFraction = catenateFiniteStateAutomata(binary, fraction);
+const binaryWithFraction = catenateFSA(binary, fraction);
 
 test(automate(binaryWithFraction), [
   '0', '1', '0.', '1.', '0.0',
@@ -956,11 +976,13 @@ test(automate(catenate(balanced, palindrome)), [
 
 ### what we have learned from catenating descriptions
 
-Now that we have written `catenate` for descriptions, we can reason as follows:
+Now that we have written `catenate` for descriptions, we can reason as follows:[^reason]
 
 - A finite state machine can recognize any regular language.
 - The catenation of two finite state machine recognizers is a finite state machine recognizer.
 - Therefore, a language defined by catenating two regular languages, will be regular.
+
+[^reason]: Well, actually, this is not strictly true. Building a catenate function certainly gives us confidence that a language formed by catenating the rules for two regular language ought to be regular, but it is always possible that our algorithm has a bug and cannot correctly catenate any two finite state automaton recognizers. Finding such a bug would be akin to finding a counter-example to something thought to have been proven, or a conjecture thought to be true, but unproven. This is the nature of "experimental computing science," it is always easier to demonstrate that certain things are impossible--by finding just one counter-example--than to prove that no counter-examples exist.
 
 Likewise, we can reason:
 
@@ -1051,6 +1073,8 @@ Our `catenate` function has transformed a deterministic pushdown automaton into 
 But to recognize `()()`, it consumed the first `(` and pushed it onto the stack, but not the second `(`. This is only possible in a Pushdown Automaton. So our `catenate` function doesn't tell us anything about whether two deterministic pushdown automata can always be catenated in such a way to produce a deterministic pushdown automaton.
 
 If it is possible, our `catenate` function doesn't tell us that it's possible. Mind you, this reasoning doesn't prove that it's impossible. We just cannot tell from this particular `catenate` function alone.
+
+## Alternating Descriptions
 
 ---
 
