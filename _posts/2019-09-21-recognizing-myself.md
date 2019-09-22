@@ -514,9 +514,9 @@ Third, wherever we had a `"consume": ""` in the first recognizer, we removed it 
 
 ---
 
-### catenate(x, y)
+### catenateFiniteStateAutomata(first, second)
 
-Let's write a function to catenate any two recognizer descriptions. First, we'll need to rename states in the second description so that they don't conflict with the first description.
+Let's start by writing a function to catenate any two finite state automaton recognizer descriptions. First, we'll need to rename states in the second description so that they don't conflict with the first description.
 
 Here's a function that takes two descriptions, and returns a copy of the second description with conflicts renamed:
 
@@ -659,7 +659,7 @@ transformFirst(binary, transformedFraction)
 Stitching them together, we get:
 
 ```javascript
-function catenateFSAs (first, second) {
+function catenateFiniteStateAutomata (first, second) {
   const transformedSecond = transformSecond(first, second);
   const transformedFirst = transformFirst(first, transformedSecond);
 
@@ -672,7 +672,7 @@ function catenateFSAs (first, second) {
   };
 }
 
-catenateFSAs(binary, fraction)
+catenateFiniteStateAutomata(binary, fraction)
   //=>
     {
       "start": "START",
@@ -703,7 +703,7 @@ catenateFSAs(binary, fraction)
 We can try it:
 
 ```javascript
-const binaryWithFraction = catenateFSAs(binary, fraction);
+const binaryWithFraction = catenateFiniteStateAutomata(binary, fraction);
 
 test(automate(binaryWithFraction), [
   '0', '1', '0.', '1.', '0.0',
@@ -738,9 +738,9 @@ There are a few loose ends to wrap up before we can catenate pushdown automata.
 
 ---
 
-### catenating pushdown automata
+### catenate(first, second)
 
-Does our code work for pushdown automata? Sort of. It appears to work for catenating any two pushdown automata. The primary trouble, however, is this: A pushdown automaton mutates the stack. This means that when we catenate the code of any two pushdown automata, the code from the first automaton might interfere with the stack in a way that invalidtes the behaviour of the second.
+Does our code work for pushdown automata? Sort of. It appears to work for catenating any two pushdown automata. The primary trouble, however, is this: A pushdown automaton mutates the stack. This means that when we catenate the code of any two pushdown automata, the code from the first automaton might interfere with the stack in a way that would interfere with the behaviour of the second.
 
 To prevent this from happening, we will introduce some code that ensures that a pushdown automaton never pops a symbol from the stack that it didn't first push there. We will also write some code that ensures that a pushdown automaton restores the stack to the state it was in before it enters its accepting state.
 
