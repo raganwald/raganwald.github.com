@@ -954,9 +954,9 @@ test(automate(catenate(balanced, palindrome)), [
 
 ---
 
-### summary of catenating descriptions
+### what we have learned from catenating descriptions
 
-Now that we have written `catenate` for descriptions, we reason as follows:
+Now that we have written `catenate` for descriptions, we can reason as follows:
 
 - A finite state machine can recognize any regular language.
 - The catenation of two finite state machine recognizers is a finite state machine recognizer.
@@ -967,6 +967,90 @@ Likewise, we can reason:
 - A pushdown automaton can recognize any context-free language.
 - The catenation of two pushdown automaton recognizers is a pushdown automaton recognizer.
 - Therefore, a language defined by catenating two context-free languages, will be context-free.
+
+As noted, we could not have come to these conclusions from functional composition alone. But we're leaving something out. What about catenating any two deterministic pushdown automata? Is the result also a deterministic pushdown automaton?
+
+Recall our balanced parentheses recognizer:
+
+```javascript
+const balanced = {
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "push": "⚓︎", "to": "read" },
+    { "from": "read", "consume": "(", "push": "(", "to": "read" },
+    { "from": "read", "consume": ")", "pop": "(", "to": "read" },
+    { "from": "read", "consume": "[", "push": "[", "to": "read" },
+    { "from": "read", "consume": "]", "pop": "[", "to": "read" },
+    { "from": "read", "consume": "{", "push": "{", "to": "read" },
+    { "from": "read", "consume": "}", "pop": "{", "to": "read" },
+    { "from": "read", "consume": "", "pop": "⚓︎", "to": "RECOGNIZED" }
+  ]
+};
+```
+
+It is clearly deterministic, there is only one unambiguous transition that cana be performed at any time. Now, here is a recognizer that recognizes a single pair of parentheses, it is very obviously a finte state automaton:
+
+```javascript
+const pair = {
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "consume": "(", "to": "closing" },
+    { "from": "closing", "consume": ")", "to": "closed" },
+    { "from": "closed", "consume": "", "to": "RECOGNIZED" }
+  ]
+};
+
+test(automate(pair), [
+  '', '(', ')', '()', ')(', '())'
+]);
+  //=>
+    '' => false
+    '(' => false
+    ')' => false
+    '()' => true
+    ')(' => false
+    '())' => false
+```
+
+What happens when we catenate them?
+
+```javascript
+catenate(balanced, pair)
+  //=>
+    {
+      "start": "START",
+      "accepting": "RECOGNIZED-2",
+      "transitions": [
+        { "from": "START", "to": "read", "push": "⚓︎" },
+        { "from": "read", "consume": "(", "to": "read", "push": "(" },
+        { "from": "read", "consume": ")", "pop": "(", "to": "read" },
+        { "from": "read", "consume": "[", "to": "read", "push": "[" },
+        { "from": "read", "consume": "]", "pop": "[", "to": "read" },
+        { "from": "read", "consume": "{", "to": "read", "push": "{" },
+        { "from": "read", "consume": "}", "pop": "{", "to": "read" },
+        { "from": "read", "pop": "⚓︎", "to": "START-2" },
+        { "from": "START-2", "consume": "(", "to": "closing" },
+        { "from": "closing", "consume": ")", "to": "closed" },
+        { "from": "closed", "consume": "", "to": "RECOGNIZED-2" }
+      ]
+    }
+
+test(automate(catenate(balanced, pair)), [
+  '', '()', '()()'
+]);
+  //=>
+    '' => false
+    '()' => true
+    '()()' => true
+```
+
+Our `catenate` function has transformed a deterministic pushdown automaton into a pushdown automaton.  How do we know this? Consider the fact that it recognized both `()` and `()()`. To recognize `()`, it transitioned from `read` to `START-2` while popping `⚓︎`, even though it could also have consumed `(` and pushed it onto the stack.
+
+But to recognize `()()`, it consumed the first `(` and pushed it onto the stack, but not the second `(`. This is only possible in a Pushdown Automaton. So our `catenate` function doesn't tell us anything about whether two deterministic pushdown automata can always be catenated in such a way to produce a deterministic pushdown automaton.
+
+If it is possible, our `catenate` function doesn't tell us that it's possible. Mind you, this reasoning doesn't prove that it's impossible. We just cannot tell from this particular `catenate` function alone.
 
 ---
 
