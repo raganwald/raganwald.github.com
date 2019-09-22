@@ -332,10 +332,10 @@ And another for balanced parentheses. This does `push` and `pop` things from the
 
 ```javascript
 const balanced = automate({
-  "start": "PUSH ANCHOR",
+  "start": "start",
   "accepting": "RECOGNIZED",
   "transitions": [
-    { "from": "PUSH ANCHOR", "push": "⚓︎", "to": "read" },
+    { "from": "start", "push": "⚓︎", "to": "read" },
     { "from": "read", "consume": "(", "push": "(", "to": "read" },
     { "from": "read", "consume": ")", "pop": "(", "to": "read" },
     { "from": "read", "consume": "[", "push": "[", "to": "read" },
@@ -415,6 +415,326 @@ We now have a function, `automate`, that takes a data description of a finite st
 ---
 
 ## Composing Recognizers
+
+We could, of course, use functional composition to compose the recognizers that we build with our data descriptions, but as noted above, that would make it difficult to reason about the characteristics of a recognizer we compose from two or more other recognizers. So instead, as planned, we'll work on _composing the data descriptions_.
+
+---
+
+### catenating descriptions
+
+Consider these two recognizers. The first recognizes a binary number:
+
+```JSON
+const binary = {
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "consume": "0", "to": "zero" },
+    { "from": "zero", "consume": "", "to": "RECOGNIZED" },
+    { "from": "START", "consume": "1", "to": "one-or-more" },
+    { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
+    { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
+    { "from": "one-or-more", "consume": "", "to": "RECOGNIZED" }
+  ]
+};
+```
+
+The second recognizes an optional binary "fraction:"
+
+```JSON
+const fraction = {
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "consume": "", "to": "RECOGNIZED" },
+    { "from": "START", "consume": ".", "to": "point" },
+
+    { "from": "point", "consume": "0", "to": "point-zero" },
+    { "from": "point", "consume": "1", "to": "endable" },
+
+    { "from": "point-zero", "consume": "", "to": "RECOGNIZED" },
+    { "from": "point-zero", "consume": "0", "to": "not-endable" },
+    { "from": "point-zero", "consume": "1", "to": "endable" },
+
+    { "from": "not-endable", "consume": "0" },
+    { "from": "not-endable", "consume": "1", "to": "endable" },
+
+    { "from": "endable", "consume": "", "to": "RECOGNIZED" },
+    { "from": "endable", "consume": "0", "to": "not-endable" },
+    { "from": "endable", "consume": "1" }
+  ]
+};
+```
+
+What would these two look like when catenated together? Perhaps this:
+
+```JSON
+{
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+
+    { "from": "START", "consume": "0", "to": "zero" },
+    { "from": "zero", "to": "START-2" },
+    { "from": "START", "consume": "1", "to": "one-or-more" },
+    { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
+    { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
+    { "from": "one-or-more", "to": "START-2" },
+
+    { "from": "START-2", "consume": "", "to": "RECOGNIZED" },
+    { "from": "START-2", "consume": ".", "to": "point" },
+
+    { "from": "point", "consume": "0", "to": "point-zero" },
+    { "from": "point", "consume": "1", "to": "endable" },
+
+    { "from": "point-zero", "consume": "", "to": "RECOGNIZED" },
+    { "from": "point-zero", "consume": "0", "to": "not-endable" },
+    { "from": "point-zero", "consume": "1", "to": "endable" },
+
+    { "from": "not-endable", "consume": "0" },
+    { "from": "not-endable", "consume": "1", "to": "endable" },
+
+    { "from": "endable", "consume": "", "to": "RECOGNIZED" },
+    { "from": "endable", "consume": "0", "to": "not-endable" },
+    { "from": "endable", "consume": "1" }
+
+  ]
+}
+```
+
+We've made a couple of changes:
+
+In the second description, we changed `START` to `START-2`, so that it would not conflict with `START` in the first recognizer. We always have to rename states so that there are no conflicts between the two recognizers.
+
+Second, in the first recognizer, wherever we had a `"to": "RECOGNIZED"`, we changed it to `"to": "START-2"`. Transitions to the recognized state of the first recognizer are now transitions to the start state of the second recognizer.
+
+Third, wherever we had a `"consume": ""` in the first recognizer, we removed it outright. Any transition that is possible at the end of a string when the recognizer is running  by itself, is possible at any point in the string when the recognizer is catenated with another recognizer.
+
+---
+
+### catenate(x, y)
+
+Let's write a function to catenate any two recognizer descriptions. First, we'll need to rename states in the second description so that they don't conflict with the first description.
+
+Here's a function that takes two descriptions, and returns a copy of the second description with conflicts renamed:
+
+```javascript
+function statesOf(recognizer) {
+  return recognizer
+    .transitions
+      .reduce(
+        (states, { from, to }) => {
+          if (from != null) states.add(from);
+          if (to != null) states.add(to);
+          return states;
+        },
+        new Set([recognizer.start, recognizer.accepting])
+      );
+}
+
+function transformSecond (first, second) {
+  const takenNames = statesOf(first);
+  const secondNames = statesOf(second);
+
+  const nameMap = {};
+
+  for (const secondName of secondNames) {
+    let name = secondName;
+    let counter = 2;
+    while (takenNames.has(name)) {
+      name = `${secondName}-${counter++}`;
+    }
+    if (name !== secondName) {
+  		nameMap[secondName] = name;
+    }
+    takenNames.add(name);
+  }
+
+  const translate =
+    before =>
+      (nameMap[before] != null) ? nameMap[before] : before;
+
+  return {
+    start: translate(second.start),
+    accepting: translate(second.accepting),
+    transitions:
+    	second.transitions.map(
+      	({ from, consume, pop, to, push }) => {
+          const transition = { from: translate(from) };
+          if (consume != null) transition.consume = consume;
+          if (pop != null) transition.pop = pop;
+          if (to != null) transition.to = translate(to);
+          if (push != null) transition.push = push;
+
+          return transition;
+        }
+      )
+  };
+}
+
+const transformedFraction = transformSecond(binary, fraction)
+  //=>
+    {
+      "start": "START-2",
+      "accepting": "RECOGNIZED-2",
+      "transitions": [
+        { "from": "START-2", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "START-2", "consume": ".", "to": "point" },
+
+        { "from": "point", "consume": "0", "to": "point-zero" },
+        { "from": "point", "consume": "1", "to": "endable" },
+
+        { "from": "point-zero", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "point-zero", "consume": "0", "to": "not-endable" },
+        { "from": "point-zero", "consume": "1", "to": "endable" },
+
+        { "from": "not-endable", "consume": "0" },
+        { "from": "not-endable", "consume": "1", "to": "endable" },
+
+        { "from": "endable", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "endable", "consume": "0", "to": "not-endable" },
+        { "from": "endable", "consume": "1" }
+      ]
+    }
+```
+
+Unlike our hand modifications, `renameConflicts` naïvely renames `RECOGNIZED` to `RECOGNIZED-2`, as it has no idea that we will later eliminate the `RECOGNIZED` state from the first description. But this is good enough, let's move on and transform the first description.
+
+As discussed above, we will eliminate `"consume": ""` and rename transitions to the first description's accepting state into the second description's start state:
+
+```javascript
+function transformFirst(first, second) {
+  const nameMap = {
+    [first.accepting]: second.start
+  };
+
+  const translate =
+    before =>
+      (nameMap[before] != null) ? nameMap[before] : before;
+
+  return {
+    start: first.start,
+    accepting: translate(first.accepting),
+    transitions:
+    	first.transitions.map(
+      	({ from, consume, pop, to, push }) => {
+          const transition = { from: translate(from) };
+          if (consume != '' && consume != null) {
+            transition.consume = consume;
+          }
+          if (pop != null) transition.pop = pop;
+          if (to != null) transition.to = translate(to);
+          if (push != null) transition.push = push;
+
+          return transition;
+        }
+      )
+  };
+}
+
+transformFirst(binary, transformedFraction)
+  //=>
+    {
+      "start": "START",
+      "accepting": "START-2",
+      "transitions": [
+        { "from": "START", "consume": "0", "to": "zero" },
+        { "from": "zero", "to": "START-2" },
+        { "from": "START", "consume": "1", "to": "one-or-more" },
+        { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
+        { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
+        { "from": "one-or-more", "to": "START-2" }
+      ]
+    }
+```
+
+Stitching them together, we get:
+
+```javascript
+function catenate (first, second) {
+  const transformedSecond = transformSecond(first, second);
+  const transformedFirst = transformFirst(first, transformedSecond);
+
+  return {
+    start: transformedFirst.start,
+    accepting: transformedSecond.accepting,
+    transitions:
+      transformedFirst.transitions
+        .concat(transformedSecond.transitions)
+  };
+}
+  //=>
+    {
+      "start": "START",
+      "accepting": "RECOGNIZED-2",
+      "transitions": [
+        { "from": "START", "consume": "0", "to": "zero" },
+        { "from": "zero", "to": "START-2" },
+        { "from": "START", "consume": "1", "to": "one-or-more" },
+        { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
+        { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
+        { "from": "one-or-more", "to": "START-2" },
+        { "from": "START-2", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "START-2", "consume": ".", "to": "point" },
+        { "from": "point", "consume": "0", "to": "point-zero" },
+        { "from": "point", "consume": "1", "to": "endable" },
+        { "from": "point-zero", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "point-zero", "consume": "0", "to": "not-endable" },
+        { "from": "point-zero", "consume": "1", "to": "endable" },
+        { "from": "not-endable", "consume": "0" },
+        { "from": "not-endable", "consume": "1", "to": "endable" },
+        { "from": "endable", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "endable", "consume": "0", "to": "not-endable" },
+        { "from": "endable", "consume": "1" }
+      ]
+    }
+```
+
+We can try it:
+
+```javascript
+const binaryWithFraction = catenate(binary, fraction);
+
+test(automate(binaryWithFraction), [
+  '0', '1', '0.', '1.', '0.0',
+  '1.0', '0.1', '0.10',
+  '0.11', '0.100', '0.101',
+  '0.11111111110'
+]);
+  //=>
+    '0' => true
+    '1' => true
+    '0.' => false
+    '1.' => false
+    '0.0' => false
+    '1.0' => false
+    '0.1' => false
+    '0.10' => false
+    '0.11' => false
+    '0.100' => false
+    '0.101' => false
+    '0.11111111110' => false
+    '0' => true
+    '1' => true
+    '0.' => false
+    '1.' => false
+    '0.0' => true
+    '1.0' => true
+```
+
+We have succeeded in making a catenation function that catenates the descriptions of two finite state automata, and returns a description of a finite state automaton that recognizes a language consisting of strings in the frist recognizer's language, followed by strings in the second recognizer's language.
+
+There are a few loose ends to wrap up before we can move on to another form of composition.
+
+---
+
+### catenating pushdown automata
+
+Does our code work for pushdown automata? Sort of. It appears to work for catenating any two pushdown automata. The primary trouble, however, is this: A pushdown automaton mutates the stack. This means that when we combine the code of any two pushdown automata, the code from one automaton might interfere with the stack in a way that invalidtes the behaviour of another.
+
+To prevent this from happening, we will introduce some code that ensures that a pushdown automaton never pops a symbol from the stack that it didn't first push there. We will also write some code that ensures that a pushdown automaton restores the stack to the state it was in before it enters its accepting state.
+
+...
 
 ---
 
