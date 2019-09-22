@@ -13,9 +13,11 @@ This essay continues from where [A Brutal Look at Balanced Parentheses, Computin
 
 In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], we began with a well-known programming puzzle: _Write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested._
 
-In pursuing the solution to this problem, we constructed machines that could recognize "sentences" in languages. We saw that while many languages can be recognized with Deterministic Finite State Automata, balanced parentheses required a more powerful recognizer, a Deterministic Pushdown Automaton.
+In pursuing the solution to this problem, we constructed machines that could recognize "sentences" in languages. We saw that some languages can be recognized with Finite State Automata. Languages that require a finite state automaton to recognize them are _regular languages_.
 
-We then went a step further and considered the palindrome problem, and saw that there were languages--like palindromes with a vocabulary of two or more symbols--that could not be recognized with Deterministic Pushdown Automata, and we needed to construct a [Pushdown Automaton] to recognize palindromes.
+We also saw that balanced parentheses required a more powerful recognizer, a Deterministic Pushdown Automaton. Languages that require a deterministic pushdown automaton to recognize them are _deterministic context-free languages_.
+
+We then went a step further and considered the palindrome problem, and saw that there were languages--like palindromes with a vocabulary of two or more symbols--that could not be recognized with Deterministic Pushdown Automata, and we needed to construct a [Pushdown Automaton] to recognize palindromes. Languages that require a pushdown automaton to recognize them are _context-free languages_.
 
 [Pushdown Automaton]: https://en.wikipedia.org/wiki/Pushdown_automaton
 
@@ -290,7 +292,7 @@ function automate ({ start, accepting, transitions }) {
 And here we are using it with our definition for recognizing binary numbers. Note that it does not `pop` anything from the stack, which means that it is a finite-state automaton:
 
 ```javascript
-const binary = automate({
+const binary = {
   "start": "START",
   "accepting": "RECOGNIZED",
   "transitions": [
@@ -301,9 +303,9 @@ const binary = automate({
     { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
     { "from": "one-or-more", "consume": "", "to": "RECOGNIZED" }
   ]
-});
+};
 
-test(binary, [
+test(automate(binary), [
   '', '0', '1', '00', '01', '10', '11',
   '000', '001', '010', '011', '100',
   '101', '110', '111',
@@ -331,11 +333,11 @@ test(binary, [
 And another for balanced parentheses. This does `push` and `pop` things from the stack, so we know it is a pushdown automaton. Is it deterministic? If we look at the description carefully, we can see that every transition is guaranteed to be unambiguous. It can only ever follow one path through the states for any input. Therefore, it is a deterministic pushdown automaton:
 
 ```javascript
-const balanced = automate({
-  "start": "start",
+const balanced = {
+  "start": "START",
   "accepting": "RECOGNIZED",
   "transitions": [
-    { "from": "start", "push": "⚓︎", "to": "read" },
+    { "from": "START", "push": "⚓︎", "to": "read" },
     { "from": "read", "consume": "(", "push": "(", "to": "read" },
     { "from": "read", "consume": ")", "pop": "(", "to": "read" },
     { "from": "read", "consume": "[", "push": "[", "to": "read" },
@@ -344,9 +346,9 @@ const balanced = automate({
     { "from": "read", "consume": "}", "pop": "{", "to": "read" },
     { "from": "read", "consume": "", "pop": "⚓︎", "to": "RECOGNIZED" }
   ]
-});
+};
 
-test(balanced, [
+test(automate(balanced), [
   '', '(', '()', ')(', '()()', '{()}',
 	'([()()]())', '([()())())',
 	'())()', '((())(())'
@@ -367,11 +369,11 @@ test(balanced, [
 Finally, even- and odd-length binary palindromes. Not only does it `push` and `pop`, but it has more than one state transition for every input it consumes, making it a non-deterministic pushdown automaton. We call these just pushdown automatons:
 
 ```javascript
-const palindrome = automate({
-  "start": "start",
+const palindrome = {
+  "start": "START",
   "accepting": "RECOGNIZED",
   "transitions": [
-    { "from": "start", "push": "⚓︎", "to": "first" },
+    { "from": "START", "push": "⚓︎", "to": "first" },
     { "from": "first", "consume": "0", "push": "0", "to": "left" },
     { "from": "first", "consume": "1", "push": "1", "to": "left" },
     { "from": "first", "consume": "0", "to": "right" },
@@ -386,9 +388,9 @@ const palindrome = automate({
     { "from": "right", "consume": "1", "pop": "1" },
     { "from": "right", "consume": "", "pop": "⚓︎", to: "RECOGNIZED" }
   ]
-});
+};
 
-test(palindrome, [
+test(automate(palindrome), [
   '', '0', '00', '11', '111', '0110',
   '10101', '10001', '100111',
   '1001', '0101', '100111',
@@ -519,8 +521,8 @@ Let's write a function to catenate any two recognizer descriptions. First, we'll
 Here's a function that takes two descriptions, and returns a copy of the second description with conflicts renamed:
 
 ```javascript
-function statesOf(recognizer) {
-  return recognizer
+function statesOf(description) {
+  return description
     .transitions
       .reduce(
         (states, { from, to }) => {
@@ -528,24 +530,24 @@ function statesOf(recognizer) {
           if (to != null) states.add(to);
           return states;
         },
-        new Set([recognizer.start, recognizer.accepting])
+        new Set([description.start, description.accepting])
       );
 }
 
-function transformSecond (first, second) {
-  const takenNames = statesOf(first);
-  const secondNames = statesOf(second);
+function renamedStates(taken, description) {
+  const takenNames = new Set(taken);
+  const descriptionNames = statesOf(description);
 
   const nameMap = {};
 
-  for (const secondName of secondNames) {
-    let name = secondName;
+  for (const descriptionName of descriptionNames) {
+    let name = descriptionName;
     let counter = 2;
     while (takenNames.has(name)) {
-      name = `${secondName}-${counter++}`;
+      name = `${descriptionName}-${counter++}`;
     }
-    if (name !== secondName) {
-  		nameMap[secondName] = name;
+    if (name !== descriptionName) {
+  		nameMap[descriptionName] = name;
     }
     takenNames.add(name);
   }
@@ -555,10 +557,10 @@ function transformSecond (first, second) {
       (nameMap[before] != null) ? nameMap[before] : before;
 
   return {
-    start: translate(second.start),
-    accepting: translate(second.accepting),
+    start: translate(description.start),
+    accepting: translate(description.accepting),
     transitions:
-    	second.transitions.map(
+    	description.transitions.map(
       	({ from, consume, pop, to, push }) => {
           const transition = { from: translate(from) };
           if (consume != null) transition.consume = consume;
@@ -570,6 +572,12 @@ function transformSecond (first, second) {
         }
       )
   };
+}
+
+function transformSecond (first, second) {
+  const takenNames = statesOf(first);
+
+  return renamedStates(statesOf(first), second);
 }
 
 const transformedFraction = transformSecond(binary, fraction)
@@ -651,7 +659,7 @@ transformFirst(binary, transformedFraction)
 Stitching them together, we get:
 
 ```javascript
-function catenate (first, second) {
+function catenateFSAs (first, second) {
   const transformedSecond = transformSecond(first, second);
   const transformedFirst = transformFirst(first, transformedSecond);
 
@@ -663,6 +671,8 @@ function catenate (first, second) {
         .concat(transformedSecond.transitions)
   };
 }
+
+catenateFSAs(binary, fraction)
   //=>
     {
       "start": "START",
@@ -693,7 +703,7 @@ function catenate (first, second) {
 We can try it:
 
 ```javascript
-const binaryWithFraction = catenate(binary, fraction);
+const binaryWithFraction = catenateFSAs(binary, fraction);
 
 test(automate(binaryWithFraction), [
   '0', '1', '0.', '1.', '0.0',
@@ -724,17 +734,239 @@ test(automate(binaryWithFraction), [
 
 We have succeeded in making a catenation function that catenates the descriptions of two finite state automata, and returns a description of a finite state automaton that recognizes a language consisting of strings in the frist recognizer's language, followed by strings in the second recognizer's language.
 
-There are a few loose ends to wrap up before we can move on to another form of composition.
+There are a few loose ends to wrap up before we can catenate pushdown automata.
 
 ---
 
 ### catenating pushdown automata
 
-Does our code work for pushdown automata? Sort of. It appears to work for catenating any two pushdown automata. The primary trouble, however, is this: A pushdown automaton mutates the stack. This means that when we combine the code of any two pushdown automata, the code from one automaton might interfere with the stack in a way that invalidtes the behaviour of another.
+Does our code work for pushdown automata? Sort of. It appears to work for catenating any two pushdown automata. The primary trouble, however, is this: A pushdown automaton mutates the stack. This means that when we catenate the code of any two pushdown automata, the code from the first automaton might interfere with the stack in a way that invalidtes the behaviour of the second.
 
 To prevent this from happening, we will introduce some code that ensures that a pushdown automaton never pops a symbol from the stack that it didn't first push there. We will also write some code that ensures that a pushdown automaton restores the stack to the state it was in before it enters its accepting state.
 
-...
+```javascript
+function stackablesOf(description) {
+  return description
+    .transitions
+      .reduce(
+        (stackables, { push, pop }) => {
+          if (push != null) stackables.add(push);
+          if (pop != null) stackables.add(pop);
+          return stackables;
+        },
+        new Set()
+      );
+}
+
+function isolatedStack (description) {
+  const stackables = stackablesOf(description);
+
+  // this is an FSA, nothing to see here
+  if (stackables.size === 0) return description;
+
+  // this is a PDA, make sure we clean the stack up
+  let sentinel = "sentinel";
+  let counter = 2;
+  while (stackables.has(sentinel)) {
+    sentinel = `${sentinel}-${counter++}`;
+  }
+
+  const start = "START", accepting = "RECOGNIZED";
+  const renamed = renamedStates([start, accepting], description);
+
+  const pushSentinel =
+    { from: start, push: sentinel, to: renamed.start };
+
+  const popStackables =
+    [...stackables].map(
+      pop => ({ from: renamed.accepting, pop })
+    );
+
+  const popSentinel =
+  	{ from: renamed.accepting, pop: sentinel, to: accepting };
+
+  return {
+    start,
+    accepting,
+    transitions: [
+      pushSentinel,
+      ...renamed.transitions,
+      ...popStackables,
+      popSentinel
+    ]
+  };
+}
+```
+
+This function doesn't change a finte state automaton:
+
+```javascript
+isolatedStack(binary)
+  //=>
+    {
+      "start": "START",
+      "accepting": "RECOGNIZED",
+      "transitions": [
+        { "from": "START", "consume": "0", "to": "zero" },
+        { "from": "zero", "consume": "", "to": "RECOGNIZED" },
+        { "from": "START", "consume": "1", "to": "one-or-more" },
+        { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
+        { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
+        { "from": "one-or-more", "consume": "", "to": "RECOGNIZED" }
+      ]
+    }
+```
+
+But it does change a pushdown automaton:
+
+```javascript
+isolatedStack(balanced)
+  //=>
+    {
+      "start": "START",
+      "accepting": "RECOGNIZED",
+      "transitions": [
+        { "from": "START", "push": "sentinel", "to": "START-2" },
+        { "from": "START-2", "to": "read", "push": "⚓︎" },
+        { "from": "read",  "consume": "(", "to": "read", "push": "(" },
+        { "from": "read",  "consume": ")",  "pop": "(", "to": "read" },
+        { "from": "read",  "consume": "[", "to": "read", "push": "[" },
+        { "from": "read",  "consume": "]",  "pop": "[", "to": "read" },
+        { "from": "read",  "consume": "{", "to": "read", "push": "{" },
+        { "from": "read",  "consume": "}",  "pop": "{", "to": "read" },
+        { "from": "read",  "consume": "",  "pop": "⚓︎", "to": "RECOGNIZED-2" },
+        { "from": "RECOGNIZED-2",  "pop": "⚓︎" },
+        { "from": "RECOGNIZED-2",  "pop": "(" },
+        { "from": "RECOGNIZED-2",  "pop": "[" },
+        { "from": "RECOGNIZED-2",  "pop": "{" },
+        { "from": "RECOGNIZED-2",  "pop": "sentinel", "to": "RECOGNIZED" }
+      ]
+    }
+```
+
+It is overly cautious, our `balanced` recognizer always clean up its own stack, but since the machine is doing all the work, we can let it.
+
+And now we can create a general-purpose `catenate` function:
+
+```javascript
+function isPushdown(description) {
+  return stackablesOf(description).size > 0
+};
+
+function catenate (first, second) {
+  const safeFirst =
+    (isPushdown(first) && isPushdown(second)) ? isolatedStack(first) : first;
+
+  const transformedSecond = transformSecond(first, second);
+  const transformedFirst = transformFirst(first, transformedSecond);
+
+  return {
+    start: transformedFirst.start,
+    accepting: transformedSecond.accepting,
+    transitions:
+      transformedFirst.transitions
+        .concat(transformedSecond.transitions)
+  };
+}
+
+catenate(binary, fraction)
+  //=>
+    {
+      "start": "START",
+      "accepting": "RECOGNIZED-2",
+      "transitions": [
+        { "from": "START", "consume": "0", "to": "zero" },
+        { "from": "zero", "to": "START-2" },
+        { "from": "START", "consume": "1", "to": "one-or-more" },
+        { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
+        { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
+        { "from": "one-or-more", "to": "START-2" },
+        { "from": "START-2", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "START-2", "consume": ".", "to": "point" },
+        { "from": "point", "consume": "0", "to": "point-zero" },
+        { "from": "point", "consume": "1", "to": "endable" },
+        { "from": "point-zero", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "point-zero", "consume": "0", "to": "not-endable" },
+        { "from": "point-zero", "consume": "1", "to": "endable" },
+        { "from": "not-endable", "consume": "0" },
+        { "from": "not-endable", "consume": "1", "to": "endable" },
+        { "from": "endable", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "endable", "consume": "0", "to": "not-endable" },
+        { "from": "endable", "consume": "1" }
+      ]
+    }
+
+catenate(balanced, palindrome)
+  //=>
+    {
+      "start": "START",
+      "accepting": "RECOGNIZED-3",
+      "transitions": [
+        { "from": "START", "to": "START-2", "push": "sentinel" },
+        { "from": "START-2", "to": "read", "push": "⚓︎" },
+        { "from": "read", "consume": "(", "to": "read", "push": "(" },
+        { "from": "read", "consume": ")", "pop": "(", "to": "read" },
+        { "from": "read", "consume": "[", "to": "read", "push": "[" },
+        { "from": "read", "consume": "]", "pop": "[", "to": "read" },
+        { "from": "read", "consume": "{", "to": "read", "push": "{" },
+        { "from": "read", "consume": "}", "pop": "{", "to": "read" },
+        { "from": "read", "pop": "⚓︎", "to": "RECOGNIZED-2" },
+        { "from": "RECOGNIZED-2", "pop": "⚓︎" },
+        { "from": "RECOGNIZED-2", "pop": "(" },
+        { "from": "RECOGNIZED-2", "pop": "[" },
+        { "from": "RECOGNIZED-2", "pop": "{" },
+        { "from": "RECOGNIZED-2", "pop": "sentinel", "to": "START-3" },
+        { "from": "START-3", "to": "first", "push": "⚓︎" },
+        { "from": "first", "consume": "0", "to": "left", "push": "0" },
+        { "from": "first", "consume": "1", "to": "left", "push": "1" },
+        { "from": "first", "consume": "0", "to": "right" },
+        { "from": "first", "consume": "1", "to": "right" },
+        { "from": "left", "consume": "0", "push": "0" },
+        { "from": "left", "consume": "1", "push": "1" },
+        { "from": "left", "consume": "0", "to": "right" },
+        { "from": "left", "consume": "1", "to": "right" },
+        { "from": "left", "consume": "0", "pop": "0", "to": "right" },
+        { "from": "left", "consume": "1", "pop": "1", "to": "right" },
+        { "from": "right", "consume": "0", "pop": "0" },
+        { "from": "right", "consume": "1", "pop": "1" },
+        { "from": "right", "consume": "", "pop": "⚓︎", "to": "RECOGNIZED-3" }
+      ]
+    }
+
+test(automate(catenate(balanced, palindrome)), [
+  '', '1', '01', '11', '101',
+  '()', ')(', '(())0', ')(101',
+  '()()101', '()()1010'
+]);
+  //=>
+    '' => false
+    '1' => true
+    '01' => false
+    '11' => true
+    '101' => true
+    '()' => false
+    ')(' => false
+    '(())0' => true
+    ')(101' => false
+    '()()101' => true
+    '()()1010' => false
+```
+
+---
+
+### summary of catenating descriptions
+
+Now that we have written `catenate` for descriptions, we reason as follows:
+
+- A finite state machine can recognize any regular language.
+- The catenation of two finite state machine recognizers is a finite state machine recognizer.
+- Therefore, a language defined by catenating two regular languages, will be regular.
+
+Likewise, we can reason:
+
+- A pushdown automaton can recognize any context-free language.
+- The catenation of two pushdown automaton recognizers is a pushdown automaton recognizer.
+- Therefore, a language defined by catenating two context-free languages, will be context-free.
 
 ---
 
