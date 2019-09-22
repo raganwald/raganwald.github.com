@@ -798,7 +798,7 @@ function isolatedStack (description) {
 }
 ```
 
-This function doesn't change a finte state automaton:
+This function doesn't change a finite state automaton:
 
 ```javascript
 isolatedStack(binary)
