@@ -562,24 +562,7 @@ function statesOf(description) {
       );
 }
 
-function renamedStates(taken, description) {
-  const takenNames = new Set(taken);
-  const descriptionNames = statesOf(description);
-
-  const nameMap = {};
-
-  for (const descriptionName of descriptionNames) {
-    let name = descriptionName;
-    let counter = 2;
-    while (takenNames.has(name)) {
-      name = `${descriptionName}-${counter++}`;
-    }
-    if (name !== descriptionName) {
-  		nameMap[descriptionName] = name;
-    }
-    takenNames.add(name);
-  }
-
+function renameStates (nameMap, description) {
   const translate =
     before =>
       (nameMap[before] != null) ? nameMap[before] : before;
@@ -602,10 +585,32 @@ function renamedStates(taken, description) {
   };
 }
 
+function resolveCollisions(taken, description) {
+  const takenNames = new Set(taken);
+  const descriptionNames = statesOf(description);
+
+  const nameMap = {};
+
+  for (const descriptionName of descriptionNames) {
+    let name = descriptionName;
+    let counter = 2;
+    while (takenNames.has(name)) {
+      name = `${descriptionName}-${counter++}`;
+    }
+    if (name !== descriptionName) {
+  		nameMap[descriptionName] = name;
+    }
+    takenNames.add(name);
+  }
+
+  return renameStates(nameMap, description);
+}
+
+
 function transformSecond (first, second) {
   const takenNames = statesOf(first);
 
-  return renamedStates(statesOf(first), second);
+  return resolveCollisions(statesOf(first), second);
 }
 
 const transformedFraction = transformSecond(binary, fraction)
@@ -644,28 +649,7 @@ function transformFirst(first, second) {
     [first.accepting]: second.start
   };
 
-  const translate =
-    before =>
-      (nameMap[before] != null) ? nameMap[before] : before;
-
-  return {
-    start: first.start,
-    accepting: translate(first.accepting),
-    transitions:
-    	first.transitions.map(
-      	({ from, consume, pop, to, push }) => {
-          const transition = { from: translate(from) };
-          if (consume != '' && consume != null) {
-            transition.consume = consume;
-          }
-          if (pop != null) transition.pop = pop;
-          if (to != null) transition.to = translate(to);
-          if (push != null) transition.push = push;
-
-          return transition;
-        }
-      )
-  };
+  return renameStates(nameMap, first);
 }
 
 transformFirst(binary, transformedFraction)
@@ -812,7 +796,7 @@ function isolatedStack (description) {
   }
 
   const start = "START", accepting = "RECOGNIZED";
-  const renamed = renamedStates([start, accepting], description);
+  const renamed = resolveCollisions([start, accepting], description);
 
   const pushSentinel =
     { from: start, push: sentinel, to: renamed.start };
@@ -1098,26 +1082,33 @@ If it is possible, our `catenate` function doesn't tell us that it's possible. M
 
 Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenate(A, B)` recognizes sentences of the form "`A` followed by `B`," `alternate(A, B)` would recognize sentences of `A` or of `B`.
 
-Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we add new new start state that transitions to both recognizers' start states, and do the same thing with their accepting states:
+Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we add new new start state that transitions to both recognizers' start states, and make sure that both descriptions use the same accepting state:
 
 ```javascript
 function alternate (first, second) {
   const start = "START";
   const accepting = "RECOGNIZED";
 
-  const renamedFirst = renamedStates([start, accepting], first);
+  const renamedFirst = resolveCollisions([start, accepting], first);
 
   const statesToRenameInSecond = statesOf(renamedFirst);
   statesToRenameInSecond.add(start);
   statesToRenameInSecond.add(accepting);
 
-  const renamedSecond = renamedStates(statesToRenameInSecond, second);
+  const renamedSecond = resolveCollisions(statesToRenameInSecond, second);
 
   const startFirst = { from: start, to: renamedFirst.start };
   const startSecond = { from: start, to: renamedSecond.start };
 
-  const recognizeFirst = { from: renamedFirst.accepting, to: accepting };
-  const recognizeSecond = { from: renamedSecond.accepting, to: accepting };
+  const acceptingFirst = renameStates(
+    { [renamedFirst.accepting]: accepting },
+    renamedFirst
+  );
+
+  const acceptingSecond = renameStates(
+    { [renamedSecond.accepting]: accepting },
+    renamedSecond
+  );
 
   return {
     start,
@@ -1125,10 +1116,8 @@ function alternate (first, second) {
     transitions: [
       startFirst,
       startSecond,
-      ...renamedFirst.transitions,
-      ...renamedSecond.transitions,
-      recognizeFirst,
-      recognizeSecond
+      ...acceptingFirst.transitions,
+      ...acceptingSecond.transitions
     ]
   };
 }
@@ -1181,12 +1170,10 @@ alternate(bang, query)
         { "from": "START", "to": "START-3" },
         { "from": "START-2", "consume": "?", "to": "endable" },
         { "from": "endable", "consume": "?" },
-        { "from": "endable", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "endable", "consume": "", "to": "RECOGNIZED" },
         { "from": "START-3", "consume": "!", "to": "endable-2" },
         { "from": "endable-2", "consume": "!" },
-        { "from": "endable-2", "consume": "", "to": "RECOGNIZED-3" },
-        { "from": "RECOGNIZED-2", "to": "RECOGNIZED" },
-        { "from": "RECOGNIZED-3", "to": "RECOGNIZED" }
+        { "from": "endable-2", "consume": "", "to": "RECOGNIZED" }
       ]
     }
 ```
@@ -1195,16 +1182,14 @@ And we can see from the diagram that we now have a recognizer that matches excla
 
 <div class="mermaid">
   graph LR
-    start(start)-->start-2
-    start-->start-3
-    start-2-->|?|endable
+    START(START)-->START-2
+    START-->START-3
+    START-2-->|?|endable
     endable-->|?|endable
-    endable-->|end|recognized-2
-    start-3-->|!|endable-2
+    endable-->|end|RECOGNIZED
+    START-3-->|!|endable-2
     endable-2-->|!|endable-2
-    endable-2-->|end|recognized-3
-    recognized-2-.->recognized
-    recognized-3-.->recognized
+    endable-2-->|end|RECOGNIZED
 </div>
 
 ### what we have learned from alternating descriptions
