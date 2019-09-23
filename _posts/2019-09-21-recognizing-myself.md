@@ -472,12 +472,12 @@ If we were to catenate these two recognizers, what would it look like? Perhaps t
 
 <div class="mermaid">
   graph LR
-    START(START)-->|!|endable
+    start(start)-->|!|endable
     endable-->|!|endable
-    endable-->START-2
+    endable-.->START-2
     START-2-->|?|endable-2
     endable-2-->|?|endable-2
-    endable-2-->|end|RECOGNIZED
+    endable-2-.->|end|recognized(recognized)
 </div>
 
 And here are their descriptions:
@@ -1066,43 +1066,34 @@ If it is possible, our `catenate` function doesn't tell us that it's possible. M
 
 Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenate(A, B)` recognizes sentences of the form "`A` followed by `B`," `alternate(A, B)` would recognize sentences of `A` or of `B`.
 
-Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we add new new start state that transitions to both recognizers' start states, and make sure that both descriptions use the same accepting state:
+Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we make sure that both recognizers share the same `start` and `accepting` states:
 
 ```javascript
 function alternate (first, second) {
   const start = "START";
   const accepting = "RECOGNIZED";
 
-  const renamedFirst = resolveCollisions([start, accepting], first);
-
-  const statesToRenameInSecond = statesOf(renamedFirst);
-  statesToRenameInSecond.add(start);
-  statesToRenameInSecond.add(accepting);
-
-  const renamedSecond = resolveCollisions(statesToRenameInSecond, second);
-
-  const startFirst = { from: start, to: renamedFirst.start };
-  const startSecond = { from: start, to: renamedSecond.start };
-
-  const acceptingFirst = renameStates(
-    { [renamedFirst.accepting]: accepting },
-    renamedFirst
+  const conformingFirst = renameStates(
+    { [first.start]: start, [first.accepting]: accepting },
+    first
   );
 
-  const acceptingSecond = renameStates(
-    { [renamedSecond.accepting]: accepting },
+  const renamedSecond = resolveCollisions(statesOf(conformingFirst), second);
+
+  const conformingSecond = renameStates(
+    { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
     renamedSecond
   );
 
   return {
     start,
     accepting,
-    transitions: [
-      startFirst,
-      startSecond,
-      ...acceptingFirst.transitions,
-      ...acceptingSecond.transitions
-    ]
+    transitions:
+  	  conformingFirst
+        .transitions
+          .concat(
+            conformingSecond.transitions
+          )
   };
 }
 ```
@@ -1126,37 +1117,17 @@ Once again, the diagrams for exclamatory and interrogative:
 And now, the alternation of the two rather than the catenation:
 
 ```javascript
-const bang = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
-  "transitions": [
-    { "from": "START", "consume": "!", "to": "RECOGNIZED" },
-    { "from": "START", "consume": "!" }
-  ]
-};
-
-const query = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
-  "transitions": [
-    { "from": "START", "consume": "?", "to": "RECOGNIZED" },
-    { "from": "START", "consume": "?" }
-  ]
-};
-
-alternate(bang, query)
+alternate(exclamatory, interrogative)
   //=>
     {
       "start": "START",
       "accepting": "RECOGNIZED",
       "transitions": [
-        { "from": "START", "to": "START-2" },
-        { "from": "START", "to": "START-3" },
-        { "from": "START-2", "consume": "?", "to": "endable" },
-        { "from": "endable", "consume": "?" },
+        { "from": "START", "consume": "!", "to": "endable" },
+        { "from": "endable", "consume": "!" },
         { "from": "endable", "consume": "", "to": "RECOGNIZED" },
-        { "from": "START-3", "consume": "!", "to": "endable-2" },
-        { "from": "endable-2", "consume": "!" },
+        { "from": "START", "consume": "?", "to": "endable-2" },
+        { "from": "endable-2", "consume": "?" },
         { "from": "endable-2", "consume": "", "to": "RECOGNIZED" }
       ]
     }
@@ -1166,15 +1137,167 @@ And we can see from the diagram that we now have a recognizer that matches excla
 
 <div class="mermaid">
   graph LR
-    START(START)-->START-2
-    START-->START-3
-    START-2-->|?|endable
-    endable-->|?|endable
-    endable-->|end|RECOGNIZED
-    START-3-->|!|endable-2
-    endable-2-->|!|endable-2
-    endable-2-->|end|RECOGNIZED
+    start(start)-->|!|endable
+    endable-->|!|endable
+    endable-.->|end|recognized(recognized)
+    start(start)-->|?|endable-2
+    endable-2-->|?|endable-2
+    endable-2-.->|end|recognized(recognized)
 </div>
+
+---
+
+### fixing a problem with alternate(first, second)
+
+Sharing the `start` state works just fine as long as it is a root state, i.e., No transitions lead back to it. Consider this recognizer that recognizes zero or more sequences of the characters `^H` (old-timers may remember this as a shorthand for "backspace" popular in old internet forums):
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|^|ctrl
+    start-.->|end|recognized(recognized)
+    ctrl-->|H|start
+</div>
+
+The way `alternate` works right now, is that if we evaluate `alternate(backspaces, exclamatory)`, we get this:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|^|ctrl
+    start-.->|end|recognized(recognized)
+    ctrl-->|H|start
+    start(start)-->|!|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|!|endable;
+</div>
+
+If we follow it along, we see that it does correctly recognize "", "^H", "^H^H", "!", "!!", and so forth. But it also recognizes strings like "^H^H!!!!!", which is not what we want. The problem is that `backspace` has a start state that is not a root: It has at least one transition leading into it.
+
+We can fix it by changing `alternate` so that when given a recognizer with a start state that is not a root, it adds a root for us, like this:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->start-2
+    start-2-->|^|ctrl
+    start-2-.->|end|recognized(recognized)
+    ctrl-->|H|start-2
+</div>
+
+After "adding a root," the result of `alternate(backspaces, exclamatory)` would then be:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->start-2
+    start-2-->|^|ctrl
+    start-2-.->|end|recognized(recognized)
+    ctrl-->|H|start-2
+    start(start)-->|!|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|!|endable;
+</div>
+
+Here's our updated code:
+
+```javascript
+function rootStart (description) {
+  const { start, accepting, transitions } = description;
+  const needsRoot =
+    !!(
+      transitions
+        .find(
+          ({ from, to }) => to === start || (from === start && to == null)
+        )
+    );
+
+  if (needsRoot) {
+    const startShifted = resolveCollisions([description.start], description);
+
+    return {
+      start,
+      accepting,
+      transitions:
+      	[{ from: start, to: startShifted.start }]
+      	  .concat(
+            startShifted.transitions
+          )
+    }
+  } else {
+    return description;
+  }
+}
+
+function alternate (first, second) {
+  const start = "START";
+  const accepting = "RECOGNIZED";
+
+  const rootFirst = rootStart(first);
+  const rootSecond = rootStart(second);
+
+  const conformingFirst = renameStates(
+    { [rootFirst.start]: start, [rootFirst.accepting]: accepting },
+    rootFirst
+  );
+
+  const renamedSecond = resolveCollisions(statesOf(conformingFirst), rootSecond);
+
+  const conformingSecond = renameStates(
+    { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
+    renamedSecond
+  );
+
+  return {
+    start,
+    accepting,
+    transitions:
+  	  conformingFirst
+        .transitions
+          .concat(
+            conformingSecond.transitions
+          )
+  };
+}
+```
+
+And in action:
+
+```javascript
+const backspaces = {
+  start: "START",
+  accepting: "RECOGNIZED",
+  transitions: [
+    { from: "START", consume: "^", to: "ctrl" },
+    { from: "START", consume: "", to: "RECOGNIZED" },
+    { from: "ctrl", consume: "H", to: "START" }
+  ]
+}
+
+const exclamatory = {
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "consume": "!", "to": "endable" },
+    { "from": "endable", "consume": "!" },
+    { "from": "endable", "consume": "", "to": "RECOGNIZED" }
+  ]
+};
+
+alternate(backspaces, exclamatory)
+  //=>
+    {
+      "start": "START",
+      "accepting": "RECOGNIZED",
+      "transitions": [
+        { "from": "START", "to": "START-2" },
+        { "from": "START-2", "consume": "^", "to": "ctrl" },
+        { "from": "START-2", "consume": "", "to": "RECOGNIZED" },
+        { "from": "ctrl", "consume": "H", "to": "START-2" },
+        { "from": "START", "consume": "!", "to": "endable" },
+        { "from": "endable", "consume": "!" },
+        { "from": "endable", "consume": "", "to": "RECOGNIZED" }
+      ]
+    }
+```
+
+---
 
 ### what we have learned from alternating descriptions
 
