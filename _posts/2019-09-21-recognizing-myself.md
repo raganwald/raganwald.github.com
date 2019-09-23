@@ -47,7 +47,10 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 [Alternating Descriptions](#alternating-descriptions)
 
+  - [fixing a problem with alternate(first, second)](#fixing-a-problem-with-alternatefirst-second)
   - [what we have learned from alternating descriptions](#what-we-have-learned-from-alternating-descriptions)
+
+[Fun with Catenation and Alternation](#fun-with-catenation-and-alternation)
 
 ---
 
@@ -1297,9 +1300,113 @@ alternate(backspaces, exclamatory)
     }
 ```
 
+And as we hoped, it is exactly the recognizer we wanted:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->start-2
+    start-2-->|^|ctrl
+    start-2-.->|end|recognized(recognized)
+    ctrl-->|H|start-2
+    start(start)-->|!|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|!|endable;
+</div>
+
 ---
 
 ### what we have learned from alternating descriptions
+
+Once again, we have developed some confidence that given any two finite state machine recognizers, we can construct an alternate recognizer that is also a finite state machine. Likewise, if either or both of the recognizers are pushdown automata, we have confidence that we can construct a recognizer that recognizes either language that will also be a pushdown automaton.
+
+Coupled with what we learned from catenating recognizers, we now can develop the conjecture that "can be recognized with a pushdown automaton" is a transitive relationship: We can build an expression of arbitrary complexity using concatenate and alternate, and if the recognizers given were pushdown automata (or simpler), the result will be a pushdown automaton.
+
+This also tells us something about languages: If we have a set of context-free languages, all the languages we can form using catenation and alternation will also be context-free languages.
+
+---
+
+## Fun with Catenation and Alternation
+
+Here is a ridiculously simple recognizer which can be very handy, let's call it `NOTHING`:
+
+<div class="mermaid">
+  graph LR
+    start(start)-.->|end|recognized(recognized)
+</div>
+
+The description is trivial, to say the least:
+
+```javascript
+const NOTHING = {
+  start: "START",
+  accepting: "RECOGNIZED",
+  transitions: [{ from: "START", consume: "", to: "RECOGNIZED" }]
+};
+```
+
+And here's a function that makes a recognizer out of a single character:
+
+```javascript
+function character (c) {
+  return {
+    start: "START",
+    accepting: "RECOGNIZED",
+    transitions: [
+      { from: "START", consume: c, to: "endable" },
+      { from: "endable", consume: "", to: "RECOGNIZED" }
+    ]
+  };
+}
+
+test(automate(character("r")), [
+  '', 'r', 'reg'
+]);
+  //=>
+    '' => false
+    'r' => true
+    'reg' => false
+```
+
+Here's an interesting way to use `NOTHING` with catenation:
+
+```javascript
+function string (str = "") {
+  return str
+  	.split('')
+  	.reduceRight(
+    	(acc, c) => catenate(character(c), acc),
+    	NOTHING
+    );
+}
+
+test(automate(string("reg")), [
+  '', 'r', 'reg'
+]);
+  //=>
+    '' => false
+    'r' => false
+    'reg' => true
+```
+
+We can use `NOTHING` with alternation as well:
+
+```javascript
+function zeroOrOne (recognizer) {
+  return alternate(NOTHING, recognizer);
+}
+
+const reginaldOrBust = zeroOrOne(string("reginald"));
+
+test(automate(reginaldOrBust), [
+  '', 'reg', 'reggie', 'reginald'
+]);
+  //=>
+    '' => true
+    'reg' => false
+    'reggie' => false
+    'reginald' => true
+```
+
 
 ---
 
