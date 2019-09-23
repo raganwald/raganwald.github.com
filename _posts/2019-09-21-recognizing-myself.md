@@ -47,6 +47,8 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 [Alternating Descriptions](#alternating-descriptions)
 
+  - [what we have learned from alternating descriptions](#what-we-have-learned-from-alternating-descriptions)
+
 ---
 
 # Composeable Recognizers
@@ -181,13 +183,15 @@ We start with the definition of a _transition_. A transition defines a change in
 
 (There are some other things, like the set of all possible input symbols, and the stack alphabet. However, those can be inferred by examining the set of transitions, and are not important to what we're trying to accomplish.)
 
-We can make two simplifying adjustments:
+We can make a few simplifying adjustments:
 
 First, we can presume that there is just one accepting state, not a set of accepting states. This does not reduce the power of our automata, as given a set of accepting states, we can write transitions that transition from those states to a single state, so any automaton with a set of accepting states can be mechanically transformed into an equivalent automaton that has just one accepting state.
 
 Second, we can have our automata assume that the stack is empty when the automaton begins. This does not reduce the power of our automata, as given a desired starting symbol, we can rewrite an automaton such that its start state pushes the desired symbol onto the stack before continuing with the rest of its logic.
 
 This reduces our definition to only requiring a start state, and accepting state, and a set of transitions, like this: `{ start, accepting, transitions }`.
+
+Finally, we will stipulate that there can never be a transition from an accepting state. There are some uses for such descriptions, but it is always possible to write a description that does exactly the same thing without transitions from the accepting state, so that's what we'll insist on.
 
 ---
 
@@ -238,6 +242,11 @@ function automate ({ start, accepting, transitions }) {
         (acc, transition) => {
           const { from } = transition;
 
+          if (from === accepting) {
+            console.log(`Transition ${JSON.stringify(transition)} is a transition from the accepting state. This is not allowed.`)
+            return;
+          }
+
           if (!acc.has(from)) {
             acc.set(from, []);
           }
@@ -254,8 +263,7 @@ function automate ({ start, accepting, transitions }) {
     const transitionsForThisState = stateMap.get(internal);
 
     if (transitionsForThisState == null) {
-      console.log(`Missing state ${internal}. This is probably an error in the automaton definition.`);
-
+      // a deliberate fail
       return [];
     }
 
@@ -691,66 +699,78 @@ function catenateFSA (first, second) {
         .concat(transformedSecond.transitions)
   };
 }
+```
 
-catenateFSA(binary, fraction)
+Here is the finite state machine for a very simple recognizer. It recognizes a sequence of one or more exclamation marks:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|!|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|!|endable;
+</div>
+
+And here's another for recognizing one or more question marks:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|?|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|?|endable;
+</div>
+
+And here are their descriptions:
+
+```javascript
+const exclamatory = {
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "consume": "!", "to": "endable" },
+    { "from": "endable", "consume": "!" },
+    { "from": "endable", "consume": "", "to": "RECOGNIZED" }
+  ]
+};
+
+const interrogative = {
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "consume": "?", "to": "endable" },
+    { "from": "endable", "consume": "?" },
+    { "from": "endable", "consume": "", "to": "RECOGNIZED" }
+  ]
+};
+
+const interrobang = catenateFSA(exclamatory, interrogative)
   //=>
     {
       "start": "START",
       "accepting": "RECOGNIZED-2",
       "transitions": [
-        { "from": "START", "consume": "0", "to": "zero" },
-        { "from": "zero", "to": "START-2" },
-        { "from": "START", "consume": "1", "to": "one-or-more" },
-        { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
-        { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-        { "from": "one-or-more", "to": "START-2" },
-        { "from": "START-2", "consume": "", "to": "RECOGNIZED-2" },
-        { "from": "START-2", "consume": ".", "to": "point" },
-        { "from": "point", "consume": "0", "to": "point-zero" },
-        { "from": "point", "consume": "1", "to": "endable" },
-        { "from": "point-zero", "consume": "", "to": "RECOGNIZED-2" },
-        { "from": "point-zero", "consume": "0", "to": "not-endable" },
-        { "from": "point-zero", "consume": "1", "to": "endable" },
-        { "from": "not-endable", "consume": "0" },
-        { "from": "not-endable", "consume": "1", "to": "endable" },
-        { "from": "endable", "consume": "", "to": "RECOGNIZED-2" },
-        { "from": "endable", "consume": "0", "to": "not-endable" },
-        { "from": "endable", "consume": "1" }
+        { "from": "START", "consume": "!", "to": "endable" },
+        { "from": "endable", "consume": "!" },
+        { "from": "endable", "to": "START-2" },
+        { "from": "START-2", "consume": "?", "to": "endable-2" },
+        { "from": "endable-2", "consume": "?" },
+        { "from": "endable-2", "consume": "", "to": "RECOGNIZED-2" }
       ]
     }
 ```
 
-We can try it:
+The diagram for `interrobang` is:
 
-```javascript
-const binaryWithFraction = catenateFSA(binary, fraction);
+<div class="mermaid">
+  graph LR
+    start(start)-->|!|endable
+    endable-->|!|endable
+    endable-.->start-2(start-2)
+    start-2(start-2)-->|?|endable-2
+    endable-2-->|?|endable-2
+    endable-2-.->|end|recognized(recognized)
+</div>
 
-test(automate(binaryWithFraction), [
-  '0', '1', '0.', '1.', '0.0',
-  '1.0', '0.1', '0.10',
-  '0.11', '0.100', '0.101',
-  '0.11111111110'
-]);
-  //=>
-    '0' => true
-    '1' => true
-    '0.' => false
-    '1.' => false
-    '0.0' => false
-    '1.0' => false
-    '0.1' => false
-    '0.10' => false
-    '0.11' => false
-    '0.100' => false
-    '0.101' => false
-    '0.11111111110' => false
-    '0' => true
-    '1' => true
-    '0.' => false
-    '1.' => false
-    '0.0' => true
-    '1.0' => true
-```
+It's easy to see that `interrobang` recognizes one or more exclamation marks, followed by one or more question marks.
 
 We have succeeded in making a catenation function that catenates the descriptions of two finite state automata, and returns a description of a finite state automaton that recognizes a language consisting of strings in the frist recognizer's language, followed by strings in the second recognizer's language.
 
@@ -1078,7 +1098,116 @@ If it is possible, our `catenate` function doesn't tell us that it's possible. M
 
 Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenate(A, B)` recognizes sentences of the form "`A` followed by `B`," `alternate(A, B)` would recognize sentences of `A` or of `B`.
 
-Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts.
+Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we add new new start state that transitions to both recognizers' start states, and do the same thing with their accepting states:
+
+```javascript
+function alternate (first, second) {
+  const start = "START";
+  const accepting = "RECOGNIZED";
+
+  const renamedFirst = renamedStates([start, accepting], first);
+
+  const statesToRenameInSecond = statesOf(renamedFirst);
+  statesToRenameInSecond.add(start);
+  statesToRenameInSecond.add(accepting);
+
+  const renamedSecond = renamedStates(statesToRenameInSecond, second);
+
+  const startFirst = { from: start, to: renamedFirst.start };
+  const startSecond = { from: start, to: renamedSecond.start };
+
+  const recognizeFirst = { from: renamedFirst.accepting, to: accepting };
+  const recognizeSecond = { from: renamedSecond.accepting, to: accepting };
+
+  return {
+    start,
+    accepting,
+    transitions: [
+      startFirst,
+      startSecond,
+      ...renamedFirst.transitions,
+      ...renamedSecond.transitions,
+      recognizeFirst,
+      recognizeSecond
+    ]
+  };
+}
+```
+
+Once again, the diagrams for exclamatory and interrogative:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|!|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|!|endable;
+</div>
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|?|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|?|endable;
+</div>
+
+And now, the alternation of the two rather than the catenation:
+
+```javascript
+const bang = {
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "consume": "!", "to": "RECOGNIZED" },
+    { "from": "START", "consume": "!" }
+  ]
+};
+
+const query = {
+  "start": "START",
+  "accepting": "RECOGNIZED",
+  "transitions": [
+    { "from": "START", "consume": "?", "to": "RECOGNIZED" },
+    { "from": "START", "consume": "?" }
+  ]
+};
+
+alternate(bang, query)
+  //=>
+    {
+      "start": "START",
+      "accepting": "RECOGNIZED",
+      "transitions": [
+        { "from": "START", "to": "START-2" },
+        { "from": "START", "to": "START-3" },
+        { "from": "START-2", "consume": "?", "to": "endable" },
+        { "from": "endable", "consume": "?" },
+        { "from": "endable", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "START-3", "consume": "!", "to": "endable-2" },
+        { "from": "endable-2", "consume": "!" },
+        { "from": "endable-2", "consume": "", "to": "RECOGNIZED-3" },
+        { "from": "RECOGNIZED-2", "to": "RECOGNIZED" },
+        { "from": "RECOGNIZED-3", "to": "RECOGNIZED" }
+      ]
+    }
+```
+
+And we can see from the diagram that we now have a recognizer that matches exclamation marks, or question marks, but not both:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->start-2
+    start-->start-3
+    start-2-->|?|endable
+    endable-->|?|endable
+    endable-->|end|recognized-2
+    start-3-->|!|endable-2
+    endable-2-->|!|endable-2
+    endable-2-->|end|recognized-3
+    recognized-2-.->recognized
+    recognized-3-.->recognized
+</div>
+
+### what we have learned from alternating descriptions
 
 ---
 
