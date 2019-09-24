@@ -1411,3 +1411,5 @@ test(automate(reginaldOrBust), [
 ---
 
 # Notes
+
+https://gist.github.com/borgar/451393#file-tiny-javascript-tokenizer-js
