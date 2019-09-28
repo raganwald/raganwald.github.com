@@ -50,10 +50,11 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
   - [fixing a problem with alternate(first, second)](#fixing-a-problem-with-alternatefirst-second)
   - [what we have learned from alternating descriptions](#what-we-have-learned-from-alternating-descriptions)
 
-[Regular Languages](#regular-languages)
+[Zero or More](#zero-or-more)
 
   - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
   - [implementing zero-or-one](#implementing-zero-or-one)
+  - [upgrading the character recognizer](#upgrading-the-character-recognizer)
   - [implementing zero-or-more](#implementing-zero-or-more)
 
 ---
@@ -238,11 +239,105 @@ And here is how we would represent it with data:
 
 ### implementing our example automaton
 
-We can write a function that takes as its input a description of an automaton, and returns a function that recognizes strings. We'll call ours `automate`. The complete source code is [here](./2019-09-21-recognizing-myself-source.html#a-function-that-takes-as-its-input-the-definition-of-an-automaton,-and-returns-a-recognizer-function).
-
-We can use it with our definition for recognizing binary numbers. Note that it does not `pop` anything from the stack, which means that it is a finite-state automaton:
+Here is a function that takes as its input the definition of an automaton, and returns a recognizer function:
 
 ```javascript
+function automate ({ start, accepting, transitions }) {
+  // map from from states to the transitions defined for that from state
+  const stateMap =
+    transitions
+      .reduce(
+        (acc, transition) => {
+          const { from } = transition;
+
+          if (from === accepting) {
+            console.log(`Transition ${JSON.stringify(transition)} is a transition from the accepting state. This is not allowed.`)
+            return;
+          }
+
+          if (!acc.has(from)) {
+            acc.set(from, []);
+          }
+          acc.get(from).push(transition);
+
+          return acc;
+        },
+        new Map()
+      );
+
+      // given a starting state defined by { internal, external, string },
+      // returns a set of next states
+  function performTransition ({ string, external, internal }) {
+    const transitionsForThisState = stateMap.get(internal);
+
+    if (transitionsForThisState == null) {
+      // a deliberate fail
+      return [];
+    }
+
+    return transitionsForThisState
+      .reduce(
+        (acc, {consume, pop, push, to}) => {
+
+          let string2 = string;
+          if (consume === '') {
+            if (string !== '') return acc; // not a match
+          } else if (consume != null) {
+            if (string === '') return acc; // not a match
+            if (string[0] !== consume) return acc; // not a match
+
+            string2 = string.substring(1); // match and consume
+          }
+
+          const external2 = external.slice(0);
+          if (pop != null) {
+            if (external2.pop() !== pop) return acc; // not a match
+          }
+          if (push != null) {
+            external2.push(push);
+          }
+
+          const internal2 = (to != null) ? to : internal;
+
+          acc.push({
+            string: string2, external: external2, internal: internal2
+          });
+
+          return acc;
+        },
+        []
+      );
+  }
+
+  return function (string) {
+    let currentStates = [
+      { string, external: [], internal: start }
+    ];
+
+    while (currentStates.length > 0) {
+      currentStates = currentStates.flatMap(performTransition);
+
+      if (currentStates.some( ({ internal }) => internal === accepting )) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+}
+```
+
+And here we are using it with our definition for recognizing binary numbers. Note that it does not `pop` anything from the stack, which means that it is a finite-state automaton:
+
+```javascript
+function test (description, examples) {
+  const recognizer = automate(description);
+
+  for (const example of examples) {
+    console.log(`'${example}' => ${recognizer(example)}`);
+  }
+}
+
 const binary = {
   "start": "START",
   "accepting": "RECOGNIZED",
@@ -256,7 +351,7 @@ const binary = {
   ]
 };
 
-test(automate(binary), [
+test(binary, [
   '', '0', '1', '00', '01', '10', '11',
   '000', '001', '010', '011', '100',
   '101', '110', '111',
@@ -299,7 +394,7 @@ const balanced = {
   ]
 };
 
-test(automate(balanced), [
+test(balanced, [
   '', '(', '()', ')(', '()()', '{()}',
 	'([()()]())', '([()())())',
 	'())()', '((())(())'
@@ -341,7 +436,7 @@ const palindrome = {
   ]
 };
 
-test(automate(palindrome), [
+test(palindrome, [
   '', '0', '00', '11', '111', '0110',
   '10101', '10001', '100111',
   '1001', '0101', '100111',
@@ -864,7 +959,7 @@ catenate(balanced, palindrome)
       ]
     }
 
-test(automate(catenate(balanced, palindrome)), [
+test(catenate(balanced, palindrome), [
   '', '1', '01', '11', '101',
   '()', ')(', '(())0', ')(101',
   '()()101', '()()1010'
@@ -935,7 +1030,7 @@ const pair = {
   ]
 };
 
-test(automate(pair), [
+test(pair, [
   '', '(', ')', '()', ')(', '())'
 ]);
   //=>
@@ -970,7 +1065,7 @@ catenate(balanced, pair)
       ]
     }
 
-test(automate(catenate(balanced, pair)), [
+test(catenate(balanced, pair), [
   '', '()', '()()'
 ]);
   //=>
@@ -1245,18 +1340,13 @@ This also tells us something about languages: If we have a set of context-free l
 
 ---
 
-## Regular Languages
+## Zero or More
 
-We are now going to turn our attention to [regular languages][regular language], as discussed in [formal languages and recognizers](/2019/02/14/i-love-programming-and-programmers.html#formal-languages-and-recognizers). We'll begin by implementing a few useful tools.
-
-[^kleene]: Formal regular expressions were invented by [Stephen Kleene].
-
-[regular language]: https://en.wikipedia.org/wiki/Regular_language
-[Stephen Kleene]: https://en.wikipedia.org/wiki/Stephen_Cole_Kleene
+We are now going to turn our attention to creating descriptions that match zero or more instances of a description. We'll begin by implementing a few useful tools.
 
 ### implementing a recognizer for strings
 
-Here's an autimaton that recognizes a single character:
+Here's an automaton that recognizes a single character:
 
 <div class="mermaid">
   graph LR
@@ -1267,18 +1357,17 @@ Here's an autimaton that recognizes a single character:
 And here's a function that makes a recognizer's description out of any single character:
 
 ```javascript
-function character (c) {
-  return {
+const char =
+  c => ({
     start: "START",
     accepting: "RECOGNIZED",
     transitions: [
-      { from: "START", consume: c, to: "endable" },
-      { from: "endable", consume: "", to: "RECOGNIZED" }
+      { from: "START", consume: c, to: c },
+      { from: c, consume: "", to: "RECOGNIZED" }
     ]
-  };
-}
+  });
 
-test(automate(character("r")), [
+test(char("r"), [
   '', 'r', 'reg'
 ]);
   //=>
@@ -1292,10 +1381,10 @@ If we wanted to make a recognizer that recognizes a string of characters, we cou
 ```javascript
 const reg =
   catenate(
-    character("r"),
+    char("r"),
     catenate(
-      character("e"),
-      character("g")
+      char("e"),
+      char("g")
     )
   );
 ```
@@ -1318,30 +1407,30 @@ const NOTHING = {
 
 const reg =
   catenate(
-    character("r"),
+    char("r"),
     catenate(
-      character("e"),
+      char("e"),
       catenate(
-        character("g"),
+        char("g"),
         NOTHING
       )
     )
   );
 ```
 
-Making a recognizer for a string can be perfomed by successively catenating recognizers for characters onto `NOTHING`:[^names]
+Making a recognizer for a string can be performed by successively catenating recognizers for characters onto `NOTHING`:[^names]
 
 ```javascript
 function string (str = "") {
   return str
   	.split('')
   	.reduceRight(
-    	(acc, c) => catenate(character(c), acc),
+    	(acc, c) => catenate(char(c), acc),
     	NOTHING
     );
 }
 
-test(automate(string("reg")), [
+test(string("reg"), [
   '', 'r', 'reg'
 ]);
   //=>
@@ -1350,11 +1439,11 @@ test(automate(string("reg")), [
     'reg' => true
 ```
 
-What do we have? `string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names]
+What do we have? `string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names] Since we built it out of `char` and `catenate`, we know that while it is a handy shorthand, it doesn't add any expressiveness that we didn't already have with `char` and `catenate`.
 
 ### implementing zero-or-one
 
-We can use `NOTHING` with alternation as well. Here's the automaton that recognizes `reginald`:
+We can use `NOTHING` with alternation as well. Here's an automaton that recognizes `reg`:
 
 <div class="mermaid">
   graph LR
@@ -1375,7 +1464,7 @@ If we alternate it with `NOTHING`, we get:
     reg-.->|end|recognized(recognized)
 </div>
 
-That's an automaton that recognizes either the string `reg`, or nothing at all. Another way to put it is that it recognzies xzero or one instances of `reg`. We can automate the idea of "zero or one instances of a description:"
+That's an automaton that recognizes either the string `reg`, or nothing at all. Another way to put it is that it recognizes zero or one instances of `reg`. We can automate the idea of "zero or one instances of a description:"
 
 ```javascript
 function zeroOrOne (recognizer) {
@@ -1384,7 +1473,7 @@ function zeroOrOne (recognizer) {
 
 const reginaldOrBust = zeroOrOne(string("reginald"));
 
-test(automate(reginaldOrBust), [
+test(reginaldOrBust, [
   '', 'reg', 'reggie', 'reginald'
 ]);
   //=>
@@ -1394,46 +1483,170 @@ test(automate(reginaldOrBust), [
     'reginald' => true
 ```
 
-### implementing zero-or-more
+### upgrading the character recognizer
 
-Sometmes we don't want zero or exactly one, we want zero or more of something. Consider building a recognizer for numbers
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    r-->|e|re
-    re-->|g|reg
-    reg-.->|end|recognized(recognized)
-</div>
-
-If we alternate it with `NOTHING`, we get:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    start(start)-.->|end|recognized(recognized)
-    r-->|e|re
-    re-->|g|reg
-    reg-.->|end|recognized(recognized)
-</div>
-
-That's an automaton that recognizes either the string `reg`, or nothing at all. Another way to put it is that it recognzies xzero or one instances of `reg`. We can automate the idea of "zero or one instances of a description:"
+It is often handy to be able to recognize one of a set of characters. Modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `character` function:
 
 ```javascript
-function zeroOrOne (recognizer) {
-  return alternate(NOTHING, recognizer);
+function character (chars) {
+  const char =
+    c => ({
+      start: "START",
+      accepting: "RECOGNIZED",
+      transitions: [
+        { from: "START", consume: c, to: c },
+        { from: c, consume: "", to: "RECOGNIZED" }
+      ]
+    });
+
+  return chars
+  	.split('')
+    .map(char)
+  	.reduce(
+      (acc, recognizer) => alternate(acc, recognizer)
+    );
 }
+```
 
-const reginaldOrBust = zeroOrOne(string("reginald"));
+The nice thing about `character` is that it also works for just one character, so we can dispense with `char`. And when we supply more than one character, it alternates the descriptions for each character. So `character("reg")` becomes the description for:
 
-test(automate(reginaldOrBust), [
-  '', 'reg', 'reggie', 'reginald'
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    r-.->|end|recognized(recognized)
+    start-->|e|e
+    e-.->|end|recognized
+    start-->|g|g
+    g-.->|end|recognized
+</div>
+
+And here it is in use:
+
+```javascript
+test(character("reg"), [
+  '', 'r', 'e', 'g',
+  'x', 'y', 'reg'
 ]);
   //=>
-    '' => true
+    '' => false
+    'r' => true
+    'e' => true
+    'g' => true
+    'x' => false
+    'y' => false
     'reg' => false
-    'reggie' => false
-    'reginald' => true
+```
+
+Our updated `character` function doesn't give us anything we couldn't do with a plain `char` and with `alternate`, and we know this because that's what we built it out of. `character` will come in handy for our next example.
+
+### implementing zero-or-more
+
+Sometimes, we don't want zero or exactly one, we want zero or more of something. Consider building a simple recognizer for binary numbers. The cases we want to support are:
+
+- `0`, or;
+- `1`, followed by zero or more instances of `0` or `1`
+
+Let's work backwards. We start with `0` or `1`. That's `character("01")`:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|0|0
+    start(start)-->|1|1
+    0-.->|end|recognized(recognized)
+    1-.->|end|recognized(recognized)
+</div>
+
+How could we transform that automaton into one that recognizes zero or more ones and zeroes? Let's simplify things for the sake of argument, and consider a recognizer for zero, `character("0")`:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|0|0
+    0-.->|end|recognized(recognized)
+</div>
+
+We know how to transform it into a recognizer for zero or one zeroes:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|0|0
+    start-.->recognized(recognized)
+    0-.->|end|recognized
+</div>
+
+Now what happens if we make the following change: After recognizing a zero, what if we start all over again, rather than waiting for the string to end?
+
+<div class="mermaid">
+  graph LR
+    start-.->recognized(recognized)
+    start(start)-->|0|0
+    0-->start
+</div>
+
+This recognizes zero or more zeroes. And we can write a function to perform this transformation:
+
+```javascript
+function zeroOrMore (description) {
+  const { start, accepting, transitions } = description;
+
+  const loopsBackToStart = ({
+    start,
+    accepting,
+    transitions:
+      transitions.map(
+        ({ from, consume, pop, to, push }) => {
+          const transition = { from };
+          if (pop != null) transition.pop = pop;
+          if (push != null) transition.push = push;
+          if (to === accepting && consume === "") {
+            transition.to = start
+          } else {
+            if (consume != null) transition.consume = consume;
+            if (to != null) transition.to = to;
+          }
+
+          return transition;
+        }
+      )
+  });
+
+  return alternate(NOTHING, loopsBackToStart);
+}
+```
+
+And now we have everything we need to get exactly what we want:
+
+```javascript
+const binary = alternate(
+  character("0"),
+  catenate(
+    character("1"),
+    zeroOrMore(character("01"))
+  )
+);
+
+test(binary, [
+  '', '0', '1', '00', '01', '10', '11',
+  '000', '001', '010', '011', '100',
+  '101', '110', '111',
+  '10100011011000001010011100101110111'
+]);
+  //=>
+    '' => false
+    '0' => true
+    '1' => true
+    '00' => false
+    '01' => false
+    '10' => true
+    '11' => true
+    '000' => false
+    '001' => false
+    '010' => false
+    '011' => false
+    '100' => true
+    '101' => true
+    '110' => true
+    '111' => true
+    '10100011011000001010011100101110111' => true
 ```
 
 ---
