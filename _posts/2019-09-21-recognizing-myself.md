@@ -3,9 +3,9 @@ title: "From Pushdown Automata to Self-Recognition"
 tags: [recursion,allonge,mermaid,wip]
 ---
 
-This essay continues from where [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata] left off. Familiarity with its subject matter is a prerequisite for exploring the ideas in this essay.
+This essay continues from where [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal] left off. Familiarity with its subject matter is a prerequisite for exploring the ideas in this essay.
 
-[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html#implementing-pushdown-automata "[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]"
+[brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
 
 ---
 
@@ -50,7 +50,7 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
   - [fixing a problem with alternate(first, second)](#fixing-a-problem-with-alternatefirst-second)
   - [what we have learned from alternating descriptions](#what-we-have-learned-from-alternating-descriptions)
 
-[Fun with Catenation and Alternation](#fun-with-catenation-and-alternation)
+[Regular Languages](#regular-languages)
 
 ---
 
@@ -234,95 +234,9 @@ And here is how we would represent it with data:
 
 ### implementing our example automaton
 
-Here is a function that takes as its input the definition of an automaton, and returns a recognizer function:
+We can write a function that takes as its input a description of an automaton, and returns a function that recognizes strings. We'll call ours `automate`. The complete source code is [here](./2019-09-21-recognizing-myself-source.html#a-function-that-takes-as-its-input-the-definition-of-an-automaton,-and-returns-a-recognizer-function).
 
-```javascript
-function automate ({ start, accepting, transitions }) {
-  // map from from states to the transitions defined for that from state
-  const stateMap =
-    transitions
-      .reduce(
-        (acc, transition) => {
-          const { from } = transition;
-
-          if (from === accepting) {
-            console.log(`Transition ${JSON.stringify(transition)} is a transition from the accepting state. This is not allowed.`)
-            return;
-          }
-
-          if (!acc.has(from)) {
-            acc.set(from, []);
-          }
-          acc.get(from).push(transition);
-
-          return acc;
-        },
-        new Map()
-      );
-
-      // given a starting state defined by { internal, external, string },
-      // returns a set of next states
-  function performTransition ({ string, external, internal }) {
-    const transitionsForThisState = stateMap.get(internal);
-
-    if (transitionsForThisState == null) {
-      // a deliberate fail
-      return [];
-    }
-
-    return transitionsForThisState
-      .reduce(
-        (acc, {consume, pop, push, to}) => {
-
-          let string2 = string;
-          if (consume === '') {
-            if (string !== '') return acc; // not a match
-          } else if (consume != null) {
-            if (string === '') return acc; // not a match
-            if (string[0] !== consume) return acc; // not a match
-
-            string2 = string.substring(1); // match and consume
-          }
-
-          const external2 = external.slice(0);
-          if (pop != null) {
-            if (external2.pop() !== pop) return acc; // not a match
-          }
-          if (push != null) {
-            external2.push(push);
-          }
-
-          const internal2 = (to != null) ? to : internal;
-
-          acc.push({
-            string: string2, external: external2, internal: internal2
-          });
-
-          return acc;
-        },
-        []
-      );
-  }
-
-  return function (string) {
-    let currentStates = [
-      { string, external: [], internal: start }
-    ];
-
-    while (currentStates.length > 0) {
-      currentStates = currentStates.flatMap(performTransition);
-
-      if (currentStates.some( ({ internal }) => internal === accepting )) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-}
-```
-
-And here we are using it with our definition for recognizing binary numbers. Note that it does not `pop` anything from the stack, which means that it is a finite-state automaton:
+We can use it with our definition for recognizing binary numbers. Note that it does not `pop` anything from the stack, which means that it is a finite-state automaton:
 
 ```javascript
 const binary = {
@@ -363,7 +277,7 @@ test(automate(binary), [
     '10100011011000001010011100101110111' => true
 ```
 
-And another for balanced parentheses. This does `push` and `pop` things from the stack, so we know it is a pushdown automaton. Is it deterministic? If we look at the description carefully, we can see that every transition is guaranteed to be unambiguous. It can only ever follow one path through the states for any input. Therefore, it is a deterministic pushdown automaton:
+Here we use it with a description for balanced parentheses. This does `push` and `pop` things from the stack, so we know it is a pushdown automaton. Is it deterministic? If we look at the description carefully, we can see that every transition is guaranteed to be unambiguous. It can only ever follow one path through the states for any input. Therefore, it is a deterministic pushdown automaton:
 
 ```javascript
 const balanced = {
@@ -399,7 +313,7 @@ test(automate(balanced), [
     '((())(())' => false
 ```
 
-Finally, even- and odd-length binary palindromes. Not only does it `push` and `pop`, but it has more than one state transition for every input it consumes, making it a non-deterministic pushdown automaton. We call these just pushdown automatons:
+Finally, even- and odd-length binary palindromes. Not only does `palindrome` both `push` and `pop`, but it has more than one state transition for every input it consumes, making it a non-deterministic pushdown automaton. We call these just pushdown automatons:
 
 ```javascript
 const palindrome = {
@@ -1321,11 +1235,19 @@ Once again, we have developed some confidence that given any two finite state ma
 
 Coupled with what we learned from catenating recognizers, we now can develop the conjecture that "can be recognized with a pushdown automaton" is a transitive relationship: We can build an expression of arbitrary complexity using concatenate and alternate, and if the recognizers given were pushdown automata (or simpler), the result will be a pushdown automaton.
 
-This also tells us something about languages: If we have a set of context-free languages, all the languages we can form using catenation and alternation will also be context-free languages.
+This also tells us something about languages: If we have a set of context-free languages, all the languages we can form using catenation and alternation, will also be context-free languages.
 
 ---
 
-## Fun with Catenation and Alternation
+## Regular Languages
+
+We are now going to turn our attention to [regular languages][regular language], as discussed in [formal languages and recognizers](/2019/02/14/i-love-programming-and-programmers.html#formal-languages-and-recognizers).
+
+[^kleene]: Formal regular expressions were invented by [Stephen Kleene].
+
+[regular language]: https://en.wikipedia.org/wiki/Regular_language
+[Stephen Kleene]: https://en.wikipedia.org/wiki/Stephen_Cole_Kleene
+
 
 Here is a ridiculously simple recognizer which can be very handy, let's call it `NOTHING`:
 
