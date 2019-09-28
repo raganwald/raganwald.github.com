@@ -11,7 +11,7 @@ This essay continues from where [A Brutal Look at Balanced Parentheses, Computin
 
 ### recapitulation
 
-In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], we began with a well-known programming puzzle: _Write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested._
+In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal], we began with a well-known programming puzzle: _Write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested._
 
 In pursuing the solution to this problem, we constructed machines that could recognize "sentences" in languages. We saw that some languages can be recognized with Finite State Automata. Languages that require a finite state automaton to recognize them are _regular languages_.
 
@@ -51,6 +51,10 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
   - [what we have learned from alternating descriptions](#what-we-have-learned-from-alternating-descriptions)
 
 [Regular Languages](#regular-languages)
+
+  - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
+  - [implementing zero-or-one](#implementing-zero-or-one)
+  - [implementing zero-or-more](#implementing-zero-or-more)
 
 ---
 
@@ -588,7 +592,9 @@ const catenatableExclamatory =
       }
 ```
 
-Stitching them together, we get:
+Stitching them together, we get:[^names]
+
+[^names]: In [Pattern Matching and Recursion], we wrote functions called `follows`, `cases`, and `just` to handle catenating recognizers, alternating recognizers, and recognizing strings. In this essay we will use different names for similar functions. Although this may seem confusing, our functions work with descriptions, not with functions, so keeping them separate in our mind can be helpful.
 
 ```javascript
 function catenate (first, second) {
@@ -983,7 +989,7 @@ If it is possible, our `catenate` function doesn't tell us that it's possible. M
 
 Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenate(A, B)` recognizes sentences of the form "`A` followed by `B`," `alternate(A, B)` would recognize sentences of `A` or of `B`.
 
-Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we make sure that both recognizers share the same `start` and `accepting` states:
+Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we make sure that both recognizers share the same `start` and `accepting` states:[^names]
 
 ```javascript
 function alternate (first, second) {
@@ -1241,32 +1247,24 @@ This also tells us something about languages: If we have a set of context-free l
 
 ## Regular Languages
 
-We are now going to turn our attention to [regular languages][regular language], as discussed in [formal languages and recognizers](/2019/02/14/i-love-programming-and-programmers.html#formal-languages-and-recognizers).
+We are now going to turn our attention to [regular languages][regular language], as discussed in [formal languages and recognizers](/2019/02/14/i-love-programming-and-programmers.html#formal-languages-and-recognizers). We'll begin by implementing a few useful tools.
 
 [^kleene]: Formal regular expressions were invented by [Stephen Kleene].
 
 [regular language]: https://en.wikipedia.org/wiki/Regular_language
 [Stephen Kleene]: https://en.wikipedia.org/wiki/Stephen_Cole_Kleene
 
+### implementing a recognizer for strings
 
-Here is a ridiculously simple recognizer which can be very handy, let's call it `NOTHING`:
+Here's an autimaton that recognizes a single character:
 
 <div class="mermaid">
   graph LR
-    start(start)-.->|end|recognized(recognized)
+    start(start)-->|r|r
+    r-.->|end|recognized(recognized)
 </div>
 
-The description is trivial, to say the least:
-
-```javascript
-const NOTHING = {
-  start: "START",
-  accepting: "RECOGNIZED",
-  transitions: [{ from: "START", consume: "", to: "RECOGNIZED" }]
-};
-```
-
-And here's a function that makes a recognizer out of a single character:
+And here's a function that makes a recognizer's description out of any single character:
 
 ```javascript
 function character (c) {
@@ -1289,7 +1287,49 @@ test(automate(character("r")), [
     'reg' => false
 ```
 
-Here's an interesting way to use `NOTHING` with catenation:
+If we wanted to make a recognizer that recognizes a string of characters, we could use catenate:
+
+```javascript
+const reg =
+  catenate(
+    character("r"),
+    catenate(
+      character("e"),
+      character("g")
+    )
+  );
+```
+
+Let's introduce `NOTHING`:
+
+<div class="mermaid">
+  graph LR
+    start(start)-.->|end|recognized(recognized)
+</div>
+
+And here's how we use it:
+
+```javascript
+const NOTHING = {
+  start: "START",
+  accepting: "RECOGNIZED",
+  transitions: [{ from: "START", consume: "", to: "RECOGNIZED" }]
+};
+
+const reg =
+  catenate(
+    character("r"),
+    catenate(
+      character("e"),
+      catenate(
+        character("g"),
+        NOTHING
+      )
+    )
+  );
+```
+
+Making a recognizer for a string can be perfomed by successively catenating recognizers for characters onto `NOTHING`:[^names]
 
 ```javascript
 function string (str = "") {
@@ -1310,7 +1350,32 @@ test(automate(string("reg")), [
     'reg' => true
 ```
 
-We can use `NOTHING` with alternation as well:
+What do we have? `string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names]
+
+### implementing zero-or-one
+
+We can use `NOTHING` with alternation as well. Here's the automaton that recognizes `reginald`:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    r-->|e|re
+    re-->|g|reg
+    reg-.->|end|recognized(recognized)
+</div>
+
+If we alternate it with `NOTHING`, we get:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    start(start)-.->|end|recognized(recognized)
+    r-->|e|re
+    re-->|g|reg
+    reg-.->|end|recognized(recognized)
+</div>
+
+That's an automaton that recognizes either the string `reg`, or nothing at all. Another way to put it is that it recognzies xzero or one instances of `reg`. We can automate the idea of "zero or one instances of a description:"
 
 ```javascript
 function zeroOrOne (recognizer) {
@@ -1329,6 +1394,47 @@ test(automate(reginaldOrBust), [
     'reginald' => true
 ```
 
+### implementing zero-or-more
+
+Sometmes we don't want zero or exactly one, we want zero or more of something. Consider building a recognizer for numbers
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    r-->|e|re
+    re-->|g|reg
+    reg-.->|end|recognized(recognized)
+</div>
+
+If we alternate it with `NOTHING`, we get:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    start(start)-.->|end|recognized(recognized)
+    r-->|e|re
+    re-->|g|reg
+    reg-.->|end|recognized(recognized)
+</div>
+
+That's an automaton that recognizes either the string `reg`, or nothing at all. Another way to put it is that it recognzies xzero or one instances of `reg`. We can automate the idea of "zero or one instances of a description:"
+
+```javascript
+function zeroOrOne (recognizer) {
+  return alternate(NOTHING, recognizer);
+}
+
+const reginaldOrBust = zeroOrOne(string("reginald"));
+
+test(automate(reginaldOrBust), [
+  '', 'reg', 'reggie', 'reginald'
+]);
+  //=>
+    '' => true
+    'reg' => false
+    'reggie' => false
+    'reginald' => true
+```
 
 ---
 
