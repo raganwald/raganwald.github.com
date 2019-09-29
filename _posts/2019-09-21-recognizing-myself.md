@@ -1695,6 +1695,8 @@ test(binary, [
 
 ## Our First Language
 
+Taken on their own, `catenate`, `alternate`, `zeroOrOne`, and `zeroOrMore` can tell us something about the relationship between thedescriptions tha they take as inputs, and the
+
 ---
 
 # Notes
