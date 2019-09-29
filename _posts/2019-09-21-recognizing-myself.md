@@ -49,7 +49,7 @@ The above regex can most certainly be implemented by a finite state machine, but
 
 ### today's essay
 
-In [A Brutal Look at Balanced Parentheses, ...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on building recognizers out of other recognizers. By creating a small set of recognizers (such as recognizers that recognize a single symbol), and then building more sophisticated recognizers with combinators such as catentation, alternation, and zero-or-more, we are creating languages that describe recognizers.
+In [A Brutal Look at Balanced Parentheses...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on building recognizers out of other recognizers. By creating a small set of recognizers (such as recognizers that recognize a single symbol), and then building more sophisticated recognizers with combinators such as catentation, alternation, and zero-or-more, we are creating languages that describe recognizers.
 
 In addition to exploring the implementation of such combinators, we will explore consequences of these combinators, answering questions such ass, "If recognizing a character can be done with a finite state machine, does an arbitrary expression catenating and alternating such recognizers create a machine more sophisticated than a finite state automata?"
 
@@ -61,7 +61,7 @@ But instead of using first principles to deduce whether it is possible, we will 
 
 ### before we get started, a brief recapitulation of the previous essay
 
-In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal], we began with a well-known programming puzzle: _Write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested._
+In [A Brutal Look at Balanced Parentheses...][brutal], we began with a well-known programming puzzle: _Write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested._
 
 [brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
 
@@ -77,7 +77,7 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 [pushdown.oop.es6]: https://gist.github.com/raganwald/41ae26b93243405136b786298bafe8e9#file-pushdown-oop-es6
 
-The takeaway from [A Brutal Look at Balanced Parentheses, ...][brutal] was that languages could be classified according to the power of the idal machine needed to recognize it, and we explored example languages that needed finite state machines, deterministic pushdown automata, and pushdown automata respectively.[^tm]
+The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the idal machine needed to recognize it, and we explored example languages that needed finite state machines, deterministic pushdown automata, and pushdown automata respectively.[^tm]
 
 [^Tm]: [a Brutal Look at Balanced Parentheses, ...][Brutal] did not explore two other classes of languages. there is a class of formal languages that requires a turing machine to recognize its sentences. turing machines are more powerful than pushdown automata. And there is a class of formal languages that cannot be recognized by Turing Machines, and therefore cannot be recognized at all! Famously, the latter class includes a machine that takes as its sentences descriptions of Turing Machines, and recognizes those that halt.
 
@@ -121,7 +121,7 @@ The takeaway from [A Brutal Look at Balanced Parentheses, ...][brutal] was that 
   - [what we know about catenate, alternate, zeroOrOne, and zeroOrMore](#what-we-know-about-catenate-alternate-zeroorone-and-zeroormore)
   - [what we know about string and character](#iwhat-we-know-about-string-and-character)
 
-### [Pattern Matching Languages](#pattern-matching-languages)
+### [Expressions That Compose Recognizers](#expressions-that-compose-recognizers)
 
 ---
 
@@ -1700,7 +1700,7 @@ test(binary, [
     '10100011011000001010011100101110111' => true
 ```
 
-## Expressions that Compose Recognizers
+## Expressions That Compose Recognizers
 
 ### what we know about catenate, alternate, zeroOrOne, and zeroOrMore
 
