@@ -85,7 +85,7 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 # Table of Contents
 
-### [Composeable Recognizers](#composeable-recognizers)
+### [Composeable Recognizers](#composeable-recognizers-1)
 
 [A few words about Functional Composition](#a-few-words-about-functional-composition)
 
@@ -121,7 +121,12 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
   - [what we know about catenate, alternate, zeroOrOne, and zeroOrMore](#what-we-know-about-catenate-alternate-zeroorone-and-zeroormore)
   - [what we know about string and character](#iwhat-we-know-about-string-and-character)
 
-### [Expressions That Compose Recognizers](#expressions-that-compose-recognizers)
+[Expressions That Compose Recognizers](#expressions-that-compose-recognizers)
+
+  - [what we know about catenate, alternate, zeroOrOne, and zeroOrMore](#what-we-know-about-catenate,-alternate,-zeroorone,-and-zeroormore)
+  - [what string and character can tell us](#what-string-and-character-can-tell-us)
+
+### [Pattern Matching Languages](#pattern-matching-languages-1)
 
 ---
 
@@ -1714,7 +1719,7 @@ If any input to `catenate`, `alternate`, `zeroOrOne`, or `zeroOrMore` is a descr
 
 By induction we can reason that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, in any combination, when applied to its inputs, will return a description of a finite state machine, provided that all of its inputs are of finite state machines.
 
-### what we know about string and character
+### what string and character can tell us
 
 The `string` and `character` functions both take strings as arguments, and always return descriptions of finite state machines. In proghramming paralance, they are _Decription Constructors_, they are the only functions we've built so far that create descriptions.
 
@@ -1742,7 +1747,29 @@ catenate(
 )
 ```
 
+---
+
 # Pattern Matching Languages
+
+We just looked at this expression in JavaScript. It returns a description of a finite state machine that recognizes strings consisting of the characters `a`, `b`, and `c`, where there are an even number of `a`s:
+
+```javascript
+catenate(
+  zeroOrMore(
+    catenate(
+      catenate(
+        zeroOrMore(character("bc")),
+        character("a"),
+      ),
+      catenate(
+        zeroOrMore(character("bc")),
+        character("a"),
+      )
+    )
+  ),
+  zeroOrMore(character("bc"))
+)
+```
 
 ---
 
