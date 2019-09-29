@@ -1695,7 +1695,19 @@ test(binary, [
 
 ## Our First Language
 
-Taken on their own, `catenate`, `alternate`, `zeroOrOne`, and `zeroOrMore` can tell us something about the relationship between thedescriptions tha they take as inputs, and the
+### what we know about `catenate`, `alternate`, `zeroOrOne`, and `zeroOrMore`
+
+Taken on their own, `catenate`, `alternate`, `zeroOrOne`, and `zeroOrMore` can tell us something about the relationship between the descriptions that they take as inputs, and the descriptions that they return as outputs.
+
+To summarize, `catenate` and `alternate` both take two descriptions as input. If both are descriptions of finite state machines, the description returned will also be of a finite state machine.
+
+`zeroOrOne` and `zeroOrMore` both take one descriptions as input. If it is a description of a finite state machine, the description returned will also be of a finite state machine.
+
+If any input to `catenate`, `alternate`, `zeroOrOne`, or `zeroOrMore` is a description of a pushdown automaton (whether deterministic or not), the description returned will be of a pushdown automaton.
+
+By induction we can reason that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, or `zeroOrMore` applied to its inputs will return a description of a finite state machine, if all of its inputs are of finite state machines.
+
+### what we know about `string` and `character`
 
 ---
 
