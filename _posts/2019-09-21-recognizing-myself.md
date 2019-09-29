@@ -49,7 +49,7 @@ The above regex can most certainly be implemented by a finite state machine, but
 
 ### today's essay
 
-In [A Brutal Look at Balanced Parentheses...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on building recognizers out of other recognizers. By creating a small set of recognizers (such as recognizers that recognize a single symbol), and then building more sophisticated recognizers with combinators such as catentation, alternation, and zero-or-more, we are creating languages that describe recognizers.
+In [A Brutal Look at Balanced Parentheses...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on building recognizers out of other recognizers. By creating a small set of recognizers (such as recognizers that recognize a single symbol), and then building more sophisticated recognizers with combinators such as catenation, alternation, and zero-or-more, we are creating languages that describe recognizers.
 
 In addition to exploring the implementation of such combinators, we will explore consequences of these combinators, answering questions such ass, "If recognizing a character can be done with a finite state machine, does an arbitrary expression catenating and alternating such recognizers create a machine more sophisticated than a finite state automata?"
 
@@ -77,7 +77,7 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 [pushdown.oop.es6]: https://gist.github.com/raganwald/41ae26b93243405136b786298bafe8e9#file-pushdown-oop-es6
 
-The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the idal machine needed to recognize it, and we explored example languages that needed finite state machines, deterministic pushdown automata, and pushdown automata respectively.[^tm]
+The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the ideal machine needed to recognize it, and we explored example languages that needed finite state machines, deterministic pushdown automata, and pushdown automata respectively.[^tm]
 
 [^Tm]: [a Brutal Look at Balanced Parentheses, ...][Brutal] did not explore two other classes of languages. there is a class of formal languages that requires a turing machine to recognize its sentences. turing machines are more powerful than pushdown automata. And there is a class of formal languages that cannot be recognized by Turing Machines, and therefore cannot be recognized at all! Famously, the latter class includes a machine that takes as its sentences descriptions of Turing Machines, and recognizes those that halt.
 
@@ -1721,7 +1721,7 @@ By induction we can reason that any expression consisting of `catenate`, `altern
 
 ### what string and character can tell us
 
-The `string` and `character` functions both take strings as arguments, and always return descriptions of finite state machines. In proghramming paralance, they are _Decription Constructors_, they are the only functions we've built so far that create descriptions.
+The `string` and `character` functions both take strings as arguments, and always return descriptions of finite state machines. In programming parlance, they are _Description Constructors_, they are the only functions we've built so far that create descriptions.
 
 We reasoned above that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, in any combination, when applied to its inputs, will return a description of a finite state machine, provided that all of its inputs are of finite state machines.
 
@@ -1770,6 +1770,14 @@ catenate(
   zeroOrMore(character("bc"))
 )
 ```
+
+If we view that expression as a string, it is also a sentence in the JavaScript language.
+
+Without getting too rigorous, we can think that there is a subset of the JavaScript language that consists only of expressions consisting of invocations of `string`, `character`, `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, with no inputs other than constant strings to `string` and `character`.
+
+That subset is also a language, and it is a language that describes finite state machines. It is not unusual to define functions and/or other infrastructure like classes and so forth in order to create a subset of a programming language that has a very specific purpose.
+
+These are sometimes called "Embedded DSLs." Some languages, like Lisp, are designed around creating embedded languages as the primary idiom. Others, like Ruby, use it often even though it was not really designed as a "programmable programming language" from the start. When we see an expression like `5.minutes.ago` in Ruby, we are looking at an embedded DSL.
 
 ---
 
