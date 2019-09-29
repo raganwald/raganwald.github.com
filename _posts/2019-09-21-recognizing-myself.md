@@ -1710,9 +1710,35 @@ To summarize, `catenate` and `alternate` both take two descriptions as input. If
 
 If any input to `catenate`, `alternate`, `zeroOrOne`, or `zeroOrMore` is a description of a pushdown automaton (whether deterministic or not), the description returned will be of a pushdown automaton.
 
-By induction we can reason that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, or `zeroOrMore` applied to its inputs will return a description of a finite state machine, if all of its inputs are of finite state machines.
+By induction we can reason that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, in any combination, when applied to its inputs, will return a description of a finite state machine, provided that all of its inputs are of finite state machines.
 
 ### what we know about `string` and `character`
+
+The `string` and `character` functions both take strings as arguments, and always return descriptions of finite state machines. In proghramming paralance, they are _Decription Constructors_, they are the only functions we've built so far that create descriptions.
+
+We reasoned above that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, in any combination, when applied to its inputs, will return a description of a finite state machine, provided that all of its inputs are of finite state machines.
+
+Since the outputs of `string` and `character` are always finite state machines... It follows that an expression consisting of invocations of `string`, `character`, `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, with no inputs other than constant strings to `string` and `character`, must return a description of a finite state machine.
+
+For example, this expression returns a description of a finiute state machine that recognizes strings consisting of the characters `a`, `b`, and `c`, where there are an even number of `a`s:
+
+```javascript
+catenate(
+  zeroOrMore(
+    catenate(
+      catenate(
+        zeroOrMore(character("bc")),
+        character("a"),
+      ),
+      catenate(
+        zeroOrMore(character("bc")),
+        character("a"),
+      )
+    )
+  ),
+  zeroOrMore(character("bc"))
+)
+```
 
 ---
 
