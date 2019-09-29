@@ -47,15 +47,17 @@ The above regex can most certainly be implemented by a finite state machine, but
 
 ### today's essay
 
-In today's essay, we are going to begin by building expressions that generate descriptions of finite state machines and pushdown automata. We will investigate how combinators like `catenate`, `alternate`, and `zero-or-more` preserve the power of the descriptions they take as arguments, and then look at combinators like `recursive` that do not.
+In [A Brutal Look at Balanced Parentheses, ...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on building recognizers out of other recognizers. By creating a small set of recognizers (such as recognizers that recognize a single symbol), and then building more sophisticated recognizers with combinators such as catentation, alternation, and zero-or-more, we are creating languages that describe recognizers.
 
-We will then write simple parsers and compilers that take languages and compile them into recognizers. We will answer the question, "can this language recognize itself?"
+In addition to exploring the implementation of such combinators, we will explore consequences of these combinators, answering questions such ass, "If recognizing a character can be done with a finite state machine, does an arbitrary expression catenating and alternating such recognizers create a machine more sophisticated than a finite state automata?"
 
-Fundamentally, we will be answering the same question as, "Can a regex recognize a valid regex?" But instead of using first principles to deduce whether it is possible, we will instead build working machines that recognize themselves.
+We will work towards asking about machines that can recognize themselves. Can a language be devised for building finite state machines that can be recognized by machines built in itself? What about a language that builds pushdown automata? Is it powerful enough to build a language that recognizes itself? Fundamentally, we will be answering the same question as, "Can a regex recognize a valid regex?"
+
+But instead of using first principles to deduce whether it is possible, we will instead build working machines that recognize themselves.
 
 ---
 
-### recapitulation
+### before we get started, a brief recapitulation of the previous essay
 
 In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal], we began with a well-known programming puzzle: _Write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested._
 
@@ -76,16 +78,6 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 The takeaway from [A Brutal Look at Balanced Parentheses, ...][brutal] was that languages could be classified according to the power of the idal machine needed to recognize it, and we explored example languages that needed finite state machines, deterministic pushdown automata, and pushdown automata respectively.[^tm]
 
 [^Tm]: [a Brutal Look at Balanced Parentheses, ...][Brutal] did not explore two other classes of languages. there is a class of formal languages that requires a turing machine to recognize its sentences. turing machines are more powerful than pushdown automata. And there is a class of formal languages that cannot be recognized by Turing Machines, and therefore cannot be recognized at all! Famously, the latter class includes a machine that takes as its sentences descriptions of Turing Machines, and recognizes those that halt.
-
----
-
-### goal
-
-In [A Brutal Look at Balanced Parentheses, ...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on building recognizers out of other recognizers. By creating a small set of recognizers (such as recognizers that recognize a single symbol), and then building more sophisticated recognizers with combinators such as catentation, alternation, and zero-or-more, we are creating languages that describe recognizers.
-
-In addition to exploring the implementation of such combinators, we will explore consequences of these combinators, answering questions such ass, "If recognizing a character can be done with a finite state machine, does an arbitrary expression catenating and alternating such recognizers create a machine more sophisticated than a finite state automata?"
-
-We will work towards asking about machines that can recognize themselves. Can a language be devised for building finite state machines that can be recognized by machines built in itself? What about a language that builds pushdown automata? Is it powerful enough to build a language that recognizes itself?
 
 ---
 
