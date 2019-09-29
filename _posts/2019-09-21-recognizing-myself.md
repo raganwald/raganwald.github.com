@@ -116,7 +116,10 @@ The takeaway from [A Brutal Look at Balanced Parentheses, ...][brutal] was that 
   - [implementing zero-or-one](#implementing-zero-or-one)
   - [implementing zero-or-more](#implementing-zero-or-more)
 
-[Our First Language]
+[Our First Language](#our-first-language)
+
+  - [what we know about `catenate`, `alternate`, `zeroOrOne`, and `zeroOrMore`](#what-we-know-about-catenate-alternate-zeroorone-and-zeroormore)
+  - [what we know about `string` and `character`](#iwhat-we-know-about-string-and-character)
 
 ---
 
