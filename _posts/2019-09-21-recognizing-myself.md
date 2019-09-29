@@ -83,9 +83,9 @@ The takeaway from [A Brutal Look at Balanced Parentheses, ...][brutal] was that 
 
 # Table of Contents
 
-[Composeable Recognizers](#composeable-recognizers)
+### [Composeable Recognizers](#composeable-recognizers)
 
-- [a few words about functional composition](#a-few-words-about-functional-composition)
+  - [a few words about functional composition](#a-few-words-about-functional-composition)
 
 [Refactoring OO Recognizers into Data](#refactoring-oo-recognizers-into-data)
 
@@ -104,11 +104,14 @@ The takeaway from [A Brutal Look at Balanced Parentheses, ...][brutal] was that 
   - [fixing a problem with alternate(first, second)](#fixing-a-problem-with-alternatefirst-second)
   - [what we have learned from alternating descriptions](#what-we-have-learned-from-alternating-descriptions)
 
-[Zero or More](#zero-or-more)
+[Recognizing Characters and Strings](#recognizing-characters-and-strings)
 
   - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
-  - [implementing zero-or-one](#implementing-zero-or-one)
   - [upgrading the character recognizer](#upgrading-the-character-recognizer)
+
+[Repetition](#repetition)
+
+  - [implementing zero-or-one](#implementing-zero-or-one)
   - [implementing zero-or-more](#implementing-zero-or-more)
 
 ---
@@ -1394,9 +1397,7 @@ This also tells us something about languages: If we have a set of context-free l
 
 ---
 
-## Zero or More
-
-We are now going to turn our attention to creating descriptions that match zero or more instances of a description. We'll begin by implementing a few useful tools.
+## Recognizing Characters and Strings
 
 ### implementing a recognizer for strings
 
@@ -1408,7 +1409,7 @@ Here's an automaton that recognizes a single character:
     r-.->|end|recognized(recognized)
 </div>
 
-And here's a function that makes a recognizer's description out of any single character:
+And here's a very basic function that makes a recognizer's description out of any single character:
 
 ```javascript
 const char =
@@ -1495,48 +1496,6 @@ test(string("reg"), [
 
 What do we have? `string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names] Since we built it out of `char` and `catenate`, we know that while it is a handy shorthand, it doesn't add any expressiveness that we didn't already have with `char` and `catenate`.
 
-### implementing zero-or-one
-
-We can use `NOTHING` with alternation as well. Here's an automaton that recognizes `reg`:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    r-->|e|re
-    re-->|g|reg
-    reg-.->|end|recognized(recognized)
-</div>
-
-If we alternate it with `NOTHING`, we get:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    start(start)-.->|end|recognized(recognized)
-    r-->|e|re
-    re-->|g|reg
-    reg-.->|end|recognized(recognized)
-</div>
-
-That's an automaton that recognizes either the string `reg`, or nothing at all. Another way to put it is that it recognizes zero or one instances of `reg`. We can automate the idea of "zero or one instances of a description:"
-
-```javascript
-function zeroOrOne (recognizer) {
-  return alternate(NOTHING, recognizer);
-}
-
-const reginaldOrBust = zeroOrOne(string("reginald"));
-
-test(reginaldOrBust, [
-  '', 'reg', 'reggie', 'reginald'
-]);
-  //=>
-    '' => true
-    'reg' => false
-    'reggie' => false
-    'reginald' => true
-```
-
 ### upgrading the character recognizer
 
 It is often handy to be able to recognize one of a set of characters. Modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `character` function:
@@ -1592,6 +1551,50 @@ test(character("reg"), [
 ```
 
 Our updated `character` function doesn't give us anything we couldn't do with a plain `char` and with `alternate`, and we know this because that's what we built it out of. `character` will come in handy for our next example.
+
+## Repetition
+
+### implementing zero-or-one
+
+We can use `NOTHING` with alternation as well. Here's an automaton that recognizes `reg`:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    r-->|e|re
+    re-->|g|reg
+    reg-.->|end|recognized(recognized)
+</div>
+
+If we alternate it with `NOTHING`, we get:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    start(start)-.->|end|recognized(recognized)
+    r-->|e|re
+    re-->|g|reg
+    reg-.->|end|recognized(recognized)
+</div>
+
+That's an automaton that recognizes either the string `reg`, or nothing at all. Another way to put it is that it recognizes zero or one instances of `reg`. We can automate the idea of "zero or one instances of a description:"
+
+```javascript
+function zeroOrOne (recognizer) {
+  return alternate(NOTHING, recognizer);
+}
+
+const reginaldOrBust = zeroOrOne(string("reginald"));
+
+test(reginaldOrBust, [
+  '', 'reg', 'reggie', 'reginald'
+]);
+  //=>
+    '' => true
+    'reg' => false
+    'reggie' => false
+    'reginald' => true
+```
 
 ### implementing zero-or-more
 
