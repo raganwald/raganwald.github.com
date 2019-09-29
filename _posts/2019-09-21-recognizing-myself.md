@@ -118,8 +118,10 @@ The takeaway from [A Brutal Look at Balanced Parentheses, ...][brutal] was that 
 
 [Our First Language](#our-first-language)
 
-  - [what we know about `catenate`, `alternate`, `zeroOrOne`, and `zeroOrMore`](#what-we-know-about-catenate-alternate-zeroorone-and-zeroormore)
-  - [what we know about `string` and `character`](#iwhat-we-know-about-string-and-character)
+  - [what we know about catenate, alternate, zeroOrOne, and zeroOrMore](#what-we-know-about-catenate-alternate-zeroorone-and-zeroormore)
+  - [what we know about string and character](#iwhat-we-know-about-string-and-character)
+
+### [Pattern Matching Languages](#pattern-matching-languages)
 
 ---
 
@@ -1698,9 +1700,9 @@ test(binary, [
     '10100011011000001010011100101110111' => true
 ```
 
-## Our First Language
+## Expressions that Compose Recognizers
 
-### what we know about `catenate`, `alternate`, `zeroOrOne`, and `zeroOrMore`
+### what we know about catenate, alternate, zeroOrOne, and zeroOrMore
 
 Taken on their own, `catenate`, `alternate`, `zeroOrOne`, and `zeroOrMore` can tell us something about the relationship between the descriptions that they take as inputs, and the descriptions that they return as outputs.
 
@@ -1712,7 +1714,7 @@ If any input to `catenate`, `alternate`, `zeroOrOne`, or `zeroOrMore` is a descr
 
 By induction we can reason that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, in any combination, when applied to its inputs, will return a description of a finite state machine, provided that all of its inputs are of finite state machines.
 
-### what we know about `string` and `character`
+### what we know about string and character
 
 The `string` and `character` functions both take strings as arguments, and always return descriptions of finite state machines. In proghramming paralance, they are _Decription Constructors_, they are the only functions we've built so far that create descriptions.
 
@@ -1720,7 +1722,7 @@ We reasoned above that any expression consisting of `catenate`, `alternate`, `ze
 
 Since the outputs of `string` and `character` are always finite state machines... It follows that an expression consisting of invocations of `string`, `character`, `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, with no inputs other than constant strings to `string` and `character`, must return a description of a finite state machine.
 
-For example, this expression returns a description of a finiute state machine that recognizes strings consisting of the characters `a`, `b`, and `c`, where there are an even number of `a`s:
+For example, this expression returns a description of a finite state machine that recognizes strings consisting of the characters `a`, `b`, and `c`, where there are an even number of `a`s:
 
 ```javascript
 catenate(
@@ -1739,6 +1741,8 @@ catenate(
   zeroOrMore(character("bc"))
 )
 ```
+
+# Pattern Matching Languages
 
 ---
 
