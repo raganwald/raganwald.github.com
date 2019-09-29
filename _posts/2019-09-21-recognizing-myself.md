@@ -85,7 +85,7 @@ The takeaway from [A Brutal Look at Balanced Parentheses, ...][brutal] was that 
 
 ### [Composeable Recognizers](#composeable-recognizers)
 
-  - [a few words about functional composition](#a-few-words-about-functional-composition)
+[A few words about Functional Composition](#a-few-words-about-functional-composition)
 
 [Refactoring OO Recognizers into Data](#refactoring-oo-recognizers-into-data)
 
@@ -114,6 +114,8 @@ The takeaway from [A Brutal Look at Balanced Parentheses, ...][brutal] was that 
   - [implementing zero-or-one](#implementing-zero-or-one)
   - [implementing zero-or-more](#implementing-zero-or-more)
 
+[Our First Language]
+
 ---
 
 # Composeable Recognizers
@@ -126,7 +128,7 @@ If we want to build a recognizer for JSON, it would be ideal to build smaller re
 
 This is the motivation for the first part of our exploration: We want to make simple recognizers, and then use composition to make more complex recognizers from the simple recognizers.
 
-### a few words about functional composition
+## A few words about Functional Composition
 
 We explored this exact idea in [Pattern Matching and Recursion]. We used functions as recognizers, and then we used functional composition to compose more complex recognizers from simpler recognizers.
 
@@ -1690,6 +1692,8 @@ test(binary, [
     '111' => true
     '10100011011000001010011100101110111' => true
 ```
+
+## Our First Language
 
 ---
 
