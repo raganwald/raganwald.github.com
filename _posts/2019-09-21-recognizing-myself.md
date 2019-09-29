@@ -5,13 +5,15 @@ tags: [recursion,allonge,mermaid,wip]
 
 # Prelude
 
-In casual programming conversation, a [Regular Expression], or *regex* (plural "regexen"), is a sequence of characters that define a search pattern. They can also be used to validate that a string has a particular form. For example, `/ab*c/` is a regex that matches an `a`, zero or more `b`s, and then a `/c/`, anywhere in a string.
+In casual programming conversation, a [Regular Expression], or *regex* (plural "regexen"),[^regex] is a sequence of characters that define a search pattern. They can also be used to validate that a string has a particular form. For example, `/ab*c/` is a regex that matches an `a`, zero or more `b`s, and then a `c`, anywhere in a string.
 
 [Regular Expression]: https://en.wikipedia.org/wiki/Regular_expression
 
-Regexen are fundamentally descriptions of machines that recognize sentences in languages, where the sentences are strings of text symbols. The regex `/ab*c` is a description of a machine that recognizes sentences.
+[^regex]: In common programming jargon, a "regular expression" refers any of a family of pattern-matching and extraction languages, that can match a variety of languages. In computer science, a "regular expression" is a specific pattern matching language that recognizes regular languages only. To avoid confusion, in this essay we will use the word "regex" to refer to the programming construct.
 
-So is this regex that purports to recognize a subset of valid email addresses. We can say that it recognizes sentences in a language, where every sentence in that language is a valid email address:[^email]
+Regexen are fundamentally descriptions of machines that recognize sentences in languages, where the sentences are strings of text symbols.
+
+Another example is this regex, that purports to recognize a subset of valid email addresses. We can say that it recognizes sentences in a language, where every sentence in that language is a valid email address:[^email]
 
 [^email]: There is an objective standard for email addresses, RFC 5322, but it allows many email addresses that are considered obsolete, *and* there are many non-conforming email servers that permit email addresses not covered by the standard. The real world is extremely messy, and it is very difficult to capture all of its messiness in a formal language.
 
