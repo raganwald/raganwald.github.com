@@ -1445,20 +1445,28 @@ test(char("r"), [
     'reg' => false
 ```
 
-If we wanted to make a recognizer that recognizes a string of characters, we could use catenate:
+To make a recognizer that recognizes a string of characters, we can use catenate:[^names]
 
 ```javascript
-const reg =
-  catenate(
-    char("r"),
-    catenate(
-      char("e"),
-      char("g")
-    )
-  );
+function string (str = "") {
+  return str
+  	.split('')
+    .map(char)
+  	.reduceRight(
+    	(acc, c) => catenate(c, acc)
+    );
+}
+
+test(string("reg"), [
+  '', 'r', 'reg'
+]);
+  //=>
+    '' => false
+    'r' => false
+    'reg' => true
 ```
 
-Let's introduce `NOTHING`:
+But what about the empty string? Let's introduce `NOTHING`:
 
 <div class="mermaid">
   graph LR
@@ -1474,58 +1482,33 @@ const NOTHING = {
   transitions: [{ from: "START", consume: "", to: "RECOGNIZED" }]
 };
 
-const reg =
-  catenate(
-    char("r"),
-    catenate(
-      char("e"),
-      catenate(
-        char("g"),
-        NOTHING
-      )
-    )
-  );
-```
-
-Making a recognizer for a string can be performed by successively catenating recognizers for characters onto `NOTHING`:[^names]
-
-```javascript
 function string (str = "") {
   return str
   	.split('')
+    .map(char)
   	.reduceRight(
-    	(acc, c) => catenate(char(c), acc),
-    	NOTHING
+    	(acc, c) => catenate(c, acc),
+      NOTHING
     );
 }
 
-test(string("reg"), [
+test(string(""), [
   '', 'r', 'reg'
 ]);
   //=>
-    '' => false
+    '' => true
     'r' => false
-    'reg' => true
+    'reg' => false
 ```
 
 What do we have? `string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names] Since we built it out of `char` and `catenate`, we know that while it is a handy shorthand, it doesn't add any expressiveness that we didn't already have with `char` and `catenate`.
 
 ### upgrading the character recognizer
 
-It is often handy to be able to recognize one of a set of characters. Modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `character` function:
+It is often handy to be able to recognize any of a set of characters. Modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `any` function:
 
 ```javascript
-function character (chars) {
-  const char =
-    c => ({
-      start: "START",
-      accepting: "RECOGNIZED",
-      transitions: [
-        { from: "START", consume: c, to: c },
-        { from: c, consume: "", to: "RECOGNIZED" }
-      ]
-    });
-
+function any (chars) {
   return chars
     .split('')
     .map(char)
@@ -1535,7 +1518,7 @@ function character (chars) {
 }
 ```
 
-The nice thing about `character` is that it also works for just one character, so we can dispense with `char`. And when we supply more than one character, it alternates the descriptions for each character. So `character("reg")` becomes the description for:
+The nice thing about `any` is that it also works for just one character, so we can dispense with `char`. And when we supply more than one character, it alternates the descriptions for each character. So `any("reg")` becomes the description for:
 
 <div class="mermaid">
   graph LR
@@ -1550,7 +1533,7 @@ The nice thing about `character` is that it also works for just one character, s
 And here it is in use:
 
 ```javascript
-test(character("reg"), [
+test(any("reg"), [
   '', 'r', 'e', 'g',
   'x', 'y', 'reg'
 ]);
@@ -1563,8 +1546,6 @@ test(character("reg"), [
     'y' => false
     'reg' => false
 ```
-
-Our updated `character` function doesn't give us anything we couldn't do with a plain `char` and with `alternate`, and we know this because that's what we built it out of. `character` will come in handy for our next example.
 
 ## Repetition
 
@@ -1612,7 +1593,7 @@ test(reginaldOrBust, [
 
 ### implementing zero-or-more
 
-Sometimes, we don't want zero or exactly one, we want zero or more of something. Consider a recognizer for zero, `character("0")`:
+Sometimes, we don't want zero or exactly one, we want zero or more of something. Consider a recognizer for zero, `any("0")`:
 
 <div class="mermaid">
   graph LR
@@ -1673,10 +1654,10 @@ Here it is in use to define `binary` using only the tools we've created:
 
 ```javascript
 const binary = alternate(
-  character("0"),
+  any("0"),
   catenate(
-    character("1"),
-    zeroOrMore(character("01"))
+    any("1"),
+    zeroOrMore(any("01"))
   )
 );
 
@@ -1719,13 +1700,13 @@ If any input to `catenate`, `alternate`, `zeroOrOne`, or `zeroOrMore` is a descr
 
 By induction we can reason that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, in any combination, when applied to its inputs, will return a description of a finite state machine, provided that all of its inputs are of finite state machines.
 
-### what string and character can tell us
+### what string and any can tell us
 
-The `string` and `character` functions both take strings as arguments, and always return descriptions of finite state machines. In programming parlance, they are _Description Constructors_, they are the only functions we've built so far that create descriptions.
+The `string` and `any` functions both take strings as arguments, and always return descriptions of finite state machines. In programming parlance, they are _Description Constructors_, they are the only functions we've built so far that create descriptions.
 
 We reasoned above that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, in any combination, when applied to its inputs, will return a description of a finite state machine, provided that all of its inputs are of finite state machines.
 
-Since the outputs of `string` and `character` are always finite state machines... It follows that an expression consisting of invocations of `string`, `character`, `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, with no inputs other than constant strings to `string` and `character`, must return a description of a finite state machine.
+Since the outputs of `string` and `any` are always finite state machines... It follows that an expression consisting of invocations of `string`, `any`, `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, with no inputs other than constant strings to `string` and `any`, must return a description of a finite state machine.
 
 For example, this expression returns a description of a finite state machine that recognizes strings consisting of the characters `a`, `b`, and `c`, where there are an even number of `a`s:
 
@@ -1734,16 +1715,16 @@ catenate(
   zeroOrMore(
     catenate(
       catenate(
-        zeroOrMore(character("bc")),
-        character("a"),
+        zeroOrMore(any("bc")),
+        any("a"),
       ),
       catenate(
-        zeroOrMore(character("bc")),
-        character("a"),
+        zeroOrMore(any("bc")),
+        any("a"),
       )
     )
   ),
-  zeroOrMore(character("bc"))
+  zeroOrMore(any("bc"))
 )
 ```
 
@@ -1758,22 +1739,22 @@ catenate(
   zeroOrMore(
     catenate(
       catenate(
-        zeroOrMore(character("bc")),
-        character("a"),
+        zeroOrMore(any("bc")),
+        any("a"),
       ),
       catenate(
-        zeroOrMore(character("bc")),
-        character("a"),
+        zeroOrMore(any("bc")),
+        any("a"),
       )
     )
   ),
-  zeroOrMore(character("bc"))
+  zeroOrMore(any("bc"))
 )
 ```
 
 If we view that expression as a string, it is also a sentence in the JavaScript language.
 
-Without getting too rigorous, we can think that there is a subset of the JavaScript language that consists only of expressions consisting of invocations of `string`, `character`, `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, with no inputs other than constant strings to `string` and `character`.
+Without getting too rigorous, we can think that there is a subset of the JavaScript language that consists only of expressions consisting of invocations of `string`, `any`, `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, with no inputs other than constant strings to `string` and `any`.
 
 That subset is also a language, and it is a language that describes finite state machines. It is not unusual to define functions and/or other infrastructure like classes and so forth in order to create a subset of a programming language that has a very specific purpose.
 
