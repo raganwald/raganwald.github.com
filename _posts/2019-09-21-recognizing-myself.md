@@ -108,23 +108,18 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 [Recognizing Characters and Strings](#recognizing-characters-and-strings)
 
+  - [implementing the character recognizer](#implementing-the-character-recognizer)
   - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
-  - [upgrading the character recognizer](#upgrading-the-character-recognizer)
 
 [Repetition](#repetition)
 
   - [implementing zero-or-one](#implementing-zero-or-one)
   - [implementing zero-or-more](#implementing-zero-or-more)
 
-[Our First Language](#our-first-language)
-
-  - [what we know about catenate, alternate, zeroOrOne, and zeroOrMore](#what-we-know-about-catenate-alternate-zeroorone-and-zeroormore)
-  - [what we know about string and character](#iwhat-we-know-about-string-and-character)
-
 [Expressions That Compose Recognizers](#expressions-that-compose-recognizers)
 
   - [what we know about catenate, alternate, zeroOrOne, and zeroOrMore](#what-we-know-about-catenate,-alternate,-zeroorone,-and-zeroormore)
-  - [what string and character can tell us](#what-string-and-character-can-tell-us)
+  - [what string and any can tell us](#what-string-and-any-can-tell-us)
 
 ### [Pattern Matching Languages](#pattern-matching-languages-1)
 
@@ -1413,48 +1408,68 @@ This also tells us something about languages: If we have a set of context-free l
 
 ## Recognizing Characters and Strings
 
-### implementing a recognizer for strings
+### implementing the character recognizer
 
-Here's an automaton that recognizes a single character:
+It is often handy to be able to recognize a single character, or any of a set of characters. Modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `any` function:
+
+```javascript
+function any (charset) {
+  const char =
+    c => ({
+      start: "START",
+      accepting: "RECOGNIZED",
+      transitions: [
+        { from: "START", consume: c, to: c },
+        { from: c, consume: "", to: "RECOGNIZED" }
+      ]
+    });
+
+  return charset
+    .split('')
+    .map(char)
+    .reduce(alternate);
+}
+```
+
+The nice thing about `any` is that it also works for just one character, and when we supply more than one character, it alternates the descriptions for each character. So `any("reg")` becomes the description for:
 
 <div class="mermaid">
   graph LR
     start(start)-->|r|r
     r-.->|end|recognized(recognized)
+    start-->|e|e
+    e-.->|end|recognized
+    start-->|g|g
+    g-.->|end|recognized
 </div>
 
-And here's a very basic function that makes a recognizer's description out of any single character:
+And here it is in use:
 
 ```javascript
-const char =
-  c => ({
-    start: "START",
-    accepting: "RECOGNIZED",
-    transitions: [
-      { from: "START", consume: c, to: c },
-      { from: c, consume: "", to: "RECOGNIZED" }
-    ]
-  });
-
-test(char("r"), [
-  '', 'r', 'reg'
+test(any("reg"), [
+  '', 'r', 'e', 'g',
+  'x', 'y', 'reg'
 ]);
   //=>
     '' => false
     'r' => true
+    'e' => true
+    'g' => true
+    'x' => false
+    'y' => false
     'reg' => false
 ```
 
-To make a recognizer that recognizes a string of characters, we can use catenate:[^names]
+### implementing a recognizer for strings
+
+To make a recognizer that recognizes a string of characters, we can use `catenate` with `any`:[^names]
 
 ```javascript
 function string (str = "") {
   return str
   	.split('')
-    .map(char)
-  	.reduceRight(
-    	(acc, c) => catenate(c, acc)
-    );
+    .map(any)
+  	.reduce(catenate);
 }
 
 test(string("reg"), [
@@ -1485,11 +1500,8 @@ const NOTHING = {
 function string (str = "") {
   return str
   	.split('')
-    .map(char)
-  	.reduceRight(
-    	(acc, c) => catenate(c, acc),
-      NOTHING
-    );
+    .map(any)
+  	.reduce(catenate, NOTHING);
 }
 
 test(string(""), [
@@ -1501,51 +1513,7 @@ test(string(""), [
     'reg' => false
 ```
 
-What do we have? `string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names] Since we built it out of `char` and `catenate`, we know that while it is a handy shorthand, it doesn't add any expressiveness that we didn't already have with `char` and `catenate`.
-
-### upgrading the character recognizer
-
-It is often handy to be able to recognize any of a set of characters. Modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `any` function:
-
-```javascript
-function any (chars) {
-  return chars
-    .split('')
-    .map(char)
-    .reduce(
-      (acc, recognizer) => alternate(acc, recognizer)
-    );
-}
-```
-
-The nice thing about `any` is that it also works for just one character, so we can dispense with `char`. And when we supply more than one character, it alternates the descriptions for each character. So `any("reg")` becomes the description for:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    r-.->|end|recognized(recognized)
-    start-->|e|e
-    e-.->|end|recognized
-    start-->|g|g
-    g-.->|end|recognized
-</div>
-
-And here it is in use:
-
-```javascript
-test(any("reg"), [
-  '', 'r', 'e', 'g',
-  'x', 'y', 'reg'
-]);
-  //=>
-    '' => false
-    'r' => true
-    'e' => true
-    'g' => true
-    'x' => false
-    'y' => false
-    'reg' => false
-```
+`string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names] Since we built it out of `any` and `catenate`, we know that while it is a handy shorthand, it doesn't add any expressiveness that we didn't already have with `any` and `catenate`.
 
 ## Repetition
 
