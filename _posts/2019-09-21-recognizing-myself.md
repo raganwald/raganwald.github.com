@@ -1431,7 +1431,17 @@ function any (charset) {
 }
 ```
 
-The nice thing about `any` is that it also works for just one character, and when we supply more than one character, it alternates the descriptions for each character. So `any("reg")` becomes the description for:
+The nice thing about `any` is that when we supply more than one character, it alternates the descriptions for each character, but when we supply just one character, it becomes the description for just that character.
+
+So `any("r")` returns the description for:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    r-.->|end|recognized(recognized)
+</div>
+
+And `any("reg")` returns the description for:
 
 <div class="mermaid">
   graph LR
@@ -1446,6 +1456,19 @@ The nice thing about `any` is that it also works for just one character, and whe
 And here it is in use:
 
 ```javascript
+test(any("r"), [
+  '', 'r', 'e', 'g',
+  'x', 'y', 'reg'
+]);
+  //=>
+    '' => false
+    'r' => true
+    'e' => false
+    'g' => false
+    'x' => false
+    'y' => false
+    'reg' => false
+
 test(any("reg"), [
   '', 'r', 'e', 'g',
   'x', 'y', 'reg'
