@@ -97,31 +97,29 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 [Catenating Descriptions](#catenating-descriptions)
 
-  - [catenateFSA(first, second)](#catenatefsafirst-second)
-  - [catenate(first, second)](#catenatefirst-second)
+  - [catenationFSA(first, second)](#catenationfsafirst-second)
+  - [catenation(first, second)](#catenationfirst-second)
   - [what we have learned from catenating descriptions](#what-we-have-learned-from-catenating-descriptions)
 
 [Alternating Descriptions](#alternating-descriptions)
 
-  - [fixing a problem with alternate(first, second)](#fixing-a-problem-with-alternatefirst-second)
+  - [fixing a problem with union(first, second)](#fixing-a-problem-with-unionfirst-second)
   - [what we have learned from alternating descriptions](#what-we-have-learned-from-alternating-descriptions)
 
-[Recognizing Characters and Strings](#recognizing-characters-and-strings)
+[Building Language Recognizers](#building-language-recognizers)
 
-  - [implementing the character recognizer](#implementing-the-character-recognizer)
-  - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
-
-[Repetition](#repetition)
-
-  - [implementing zero-or-one](#implementing-zero-or-one)
+  - [recognizing emptiness](#recognizing-emptiness)
+  - [recognizing symbols](#recognizing-symbols)
   - [implementing zero-or-more](#implementing-zero-or-more)
 
-[Expressions That Compose Recognizers](#expressions-that-compose-recognizers)
+### [Regular Languages](#regular-languages-1)
 
-  - [what we know about catenate, alternate, zeroOrOne, and zeroOrMore](#what-we-know-about-catenate,-alternate,-zeroorone,-and-zeroormore)
-  - [what string and any can tell us](#what-string-and-any-can-tell-us)
+  - [what is a regular language]
+  - [making regular expressions more convenient](#making-regular-expressions-more-convenient)
+  - [implementing a recognizer for a set of symbols](#implementing-a-recognizer-for-a-set-of-symbols)
+  - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
+  - [implementing one-or-more](#implementing-one-or-more)
 
-### [Pattern Matching Languages](#pattern-matching-languages-1)
 
 ---
 
@@ -141,7 +139,7 @@ We explored this exact idea in [Pattern Matching and Recursion]. We used functio
 
 [Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
 
-For example, `just` was function that took a string and returned a recognizer that recognized just that string. `follows` was a higher-order function that catenated recognizers together, like this:
+For example, `just` was function that took a string and returned a recognizer that recognized just that string. `follows` was a higher-order function that catenationd recognizers together, like this:
 
 ```javascript
 follows(just('fu'), just('bar'))('foobar')
@@ -613,7 +611,7 @@ Third, wherever we had a `"consume": ""` in the first recognizer, we removed it 
 
 ---
 
-### catenateFSA(first, second)
+### catenationFSA(first, second)
 
 Let's start by writing a function to catenate any two finite state automaton recognizer descriptions. First, we'll need to rename states in the second description so that they don't conflict with the first description.
 
@@ -758,7 +756,7 @@ Stitching them together, we get:[^names]
 [^names]: In [Pattern Matching and Recursion], we wrote functions called `follows`, `cases`, and `just` to handle catenating recognizers, alternating recognizers, and recognizing strings. In this essay we will use different names for similar functions. Although this may seem confusing, our functions work with descriptions, not with functions, so keeping them separate in our mind can be helpful.
 
 ```javascript
-function catenate (first, second) {
+function catenation (first, second) {
   const start = "START";
   const accepting = "RECOGNIZED";
 
@@ -778,7 +776,7 @@ function catenate (first, second) {
 And when we try it:
 
 ```javascript
-const interrobang = catenate(exclamatory, interrogative)
+const interrobang = catenation(exclamatory, interrogative)
   //=>
     {
       "start": "START",
@@ -814,7 +812,7 @@ There are a few loose ends to wrap up before we can catenate pushdown automata.
 
 ---
 
-### catenate(first, second)
+### catenation(first, second)
 
 Does our code work for pushdown automata? Sort of. It appears to work for catenating any two pushdown automata. The primary trouble, however, is this: A pushdown automaton mutates the stack. This means that when we catenate the code of any two pushdown automata, the code from the first automaton might interfere with the stack in a way that would interfere with the behaviour of the second.
 
@@ -961,7 +959,7 @@ function prepareFirstForCatenation(start, accepting, first, second) {
 We can check that it isolates the stack:
 
 ```javascript
-catenate(binary, fraction)
+catenation(binary, fraction)
   //=>
     {
       "start": "START",
@@ -988,7 +986,7 @@ catenate(binary, fraction)
       ]
     }
 
-catenate(balanced, palindrome)
+catenation(balanced, palindrome)
   //=>
     {
       "start": "START",
@@ -1025,7 +1023,7 @@ catenate(balanced, palindrome)
       ]
     }
 
-test(catenate(balanced, palindrome), [
+test(catenation(balanced, palindrome), [
   '', '1', '01', '11', '101',
   '()', ')(', '(())0', ')(101',
   '()()101', '()()1010'
@@ -1048,13 +1046,13 @@ test(catenate(balanced, palindrome), [
 
 ### what we have learned from catenating descriptions
 
-Now that we have written `catenate` for descriptions, we can reason as follows:[^reason]
+Now that we have written `catenation` for descriptions, we can reason as follows:[^reason]
 
 - A finite state machine can recognize any regular language.
 - The catenation of two finite state machine recognizers is a finite state machine recognizer.
 - Therefore, a language defined by catenating two regular languages, will be regular.
 
-[^reason]: Well, actually, this is not strictly true. Building a catenate function certainly gives us confidence that a language formed by catenating the rules for two regular language ought to be regular, but it is always possible that our algorithm has a bug and cannot correctly catenate any two finite state automaton recognizers. Finding such a bug would be akin to finding a counter-example to something thought to have been proven, or a conjecture thought to be true, but unproven. This is the nature of "experimental computing science," it is always easier to demonstrate that certain things are impossible--by finding just one counter-example--than to prove that no counter-examples exist.
+[^reason]: Well, actually, this is not strictly true. Building a catenation function certainly gives us confidence that a language formed by catenating the rules for two regular language ought to be regular, but it is always possible that our algorithm has a bug and cannot correctly catenate any two finite state automaton recognizers. Finding such a bug would be akin to finding a counter-example to something thought to have been proven, or a conjecture thought to be true, but unproven. This is the nature of "experimental computing science," it is always easier to demonstrate that certain things are impossible--by finding just one counter-example--than to prove that no counter-examples exist.
 
 Likewise, we can reason:
 
@@ -1111,7 +1109,7 @@ test(pair, [
 What happens when we catenate them?
 
 ```javascript
-catenate(balanced, pair)
+catenation(balanced, pair)
   //=>
     {
       "start": "START",
@@ -1131,7 +1129,7 @@ catenate(balanced, pair)
       ]
     }
 
-test(catenate(balanced, pair), [
+test(catenation(balanced, pair), [
   '', '()', '()()'
 ]);
   //=>
@@ -1140,20 +1138,20 @@ test(catenate(balanced, pair), [
     '()()' => true
 ```
 
-Our `catenate` function has transformed a deterministic pushdown automaton into a pushdown automaton.  How do we know this? Consider the fact that it recognized both `()` and `()()`. To recognize `()`, it transitioned from `read` to `START-2` while popping `⚓︎`, even though it could also have consumed `(` and pushed it onto the stack.
+Our `catenation` function has transformed a deterministic pushdown automaton into a pushdown automaton.  How do we know this? Consider the fact that it recognized both `()` and `()()`. To recognize `()`, it transitioned from `read` to `START-2` while popping `⚓︎`, even though it could also have consumed `(` and pushed it onto the stack.
 
-But to recognize `()()`, it consumed the first `(` and pushed it onto the stack, but not the second `(`. This is only possible in a Pushdown Automaton. So our `catenate` function doesn't tell us anything about whether two deterministic pushdown automata can always be catenated in such a way to produce a deterministic pushdown automaton.
+But to recognize `()()`, it consumed the first `(` and pushed it onto the stack, but not the second `(`. This is only possible in a Pushdown Automaton. So our `catenation` function doesn't tell us anything about whether two deterministic pushdown automata can always be catenated in such a way to produce a deterministic pushdown automaton.
 
-If it is possible, our `catenate` function doesn't tell us that it's possible. Mind you, this reasoning doesn't prove that it's impossible. We just cannot tell from this particular `catenate` function alone.
+If it is possible, our `catenation` function doesn't tell us that it's possible. Mind you, this reasoning doesn't prove that it's impossible. We just cannot tell from this particular `catenation` function alone.
 
 ## Alternating Descriptions
 
-Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenate(A, B)` recognizes sentences of the form "`A` followed by `B`," `alternate(A, B)` would recognize sentences of `A` or of `B`.
+Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenation(A, B)` recognizes sentences of the form "`A` followed by `B`," `union(A, B)` would recognize sentences of `A` or of `B`.
 
 Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we make sure that both recognizers share the same `start` and `accepting` states:[^names]
 
 ```javascript
-function alternate (first, second) {
+function union (first, second) {
   const start = "START";
   const accepting = "RECOGNIZED";
 
@@ -1201,7 +1199,7 @@ Once again, the diagrams for exclamatory and interrogative:
 And now, the alternation of the two rather than the catenation:
 
 ```javascript
-alternate(exclamatory, interrogative)
+union(exclamatory, interrogative)
   //=>
     {
       "start": "START",
@@ -1231,7 +1229,7 @@ And we can see from the diagram that we now have a recognizer that matches excla
 
 ---
 
-### fixing a problem with alternate(first, second)
+### fixing a problem with union(first, second)
 
 Sharing the `start` state works just fine as long as it is a root state, i.e., No transitions lead back to it. Consider this recognizer that recognizes zero or more sequences of the characters `^H` (old-timers may remember this as a shorthand for "backspace" popular in old internet forums):
 
@@ -1242,7 +1240,7 @@ Sharing the `start` state works just fine as long as it is a root state, i.e., N
     ctrl-->|H|start
 </div>
 
-The way `alternate` works right now, is that if we evaluate `alternate(backspaces, exclamatory)`, we get this:
+The way `union` works right now, is that if we evaluate `union(backspaces, exclamatory)`, we get this:
 
 <div class="mermaid">
   graph LR
@@ -1256,7 +1254,7 @@ The way `alternate` works right now, is that if we evaluate `alternate(backspace
 
 If we follow it along, we see that it does correctly recognize "", "^H", "^H^H", "!", "!!", and so forth. But it also recognizes strings like "^H^H!!!!!", which is not what we want. The problem is that `backspace` has a start state that is not a root: It has at least one transition leading into it.
 
-We can fix it by changing `alternate` so that when given a recognizer with a start state that is not a root, it adds a root for us, like this:
+We can fix it by changing `union` so that when given a recognizer with a start state that is not a root, it adds a root for us, like this:
 
 <div class="mermaid">
   graph LR
@@ -1266,7 +1264,7 @@ We can fix it by changing `alternate` so that when given a recognizer with a sta
     ctrl-->|H|start-2
 </div>
 
-After "adding a root," the result of `alternate(backspaces, exclamatory)` would then be:
+After "adding a root," the result of `union(backspaces, exclamatory)` would then be:
 
 <div class="mermaid">
   graph LR
@@ -1309,7 +1307,7 @@ function rootStart (description) {
   }
 }
 
-function alternate (first, second) {
+function union (first, second) {
   const start = "START";
   const accepting = "RECOGNIZED";
 
@@ -1364,7 +1362,7 @@ const exclamatory = {
   ]
 };
 
-alternate(backspaces, exclamatory)
+union(backspaces, exclamatory)
   //=>
     {
       "start": "START",
@@ -1398,136 +1396,41 @@ And as we hoped, it is exactly the recognizer we wanted:
 
 ### what we have learned from alternating descriptions
 
-Once again, we have developed some confidence that given any two finite state machine recognizers, we can construct an alternate recognizer that is also a finite state machine. Likewise, if either or both of the recognizers are pushdown automata, we have confidence that we can construct a recognizer that recognizes either language that will also be a pushdown automaton.
+Once again, we have developed some confidence that given any two finite state machine recognizers, we can construct a union recognizer that is also a finite state machine. Likewise, if either or both of the recognizers are pushdown automata, we have confidence that we can construct a recognizer that recognizes either language that will also be a pushdown automaton.
 
-Coupled with what we learned from catenating recognizers, we now can develop the conjecture that "can be recognized with a pushdown automaton" is a transitive relationship: We can build an expression of arbitrary complexity using concatenate and alternate, and if the recognizers given were pushdown automata (or simpler), the result will be a pushdown automaton.
+Coupled with what we learned from catenating recognizers, we now can develop the conjecture that "can be recognized with a pushdown automaton" is a transitive relationship: We can build an expression of arbitrary complexity using catenation and union, and if the recognizers given were pushdown automata (or simpler), the result will be a pushdown automaton.
 
 This also tells us something about languages: If we have a set of context-free languages, all the languages we can form using catenation and alternation, will also be context-free languages.
 
 ---
 
-## Recognizing Characters and Strings
+## Building Language Recognizers
 
-### implementing the character recognizer
+`catenation` and `union` are binary combinators: They compose a new description, given two existing descriptions. But we don't have any functions for making descriptions from scratch. Up to here, we have always written such descriptions by hand.
 
-It is often handy to be able to recognize a single character, or any of a set of characters. Modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `any` function:
+But now we'll turn our attention to making new descriptions from scratch. If we have a way to manufacture new descriptions, and ways to combine existing descriptions, we have a way to build recognizers in a more structured fashion than coding finite state machines by hand.
 
-```javascript
-function any (charset) {
-  const char =
-    c => ({
-      start: "START",
-      accepting: "RECOGNIZED",
-      transitions: [
-        { from: "START", consume: c, to: c },
-        { from: c, consume: "", to: "RECOGNIZED" }
-      ]
-    });
+That allows us to reason more easily about what our recognizers can and cannot recognize.
 
-  return charset
-    .split('')
-    .map(char)
-    .reduce(alternate);
-}
-```
+### recognizing emptiness
 
-The nice thing about `any` is that when we supply more than one character, it alternates the descriptions for each character, but when we supply just one character, it becomes the description for just that character.
-
-So `any("r")` returns the description for:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    r-.->|end|recognized(recognized)
-</div>
-
-And `any("reg")` returns the description for:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    r-.->|end|recognized(recognized)
-    start-->|e|e
-    e-.->|end|recognized
-    start-->|g|g
-    g-.->|end|recognized
-</div>
-
-And here it is in use:
-
-```javascript
-test(any("r"), [
-  '', 'r', 'e', 'g',
-  'x', 'y', 'reg'
-]);
-  //=>
-    '' => false
-    'r' => true
-    'e' => false
-    'g' => false
-    'x' => false
-    'y' => false
-    'reg' => false
-
-test(any("reg"), [
-  '', 'r', 'e', 'g',
-  'x', 'y', 'reg'
-]);
-  //=>
-    '' => false
-    'r' => true
-    'e' => true
-    'g' => true
-    'x' => false
-    'y' => false
-    'reg' => false
-```
-
-### implementing a recognizer for strings
-
-To make a recognizer that recognizes a string of characters, we can use `catenate` with `any`:[^names]
-
-```javascript
-function string (str = "") {
-  return str
-  	.split('')
-    .map(any)
-  	.reduce(catenate);
-}
-
-test(string("reg"), [
-  '', 'r', 'reg'
-]);
-  //=>
-    '' => false
-    'r' => false
-    'reg' => true
-```
-
-But what about the empty string? Let's introduce `NOTHING`:
+The simplest possible recognizer is one that doesn't recognize anything at all. It is called `EMPTY`, because as we'll see below, it recognizes the "empty language," the language that has no sentences at all:
 
 <div class="mermaid">
   graph LR
     start(start)-.->|end|recognized(recognized)
 </div>
 
-And here's how we use it:
+And here's our implementation:
 
 ```javascript
-const NOTHING = {
+const EMPTY = {
   start: "START",
   accepting: "RECOGNIZED",
   transitions: [{ from: "START", consume: "", to: "RECOGNIZED" }]
 };
 
-function string (str = "") {
-  return str
-  	.split('')
-    .map(any)
-  	.reduce(catenate, NOTHING);
-}
-
-test(string(""), [
+test(EMPTY, [
   '', 'r', 'reg'
 ]);
   //=>
@@ -1536,55 +1439,46 @@ test(string(""), [
     'reg' => false
 ```
 
-`string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names] Since we built it out of `any` and `catenate`, we know that while it is a handy shorthand, it doesn't add any expressiveness that we didn't already have with `any` and `catenate`.
+It does just one thing, but as we'll see shortly, that thoing is essential. `EMPTY` is also useful for creating convenience functions like `zeroOrOne`, but let's not get ahead of ourselves.
 
-## Repetition
+### recognizing symbols
 
-### implementing zero-or-one
+Most of the time, we're interested in recognizing strings of characters, called "symbols" in formal computer science. To get started recognizing strings, we need to be able to recognize single symbols.
 
-We can use `NOTHING` with alternation as well. Here's an automaton that recognizes `reg`:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    r-->|e|re
-    re-->|g|reg
-    reg-.->|end|recognized(recognized)
-</div>
-
-If we alternate it with `NOTHING`, we get:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    start(start)-.->|end|recognized(recognized)
-    r-->|e|re
-    re-->|g|reg
-    reg-.->|end|recognized(recognized)
-</div>
-
-That's an automaton that recognizes either the string `reg`, or nothing at all. Another way to put it is that it recognizes zero or one instances of `reg`. We can automate the idea of "zero or one instances of a description:"
+Like this:
 
 ```javascript
-function zeroOrOne (recognizer) {
-  return alternate(NOTHING, recognizer);
+function symbol (s) {
+  return {
+    start: "START",
+    accepting: "RECOGNIZED",
+    transitions: [
+      { from: "START", consume: s, to: s },
+      { from: s, consume: "", to: "RECOGNIZED" }
+    ]
+  };
 }
-
-const reginaldOrBust = zeroOrOne(string("reginald"));
-
-test(reginaldOrBust, [
-  '', 'reg', 'reggie', 'reginald'
-]);
-  //=>
-    '' => true
-    'reg' => false
-    'reggie' => false
-    'reginald' => true
 ```
+
+With `symbol`, we can manufacture a description of a recognizer that recognizes any one symbol. For example, `symbol("r")` gives us:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    r-.->|end|recognized(recognized)
+</div>
 
 ### implementing zero-or-more
 
-Sometimes, we don't want zero or exactly one, we want zero or more of something. Consider a recognizer for zero, `any("0")`:
+With `EMPTY`, `symbol`, `catenate`, and `alternate` we can write recognizers that recognize any language that has a finite alphabet, and contains a finite number of sentences, each of which is of finite length.[^proof]
+
+[^proof]: To prove this, consider that given a finite set of sentences of finte length, we can construct a recognizer for each sentence using `symbol` and `catenate`, then we can use `alternate` to create a recognizer for the entire language.
+
+In order to recognize some sentences of infinite length, we need something more than `EMPTY`, `symbol`, `catenate`, and `alternate`. The original tool for recognizing strings of infinite length is formally called the [Kleene star]. We'll call it `zeroOrMore`, because that is the way most programmers describe its behaviour.
+
+[Kleene star]: https://en.wikipedia.org/wiki/Kleene_star
+
+Consider this description of a recognizer that recognizes a single zero. We could write it out by hand, of course, or generate it with `symbol("0")`:
 
 <div class="mermaid">
   graph LR
@@ -1592,7 +1486,7 @@ Sometimes, we don't want zero or exactly one, we want zero or more of something.
     0-.->|end|recognized(recognized)
 </div>
 
-We know how to transform it into a recognizer for zero or one zeroes:
+We can transform it into a recognizer for zero or one zeroes allowing it to recognize the empty string. This is the same result that we would get from `union(EMPTY, symbol("0)"))`:
 
 <div class="mermaid">
   graph LR
@@ -1610,7 +1504,7 @@ Now what happens if we make the following change: After recognizing a zero, what
     0-->start
 </div>
 
-This recognizes zero or more zeroes. And we can write a function to perform this transformation:
+This recognizes *zero or more* zeroes. And we can write a function to perform this transformation:
 
 ```javascript
 function zeroOrMore (description) {
@@ -1637,18 +1531,20 @@ function zeroOrMore (description) {
       )
   });
 
-  return alternate(NOTHING, loopsBackToStart);
+  return union(EMPTY, loopsBackToStart);
 }
 ```
 
 Here it is in use to define `binary` using only the tools we've created:
 
 ```javascript
-const binary = alternate(
-  any("0"),
-  catenate(
-    any("1"),
-    zeroOrMore(any("01"))
+const binary = union(
+  symbol("0"),
+  catenation(
+    symbol("1"),
+    zeroOrMore(
+      union(symbol("0"), symbol("1"))
+    )
   )
 );
 
@@ -1677,79 +1573,250 @@ test(binary, [
     '10100011011000001010011100101110111' => true
 ```
 
-## Expressions That Compose Recognizers
-
-### what we know about catenate, alternate, zeroOrOne, and zeroOrMore
-
-Taken on their own, `catenate`, `alternate`, `zeroOrOne`, and `zeroOrMore` can tell us something about the relationship between the descriptions that they take as inputs, and the descriptions that they return as outputs.
-
-To summarize, `catenate` and `alternate` both take two descriptions as input. If both are descriptions of finite state machines, the description returned will also be of a finite state machine.
-
-`zeroOrOne` and `zeroOrMore` both take one descriptions as input. If it is a description of a finite state machine, the description returned will also be of a finite state machine.
-
-If any input to `catenate`, `alternate`, `zeroOrOne`, or `zeroOrMore` is a description of a pushdown automaton (whether deterministic or not), the description returned will be of a pushdown automaton.
-
-By induction we can reason that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, in any combination, when applied to its inputs, will return a description of a finite state machine, provided that all of its inputs are of finite state machines.
-
-### what string and any can tell us
-
-The `string` and `any` functions both take strings as arguments, and always return descriptions of finite state machines. In programming parlance, they are _Description Constructors_, they are the only functions we've built so far that create descriptions.
-
-We reasoned above that any expression consisting of `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, in any combination, when applied to its inputs, will return a description of a finite state machine, provided that all of its inputs are of finite state machines.
-
-Since the outputs of `string` and `any` are always finite state machines... It follows that an expression consisting of invocations of `string`, `any`, `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, with no inputs other than constant strings to `string` and `any`, must return a description of a finite state machine.
-
-For example, this expression returns a description of a finite state machine that recognizes strings consisting of the characters `a`, `b`, and `c`, where there are an even number of `a`s:
-
-```javascript
-catenate(
-  zeroOrMore(
-    catenate(
-      catenate(
-        zeroOrMore(any("bc")),
-        any("a"),
-      ),
-      catenate(
-        zeroOrMore(any("bc")),
-        any("a"),
-      )
-    )
-  ),
-  zeroOrMore(any("bc"))
-)
-```
+Notice that `zeroOrMore(union(symbol("0"), symbol("1")))` recognizes the empty string, or a string of any length of zeroes and/or ones.
 
 ---
 
-# Pattern Matching Languages
+# Regular Languages
 
-We just looked at this expression in JavaScript. It returns a description of a finite state machine that recognizes strings consisting of the characters `a`, `b`, and `c`, where there are an even number of `a`s:
+### what is a regular language?
+
+As described above, `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` are all fundamental. They each give us something that could not be constructed from the remaining functions. In an homage, we will call these "special forms."[^special-form]
+
+[^special-form]: Literally speaking, they are not special forms, we're just using the expression. In Lisp dialects, the expression `(FUN ARG1 ARG2 ARG3... ARGN)` is evaluated as invoking function `FUN` wwith arguments `ARG1 ARG2 ARG3... ARGN` by default. However, there are certain "special forms" that share the same syntax, but are evaluated in special ways. The special forms vary from dialect to dialect, but function definition/lambdas are always a special form of some kind, some kind of conditional (such as `COND` or `IF`) is usually another because of its short-circuit semantics, `SET!` or its equivalent is usually a special form, and so forth.<br/><br/>Our "special forms" are just JavaScript, there is nothing special about they way they're evaulated. However, what they share with Lisp's special forms is that we can build everything else in the language from them.
+
+In formal computer science, **regular languages** are defined using the following rules. Given some alphabet of symbols Σ:[^Σ]
+
+[^Σ]: An alphabet is nothing more than a set of symbols. `{ 0, 1 }` is an alphabet often associated with binary numbers. `{ a, b, c ..., z, A, B, C, ... Z}` is an alphabet often associated with English words, and so forth.
+
+- The "empty language," often notated Ø, is a regular language. The empty language is either a language where no strings are accepted at all, or a language where the empty string is the only string accepted. We can make a recognizer for the empty language using `EMPTY`.
+- A "singleton set" is a language where single symbols from its alphabet Σ are accepted. We can make a recognizer for a singleton language using `union` and `symbol`.
+
+Now consider two languages `A` and `B`. We are given that `A` and `B` are already defined, and are known to be regular. By this we mean, that they are defined by some combination of the two rules just given, or the three rules that follow. Each has its own alphabet.
+
+- If `A` and `B` are regular languages, the language `AB` formed by catenating `A` and `B` is a regular language. Meaning, if the sentance `ab` belongs to the language `AB` if and only if `a` belongs to `A` and `b` belongs to `B`, then the language `AB` is a regular language if and only if both `A` and `B` are regular languages. If we have a recognizer for `A` and `B`, we can construct a recognizer for the catenation of `A` and `B` by invoking `catenation(A, B)`.
+- If `A` and `B` are regular languages, the union of `A` and `B` is a regular language. Meaning, if the sentance `x` belongs to the language `A|B` if and only if `x` belongs to `A` or `x` belongs to `B`, then the language `A|B` is a regular language if and only if both `A` and `B` are regular languages. If we have a recognizer for `A` and `B`, we can construct a recognizer for the union of `A` and `B` by invoking `union(A, B)`.
+- If `A` is a regular language, the language `A*` is formed by taking the Kleene Star of `A`. Meaning, if the empty sentence belongs to `A*`, and the sentance `ab` belongs to `A*` if and only if the sentance `a` belongs to `A` and `b` belongs to `A*`, then `A*` is a regular language. If we have a recognizer for `A`, we can construct a recognizer for the Kleene Star of `A` by invoking `zeroOrMore(A)`.
+
+A language is regular if and only if it conforms with the above rules. And since we can construct all the languages formed by the above rules, we can construct all possible regular languages using our five special forms `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`.
+
+But wait, there's more!
+
+A formal *regular expression* is an expression formed by combining `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`. Of coure, computer scientists prefer mathematical symbols to make regular expressions, but for our purposes, this is both JavaScript and a regular expression:
 
 ```javascript
-catenate(
-  zeroOrMore(
-    catenate(
-      catenate(
-        zeroOrMore(any("bc")),
-        any("a"),
-      ),
-      catenate(
-        zeroOrMore(any("bc")),
-        any("a"),
-      )
+union(
+  symbol("0"),
+  catenation(
+    symbol("1"),
+    zeroOrMore(
+      union(symbol("0"), symbol("1"))
     )
-  ),
-  zeroOrMore(any("bc"))
+  )
 )
 ```
+Having defined `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, it follows that any regular expression has an equivalent JavaScript expression formed by combining these functions with singe character string inputs for `symbol`.
 
-If we view that expression as a string, it is also a sentence in the JavaScript language.
+Regular expressions define regular languages. Therefore, every regular language has an equivalent JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`.
 
-Without getting too rigorous, we can think that there is a subset of the JavaScript language that consists only of expressions consisting of invocations of `string`, `any`, `catenate`, `alternate`, `zeroOrOne`, and/or `zeroOrMore`, with no inputs other than constant strings to `string` and `any`.
+Now consider what we know from our implementation so far: `EMPTY` is a finite state automaton, and `symbol` only creates finite state automata. And we know that `catenation`, `union`, and `zeroOrMore` create finite state automata if given finite state automata as input. Therefore, every JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` evaluates to the description of a finite state machine that recognizes the regular language.
 
-That subset is also a language, and it is a language that describes finite state machines. It is not unusual to define functions and/or other infrastructure like classes and so forth in order to create a subset of a programming language that has a very specific purpose.
+Therefore, *All regular languages can be recognized by finite state automata*. If someone says, "Oh no, this regular language cannot be recognized by a finite state machine," we ask them to write out the regular expression for that language. We then translate the symbols into invocations of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, then evaluate the JavaScript expression. The result will be a finite state automaton recognizing the language, disproviong their claim.
 
-These are sometimes called "Embedded DSLs." Some languages, like Lisp, are designed around creating embedded languages as the primary idiom. Others, like Ruby, use it often even though it was not really designed as a "programmable programming language" from the start. When we see an expression like `5.minutes.ago` in Ruby, we are looking at an embedded DSL.
+---
+
+### making regular expressions more convenient
+
+Our five special forms--`EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`--can make a recognizer for any regular language. But working with just those forms is tedious: That is why regex dialects include other mechanisms, like being able to specify a string of symbols to match, or the `?` operator that represents "zero or one," or the `+` operator that represents "one or more."
+
+We are now going to define some helpful higher-order functions that work only with the five special forms and each other. Since everything we will now build is built on top of what we already have, we can rest assured that we aren't making anything that couldn't be done by hand with the five tools we already have.
+
+We'll start by making it easier to work with symbols and strings.
+
+### implementing a recognizer for a set of symbols
+
+It is often handy to be able to recognize any of a set of symbols. We could, of course, do it by hand using union:
+
+```javascript
+const zeroOrOne = union(symbol("0"), symbol("1"));
+```
+
+For convenience, modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `any` function:
+
+```javascript
+function any (charset) {
+  return charset
+    .split('')
+    .map(symbol)
+    .reduce(union);
+}
+```
+
+Thus, `any("reg")` returns the description for:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    r-.->|end|recognized(recognized)
+    start-->|e|e
+    e-.->|end|recognized
+    start-->|g|g
+    g-.->|end|recognized
+</div>
+
+And here it is in use:
+
+```javascript
+test(any("reg"), [
+  '', 'r', 'e', 'g',
+  'x', 'y', 'reg'
+]);
+  //=>
+    '' => false
+    'r' => true
+    'e' => true
+    'g' => true
+    'x' => false
+    'y' => false
+    'reg' => false
+```
+
+It's important to note that `any` is purely a convenience function. It doesn't provide any power that we didn't already have with `symbol` and `union`.
+
+---
+
+### implementing a recognizer for strings
+
+To make a recognizer that recognizes a string of characters, we can use `catenation` with `symbol`:[^names]
+
+```javascript
+function string (str = "") {
+  return str
+  	.split('')
+    .map(any)
+  	.reduce(catenation);
+}
+
+test(string("reg"), [
+  '', 'r', 'reg'
+]);
+  //=>
+    '' => false
+    'r' => false
+    'reg' => true
+```
+
+But what about the empty string? Let's introduce `EMPTY`:
+
+function string (str = "") {
+  return str
+  	.split('')
+    .map(symbol)
+  	.reduce(catenation, EMPTY);
+}
+
+test(string(""), [
+  '', 'r', 'reg'
+]);
+  //=>
+    '' => true
+    'r' => false
+    'reg' => false
+```
+
+`string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names] Since we built it out of `symbol` and `catenation`, we know that while it is a handy shorthand, it doesn't add any power that we didn't already have with `symbol` and `catenation`.
+
+### implementing zero-or-one
+
+We can use `EMPTY` with alternation as well. Here's an automaton that recognizes `reg`:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    r-->|e|re
+    re-->|g|reg
+    reg-.->|end|recognized(recognized)
+</div>
+
+If we form the union of `reg` with `EMPTY`, we get:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|r|r
+    start(start)-.->|end|recognized(recognized)
+    r-->|e|re
+    re-->|g|reg
+    reg-.->|end|recognized(recognized)
+</div>
+
+That's an automaton that recognizes either the string `reg`, or nothing at all. Another way to put it is that it recognizes zero or one instances of `reg`. We can automate the idea of "zero or one instances of a description:"
+
+```javascript
+function zeroOrOne (recognizer) {
+  return union(EMPTY, recognizer);
+}
+
+const reginaldOrBust = zeroOrOne(string("reginald"));
+
+test(reginaldOrBust, [
+  '', 'reg', 'reggie', 'reginald'
+]);
+  //=>
+    '' => true
+    'reg' => false
+    'reggie' => false
+    'reginald' => true
+```
+
+Once again, `zerOrOne` doesn't give us anything that we didn't already have with `EMPTY` and `union`. But it is a convenience.
+
+---
+
+### implementing one-or-more
+
+Given a recognizer such as:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|0|0
+    0-.->|end|recognized(recognized)
+</div>
+
+We could easily transform it into "one or more instances of 0" like this:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|0|0
+    0-->start
+    0-.->|end|recognized(recognized)
+</div>
+
+A function to perform that transformation would be trivial. However, that would be adding a new function, and it would disrupt our assertion that everything we make with these tools is a regular language. So instead, we will create this:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|0|0
+    0-->start-2(start-2)
+    start-2-.->recognized(recognized)
+    start-2-->|0|0-2
+    0-2-->start-2
+</div>
+
+That is nothing more than catenating a recognizer for zero with a recognizer for zero or more zeroes:
+
+```javascript
+function oneOrMore (description) {
+  return catenation(description, zeroOrMore(description));
+}
+
+test(oneOrMore(symbol("0")), [
+  '', '0', '00'
+]);
+  //=>
+    '' => false
+    '0' => true
+    '00' => true
+```
 
 ---
 
