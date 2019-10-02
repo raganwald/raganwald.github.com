@@ -117,7 +117,10 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 ### [Regular Languages](#regular-languages-1)
 
   - [what is a regular language](#what-is-a-regular-language)
-  - [making regular expressions more convenient](#making-regular-expressions-more-convenient)
+
+[Making Regular Expressions More Convenient](#making-regular-expressions-more-convenient)
+
+  - [upping our catenation and union game](#upping-our-catenation-and-union-game)
   - [implementing a recognizer for a set of symbols](#implementing-a-recognizer-for-a-set-of-symbols)
   - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
   - [implementing one-or-more](#implementing-one-or-more)
@@ -1627,31 +1630,109 @@ Therefore, *All regular languages can be recognized by finite state automata*. I
 
 ---
 
-### making regular expressions more convenient
+## Making Regular Expressions More Convenient
 
 Our five special forms--`EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`--can make a recognizer for any regular language. But working with just those forms is tedious: That is why regex dialects include other mechanisms, like being able to specify a string of symbols to match, or the `?` operator that represents "zero or one," or the `+` operator that represents "one or more."
 
 We are now going to define some helpful higher-order functions that work only with the five special forms and each other. Since everything we will now build is built on top of what we already have, we can rest assured that we aren't making anything that couldn't be done by hand with the five tools we already have.
 
-We'll start by making it easier to work with symbols and strings.
+We'll start by making it easier to work with `catenation` and `union`, then we'll move to working with symbols and strings.
+
+---
+
+### upping our catenation and union game
+
+Our `catenation` and `union` functions have an arity of two: They each take two descriptions and return one. when we need to catenate (or take the union of) more than two descriptons, we have to nest our invocations, e.g.
+
+```javascript
+const something =
+  catenation(
+    andNow,
+    catenation(
+      forSomething,
+      completelyDifferent
+    ),
+  );
+```
+
+Binary functions are easiest to reason about, but with some care we can transform them into n-ary functions:
+
+```javascript
+function catenation (...descriptions) {
+  function binaryCatenation (first, second) {
+    const start = "START";
+    const accepting = "RECOGNIZED";
+
+    const catenatableSecond = prepareSecondForCatenation(start, accepting, first, second);
+    const catenatableFirst = prepareFirstForCatenation(start, accepting, first, catenatableSecond);
+
+    return {
+      start: start,
+      accepting: accepting,
+      transitions:
+        catenatableFirst.transitions
+          .concat(catenatableSecond.transitions)
+    };
+  }
+
+  return descriptions.reduce(binaryCatenation);
+}
+
+function union (...descriptions) {
+  function binaryUnion (first, second) {
+    const start = "START";
+    const accepting = "RECOGNIZED";
+
+    const conformingFirst = renameStates(
+      { [first.start]: start, [first.accepting]: accepting },
+      first
+    );
+
+    const renamedSecond = resolveCollisions(statesOf(conformingFirst), second);
+
+    const conformingSecond = renameStates(
+      { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
+      renamedSecond
+    );
+
+    return {
+      start,
+      accepting,
+      transitions:
+        conformingFirst
+          .transitions
+            .concat(
+              conformingSecond.transitions
+            )
+    };
+  }
+
+  return descriptions.reduce(binaryUnion);
+}
+```
+
+Although these are now n-ary functions, they are built by applying the original binary functions (now renamed `binaryCatenation` and `binaryUnion`), so we can continue to reason that catenating any number of descriptions follows the rules for repeated pair-wise catenation.
+
+---
 
 ### implementing a recognizer for a set of symbols
 
 It is often handy to be able to recognize any of a set of symbols. We could, of course, do it by hand using union:
 
 ```javascript
-const zeroOrOne = union(symbol("0"), symbol("1"));
+const binaryDigit = union(symbol("0"), symbol("1"));
 ```
 
-For convenience, modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `any` function:
+For convenience, modern regexen support all kinds of special syntaxes for this, e.g. `[a-zA-Z]`. We'll go with something far simpler. Here's our `any` function, taking full advantage of n-ary union:
 
 ```javascript
 function any (charset) {
-  return charset
-    .split('')
-    .map(symbol)
-    .reduce(union);
+  return union(
+    ...charset.split('').map(symbol)
+  );
 }
+
+
 ```
 
 Thus, `any("reg")` returns the description for:
@@ -1693,10 +1774,11 @@ To make a recognizer that recognizes a string of characters, we can use `catenat
 
 ```javascript
 function string (str = "") {
-  return str
-  	.split('')
-    .map(any)
-  	.reduce(catenation);
+  return catenation(
+    ...str
+  		.split('')
+    	.map(symbol)
+  );
 }
 
 test(string("reg"), [
@@ -1708,14 +1790,16 @@ test(string("reg"), [
     'reg' => true
 ```
 
-But what about the empty string? Let's use `EMPTY`:
+But what about the empty string? Let's incorporate `EMPTY`:
 
 ```javascript
 function string (str = "") {
-  return str
-  	.split('')
-    .map(symbol)
-  	.reduce(catenation, EMPTY);
+  return catenation(
+    ...str
+  		.split('')
+    	.map(symbol)
+    	.concat([ EMPTY ])
+  );
 }
 
 test(string(""), [
@@ -1728,6 +1812,8 @@ test(string(""), [
 ```
 
 `string` is a function that takes a string, and returns a recognizer that recognizes that string.[^names] Since we built it out of `symbol` and `catenation`, we know that while it is a handy shorthand, it doesn't add any power that we didn't already have with `symbol` and `catenation`.
+
+---
 
 ### implementing zero-or-one
 
