@@ -1587,9 +1587,9 @@ As described above, `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` a
 
 [^special-form]: Literally speaking, they are not special forms, we're just using the expression. In Lisp dialects, the expression `(FUN ARG1 ARG2 ARG3... ARGN)` is evaluated as invoking function `FUN` wwith arguments `ARG1 ARG2 ARG3... ARGN` by default. However, there are certain "special forms" that share the same syntax, but are evaluated in special ways. The special forms vary from dialect to dialect, but function definition/lambdas are always a special form of some kind, some kind of conditional (such as `COND` or `IF`) is usually another because of its short-circuit semantics, `SET!` or its equivalent is usually a special form, and so forth.<br/><br/>Our "special forms" are just JavaScript, there is nothing special about they way they're evaulated. However, what they share with Lisp's special forms is that we can build everything else in the language from them.
 
-In formal computer science, **regular languages** are defined using the following rules. Given some alphabet of symbols Σ:[^Σ]
+In formal computer science, **regular languages** are defined using the following rules. Given some alphabet of symbols Σ:[^alphabet]
 
-[^Σ]: An alphabet is nothing more than a set of symbols. `{ 0, 1 }` is an alphabet often associated with binary numbers. `{ a, b, c ..., z, A, B, C, ... Z}` is an alphabet often associated with English words, and so forth.
+[^alphabet]: An alphabet is nothing more than a set of symbols. `{ 0, 1 }` is an alphabet often associated with binary numbers. `{ a, b, c ..., z, A, B, C, ... Z}` is an alphabet often associated with English words, and so forth.
 
 - The "empty language," often notated Ø, is a regular language. The empty language is either a language where no strings are accepted at all, or a language where the empty string is the only string accepted. We can make a recognizer for the empty language using `EMPTY`.
 - A "singleton set" is a language where single symbols from its alphabet Σ are accepted. We can make a recognizer for a singleton language using `union` and `symbol`.
@@ -1708,8 +1708,9 @@ test(string("reg"), [
     'reg' => true
 ```
 
-But what about the empty string? Let's introduce `EMPTY`:
+But what about the empty string? Let's use `EMPTY`:
 
+```javascript
 function string (str = "") {
   return str
   	.split('')
