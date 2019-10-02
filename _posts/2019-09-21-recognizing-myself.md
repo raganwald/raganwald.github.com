@@ -51,9 +51,9 @@ The above regex can most certainly be implemented by a finite state machine, but
 
 ### today's essay
 
-In [A Brutal Look at Balanced Parentheses...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on building recognizers out of other recognizers. By creating a small set of recognizers (such as recognizers that recognize a single symbol), and then building more sophisticated recognizers with combinators such as catenation, alternation, and zero-or-more, we are creating languages that describe recognizers.
+In [A Brutal Look at Balanced Parentheses...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on building recognizers out of other recognizers. By creating a small set of recognizers (such as recognizers that recognize a single symbol), and then building more sophisticated recognizers with combinators such as catenation, union, and zero-or-more, we will create languages that describe recognizers.
 
-In addition to exploring the implementation of such combinators, we will explore consequences of these combinators, answering questions such ass, "If recognizing a character can be done with a finite state machine, does an arbitrary expression catenating and alternating such recognizers create a machine more sophisticated than a finite state automata?"
+In addition to exploring the implementation of such combinators, we will explore consequences of these combinators, answering questions such ass, "If recognizing a character can be done with a finite state machine, does an arbitrary expression catenating and taking the union of such recognizers create a machine more sophisticated than a finite state automata?"
 
 We will work towards asking about machines that can recognize themselves. Can a language be devised for building finite state machines that can be recognized by machines built in itself? What about a language that builds pushdown automata? Is it powerful enough to build a language that recognizes itself? Fundamentally, we will be answering the same question as, "Can a regex recognize a valid regex?"
 
@@ -103,10 +103,10 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
   - [catenation(first, second)](#catenationfirst-second)
   - [what we have learned from catenating descriptions](#what-we-have-learned-from-catenating-descriptions)
 
-[Alternating Descriptions](#alternating-descriptions)
+[Takng the Union of Descriptions](#taking-the-union-of-descriptions)
 
   - [fixing a problem with union(first, second)](#fixing-a-problem-with-unionfirst-second)
-  - [what we have learned from alternating descriptions](#what-we-have-learned-from-alternating-descriptions)
+  - [what we have learned from taking the union of descriptions](#what-we-have-learned-from-taking-the-union-of-descriptions)
 
 [Building Language Recognizers](#building-language-recognizers)
 
@@ -755,7 +755,7 @@ const catenatableExclamatory =
 
 Stitching them together, we get:[^names]
 
-[^names]: In [Pattern Matching and Recursion], we wrote functions called `follows`, `cases`, and `just` to handle catenating recognizers, alternating recognizers, and recognizing strings. In this essay we will use different names for similar functions. Although this may seem confusing, our functions work with descriptions, not with functions, so keeping them separate in our mind can be helpful.
+[^names]: In [Pattern Matching and Recursion], we wrote functions called `follows`, `cases`, and `just` to handle catenating recognizers, taking the union of recognizers, and recognizing strings. In this essay we will use different names for similar functions. Although this may seem confusing, our functions work with descriptions, not with functions, so keeping them separate in our mind can be helpful.
 
 ```javascript
 function catenation (first, second) {
@@ -1146,7 +1146,7 @@ But to recognize `()()`, it consumed the first `(` and pushed it onto the stack,
 
 If it is possible, our `catenation` function doesn't tell us that it's possible. Mind you, this reasoning doesn't prove that it's impossible. We just cannot tell from this particular `catenation` function alone.
 
-## Alternating Descriptions
+## Taking the Union of Descriptions
 
 Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenation(A, B)` recognizes sentences of the form "`A` followed by `B`," `union(A, B)` would recognize sentences of `A` or of `B`.
 
@@ -1396,7 +1396,7 @@ And as we hoped, it is exactly the recognizer we wanted:
 
 ---
 
-### what we have learned from alternating descriptions
+### what we have learned from taking the union of descriptions
 
 Once again, we have developed some confidence that given any two finite state machine recognizers, we can construct a union recognizer that is also a finite state machine. Likewise, if either or both of the recognizers are pushdown automata, we have confidence that we can construct a recognizer that recognizes either language that will also be a pushdown automaton.
 
