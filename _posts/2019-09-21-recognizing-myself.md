@@ -5,6 +5,8 @@ tags: [recursion,allonge,mermaid,wip]
 
 # Prelude
 
+(If you wish to skip the prelude, you can jump directly to the [Table of Contents](#table-of-contents))
+
 In casual programming conversation, a [Regular Expression], or *regex* (plural "regexen"),[^regex] is a sequence of characters that define a search pattern. They can also be used to validate that a string has a particular form. For example, `/ab*c/` is a regex that matches an `a`, zero or more `b`s, and then a `c`, anywhere in a string.
 
 [Regular Expression]: https://en.wikipedia.org/wiki/Regular_expression
