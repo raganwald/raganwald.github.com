@@ -85,6 +85,12 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 ---
 
+![Placeholder figs](/assets/images/pushdown/figs.jpg)
+
+*Placeholder for figs to be added later*
+
+---
+
 # Table of Contents
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
@@ -1880,7 +1886,7 @@ We could easily transform it into "one or more instances of 0" like this:
     0-.->|end|recognized(recognized)
 </div>
 
-A function to perform that transformation would be trivial. However, that would be adding a new function, and it would disrupt our assertion that everything we make with these tools is a regular language. So instead, we will create this:
+A function to perform that transformation directly on the description would be trivial. However, that would be adding a new function, and it would disrupt our assertion that everything we make with these tools is a regular language. So instead, we will create this:
 
 <div class="mermaid">
   graph LR
@@ -1906,6 +1912,8 @@ test(oneOrMore(symbol("0")), [
     '0' => true
     '00' => true
 ```
+
+Since we built `oneOrMore` as a convenience for writing `catenation` and `zeroOrMore`, we can continue to reason about anything we create with `oneOrMore` using what we already know about `catenation` and `oneOrMore`.
 
 ---
 
