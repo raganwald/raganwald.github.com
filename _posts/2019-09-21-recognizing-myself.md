@@ -91,7 +91,7 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 ---
 
-# Table of Contents
+# [Table of Contents](#table-of-contents)
 
 ### [Prelude](#prelude)
 
