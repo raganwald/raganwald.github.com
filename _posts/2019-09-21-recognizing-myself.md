@@ -135,7 +135,10 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
   - [implementing a recognizer for a set of symbols](#implementing-a-recognizer-for-a-set-of-symbols)
   - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
   - [implementing one-or-more](#implementing-one-or-more)
+  - [implementing permute](#implementing-permute)
   - [summarizing our conveniences](#summarizing-our-conveniences)
+
+[A Recognizer That Recognizes Finite State Machine Descriptions](#a-recognizer-that-recognizes-finite-state-machine-descriptions)
 
 ---
 
@@ -1920,6 +1923,72 @@ test(oneOrMore(symbol("0")), [
 
 Since we built `oneOrMore` as a convenience for writing `catenation` and `zeroOrMore`, we can continue to reason about anything we create with `oneOrMore` using what we already know about `catenation` and `oneOrMore`.
 
+### implementing permute
+
+Languages often have rules that allow for a certan number of things, but in any order. We can recognize such languages using catenation and alternation. For example, if we want to allow the letters `c`, `a`, and `t` in any order, we can write:
+
+```javascript
+union(
+  concatenate('symbol('c'), symbol('a'), symbol('t')'),
+  concatenate('symbol('a'), symbol('c'), symbol('t')'),
+  concatenate('symbol('t'), symbol('c'), symbol('a')'),
+  concatenate('symbol('c'), symbol('t'), symbol('a')'),
+  concatenate('symbol('a'), symbol('t'), symbol('c')'),
+  concatenate('symbol('t'), symbol('a'), symbol('c')')
+)
+```
+
+We can write a function to perform permutations for us. If we restrict it to using `concatenate` and `union` as we did above, it will provide no more power than the tools we already have:
+
+```javascript
+function permute (...descriptions) {
+  function permuteArray(permutation) {
+    const length = permutation.length,
+          result = [permutation.slice()],
+          c = new Array(length).fill(0);
+
+    let i = 1;
+
+    while (i < length) {
+      if (c[i] < i) {
+        const k = i % 2 && c[i];
+        const p = permutation[i];
+        permutation[i] = permutation[k];
+        permutation[k] = p;
+        ++c[i];
+        i = 1;
+        result.push(permutation.slice());
+      } else {
+        c[i] = 0;
+        ++i;
+      }
+    }
+    return result;
+  }
+
+  return union(
+    ...permuteArray(descriptions).map(
+      elements => catenation(...elements)
+    )
+  )
+}
+
+const scrambledFeline = permute(symbol('c'), symbol('a'), symbol('t'));
+
+test(scrambledFeline, [
+  '', 'cct', 'cat', 'act',
+  'tca', 'cta', 'atc', 'tac'
+])
+  //=>
+    '' => false
+    'cct' => false
+    'cat' => true
+    'act' => true
+    'tca' => true
+    'cta' => true
+    'atc' => true
+    'tac' => true
+```
 
 ### summarizing our conveniences
 
@@ -1936,6 +2005,269 @@ In sum, we now have some very convenient tools for building finite state automat
 - Regex allows us to specify zero or one, zero or more, and one or more, e.g. `/[abc]?/`, `/[abc]*/`, and `/[abc]+/`.
 - Regex allows us to catenate specifications by default, e.g. `/[abc][def]/`;
 - Regex allows us to alternate specifications, e.g. `/[abc]|[def]/`.
+
+We also created `permute`. It recognizes any permutation of a set of descriptions. As it builds the result by taking the union of the catenation of existing descriptions, we know that if `permute` is given descriptions of finite state automata, it also returns a description of a finite state automaton.
+
+## A Recognizer That Recognizes Finite State Machine Descriptions
+
+Armed with our tools, we can build a finite state machine that recognizes descriptions of finite state machines:
+
+```javascript
+let startMap = symbol('{');
+let endMap = symbol('}');
+
+let whitespace = oneOrMore(any(' \t\r\n'));
+let optionalWhitespace = zeroOrOne(whitespace);
+
+let colon = symbol(':');
+
+let startLabel = union(
+  catenation(string('start'), optionalWhitespace, colon),
+  catenation(string('"start"'), optionalWhitespace, colon),
+  catenation(string("'start'"), optionalWhitespace, colon)
+);
+
+let singleSymbol = any(
+  '[]{}<>+' +
+  '0123456789 ' +
+  'abcdefghijklmnopqrstuvwxyz-' +
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ_'
+);
+let state = oneOrMore(singleSymbol);
+let singleQuotedState = catenation(
+  symbol("'"),
+  state,
+  symbol("'")
+);
+let doubleQuotedState = catenation(
+  symbol('"'),
+  state,
+  symbol('"')
+);
+let quotedState = union(singleQuotedState, doubleQuotedState);
+
+let startClause = catenation(
+  optionalWhitespace, startLabel, optionalWhitespace, quotedState, optionalWhitespace
+);
+
+let acceptingLabel = union(
+  catenation(string('accepting'), optionalWhitespace, colon),
+  catenation(string('"accepting"'), optionalWhitespace, colon),
+  catenation(string("'accepting'"), optionalWhitespace, colon)
+);
+
+let acceptingClause = catenation(
+  optionalWhitespace, acceptingLabel, optionalWhitespace, quotedState, optionalWhitespace
+);
+
+let transitionsLabel = union(
+  catenation(string('transitions'), optionalWhitespace, colon),
+  catenation(string('"transitions"'), optionalWhitespace, colon),
+  catenation(string("'transitions'"), optionalWhitespace, colon)
+);
+
+let fromLabel = union(
+  catenation(string('from'), optionalWhitespace, colon),
+  catenation(string('"from"'), optionalWhitespace, colon),
+  catenation(string("'from'"), optionalWhitespace, colon)
+);
+
+let fromClause = catenation(
+  optionalWhitespace, fromLabel, optionalWhitespace, quotedState, optionalWhitespace
+);
+
+let singleQuotedSymbol = catenation(
+  symbol("'"),
+  singleSymbol,
+  symbol("'")
+);
+let doubleQuotedSymbol = catenation(
+  symbol('"'),
+  singleSymbol,
+  symbol('"')
+);
+let quotedSymbol = union(singleQuotedSymbol, doubleQuotedSymbol);
+
+let consumeLabel = union(
+  catenation(string('consume'), optionalWhitespace, colon),
+  catenation(string('"consume"'), optionalWhitespace, colon),
+  catenation(string("'consume'"), optionalWhitespace, colon)
+);
+
+let consumable = union(quotedSymbol, string("''"), string('""'));
+
+let consumeClause = catenation(
+  optionalWhitespace, consumeLabel, optionalWhitespace, consumable, optionalWhitespace
+);
+
+let popLabel = union(
+  catenation(string('pop'), optionalWhitespace, colon),
+  catenation(string('"pop"'), optionalWhitespace, colon),
+  catenation(string("'pop'"), optionalWhitespace, colon)
+);
+
+let popClause = catenation(
+  optionalWhitespace, popLabel, optionalWhitespace, quotedSymbol, optionalWhitespace
+);
+
+let toLabel = union(
+  catenation(string('to'), optionalWhitespace, colon),
+  catenation(string('"to"'), optionalWhitespace, colon),
+  catenation(string("'to'"), optionalWhitespace, colon)
+);
+
+let toClause = catenation(
+  optionalWhitespace, toLabel, optionalWhitespace, quotedState, optionalWhitespace
+);
+
+let pushLabel = union(
+  catenation(string('push'), optionalWhitespace, colon),
+  catenation(string('"push"'), optionalWhitespace, colon),
+  catenation(string("'push'"), optionalWhitespace, colon)
+);
+
+let pushClause = catenation(
+  optionalWhitespace, pushLabel, optionalWhitespace, quotedSymbol, optionalWhitespace
+);
+
+let comma = symbol(',');
+
+let startsWithFrom = catenation(
+  fromClause,
+  union(
+    permute(
+      catenation(comma, optionalWhitespace, consumeClause),
+      zeroOrOne(catenation(comma, optionalWhitespace, popClause)),
+      zeroOrOne(catenation(comma, optionalWhitespace, toClause)),
+      zeroOrOne(catenation(comma, optionalWhitespace, pushClause))
+    ),
+    permute(
+      catenation(comma, optionalWhitespace, popClause),
+      zeroOrOne(catenation(comma, optionalWhitespace, toClause)),
+      zeroOrOne(catenation(comma, optionalWhitespace, pushClause))
+    ),
+    permute(
+      catenation(comma, optionalWhitespace, toClause),
+      zeroOrOne(catenation(comma, optionalWhitespace, pushClause))
+    )
+  )
+);
+
+let startsWithConsume = catenation(
+  consumeClause,
+  permute(
+    catenation(comma, optionalWhitespace, fromClause),
+    zeroOrOne(catenation(comma, optionalWhitespace, popClause)),
+    zeroOrOne(catenation(comma, optionalWhitespace, toClause)),
+    zeroOrOne(catenation(comma, optionalWhitespace, pushClause))
+  )
+);
+
+let startsWithPop = catenation(
+  popClause,
+  permute(
+    catenation(comma, optionalWhitespace, fromClause),
+    zeroOrOne(catenation(comma, optionalWhitespace, consumeClause)),
+    zeroOrOne(catenation(comma, optionalWhitespace, toClause)),
+    zeroOrOne(catenation(comma, optionalWhitespace, pushClause))
+  )
+);
+
+let startsWithTo = catenation(
+  toClause,
+  permute(
+    catenation(comma, optionalWhitespace, fromClause),
+    zeroOrOne(catenation(comma, optionalWhitespace, consumeClause)),
+    zeroOrOne(catenation(comma, optionalWhitespace, popClause)),
+    zeroOrOne(catenation(comma, optionalWhitespace, pushClause))
+  )
+);
+
+let startsWithPush = catenation(
+  pushClause,
+  union(
+    permute(
+      catenation(comma, optionalWhitespace, fromClause),
+      catenation(comma, optionalWhitespace, consumeClause),
+      zeroOrOne(catenation(comma, optionalWhitespace, popClause)),
+      zeroOrOne(catenation(comma, optionalWhitespace, toClause))
+    ),
+    permute(
+      catenation(comma, optionalWhitespace, fromClause),
+      catenation(comma, optionalWhitespace, popClause),
+      zeroOrOne(catenation(comma, optionalWhitespace, toClause))
+    ),
+    permute(
+      catenation(comma, optionalWhitespace, fromClause),
+      catenation(comma, optionalWhitespace, toClause)
+    )
+  )
+);
+
+let stateDescription = catenation(
+  startMap,
+  union(
+    startsWithFrom,
+    startsWithConsume,
+    startsWithPop,
+    startsWithTo,
+    startsWithPush
+  ),
+  endMap
+);
+
+let stateElement = catenation(
+  optionalWhitespace, stateDescription, optionalWhitespace
+);
+
+let stateList = catenation(
+  symbol('['),
+  stateElement,
+  zeroOrMore(
+    catenation(comma, stateElement)
+  ),
+  symbol(']')
+);
+
+let transitionsClause = catenation(
+  transitionsLabel, optionalWhitespace, stateList, optionalWhitespace
+);
+
+const description = catenation(
+  startMap,
+  union(
+    catenation(
+      startClause,
+      permute(
+        catenation(comma, acceptingClause),
+        catenation(comma, transitionsClause),
+      )
+    ),
+    catenation(
+      acceptingClause,
+      permute(
+        catenation(comma, startClause),
+        catenation(comma, transitionsClause),
+      )
+    ),
+    catenation(
+      transitionsClause,
+      permute(
+        catenation(comma, startClause),
+        catenation(comma, acceptingClause),
+      )
+    )
+  ),
+  endMap
+);
+
+test(description, [
+  JSON.stringify(EMPTY),
+  JSON.stringify(catenation(symbol('0'), zeroOrMore(any('01'))))
+]);
+  //=>
+    '{"start":"START","accepting":"RECOGNIZED","transitions":[{"from":"START","consume":"","to":"RECOGNIZED"}]}' => true '{"start":"START","accepting":"RECOGNIZED","transitions":[{"from":"START","consume":"0","to":"0"},{"from":"0","to":"START-2"},{"from":"START-2","consume":"","to":"RECOGNIZED"},{"from":"START-2","consume":"0","to":"0-2"},{"from":"0-2","to":"START-2"},{"from":"START-2","consume":"1","to":"1"},{"from":"1","to":"START-2"}]}' => true
+```
 
 ---
 
