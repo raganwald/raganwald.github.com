@@ -122,7 +122,7 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 ### [Regular Languages](#regular-languages-1)
 
-  - [what is a regular language](#what-is-a-regular-language)
+  - [what is a regular language?](#what-is-a-regular-language)
 
 [Making Regular Expressions More Convenient](#making-regular-expressions-more-convenient)
 
