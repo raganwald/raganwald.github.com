@@ -93,6 +93,11 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 # Table of Contents
 
+### [Prelude](#prelude)
+
+  - [today's essay](#todays-essay)
+  - [before we get started, a brief recapitulation of the previous essay](#before-we-get-started-a-brief-recapitulation-of-the-previous-essay)
+
 ### [Composeable Recognizers](#composeable-recognizers-1)
 
 [A few words about Functional Composition](#a-few-words-about-functional-composition)
@@ -130,7 +135,7 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
   - [implementing a recognizer for a set of symbols](#implementing-a-recognizer-for-a-set-of-symbols)
   - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
   - [implementing one-or-more](#implementing-one-or-more)
-
+  - [summarizing our conveniences](#summarizing-our-conveniences)
 
 ---
 
@@ -1863,7 +1868,7 @@ test(reginaldOrBust, [
     'reginald' => true
 ```
 
-Once again, `zerOrOne` doesn't give us anything that we didn't already have with `EMPTY` and `union`. But it is a convenience.
+Once again, `zeroOrOne` doesn't give us anything that we didn't already have with `EMPTY` and `union`. But it is a convenience.
 
 ---
 
@@ -1914,6 +1919,23 @@ test(oneOrMore(symbol("0")), [
 ```
 
 Since we built `oneOrMore` as a convenience for writing `catenation` and `zeroOrMore`, we can continue to reason about anything we create with `oneOrMore` using what we already know about `catenation` and `oneOrMore`.
+
+
+### summarizing our conveniences
+
+We've transformed `catenation` and `union` from binary to n-ary functions. Because we did so by applyimnhg the binary functions we already had, we preserve what we have learned about them, that given descriptions for two or more finite state automata as arguments, the description returned will be for a finite state automaton.
+
+We also created `any` and `string`, recognizers for sets of symbols and strings of symbols. Since we implemented these with `symbol`, `union`, and `catenation`, we know that the descriptions they produce are for finte state automata.
+
+We created `zeroOrOne` and `oneOrMore`, functions that transform recognizers. Since wwe implemented these with `EMPTY`, `union`, and `catenation`, we know that given descriptions of finite state automata, they return descriptions of finite state automata.
+
+In sum, we now have some very convenient tools for building finite state automata that recognize languages. Tools that are very familiar to regex users:
+
+- Regex allows us to specify strings of symbols, e.g. `/foo/`;
+- Regex allows us to specify sets of symbols, e.g. `/[abc]/`;
+- Regex allows us to specify zero or one, zero or more, and one or more, e.g. `/[abc]?/`, `/[abc]*/`, and `/[abc]+/`.
+- Regex allows us to catenate specifications by default, e.g. `/[abc][def]/`;
+- Regex allows us to alternate specifications, e.g. `/[abc]|[def]/`.
 
 ---
 
