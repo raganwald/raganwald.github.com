@@ -2010,7 +2010,7 @@ We also created `permute`. It recognizes any permutation of a set of description
 
 ## A Recognizer That Recognizes Finite State Machine Descriptions
 
-Armed with our tools, we can build a finite state machine that recognizes descriptions of finite state machines. It recognizes a subset of all of teh possible ASCII characters we might build such recognizers to recognize, but it gets the point across:
+Armed with our tools, we can build a finite state machine that recognizes descriptions of finite state machines. It recognizes a subset of all of the possible ASCII characters we might build such recognizers to recognize, but it gets the point across:
 
 ```javascript
 let startMap = symbol('{');
@@ -2263,6 +2263,8 @@ const description = catenation(
 
 This "compiles" to a description of a recognizer with [2,361,529 states](/assets/supplementa/pushdown/description.pp.json.zip)!
 
+We'll get back to its size in a moment. Does it work? Yes it does, although it is slow:
+
 ```javascript
 test(description, [
   JSON.stringify(EMPTY),
@@ -2271,6 +2273,12 @@ test(description, [
   //=>
     '{"start":"start","accepting":"accepting","transitions":[{"from":"start","consume":"","to":"accepting"}]}' => true '{"start":"start","accepting":"accepting","transitions":[{"from":"start","consume":"0","to":"0"},{"from":"0","to":"start-2"},{"from":"start-2","consume":"","to":"accepting"},{"from":"start-2","consume":"0","to":"0-2"},{"from":"0-2","to":"start-2"},{"from":"start-2","consume":"1","to":"1"},{"from":"1","to":"start-2"}]}' => true
 ```
+
+### the significance of our recognizer
+
+Before we look at our recognizer's size and slowness, let's acknowledge something remarkable: We have built a recognizer that recognizers recognizers. It recognizes a language for describing recognizers. It can even recognize itself, given a great deal of patience on our part.
+
+
 
 ---
 
