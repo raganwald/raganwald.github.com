@@ -303,15 +303,15 @@ And here is how we would represent it with data:
 
 ```JSON
 {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "consume": "0", "to": "zero" },
-    { "from": "zero", "consume": "", "to": "RECOGNIZED" },
-    { "from": "START", "consume": "1", "to": "one-or-more" },
+    { "from": "start", "consume": "0", "to": "zero" },
+    { "from": "zero", "consume": "", "to": "accepting" },
+    { "from": "start", "consume": "1", "to": "one-or-more" },
     { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
     { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-    { "from": "one-or-more", "consume": "", "to": "RECOGNIZED" }
+    { "from": "one-or-more", "consume": "", "to": "accepting" }
   ]
 }
 ```
@@ -422,15 +422,15 @@ function test (description, examples) {
 }
 
 const binary = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "consume": "0", "to": "zero" },
-    { "from": "zero", "consume": "", "to": "RECOGNIZED" },
-    { "from": "START", "consume": "1", "to": "one-or-more" },
+    { "from": "start", "consume": "0", "to": "zero" },
+    { "from": "zero", "consume": "", "to": "accepting" },
+    { "from": "start", "consume": "1", "to": "one-or-more" },
     { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
     { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-    { "from": "one-or-more", "consume": "", "to": "RECOGNIZED" }
+    { "from": "one-or-more", "consume": "", "to": "accepting" }
   ]
 };
 
@@ -463,17 +463,17 @@ Here we use it with a description for balanced parentheses. This does `push` and
 
 ```javascript
 const balanced = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "push": "⚓︎", "to": "read" },
+    { "from": "start", "push": "⚓︎", "to": "read" },
     { "from": "read", "consume": "(", "push": "(", "to": "read" },
     { "from": "read", "consume": ")", "pop": "(", "to": "read" },
     { "from": "read", "consume": "[", "push": "[", "to": "read" },
     { "from": "read", "consume": "]", "pop": "[", "to": "read" },
     { "from": "read", "consume": "{", "push": "{", "to": "read" },
     { "from": "read", "consume": "}", "pop": "{", "to": "read" },
-    { "from": "read", "consume": "", "pop": "⚓︎", "to": "RECOGNIZED" }
+    { "from": "read", "consume": "", "pop": "⚓︎", "to": "accepting" }
   ]
 };
 
@@ -499,10 +499,10 @@ Finally, even- and odd-length binary palindromes. Not only does `palindrome` bot
 
 ```javascript
 const palindrome = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "push": "⚓︎", "to": "first" },
+    { "from": "start", "push": "⚓︎", "to": "first" },
     { "from": "first", "consume": "0", "push": "0", "to": "left" },
     { "from": "first", "consume": "1", "push": "1", "to": "left" },
     { "from": "first", "consume": "0", "to": "right" },
@@ -515,7 +515,7 @@ const palindrome = {
     { "from": "left", "consume": "1", "pop": "1", "to": "right" },
     { "from": "right", "consume": "0", "pop": "0" },
     { "from": "right", "consume": "1", "pop": "1" },
-    { "from": "right", "consume": "", "pop": "⚓︎", to: "RECOGNIZED" }
+    { "from": "right", "consume": "", "pop": "⚓︎", to: "accepting" }
   ]
 };
 
@@ -573,8 +573,8 @@ If we were to catenate these two recognizers, what would it look like? Perhaps t
   graph LR
     start(start)-->|!|endable
     endable-->|!|endable
-    endable-.->START-2
-    START-2-->|?|endable-2
+    endable-.->start-2
+    start-2-->|?|endable-2
     endable-2-->|?|endable-2
     endable-2-.->|end|recognized(recognized)
 </div>
@@ -583,22 +583,22 @@ And here are their descriptions:
 
 ```javascript
 const exclamatory = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "consume": "!", "to": "endable" },
+    { "from": "start", "consume": "!", "to": "endable" },
     { "from": "endable", "consume": "!" },
-    { "from": "endable", "consume": "", "to": "RECOGNIZED" }
+    { "from": "endable", "consume": "", "to": "accepting" }
   ]
 };
 
 const interrogative = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "consume": "?", "to": "endable" },
+    { "from": "start", "consume": "?", "to": "endable" },
     { "from": "endable", "consume": "?" },
-    { "from": "endable", "consume": "", "to": "RECOGNIZED" }
+    { "from": "endable", "consume": "", "to": "accepting" }
   ]
 };
 ```
@@ -607,24 +607,24 @@ What would the descriptions look like when catenated? Perhaps this:
 
 ```JSON
 const interrobang = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "consume": "!", "to": "endable" },
+    { "from": "start", "consume": "!", "to": "endable" },
     { "from": "endable", "consume": "!" },
-    { "from": "endable", "to": "START-2" },
-    { "from": "START-2", "consume": "?", "to": "endable-2" },
+    { "from": "endable", "to": "start-2" },
+    { "from": "start-2", "consume": "?", "to": "endable-2" },
     { "from": "endable-2", "consume": "?" },
-    { "from": "endable-2", "consume": "", "to": "RECOGNIZED" }
+    { "from": "endable-2", "consume": "", "to": "accepting" }
   ]
 };
 ```
 
 We've made a couple of changes:
 
-In the second description, we changed `START` to `START-2`, so that it would not conflict with `START` in the first recognizer. We always have to rename states so that there are no conflicts between the two recognizers.
+In the second description, we changed `start` to `start-2`, so that it would not conflict with `start` in the first recognizer. We always have to rename states so that there are no conflicts between the two recognizers.
 
-Second, in the first recognizer, wherever we had a `"to": "RECOGNIZED"`, we changed it to `"to": "START-2"`. Transitions to the recognized state of the first recognizer are now transitions to the start state of the second recognizer.
+Second, in the first recognizer, wherever we had a `"to": "accepting"`, we changed it to `"to": "start-2"`. Transitions to the recognized state of the first recognizer are now transitions to the start state of the second recognizer.
 
 Third, wherever we had a `"consume": ""` in the first recognizer, we removed it outright. Any transition that is possible at the end of a string when the recognizer is running  by itself, is possible at any point in the string when the recognizer is catenated with another recognizer.
 
@@ -710,15 +710,15 @@ And here it is in action:
 
 ```javascript
 const catenatableInterrogative =
-  prepareSecondForCatenation("START", "RECOGNIZED", exclamatory, interrogative)
+  prepareSecondForCatenation("start", "accepting", exclamatory, interrogative)
     //=>
       {
-        "start": "START-2",
-        "accepting": "RECOGNIZED",
+        "start": "start-2",
+        "accepting": "accepting",
         "transitions": [
-          { "from": "START-2", "consume": "?", "to": "endable-2" },
+          { "from": "start-2", "consume": "?", "to": "endable-2" },
           { "from": "endable-2", "consume": "?" },
-          { "from": "endable-2", "consume": "", "to": "RECOGNIZED" }
+          { "from": "endable-2", "consume": "", "to": "accepting" }
         ]
       }
 ```
@@ -757,15 +757,15 @@ And here it is in action:
 
 ```javascript
 const catenatableExclamatory =
-  prepareFirstForCatenation("START", "RECOGNIZED", exclamatory, catenatableInterrogative)
+  prepareFirstForCatenation("start", "accepting", exclamatory, catenatableInterrogative)
     //=>
       {
-        "start": "START",
-        "accepting": "RECOGNIZED",
+        "start": "start",
+        "accepting": "accepting",
         "transitions": [
-          { "from": "START", "consume": "!", "to": "endable" },
+          { "from": "start", "consume": "!", "to": "endable" },
           { "from": "endable", "consume": "!" },
-          { "from": "endable", "to": "START-2" }
+          { "from": "endable", "to": "start-2" }
         ]
       }
 ```
@@ -776,8 +776,8 @@ Stitching them together, we get:[^names]
 
 ```javascript
 function catenation (first, second) {
-  const start = "START";
-  const accepting = "RECOGNIZED";
+  const start = "start";
+  const accepting = "accepting";
 
   const catenatableSecond = prepareSecondForCatenation(start, accepting, first, second);
   const catenatableFirst = prepareFirstForCatenation(start, accepting, first, catenatableSecond);
@@ -798,15 +798,15 @@ And when we try it:
 const interrobang = catenation(exclamatory, interrogative)
   //=>
     {
-      "start": "START",
-      "accepting": "RECOGNIZED",
+      "start": "start",
+      "accepting": "accepting",
       "transitions": [
-        { "from": "START", "consume": "!", "to": "endable" },
+        { "from": "start", "consume": "!", "to": "endable" },
         { "from": "endable", "consume": "!" },
-        { "from": "endable", "to": "START-2" },
-        { "from": "START-2", "consume": "?", "to": "endable-2" },
+        { "from": "endable", "to": "start-2" },
+        { "from": "start-2", "consume": "?", "to": "endable-2" },
         { "from": "endable-2", "consume": "?" },
-        { "from": "endable-2", "consume": "", "to": "RECOGNIZED" }
+        { "from": "endable-2", "consume": "", "to": "accepting" }
       ]
     }
 ```
@@ -895,18 +895,18 @@ function isolatedStack (start, accepting, description) {
 This function doesn't change a finite state automaton:
 
 ```javascript
-isolatedStack("START", "RECOGNIZED", binary)
+isolatedStack("start", "accepting", binary)
   //=>
     {
-      "start": "START",
-      "accepting": "RECOGNIZED",
+      "start": "start",
+      "accepting": "accepting",
       "transitions": [
-        { "from": "START", "consume": "0", "to": "zero" },
-        { "from": "zero", "consume": "", "to": "RECOGNIZED" },
-        { "from": "START", "consume": "1", "to": "one-or-more" },
+        { "from": "start", "consume": "0", "to": "zero" },
+        { "from": "zero", "consume": "", "to": "accepting" },
+        { "from": "start", "consume": "1", "to": "one-or-more" },
         { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
         { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-        { "from": "one-or-more", "consume": "", "to": "RECOGNIZED" }
+        { "from": "one-or-more", "consume": "", "to": "accepting" }
       ]
     }
 ```
@@ -914,26 +914,26 @@ isolatedStack("START", "RECOGNIZED", binary)
 But it does change a pushdown automaton:
 
 ```javascript
-isolatedStack("START", "RECOGNIZED", balanced)
+isolatedStack("start", "accepting", balanced)
   //=>
     {
-      "start": "START",
-      "accepting": "RECOGNIZED",
+      "start": "start",
+      "accepting": "accepting",
       "transitions": [
-        { "from": "START", "push": "sentinel", "to": "START-2" },
-        { "from": "START-2", "to": "read", "push": "⚓︎" },
+        { "from": "start", "push": "sentinel", "to": "start-2" },
+        { "from": "start-2", "to": "read", "push": "⚓︎" },
         { "from": "read",  "consume": "(", "to": "read", "push": "(" },
         { "from": "read",  "consume": ")",  "pop": "(", "to": "read" },
         { "from": "read",  "consume": "[", "to": "read", "push": "[" },
         { "from": "read",  "consume": "]",  "pop": "[", "to": "read" },
         { "from": "read",  "consume": "{", "to": "read", "push": "{" },
         { "from": "read",  "consume": "}",  "pop": "{", "to": "read" },
-        { "from": "read",  "consume": "",  "pop": "⚓︎", "to": "RECOGNIZED-2" },
-        { "from": "RECOGNIZED-2",  "pop": "⚓︎" },
-        { "from": "RECOGNIZED-2",  "pop": "(" },
-        { "from": "RECOGNIZED-2",  "pop": "[" },
-        { "from": "RECOGNIZED-2",  "pop": "{" },
-        { "from": "RECOGNIZED-2",  "pop": "sentinel", "to": "RECOGNIZED" }
+        { "from": "read",  "consume": "",  "pop": "⚓︎", "to": "accepting-2" },
+        { "from": "accepting-2",  "pop": "⚓︎" },
+        { "from": "accepting-2",  "pop": "(" },
+        { "from": "accepting-2",  "pop": "[" },
+        { "from": "accepting-2",  "pop": "{" },
+        { "from": "accepting-2",  "pop": "sentinel", "to": "accepting" }
       ]
     }
 ```
@@ -981,25 +981,25 @@ We can check that it isolates the stack:
 catenation(binary, fraction)
   //=>
     {
-      "start": "START",
-      "accepting": "RECOGNIZED-2",
+      "start": "start",
+      "accepting": "accepting-2",
       "transitions": [
-        { "from": "START", "consume": "0", "to": "zero" },
-        { "from": "zero", "to": "START-2" },
-        { "from": "START", "consume": "1", "to": "one-or-more" },
+        { "from": "start", "consume": "0", "to": "zero" },
+        { "from": "zero", "to": "start-2" },
+        { "from": "start", "consume": "1", "to": "one-or-more" },
         { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
         { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-        { "from": "one-or-more", "to": "START-2" },
-        { "from": "START-2", "consume": "", "to": "RECOGNIZED-2" },
-        { "from": "START-2", "consume": ".", "to": "point" },
+        { "from": "one-or-more", "to": "start-2" },
+        { "from": "start-2", "consume": "", "to": "accepting-2" },
+        { "from": "start-2", "consume": ".", "to": "point" },
         { "from": "point", "consume": "0", "to": "point-zero" },
         { "from": "point", "consume": "1", "to": "endable" },
-        { "from": "point-zero", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "point-zero", "consume": "", "to": "accepting-2" },
         { "from": "point-zero", "consume": "0", "to": "not-endable" },
         { "from": "point-zero", "consume": "1", "to": "endable" },
         { "from": "not-endable", "consume": "0" },
         { "from": "not-endable", "consume": "1", "to": "endable" },
-        { "from": "endable", "consume": "", "to": "RECOGNIZED-2" },
+        { "from": "endable", "consume": "", "to": "accepting-2" },
         { "from": "endable", "consume": "0", "to": "not-endable" },
         { "from": "endable", "consume": "1" }
       ]
@@ -1008,24 +1008,24 @@ catenation(binary, fraction)
 catenation(balanced, palindrome)
   //=>
     {
-      "start": "START",
-      "accepting": "RECOGNIZED-3",
+      "start": "start",
+      "accepting": "accepting-3",
       "transitions": [
-        { "from": "START", "to": "START-2", "push": "sentinel" },
-        { "from": "START-2", "to": "read", "push": "⚓︎" },
+        { "from": "start", "to": "start-2", "push": "sentinel" },
+        { "from": "start-2", "to": "read", "push": "⚓︎" },
         { "from": "read", "consume": "(", "to": "read", "push": "(" },
         { "from": "read", "consume": ")", "pop": "(", "to": "read" },
         { "from": "read", "consume": "[", "to": "read", "push": "[" },
         { "from": "read", "consume": "]", "pop": "[", "to": "read" },
         { "from": "read", "consume": "{", "to": "read", "push": "{" },
         { "from": "read", "consume": "}", "pop": "{", "to": "read" },
-        { "from": "read", "pop": "⚓︎", "to": "RECOGNIZED-2" },
-        { "from": "RECOGNIZED-2", "pop": "⚓︎" },
-        { "from": "RECOGNIZED-2", "pop": "(" },
-        { "from": "RECOGNIZED-2", "pop": "[" },
-        { "from": "RECOGNIZED-2", "pop": "{" },
-        { "from": "RECOGNIZED-2", "pop": "sentinel", "to": "START-3" },
-        { "from": "START-3", "to": "first", "push": "⚓︎" },
+        { "from": "read", "pop": "⚓︎", "to": "accepting-2" },
+        { "from": "accepting-2", "pop": "⚓︎" },
+        { "from": "accepting-2", "pop": "(" },
+        { "from": "accepting-2", "pop": "[" },
+        { "from": "accepting-2", "pop": "{" },
+        { "from": "accepting-2", "pop": "sentinel", "to": "start-3" },
+        { "from": "start-3", "to": "first", "push": "⚓︎" },
         { "from": "first", "consume": "0", "to": "left", "push": "0" },
         { "from": "first", "consume": "1", "to": "left", "push": "1" },
         { "from": "first", "consume": "0", "to": "right" },
@@ -1038,7 +1038,7 @@ catenation(balanced, palindrome)
         { "from": "left", "consume": "1", "pop": "1", "to": "right" },
         { "from": "right", "consume": "0", "pop": "0" },
         { "from": "right", "consume": "1", "pop": "1" },
-        { "from": "right", "consume": "", "pop": "⚓︎", "to": "RECOGNIZED-3" }
+        { "from": "right", "consume": "", "pop": "⚓︎", "to": "accepting-3" }
       ]
     }
 
@@ -1085,17 +1085,17 @@ Recall our balanced parentheses recognizer:
 
 ```javascript
 const balanced = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "push": "⚓︎", "to": "read" },
+    { "from": "start", "push": "⚓︎", "to": "read" },
     { "from": "read", "consume": "(", "push": "(", "to": "read" },
     { "from": "read", "consume": ")", "pop": "(", "to": "read" },
     { "from": "read", "consume": "[", "push": "[", "to": "read" },
     { "from": "read", "consume": "]", "pop": "[", "to": "read" },
     { "from": "read", "consume": "{", "push": "{", "to": "read" },
     { "from": "read", "consume": "}", "pop": "{", "to": "read" },
-    { "from": "read", "consume": "", "pop": "⚓︎", "to": "RECOGNIZED" }
+    { "from": "read", "consume": "", "pop": "⚓︎", "to": "accepting" }
   ]
 };
 ```
@@ -1104,12 +1104,12 @@ It is clearly deterministic, there is only one unambiguous transition that cana 
 
 ```javascript
 const pair = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "consume": "(", "to": "closing" },
+    { "from": "start", "consume": "(", "to": "closing" },
     { "from": "closing", "consume": ")", "to": "closed" },
-    { "from": "closed", "consume": "", "to": "RECOGNIZED" }
+    { "from": "closed", "consume": "", "to": "accepting" }
   ]
 };
 
@@ -1131,20 +1131,20 @@ What happens when we catenate them?
 catenation(balanced, pair)
   //=>
     {
-      "start": "START",
-      "accepting": "RECOGNIZED-2",
+      "start": "start",
+      "accepting": "accepting-2",
       "transitions": [
-        { "from": "START", "to": "read", "push": "⚓︎" },
+        { "from": "start", "to": "read", "push": "⚓︎" },
         { "from": "read", "consume": "(", "to": "read", "push": "(" },
         { "from": "read", "consume": ")", "pop": "(", "to": "read" },
         { "from": "read", "consume": "[", "to": "read", "push": "[" },
         { "from": "read", "consume": "]", "pop": "[", "to": "read" },
         { "from": "read", "consume": "{", "to": "read", "push": "{" },
         { "from": "read", "consume": "}", "pop": "{", "to": "read" },
-        { "from": "read", "pop": "⚓︎", "to": "START-2" },
-        { "from": "START-2", "consume": "(", "to": "closing" },
+        { "from": "read", "pop": "⚓︎", "to": "start-2" },
+        { "from": "start-2", "consume": "(", "to": "closing" },
         { "from": "closing", "consume": ")", "to": "closed" },
-        { "from": "closed", "consume": "", "to": "RECOGNIZED-2" }
+        { "from": "closed", "consume": "", "to": "accepting-2" }
       ]
     }
 
@@ -1157,7 +1157,7 @@ test(catenation(balanced, pair), [
     '()()' => true
 ```
 
-Our `catenation` function has transformed a deterministic pushdown automaton into a pushdown automaton.  How do we know this? Consider the fact that it recognized both `()` and `()()`. To recognize `()`, it transitioned from `read` to `START-2` while popping `⚓︎`, even though it could also have consumed `(` and pushed it onto the stack.
+Our `catenation` function has transformed a deterministic pushdown automaton into a pushdown automaton.  How do we know this? Consider the fact that it recognized both `()` and `()()`. To recognize `()`, it transitioned from `read` to `start-2` while popping `⚓︎`, even though it could also have consumed `(` and pushed it onto the stack.
 
 But to recognize `()()`, it consumed the first `(` and pushed it onto the stack, but not the second `(`. This is only possible in a Pushdown Automaton. So our `catenation` function doesn't tell us anything about whether two deterministic pushdown automata can always be catenated in such a way to produce a deterministic pushdown automaton.
 
@@ -1171,8 +1171,8 @@ Implementing alternation is a little simpler than implementing catenation. Once 
 
 ```javascript
 function union (first, second) {
-  const start = "START";
-  const accepting = "RECOGNIZED";
+  const start = "start";
+  const accepting = "accepting";
 
   const conformingFirst = renameStates(
     { [first.start]: start, [first.accepting]: accepting },
@@ -1221,15 +1221,15 @@ And now, the alternation of the two rather than the catenation:
 union(exclamatory, interrogative)
   //=>
     {
-      "start": "START",
-      "accepting": "RECOGNIZED",
+      "start": "start",
+      "accepting": "accepting",
       "transitions": [
-        { "from": "START", "consume": "!", "to": "endable" },
+        { "from": "start", "consume": "!", "to": "endable" },
         { "from": "endable", "consume": "!" },
-        { "from": "endable", "consume": "", "to": "RECOGNIZED" },
-        { "from": "START", "consume": "?", "to": "endable-2" },
+        { "from": "endable", "consume": "", "to": "accepting" },
+        { "from": "start", "consume": "?", "to": "endable-2" },
         { "from": "endable-2", "consume": "?" },
-        { "from": "endable-2", "consume": "", "to": "RECOGNIZED" }
+        { "from": "endable-2", "consume": "", "to": "accepting" }
       ]
     }
 ```
@@ -1327,8 +1327,8 @@ function rootStart (description) {
 }
 
 function union (first, second) {
-  const start = "START";
-  const accepting = "RECOGNIZED";
+  const start = "start";
+  const accepting = "accepting";
 
   const rootFirst = rootStart(first);
   const rootSecond = rootStart(second);
@@ -1362,38 +1362,38 @@ And in action:
 
 ```javascript
 const backspaces = {
-  start: "START",
-  accepting: "RECOGNIZED",
+  start: "start",
+  accepting: "accepting",
   transitions: [
-    { from: "START", consume: "^", to: "ctrl" },
-    { from: "START", consume: "", to: "RECOGNIZED" },
-    { from: "ctrl", consume: "H", to: "START" }
+    { from: "start", consume: "^", to: "ctrl" },
+    { from: "start", consume: "", to: "accepting" },
+    { from: "ctrl", consume: "H", to: "start" }
   ]
 }
 
 const exclamatory = {
-  "start": "START",
-  "accepting": "RECOGNIZED",
+  "start": "start",
+  "accepting": "accepting",
   "transitions": [
-    { "from": "START", "consume": "!", "to": "endable" },
+    { "from": "start", "consume": "!", "to": "endable" },
     { "from": "endable", "consume": "!" },
-    { "from": "endable", "consume": "", "to": "RECOGNIZED" }
+    { "from": "endable", "consume": "", "to": "accepting" }
   ]
 };
 
 union(backspaces, exclamatory)
   //=>
     {
-      "start": "START",
-      "accepting": "RECOGNIZED",
+      "start": "start",
+      "accepting": "accepting",
       "transitions": [
-        { "from": "START", "to": "START-2" },
-        { "from": "START-2", "consume": "^", "to": "ctrl" },
-        { "from": "START-2", "consume": "", "to": "RECOGNIZED" },
-        { "from": "ctrl", "consume": "H", "to": "START-2" },
-        { "from": "START", "consume": "!", "to": "endable" },
+        { "from": "start", "to": "start-2" },
+        { "from": "start-2", "consume": "^", "to": "ctrl" },
+        { "from": "start-2", "consume": "", "to": "accepting" },
+        { "from": "ctrl", "consume": "H", "to": "start-2" },
+        { "from": "start", "consume": "!", "to": "endable" },
         { "from": "endable", "consume": "!" },
-        { "from": "endable", "consume": "", "to": "RECOGNIZED" }
+        { "from": "endable", "consume": "", "to": "accepting" }
       ]
     }
 ```
@@ -1444,9 +1444,9 @@ And here's our implementation:
 
 ```javascript
 const EMPTY = {
-  start: "START",
-  accepting: "RECOGNIZED",
-  transitions: [{ from: "START", consume: "", to: "RECOGNIZED" }]
+  start: "start",
+  accepting: "accepting",
+  transitions: [{ from: "start", consume: "", to: "accepting" }]
 };
 
 test(EMPTY, [
@@ -1469,11 +1469,11 @@ Like this:
 ```javascript
 function symbol (s) {
   return {
-    start: "START",
-    accepting: "RECOGNIZED",
+    start: "start",
+    accepting: "accepting",
     transitions: [
-      { from: "START", consume: s, to: s },
-      { from: s, consume: "", to: "RECOGNIZED" }
+      { from: "start", consume: s, to: s },
+      { from: s, consume: "", to: "accepting" }
     ]
   };
 }
@@ -1674,8 +1674,8 @@ Binary functions are easiest to reason about, but with some care we can transfor
 ```javascript
 function catenation (...descriptions) {
   function binaryCatenation (first, second) {
-    const start = "START";
-    const accepting = "RECOGNIZED";
+    const start = "start";
+    const accepting = "accepting";
 
     const catenatableSecond = prepareSecondForCatenation(start, accepting, first, second);
     const catenatableFirst = prepareFirstForCatenation(start, accepting, first, catenatableSecond);
@@ -1694,8 +1694,8 @@ function catenation (...descriptions) {
 
 function union (...descriptions) {
   function binaryUnion (first, second) {
-    const start = "START";
-    const accepting = "RECOGNIZED";
+    const start = "start";
+    const accepting = "accepting";
 
     const conformingFirst = renameStates(
       { [first.start]: start, [first.accepting]: accepting },
@@ -2010,7 +2010,7 @@ We also created `permute`. It recognizes any permutation of a set of description
 
 ## A Recognizer That Recognizes Finite State Machine Descriptions
 
-Armed with our tools, we can build a finite state machine that recognizes descriptions of finite state machines:
+Armed with our tools, we can build a finite state machine that recognizes descriptions of finite state machines. It recognizes a subset of all of teh possible ASCII characters we might build such recognizers to recognize, but it gets the point across:
 
 ```javascript
 let startMap = symbol('{');
@@ -2028,10 +2028,9 @@ let startLabel = union(
 );
 
 let singleSymbol = any(
-  '[]{}<>+' +
-  '0123456789 ' +
-  'abcdefghijklmnopqrstuvwxyz-' +
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ_'
+  ` \t\r\n:,[]{}-` +
+  '0123456789' +
+  'abcdefghijklmnopqrstuvwxyz'
 );
 let state = oneOrMore(singleSymbol);
 let singleQuotedState = catenation(
@@ -2260,13 +2259,16 @@ const description = catenation(
   ),
   endMap
 );
+```
+
+This "compiles" to a description of a recognizer with 31,110,529 states!
 
 test(description, [
   JSON.stringify(EMPTY),
   JSON.stringify(catenation(symbol('0'), zeroOrMore(any('01'))))
 ]);
   //=>
-    '{"start":"START","accepting":"RECOGNIZED","transitions":[{"from":"START","consume":"","to":"RECOGNIZED"}]}' => true '{"start":"START","accepting":"RECOGNIZED","transitions":[{"from":"START","consume":"0","to":"0"},{"from":"0","to":"START-2"},{"from":"START-2","consume":"","to":"RECOGNIZED"},{"from":"START-2","consume":"0","to":"0-2"},{"from":"0-2","to":"START-2"},{"from":"START-2","consume":"1","to":"1"},{"from":"1","to":"START-2"}]}' => true
+    '{"start":"start","accepting":"accepting","transitions":[{"from":"start","consume":"","to":"accepting"}]}' => true '{"start":"start","accepting":"accepting","transitions":[{"from":"start","consume":"0","to":"0"},{"from":"0","to":"start-2"},{"from":"start-2","consume":"","to":"accepting"},{"from":"start-2","consume":"0","to":"0-2"},{"from":"0-2","to":"start-2"},{"from":"start-2","consume":"1","to":"1"},{"from":"1","to":"start-2"}]}' => true
 ```
 
 ---
