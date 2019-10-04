@@ -2261,8 +2261,9 @@ const description = catenation(
 );
 ```
 
-This "compiles" to a description of a recognizer with 31,110,529 states!
+This "compiles" to a description of a recognizer with [2,361,529 states](/assets/supplementa/pushdown/description.pp.json.zip)!
 
+```javascript
 test(description, [
   JSON.stringify(EMPTY),
   JSON.stringify(catenation(symbol('0'), zeroOrMore(any('01'))))
