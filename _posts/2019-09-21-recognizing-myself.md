@@ -1923,6 +1923,8 @@ test(oneOrMore(symbol("0")), [
 
 Since we built `oneOrMore` as a convenience for writing `catenation` and `zeroOrMore`, we can continue to reason about anything we create with `oneOrMore` using what we already know about `catenation` and `oneOrMore`.
 
+---
+
 ### implementing permute
 
 Languages often have rules that allow for a certan number of things, but in any order. We can recognize such languages using catenation and alternation. For example, if we want to allow the letters `c`, `a`, and `t` in any order, we can write:
@@ -1990,6 +1992,8 @@ test(scrambledFeline, [
     'tac' => true
 ```
 
+---
+
 ### summarizing our conveniences
 
 We've transformed `catenation` and `union` from binary to n-ary functions. Because we did so by applyimnhg the binary functions we already had, we preserve what we have learned about them, that given descriptions for two or more finite state automata as arguments, the description returned will be for a finite state automaton.
@@ -2007,6 +2011,8 @@ In sum, we now have some very convenient tools for building finite state automat
 - Regex allows us to alternate specifications, e.g. `/[abc]|[def]/`.
 
 We also created `permute`. It recognizes any permutation of a set of descriptions. As it builds the result by taking the union of the catenation of existing descriptions, we know that if `permute` is given descriptions of finite state automata, it also returns a description of a finite state automaton.
+
+---
 
 ## A Recognizer That Recognizes Finite State Machine Descriptions
 
