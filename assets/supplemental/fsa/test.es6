@@ -1,4 +1,4 @@
-function toStateMap (transitions) {
+function toStateMap (transitions, allowNFA = false) {
   return transitions
       .reduce(
         (acc, transition) => {
@@ -46,7 +46,7 @@ function toStateMap (transitions) {
               )
               return acc;
             }
-            if (consume === existingConsume) {
+            if (!allowNFA && consume === existingConsume) {
               console.log(
                 `Transition ${JSON.stringify(transition)} creates non-determinism ` +
                 `between ${to} and ${existingTo}. ` +
@@ -284,23 +284,203 @@ const three = {
 //   '0', '101', '11111', , '111011'
 // ])
 
-console.log(product(theSame, three))
+// console.log(product(theSame, three))
 
-test(product(theSame, three, 'intersection'), [
-  '0', '000', '101', '11111', '111011'
-])
+// test(product(theSame, three, 'intersection'), [
+//   '0', '000', '101', '11111', '111011'
+// ])
 
+const delayedC = {
+  start: 'start',
+  accepting: 'c',
+  transitions: [
+    { from: 'start', to: 'a' },
+    { from: 'a', to: 'b' },
+    { from: 'b', to: 'c' },
+    { from: 'c', consume: 'c', to: 'c' }
+  ]
+};
 
+function reachableFromStart ({ start, accepting, transitions: allTransitions }) {
+  const stateMap = toStateMap(allTransitions);
+  const reachableMap = new Map();
+  const R = new Set([start]);
+
+  while (R.size > 0) {
+    const [state] = [...R];
+    R.delete(state);
+    const transitions = stateMap.get(state) || [];
+
+    // this state is reacdhable
+    reachableMap.set(state, transitions);
+
+    const reachableFromThisState =
+      transitions.map(({ to }) => to);
+
+    const unprocessedReachableFromThisState =
+      reachableFromThisState
+        .filter(to => !reachableMap.has(to) && !R.has(to));
+
+    for (const reachableState of unprocessedReachableFromThisState) {
+      R.add(reachableState);
+    }
+  }
+
+  return {
+    start,
+    accepting,
+    transitions: [...reachableMap.values()].flatMap(tt => tt)
+  };
+}
+
+const withOrphans = reachableFromStart(epsilonRemoved(delayedC));
+
+function statesOf(description) {
+  return description
+    .transitions
+      .reduce(
+        (states, { from, to }) => {
+          if (from != null) states.add(from);
+          if (to != null) states.add(to);
+          return states;
+        },
+        new Set([description.start, description.accepting])
+      );
+}
+
+function renameStates (nameMap, description) {
+  const translate =
+    before =>
+      (nameMap[before] != null) ? nameMap[before] : before;
+
+  return {
+    start: translate(description.start),
+    accepting: translate(description.accepting),
+    transitions:
+    	description.transitions.map(
+      	({ from, consume, pop, to, push }) => {
+          const transition = { from: translate(from) };
+          if (consume != null) transition.consume = consume;
+          if (pop != null) transition.pop = pop;
+          if (to != null) transition.to = translate(to);
+          if (push != null) transition.push = push;
+
+          return transition;
+        }
+      )
+  };
+}
+
+function resolveCollisions(taken, description) {
+  const takenNames = new Set(taken);
+  const descriptionNames = statesOf(description);
+
+  const nameMap = {};
+
+  for (const descriptionName of descriptionNames) {
+    let name = descriptionName;
+    let counter = 2;
+    while (takenNames.has(name)) {
+      name = `${descriptionName}-${counter++}`;
+    }
+    if (name !== descriptionName) {
+  		nameMap[descriptionName] = name;
+    }
+    takenNames.add(name);
+  }
+
+  return renameStates(nameMap, description);
+}
+
+function prepareSecondForCatenation (start, accepting, first, second) {
+  const uncollidedSecond =  resolveCollisions(statesOf(first), second);
+
+  const acceptingSecond =
+    uncollidedSecond.accepting === accepting
+  	  ? uncollidedSecond
+      : renameStates({ [uncollidedSecond.accepting]: accepting }, uncollidedSecond);
+
+  return acceptingSecond;
+}
+
+function prepareFirstForCatenation(start, accepting, first, second) {
+  const nameMap = {
+    [first.accepting]: second.start,
+    [first.start]: start
+  };
+  const { transitions } =
+    renameStates(nameMap, first);
+
+  return {
+    start,
+    accepting,
+    transitions:
+  	  transitions.map(
+        ({ from, consume, pop, to, push }) => {
+          const transition = { from };
+          if (consume != null && consume !== "") transition.consume = consume;
+          if (pop != null) transition.pop = pop;
+          if (to != null) transition.to = to;
+          if (push != null) transition.push = push;
+
+          return transition;
+        }
+      )
+  };
+}
+
+function catenation (first, second) {
+  const start = "start";
+  const accepting = "accepting";
+
+  const catenatableSecond = prepareSecondForCatenation(start, accepting, first, second);
+  const catenatableFirst = prepareFirstForCatenation(start, accepting, first, catenatableSecond);
+
+  return {
+    start: start,
+    accepting: accepting,
+    transitions:
+      catenatableFirst.transitions
+        .concat(catenatableSecond.transitions)
+  };
+}
+
+const exclamatory = {
+  "start": "start",
+  "accepting": ["accepting"],
+  "transitions": [
+    { "from": "start", "consume": "!", "to": "endable" },
+    { "from": "endable", "consume": "!", "to": "endable" },
+    { "from": "endable", "consume": "", "to": "accepting" }
+  ]
+};
+
+const interrogative = {
+  "start": "start",
+  "accepting": ["accepting"],
+  "transitions": [
+    { "from": "start", "consume": "?", "to": "endable" },
+    { "from": "endable", "consume": "?", "to": "endable" },
+    { "from": "endable", "consume": "", "to": "accepting" }
+  ]
+};
+
+const interrobang = catenation(exclamatory, interrogative);
+
+const tightened = reachableFromStart(epsilonRemoved(interrobang));
+
+//////////////////////////////////////////////////////////////////
 
 function epsilonRemoved ({ start, accepting, transitions }) {
   const transitionsWithoutEpsilon =
     transitions
-    .filter(({ consume }) => consume != null);
+      .filter(({ consume }) => consume != null);
   const stateMapWithoutEpsilon = toStateMap(transitionsWithoutEpsilon);
   const epsilonMap =
     transitions
       .filter(({ consume }) => consume == null)
       .reduce((acc, { from, to }) => (acc.set(from, to), acc), new Map());
+  const acceptingSet = new Set(accepting);
 
   while (epsilonMap.size > 0) {
     let [[epsilonFrom, epsilonTo]] = [...epsilonMap.entries()];
@@ -333,8 +513,15 @@ function epsilonRemoved ({ start, accepting, transitions }) {
         ({ consume, to }) => ({ from: epsilonFrom, consume, to })
       );
 
+    const existingTransitions = stateMapWithoutEpsilon.get(epsilonFrom) || [];
+
     // now add the moved transitions
-    stateMapWithoutEpsilon.set(epsilonFrom, moved);
+    stateMapWithoutEpsilon.set(epsilonFrom, existingTransitions.concat(moved));
+
+    // special case!
+    if (acceptingSet.has(epsilonTo)) {
+      acceptingSet.add(epsilonFrom);
+    }
 
     // and remove the original from our epsilonMap
     epsilonMap.delete(epsilonFrom);
@@ -342,39 +529,151 @@ function epsilonRemoved ({ start, accepting, transitions }) {
 
   return {
     start,
-    accepting,
-    transitions: [...stateMapWithoutEpsilon.values()]
+    accepting: [...acceptingSet],
+    transitions: [
+      ...stateMapWithoutEpsilon
+        .values()
+
+    ].flatMap( tt => tt )
   };
 }
 
-function reachableFromStart ({ start, acceptimng, transitions: allTransitions }) {
-  const stateMap = toStateMap(allTransitions);
-  const reachableMap = new Map();
-  const R = new Set([start]);
+// takes an nfa without epsilons
+function dfa ({ start, accepting, transitions }) {
+  const singles =
+    transitions
+      .reduce(
+        (acc, { from, to }) => (acc.add(from), acc.add(to), acc)
+        ,
+        new Set()
+      );
+  const nameMap =
+    [...singles]
+      .reduce(
+        (acc, state) => (acc.set(state, state), acc),
+        new Map()
+      );
+  const separator = Math.random().toString().substring(2);
+  function name (states) {
+    const key = states.join(separator);
+
+    if (nameMap.has(key)) {
+      return nameMap.get(key);
+    } else {
+      const base = `{${states.join(',')}}`;
+      let readable = base;
+      let n = 1;
+
+      const existingStates = new Set([...nameMap.values()]);
+
+      while (existingStates.has(readable)) {
+        readable = `${base}-${++n}`;
+      }
+
+      return readable;
+    }
+  }
+
+  const nfaStateMap = toStateMap(transitions, true);
+  const dfaStateMap = new Map();
+  const nfaAcceptingSet = new Set(accepting);
+  const dfaAcceptingSet = new Set();
+
+  const R = new Map();
+  R.set(name([start]), [start]);
 
   while (R.size > 0) {
-    const [state] = [...R];
+    const [[state, states]] = [...R.entries()];
     R.delete(state);
-    const transitions = stateMap.get(state) || [];
 
-    // this state is reacdhable
-    reachableMap.set(state, transitions);
+    // get the aggregate transitions
+    const transitions =
+      states.flatMap(s => nfaStateMap.get(s) || []);
 
-    const reachableFromThisState =
-      transitions.map(({ to }) => to);
+    const distinctConsumptions =
+      new Set(transitions.map(({ consume }) => consume));
 
-    const unprocessedReachableFromThisState =
-      reachableFromThisState
-        .filter(to => !reachableMap.has(to) && !R.has(to));
+    const routes =
+      transitions.reduce(
+        (acc, { consume, to }) => {
+          acc.set(consume, (acc.get(consume) || []).concat([to]));
+          return acc;
+        },
+        new Map()
+      );
 
-    for (const reachableState of unprocessedReachableFromThisState) {
-      R.add(reachableState);
+    const nfaTransitions = [];
+  	for (const [consume, destinations] of routes.entries()) {
+      const destination = name(destinations);
+
+      nfaTransitions.push({ from: state, consume, to: destination });
+      if (!dfaStateMap.has(destination) && !R.has(destination)) {
+        R.set(destination, destinations);
+      }
     }
+
+    dfaStateMap.set(state, nfaTransitions);
+
+    const anyStateIsAccepting =
+      states.find(s => nfaAcceptingSet.has(s));
+    if (anyStateIsAccepting) {
+      dfaAcceptingSet.add(state);
+    }
+
   }
 
   return {
     start,
-    accepting,
-    transitions: [...reachableMap.values()]
+    accepting: [...dfaAcceptingSet],
+    transitions:
+      [...dfaStateMap.values()]
+        .flatMap(tt => tt)
   };
 }
+
+const fubar = {
+  start: 'start',
+  accepting: ['f'],
+  transitions: [
+    { from: 'start', consume: 'f', to: 'f' },
+    { from: 'start', consume: 'f', to: 'f-2' },
+    // { from: 'f', consume: 'u', to: 'fu' },
+    // { from: 'fo', consume: 'o', to: 'foo' },
+    // { from: 'f-2', consume: 'u', to: 'fu' },
+    // { from: 'fu', consume: 'b', to: 'fub' },
+    // { from: 'fub', consume: 'a', to: 'fuba' },
+    // { from: 'fuba', consume: 'r', to: 'fubar' }
+  ]
+};
+
+const r = {
+  start: 'start',
+  accepting: ['reginald', '.reggie'],
+  transitions: [
+    { from: 'start', consume: 'r', to: 'r' },
+    { from: 'r', consume: 'e', to: 're' },
+    { from: 're', consume: 'g', to: 'reg' },
+    { from: 'reg', consume: 'i', to: 'regi' },
+    { from: 'regi', consume: 'n', to: 'regin' },
+    { from: 'regin', consume: 'a', to: 'regina' },
+    { from: 'regina', consume: 'l', to: 'reginal' },
+    { from: 'reginal', consume: 'd', to: 'reginald' },
+    { from: 'start', consume: 'r', to: '.r' },
+    { from: '.r', consume: 'e', to: '.re' },
+    { from: '.re', consume: 'g', to: '.reg' },
+    { from: '.reg', consume: 'g', to: '.regg' },
+    { from: '.regg', consume: 'i', to: '.reggi' },
+    { from: '.reggi', consume: 'e', to: '.reggie' },
+  ]
+};
+
+const toWin = {
+  start: 'start',
+  accepting: ['accepting'],
+  transitions: [
+    { from: 'start', consume: '1', to: '1' },
+    { from: '1', to: 'accepting' }
+  ]
+};
+
+console.log({ toWin, epsilonRemoved: epsilonRemoved(toWin) })
