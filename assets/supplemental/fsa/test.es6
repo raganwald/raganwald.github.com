@@ -289,3 +289,92 @@ console.log(product(theSame, three))
 test(product(theSame, three, 'intersection'), [
   '0', '000', '101', '11111', '111011'
 ])
+
+
+
+function epsilonRemoved ({ start, accepting, transitions }) {
+  const transitionsWithoutEpsilon =
+    transitions
+    .filter(({ consume }) => consume != null);
+  const stateMapWithoutEpsilon = toStateMap(transitionsWithoutEpsilon);
+  const epsilonMap =
+    transitions
+      .filter(({ consume }) => consume == null)
+      .reduce((acc, { from, to }) => (acc.set(from, to), acc), new Map());
+
+  while (epsilonMap.size > 0) {
+    let [[epsilonFrom, epsilonTo]] = [...epsilonMap.entries()];
+
+    const seen = new Set([epsilonFrom]);
+
+    while (epsilonMap.has(epsilonTo)) {
+      if (seen.has(epsilonTo)) {
+        const display =
+          [...seen]
+            .map(f => `${f} -> ${epsilonMap.get(f)}`)
+            .join(', ');
+        console.log(`The epsilon path { ${display} } includes a loop. This is invalid.`);
+
+        return undefined;
+      }
+      epsilonFrom = epsilonTo;
+      epsilonTo = epsilonMap.get(epsilonFrom);
+      seen.add(epsilonFrom);
+    }
+
+    // from -> to is a valid epsilon transition
+    // remove it by making a copy of the destination
+    // (destination must not be an epson, by viture of above code)
+
+    const source =
+      stateMapWithoutEpsilon.get(epsilonTo) || [];
+    const moved =
+      source.map(
+        ({ consume, to }) => ({ from: epsilonFrom, consume, to })
+      );
+
+    // now add the moved transitions
+    stateMapWithoutEpsilon.set(epsilonFrom, moved);
+
+    // and remove the original from our epsilonMap
+    epsilonMap.delete(epsilonFrom);
+  }
+
+  return {
+    start,
+    accepting,
+    transitions: [...stateMapWithoutEpsilon.values()]
+  };
+}
+
+function reachableFromStart ({ start, acceptimng, transitions: allTransitions }) {
+  const stateMap = toStateMap(allTransitions);
+  const reachableMap = new Map();
+  const R = new Set([start]);
+
+  while (R.size > 0) {
+    const [state] = [...R];
+    R.delete(state);
+    const transitions = stateMap.get(state) || [];
+
+    // this state is reacdhable
+    reachableMap.set(state, transitions);
+
+    const reachableFromThisState =
+      transitions.map(({ to }) => to);
+
+    const unprocessedReachableFromThisState =
+      reachableFromThisState
+        .filter(to => !reachableMap.has(to) && !R.has(to));
+
+    for (const reachableState of unprocessedReachableFromThisState) {
+      R.add(reachableState);
+    }
+  }
+
+  return {
+    start,
+    accepting,
+    transitions: [...reachableMap.values()]
+  };
+}
