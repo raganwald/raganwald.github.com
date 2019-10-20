@@ -335,141 +335,9 @@ function reachableFromStart ({ start, accepting, transitions: allTransitions }) 
 
 const withOrphans = reachableFromStart(epsilonRemoved(delayedC));
 
-function statesOf(description) {
-  return description
-    .transitions
-      .reduce(
-        (states, { from, to }) => {
-          if (from != null) states.add(from);
-          if (to != null) states.add(to);
-          return states;
-        },
-        new Set([description.start, description.accepting])
-      );
-}
-
-function renameStates (nameMap, description) {
-  const translate =
-    before =>
-      (nameMap[before] != null) ? nameMap[before] : before;
-
-  return {
-    start: translate(description.start),
-    accepting: translate(description.accepting),
-    transitions:
-    	description.transitions.map(
-      	({ from, consume, pop, to, push }) => {
-          const transition = { from: translate(from) };
-          if (consume != null) transition.consume = consume;
-          if (pop != null) transition.pop = pop;
-          if (to != null) transition.to = translate(to);
-          if (push != null) transition.push = push;
-
-          return transition;
-        }
-      )
-  };
-}
-
-function resolveCollisions(taken, description) {
-  const takenNames = new Set(taken);
-  const descriptionNames = statesOf(description);
-
-  const nameMap = {};
-
-  for (const descriptionName of descriptionNames) {
-    let name = descriptionName;
-    let counter = 2;
-    while (takenNames.has(name)) {
-      name = `${descriptionName}-${counter++}`;
-    }
-    if (name !== descriptionName) {
-  		nameMap[descriptionName] = name;
-    }
-    takenNames.add(name);
-  }
-
-  return renameStates(nameMap, description);
-}
-
-function prepareSecondForCatenation (start, accepting, first, second) {
-  const uncollidedSecond =  resolveCollisions(statesOf(first), second);
-
-  const acceptingSecond =
-    uncollidedSecond.accepting === accepting
-  	  ? uncollidedSecond
-      : renameStates({ [uncollidedSecond.accepting]: accepting }, uncollidedSecond);
-
-  return acceptingSecond;
-}
-
-function prepareFirstForCatenation(start, accepting, first, second) {
-  const nameMap = {
-    [first.accepting]: second.start,
-    [first.start]: start
-  };
-  const { transitions } =
-    renameStates(nameMap, first);
-
-  return {
-    start,
-    accepting,
-    transitions:
-  	  transitions.map(
-        ({ from, consume, pop, to, push }) => {
-          const transition = { from };
-          if (consume != null && consume !== "") transition.consume = consume;
-          if (pop != null) transition.pop = pop;
-          if (to != null) transition.to = to;
-          if (push != null) transition.push = push;
-
-          return transition;
-        }
-      )
-  };
-}
-
-function catenation (first, second) {
-  const start = "start";
-  const accepting = "accepting";
-
-  const catenatableSecond = prepareSecondForCatenation(start, accepting, first, second);
-  const catenatableFirst = prepareFirstForCatenation(start, accepting, first, catenatableSecond);
-
-  return {
-    start: start,
-    accepting: accepting,
-    transitions:
-      catenatableFirst.transitions
-        .concat(catenatableSecond.transitions)
-  };
-}
-
-const exclamatory = {
-  "start": "start",
-  "accepting": ["accepting"],
-  "transitions": [
-    { "from": "start", "consume": "!", "to": "endable" },
-    { "from": "endable", "consume": "!", "to": "endable" },
-    { "from": "endable", "consume": "", "to": "accepting" }
-  ]
-};
-
-const interrogative = {
-  "start": "start",
-  "accepting": ["accepting"],
-  "transitions": [
-    { "from": "start", "consume": "?", "to": "endable" },
-    { "from": "endable", "consume": "?", "to": "endable" },
-    { "from": "endable", "consume": "", "to": "accepting" }
-  ]
-};
-
-const interrobang = catenation(exclamatory, interrogative);
-
-const tightened = reachableFromStart(epsilonRemoved(interrobang));
-
-//////////////////////////////////////////////////////////////////
+//////////////////////
+//  Epsilon Removal //
+//////////////////////
 
 function epsilonRemoved ({ start, accepting, transitions }) {
   const transitionsWithoutEpsilon =
@@ -538,7 +406,10 @@ function epsilonRemoved ({ start, accepting, transitions }) {
   };
 }
 
-// takes an nfa without epsilons
+    ////////////////
+    // NFA -> DFA //
+    ////////////////
+
 function dfa ({ start, accepting, transitions }) {
   const singles =
     transitions
@@ -676,4 +547,181 @@ const toWin = {
   ]
 };
 
-console.log({ toWin, epsilonRemoved: epsilonRemoved(toWin) })
+    ///////////////////
+    //  COMPOSITION  //
+    ///////////////////
+
+// naively return all states mentioned,
+// whether reachable or not,in use or not
+function statesOf(description) {
+  return description
+    .transitions
+      .reduce(
+        (states, { from, to }) => {
+          if (from != null) states.add(from);
+          if (to != null) states.add(to);
+          return states;
+        },
+        new Set([description.start].concat(description.accepting))
+      );
+}
+// console.log(statesOf({
+//   start: 'start',
+//   accepting: ['foo', 'bar'],
+//   transitions: [
+//     // { from: 'start', consume: '0', to: 'foo' },
+//     // { from: 'foo', consume: '1', to: 'bar' }
+//     ]
+// }))
+
+// given a mapping of individual names, renames all the states in
+// an fas, including the start and accepting. any names not in the map
+// rename unchanged
+function renameStates (nameDictionary, { start, accepting, transitions }) {
+  const translate =
+    before =>
+      (nameDictionary[before] != null) ? nameDictionary[before] : before;
+
+  return {
+    start: translate(start),
+    accepting: accepting.map(translate),
+    transitions:
+    	transitions.map(
+      	({ from, consume, to }) => {
+          const transition = { from: translate(from), to: translate(to || from) };
+          if (consume != null) transition.consume = consume;
+
+          return transition;
+        }
+      )
+  };
+}
+const mule = {
+  start: 'start',
+  accepting: ['foo', 'bar'],
+  transitions: [
+    { from: 'start', consume: '0', to: '0' },
+    { from: '0', consume: '1', to: 'foo' }
+    ]
+};
+
+// console.log(renameStates({ 0: 'zero', foo: 'baz' }, mule))
+
+// given an iterable of names that are reserved,
+// renames any states in a name so that they no longer
+// overlap with reserved names
+function resolveCollisions(reserved, description) {
+  const reservedSet = new Set(reserved);
+  const states = statesOf(description);
+
+  const nameMap = {};
+
+  // build the map to resolve overlaps with reserved names
+  for (const state of states) {
+    const match = /^(.*)-(\d+)$/.exec(state);
+    let base = match == null ? state : match[1];
+    let counter = match == null ? 1 : Number.parseInt(match[2], 10);
+    let resolved = state;
+    while (reservedSet.has(resolved)) {
+      resolved = `${base}-${++counter}`;
+    }
+    if (resolved !== state) {
+  		nameMap[state] = resolved;
+    }
+    reservedSet.add(resolved);
+  }
+
+  // apply the built map
+  return renameStates(nameMap, description);
+}
+
+const mule2 = {
+  start: 'start-2',
+  accepting: ['foo', 'bar'],
+  transitions: [
+    { from: 'start-2', consume: '0', to: '0' },
+    { from: '0', consume: '1', to: 'foo' }
+    ]
+};
+
+console.log(resolveCollisions(['start-2', 'bar'], mule2))
+
+function prepareSecondForCatenation (start, accepting, first, second) {
+  const uncollidedSecond =  resolveCollisions(statesOf(first), second);
+
+  const acceptingSecond =
+    uncollidedSecond.accepting === accepting
+  	  ? uncollidedSecond
+      : renameStates({ [uncollidedSecond.accepting]: accepting }, uncollidedSecond);
+
+  return acceptingSecond;
+}
+
+function prepareFirstForCatenation(start, accepting, first, second) {
+  const nameMap = {
+    [first.accepting]: second.start,
+    [first.start]: start
+  };
+  const { transitions } =
+    renameStates(nameMap, first);
+
+  return {
+    start,
+    accepting,
+    transitions:
+  	  transitions.map(
+        ({ from, consume, pop, to, push }) => {
+          const transition = { from };
+          if (consume != null && consume !== "") transition.consume = consume;
+          if (pop != null) transition.pop = pop;
+          if (to != null) transition.to = to;
+          if (push != null) transition.push = push;
+
+          return transition;
+        }
+      )
+  };
+}
+
+function catenation (first, second) {
+  const cleanSecond =  resolveCollisions(statesOf(first), second);
+
+  const joinTransitions =
+    first.accepting.map(
+      from => ({ from, to: cleanSecond.start })
+    );
+
+  const nfaWithJoins = {
+    start: first.start,
+    accepting: second.accepting,
+    transitions:
+      first.transitions
+        .concat(joinTransitions)
+        .concat(cleanSecond.transitions)
+  };
+
+  const nfa = epsilonRemoved(nfaWithJoins);
+
+  const catenatedDfa = dfa(nfa);
+
+  return catenatedDfa;
+}
+
+const zeroes = {
+  start: 'start',
+  accepting: ['start'],
+  transitions: [
+    { from: 'start', consume: '0', to: 'start' }
+  ]
+};
+
+const zeroOne = {
+  start: 'start',
+  accepting: ['one'],
+  transitions: [
+    { from: 'start', consume: '0', to: 'zero' },
+    { from: 'zero', consume: '1', to: 'one' },
+  ]
+};
+
+console.log(catenation(zeroes, zeroOne))
