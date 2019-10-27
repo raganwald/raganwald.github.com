@@ -87,7 +87,15 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 ### terminology
 
-<!-- TODO: disambiguate adn clarify finite state automaton/a, recognizer, acceptor, deterministic finite state machine, &c. -->
+In this iessay will will play a little loose with terminology. We are concerned with [finite state machines][fsm], also called *finite state automata*. FInite state automata can do a lot of things. They can recognize sentances in a language, which is our interest here. Finite state auatomata that recognize statements in a language are also called _finite state recognizers_.
+
+Finite state automata can slo do thing that are not of interest to our essay today. A finite state recognizer recognizes whether a sentance is a sentnance in a language. A finite state automaton can also be devised that not only recognizes whether a sentance is in a language, but also recgnizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.
+
+Other automata can generate strings, transform strings, and so forth. These are not of interest to us.
+
+Now that we have established that finite state automata can do much more than "just" recognize statements in languages, we will continue on for the rest of the essay using the terms "finite state automaton," "finite state machine," and "finite state recognizer" interchangeably.
+
+[fsa]: https://en.wikipedia.org/wiki/Finite-state_machine
 
 # [Table of Contents](#table-of-contents)
 
@@ -169,7 +177,7 @@ But we'll start with devising a finite state recognizer that recognizes syntacti
 
 ### a language for describing finite state recognizers
 
-Before we can write finite state recognizers that recognize the descriptions of finite state recognizers, we need a language for describing finite state recognizers.
+Before we can write finite state recognizers that recognize syntactically valid descriptions of finite state recognizers, we need a language for describing finite state recognizers.
 
 We don't need to invent a brand-new format, there is already an accepted [formal definition][fdfsa] for Pushdown Automata. Mind you, it involves mathematical symbols that are unfamiliar to some programmers, so without dumbing it down, we will create our own language that is equivalent to the full formal definition, but expressed in JSON.
 
@@ -201,7 +209,7 @@ The recognizer's `alphabet`, `Σ`, will be _optional_. If present, it will be en
 
 ```javascript
 {
-  'alphabet': '01'
+  "alphabet": "01"
 }
 ```
 
@@ -213,7 +221,7 @@ The recognizer's `states`, `S`, will also be _optional_. If present, it will be 
 
 ```javascript
 {
-  'states': ['start', 'zero', 'one or more']
+  "states": ["start", "zero", "one or more"]
 }
 ```
 
@@ -225,7 +233,7 @@ The recognizer's initial, or `start` state is required. It is a string respresen
 
 ```javascript
 {
-  'start': `start`
+  "start": "start"
 }
 ```
 
@@ -233,7 +241,7 @@ The recognizer's set of final, or `accepting` states is required. It is encoded 
 
 ```javascript
 {
-  'accepting': [`zero`, `one or more`]
+  "accepting": ["zero", "one or more"]
 }
 ```
 
@@ -241,7 +249,7 @@ The recognizer's state transition function, `ẟ`, is represented as a set of `t
 
 ```javascript
 {
-  'transitions': [
+  "transitions": [
     // list of transitions...
   ]
 }
@@ -259,11 +267,11 @@ Thus, one possible set of transitions might be encoded like this:
 
 ```javascript
 {
-  'transitions': [
-    { 'from': 'start', 'consume': '0', 'to': 'zero' },
-    { 'from': 'start', 'consume': '1', 'to': 'one or more' },
-    { 'from': 'one or more', 'consume': '0', 'to': 'one or more' },
-    { 'from': 'one or more', 'consume': '1', 'to': 'one or more' }
+  "transitions": [
+    { "from": "start", "consume": "0", "to": "zero" },
+    { "from": "start", "consume": "1", "to": "one or more" },
+    { "from": "one or more", "consume": "0", "to": "one or more" },
+    { "from": "one or more", "consume": "1", "to": "one or more" }
   ]
 }
 ```
@@ -272,16 +280,16 @@ Putting it all together, we have:
 
 ```json
 {
-  'alphabet': '01',
-  'states': ['start', 'zero', 'one or more'],
-  'start': `start`,
-  'transitions': [
-    { 'from': 'start', 'consume': '0', 'to': 'zero' },
-    { 'from': 'start', 'consume': '1', 'to': 'one or more' },
-    { 'from': 'one or more', 'consume': '0', 'to': 'one or more' },
-    { 'from': 'one or more', 'consume': '1', 'to': 'one or more' }
+  "alphabet": "01",
+  "states": ["start", "zero", "one or more"],
+  "start": "start",
+  "transitions": [
+    { "from": "start", "consume": "0", "to": "zero" },
+    { "from": "start", "consume": "1", "to": "one or more" },
+    { "from": "one or more", "consume": "0", "to": "one or more" },
+    { "from": "one or more", "consume": "1", "to": "one or more" }
   ],
-  'accepting': [`zero`, `one or more`]
+  "accepting": ["zero", "one or more"]
 }
 ```
 
