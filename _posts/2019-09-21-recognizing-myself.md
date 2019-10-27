@@ -270,7 +270,7 @@ Thus, one possible set of transitions might be encoded like this:
 
 Putting it all together, we have:
 
-```javascript
+```json
 {
   'alphabet': '01',
   'states': ['start', 'zero', 'one or more'],
