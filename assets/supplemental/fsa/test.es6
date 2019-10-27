@@ -1,3 +1,8 @@
+function error (description) {
+  console.log({ error: description });
+  throw description;
+}
+
 function toStateMap (transitions, allowNFA = false) {
   return transitions
       .reduce(
@@ -9,27 +14,24 @@ function toStateMap (transitions, allowNFA = false) {
           } = transition;
 
           if (from == null) {
-            console.log(
+            error(
               `Transition ${JSON.stringify(transition)} does not have a from state. ` +
-              `This is not allowed and will be ignored.`
-            )
-            return acc;
+              `This is not allowed.`
+            );
           }
 
           if (consume == null) {
-            console.log(
-              `Transition ${JSON.stringify(transition)} does not consume a token. ` +
-              `ε-transitions are not supported by this engine and will be ignored.`
-            )
-            return acc;
+            error(
+               `Transition ${JSON.stringify(transition)} does not consume a token. ` +
+              `ε-transitions are not allowed.`
+            );
           }
 
           if (to == null) {
-            console.log(
+            error(
               `Transition ${JSON.stringify(transition)} does not have a to state. ` +
-              `Assuming that it is a transition back to ${from}.`
-            )
-            to = from;
+              `This is not allowed.`
+            );
           }
 
           if (!acc.has(from)) {
@@ -47,12 +49,11 @@ function toStateMap (transitions, allowNFA = false) {
               return acc;
             }
             if (!allowNFA && consume === existingConsume) {
-              console.log(
+              error(
                 `Transition ${JSON.stringify(transition)} creates non-determinism ` +
                 `between ${to} and ${existingTo}. ` +
-                `This is not allowed and will be ignored. Please avoid this in future.`
-              )
-              return acc;
+                `This is not allowed.`
+              );
             }
           }
 
@@ -64,14 +65,44 @@ function toStateMap (transitions, allowNFA = false) {
       );
 }
 
-function automateFSA({
+function toAlphabetSet (transitions) {
+  return new Set(
+    transitions.map(
+      ({ consume }) => consume
+    )
+  )
+}
+
+function automate({
+  alphabet,
+  states,
   start,
   accepting,
   transitions
 }) {
-  // map from from states to the transitions defined for that from state
+  const alphabetSet = toAlphabetSet(transitions);
   const stateMap = toStateMap(transitions);
+  const stateSet = new Set(stateMap.keys());
   const acceptingStates = new Set(accepting);
+
+  // validate alphabet if present
+  if (alphabet != null) {
+    const declaredAlphabetSet = new Set(alphabet.split(''));
+
+    const undeclaredSymbols =
+      [...alphabetSet]
+        .filter(
+          sym => !declaredAlphabetSet.has(sym)
+        );
+
+    if (undeclaredSymbols.length > 0) {
+      error(
+        `the symbols ${undeclaredSymbols.join(', ')} are used, but not present in the alphabet`
+      );
+    }
+  } else {
+    alphabet = [...alphabetSet].join('');
+  }
 
   return function (string) {
     let state = start;
@@ -107,7 +138,7 @@ function automateFSA({
 }
 
 function test(description, examples) {
-  const recognizer = automateFSA(description);
+  const recognizer = automate(description);
 
   for (const example of examples) {
     console.log(`'${example}' => ${recognizer(example)}`);
@@ -716,6 +747,7 @@ const zeroes = {
 };
 
 const zeroOne = {
+  alphabet: 'x',
   start: 'start',
   accepting: ['one'],
   transitions: [
@@ -724,4 +756,4 @@ const zeroOne = {
   ]
 };
 
-console.log(catenation(zeroes, zeroOne))
+automate(zeroOne)
