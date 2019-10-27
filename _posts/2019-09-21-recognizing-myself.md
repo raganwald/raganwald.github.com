@@ -1,5 +1,5 @@
 ---
-title: "From Pushdown Automata to Self-Recognition"
+title: "Computing Machines that Recognize Themselves, Part I: Finite state automata"
 tags: [recursion,allonge,mermaid,wip]
 ---
 
@@ -37,27 +37,21 @@ Regexen are more than just descriptions of machines that recognize sentences in 
 
 It is easy to write a function that recognizes valid regex given any regex engine: Give the engine the regex, and see if it returns an error. That is practical, but unsatisfying. All it tells us is that a Turing Machine can be devised to recognize regexen. But not all flavours of regexen are as powerful as Turing Machines.
 
-It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite state machines, thus the original regexen described finite state machines.
+It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite state automata, thus the original regexen described finite state automata.
 
-But just because a flavour of regex only describes finite state machines, does not mean that descriptions of those regexen can be recognized by finite state machines. Consider, for example, a flavour of regex that permits characters, the wildcard operator `.`, the zero-or more operator `*`, and non-capturing groups `(?: ... )`. Here's an example:
+But just because a flavour of regex only describes finite state automata, does not mean that descriptions of those regexen can be recognized by finite state automata. Consider, for example, a flavour of regex that permits characters, the wildcard operator `.`, the zero-or more operator `*`, and non-capturing groups `(?: ... )`. Here's an example:
 
 ```
 /(?:<(?:ab*c)>)+/
 ```
 
-The above regex can most certainly be implemented by a finite state machine, but recognizing descriptions that include nested non-capturing groups cannot be recognized by a finite state machine, as we saw in [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal]. Therefore, we know that this simple flavour of regexen cannot recognize itself.
+The above regex can most certainly be implemented by a finite state automaton, but recognizing descriptions that include nested non-capturing groups cannot be recognized by a finite state automaton, as we saw in [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal]. Therefore, we know that this simple flavour of regexen cannot recognize itself.
 
 ---
 
 ### today's essay
 
-In [A Brutal Look at Balanced Parentheses...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on building recognizers out of other recognizers. By creating a small set of recognizers (such as recognizers that recognize a single symbol), and then building more sophisticated recognizers with combinators such as catenation, union, and zero-or-more, we will create languages that describe recognizers.
-
-In addition to exploring the implementation of such combinators, we will explore consequences of these combinators, answering questions such ass, "If recognizing a character can be done with a finite state machine, does an arbitrary expression catenating and taking the union of such recognizers create a machine more sophisticated than a finite state automata?"
-
-We will work towards asking about machines that can recognize themselves. Can a language be devised for building finite state machines that can be recognized by machines built in itself? What about a language that builds pushdown automata? Is it powerful enough to build a language that recognizes itself? Fundamentally, we will be answering the same question as, "Can a regex recognize a valid regex?"
-
-But instead of using first principles to deduce whether it is possible, we will instead build working machines that recognize themselves.
+In [A Brutal Look at Balanced Parentheses...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on <!-- TODO: Introduction -->
 
 ---
 
@@ -79,7 +73,7 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 [pushdown.oop.es6]: https://gist.github.com/raganwald/41ae26b93243405136b786298bafe8e9#file-pushdown-oop-es6
 
-The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the ideal machine needed to recognize it, and we explored example languages that needed finite state machines, deterministic pushdown automata, and pushdown automata respectively.[^tm]
+The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the ideal machine needed to recognize it, and we explored example languages that needed finite state automata, deterministic pushdown automata, and pushdown automata respectively.[^tm]
 
 [^Tm]: [a Brutal Look at Balanced Parentheses, ...][Brutal] did not explore two other classes of languages. there is a class of formal languages that requires a turing machine to recognize its sentences. turing machines are more powerful than pushdown automata. And there is a class of formal languages that cannot be recognized by Turing Machines, and therefore cannot be recognized at all! Famously, the latter class includes a machine that takes as its sentences descriptions of Turing Machines, and recognizes those that halt.
 
@@ -91,22 +85,29 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 ---
 
+### terminology
+
+<!-- TODO: disambiguate adn clarify finite state automaton/a, recognizer, acceptor, deterministic finite state machine, &c. -->
+
 # [Table of Contents](#table-of-contents)
 
 ### [Prelude](#prelude)
 
   - [today's essay](#todays-essay)
   - [before we get started, a brief recapitulation of the previous essay](#before-we-get-started-a-brief-recapitulation-of-the-previous-essay)
+  - [terminology](#terminology)
+
+### [The Problem Statement](#the-problem-statement-1)
+
+  - [a language for describing finite state recognizers](#a-language-for-describing-finite-state-recognizers)
+  - [an example automaton](#an-example-automaton)
+  - [implementing our example automaton](#implementing-our-example-automaton)
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
 
 [A few words about Functional Composition](#a-few-words-about-functional-composition)
 
 [Refactoring OO Recognizers into Data](#refactoring-oo-recognizers-into-data)
-
-  - [a data format for automata](#a-data-format-for-automata)
-  - [an example automaton](#an-example-automaton)
-  - [implementing our example automaton](#implementing-our-example-automaton)
 
 [Catenating Descriptions](#catenating-descriptions)
 
@@ -142,147 +143,161 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 ---
 
-# Composeable Recognizers
+# The Problem Statement
 
-One of programming's "superpowers" is _composition_, the ability to build things out of smaller things, and especially, to reuse those smaller things to build other things. Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
+We will begin by stating the problem we are going to solve: We wish to answer the question, *Can a finite state automaton recognize valid finite state automata?*
 
-Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
+We'll need to be a bit more specific. Finite state automata can do a lot of things. Some finite state automata recognize statements in languages, where the staements consist of ordered and finite collections of symbols. We will call these **finite state recognizers**, and we are only concerned with finite state recognizers in this essay.
 
-If we want to build a recognizer for JSON, it would be ideal to build smaller recognizers for things like strings or numbers, and then use composition to build recognizers for elements like lists and "objects."
+Thus, we will not—of course—ask whether a finite state automaton can be hooked up to cameras and recognize whether a phyiscal scene contains a physical state machine. We also will not ask whether a finite state automaton can recognize a `.png` encoding of a diagram, and recognize whther it is a diagram of a valid fnite state state machine:
 
-This is the motivation for the first part of our exploration: We want to make simple recognizers, and then use composition to make more complex recognizers from the simple recognizers.
+<div class="mermaid">
+  graph LR
+    start(start)-->|0|zero
+    zero-.->|end|recognized(recognized)
+    start-->|1|one[one or more]
+    one-->|0 or 1|one
+    one-.->|end|recognized;
+</div>
 
-## A few words about Functional Composition
+Instead, we will formulate a language for describing finite state recognizers, and ask whether a finite state recognizer can be devised to recognize valid statements in the language that describes finite state recognizers. If we can make such a recognizer, we will have shown that in at least one sense, a finite state recognizer can recognize finite state recognizers.
 
-We explored this exact idea in [Pattern Matching and Recursion]. We used functions as recognizers, and then we used functional composition to compose more complex recognizers from simpler recognizers.
+That is not, of course, the exact same thing as asking whether a regex can recognize a valid regex. Regexen are a language of their own, and it is possible that a regular expression might be more powerful than a finite state recognizer, and it is equally possible (certain, in fact) that the language used to describe a regex cannot be parsed with finite state recognizers.[^cannot-parse]
 
-[Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
+[^cannot-parse]: How certain? Well, all regular expression languages in wide usage have the ability to create *groups* using parentheses, e.g. `/Reg(?:inald)?/` is a regular expression containing an optional non-capturing group. Groups in regex can be nested, and must be properly nested and balanced for a regex to be valid. We know from [A Brutal Look at Balanced Parentheses...][brutal] that we cannot recognize balanced (or even nested) parentheses with just a finite state recognizer, so therefore we cannot recognize valid regexen with a finite state recognizer.
 
-For example, `just` was function that took a string and returned a recognizer that recognized just that string. `follows` was a higher-order function that catenationd recognizers together, like this:
+But we'll start with devising a finite state recognizer that recognizes valid descriptions of finite state recognizers, and see where that takes us.
+
+### a language for describing finite state recognizers
+
+Before we can write finite state recognizers that recognize the descriptions of finite state recognizers, we need a language for describing finite state recognizers.
+
+We don't need to invent a brand-new format, there is already an accepted [formal definition][fdfsa] for Pushdown Automata. Mind you, it involves mathematical symbols that are unfamiliar to some programmers, so without dumbing it down, we will create our own language that is equivalent to the full formal definition, but expressed in JSON.
+
+[fdfsa]: https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model
+
+JSON has the advantage that it is a language in the exact sense we want: An ordered set of symbols. So we will describe finite state recognizers using JSON, and we will attempt to write a finite state recognizer that recognizes strings that are valid JSON descriptions of finite state recognizers.[^natch]
+
+[^natch]: Naturally, if we have a valid description of a finte state recognizer that recognizes vald descriptions of finite state recognizers... We expect it to recognize itself.
+
+Now what do we need to encode? Finite state recognizers are defined as a quintuple of `(Σ, S, s, ẟ, F)`, where:
+
+  - `Σ` is the alphabet of symbols this recognizer operates upon.
+  - `S` is the set of states this recognizer can be in.
+  - `s` is the initial or "start" state of the recognizer.
+  - `ẟ` is the recognizer's "state transition function" that governs how the recognizer changes states while it consumes symbols from the sentance iit is attempting to recognize.
+  - `F` is the set of "final" states. If the recognizer is in one of these states when the input ends, it has recognzied the sentance.
+
+We can encode these with JSON. We'll use descriptive words rather than matehmatical symbols, but note that if we wanted to use the mathematical symbols, everything we're doing would work just as well.
+
+Or JSON representation will represent the quintuple as a Plain Old JavaScript Object (or "POJO"), rather than an array. This makes it easier to document what each element means, and it alsso makes it easy for some of the elements to be optional:
 
 ```javascript
-follows(just('fu'), just('bar'))('foobar')
-  //=> false
-
-follows(just('fu'), just('bar'))('fubar\'d')
-  //=> 'fubar'
+{
+  // elements...
+}
 ```
 
-`cases` was another higher-order function, it took two or more recognizer and made a recognizer that recognized strings that any of its recognizers recognized:
+The recognizer's `alphabet`, `Σ`, will be _optional_. If present, it will be encoded as a string. In this example, we are encoding the alphabet of a recognizer that operates on zeroes and ones:
 
 ```javascript
-const ones =
-  input => cases(
-    just('1'),
-    follows(just('1'), ones)
-  )(input);
-
-ones('1')
-  //=> '1'
-
-ones('111')
-  //=> '111'
+{
+  'alphabet': '01'
+}
 ```
 
-Now there are lots of ways that we can write a function that takes two or more arguments and then returns a new function. What made `follows` and `cases` examples of functional composition is not just that they took functions as arguments and returned functions, but that the functions they return invoke the original functions in order to compute the result.
+If `alphabet` is present, it must be complete:[^complete-alphabet]
 
-Here they are:
+[^complete-alphabet]: A complete alphabet is one in which every symbol used by the transition function is a member of the alphabet.
+
+The recognizer's `states`, `S`, will also be _optional_. If present, it will be encoded as list of strings representing the names of the states. States in our recognizer must have unique names. The names need not be constructed from the recognizer's alphabet, they are for our convenience:
 
 ```javascript
-const follows =
-  (...patterns) =>
-    input => {
-      let matchLength = 0;
-      let remaining = input;
-
-      for (const pattern of patterns) {
-        const matched = pattern(remaining);
-
-        if (matched === false) return false;
-
-        matchLength = matchLength + matched.length;
-        remaining = input.slice(matchLength);
-      }
-
-      return input.slice(0, matchLength);
-    };
-
-const cases =
-  (...patterns) =>
-    input => {
-      const matches = patterns.map(p => p(input)).filter(m => m !== false);
-
-      if (matches.length === 0) {
-        return false;
-      } else {
-        return matches.sort((a, b) => a.length > b.length ? -1 : +1)[0]
-      }
-    };
+{
+  'states': ['start', 'zero', 'one or more']
+}
 ```
 
-This is a very powerful technique in programming, one of the foundational ideas that can be traced back to the Lambda Calculus and Combinatorial Logic. And it seems very promising. Our Pushdown Automata are objects, but their `.recognize` methods are functions, so with a nip here and a tuck there, we ought to be able to use functions like `follows` and `cases` to compose new recognizers from Pushdown Automata.
+As with `alphabet`, if `states` is present, the set of states must be complete.[^complete-states]
 
-But we are actually going to avoid this technique. Functional composition is wonderful, but it has certain problems that are relevant here.
+[^complete-states]: For the set of states to be complete, it must contain the start or initial state, all of the final states, and every state used by the transition function.
 
-First and foremost, when we compose functions with a new function, we are using all the programming power of JavaScript. We can use loops, recursion, whatever we like. But when we built recognizers out of Finite State Automata, Desterministic Pushdown Automata, or Pushdown Automata, we were constrained to only use very specific computing capabilities.
+The recognizer's initial, or `start` state is required. It is a string respresenting the name of the initial state:
 
-If we use a function like `follows` to catenate two FSAs together, is the resulting recognizer still equivalent to an FSA? What about two Pushdown Automata? Functions obscure the underlying model of computation. Of course, for practical programming, this is not a concern, and functional composition is a powerful technique.
+```javascript
+{
+  'start': `start`
+}
+```
 
-But for the sake of exploring the computational consequences of composing recognizers, we're going to explore a different technique. We'll start by refactoring our Pushdown Automation.
+The recognizer's set of final, or `accepting` states is required. It is encoded as a list of strings representing the names of the final states.
 
----
+```javascript
+{
+  'accepting': [`zero`, `one or more`]
+}
+```
 
-## Refactoring OO Recognizers into Data
+The recognizer's state transition function, `ẟ`, is represented as a set of `transitions`, encoded as a list of POJOs, each of which represents exactly one transition:
 
-We're going to perform one of the more interesting types of refactoring, refactoring functions into data. Of course, functions in JavaScript are first-class entities, which means they are already data in a certain way, namely, they are _values_. Data of the sort you'd find in a classical database like strings, booleans, numbers, and so forth are also values.
+```javascript
+{
+  'transitions': [
+    // list of transitions...
+  ]
+}
+```
 
-So that is the difference? For the purposes of this essay, we shall pay attention to one very important characteristic of data like strings and numbers: Data is entirely transparent and explicit. When we look at a string, we know everything we need to know about it. There is no hidden, encapsulated behaviour.
+Each transition defines a change in the recognizer's state. Transitions are formally defined as triples of the form `(p,a, q)`:
 
-Whereas, functions encapsulate behaviour. When we inspect a function, we might discover its name and the number of arguments. In some languages, we get type information too. But its internals are a sealed book to us. We don't know its environment, we don't know which variables are closed over. Some implementation allow us to inspect a function's source code, but JavaScript does not.
+ - `p` is the state the recognizer is currently in.
+ - `a` is the input symbol  consumed.
+ - `q` is the state the recognizer will be in after completing this transition. It can be the same as `p`, meaning that it consumes a symbol and remains in the same state.
 
-This is not a hard definition, but for our purposes here, it is sufficient. Functions are opaque, data is transparent.
+ We can represent this with POJOs. For readability by those unfamiliar with the formal notation, we will use the words `from`, `consume`, and `to`. This may feel like a lot of typing compared to the formal symbols, but we'll get the computer do do our writing for us, and it doesn't care.
 
-Why do we want to do this? Let's consider our design for Pushdown Automata. Each automata has two parts: There's code that "runs the automaton," it's in the parent class `PushdownAutomata`. Then there are the specific methods that make up the states of an automaton, their in the concrete child class, e.g. `BinaryPalindrome`.
+Thus, one possible set of transitions might be encoded like this:
 
-Consider a different design. Let's say we had a format for defining the states of a Pushdown Automaton in data, pure data. We could hand this to `PushdownAutomata`, and it could give us back a recognizer function, instead of extending a class. What does this give us? Well, the data that defines the states is fully transparent. We can inspect it, we can write functions that modify it, and most especially, we can explore whether given the data for two different recognizers, we can compute the data for a recognizer that composes the recognizers.
+```javascript
+{
+  'transitions': [
+    { 'from': 'start', 'consume': '0', 'to': 'zero' },
+    { 'from': 'start', 'consume': '1', 'to': 'one or more' },
+    { 'from': 'one or more', 'consume': '0', 'to': 'one or more' },
+    { 'from': 'one or more', 'consume': '1', 'to': 'one or more' }
+  ]
+}
+```
 
-But let's not get ahead of ourselves. Let's start with our refactoring:
+Putting it all together, we have:
 
----
+```javascript
+{
+  'alphabet': '01',
+  'states': ['start', 'zero', 'one or more'],
+  'start': `start`,
+  'transitions': [
+    { 'from': 'start', 'consume': '0', 'to': 'zero' },
+    { 'from': 'start', 'consume': '1', 'to': 'one or more' },
+    { 'from': 'one or more', 'consume': '0', 'to': 'one or more' },
+    { 'from': 'one or more', 'consume': '1', 'to': 'one or more' }
+  ],
+  'accepting': [`zero`, `one or more`]
+}
+```
 
-### a data format for automata
+Or representation translates directly to a simplified state diagram:
 
-We don't need to invent a brand-new format, there is already an accepted [formal definition][fdpda] for Pushdown Automata. Mind you, it involves mathematical symbols that are unfamiliar to some programmers, so without dumbing it down, we will create our own format that is equivalent to the full formal definition, but expressed in JSON.
+<div class="mermaid">
+  graph LR
+    start(start)-->|0|zero
+    zero-.->|end|recognized(recognized)
+    start-->|1|one[one or more]
+    one-->|0 or 1|one
+    one-.->|end|recognized;
+</div>
 
-[fdpda]: https://en.wikipedia.org/wiki/Pushdown_automaton#Formal_definition
-
-We start with the definition of a _transition_. A transition defines a change in the automaton's state. Transitions are formally defined as tuples of the form `(p,a,A,q,⍺)`:
-
- - `p` is the state the automaton is currently in.
- - `a` is the input symbol being consumed. This can be empty, meaning that the machine does not have to consume an input symbol to perform this transition. To indicate that the transition is to succeed when there ar eno more symbols, we will use the empty string, `''`. (In our previous implementation, we used a special symbol called END).
- - `A` is the topmost stack symbol, which is popped off the stack. This can be empty, meaning that the machine does not have to pop a symbol from the stack to perform this transition.
- - `q` is the state the automaton will be in after completing this transition. It can be the same as `q`, meaning that it might perform some action with the input and/or stack and remain in the same state.
- - `⍺` is a symbol to push onto the stack. This can be empty, meaning that the machine does not have to push a symbol onto the stack to perform this transition.
-
- We can represent this with POJOs. For readability by those unfamiliar with the formal notation, we will use the words `from`, `consume`, `pop`, `to`, and `push`. This may feel like a lot of typing compared to the formal symbols, but we'll get the computer do do our writing for us, and it doesn't care.
-
- An automaton is a set of such transitions, along with:
-
- - A *start state*,
- - A set of _accepting states_.
- - A starting symbol for the stack.
-
-(There are some other things, like the set of all possible input symbols, and the stack alphabet. However, those can be inferred by examining the set of transitions, and are not important to what we're trying to accomplish.)
-
-We can make a few simplifying adjustments:
-
-First, we can presume that there is just one accepting state, not a set of accepting states. This does not reduce the power of our automata, as given a set of accepting states, we can write transitions that transition from those states to a single state, so any automaton with a set of accepting states can be mechanically transformed into an equivalent automaton that has just one accepting state.
-
-Second, we can have our automata assume that the stack is empty when the automaton begins. This does not reduce the power of our automata, as given a desired starting symbol, we can rewrite an automaton such that its start state pushes the desired symbol onto the stack before continuing with the rest of its logic.
-
-This reduces our definition to only requiring a start state, and accepting state, and a set of transitions, like this: `{ start, accepting, transitions }`.
-
-Finally, we will stipulate that there can never be a transition from an accepting state. There are some uses for such descriptions, but it is always possible to write a description that does exactly the same thing without transitions from the accepting state, so that's what we'll insist on.
+This finite state recognizer recognizes binary numbers.
 
 ---
 
@@ -543,13 +558,121 @@ test(palindrome, [
 
 We now have a function, `automate`, that takes a data description of a finite state automaton, deterministic pushdown automaton, or pushdown automaton, and returns a recognizer function.
 
+# Composeable Recognizers
+
+One of programming's "superpowers" is _composition_, the ability to build things out of smaller things, and especially, to reuse those smaller things to build other things. Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
+
+Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
+
+If we want to build a recognizer for JSON, it would be ideal to build smaller recognizers for things like strings or numbers, and then use composition to build recognizers for elements like lists and "objects."
+
+This is the motivation for the first part of our exploration: We want to make simple recognizers, and then use composition to make more complex recognizers from the simple recognizers.
+
+## A few words about Functional Composition
+
+We explored this exact idea in [Pattern Matching and Recursion]. We used functions as recognizers, and then we used functional composition to compose more complex recognizers from simpler recognizers.
+
+[Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
+
+For example, `just` was function that took a string and returned a recognizer that recognized just that string. `follows` was a higher-order function that catenationd recognizers together, like this:
+
+```javascript
+follows(just('fu'), just('bar'))('foobar')
+  //=> false
+
+follows(just('fu'), just('bar'))('fubar\'d')
+  //=> 'fubar'
+```
+
+`cases` was another higher-order function, it took two or more recognizer and made a recognizer that recognized strings that any of its recognizers recognized:
+
+```javascript
+const ones =
+  input => cases(
+    just('1'),
+    follows(just('1'), ones)
+  )(input);
+
+ones('1')
+  //=> '1'
+
+ones('111')
+  //=> '111'
+```
+
+Now there are lots of ways that we can write a function that takes two or more arguments and then returns a new function. What made `follows` and `cases` examples of functional composition is not just that they took functions as arguments and returned functions, but that the functions they return invoke the original functions in order to compute the result.
+
+Here they are:
+
+```javascript
+const follows =
+  (...patterns) =>
+    input => {
+      let matchLength = 0;
+      let remaining = input;
+
+      for (const pattern of patterns) {
+        const matched = pattern(remaining);
+
+        if (matched === false) return false;
+
+        matchLength = matchLength + matched.length;
+        remaining = input.slice(matchLength);
+      }
+
+      return input.slice(0, matchLength);
+    };
+
+const cases =
+  (...patterns) =>
+    input => {
+      const matches = patterns.map(p => p(input)).filter(m => m !== false);
+
+      if (matches.length === 0) {
+        return false;
+      } else {
+        return matches.sort((a, b) => a.length > b.length ? -1 : +1)[0]
+      }
+    };
+```
+
+This is a very powerful technique in programming, one of the foundational ideas that can be traced back to the Lambda Calculus and Combinatorial Logic. And it seems very promising. Our Pushdown Automata are objects, but their `.recognize` methods are functions, so with a nip here and a tuck there, we ought to be able to use functions like `follows` and `cases` to compose new recognizers from Pushdown Automata.
+
+But we are actually going to avoid this technique. Functional composition is wonderful, but it has certain problems that are relevant here.
+
+First and foremost, when we compose functions with a new function, we are using all the programming power of JavaScript. We can use loops, recursion, whatever we like. But when we built recognizers out of Finite State Automata, Desterministic Pushdown Automata, or Pushdown Automata, we were constrained to only use very specific computing capabilities.
+
+If we use a function like `follows` to catenate two FSAs together, is the resulting recognizer still equivalent to an FSA? What about two Pushdown Automata? Functions obscure the underlying model of computation. Of course, for practical programming, this is not a concern, and functional composition is a powerful technique.
+
+But for the sake of exploring the computational consequences of composing recognizers, we're going to explore a different technique. We'll start by refactoring our Pushdown Automation.
+
+---
+
+## Refactoring OO Recognizers into Data
+
+We're going to perform one of the more interesting types of refactoring, refactoring functions into data. Of course, functions in JavaScript are first-class entities, which means they are already data in a certain way, namely, they are _values_. Data of the sort you'd find in a classical database like strings, booleans, numbers, and so forth are also values.
+
+So that is the difference? For the purposes of this essay, we shall pay attention to one very important characteristic of data like strings and numbers: Data is entirely transparent and explicit. When we look at a string, we know everything we need to know about it. There is no hidden, encapsulated behaviour.
+
+Whereas, functions encapsulate behaviour. When we inspect a function, we might discover its name and the number of arguments. In some languages, we get type information too. But its internals are a sealed book to us. We don't know its environment, we don't know which variables are closed over. Some implementation allow us to inspect a function's source code, but JavaScript does not.
+
+This is not a hard definition, but for our purposes here, it is sufficient. Functions are opaque, data is transparent.
+
+Why do we want to do this? Let's consider our design for Pushdown Automata. Each automata has two parts: There's code that "runs the automaton," it's in the parent class `PushdownAutomata`. Then there are the specific methods that make up the states of an automaton, their in the concrete child class, e.g. `BinaryPalindrome`.
+
+Consider a different design. Let's say we had a format for defining the states of a Pushdown Automaton in data, pure data. We could hand this to `PushdownAutomata`, and it could give us back a recognizer function, instead of extending a class. What does this give us? Well, the data that defines the states is fully transparent. We can inspect it, we can write functions that modify it, and most especially, we can explore whether given the data for two different recognizers, we can compute the data for a recognizer that composes the recognizers.
+
+But let's not get ahead of ourselves. Let's start with our refactoring:
+
+
+
 ---
 
 ## Catenating Descriptions
 
 We could, of course, use functional composition to compose the recognizers that we build with our data descriptions, but as noted above, that would make it difficult to reason about the characteristics of a recognizer we compose from two or more other recognizers. So instead, as planned, we'll work on _composing the data descriptions_.
 
-We'll begin by catenating descriptions. Here is the finite state machine for a very simple recognizer. It recognizes a sequence of one or more exclamation marks:
+We'll begin by catenating descriptions. Here is the finite state automaton for a very simple recognizer. It recognizes a sequence of one or more exclamation marks:
 
 <div class="mermaid">
   graph LR
@@ -632,7 +755,7 @@ Third, wherever we had a `"consume": ""` in the first recognizer, we removed it 
 
 ### catenationFSA(first, second)
 
-Let's start by writing a function to catenate any two finite state automaton recognizer descriptions. First, we'll need to rename states in the second description so that they don't conflict with the first description.
+Let's start by writing a function to catenate any two finite state recognizer descriptions. First, we'll need to rename states in the second description so that they don't conflict with the first description.
 
 Here's a function, `prepareSecondForCatenation` that takes two descriptions, and returns a copy of the second description with conflicts renamed, along with the helper functions it uses:
 
@@ -1067,11 +1190,11 @@ test(catenation(balanced, palindrome), [
 
 Now that we have written `catenation` for descriptions, we can reason as follows:[^reason]
 
-- A finite state machine can recognize any regular language.
-- The catenation of two finite state machine recognizers is a finite state machine recognizer.
+- A finite state automaton can recognize any regular language.
+- The catenation of two finite state recognizers is a finite state recognizer.
 - Therefore, a language defined by catenating two regular languages, will be regular.
 
-[^reason]: Well, actually, this is not strictly true. Building a catenation function certainly gives us confidence that a language formed by catenating the rules for two regular language ought to be regular, but it is always possible that our algorithm has a bug and cannot correctly catenate any two finite state automaton recognizers. Finding such a bug would be akin to finding a counter-example to something thought to have been proven, or a conjecture thought to be true, but unproven. This is the nature of "experimental computing science," it is always easier to demonstrate that certain things are impossible--by finding just one counter-example--than to prove that no counter-examples exist.
+[^reason]: Well, actually, this is not strictly true. Building a catenation function certainly gives us confidence that a language formed by catenating the rules for two regular language ought to be regular, but it is always possible that our algorithm has a bug and cannot correctly catenate any two finite state recognizers. Finding such a bug would be akin to finding a counter-example to something thought to have been proven, or a conjecture thought to be true, but unproven. This is the nature of "experimental computing science," it is always easier to demonstrate that certain things are impossible--by finding just one counter-example--than to prove that no counter-examples exist.
 
 Likewise, we can reason:
 
@@ -1415,7 +1538,7 @@ And as we hoped, it is exactly the recognizer we wanted:
 
 ### what we have learned from taking the union of descriptions
 
-Once again, we have developed some confidence that given any two finite state machine recognizers, we can construct a union recognizer that is also a finite state machine. Likewise, if either or both of the recognizers are pushdown automata, we have confidence that we can construct a recognizer that recognizes either language that will also be a pushdown automaton.
+Once again, we have developed some confidence that given any two finite state recognizers, we can construct a union recognizer that is also a finite state automaton. Likewise, if either or both of the recognizers are pushdown automata, we have confidence that we can construct a recognizer that recognizes either language that will also be a pushdown automaton.
 
 Coupled with what we learned from catenating recognizers, we now can develop the conjecture that "can be recognized with a pushdown automaton" is a transitive relationship: We can build an expression of arbitrary complexity using catenation and union, and if the recognizers given were pushdown automata (or simpler), the result will be a pushdown automaton.
 
@@ -1427,7 +1550,7 @@ This also tells us something about languages: If we have a set of context-free l
 
 `catenation` and `union` are binary combinators: They compose a new description, given two existing descriptions. But we don't have any functions for making descriptions from scratch. Up to here, we have always written such descriptions by hand.
 
-But now we'll turn our attention to making new descriptions from scratch. If we have a way to manufacture new descriptions, and ways to combine existing descriptions, we have a way to build recognizers in a more structured fashion than coding finite state machines by hand.
+But now we'll turn our attention to making new descriptions from scratch. If we have a way to manufacture new descriptions, and ways to combine existing descriptions, we have a way to build recognizers in a more structured fashion than coding finite state automata by hand.
 
 That allows us to reason more easily about what our recognizers can and cannot recognize.
 
@@ -1638,9 +1761,9 @@ Having defined `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, it fo
 
 Regular expressions define regular languages. Therefore, every regular language has an equivalent JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`.
 
-Now consider what we know from our implementation so far: `EMPTY` is a finite state automaton, and `symbol` only creates finite state automata. And we know that `catenation`, `union`, and `zeroOrMore` create finite state automata if given finite state automata as input. Therefore, every JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` evaluates to the description of a finite state machine that recognizes the regular language.
+Now consider what we know from our implementation so far: `EMPTY` is a finite state automaton, and `symbol` only creates finite state automata. And we know that `catenation`, `union`, and `zeroOrMore` create finite state automata if given finite state automata as input. Therefore, every JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` evaluates to the description of a finite state automaton that recognizes the regular language.
 
-Therefore, *All regular languages can be recognized by finite state automata*. If someone says, "Oh no, this regular language cannot be recognized by a finite state machine," we ask them to write out the regular expression for that language. We then translate the symbols into invocations of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, then evaluate the JavaScript expression. The result will be a finite state automaton recognizing the language, disproviong their claim.
+Therefore, *All regular languages can be recognized by finite state automata*. If someone says, "Oh no, this regular language cannot be recognized by a finite state automaton," we ask them to write out the regular expression for that language. We then translate the symbols into invocations of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, then evaluate the JavaScript expression. The result will be a finite state automaton recognizing the language, disproviong their claim.
 
 ---
 
@@ -2016,7 +2139,7 @@ We also created `permute`. It recognizes any permutation of a set of description
 
 ## A Recognizer That Recognizes Finite State Machine Descriptions
 
-Armed with our tools, we can build a finite state machine that recognizes descriptions of finite state machines. It recognizes a subset of all of the possible ASCII characters we might build such recognizers to recognize, but it gets the point across:
+Armed with our tools, we can build a finite state automaton that recognizes descriptions of finite state automata. It recognizes a subset of all of the possible ASCII characters we might build such recognizers to recognize, but it gets the point across:
 
 ```javascript
 let startMap = symbol('{');
