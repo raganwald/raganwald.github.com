@@ -207,7 +207,7 @@ Or JSON representation will represent the quintuple as a Plain Old JavaScript Ob
 
 The recognizer's `alphabet`, `Σ`, will be _optional_. If present, it will be encoded as a string. In this example, we are encoding the alphabet of a recognizer that operates on zeroes and ones:
 
-```javascript
+```json
 {
   "alphabet": "01"
 }
@@ -219,7 +219,7 @@ If `alphabet` is present, it must be complete:[^complete-alphabet]
 
 The recognizer's `states`, `S`, will also be _optional_. If present, it will be encoded as list of strings representing the names of the states. States in our recognizer must have unique names. The names need not be constructed from the recognizer's alphabet, they are for our convenience:
 
-```javascript
+```json
 {
   "states": ["start", "zero", "one or more"]
 }
@@ -231,7 +231,7 @@ As with `alphabet`, if `states` is present, the set of states must be complete.[
 
 The recognizer's initial, or `start` state is required. It is a string respresenting the name of the initial state:
 
-```javascript
+```json
 {
   "start": "start"
 }
@@ -239,7 +239,7 @@ The recognizer's initial, or `start` state is required. It is a string respresen
 
 The recognizer's set of final, or `accepting` states is required. It is encoded as a list of strings representing the names of the final states.
 
-```javascript
+```json
 {
   "accepting": ["zero", "one or more"]
 }
@@ -265,7 +265,7 @@ Each transition defines a change in the recognizer's state. Transitions are form
 
 Thus, one possible set of transitions might be encoded like this:
 
-```javascript
+```json
 {
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
