@@ -228,7 +228,7 @@ As with `alphabet`, if `states` is present, the set of states must be complete.[
 
 [^complete-states]: For the set of states to be complete, it must contain the start or initial state, all of the final states, and every state used by the transition function.
 
-The recognizer's initial, or `start` state is required. It is a string respresenting the name of the initial state:
+The recognizer's initial, or `start` state is required. It is a string representing the name of the initial state:
 
 ```json
 {
@@ -236,7 +236,7 @@ The recognizer's initial, or `start` state is required. It is a string respresen
 }
 ```
 
-The recognizer's set of final, or `accepting` states is required. It is encoded as a list of strings representing the names of the final states.
+The recognizer's set of final, or `accepting` states is required. It is encoded as a list of strings representing the names of the final states. If the recognizer is in any of the `accepting` (or "final") states when the end of the sentence is reached (or equivalently, when there are no more symbols to consume), the recognizer accepts or "recognizes" the sentence.
 
 ```json
 {
@@ -260,7 +260,7 @@ Each transition defines a change in the recognizer's state. Transitions are form
  - `a` is the input symbol  consumed.
  - `q` is the state the recognizer will be in after completing this transition. It can be the same as `p`, meaning that it consumes a symbol and remains in the same state.
 
- We can represent this with POJOs. For readability by those unfamiliar with the formal notation, we will use the words `from`, `consume`, and `to`. This may feel like a lot of typing compared to the formal symbols, but we'll get the computer do do our writing for us, and it doesn't care.
+We can represent this with POJOs. For readability by those unfamiliar with the formal notation, we will use the words `from`, `consume`, and `to`. This may feel like a lot of typing compared to the formal symbols, but we'll get the computer do do our writing for us, and it doesn't care.
 
 Thus, one possible set of transitions might be encoded like this:
 
@@ -292,7 +292,7 @@ Putting it all together, we have:
 }
 ```
 
-Or representation translates directly to our simplified state diagram:
+Or representation translates directly to this simplified state diagram:
 
 <div class="mermaid">
   graph LR
