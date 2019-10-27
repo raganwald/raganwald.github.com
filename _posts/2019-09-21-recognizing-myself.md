@@ -1,6 +1,6 @@
 ---
 title: "Computing Machines that Recognize Themselves, Part I: Finite state automata"
-tags: [recursion,allonge,mermaid,wip]
+tags: [recursion,allonge,mermaid,wip,noindex]
 ---
 
 # Prelude
@@ -100,7 +100,6 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 ### [The Problem Statement](#the-problem-statement-1)
 
   - [a language for describing finite state recognizers](#a-language-for-describing-finite-state-recognizers)
-  - [an example automaton](#an-example-automaton)
   - [implementing our example automaton](#implementing-our-example-automaton)
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
@@ -149,7 +148,7 @@ We will begin by stating the problem we are going to solve: We wish to answer th
 
 We'll need to be a bit more specific. Finite state automata can do a lot of things. Some finite state automata recognize statements in languages, where the staements consist of ordered and finite collections of symbols. We will call these **finite state recognizers**, and we are only concerned with finite state recognizers in this essay.
 
-Thus, we will not—of course—ask whether a finite state automaton can be hooked up to cameras and recognize whether a phyiscal scene contains a physical state machine. We also will not ask whether a finite state automaton can recognize a `.png` encoding of a diagram, and recognize whther it is a diagram of a valid fnite state state machine:
+Thus, we will not—of course—ask whether a finite state automaton can be hooked up to cameras and recognize whether a phyiscal scene contains a physical state machine. We also will not ask whether a finite state automaton can recognize a `.png` encoding of a diagram, and recognize whther it is a diagram of a valid finite state state machine:
 
 <div class="mermaid">
   graph LR
@@ -166,7 +165,7 @@ That is not, of course, the exact same thing as asking whether a regex can recog
 
 [^cannot-parse]: How certain? Well, all regular expression languages in wide usage have the ability to create *groups* using parentheses, e.g. `/Reg(?:inald)?/` is a regular expression containing an optional non-capturing group. Groups in regex can be nested, and must be properly nested and balanced for a regex to be valid. We know from [A Brutal Look at Balanced Parentheses...][brutal] that we cannot recognize balanced (or even nested) parentheses with just a finite state recognizer, so therefore we cannot recognize valid regexen with a finite state recognizer.
 
-But we'll start with devising a finite state recognizer that recognizes valid descriptions of finite state recognizers, and see where that takes us.
+But we'll start with devising a finite state recognizer that recognizes syntactically valid descriptions of finite state recognizers, and see where that takes us.
 
 ### a language for describing finite state recognizers
 
@@ -286,7 +285,7 @@ Putting it all together, we have:
 }
 ```
 
-Or representation translates directly to a simplified state diagram:
+Or representation translates directly to our simplified state diagram:
 
 <div class="mermaid">
   graph LR
@@ -298,40 +297,6 @@ Or representation translates directly to a simplified state diagram:
 </div>
 
 This finite state recognizer recognizes binary numbers.
-
----
-
-### an example automaton
-
-Here is a deterministic finite automaton that recognizes binary numbers:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|0|zero
-    zero-.->|end|recognized(recognized)
-    start-->|1|one[one or more]
-    one-->|0 or 1|one
-    one-.->|end|recognized;
-</div>
-
-And here is how we would represent it with data:
-
-```JSON
-{
-  "start": "start",
-  "accepting": "accepting",
-  "transitions": [
-    { "from": "start", "consume": "0", "to": "zero" },
-    { "from": "zero", "consume": "", "to": "accepting" },
-    { "from": "start", "consume": "1", "to": "one-or-more" },
-    { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
-    { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-    { "from": "one-or-more", "consume": "", "to": "accepting" }
-  ]
-}
-```
-
-(As an aside, any definition that does not include any `pop` elements is equivalent to a finite automaton, even if it is being interpreted by a framework that supports pushdown automata.)
 
 ---
 
