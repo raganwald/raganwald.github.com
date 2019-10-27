@@ -108,7 +108,7 @@ Now that we have established that finite state automata can do much more than "j
 ### [The Problem Statement](#the-problem-statement-1)
 
   - [a language for describing finite state recognizers](#a-language-for-describing-finite-state-recognizers)
-  - [implementing our example automaton](#implementing-our-example-automaton)
+  - [implementing our example recognizer](#implementing-our-example-recognizer)
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
 
@@ -160,11 +160,10 @@ Thus, we will not—of course—ask whether a finite state automaton can be hook
 
 <div class="mermaid">
   graph LR
-    start(start)-->|0|zero
-    zero-.->|end|recognized(recognized)
-    start-->|1|one[one or more]
-    one-->|0 or 1|one
-    one-.->|end|recognized;
+    start(start)-->|0|zero(zero)
+    start-->|1|one(one or more)
+    one-->|0|one
+    one-->|1|one;
 </div>
 
 Instead, we will formulate a language for describing finite state recognizers, and ask whether a finite state recognizer can be devised to recognize valid statements in the language that describes finite state recognizers. If we can make such a recognizer, we will have shown that in at least one sense, a finite state recognizer can recognize finite state recognizers.
@@ -297,20 +296,19 @@ Or representation translates directly to our simplified state diagram:
 
 <div class="mermaid">
   graph LR
-    start(start)-->|0|zero
-    zero-.->|end|recognized(recognized)
-    start-->|1|one[one or more]
-    one-->|0 or 1|one
-    one-.->|end|recognized;
+    start(start)-->|0|zero(zero)
+    start-->|1|one(one or more)
+    one-->|0|one
+    one-->|1|one;
 </div>
 
 This finite state recognizer recognizes binary numbers.
 
 ---
 
-### implementing our example automaton
+### implementing our example recognizer
 
-Here is a function that takes as its input the definition of an automaton, and returns a recognizer function:
+Here is a function that takes as its input the definition of a recognizer, and returns a recognizer *function*:
 
 ```javascript
 function automate ({ start, accepting, transitions }) {
