@@ -353,7 +353,7 @@ function automate (description) {
 }
 ```
 
-[^vap]: `automate` relies on `validatedAndProcessed`, a utility function that does some general-purpose processing useful to many of the things we will build along the way. The source code is [here](/assets/supplemental/fas/validated-and-processed.js).)
+[^vap]: `automate` relies on `validatedAndProcessed`, a utility function that does some general-purpose processing useful to many of the things we will build along the way. The source code is [here](/assets/supplemental/fsa/validated-and-processed.js).)
 
 Here we are using `automate` with our definition for recognizing binary numbers:
 
