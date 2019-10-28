@@ -87,9 +87,9 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 ### terminology
 
-In this iessay will will play a little loose with terminology. We are concerned with [finite state machines][fsm], also called *finite state automata*. FInite state automata can do a lot of things. They can recognize sentances in a language, which is our interest here. Finite state auatomata that recognize statements in a language are also called _finite state recognizers_.
+In this essay will will play a little loose with terminology. We are concerned with [finite state machines][fsm], also called *finite state automata*. Finite state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite state automata that recognize statements in a language are also called _finite state recognizers_.
 
-Finite state automata can slo do thing that are not of interest to our essay today. A finite state recognizer recognizes whether a sentance is a sentnance in a language. A finite state automaton can also be devised that not only recognizes whether a sentance is in a language, but also recgnizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.
+Finite state automata can slo do thing that are not of interest to our essay today. A finite state recognizer recognizes whether a sentence is a sentence in a language. A finite state automaton can also be devised that not only recognizes whether a sentence is in a language, but also recognizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.
 
 Other automata can generate strings, transform strings, and so forth. These are not of interest to us.
 
@@ -122,7 +122,7 @@ Now that we have established that finite state automata can do much more than "j
   - [catenation(first, second)](#catenationfirst-second)
   - [what we have learned from catenating descriptions](#what-we-have-learned-from-catenating-descriptions)
 
-[Takng the Union of Descriptions](#taking-the-union-of-descriptions)
+[Taking the Union of Descriptions](#taking-the-union-of-descriptions)
 
   - [fixing a problem with union(first, second)](#fixing-a-problem-with-unionfirst-second)
   - [what we have learned from taking the union of descriptions](#what-we-have-learned-from-taking-the-union-of-descriptions)
@@ -154,9 +154,9 @@ Now that we have established that finite state automata can do much more than "j
 
 We will begin by stating the problem we are going to solve: We wish to answer the question, *Can a finite state automaton recognize valid finite state automata?*
 
-We'll need to be a bit more specific. Finite state automata can do a lot of things. Some finite state automata recognize statements in languages, where the staements consist of ordered and finite collections of symbols. We will call these **finite state recognizers**, and we are only concerned with finite state recognizers in this essay.
+We'll need to be a bit more specific. Finite state automata can do a lot of things. Some finite state automata recognize statements in languages, where the statements consist of ordered and finite collections of symbols. We will call these **finite state recognizers**, and we are only concerned with finite state recognizers in this essay.
 
-Thus, we will not—of course—ask whether a finite state automaton can be hooked up to cameras and recognize whether a phyiscal scene contains a physical state machine. We also will not ask whether a finite state automaton can recognize a `.png` encoding of a diagram, and recognize whther it is a diagram of a valid finite state state machine:
+Thus, we will not—of course—ask whether a finite state automaton can be hooked up to cameras and recognize whether a physical scene contains a physical state machine. We also will not ask whether a finite state automaton can recognize a `.png` encoding of a diagram, and recognize whether it is a diagram of a valid finite state state machine:
 
 <div class="mermaid">
   graph LR
@@ -191,12 +191,12 @@ Now what do we need to encode? Finite state recognizers are defined as a quintup
   - `Σ` is the alphabet of symbols this recognizer operates upon.
   - `S` is the set of states this recognizer can be in.
   - `s` is the initial or "start" state of the recognizer.
-  - `ẟ` is the recognizer's "state transition function" that governs how the recognizer changes states while it consumes symbols from the sentance iit is attempting to recognize.
-  - `F` is the set of "final" states. If the recognizer is in one of these states when the input ends, it has recognzied the sentance.
+  - `ẟ` is the recognizer's "state transition function" that governs how the recognizer changes states while it consumes symbols from the sentence it is attempting to recognize.
+  - `F` is the set of "final" states. If the recognizer is in one of these states when the input ends, it has recognized the sentence.
 
-We can encode these with JSON. We'll use descriptive words rather than matehmatical symbols, but note that if we wanted to use the mathematical symbols, everything we're doing would work just as well.
+We can encode these with JSON. We'll use descriptive words rather than mathematical symbols, but note that if we wanted to use the mathematical symbols, everything we're doing would work just as well.
 
-Or JSON representation will represent the quintuple as a Plain Old JavaScript Object (or "POJO"), rather than an array. This makes it easier to document what each element means, and it alsso makes it easy for some of the elements to be optional:
+Or JSON representation will represent the quintuple as a Plain Old JavaScript Object (or "POJO"), rather than an array. This makes it easier to document what each element means, and it also makes it easy for some of the elements to be optional:
 
 ```javascript
 {
@@ -246,10 +246,10 @@ The recognizer's set of final, or `accepting` states is required. It is encoded 
 
 The recognizer's state transition function, `ẟ`, is represented as a set of `transitions`, encoded as a list of POJOs, each of which represents exactly one transition:
 
-```javascript
+```json
 {
   "transitions": [
-    // list of transitions...
+
   ]
 }
 ```
@@ -277,7 +277,7 @@ Thus, one possible set of transitions might be encoded like this:
 
 Putting it all together, we have:
 
-```json
+```javascript
 const binaryNumber = {
   "alphabet": "01",
   "states": ["start", "zero", "one or more"],
