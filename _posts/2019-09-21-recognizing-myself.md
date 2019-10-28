@@ -278,7 +278,7 @@ Thus, one possible set of transitions might be encoded like this:
 Putting it all together, we have:
 
 ```json
-{
+const binaryNumber = {
   "alphabet": "01",
   "states": ["start", "zero", "one or more"],
   "start": "start",
@@ -308,95 +308,54 @@ This finite state recognizer recognizes binary numbers.
 
 ### implementing our example recognizer
 
-Here is a function that takes as its input the definition of a recognizer, and returns a recognizer *function*:
+Here is a function that takes as its input the definition of a recognizer, and returns a recognizer *function*:[^vap]
 
 ```javascript
-function automate ({ start, accepting, transitions }) {
-  // map from from states to the transitions defined for that from state
-  const stateMap =
+function automate (description) {
+  const {
+    stateMap,
+    start,
+    acceptingSet,
     transitions
-      .reduce(
-        (acc, transition) => {
-          const { from } = transition;
-
-          if (from === accepting) {
-            console.log(`Transition ${JSON.stringify(transition)} is a transition from the accepting state. This is not allowed.`)
-            return;
-          }
-
-          if (!acc.has(from)) {
-            acc.set(from, []);
-          }
-          acc.get(from).push(transition);
-
-          return acc;
-        },
-        new Map()
-      );
-
-      // given a starting state defined by { internal, external, string },
-      // returns a set of next states
-  function performTransition ({ string, external, internal }) {
-    const transitionsForThisState = stateMap.get(internal);
-
-    if (transitionsForThisState == null) {
-      // a deliberate fail
-      return [];
-    }
-
-    return transitionsForThisState
-      .reduce(
-        (acc, {consume, pop, push, to}) => {
-
-          let string2 = string;
-          if (consume === '') {
-            if (string !== '') return acc; // not a match
-          } else if (consume != null) {
-            if (string === '') return acc; // not a match
-            if (string[0] !== consume) return acc; // not a match
-
-            string2 = string.substring(1); // match and consume
-          }
-
-          const external2 = external.slice(0);
-          if (pop != null) {
-            if (external2.pop() !== pop) return acc; // not a match
-          }
-          if (push != null) {
-            external2.push(push);
-          }
-
-          const internal2 = (to != null) ? to : internal;
-
-          acc.push({
-            string: string2, external: external2, internal: internal2
-          });
-
-          return acc;
-        },
-        []
-      );
-  }
+  } = validatedAndProcessed(description);
 
   return function (string) {
-    let currentStates = [
-      { string, external: [], internal: start }
-    ];
+    let state = start;
+    let unconsumed = string;
 
-    while (currentStates.length > 0) {
-      currentStates = currentStates.flatMap(performTransition);
+    while (unconsumed !== '') {
+      const transitionsForThisState = stateMap.get(state) || [];
+      const transition =
+      	transitionsForThisState.find(
+          ({ consume }) => consume === unconsumed[0]
+      	);
 
-      if (currentStates.some( ({ internal }) => internal === accepting )) {
-        return true;
+      if (transition == null) {
+        // the machine stops
+      	break;
       }
+
+      const { to } = transition;
+      unconsumed = unconsumed.substring(1);
+
+      state = to;
     }
 
-    return false;
+    // machine has reached a terminal state.
+    if (unconsumed === '') {
+      // reached the end. do we accept?
+      return acceptingSet.has(state);
+    } else {
+      // stopped before reaching the end is a fail
+      return false;
+    }
   }
 }
 ```
 
-And here we are using it with our definition for recognizing binary numbers. Note that it does not `pop` anything from the stack, which means that it is a finite-state automaton:
+[^vap]: `automate` relies on `validatedAndProcessed`, a utility function that does some general-purpose processing useful to many of the things we will build along the way. The source code is [here](/assets/supplemental/fas/validated-and-processed.js).)
+
+Here we are using `automate` with our definition for recognizing binary numbers:
 
 ```javascript
 function test (description, examples) {
@@ -407,20 +366,20 @@ function test (description, examples) {
   }
 }
 
-const binary = {
+const binaryNumber = {
+  "alphabet": "01",
+  "states": ["start", "zero", "one or more"],
   "start": "start",
-  "accepting": "accepting",
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
-    { "from": "zero", "consume": "", "to": "accepting" },
-    { "from": "start", "consume": "1", "to": "one-or-more" },
-    { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
-    { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-    { "from": "one-or-more", "consume": "", "to": "accepting" }
-  ]
+    { "from": "start", "consume": "1", "to": "one or more" },
+    { "from": "one or more", "consume": "0", "to": "one or more" },
+    { "from": "one or more", "consume": "1", "to": "one or more" }
+  ],
+  "accepting": ["zero", "one or more"]
 };
 
-test(binary, [
+test(binaryNumber, [
   '', '0', '1', '00', '01', '10', '11',
   '000', '001', '010', '011', '100',
   '101', '110', '111',
@@ -445,89 +404,7 @@ test(binary, [
     '10100011011000001010011100101110111' => true
 ```
 
-Here we use it with a description for balanced parentheses. This does `push` and `pop` things from the stack, so we know it is a pushdown automaton. Is it deterministic? If we look at the description carefully, we can see that every transition is guaranteed to be unambiguous. It can only ever follow one path through the states for any input. Therefore, it is a deterministic pushdown automaton:
-
-```javascript
-const balanced = {
-  "start": "start",
-  "accepting": "accepting",
-  "transitions": [
-    { "from": "start", "push": "⚓︎", "to": "read" },
-    { "from": "read", "consume": "(", "push": "(", "to": "read" },
-    { "from": "read", "consume": ")", "pop": "(", "to": "read" },
-    { "from": "read", "consume": "[", "push": "[", "to": "read" },
-    { "from": "read", "consume": "]", "pop": "[", "to": "read" },
-    { "from": "read", "consume": "{", "push": "{", "to": "read" },
-    { "from": "read", "consume": "}", "pop": "{", "to": "read" },
-    { "from": "read", "consume": "", "pop": "⚓︎", "to": "accepting" }
-  ]
-};
-
-test(balanced, [
-  '', '(', '()', ')(', '()()', '{()}',
-	'([()()]())', '([()())())',
-	'())()', '((())(())'
-]);
-  //=>
-    '' => true
-    '(' => false
-    '()' => true
-    ')(' => false
-    '()()' => true
-    '{()}' => true
-    '([()()]())' => true
-    '([()())())' => false
-    '())()' => false
-    '((())(())' => false
-```
-
-Finally, even- and odd-length binary palindromes. Not only does `palindrome` both `push` and `pop`, but it has more than one state transition for every input it consumes, making it a non-deterministic pushdown automaton. We call these just pushdown automatons:
-
-```javascript
-const palindrome = {
-  "start": "start",
-  "accepting": "accepting",
-  "transitions": [
-    { "from": "start", "push": "⚓︎", "to": "first" },
-    { "from": "first", "consume": "0", "push": "0", "to": "left" },
-    { "from": "first", "consume": "1", "push": "1", "to": "left" },
-    { "from": "first", "consume": "0", "to": "right" },
-    { "from": "first", "consume": "1", "to": "right" },
-    { "from": "left", "consume": "0", "push": "0" },
-    { "from": "left", "consume": "1", "push": "1" },
-    { "from": "left", "consume": "0", "to": "right" },
-    { "from": "left", "consume": "1", "to": "right" },
-    { "from": "left", "consume": "0", "pop": "0", "to": "right" },
-    { "from": "left", "consume": "1", "pop": "1", "to": "right" },
-    { "from": "right", "consume": "0", "pop": "0" },
-    { "from": "right", "consume": "1", "pop": "1" },
-    { "from": "right", "consume": "", "pop": "⚓︎", to: "accepting" }
-  ]
-};
-
-test(palindrome, [
-  '', '0', '00', '11', '111', '0110',
-  '10101', '10001', '100111',
-  '1001', '0101', '100111',
-  '01000000000000000010'
-]);
-  //=>
-    '' => false
-    '0' => true
-    '00' => true
-    '11' => true
-    '111' => true
-    '0110' => true
-    '10101' => true
-    '10001' => true
-    '100111' => false
-    '1001' => true
-    '0101' => false
-    '100111' => false
-    '01000000000000000010' => true
-```
-
-We now have a function, `automate`, that takes a data description of a finite state automaton, deterministic pushdown automaton, or pushdown automaton, and returns a recognizer function.
+We have a function, `automate`, that takes a data description of a finite state automaton/recognizer, and returns a recognizer function we can play with in JavaScript.
 
 # Composeable Recognizers
 

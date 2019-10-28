@@ -73,7 +73,20 @@ function toAlphabetSet (transitions) {
   )
 }
 
-function automate({
+function toStateSet (transitions) {
+  return new Set(
+    transitions.reduce(
+      (acc, { from, to }) => {
+        acc.add(from);
+        acc.add(to);
+        return acc;
+      },
+      new Set()
+    )
+  )
+}
+
+function validatedAndProcessed ({
   alphabet,
   states,
   start,
@@ -82,8 +95,8 @@ function automate({
 }) {
   const alphabetSet = toAlphabetSet(transitions);
   const stateMap = toStateMap(transitions);
-  const stateSet = new Set(stateMap.keys());
-  const acceptingStates = new Set(accepting);
+  const stateSet = toStateSet(transitions);
+  const acceptingSet = new Set(accepting);
 
   // validate alphabet if present
   if (alphabet != null) {
@@ -93,7 +106,8 @@ function automate({
       [...alphabetSet]
         .filter(
           sym => !declaredAlphabetSet.has(sym)
-        );
+        )
+    	.map(x => `'${x}'`);
 
     if (undeclaredSymbols.length > 0) {
       error(
@@ -103,6 +117,65 @@ function automate({
   } else {
     alphabet = [...alphabetSet].join('');
   }
+
+  // validate states if present
+  if (states != null) {
+    const declaredStateSet = new Set(states);
+
+    const undeclaredStates =
+      [...stateSet]
+        .filter(
+          state => !declaredStateSet.has(state)
+        )
+    	.map(x => `'${x}'`);
+
+    if (undeclaredStates.length > 0) {
+      error(
+        `the states ${undeclaredStates.join(', ')} are used, but not present in the states declaration`
+      );
+    }
+
+    const unusedStates =
+      states
+        .filter(
+          state => !stateSet.has(state)
+        )
+    	.map(x => `'${x}'`);
+
+    if (unusedStates.length > 0) {
+      error(
+        `the states ${unusedStates.join(', ')} are declared, but not used in the transitions`
+      );
+    }
+  } else {
+    states = [...stateSet];
+  }
+
+  return {
+    alphabet,
+    alphabetSet,
+    states,
+    stateSet,
+    stateMap,
+    start,
+    accepting,
+    acceptingSet,
+    transitions
+  };
+}
+
+function automate (description) {
+  const {
+    alphabet,
+    alphabetSet,
+    states,
+    stateSet,
+    stateMap,
+    start,
+    accepting,
+    acceptingSet,
+    transitions
+  } = validatedAndProcessed(description);
 
   return function (string) {
     let state = start;
@@ -129,7 +202,7 @@ function automate({
     // machine has reached a terminal state.
     if (unconsumed === '') {
       // reached the end. do we accept?
-      return acceptingStates.has(state);
+      return acceptingSet.has(state);
     } else {
       // stopped before reaching the end is a fail
       return false;
@@ -675,8 +748,6 @@ const mule2 = {
     ]
 };
 
-console.log(resolveCollisions(['start-2', 'bar'], mule2))
-
 function prepareSecondForCatenation (start, accepting, first, second) {
   const uncollidedSecond =  resolveCollisions(statesOf(first), second);
 
@@ -747,7 +818,8 @@ const zeroes = {
 };
 
 const zeroOne = {
-  alphabet: 'x',
+  alphabet: '01',
+  states: ['start', 'zero'],
   start: 'start',
   accepting: ['one'],
   transitions: [
@@ -756,4 +828,23 @@ const zeroOne = {
   ]
 };
 
-automate(zeroOne)
+const binaryNumber = {
+  "alphabet": "01",
+  "states": ["start", "zero", "one or more"],
+  "start": "start",
+  "transitions": [
+    { "from": "start", "consume": "0", "to": "zero" },
+    { "from": "start", "consume": "1", "to": "one or more" },
+    { "from": "one or more", "consume": "0", "to": "one or more" },
+    { "from": "one or more", "consume": "1", "to": "one or more" }
+  ],
+  "accepting": ["zero", "one or more"]
+};
+
+test(binaryNumber, [
+  '', '0', '1', '00', '01', '10', '11',
+  '000', '001', '010', '011', '100',
+  '101', '110', '111',
+  '10100011011000001010011100101110111'
+]);
+
