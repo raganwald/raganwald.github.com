@@ -155,11 +155,13 @@ We'll need to be a bit more specific. Finite state automata can do a lot of thin
 Thus, we will not—of course—ask whether a finite state automaton can be hooked up to cameras and recognize whether a physical scene contains a physical state machine. We also will not ask whether a finite state automaton can recognize a `.png` encoding of a diagram, and recognize whether it is a diagram of a valid finite state state machine:
 
 <div class="mermaid">
-  graph LR
-    start(start)-->|0|zero(zero)
-    start-->|1|one(one or more)
-    one-->|0|one
-    one-->|1|one;
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> one : 1
+    one --> one : 0, 1
+    zero --> [*]
+    one --> [*]
 </div>
 
 Instead, we will formulate a language for describing finite state recognizers, and ask whether a finite state recognizer can be devised to recognize valid statements in the language that describes finite state recognizers. If we can make such a recognizer, we will have shown that in at least one sense, a finite state recognizer can recognize finite state recognizers.
@@ -288,14 +290,16 @@ const binaryNumber = {
 }
 ```
 
-Or representation translates directly to this simplified state diagram:
+Our representation translates directly to this simplified state diagram:
 
 <div class="mermaid">
-  graph LR
-    start(start)-->|0|zero(zero)
-    start-->|1|one(one or more)
-    one-->|0|one
-    one-->|1|one;
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> one : 1
+    one --> one : 0, 1
+    zero --> [*]
+    one --> [*]
 </div>
 
 This finite state recognizer recognizes binary numbers.
