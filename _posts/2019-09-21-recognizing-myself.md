@@ -112,10 +112,6 @@ Now that we have established that finite state automata can do much more than "j
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
 
-[A few words about Functional Composition](#a-few-words-about-functional-composition)
-
-[Refactoring OO Recognizers into Data](#refactoring-oo-recognizers-into-data)
-
 [Catenating Descriptions](#catenating-descriptions)
 
   - [catenationFSA(first, second)](#catenationfsafirst-second)
@@ -308,7 +304,7 @@ This finite state recognizer recognizes binary numbers.
 
 ### implementing our example recognizer
 
-Here is a function that takes as its input the definition of a recognizer, and returns a recognizer *function*:[^vap]
+Here is a function that takes as its input the definition of a recognizer, and returns a Javascript recognizer *function*:[^vap]
 
 ```javascript
 function automate (description) {
@@ -404,7 +400,7 @@ test(binaryNumber, [
     '10100011011000001010011100101110111' => true
 ```
 
-We have a function, `automate`, that takes a data description of a finite state automaton/recognizer, and returns a recognizer function we can play with in JavaScript.
+We now have a function, `automate`, that takes a data description of a finite state automaton/recognizer, and returns a Javascript recognizer function we can play with.
 
 # Composeable Recognizers
 
@@ -412,105 +408,9 @@ One of programming's "superpowers" is _composition_, the ability to build things
 
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
 
-If we want to build a recognizer for JSON, it would be ideal to build smaller recognizers for things like strings or numbers, and then use composition to build recognizers for elements like lists and "objects."
+If we want to build a recognizer for recognizers, it would be ideal to build smaller recognizers for things like strings, and then use composition to build recognizers for elements like lists and "objects."
 
 This is the motivation for the first part of our exploration: We want to make simple recognizers, and then use composition to make more complex recognizers from the simple recognizers.
-
-## A few words about Functional Composition
-
-We explored this exact idea in [Pattern Matching and Recursion]. We used functions as recognizers, and then we used functional composition to compose more complex recognizers from simpler recognizers.
-
-[Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
-
-For example, `just` was function that took a string and returned a recognizer that recognized just that string. `follows` was a higher-order function that catenationd recognizers together, like this:
-
-```javascript
-follows(just('fu'), just('bar'))('foobar')
-  //=> false
-
-follows(just('fu'), just('bar'))('fubar\'d')
-  //=> 'fubar'
-```
-
-`cases` was another higher-order function, it took two or more recognizer and made a recognizer that recognized strings that any of its recognizers recognized:
-
-```javascript
-const ones =
-  input => cases(
-    just('1'),
-    follows(just('1'), ones)
-  )(input);
-
-ones('1')
-  //=> '1'
-
-ones('111')
-  //=> '111'
-```
-
-Now there are lots of ways that we can write a function that takes two or more arguments and then returns a new function. What made `follows` and `cases` examples of functional composition is not just that they took functions as arguments and returned functions, but that the functions they return invoke the original functions in order to compute the result.
-
-Here they are:
-
-```javascript
-const follows =
-  (...patterns) =>
-    input => {
-      let matchLength = 0;
-      let remaining = input;
-
-      for (const pattern of patterns) {
-        const matched = pattern(remaining);
-
-        if (matched === false) return false;
-
-        matchLength = matchLength + matched.length;
-        remaining = input.slice(matchLength);
-      }
-
-      return input.slice(0, matchLength);
-    };
-
-const cases =
-  (...patterns) =>
-    input => {
-      const matches = patterns.map(p => p(input)).filter(m => m !== false);
-
-      if (matches.length === 0) {
-        return false;
-      } else {
-        return matches.sort((a, b) => a.length > b.length ? -1 : +1)[0]
-      }
-    };
-```
-
-This is a very powerful technique in programming, one of the foundational ideas that can be traced back to the Lambda Calculus and Combinatorial Logic. And it seems very promising. Our Pushdown Automata are objects, but their `.recognize` methods are functions, so with a nip here and a tuck there, we ought to be able to use functions like `follows` and `cases` to compose new recognizers from Pushdown Automata.
-
-But we are actually going to avoid this technique. Functional composition is wonderful, but it has certain problems that are relevant here.
-
-First and foremost, when we compose functions with a new function, we are using all the programming power of JavaScript. We can use loops, recursion, whatever we like. But when we built recognizers out of Finite State Automata, Desterministic Pushdown Automata, or Pushdown Automata, we were constrained to only use very specific computing capabilities.
-
-If we use a function like `follows` to catenate two FSAs together, is the resulting recognizer still equivalent to an FSA? What about two Pushdown Automata? Functions obscure the underlying model of computation. Of course, for practical programming, this is not a concern, and functional composition is a powerful technique.
-
-But for the sake of exploring the computational consequences of composing recognizers, we're going to explore a different technique. We'll start by refactoring our Pushdown Automation.
-
----
-
-## Refactoring OO Recognizers into Data
-
-We're going to perform one of the more interesting types of refactoring, refactoring functions into data. Of course, functions in JavaScript are first-class entities, which means they are already data in a certain way, namely, they are _values_. Data of the sort you'd find in a classical database like strings, booleans, numbers, and so forth are also values.
-
-So that is the difference? For the purposes of this essay, we shall pay attention to one very important characteristic of data like strings and numbers: Data is entirely transparent and explicit. When we look at a string, we know everything we need to know about it. There is no hidden, encapsulated behaviour.
-
-Whereas, functions encapsulate behaviour. When we inspect a function, we might discover its name and the number of arguments. In some languages, we get type information too. But its internals are a sealed book to us. We don't know its environment, we don't know which variables are closed over. Some implementation allow us to inspect a function's source code, but JavaScript does not.
-
-This is not a hard definition, but for our purposes here, it is sufficient. Functions are opaque, data is transparent.
-
-Why do we want to do this? Let's consider our design for Pushdown Automata. Each automata has two parts: There's code that "runs the automaton," it's in the parent class `PushdownAutomata`. Then there are the specific methods that make up the states of an automaton, their in the concrete child class, e.g. `BinaryPalindrome`.
-
-Consider a different design. Let's say we had a format for defining the states of a Pushdown Automaton in data, pure data. We could hand this to `PushdownAutomata`, and it could give us back a recognizer function, instead of extending a class. What does this give us? Well, the data that defines the states is fully transparent. We can inspect it, we can write functions that modify it, and most especially, we can explore whether given the data for two different recognizers, we can compute the data for a recognizer that composes the recognizers.
-
-But let's not get ahead of ourselves. Let's start with our refactoring:
 
 
 
