@@ -112,16 +112,16 @@ Now that we have established that finite state automata can do much more than "j
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
 
+[Taking the Union of Descriptions](#taking-the-union-of-descriptions)
+
+  - [fixing a problem with union(first, second)](#fixing-a-problem-with-unionfirst-second)
+  - [what we have learned from taking the union of descriptions](#what-we-have-learned-from-taking-the-union-of-descriptions)
+
 [Catenating Descriptions](#catenating-descriptions)
 
   - [catenationFSA(first, second)](#catenationfsafirst-second)
   - [catenation(first, second)](#catenationfirst-second)
   - [what we have learned from catenating descriptions](#what-we-have-learned-from-catenating-descriptions)
-
-[Taking the Union of Descriptions](#taking-the-union-of-descriptions)
-
-  - [fixing a problem with union(first, second)](#fixing-a-problem-with-unionfirst-second)
-  - [what we have learned from taking the union of descriptions](#what-we-have-learned-from-taking-the-union-of-descriptions)
 
 [Building Language Recognizers](#building-language-recognizers)
 
@@ -408,7 +408,9 @@ We now have a function, `automate`, that takes a data description of a finite st
 
 # Composeable Recognizers
 
-One of programming's "superpowers" is _composition_, the ability to build things out of smaller things, and especially, to reuse those smaller things to build other things. Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
+One of programming's "superpowers" is _composition_, the ability to build things out of smaller things, and especially, to reuse those smaller things to build other things.
+
+Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
 
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
 
@@ -416,6 +418,275 @@ If we want to build a recognizer for recognizers, it would be ideal to build sma
 
 This is the motivation for the first part of our exploration: We want to make simple recognizers, and then use composition to make more complex recognizers from the simple recognizers.
 
+We are going to implement three operations that compose two recognizers: _Union_, _Intersection_, and _Catenation_.
+
+Given two recognizes `a` and `b`, we can say that `A` is a set of sentences recognized by `a`, and `B` is a set of sentences recognized by `b`. Given `a`, `A`, `b`, and `B`, we can say that the `union(a, b)` is a recognizer that recognizes sentences in the set `A ⋃ B`, and `intersection(a, b)` is a recognizer that recognizes sentences in the set `A ⋂ B`.
+
+Or in colloquial terms, a sentence is recognized by `union(a, b)` if and only if it is recognized by `a` or it is recognized by `b`. And a sentence is recognized by `intersection(a, b)` if and only if it is recognized by both `a` and by `b`.
+
+What about `catenation(a, b)`? If we have some sentence `xy`, where `x` and `y` are strings of zero or more symbols, then `xy` is recognized by `catenation(a, b)` is and only if `x` is recognized by `a` and `y` is recognized by `b`.
+
+We'll get started with union and catenation, because they both are built on a common operation, taking the _product_ of two finite state automata.
+
+---
+
+## Taking the Union of Descriptions
+
+Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenation(A, B)` recognizes sentences of the form "`A` followed by `B`," `union(A, B)` would recognize sentences of `A` or of `B`.
+
+Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we make sure that both recognizers share the same `start` and `accepting` states:[^names]
+
+```javascript
+function union (first, second) {
+  const start = "start";
+  const accepting = "accepting";
+
+  const conformingFirst = renameStates(
+    { [first.start]: start, [first.accepting]: accepting },
+    first
+  );
+
+  const renamedSecond = resolveCollisions(statesOf(conformingFirst), second);
+
+  const conformingSecond = renameStates(
+    { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
+    renamedSecond
+  );
+
+  return {
+    start,
+    accepting,
+    transitions:
+  	  conformingFirst
+        .transitions
+          .concat(
+            conformingSecond.transitions
+          )
+  };
+}
+```
+
+Once again, the diagrams for exclamatory and interrogative:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|!|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|!|endable;
+</div>
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|?|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|?|endable;
+</div>
+
+And now, the alternation of the two rather than the catenation:
+
+```javascript
+union(exclamatory, interrogative)
+  //=>
+    {
+      "start": "start",
+      "accepting": "accepting",
+      "transitions": [
+        { "from": "start", "consume": "!", "to": "endable" },
+        { "from": "endable", "consume": "!" },
+        { "from": "endable", "consume": "", "to": "accepting" },
+        { "from": "start", "consume": "?", "to": "endable-2" },
+        { "from": "endable-2", "consume": "?" },
+        { "from": "endable-2", "consume": "", "to": "accepting" }
+      ]
+    }
+```
+
+And we can see from the diagram that we now have a recognizer that matches exclamation marks, or question marks, but not both:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|!|endable
+    endable-->|!|endable
+    endable-.->|end|recognized(recognized)
+    start(start)-->|?|endable-2
+    endable-2-->|?|endable-2
+    endable-2-.->|end|recognized(recognized)
+</div>
+
+---
+
+### fixing a problem with union(first, second)
+
+Sharing the `start` state works just fine as long as it is a root state, i.e., No transitions lead back to it. Consider this recognizer that recognizes zero or more sequences of the characters `^H` (old-timers may remember this as a shorthand for "backspace" popular in old internet forums):
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|^|ctrl
+    start-.->|end|recognized(recognized)
+    ctrl-->|H|start
+</div>
+
+The way `union` works right now, is that if we evaluate `union(backspaces, exclamatory)`, we get this:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->|^|ctrl
+    start-.->|end|recognized(recognized)
+    ctrl-->|H|start
+    start(start)-->|!|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|!|endable;
+</div>
+
+If we follow it along, we see that it does correctly recognize "", "^H", "^H^H", "!", "!!", and so forth. But it also recognizes strings like "^H^H!!!!!", which is not what we want. The problem is that `backspace` has a start state that is not a root: It has at least one transition leading into it.
+
+We can fix it by changing `union` so that when given a recognizer with a start state that is not a root, it adds a root for us, like this:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->start-2
+    start-2-->|^|ctrl
+    start-2-.->|end|recognized(recognized)
+    ctrl-->|H|start-2
+</div>
+
+After "adding a root," the result of `union(backspaces, exclamatory)` would then be:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->start-2
+    start-2-->|^|ctrl
+    start-2-.->|end|recognized(recognized)
+    ctrl-->|H|start-2
+    start(start)-->|!|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|!|endable;
+</div>
+
+Here's our updated code:
+
+```javascript
+function rootStart (description) {
+  const { start, accepting, transitions } = description;
+  const needsRoot =
+    !!(
+      transitions
+        .find(
+          ({ from, to }) => to === start || (from === start && to == null)
+        )
+    );
+
+  if (needsRoot) {
+    const startShifted = resolveCollisions([description.start], description);
+
+    return {
+      start,
+      accepting,
+      transitions:
+      	[{ from: start, to: startShifted.start }]
+      	  .concat(
+            startShifted.transitions
+          )
+    }
+  } else {
+    return description;
+  }
+}
+
+function union (first, second) {
+  const start = "start";
+  const accepting = "accepting";
+
+  const rootFirst = rootStart(first);
+  const rootSecond = rootStart(second);
+
+  const conformingFirst = renameStates(
+    { [rootFirst.start]: start, [rootFirst.accepting]: accepting },
+    rootFirst
+  );
+
+  const renamedSecond = resolveCollisions(statesOf(conformingFirst), rootSecond);
+
+  const conformingSecond = renameStates(
+    { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
+    renamedSecond
+  );
+
+  return {
+    start,
+    accepting,
+    transitions:
+  	  conformingFirst
+        .transitions
+          .concat(
+            conformingSecond.transitions
+          )
+  };
+}
+```
+
+And in action:
+
+```javascript
+const backspaces = {
+  start: "start",
+  accepting: "accepting",
+  transitions: [
+    { from: "start", consume: "^", to: "ctrl" },
+    { from: "start", consume: "", to: "accepting" },
+    { from: "ctrl", consume: "H", to: "start" }
+  ]
+}
+
+const exclamatory = {
+  "start": "start",
+  "accepting": "accepting",
+  "transitions": [
+    { "from": "start", "consume": "!", "to": "endable" },
+    { "from": "endable", "consume": "!" },
+    { "from": "endable", "consume": "", "to": "accepting" }
+  ]
+};
+
+union(backspaces, exclamatory)
+  //=>
+    {
+      "start": "start",
+      "accepting": "accepting",
+      "transitions": [
+        { "from": "start", "to": "start-2" },
+        { "from": "start-2", "consume": "^", "to": "ctrl" },
+        { "from": "start-2", "consume": "", "to": "accepting" },
+        { "from": "ctrl", "consume": "H", "to": "start-2" },
+        { "from": "start", "consume": "!", "to": "endable" },
+        { "from": "endable", "consume": "!" },
+        { "from": "endable", "consume": "", "to": "accepting" }
+      ]
+    }
+```
+
+And as we hoped, it is exactly the recognizer we wanted:
+
+<div class="mermaid">
+  graph LR
+    start(start)-->start-2
+    start-2-->|^|ctrl
+    start-2-.->|end|recognized(recognized)
+    ctrl-->|H|start-2
+    start(start)-->|!|endable
+    endable-.->|end|recognized(recognized)
+    endable-->|!|endable;
+</div>
+
+---
+
+### what we have learned from taking the union of descriptions
+
+Once again, we have developed some confidence that given any two finite state recognizers, we can construct a union recognizer that is also a finite state automaton. Likewise, if either or both of the recognizers are pushdown automata, we have confidence that we can construct a recognizer that recognizes either language that will also be a pushdown automaton.
+
+Coupled with what we learned from catenating recognizers, we now can develop the conjecture that "can be recognized with a pushdown automaton" is a transitive relationship: We can build an expression of arbitrary complexity using catenation and union, and if the recognizers given were pushdown automata (or simpler), the result will be a pushdown automaton.
+
+This also tells us something about languages: If we have a set of context-free languages, all the languages we can form using catenation and alternation, will also be context-free languages.
 
 
 ---
@@ -1037,264 +1308,6 @@ Our `catenation` function has transformed a deterministic pushdown automaton int
 But to recognize `()()`, it consumed the first `(` and pushed it onto the stack, but not the second `(`. This is only possible in a Pushdown Automaton. So our `catenation` function doesn't tell us anything about whether two deterministic pushdown automata can always be catenated in such a way to produce a deterministic pushdown automaton.
 
 If it is possible, our `catenation` function doesn't tell us that it's possible. Mind you, this reasoning doesn't prove that it's impossible. We just cannot tell from this particular `catenation` function alone.
-
-## Taking the Union of Descriptions
-
-Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenation(A, B)` recognizes sentences of the form "`A` followed by `B`," `union(A, B)` would recognize sentences of `A` or of `B`.
-
-Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we make sure that both recognizers share the same `start` and `accepting` states:[^names]
-
-```javascript
-function union (first, second) {
-  const start = "start";
-  const accepting = "accepting";
-
-  const conformingFirst = renameStates(
-    { [first.start]: start, [first.accepting]: accepting },
-    first
-  );
-
-  const renamedSecond = resolveCollisions(statesOf(conformingFirst), second);
-
-  const conformingSecond = renameStates(
-    { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
-    renamedSecond
-  );
-
-  return {
-    start,
-    accepting,
-    transitions:
-  	  conformingFirst
-        .transitions
-          .concat(
-            conformingSecond.transitions
-          )
-  };
-}
-```
-
-Once again, the diagrams for exclamatory and interrogative:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|!|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|!|endable;
-</div>
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|?|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|?|endable;
-</div>
-
-And now, the alternation of the two rather than the catenation:
-
-```javascript
-union(exclamatory, interrogative)
-  //=>
-    {
-      "start": "start",
-      "accepting": "accepting",
-      "transitions": [
-        { "from": "start", "consume": "!", "to": "endable" },
-        { "from": "endable", "consume": "!" },
-        { "from": "endable", "consume": "", "to": "accepting" },
-        { "from": "start", "consume": "?", "to": "endable-2" },
-        { "from": "endable-2", "consume": "?" },
-        { "from": "endable-2", "consume": "", "to": "accepting" }
-      ]
-    }
-```
-
-And we can see from the diagram that we now have a recognizer that matches exclamation marks, or question marks, but not both:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|!|endable
-    endable-->|!|endable
-    endable-.->|end|recognized(recognized)
-    start(start)-->|?|endable-2
-    endable-2-->|?|endable-2
-    endable-2-.->|end|recognized(recognized)
-</div>
-
----
-
-### fixing a problem with union(first, second)
-
-Sharing the `start` state works just fine as long as it is a root state, i.e., No transitions lead back to it. Consider this recognizer that recognizes zero or more sequences of the characters `^H` (old-timers may remember this as a shorthand for "backspace" popular in old internet forums):
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|^|ctrl
-    start-.->|end|recognized(recognized)
-    ctrl-->|H|start
-</div>
-
-The way `union` works right now, is that if we evaluate `union(backspaces, exclamatory)`, we get this:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|^|ctrl
-    start-.->|end|recognized(recognized)
-    ctrl-->|H|start
-    start(start)-->|!|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|!|endable;
-</div>
-
-If we follow it along, we see that it does correctly recognize "", "^H", "^H^H", "!", "!!", and so forth. But it also recognizes strings like "^H^H!!!!!", which is not what we want. The problem is that `backspace` has a start state that is not a root: It has at least one transition leading into it.
-
-We can fix it by changing `union` so that when given a recognizer with a start state that is not a root, it adds a root for us, like this:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->start-2
-    start-2-->|^|ctrl
-    start-2-.->|end|recognized(recognized)
-    ctrl-->|H|start-2
-</div>
-
-After "adding a root," the result of `union(backspaces, exclamatory)` would then be:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->start-2
-    start-2-->|^|ctrl
-    start-2-.->|end|recognized(recognized)
-    ctrl-->|H|start-2
-    start(start)-->|!|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|!|endable;
-</div>
-
-Here's our updated code:
-
-```javascript
-function rootStart (description) {
-  const { start, accepting, transitions } = description;
-  const needsRoot =
-    !!(
-      transitions
-        .find(
-          ({ from, to }) => to === start || (from === start && to == null)
-        )
-    );
-
-  if (needsRoot) {
-    const startShifted = resolveCollisions([description.start], description);
-
-    return {
-      start,
-      accepting,
-      transitions:
-      	[{ from: start, to: startShifted.start }]
-      	  .concat(
-            startShifted.transitions
-          )
-    }
-  } else {
-    return description;
-  }
-}
-
-function union (first, second) {
-  const start = "start";
-  const accepting = "accepting";
-
-  const rootFirst = rootStart(first);
-  const rootSecond = rootStart(second);
-
-  const conformingFirst = renameStates(
-    { [rootFirst.start]: start, [rootFirst.accepting]: accepting },
-    rootFirst
-  );
-
-  const renamedSecond = resolveCollisions(statesOf(conformingFirst), rootSecond);
-
-  const conformingSecond = renameStates(
-    { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
-    renamedSecond
-  );
-
-  return {
-    start,
-    accepting,
-    transitions:
-  	  conformingFirst
-        .transitions
-          .concat(
-            conformingSecond.transitions
-          )
-  };
-}
-```
-
-And in action:
-
-```javascript
-const backspaces = {
-  start: "start",
-  accepting: "accepting",
-  transitions: [
-    { from: "start", consume: "^", to: "ctrl" },
-    { from: "start", consume: "", to: "accepting" },
-    { from: "ctrl", consume: "H", to: "start" }
-  ]
-}
-
-const exclamatory = {
-  "start": "start",
-  "accepting": "accepting",
-  "transitions": [
-    { "from": "start", "consume": "!", "to": "endable" },
-    { "from": "endable", "consume": "!" },
-    { "from": "endable", "consume": "", "to": "accepting" }
-  ]
-};
-
-union(backspaces, exclamatory)
-  //=>
-    {
-      "start": "start",
-      "accepting": "accepting",
-      "transitions": [
-        { "from": "start", "to": "start-2" },
-        { "from": "start-2", "consume": "^", "to": "ctrl" },
-        { "from": "start-2", "consume": "", "to": "accepting" },
-        { "from": "ctrl", "consume": "H", "to": "start-2" },
-        { "from": "start", "consume": "!", "to": "endable" },
-        { "from": "endable", "consume": "!" },
-        { "from": "endable", "consume": "", "to": "accepting" }
-      ]
-    }
-```
-
-And as we hoped, it is exactly the recognizer we wanted:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->start-2
-    start-2-->|^|ctrl
-    start-2-.->|end|recognized(recognized)
-    ctrl-->|H|start-2
-    start(start)-->|!|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|!|endable;
-</div>
-
----
-
-### what we have learned from taking the union of descriptions
-
-Once again, we have developed some confidence that given any two finite state recognizers, we can construct a union recognizer that is also a finite state automaton. Likewise, if either or both of the recognizers are pushdown automata, we have confidence that we can construct a recognizer that recognizes either language that will also be a pushdown automaton.
-
-Coupled with what we learned from catenating recognizers, we now can develop the conjecture that "can be recognized with a pushdown automaton" is a transitive relationship: We can build an expression of arbitrary complexity using catenation and union, and if the recognizers given were pushdown automata (or simpler), the result will be a pushdown automaton.
-
-This also tells us something about languages: If we have a set of context-free languages, all the languages we can form using catenation and alternation, will also be context-free languages.
 
 ---
 
