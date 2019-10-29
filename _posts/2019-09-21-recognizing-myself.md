@@ -1,6 +1,6 @@
 ---
 title: "Computing Machines that Recognize Themselves, Part I: Finite state automata"
-tags: [recursion,allonge,mermaid,wip,noindex]
+tags: [recursion,allonge,mermaid,noindex]
 ---
 
 # Prelude
