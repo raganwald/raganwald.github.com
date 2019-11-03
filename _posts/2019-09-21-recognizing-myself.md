@@ -470,6 +470,12 @@ Now let us imagine the two recognizers are operating simultaneously on two strin
 |'zero'|'empty'|
 |'zero'|'one'|
 
+If we wish to simulate the actions of the two recognizers operating concurrently, we could do so if we had a finite state automaton with nine states, one for each of the pairs of states that `a` and `b` could be in. As a convention, we will name our machine's states like this: `(a)(b)`, i.e. The state that simulates recognizer `a`( being in state `'zero'` while recognizer `b` is in state `''` will be named `'(zero)()`.
+
+It will look something like this:
+
+
+
 ---
 
 ## Taking the Union of Two Descriptions
