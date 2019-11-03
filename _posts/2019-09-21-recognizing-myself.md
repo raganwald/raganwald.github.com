@@ -112,6 +112,12 @@ Now that we have established that finite state automata can do much more than "j
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
 
+[Taking the Product of Two Finite State Automata](#taking-the-product-of-two-finite-state-automata)
+
+  - [starting the product](#starting-the-product)
+  - [transitions](#transitions)
+  - [accepting states](#accepting-states)
+
 [Taking the Union of Two Descriptions](#taking-the-union-of-two-descriptions)
 
   - [fixing a problem with union(first, second)](#fixing-a-problem-with-unionfirst-second)
@@ -502,23 +508,169 @@ It will look something like this:
     state3 : '' and 'one'
 </div>
 
-And this:
+<div class="mermaid">
+  stateDiagram
+    state4 : 'emptyA' and ''
+    state5 : 'emptyA' and 'emptyB'
+    state6 : 'emptyA' and 'one'
+</div>
 
 <div class="mermaid">
   stateDiagram
-    state1 : 'emptyA' and ''
-    state2 : 'emptyA' and 'emptyB'
-    state3 : 'emptyA' and 'one'
+    state7 : 'zero' and ''
+    state8 : 'zero' and 'emptyB'
+    state9 : 'zero' and 'one'
 </div>
 
-And this:
+We haven't decided where such an automaton would start, how it transitions between its states, and which states should be accepting states. We'll go through those in that order.
+
+---
+
+### starting the product
+
+Now let's consider `a` and `b` simultaneously reading the same string of symbols in parallel. What states would they respectively start in? `emptyA` and `emptyB`, of course, therefore our product will begin in `state5`, which corresponds to `emptyA` and `emptyB`:
 
 <div class="mermaid">
   stateDiagram
-    state1 : 'zero' and ''
-    state2 : 'zero' and 'emptyB'
-    state3 : 'zero' and 'one'
+    [*] --> state5
+    state5 : 'emptyA' and 'emptyB'
 </div>
+
+This is a rule for constructing products: The product of two recognizers begins in the state corresponding to the start state for each of the recognizers.
+
+---
+
+### transitions
+
+Now let's think about our product automaton. It begins in `state5`. What transitions can it make from there? We can work that out by looking at the transitions for `emptyA` and `emptyB`.
+
+Given that the product is in a state corresponding to `a` being in state _Fa_ and `b` being in state `Fb`, We'll follow these rules for determining the transitions from the state (_Fa_ and _Fb_):
+
+1. If when `a` is in state _Fa_ it consumes a symbol _S_ and transitions to state _Ta_, but when `b` is in state _Fb_ it does not consume the symbol _S_, then the product of `a` and `b` will consume _S_ and transition to the state (_Ta_ and `''`), denoting that were the two recognizers operating concurrently, `a` would transition to state _Ta_ while `b` would halt.
+2. If when `a` is in state _Fa_ it does not consume a symbol _S_, but when `b` is in state _Fb_ it consumes the symbol _S_ and transitions to state _Tb_, then the product of `a` and `b` will consume _S_ and transition to (`''` and _Tb_), denoting that were the two recognizers operating concurrently, `a` would halt while `b` would transition to state _Tb_.
+2. If when `a` is in state _Fa_ it consumes a symbol _S_ and transitions to state _Ta_, and also if when `b` is in state _Fb_ it consumes the symbol _S_ and transitions to state _Tb_, then the product of `a` and `b` will consume _S_ and transition to (_Ta_ and _Tb_), denoting that were the two recognizers operating concurrently, `a` would transition to state _Ta_ while `b` would transition to state _Tb_.
+
+When our product is in state `'state5'`, it corresponds to the states (`'emptyA'` and `'emptyB'`). Well, when `a` is in state `'emptyA'`, it consumes `0` and transitions to `'zero'`, but when `b` is in `'emptyB'`, it does not consume `0`.
+
+Therefore, by rule 1, when the product is in state `'state5'` corresponding to the states (`'emptyA'` and `'emptyB'`), it consumes `0` and transitions to `'state7'` corresponding to the states (`'zero'` and `''`):
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> state5
+    state5 --> state7 : 0
+
+    state5 : 'emptyA' and 'emptyB'
+    state7 : 'zero' and ''
+</div>
+
+And by rule 2, when the product is in state `'state5'` corresponding to the states (`'emptyA'` and `'emptyB'`), it consumes `1` and transitions to `'state3'`, corresponding to the states (`''` and `'one'`):
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> state5
+    state5 --> state7 : 0
+    state5 --> state3 : 1
+
+    state3: '' and 'one'
+    state5 : 'emptyA' and 'emptyB'
+    state7 : 'zero' and ''
+</div>
+
+What transitions take place from state `'state7'`? `b` is halted in `'state7'`, and therefore `b` doesn't consume any symbols in `'state7'`, and therefore we can apply rule 1 to the case where `a` consumes a `0` from state `'zero'` and transitions to state `'zero'`:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> state5
+    state5 --> state7 : 0
+    state5 --> state3 : 1
+
+    state7 --> state7 : 0
+
+    state3: '' and 'one'
+    state5 : 'emptyA' and 'emptyB'
+    state7 : 'zero' and ''
+</div>
+
+We can always apply rule 1 to any state where `b` is halted, and it follows that all of the transitions from a state where `b` is halted will lead to states where `b` is halted. Now what about state `'state3'`?
+
+Well, by similar logic, since `a` is halted in state `'state3'`, and `b` consumes a `1` in state `'one'` and transitions back to state `'one'`, we apply rule 2 and get:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> state5
+    state5 --> state7 : 0
+    state5 --> state3 : 1
+
+    state7 --> state7 : 0
+    state3 --> state3 : 1
+
+    state3: '' and 'one'
+    state5 : 'emptyA' and 'emptyB'
+    state7 : 'zero' and ''
+</div>
+
+We could apply our rules to the other six states, but we don't need to: The states `'state2'`, `'state4'`, `'state6'`, `'state8'`, and `'state9'` are unreachable from the starting state `'state5'`.
+
+And `'state1` need not be included: When both `a` and `b` halt, then the product of `a` and `b` also halts. So we can leave it out.
+
+Thus, if we begin with the start state and then recursively follow transitions, we will automatically end up with the subset of all possible product states that are reachable given the transitions for `a` and `b`.
+
+---
+
+### accepting the product
+
+Here is a function that [takes the product of two recognizers](/assets/supplemental/product.js). We can test it with out `a` and `b`:
+
+```javascript
+const a = {
+  "start": 'emptyA',
+  "accepting": ['zero'],
+  "transitions": [
+    { "from": 'emptyA', "consume": '0', "to": 'zero' },
+    { "from": 'zero', "consume": '0', "to": 'zero' }
+  ]
+};
+
+const b = {
+  "start": 'emptyB',
+  "accepting": ['one'],
+  "transitions": [
+    { "from": 'emptyB', "consume": '1', "to": 'one' },
+    { "from": 'one', "consume": '1', "to": 'one' }
+  ]
+};
+
+product(a, b)
+  //=>
+    {
+      "start": "(emptyA)(emptyB)",
+      "accepting": [],
+      "transitions": [
+        {
+          "from": "(emptyA)(emptyB)",
+          "consume": "0",
+          "to": "(zero)()"
+        },
+        {
+          "from": "(emptyA)(emptyB)",
+          "consume": "1",
+          "to": "()(one)"
+        },
+        {
+          "from": "(zero)()",
+          "consume": "0",
+          "to": "(zero)()"
+        },
+        {
+          "from": "()(one)",
+          "consume": "1",
+          "to": "()(one)"
+        }
+      ]
+    }
+```
+
+It doesn't actually accpt anything, so it's not much of a recognizer. But that's literally the easy bit!
 
 ---
 
