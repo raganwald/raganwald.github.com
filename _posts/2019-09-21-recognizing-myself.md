@@ -459,16 +459,16 @@ Thus, recognizer `a` has three possible states: `'empty'`, `'zero'`, and `''`. L
 Now let us imagine the two recognizers are operating simultaneously on two strings of symbols (they could be the same symbols or different symbols, that doesn't matter just yet). We could say that at any one time, there are nine possible combinations of states the two machines could be in:
 
 |a|b|
-|---|---|
-|''|''|
-|''|'empty'|
-|''|'one'|
-|'empty'|''|
-|'empty'|'empty'|
-|'empty'|'one'|
-|'zero'|''|
-|'zero'|'empty'|
-|'zero'|'one'|
+|:---|:---|
+|`''`|`''`|
+|`''`|`'empty'`|
+|`''`|`'one'`|
+|`'empty'`|`''`|
+|`'empty'`|`'empty'`|
+|`'empty'`|`'one'`|
+|`'zero'`|`''`|
+|`'zero'`|`'empty'`|
+|`'zero'`|`'one'`|
 
 If we wish to simulate the actions of the two recognizers operating concurrently, we could do so if we had a finite state automaton with nine states, one for each of the pairs of states that `a` and `b` could be in. As a convention, we will name our machine's states like this: `(a)(b)`, i.e. The state that simulates recognizer `a`( being in state `'zero'` while recognizer `b` is in state `''` will be named `'(zero)()`.
 
