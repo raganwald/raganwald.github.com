@@ -112,7 +112,7 @@ Now that we have established that finite state automata can do much more than "j
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
 
-[Taking the Union of Descriptions](#taking-the-union-of-descriptions)
+[Taking the Union of Two Descriptions](#taking-the-union-of-two-descriptions)
 
   - [fixing a problem with union(first, second)](#fixing-a-problem-with-unionfirst-second)
   - [what we have learned from taking the union of descriptions](#what-we-have-learned-from-taking-the-union-of-descriptions)
@@ -426,11 +426,53 @@ Or in colloquial terms, a sentence is recognized by `union(a, b)` if and only if
 
 What about `catenation(a, b)`? If we have some sentence `xy`, where `x` and `y` are strings of zero or more symbols, then `xy` is recognized by `catenation(a, b)` is and only if `x` is recognized by `a` and `y` is recognized by `b`.
 
-We'll get started with union and catenation, because they both are built on a common operation, taking the _product_ of two finite state automata.
+We'll get started with union and catenation, because they both are built on a common operation, *taking the product of two finite state automata*.
 
 ---
 
-## Taking the Union of Descriptions
+## Taking the Product of Two Finite State Automata
+
+Consider two finite state recognizers. The first, `a`, recognizes a string of one or more zeroes:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->zero : 0
+    zero-->zero : 0
+    zero-->[*]
+</div>
+
+The second, `b`, recognizes a string of one ore more ones:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->one : 1
+    one--> one : 1
+    one-->[*]
+</div>
+
+Recognizer `a` has two declared states: `'empty'` and `'zero'`. Recognizer `b` also has two declared states: `'empty'` and `'one'`. Both also have an undeclared state: they can halt. As a convention, we will refer to the halted state as an empty string, `''`.
+
+Thus, recognizer `a` has three possible states: `'empty'`, `'zero'`, and `''`. Likewise, recognizer `b` has three possible states: `'empty'`, `'one'`, and `''`.
+
+Now let us imagine the two recognizers are operating simultaneously on two strings of symbols (they could be the same symbols or different symbols, that doesn't matter just yet). We could say that at any one time, there are nine possible combinations of states the two machines could be in:
+
+|a|b|
+|---|---|
+|''|''|
+|''|'empty'|
+|''|'one'|
+|'empty'|''|
+|'empty'|'empty'|
+|'empty'|'one'|
+|'zero'|''|
+|'zero'|'empty'|
+|'zero'|'one'|
+
+---
+
+## Taking the Union of Two Descriptions
 
 Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenation(A, B)` recognizes sentences of the form "`A` followed by `B`," `union(A, B)` would recognize sentences of `A` or of `B`.
 
