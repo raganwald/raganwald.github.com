@@ -436,8 +436,8 @@ Consider two finite state recognizers. The first, `a`, recognizes a string of on
 
 <div class="mermaid">
   stateDiagram
-    [*]-->empty
-    empty-->zero : 0
+    [*]-->emptyA
+    emptyA-->zero : 0
     zero-->zero : 0
     zero-->[*]
 </div>
@@ -446,8 +446,8 @@ The second, `b`, recognizes a string of one ore more ones:
 
 <div class="mermaid">
   stateDiagram
-    [*]-->empty
-    empty-->one : 1
+    [*]-->emptyB
+    emptyB-->one : 1
     one--> one : 1
     one-->[*]
 </div>
@@ -456,25 +456,69 @@ Recognizer `a` has two declared states: `'empty'` and `'zero'`. Recognizer `b` a
 
 Thus, recognizer `a` has three possible states: `'empty'`, `'zero'`, and `''`. Likewise, recognizer `b` has three possible states: `'empty'`, `'one'`, and `''`.
 
-Now let us imagine the two recognizers are operating simultaneously on two strings of symbols (they could be the same symbols or different symbols, that doesn't matter just yet). We could say that at any one time, there are nine possible combinations of states the two machines could be in:
+Now let us imagine the two recognizers are operating simultaneously on two strings of symbols (they could be the same symbols or different symbols, that doesn't matter just yet):
+
+<div class="mermaid">
+  stateDiagram
+    simultaneous
+
+  state simultaneous {
+    [*]-->emptyA
+      emptyA-->zero : 0
+      zero-->zero : 0
+      zero-->[*]
+
+    --
+
+    [*]-->emptyB
+      emptyB-->one : 1
+      one--> one : 1
+      one-->[*]
+  }
+</div>
+
+At any one time, there are nine possible combinations of states the two machines could be in:
 
 |a|b|
 |:---|:---|
 |`''`|`''`|
-|`''`|`'empty'`|
+|`''`|`'emptyB'`|
 |`''`|`'one'`|
-|`'empty'`|`''`|
-|`'empty'`|`'empty'`|
-|`'empty'`|`'one'`|
+|`'emptyA'`|`''`|
+|`'emptyA'`|`'emptyB'`|
+|`'emptyA'`|`'one'`|
 |`'zero'`|`''`|
-|`'zero'`|`'empty'`|
+|`'zero'`|`'emptyB'`|
 |`'zero'`|`'one'`|
 
-If we wish to simulate the actions of the two recognizers operating concurrently, we could do so if we had a finite state automaton with nine states, one for each of the pairs of states that `a` and `b` could be in. As a convention, we will name our machine's states like this: `(a)(b)`, i.e. The state that simulates recognizer `a`( being in state `'zero'` while recognizer `b` is in state `''` will be named `'(zero)()`.
+If we wish to simulate the actions of the two recognizers operating concurrently, we could do so if we had a finite state automaton with nine states, one for each of the pairs of states that `a` and `b` could be in.
 
 It will look something like this:
 
+<div class="mermaid">
+  stateDiagram
+    state1 : '' and ''
+    state2 : '' and 'emptyB'
+    state3 : '' and 'one'
+</div>
 
+And this:
+
+<div class="mermaid">
+  stateDiagram
+    state1 : 'emptyA' and ''
+    state2 : 'emptyA' and 'emptyB'
+    state3 : 'emptyA' and 'one'
+</div>
+
+And this:
+
+<div class="mermaid">
+  stateDiagram
+    state1 : 'zero' and ''
+    state2 : 'zero' and 'emptyB'
+    state3 : 'zero' and 'one'
+</div>
 
 ---
 
