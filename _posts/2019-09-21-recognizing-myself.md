@@ -116,7 +116,12 @@ Now that we have established that finite state automata can do much more than "j
 
   - [starting the product](#starting-the-product)
   - [transitions](#transitions)
-  - [accepting states](#accepting-states)
+  - [a function to compute the product of two recognizers](#a-function-to-compute-the-product-of-two-recognizers)
+
+[From Product to Union and Intersection](#from-product-to-union-and-intersection)
+
+  - [union](#union)
+  - [intersection](#intersection)
 
 [Taking the Union of Two Descriptions](#taking-the-union-of-two-descriptions)
 
@@ -617,9 +622,11 @@ Thus, if we begin with the start state and then recursively follow transitions, 
 
 ---
 
-### accepting the product
+### a function to compute the product of two recognizers
 
-Here is a function that [takes the product of two recognizers](/assets/supplemental/product.js). We can test it with out `a` and `b`:
+Here is a function that [takes the product of two recognizers](/assets/supplemental/fsa/product.js). It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`, although that's easy enough to change.
+
+We can test it with out `a` and `b`:
 
 ```javascript
 const a = {
@@ -670,268 +677,243 @@ product(a, b)
     }
 ```
 
-It doesn't actually accpt anything, so it's not much of a recognizer. But that's literally the easy bit!
+It doesn't actually accept anything, so it's not much of a recognizer. Yet.
 
 ---
 
-## Taking the Union of Two Descriptions
+## From Product to Union and Intersection
 
-Catenation is not the only way to compose recognizers. The other most important composition is alternation: Given recognizers `A` and `B`, while `catenation(A, B)` recognizes sentences of the form "`A` followed by `B`," `union(A, B)` would recognize sentences of `A` or of `B`.
+We know how to compute the product of two recognizers, and we see how the product actually simulates having two recognizers simultaneously consuming the same symbols. But what we want is to compute the union or intersection of the recognizers.
 
-Implementing alternation is a little simpler than implementing catenation. Once again we have to ensure that the states of the two recognizers are distinct, so we'll rename states to avoid conflicts. Then we make sure that both recognizers share the same `start` and `accepting` states:[^names]
+So let's consider our requirements. We'll start with the _Union_ of two recognizers. When we talk about the union of `a` and `b`, we mean a recognizer that recognizes any sentance that `a` recognizes or any sentance that `b` recognizes.
+
+If the two recognizers were running concurrently, we would want to accept a sentance if `a` ended up in one of its recognizing states or if `b` ended up in one of its accepting states. How does this translate to the produt's states?
+
+Well, each state of the product represents one state from `a` and one state from `b`. If there are no more symbols to consume and the product is in a state where the state from `a` is in `a`'s set of accepting states, then this is equivalent to `a` having accepted the sentance. Likewise, if there are no more symbols to consume and the product is in a state where the state from `b` is in `b`'s set of accepting states, then this is equivalent to `b` having accepted the sentance.
+
+In theory, then, for `a` and `b`, the following product states represent the union of `a` and `b`:
+
+|a|b|
+|:---|:---|
+|`''`|`'one'`|
+|`'emptyA'`|`'one'`|
+|`'zero'`|`''`|
+|`'zero'`|`'emptyB'`|
+|`'zero'`|`'one'`|
+
+Of course, only two of these (`'zero'` and `''`, `''` and `'one'`) are reachable, so those are the ones we want oour product to accept when we want the union of two recognizers.
+
+---
+
+### union
+
+Here's a union function that makes use of `product` and some of the helpers we've already written:
 
 ```javascript
-function union (first, second) {
-  const start = "start";
-  const accepting = "accepting";
+function union (a, b) {
+  const {
+    states: aDeclaredStates,
+    accepting: aAccepting
+  } = validatedAndProcessed(a);
+  const aStates = [''].concat(aDeclaredStates);
+  const {
+    states: bDeclaredStates,
+    accepting: bAccepting
+  } = validatedAndProcessed(b);
+  const bStates = [''].concat(bDeclaredStates);
 
-  const conformingFirst = renameStates(
-    { [first.start]: start, [first.accepting]: accepting },
-    first
-  );
+  const statesAAccepts =
+    aAccepting.flatMap(
+      aAcceptingState => bStates.map(bState => abToAB(aAcceptingState, bState))
+    );
+  const statesBAccepts =
+    bAccepting.flatMap(
+      bAcceptingState => aStates.map(aState => abToAB(aState, bAcceptingState))
+    );
+  const allAcceptingStates =
+    statesAAccepts.concat(
+      statesBAccepts.filter(
+        state => statesAAccepts.indexOf(state) === -1
+      )
+    );
 
-  const renamedSecond = resolveCollisions(statesOf(conformingFirst), second);
+    const productAB = product(a, b);
+    const reachableStates = new Set(statesOf(productAB));
 
-  const conformingSecond = renameStates(
-    { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
-    renamedSecond
-  );
+    const { start, transitions } = productAB;
+    const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
 
-  return {
-    start,
-    accepting,
-    transitions:
-  	  conformingFirst
-        .transitions
-          .concat(
-            conformingSecond.transitions
-          )
-  };
+    return { start, accepting, transitions };
 }
 ```
 
-Once again, the diagrams for exclamatory and interrogative:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|!|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|!|endable;
-</div>
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|?|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|?|endable;
-</div>
-
-And now, the alternation of the two rather than the catenation:
+And when we try it:
 
 ```javascript
-union(exclamatory, interrogative)
+union(a, b)
   //=>
     {
-      "start": "start",
-      "accepting": "accepting",
+      "start": "(emptyA)(emptyB)",
+      "accepting": [
+        "(zero)()",
+        "()(one)"
+      ],
       "transitions": [
-        { "from": "start", "consume": "!", "to": "endable" },
-        { "from": "endable", "consume": "!" },
-        { "from": "endable", "consume": "", "to": "accepting" },
-        { "from": "start", "consume": "?", "to": "endable-2" },
-        { "from": "endable-2", "consume": "?" },
-        { "from": "endable-2", "consume": "", "to": "accepting" }
+        {
+          "from": "(emptyA)(emptyB)",
+          "consume": "0",
+          "to": "(zero)()"
+        },
+        {
+          "from": "(emptyA)(emptyB)",
+          "consume": "1",
+          "to": "()(one)"
+        },
+        {
+          "from": "(zero)()",
+          "consume": "0",
+          "to": "(zero)()"
+        },
+        {
+          "from": "()(one)",
+          "consume": "1",
+          "to": "()(one)"
+        }
       ]
     }
 ```
 
-And we can see from the diagram that we now have a recognizer that matches exclamation marks, or question marks, but not both:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|!|endable
-    endable-->|!|endable
-    endable-.->|end|recognized(recognized)
-    start(start)-->|?|endable-2
-    endable-2-->|?|endable-2
-    endable-2-.->|end|recognized(recognized)
-</div>
-
 ---
 
-### fixing a problem with union(first, second)
+### intersection
 
-Sharing the `start` state works just fine as long as it is a root state, i.e., No transitions lead back to it. Consider this recognizer that recognizes zero or more sequences of the characters `^H` (old-timers may remember this as a shorthand for "backspace" popular in old internet forums):
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|^|ctrl
-    start-.->|end|recognized(recognized)
-    ctrl-->|H|start
-</div>
-
-The way `union` works right now, is that if we evaluate `union(backspaces, exclamatory)`, we get this:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|^|ctrl
-    start-.->|end|recognized(recognized)
-    ctrl-->|H|start
-    start(start)-->|!|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|!|endable;
-</div>
-
-If we follow it along, we see that it does correctly recognize "", "^H", "^H^H", "!", "!!", and so forth. But it also recognizes strings like "^H^H!!!!!", which is not what we want. The problem is that `backspace` has a start state that is not a root: It has at least one transition leading into it.
-
-We can fix it by changing `union` so that when given a recognizer with a start state that is not a root, it adds a root for us, like this:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->start-2
-    start-2-->|^|ctrl
-    start-2-.->|end|recognized(recognized)
-    ctrl-->|H|start-2
-</div>
-
-After "adding a root," the result of `union(backspaces, exclamatory)` would then be:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->start-2
-    start-2-->|^|ctrl
-    start-2-.->|end|recognized(recognized)
-    ctrl-->|H|start-2
-    start(start)-->|!|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|!|endable;
-</div>
-
-Here's our updated code:
+The accepting set for the _Intersection_ of two recognizers is equally straightforward. While the acceptng set for the union is all those reachable states of the product where either (or both) of the two states is an accepting state, the accepting set for the intersection is all those reachable states of the product where both of the two states is an accepting state:
 
 ```javascript
-function rootStart (description) {
-  const { start, accepting, transitions } = description;
-  const needsRoot =
-    !!(
-      transitions
-        .find(
-          ({ from, to }) => to === start || (from === start && to == null)
-        )
+function intersection (a, b) {
+  const {
+    accepting: aAccepting
+  } = validatedAndProcessed(a);
+  const {
+    accepting: bAccepting
+  } = validatedAndProcessed(b);
+
+  const allAcceptingStates =
+    aAccepting.flatMap(
+      aAcceptingState => bAccepting.map(bAcceptingState => abToAB(aAcceptingState, bAcceptingState))
     );
 
-  if (needsRoot) {
-    const startShifted = resolveCollisions([description.start], description);
+  const productAB = product(a, b);
+  const reachableStates = new Set(statesOf(productAB));
 
-    return {
-      start,
-      accepting,
-      transitions:
-      	[{ from: start, to: startShifted.start }]
-      	  .concat(
-            startShifted.transitions
-          )
-    }
-  } else {
-    return description;
-  }
-}
+  const { start, transitions } = productAB;
+  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
 
-function union (first, second) {
-  const start = "start";
-  const accepting = "accepting";
-
-  const rootFirst = rootStart(first);
-  const rootSecond = rootStart(second);
-
-  const conformingFirst = renameStates(
-    { [rootFirst.start]: start, [rootFirst.accepting]: accepting },
-    rootFirst
-  );
-
-  const renamedSecond = resolveCollisions(statesOf(conformingFirst), rootSecond);
-
-  const conformingSecond = renameStates(
-    { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
-    renamedSecond
-  );
-
-  return {
-    start,
-    accepting,
-    transitions:
-  	  conformingFirst
-        .transitions
-          .concat(
-            conformingSecond.transitions
-          )
-  };
+  return { start, accepting, transitions };
 }
 ```
 
-And in action:
+The intersection of our `a` and `b` is going to be empty, and that makes sense: There is only one possible accepting state, `'zero'` and `'one'`, and there is no path to reach that state. Which makes sense, as there are no sentances which consists of nothing but one or more zeroes *and* nothing but one or more ones.
+
+We can give it a different test. First, here is a recognizer that recognizes the name "reg." It is case-insensitive:
 
 ```javascript
-const backspaces = {
-  start: "start",
-  accepting: "accepting",
-  transitions: [
-    { from: "start", consume: "^", to: "ctrl" },
-    { from: "start", consume: "", to: "accepting" },
-    { from: "ctrl", consume: "H", to: "start" }
-  ]
-}
-
-const exclamatory = {
-  "start": "start",
-  "accepting": "accepting",
+const reg = {
+  "start": "empty",
+  "accepting": ["reg"],
   "transitions": [
-    { "from": "start", "consume": "!", "to": "endable" },
-    { "from": "endable", "consume": "!" },
-    { "from": "endable", "consume": "", "to": "accepting" }
+    { "from": "empty", "consume": "r", "to": "r" },
+    { "from": "empty", "consume": "R", "to": "r" },
+    { "from": "r", "consume": "e", "to": "re" },
+    { "from": "r", "consume": "E", "to": "re" },
+    { "from": "re", "consume": "g", "to": "reg" },
+    { "from": "re", "consume": "G", "to": "reg" }
   ]
 };
 
-union(backspaces, exclamatory)
+test(reg, ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD']))
   //=>
-    {
-      "start": "start",
-      "accepting": "accepting",
-      "transitions": [
-        { "from": "start", "to": "start-2" },
-        { "from": "start-2", "consume": "^", "to": "ctrl" },
-        { "from": "start-2", "consume": "", "to": "accepting" },
-        { "from": "ctrl", "consume": "H", "to": "start-2" },
-        { "from": "start", "consume": "!", "to": "endable" },
-        { "from": "endable", "consume": "!" },
-        { "from": "endable", "consume": "", "to": "accepting" }
-      ]
-    }
+    '' => false
+    'r' => false
+    'R' => false
+    'Reg' => true
+    'REG' => true
+    'Reginald' => false
+    'REGINALD' => false
 ```
 
-And as we hoped, it is exactly the recognizer we wanted:
+Second, here is a recognizer that recognizes uppercase words:
 
-<div class="mermaid">
-  graph LR
-    start(start)-->start-2
-    start-2-->|^|ctrl
-    start-2-.->|end|recognized(recognized)
-    ctrl-->|H|start-2
-    start(start)-->|!|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|!|endable;
-</div>
+```javascript
+const uppercase = {
+  "start": "uppercase",
+  "accepting": ["uppercase"],
+  "transitions": [
+    { "from": "uppercase", "consume": "A", "to": "uppercase" },
+    { "from": "uppercase", "consume": "B", "to": "uppercase" },
+    { "from": "uppercase", "consume": "C", "to": "uppercase" },
+    { "from": "uppercase", "consume": "D", "to": "uppercase" },
+    { "from": "uppercase", "consume": "E", "to": "uppercase" },
+    { "from": "uppercase", "consume": "F", "to": "uppercase" },
+    { "from": "uppercase", "consume": "G", "to": "uppercase" },
+    { "from": "uppercase", "consume": "H", "to": "uppercase" },
+    { "from": "uppercase", "consume": "I", "to": "uppercase" },
+    { "from": "uppercase", "consume": "J", "to": "uppercase" },
+    { "from": "uppercase", "consume": "K", "to": "uppercase" },
+    { "from": "uppercase", "consume": "L", "to": "uppercase" },
+    { "from": "uppercase", "consume": "M", "to": "uppercase" },
+    { "from": "uppercase", "consume": "N", "to": "uppercase" },
+    { "from": "uppercase", "consume": "O", "to": "uppercase" },
+    { "from": "uppercase", "consume": "P", "to": "uppercase" },
+    { "from": "uppercase", "consume": "Q", "to": "uppercase" },
+    { "from": "uppercase", "consume": "R", "to": "uppercase" },
+    { "from": "uppercase", "consume": "S", "to": "uppercase" },
+    { "from": "uppercase", "consume": "T", "to": "uppercase" },
+    { "from": "uppercase", "consume": "U", "to": "uppercase" },
+    { "from": "uppercase", "consume": "V", "to": "uppercase" },
+    { "from": "uppercase", "consume": "W", "to": "uppercase" },
+    { "from": "uppercase", "consume": "X", "to": "uppercase" },
+    { "from": "uppercase", "consume": "Y", "to": "uppercase" },
+    { "from": "uppercase", "consume": "Z", "to": "uppercase" }
+  ]
+};
 
----
+test(uppercase, ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
+  //=>
+    '' => true
+    'r' => false
+    'R' => true
+    'Reg' => false
+    'REG' => true
+    'Reginald' => false
+    'REGINALD' => true
+```
 
-### what we have learned from taking the union of descriptions
+Now we can try their unio0n and intersection:
 
-Once again, we have developed some confidence that given any two finite state recognizers, we can construct a union recognizer that is also a finite state automaton. Likewise, if either or both of the recognizers are pushdown automata, we have confidence that we can construct a recognizer that recognizes either language that will also be a pushdown automaton.
+```javascript
+test(union(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
+  //=>
+    [Log] '' => true
+    [Log] 'r' => false
+    [Log] 'R' => true
+    [Log] 'Reg' => true
+    [Log] 'REG' => true
+    [Log] 'Reginald' => false
+    [Log] 'REGINALD' => true
 
-Coupled with what we learned from catenating recognizers, we now can develop the conjecture that "can be recognized with a pushdown automaton" is a transitive relationship: We can build an expression of arbitrary complexity using catenation and union, and if the recognizers given were pushdown automata (or simpler), the result will be a pushdown automaton.
+test(intersection(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
+  //=>
+    '' => false
+    'r' => false
+    'R' => false
+    'Reg' => false
+    'REG' => true
+    'Reginald' => false
+    'REGINALD' => false
+```
 
-This also tells us something about languages: If we have a set of context-free languages, all the languages we can form using catenation and alternation, will also be context-free languages.
-
+We now have a `union` and `intersection` functions, each of which takes two descriptions and returns a description.
 
 ---
 
