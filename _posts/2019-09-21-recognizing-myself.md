@@ -685,11 +685,11 @@ It doesn't actually accept anything, so it's not much of a recognizer. Yet.
 
 We know how to compute the product of two recognizers, and we see how the product actually simulates having two recognizers simultaneously consuming the same symbols. But what we want is to compute the union or intersection of the recognizers.
 
-So let's consider our requirements. We'll start with the _Union_ of two recognizers. When we talk about the union of `a` and `b`, we mean a recognizer that recognizes any sentance that `a` recognizes or any sentance that `b` recognizes.
+So let's consider our requirements. We'll start with the _Union_ of two recognizers. When we talk about the union of `a` and `b`, we mean a recognizer that recognizes any sentence that `a` recognizes or any sentence that `b` recognizes.
 
-If the two recognizers were running concurrently, we would want to accept a sentance if `a` ended up in one of its recognizing states or if `b` ended up in one of its accepting states. How does this translate to the produt's states?
+If the two recognizers were running concurrently, we would want to accept a sentence if `a` ended up in one of its recognizing states or if `b` ended up in one of its accepting states. How does this translate to the product's states?
 
-Well, each state of the product represents one state from `a` and one state from `b`. If there are no more symbols to consume and the product is in a state where the state from `a` is in `a`'s set of accepting states, then this is equivalent to `a` having accepted the sentance. Likewise, if there are no more symbols to consume and the product is in a state where the state from `b` is in `b`'s set of accepting states, then this is equivalent to `b` having accepted the sentance.
+Well, each state of the product represents one state from `a` and one state from `b`. If there are no more symbols to consume and the product is in a state where the state from `a` is in `a`'s set of accepting states, then this is equivalent to `a` having accepted the sentence. Likewise, if there are no more symbols to consume and the product is in a state where the state from `b` is in `b`'s set of accepting states, then this is equivalent to `b` having accepted the sentence.
 
 In theory, then, for `a` and `b`, the following product states represent the union of `a` and `b`:
 
@@ -701,7 +701,7 @@ In theory, then, for `a` and `b`, the following product states represent the uni
 |`'zero'`|`'emptyB'`|
 |`'zero'`|`'one'`|
 
-Of course, only two of these (`'zero'` and `''`, `''` and `'one'`) are reachable, so those are the ones we want oour product to accept when we want the union of two recognizers.
+Of course, only two of these (`'zero'` and `''`, `''` and `'one'`) are reachable, so those are the ones we want our product to accept when we want the union of two recognizers.
 
 ---
 
@@ -787,7 +787,7 @@ union(a, b)
 
 ### intersection
 
-The accepting set for the _Intersection_ of two recognizers is equally straightforward. While the acceptng set for the union is all those reachable states of the product where either (or both) of the two states is an accepting state, the accepting set for the intersection is all those reachable states of the product where both of the two states is an accepting state:
+The accepting set for the _Intersection_ of two recognizers is equally straightforward. While the accepting set for the union is all those reachable states of the product where either (or both) of the two states is an accepting state, the accepting set for the intersection is all those reachable states of the product where both of the two states is an accepting state:
 
 ```javascript
 function intersection (a, b) {
@@ -813,7 +813,7 @@ function intersection (a, b) {
 }
 ```
 
-The intersection of our `a` and `b` is going to be empty, and that makes sense: There is only one possible accepting state, `'zero'` and `'one'`, and there is no path to reach that state. Which makes sense, as there are no sentances which consists of nothing but one or more zeroes *and* nothing but one or more ones.
+The intersection of our `a` and `b` is going to be empty, and that makes sense: There is only one possible accepting state, `'zero'` and `'one'`, and there is no path to reach that state. Which makes sense, as there are no sentences which consists of nothing but one or more zeroes *and* nothing but one or more ones.
 
 We can give it a different test. First, here is a recognizer that recognizes the name "reg." It is case-insensitive:
 
@@ -889,18 +889,18 @@ test(uppercase, ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
     'REGINALD' => true
 ```
 
-Now we can try their unio0n and intersection:
+Now we can try their union and intersection:
 
 ```javascript
 test(union(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
   //=>
-    [Log] '' => true
-    [Log] 'r' => false
-    [Log] 'R' => true
-    [Log] 'Reg' => true
-    [Log] 'REG' => true
-    [Log] 'Reginald' => false
-    [Log] 'REGINALD' => true
+    '' => true
+    'r' => false
+    'R' => true
+    'Reg' => true
+    'REG' => true
+    'Reginald' => false
+    'REGINALD' => true
 
 test(intersection(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
   //=>
@@ -913,7 +913,7 @@ test(intersection(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REG
     'REGINALD' => false
 ```
 
-We now have a `union` and `intersection` functions, each of which takes two descriptions and returns a description.
+We now have `union` and `intersection` functions, each of which takes two descriptions and returns a description.
 
 ---
 
