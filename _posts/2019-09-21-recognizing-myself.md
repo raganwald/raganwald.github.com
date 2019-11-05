@@ -1063,30 +1063,87 @@ This transformation complete, we can then remove the ε-transitions. For each ε
 Here's some code to resolve conflicts between the state names of two recognizers:
 
 ```javascript
-function resolveConflicts(reserved, description) {
-  const reservedSet = new Set(reserved);
-  const states = statesOf(description);
+function renameStates (nameDictionary, { start, accepting, transitions }) {
+  const translate =
+    before =>
+      (nameDictionary[before] != null) ? nameDictionary[before] : before;
+
+  return {
+    start: translate(start),
+    accepting: accepting.map(translate),
+    transitions:
+    	transitions.map(
+      	({ from, consume, to }) => {
+          const transition = { from: translate(from), to: translate(to || from) };
+          if (consume != null) transition.consume = consume;
+
+          return transition;
+        }
+      )
+  };
+}
+
+function resolveConflicts (first, second) {
+  const { stateSet: firstStatesSet } = validatedAndProcessed(first);
+  const { stateSet: secondStatesSet } = validatedAndProcessed(second);
 
   const nameMap = {};
 
   // build the map to resolve overlaps with reserved names
-  for (const state of states) {
-    const match = /^(.*)-(\d+)$/.exec(state);
-    let base = match == null ? state : match[1];
+  for (const secondState of secondStatesSet) {
+    const match = /^(.*)(\d+)$/.exec(secondState);
+    let base = match == null ? secondState : match[1];
     let counter = match == null ? 1 : Number.parseInt(match[2], 10);
-    let resolved = state;
-    while (reservedSet.has(resolved)) {
-      resolved = `${base}-${++counter}`;
+    let resolved = secondState;
+    while (firstStatesSet.has(resolved)) {
+      resolved = `${base}${++counter}`;
     }
-    if (resolved !== state) {
-  		nameMap[state] = resolved;
+    if (resolved !== secondState) {
+  		nameMap[secondState] = resolved;
     }
-    reservedSet.add(resolved);
+    firstStatesSet.add(resolved);
   }
 
   // apply the built map
-  return renameStates(nameMap, description);
+  return renameStates(nameMap, second);
 }
+```
+
+Let's make sure it works:
+
+```javascript
+const reg = {
+  "start": "empty",
+  "accepting": ["reg"],
+  "transitions": [
+    { "from": "empty", "consume": "r", "to": "r" },
+    { "from": "empty", "consume": "R", "to": "r" },
+    { "from": "r", "consume": "e", "to": "re" },
+    { "from": "r", "consume": "E", "to": "re" },
+    { "from": "re", "consume": "g", "to": "reg" },
+    { "from": "re", "consume": "G", "to": "reg" }
+  ]
+};
+
+const exclamations = {
+  "start": "empty",
+  "accepting": ["bang"],
+  "transitions": [
+    { "from": "empty", "consume": "!", "to": "bang" },
+    { "from": "bang", "consume": "!", "to": "bang" },
+  ]
+}
+
+resolveConflicts(reg, exclamations)
+  //=>
+    {
+      "start": "empty2",
+      "accepting": [ "bang" ],
+      "transitions": [
+        { "from": "empty2", "to": "bang", "consume": "!" },
+        { "from": "bang", "to": "bang", "consume": "!" }
+      ]
+    }
 ```
 
 
