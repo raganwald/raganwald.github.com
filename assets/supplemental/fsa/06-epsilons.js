@@ -78,3 +78,35 @@ function epsilonsRemoved ({ start, accepting, transitions }) {
     ].flatMap( tt => tt )
   };
 }
+
+function reachableFromStart ({ start, accepting, transitions: allTransitions }) {
+  const stateMap = toStateMap(allTransitions);
+  const reachableMap = new Map();
+  const R = new Set([start]);
+
+  while (R.size > 0) {
+    const [state] = [...R];
+    R.delete(state);
+    const transitions = stateMap.get(state) || [];
+
+    // this state is reacdhable
+    reachableMap.set(state, transitions);
+
+    const reachableFromThisState =
+      transitions.map(({ to }) => to);
+
+    const unprocessedReachableFromThisState =
+      reachableFromThisState
+        .filter(to => !reachableMap.has(to) && !R.has(to));
+
+    for (const reachableState of unprocessedReachableFromThisState) {
+      R.add(reachableState);
+    }
+  }
+
+  return {
+    start,
+    accepting,
+    transitions: [...reachableMap.values()].flatMap(tt => tt)
+  };
+}

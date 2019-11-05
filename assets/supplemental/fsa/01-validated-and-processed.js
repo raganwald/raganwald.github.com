@@ -92,9 +92,9 @@ function validatedAndProcessed ({
   start,
   accepting,
   transitions
-}) {
+}, allowNFA = false) {
   const alphabetSet = toAlphabetSet(transitions);
-  const stateMap = toStateMap(transitions);
+  const stateMap = toStateMap(transitions, allowNFA);
   const stateSet = toStateSet(transitions);
   const acceptingSet = new Set(accepting);
 

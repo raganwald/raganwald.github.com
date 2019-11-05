@@ -135,9 +135,7 @@ Now that we have established that finite state automata can do much more than "j
   - [implementing catenation](#implementing-catenation)
   - [the catch with catenation](#the-catch-with-catenation)
 
-  - [catenationFSA(first, second)](#catenationfsafirst-second)
-  - [catenation(first, second)](#catenationfirst-second)
-  - [what we have learned from catenating descriptions](#what-we-have-learned-from-catenating-descriptions)
+[Coverting Nondeterministic to Deterministic Finite-State Recognizers](#coverting-nondeterministic-to-deterministic-finte-state-recognizers)
 
 [Building Language Recognizers](#building-language-recognizers)
 
@@ -198,7 +196,7 @@ We don't need to invent a brand-new format, there is already an accepted [formal
 
 JSON has the advantage that it is a language in the exact sense we want: An ordered set of symbols. So we will describe finite state recognizers using JSON, and we will attempt to write a finite state recognizer that recognizes strings that are valid JSON descriptions of finite state recognizers.[^natch]
 
-[^natch]: Naturally, if we have a valid description of a finte state recognizer that recognizes vald descriptions of finite state recognizers... We expect it to recognize itself.
+[^natch]: Naturally, if we have a valid description of a finite-state recognizer that recognizes vald descriptions of finite state recognizers... We expect it to recognize itself.
 
 Now what do we need to encode? Finite state recognizers are defined as a quintuple of `(Σ, S, s, ẟ, F)`, where:
 
@@ -1360,6 +1358,16 @@ The problem is that there are two transitions from `ones` when consuming a `1`. 
 
 We want to catenate two deterministic finite state recognizers, and wind up with a finite state recognizer. To do that, we'll need a way to convert nondeterministic finite state recognizers into deterministic finite state recognizers.
 
+---
+
+## Coverting Nondeterministic to Deterministic Finite-State Recognizers
+
+As noted, our procedure for joining two recognizers with ε-transitions can create nondeterministic finite-state automata ("NFAs"). We wish to convert these NFAs to deterministic finite-state automata ("DFAs") so that we end up with a catenation algorithm that can take any two DFA recognizers and return a DFA recognizer for the catenation of the recognizers' languages.
+
+We have already solved a subset of this problem, in a way. Consider the problem of taking the union of two recognizers. We did this with the product of the two recognizers. The way "product" worked was that it modelled two recognizers being in two different states at a time by creating new states that represented the pair of states each recognizer could be in.
+
+We can use this approach with NFAs as well: We need a new kind of state to represent when an NFA can be in more than one state at once.
+
 <!-- UNFINISHED STUFF BELOW -->
 
 ---
@@ -1401,7 +1409,7 @@ const balanced = {
 };
 ```
 
-It is clearly deterministic, there is only one unambiguous transition that cana be performed at any time. Now, here is a recognizer that recognizes a single pair of parentheses, it is very obviously a finte state automaton:
+It is clearly deterministic, there is only one unambiguous transition that cana be performed at any time. Now, here is a recognizer that recognizes a single pair of parentheses, it is very obviously a finite-state automaton:
 
 ```javascript
 const pair = {
@@ -1683,7 +1691,7 @@ Regular expressions define regular languages. Therefore, every regular language 
 
 Now consider what we know from our implementation so far: `EMPTY` is a finite state automaton, and `symbol` only creates finite state automata. And we know that `catenation`, `union`, and `zeroOrMore` create finite state automata if given finite state automata as input. Therefore, every JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` evaluates to the description of a finite state automaton that recognizes the regular language.
 
-Therefore, *All regular languages can be recognized by finite state automata*. If someone says, "Oh no, this regular language cannot be recognized by a finite state automaton," we ask them to write out the regular expression for that language. We then translate the symbols into invocations of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, then evaluate the JavaScript expression. The result will be a finite state automaton recognizing the language, disproviong their claim.
+Therefore, *All regular languages can be recognized by finite state automata*. If someone says, "Oh no, this regular language cannot be recognized by a finite state automaton," we ask them to write out the regular expression for that language. We then translate the symbols into invocations of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, then evaluate the JavaScript expression. The result will be a finite state automaton recognizing the language, disproving their claim.
 
 ---
 
@@ -1699,7 +1707,7 @@ We'll start by making it easier to work with `catenation` and `union`, then we'l
 
 ### upping our catenation and union game
 
-Our `catenation` and `union` functions have an arity of two: They each take two descriptions and return one. when we need to catenate (or take the union of) more than two descriptons, we have to nest our invocations, e.g.
+Our `catenation` and `union` functions have an arity of two: They each take two descriptions and return one. when we need to catenate (or take the union of) more than two descriptions, we have to nest our invocations, e.g.
 
 ```javascript
 const something =
@@ -2041,7 +2049,7 @@ test(scrambledFeline, [
 
 We've transformed `catenation` and `union` from binary to n-ary functions. Because we did so by applyimnhg the binary functions we already had, we preserve what we have learned about them, that given descriptions for two or more finite state automata as arguments, the description returned will be for a finite state automaton.
 
-We also created `any` and `string`, recognizers for sets of symbols and strings of symbols. Since we implemented these with `symbol`, `union`, and `catenation`, we know that the descriptions they produce are for finte state automata.
+We also created `any` and `string`, recognizers for sets of symbols and strings of symbols. Since we implemented these with `symbol`, `union`, and `catenation`, we know that the descriptions they produce are for finite-state automata.
 
 We created `zeroOrOne` and `oneOrMore`, functions that transform recognizers. Since wwe implemented these with `EMPTY`, `union`, and `catenation`, we know that given descriptions of finite state automata, they return descriptions of finite state automata.
 
