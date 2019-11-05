@@ -131,7 +131,9 @@ Now that we have established that finite state automata can do much more than "j
 [Catenating Descriptions](#catenating-descriptions)
 
   - [catenating descriptions with epsilon-transitions](#catenating-descriptions-with-epsilon-transitions)
-  = [removing epsilon-transitions](#removing-epsilon-transitions)
+  - [removing epsilon-transitions](#removing-epsilon-transitions)
+  - [implementing catenation](#implementing-catenation)
+  - [the catch with catenation](#the-catch-with-catenation)
 
   - [catenationFSA(first, second)](#catenationfsafirst-second)
   - [catenation(first, second)](#catenationfirst-second)
@@ -456,7 +458,7 @@ Consider two finite state recognizers. The first, `a`, recognizes a string of on
     zero-->[*]
 </div>
 
-The second, `b`, recognizes a string of one ore more ones:
+The second, `b`, recognizes a string of one or more ones:
 
 <div class="mermaid">
   stateDiagram
@@ -1272,6 +1274,91 @@ epsilonsRemoved(epsilonJoin(reg, exclamations))
 ```
 
 We have now implemented catenating two deterministic finite recognizers. Mind you, there's a catch.
+
+---
+
+### the catch with catenation
+
+Consider this recognizer that recognizes one or more `1`s:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->ones : 1
+    ones-->ones : 1
+    ones-->[*]
+</div>
+
+And consider this recognizer that recognizes a binary number:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> empty
+    empty --> zero : 0
+    empty --> one : 1
+    one --> one : 0, 1
+    zero --> [*]
+    one --> [*]
+</div>
+
+What happens when we use our functions to catenate them?
+
+```javascript
+const ones = {
+  "start": "empty",
+  "accepting": ["ones"],
+  "transitions": [
+    { "from": "empty", "consume": "1", "to": "ones" },
+    { "from": "ones", "consume": "1", "to": "ones" }
+  ]
+};
+
+const binary = {
+  "start": "empty",
+  "accepting": ["zero", "one or more"],
+  "transitions": [
+    { "from": "empty", "consume": "0", "to": "zero" },
+    { "from": "empty", "consume": "1", "to": "one or more" },
+    { "from": "one or more", "consume": "0", "to": "one or more" },
+    { "from": "one or more", "consume": "1", "to": "one or more" }
+  ]
+}
+
+epsilonsRemoved(epsilonJoin(ones, binary))
+  //=>
+    {
+      "empty": "empty",
+      "accepting": [ "zero", "one or more" ],
+      "transitions": [
+        { "from": "empty", "consume": "1", "to": "ones" },
+        { "from": "ones", "consume": "0", "to": "zero" },
+        { "from": "ones", "consume": "1", "to": "ones" },
+        { "from": "ones", "consume": "1", "to": "one or more" },
+        { "from": "empty2", "consume": "0", "to": "zero" },
+        { "from": "empty2", "consume": "1" , "to": "one or more"},
+        { "from": "one or more", "consume": "0", "to": "one or more" },
+        { "from": "one or more", "consume": "1", "to": "one or more" }
+      ]
+    }
+```
+
+And here's a diagram of the result (omitting the unreachable `empty2` to aid clarity):
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->ones : 1
+    ones-->ones : 1
+    ones --> zero : 0
+    ones --> one : 1
+    one --> one : 0, 1
+    zero --> [*]
+    one --> [*]
+</div>
+
+The problem is that there are two transitions from `ones` when consuming a `1`. We started with two deterministic finite state recognizers, but ended up with a nondeterministic finite state recognizer. We can always find a manual way to fix these things, but there is no simple rule for fixing them.
+
+We want to catenate two deterministic finite state recognizers, and wind up with a finite state recognizer. To do that, we'll need a way to convert nondeterministic finite state recognizers into deterministic finite state recognizers.
 
 <!-- UNFINISHED STUFF BELOW -->
 
