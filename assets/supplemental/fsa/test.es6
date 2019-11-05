@@ -465,9 +465,7 @@ function epsilonRemoved ({ start, accepting, transitions }) {
           [...seen]
             .map(f => `${f} -> ${epsilonMap.get(f)}`)
             .join(', ');
-        console.log(`The epsilon path { ${display} } includes a loop. This is invalid.`);
-
-        return undefined;
+        error(`The epsilon path { ${display} } includes a loop. This is invalid.`);
       }
       epsilonFrom = epsilonTo;
       epsilonTo = epsilonMap.get(epsilonFrom);
@@ -476,7 +474,7 @@ function epsilonRemoved ({ start, accepting, transitions }) {
 
     // from -> to is a valid epsilon transition
     // remove it by making a copy of the destination
-    // (destination must not be an epson, by viture of above code)
+    // (destination must not be an epsilon, by viture of above code)
 
     const source =
       stateMapWithoutEpsilon.get(epsilonTo) || [];
@@ -714,7 +712,7 @@ const mule = {
 // given an iterable of names that are reserved,
 // renames any states in a name so that they no longer
 // overlap with reserved names
-function resolveCollisions(reserved, description) {
+function resolveConflicts(reserved, description) {
   const reservedSet = new Set(reserved);
   const states = statesOf(description);
 
@@ -749,7 +747,7 @@ const mule2 = {
 };
 
 function prepareSecondForCatenation (start, accepting, first, second) {
-  const uncollidedSecond =  resolveCollisions(statesOf(first), second);
+  const uncollidedSecond =  resolveConflicts(statesOf(first), second);
 
   const acceptingSecond =
     uncollidedSecond.accepting === accepting
@@ -786,7 +784,7 @@ function prepareFirstForCatenation(start, accepting, first, second) {
 }
 
 function catenation (first, second) {
-  const cleanSecond =  resolveCollisions(statesOf(first), second);
+  const cleanSecond =  resolveConflicts(statesOf(first), second);
 
   const joinTransitions =
     first.accepting.map(
