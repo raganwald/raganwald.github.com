@@ -130,6 +130,9 @@ Now that we have established that finite state automata can do much more than "j
 
 [Catenating Descriptions](#catenating-descriptions)
 
+  - [catenating descriptions with epsilon-transitions](#catenating-descriptions-with-epsilon-transitions)
+  = [removing epsilon-transitions](#removing-epsilon-transitions)
+
   - [catenationFSA(first, second)](#catenationfsafirst-second)
   - [catenation(first, second)](#catenationfirst-second)
   - [what we have learned from catenating descriptions](#what-we-have-learned-from-catenating-descriptions)
@@ -425,7 +428,7 @@ Composition is built into our brains: When we speak human languages, we use comb
 
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
 
-If we want to build a recognizer for recognizers, it would be ideal to build smaller recognizers for things like strings, and then use composition to build recognizers for elements like lists and "objects."
+If we want to build a recognizer for recognizers, it would be ideal to build smaller recognizers for things like strings, and then use composition to build more complicated recognizers for elements like lists of strings, or "objects."
 
 This is the motivation for the first part of our exploration: We want to make simple recognizers, and then use composition to make more complex recognizers from the simple recognizers.
 
@@ -919,519 +922,109 @@ We now have `union` and `intersection` functions, each of which takes two descri
 
 ## Catenating Descriptions
 
-We could, of course, use functional composition to compose the recognizers that we build with our data descriptions, but as noted above, that would make it difficult to reason about the characteristics of a recognizer we compose from two or more other recognizers. So instead, as planned, we'll work on _composing the data descriptions_.
+And now we turn our attention to catenating descriptions. Let's begin by informally defining what we mean  by "catenating descriptions:"
 
-We'll begin by catenating descriptions. Here is the finite state automaton for a very simple recognizer. It recognizes a sequence of one or more exclamation marks:
+Given two recognizers, `a` and `b`, the catenation of `a` and `b` is a recognizer that recognizes a sentence `AB`, if and only if `A` is a sentence recognized by `a` and `B` is a sentence recognized by `b`.
 
-<div class="mermaid">
-  graph LR
-    start(start)-->|!|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|!|endable;
-</div>
+Catenation is very common in composing patterns. It's how we formally define recognizers that recognize things like "the function keyword, followed by optional whitespace, followed by an optional label, followed by optional whitespace, followed by an open parenthesis, followed by..." and so forth.
 
-And here's another for recognizing one or more question marks:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|?|endable
-    endable-.->|end|recognized(recognized)
-    endable-->|?|endable;
-</div>
-
-If we were to catenate these two recognizers, what would it look like? Perhaps this:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|!|endable
-    endable-->|!|endable
-    endable-.->start-2
-    start-2-->|?|endable-2
-    endable-2-->|?|endable-2
-    endable-2-.->|end|recognized(recognized)
-</div>
-
-And here are their descriptions:
-
-```javascript
-const exclamatory = {
-  "start": "start",
-  "accepting": "accepting",
-  "transitions": [
-    { "from": "start", "consume": "!", "to": "endable" },
-    { "from": "endable", "consume": "!" },
-    { "from": "endable", "consume": "", "to": "accepting" }
-  ]
-};
-
-const interrogative = {
-  "start": "start",
-  "accepting": "accepting",
-  "transitions": [
-    { "from": "start", "consume": "?", "to": "endable" },
-    { "from": "endable", "consume": "?" },
-    { "from": "endable", "consume": "", "to": "accepting" }
-  ]
-};
-```
-
-What would the descriptions look like when catenated? Perhaps this:
-
-```JSON
-const interrobang = {
-  "start": "start",
-  "accepting": "accepting",
-  "transitions": [
-    { "from": "start", "consume": "!", "to": "endable" },
-    { "from": "endable", "consume": "!" },
-    { "from": "endable", "to": "start-2" },
-    { "from": "start-2", "consume": "?", "to": "endable-2" },
-    { "from": "endable-2", "consume": "?" },
-    { "from": "endable-2", "consume": "", "to": "accepting" }
-  ]
-};
-```
-
-We've made a couple of changes:
-
-In the second description, we changed `start` to `start-2`, so that it would not conflict with `start` in the first recognizer. We always have to rename states so that there are no conflicts between the two recognizers.
-
-Second, in the first recognizer, wherever we had a `"to": "accepting"`, we changed it to `"to": "start-2"`. Transitions to the recognized state of the first recognizer are now transitions to the start state of the second recognizer.
-
-Third, wherever we had a `"consume": ""` in the first recognizer, we removed it outright. Any transition that is possible at the end of a string when the recognizer is running  by itself, is possible at any point in the string when the recognizer is catenated with another recognizer.
+A hypothetical recognizer for JavaScript function expressions would be composed by catenating recognizers for keywords, optional whitespace, labels, parentheses, and so forth.
 
 ---
 
-### catenationFSA(first, second)
+### catenating descriptions with epsilon-transitions
 
-Let's start by writing a function to catenate any two finite state recognizer descriptions. First, we'll need to rename states in the second description so that they don't conflict with the first description.
+Our finite state automata are very simple: They are deterministic, meaning that in every state, there is one and only one transition for each unique symbol. And they always consume a symbol when they transition.
 
-Here's a function, `prepareSecondForCatenation` that takes two descriptions, and returns a copy of the second description with conflicts renamed, along with the helper functions it uses:
+Some finite state automata relax the second constraint. They allow a transition between states without consuming a symbol. If a transition with a symbol to be consumed is like an "if statement," a transition without a symbol to consume is like a "goto."
 
-```javascript
-function statesOf(description) {
-  return description
-    .transitions
-      .reduce(
-        (states, { from, to }) => {
-          if (from != null) states.add(from);
-          if (to != null) states.add(to);
-          return states;
-        },
-        new Set([description.start, description.accepting])
-      );
-}
+Such transitions are called "ε-transitions," or "epsilon transitions" for those who prefer to avoid greek letters. As we'll see, ε-transitions do not add any power to finite state automata, but they do sometimes help make diagrams a little easier to understand and formulate.
 
-function renameStates (nameMap, description) {
-  const translate =
-    before =>
-      (nameMap[before] != null) ? nameMap[before] : before;
-
-  return {
-    start: translate(description.start),
-    accepting: translate(description.accepting),
-    transitions:
-    	description.transitions.map(
-      	({ from, consume, pop, to, push }) => {
-          const transition = { from: translate(from) };
-          if (consume != null) transition.consume = consume;
-          if (pop != null) transition.pop = pop;
-          if (to != null) transition.to = translate(to);
-          if (push != null) transition.push = push;
-
-          return transition;
-        }
-      )
-  };
-}
-
-function resolveCollisions(taken, description) {
-  const takenNames = new Set(taken);
-  const descriptionNames = statesOf(description);
-
-  const nameMap = {};
-
-  for (const descriptionName of descriptionNames) {
-    let name = descriptionName;
-    let counter = 2;
-    while (takenNames.has(name)) {
-      name = `${descriptionName}-${counter++}`;
-    }
-    if (name !== descriptionName) {
-  		nameMap[descriptionName] = name;
-    }
-    takenNames.add(name);
-  }
-
-  return renameStates(nameMap, description);
-}
-
-function prepareSecondForCatenation (start, accepting, first, second) {
-  const uncollidedSecond =  resolveCollisions(statesOf(first), second);
-
-  const acceptingSecond =
-    uncollidedSecond.accepting === accepting
-  	  ? uncollidedSecond
-      : renameStates({ [uncollidedSecond.accepting]: accepting }, uncollidedSecond);
-
-  return acceptingSecond;
-}
-```
-
-And here it is in action:
-
-```javascript
-const catenatableInterrogative =
-  prepareSecondForCatenation("start", "accepting", exclamatory, interrogative)
-    //=>
-      {
-        "start": "start-2",
-        "accepting": "accepting",
-        "transitions": [
-          { "from": "start-2", "consume": "?", "to": "endable-2" },
-          { "from": "endable-2", "consume": "?" },
-          { "from": "endable-2", "consume": "", "to": "accepting" }
-        ]
-      }
-```
-
-Let's move on and transform the first description. As discussed above, we will eliminate `"consume": ""`, and rename transitions to the first description's accepting state into the second description's start state:
-
-```javascript
-function prepareFirstForCatenation(start, accepting, first, second) {
-  const nameMap = {
-    [first.accepting]: second.start,
-    [first.start]: start
-  };
-  const { transitions } =
-    renameStates(nameMap, first);
-
-  return {
-    start,
-    accepting,
-    transitions:
-  	  transitions.map(
-        ({ from, consume, pop, to, push }) => {
-          const transition = { from };
-          if (consume != null && consume !== "") transition.consume = consume;
-          if (pop != null) transition.pop = pop;
-          if (to != null) transition.to = to;
-          if (push != null) transition.push = push;
-
-          return transition;
-        }
-      )
-  };
-}
-```
-
-And here it is in action:
-
-```javascript
-const catenatableExclamatory =
-  prepareFirstForCatenation("start", "accepting", exclamatory, catenatableInterrogative)
-    //=>
-      {
-        "start": "start",
-        "accepting": "accepting",
-        "transitions": [
-          { "from": "start", "consume": "!", "to": "endable" },
-          { "from": "endable", "consume": "!" },
-          { "from": "endable", "to": "start-2" }
-        ]
-      }
-```
-
-Stitching them together, we get:[^names]
-
-[^names]: In [Pattern Matching and Recursion], we wrote functions called `follows`, `cases`, and `just` to handle catenating recognizers, taking the union of recognizers, and recognizing strings. In this essay we will use different names for similar functions. Although this may seem confusing, our functions work with descriptions, not with functions, so keeping them separate in our mind can be helpful.
-
-```javascript
-function catenation (first, second) {
-  const start = "start";
-  const accepting = "accepting";
-
-  const catenatableSecond = prepareSecondForCatenation(start, accepting, first, second);
-  const catenatableFirst = prepareFirstForCatenation(start, accepting, first, catenatableSecond);
-
-  return {
-    start: start,
-    accepting: accepting,
-    transitions:
-      catenatableFirst.transitions
-        .concat(catenatableSecond.transitions)
-  };
-}
-```
-
-And when we try it:
-
-```javascript
-const interrobang = catenation(exclamatory, interrogative)
-  //=>
-    {
-      "start": "start",
-      "accepting": "accepting",
-      "transitions": [
-        { "from": "start", "consume": "!", "to": "endable" },
-        { "from": "endable", "consume": "!" },
-        { "from": "endable", "to": "start-2" },
-        { "from": "start-2", "consume": "?", "to": "endable-2" },
-        { "from": "endable-2", "consume": "?" },
-        { "from": "endable-2", "consume": "", "to": "accepting" }
-      ]
-    }
-```
-
-Perfect. And as we expected, the diagram for `interrobang` is:
+Recall our recognizer that recognizes variations on the name "reg." Here it is as a diagram:
 
 <div class="mermaid">
-  graph LR
-    start(start)-->|!|endable
-    endable-->|!|endable
-    endable-.->start-2(start-2)
-    start-2(start-2)-->|?|endable-2
-    endable-2-->|?|endable-2
-    endable-2-.->|end|recognized(recognized)
+  stateDiagram
+    [*]-->empty
+    empty-->r : r,R
+    r-->re : e,E
+    re-->reg : g,G
+    reg-->[*]
 </div>
 
-It's easy to see that `interrobang` recognizes one or more exclamation marks, followed by one or more question marks.
+And here is the diagram for a recognizer that recognizes zero or more exclamation marks:
 
-We have succeeded in making a catenation function that catenates the descriptions of two finite state automata, and returns a description of a finite state automaton that recognizes a language consisting of strings in the frist recognizer's language, followed by strings in the second recognizer's language.
+<div class="mermaid">
+  stateDiagram
+    [*]-->suffix
+    suffix-->suffix : !
+    suffix-->[*]
+</div>
 
-There are a few loose ends to wrap up before we can catenate pushdown automata.
+The simplest way to catenate recognizers is to create an ε-transition between the accepting states fo the first recognizer and the start state of the second. The start state of the first recognizer becomes the start state of the result, and the accepting states of the second recognizer become the accepting state of the result:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->r : r,R
+    r-->re : e,E
+    re-->reg : g,G
+    reg-->suffix
+    suffix-->suffix : !
+    suffix-->[*]
+</div>
+
+This works like a charm, and we could code this algorithm up for our actual descriptions. However, our `automate` function doesn't permit ε-transitions. We could add that as a feature, but before we do that, let's look at an algorithm for removing ε-transitions from finite state machines.
 
 ---
 
-### catenation(first, second)
+### removing epsilon-transitions
 
-Does our code work for pushdown automata? Sort of. It appears to work for catenating any two pushdown automata. The primary trouble, however, is this: A pushdown automaton mutates the stack. This means that when we catenate the code of any two pushdown automata, the code from the first automaton might interfere with the stack in a way that would interfere with the behaviour of the second.
+To remove an ε-transition between any two states, we start by taking all the transitions in the destination state, and copy them into the origin state. Next, if the destination state is an accepting state, we make the origin state an accepting state as well.
 
-To prevent this from happening, we will introduce some code that ensures that a pushdown automaton never pops a symbol from the stack that it didn't first push there. We will also write some code that ensures that a pushdown automaton restores the stack to the state it was in before it enters its accepting state.
+We then can remove the ε-transition without changing the recognizer's behaviour. In our catenated recognizer, we have an ε-transition between the `reg` and `suffix` states:
 
-We'll modify the way we prepare the first description:
+<div class="mermaid">
+  stateDiagram
+    reg-->suffix
+    suffix-->suffix : !
+    suffix-->[*]
+</div>
 
-```javascript
-function stackablesOf(description) {
-  return description
-    .transitions
-      .reduce(
-        (stackables, { push, pop }) => {
-          if (push != null) stackables.add(push);
-          if (pop != null) stackables.add(pop);
-          return stackables;
-        },
-        new Set()
-      );
-}
+The `suffix` state has one transition, from `suffix` to `suffix` while consuming `!`. If we copy that into `reg`, we get:
 
-function isolatedStack (start, accepting, description) {
-  const stackables = stackablesOf(description);
+<div class="mermaid">
+  stateDiagram
+    reg-->suffix : !
+    suffix-->suffix : !
+    suffix-->[*]
+</div>
 
-  // this is an FSA, nothing to see here
-  if (stackables.size === 0) return description;
+Since `suffix` is an accepting state, we make `reg` an accepting state as well:
 
-  // this is a PDA, make sure we clean the stack up
-  let sentinel = "sentinel";
-  let counter = 2;
-  while (stackables.has(sentinel)) {
-    sentinel = `${sentinel}-${counter++}`;
-  }
+<div class="mermaid">
+  stateDiagram
+    reg-->suffix : !
+    reg-->[*]
+    suffix-->suffix : !
+    suffix-->[*]
+</div>
 
-  const renamed = resolveCollisions([start, accepting], description);
+We repeat this process for all epsilon states, in any order we like, until there are no more epsilon states. In this case, there only was one, so the result is:
 
-  const pushSentinel =
-    { from: start, push: sentinel, to: renamed.start };
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->r : r,R
+    r-->re : e,E
+    re-->reg : g,G
+    reg-->suffix : !
+    reg-->[*]
+    suffix-->suffix : !
+    suffix-->[*]
+</div>
 
-  const popStackables =
-    [...stackables].map(
-      pop => ({ from: renamed.accepting, pop })
-    );
 
-  const popSentinel =
-  	{ from: renamed.accepting, pop: sentinel, to: accepting };
-
-  return {
-    start,
-    accepting,
-    transitions: [
-      pushSentinel,
-      ...renamed.transitions,
-      ...popStackables,
-      popSentinel
-    ]
-  };
-}
-```
-
-This function doesn't change a finite state automaton:
-
-```javascript
-isolatedStack("start", "accepting", binary)
-  //=>
-    {
-      "start": "start",
-      "accepting": "accepting",
-      "transitions": [
-        { "from": "start", "consume": "0", "to": "zero" },
-        { "from": "zero", "consume": "", "to": "accepting" },
-        { "from": "start", "consume": "1", "to": "one-or-more" },
-        { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
-        { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-        { "from": "one-or-more", "consume": "", "to": "accepting" }
-      ]
-    }
-```
-
-But it does change a pushdown automaton:
-
-```javascript
-isolatedStack("start", "accepting", balanced)
-  //=>
-    {
-      "start": "start",
-      "accepting": "accepting",
-      "transitions": [
-        { "from": "start", "push": "sentinel", "to": "start-2" },
-        { "from": "start-2", "to": "read", "push": "⚓︎" },
-        { "from": "read",  "consume": "(", "to": "read", "push": "(" },
-        { "from": "read",  "consume": ")",  "pop": "(", "to": "read" },
-        { "from": "read",  "consume": "[", "to": "read", "push": "[" },
-        { "from": "read",  "consume": "]",  "pop": "[", "to": "read" },
-        { "from": "read",  "consume": "{", "to": "read", "push": "{" },
-        { "from": "read",  "consume": "}",  "pop": "{", "to": "read" },
-        { "from": "read",  "consume": "",  "pop": "⚓︎", "to": "accepting-2" },
-        { "from": "accepting-2",  "pop": "⚓︎" },
-        { "from": "accepting-2",  "pop": "(" },
-        { "from": "accepting-2",  "pop": "[" },
-        { "from": "accepting-2",  "pop": "{" },
-        { "from": "accepting-2",  "pop": "sentinel", "to": "accepting" }
-      ]
-    }
-```
-
-And now we can create a safer `prepareFirstForCatenation` function:
-
-```javascript
-function isPushdown(description) {
-  return stackablesOf(description).size > 0
-};
-
-function prepareFirstForCatenation(start, accepting, first, second) {
-  const safeFirst =
-    (isPushdown(first) && isPushdown(second)) ? isolatedStack(start, accepting, first) : first;
-
-  const nameMap = {
-    [safeFirst.accepting]: second.start,
-    [safeFirst.start]: start
-  };
-  const { transitions } =
-    renameStates(nameMap, first);
-
-  return {
-    start,
-    accepting,
-    transitions:
-  	  transitions.map(
-        ({ from, consume, pop, to, push }) => {
-          const transition = { from };
-          if (consume != null && consume !== "") transition.consume = consume;
-          if (pop != null) transition.pop = pop;
-          if (to != null) transition.to = to;
-          if (push != null) transition.push = push;
-
-          return transition;
-        }
-      )
-  };
-}
-```
-
-We can check that it isolates the stack:
-
-```javascript
-catenation(binary, fraction)
-  //=>
-    {
-      "start": "start",
-      "accepting": "accepting-2",
-      "transitions": [
-        { "from": "start", "consume": "0", "to": "zero" },
-        { "from": "zero", "to": "start-2" },
-        { "from": "start", "consume": "1", "to": "one-or-more" },
-        { "from": "one-or-more", "consume": "0", "to": "one-or-more" },
-        { "from": "one-or-more", "consume": "1", "to": "one-or-more" },
-        { "from": "one-or-more", "to": "start-2" },
-        { "from": "start-2", "consume": "", "to": "accepting-2" },
-        { "from": "start-2", "consume": ".", "to": "point" },
-        { "from": "point", "consume": "0", "to": "point-zero" },
-        { "from": "point", "consume": "1", "to": "endable" },
-        { "from": "point-zero", "consume": "", "to": "accepting-2" },
-        { "from": "point-zero", "consume": "0", "to": "not-endable" },
-        { "from": "point-zero", "consume": "1", "to": "endable" },
-        { "from": "not-endable", "consume": "0" },
-        { "from": "not-endable", "consume": "1", "to": "endable" },
-        { "from": "endable", "consume": "", "to": "accepting-2" },
-        { "from": "endable", "consume": "0", "to": "not-endable" },
-        { "from": "endable", "consume": "1" }
-      ]
-    }
-
-catenation(balanced, palindrome)
-  //=>
-    {
-      "start": "start",
-      "accepting": "accepting-3",
-      "transitions": [
-        { "from": "start", "to": "start-2", "push": "sentinel" },
-        { "from": "start-2", "to": "read", "push": "⚓︎" },
-        { "from": "read", "consume": "(", "to": "read", "push": "(" },
-        { "from": "read", "consume": ")", "pop": "(", "to": "read" },
-        { "from": "read", "consume": "[", "to": "read", "push": "[" },
-        { "from": "read", "consume": "]", "pop": "[", "to": "read" },
-        { "from": "read", "consume": "{", "to": "read", "push": "{" },
-        { "from": "read", "consume": "}", "pop": "{", "to": "read" },
-        { "from": "read", "pop": "⚓︎", "to": "accepting-2" },
-        { "from": "accepting-2", "pop": "⚓︎" },
-        { "from": "accepting-2", "pop": "(" },
-        { "from": "accepting-2", "pop": "[" },
-        { "from": "accepting-2", "pop": "{" },
-        { "from": "accepting-2", "pop": "sentinel", "to": "start-3" },
-        { "from": "start-3", "to": "first", "push": "⚓︎" },
-        { "from": "first", "consume": "0", "to": "left", "push": "0" },
-        { "from": "first", "consume": "1", "to": "left", "push": "1" },
-        { "from": "first", "consume": "0", "to": "right" },
-        { "from": "first", "consume": "1", "to": "right" },
-        { "from": "left", "consume": "0", "push": "0" },
-        { "from": "left", "consume": "1", "push": "1" },
-        { "from": "left", "consume": "0", "to": "right" },
-        { "from": "left", "consume": "1", "to": "right" },
-        { "from": "left", "consume": "0", "pop": "0", "to": "right" },
-        { "from": "left", "consume": "1", "pop": "1", "to": "right" },
-        { "from": "right", "consume": "0", "pop": "0" },
-        { "from": "right", "consume": "1", "pop": "1" },
-        { "from": "right", "consume": "", "pop": "⚓︎", "to": "accepting-3" }
-      ]
-    }
-
-test(catenation(balanced, palindrome), [
-  '', '1', '01', '11', '101',
-  '()', ')(', '(())0', ')(101',
-  '()()101', '()()1010'
-]);
-  //=>
-    '' => false
-    '1' => true
-    '01' => false
-    '11' => true
-    '101' => true
-    '()' => false
-    ')(' => false
-    '(())0' => true
-    ')(101' => false
-    '()()101' => true
-    '()()1010' => false
-```
+<!-- UNFINISHED STUFF BELOW -->
 
 ---
 
