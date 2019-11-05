@@ -26,7 +26,7 @@ function union (a, b) {
     );
 
   const productAB = product(a, b);
-  const reachableStates = new Set(statesOf(productAB));
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
 
   const { start, transitions } = productAB;
   const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
@@ -48,7 +48,7 @@ function intersection (a, b) {
     );
 
   const productAB = product(a, b);
-  const reachableStates = new Set(statesOf(productAB));
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
 
   const { start, transitions } = productAB;
   const accepting = allAcceptingStates.filter(state => reachableStates.has(state));

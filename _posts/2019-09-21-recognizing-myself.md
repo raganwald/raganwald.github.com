@@ -367,7 +367,7 @@ function automate (description) {
 }
 ```
 
-[^vap]: `automate` relies on `validatedAndProcessed`, a utility function that does some general-purpose processing useful to many of the things we will build along the way. The source code is [here](/assets/supplemental/fsa/validated-and-processed.js).)
+[^vap]: `automate` relies on `validatedAndProcessed`, a utility function that does some general-purpose processing useful to many of the things we will build along the way. The source code is [here](/assets/supplemental/fsa/01-validated-and-processed.js).)
 
 Here we are using `automate` with our definition for recognizing binary numbers:
 
@@ -627,7 +627,7 @@ Thus, if we begin with the start state and then recursively follow transitions, 
 
 ### a function to compute the product of two recognizers
 
-Here is a function that [takes the product of two recognizers](/assets/supplemental/fsa/product.js). It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`, although that's easy enough to change.
+Here is a function that [takes the product of two recognizers](/assets/supplemental/fsa/03-product.js). It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`, although that's easy enough to change.
 
 We can test it with out `a` and `b`:
 
@@ -741,7 +741,7 @@ function union (a, b) {
     );
 
     const productAB = product(a, b);
-    const reachableStates = new Set(statesOf(productAB));
+    const { stateSet: reachableStates } = validatedAndProcessed(productAB);
 
     const { start, transitions } = productAB;
     const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
@@ -807,7 +807,7 @@ function intersection (a, b) {
     );
 
   const productAB = product(a, b);
-  const reachableStates = new Set(statesOf(productAB));
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
 
   const { start, transitions } = productAB;
   const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
@@ -951,16 +951,41 @@ Recall our recognizer that recognizes variations on the name "reg." Here it is a
     reg-->[*]
 </div>
 
-And here is the diagram for a recognizer that recognizes zero or more exclamation marks:
+And here is the diagram for a recognizer that recognizes one or more exclamation marks:
 
 <div class="mermaid">
   stateDiagram
-    [*]-->suffix
-    suffix-->suffix : !
-    suffix-->[*]
+    [*]-->empty
+    empty-->bang : !
+    bang-->bang : !
+    bang-->[*]
 </div>
 
-The simplest way to catenate recognizers is to create an ε-transition between the accepting states fo the first recognizer and the start state of the second. The start state of the first recognizer becomes the start state of the result, and the accepting states of the second recognizer become the accepting state of the result:
+The simplest way to catenate recognizers is to put all their states together in one big diagram, and create an ε-transition between the accepting states for the first recognizer, and the start state of the second. The start state of the first recognizer becomes the start state of the result, and the accepting states of the second recognizer become the accepting state of the result.
+
+But if we try to put them together in one diagram we have a problem:
+
+<div class="mermaid">
+  graph TD
+    empty(empty)-->r
+    r-->re
+    re-->reg
+    reg-->empty2[empty]
+    empty2-->suffix(suffix)
+    suffix-->suffix
+</div>
+
+We can't have two separate states with the same name. So before we catenate the two recognizers, we have to find any states they have in common, and rename them to avoid collisions. In this case, we have to transform the second recognizer into:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty2
+    empty2-->bang : !
+    bang-->bang : !
+    bang-->[*]
+</div>
+
+And now we can connect the two recognizers with ε-transitions between the first recognizer's accepting states, and the second recognizer's start stae:
 
 <div class="mermaid">
   stateDiagram
@@ -968,9 +993,10 @@ The simplest way to catenate recognizers is to create an ε-transition between t
     empty-->r : r,R
     r-->re : e,E
     re-->reg : g,G
-    reg-->suffix
-    suffix-->suffix : !
-    suffix-->[*]
+    reg-->empty2
+    empty2-->bang : !
+    bang-->bang : !
+    bang-->[*]
 </div>
 
 This works like a charm, and we could code this algorithm up for our actual descriptions. However, our `automate` function doesn't permit ε-transitions. We could add that as a feature, but before we do that, let's look at an algorithm for removing ε-transitions from finite state machines.
@@ -981,35 +1007,27 @@ This works like a charm, and we could code this algorithm up for our actual desc
 
 To remove an ε-transition between any two states, we start by taking all the transitions in the destination state, and copy them into the origin state. Next, if the destination state is an accepting state, we make the origin state an accepting state as well.
 
-We then can remove the ε-transition without changing the recognizer's behaviour. In our catenated recognizer, we have an ε-transition between the `reg` and `suffix` states:
+We then can remove the ε-transition without changing the recognizer's behaviour. In our catenated recognizer, we have an ε-transition between the `reg` and `empty2` states:
 
 <div class="mermaid">
   stateDiagram
-    reg-->suffix
-    suffix-->suffix : !
-    suffix-->[*]
+    reg-->empty2
+    empty2-->bang : !
+    bang-->bang : !
+    bang-->[*]
 </div>
 
-The `suffix` state has one transition, from `suffix` to `suffix` while consuming `!`. If we copy that into `reg`, we get:
+The `empty2` state has one transition, from `empty2` to `bang` while consuming `!`. If we copy that into `reg`, we get:
 
 <div class="mermaid">
   stateDiagram
-    reg-->suffix : !
-    suffix-->suffix : !
-    suffix-->[*]
+    reg-->bang : !
+    empty2-->bang : !
+    bang-->bang : !
+    bang-->[*]
 </div>
 
-Since `suffix` is an accepting state, we make `reg` an accepting state as well:
-
-<div class="mermaid">
-  stateDiagram
-    reg-->suffix : !
-    reg-->[*]
-    suffix-->suffix : !
-    suffix-->[*]
-</div>
-
-We repeat this process for all epsilon states, in any order we like, until there are no more epsilon states. In this case, there only was one, so the result is:
+Since `empty2` is not an accepting state, we do not need to make `reg` an accepting state, so we are done removing this ε-transition. We repeat this process for all ε-transitions, in any order we like, until there are no more ε-transitions. In this case, there only was one, so the result is:
 
 <div class="mermaid">
   stateDiagram
@@ -1017,11 +1035,59 @@ We repeat this process for all epsilon states, in any order we like, until there
     empty-->r : r,R
     r-->re : e,E
     re-->reg : g,G
-    reg-->suffix : !
-    reg-->[*]
-    suffix-->suffix : !
-    suffix-->[*]
+    reg-->bang : !
+    empty2-->bang : !
+    bang-->bang : !
+    bang-->[*]
 </div>
+
+This is clearly a recognizer that recognizes the name "reg" followed by one or more exclamation marks. Our catenation algorithm has two steps. In the first, we create a recognizer with ε-transitions:
+
+1. Rename any states in the second recognizer to avoid conflicts with names of states in the first recognizer.
+2. Connect the two recognizers with an ε-transition from each accepting state from the first recognizer to the start state from the second recognizer.
+3. The start state of the first recognizer becomes the start state of the catenated recognizers.
+4. The accepting states of the second recognizer become the accepting states of the catenated recognizers.\
+
+This transformation complete, we can then remove the ε-transitions. For each ε-transition between an origin and destination state:
+
+1. Copy all of the transitions from the destination state into the origin state.
+2. If the destination state is an accepting state, make the origin state an accepting state as well.
+3. Remove the ε-transition.
+
+(Following this process, we sometimes wind up with unreachable states. In our example above, `empty2` becomes unreachable after removing the ε-transition. This has no effect on the behaviour of the recognizer, and in the next section, we'll see how to prune those unreachable states.)
+
+---
+
+### implementing catenation
+
+Here's some code to resolve conflicts between the state names of two recognizers:
+
+```javascript
+function resolveConflicts(reserved, description) {
+  const reservedSet = new Set(reserved);
+  const states = statesOf(description);
+
+  const nameMap = {};
+
+  // build the map to resolve overlaps with reserved names
+  for (const state of states) {
+    const match = /^(.*)-(\d+)$/.exec(state);
+    let base = match == null ? state : match[1];
+    let counter = match == null ? 1 : Number.parseInt(match[2], 10);
+    let resolved = state;
+    while (reservedSet.has(resolved)) {
+      resolved = `${base}-${++counter}`;
+    }
+    if (resolved !== state) {
+  		nameMap[state] = resolved;
+    }
+    reservedSet.add(resolved);
+  }
+
+  // apply the built map
+  return renameStates(nameMap, description);
+}
+```
 
 
 <!-- UNFINISHED STUFF BELOW -->
@@ -1409,7 +1475,7 @@ function union (...descriptions) {
       first
     );
 
-    const renamedSecond = resolveCollisions(statesOf(conformingFirst), second);
+    const renamedSecond = resolveConflicts(statesOf(conformingFirst), second);
 
     const conformingSecond = renameStates(
       { [renamedSecond.start]: start, [renamedSecond.accepting]: accepting },
