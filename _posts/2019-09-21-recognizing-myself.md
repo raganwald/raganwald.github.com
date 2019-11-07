@@ -232,7 +232,7 @@ The recognizer's `states`, `S`, will also be _optional_. If present, it will be 
 
 ```json
 {
-  "states": ["start", "zero", "one or more"]
+  "states": ["start", "zero", "notZero"]
 }
 ```
 
@@ -252,7 +252,7 @@ The recognizer's set of final, or `accepting` states is required. It is encoded 
 
 ```json
 {
-  "accepting": ["zero", "one or more"]
+  "accepting": ["zero", "notZero"]
 }
 ```
 
@@ -280,9 +280,9 @@ Thus, one possible set of transitions might be encoded like this:
 {
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
-    { "from": "start", "consume": "1", "to": "one or more" },
-    { "from": "one or more", "consume": "0", "to": "one or more" },
-    { "from": "one or more", "consume": "1", "to": "one or more" }
+    { "from": "start", "consume": "1", "to": "notZero" },
+    { "from": "notZero", "consume": "0", "to": "notZero" },
+    { "from": "notZero", "consume": "1", "to": "notZero" }
   ]
 }
 ```
@@ -292,15 +292,15 @@ Putting it all together, we have:
 ```javascript
 const binaryNumber = {
   "alphabet": "01",
-  "states": ["start", "zero", "one or more"],
+  "states": ["start", "zero", "notZero"],
   "start": "start",
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
-    { "from": "start", "consume": "1", "to": "one or more" },
-    { "from": "one or more", "consume": "0", "to": "one or more" },
-    { "from": "one or more", "consume": "1", "to": "one or more" }
+    { "from": "start", "consume": "1", "to": "notZero" },
+    { "from": "notZero", "consume": "0", "to": "notZero" },
+    { "from": "notZero", "consume": "1", "to": "notZero" }
   ],
-  "accepting": ["zero", "one or more"]
+  "accepting": ["zero", "notZero"]
 }
 ```
 
@@ -310,10 +310,10 @@ Our representation translates directly to this simplified state diagram:
   stateDiagram
     [*] --> start
     start --> zero : 0
-    start --> one : 1
-    one --> one : 0, 1
+    start --> notZero : 1
+    notZero --> notZero : 0, 1
     zero --> [*]
-    one --> [*]
+    notZero --> [*]
 </div>
 
 This finite state recognizer recognizes binary numbers.
@@ -382,15 +382,15 @@ function test (description, examples) {
 
 const binaryNumber = {
   "alphabet": "01",
-  "states": ["start", "zero", "one or more"],
+  "states": ["start", "zero", "notZero"],
   "start": "start",
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
-    { "from": "start", "consume": "1", "to": "one or more" },
-    { "from": "one or more", "consume": "0", "to": "one or more" },
-    { "from": "one or more", "consume": "1", "to": "one or more" }
+    { "from": "start", "consume": "1", "to": "notZero" },
+    { "from": "notZero", "consume": "0", "to": "notZero" },
+    { "from": "notZero", "consume": "1", "to": "notZero" }
   ],
-  "accepting": ["zero", "one or more"]
+  "accepting": ["zero", "notZero"]
 };
 
 test(binaryNumber, [
@@ -470,7 +470,7 @@ Recognizer `a` has two declared states: `'empty'` and `'zero'`. Recognizer `b` a
 
 Thus, recognizer `a` has three possible states: `'empty'`, `'zero'`, and `''`. Likewise, recognizer `b` has three possible states: `'empty'`, `'one'`, and `''`.
 
-Now let us imagine the two recognizers are operating simultaneously on two strings of symbols (they could be the same symbols or different symbols, that doesn't matter just yet):
+Now let us imagine the two recognizers are operating concurrently on the same stream of symbols:
 
 <div class="mermaid">
   stateDiagram
@@ -656,26 +656,10 @@ product(a, b)
       "start": "(emptyA)(emptyB)",
       "accepting": [],
       "transitions": [
-        {
-          "from": "(emptyA)(emptyB)",
-          "consume": "0",
-          "to": "(zero)()"
-        },
-        {
-          "from": "(emptyA)(emptyB)",
-          "consume": "1",
-          "to": "()(one)"
-        },
-        {
-          "from": "(zero)()",
-          "consume": "0",
-          "to": "(zero)()"
-        },
-        {
-          "from": "()(one)",
-          "consume": "1",
-          "to": "()(one)"
-        }
+        { "from": "(emptyA)(emptyB)", "consume": "0", "to": "(zero)()" },
+        { "from": "(emptyA)(emptyB)", "consume": "1", "to": "()(one)" },
+        { "from": "(zero)()", "consume": "0", "to": "(zero)()" },
+        { "from": "()(one)", "consume": "1", "to": "()(one)" }
       ]
     }
 ```
@@ -757,31 +741,12 @@ union(a, b)
   //=>
     {
       "start": "(emptyA)(emptyB)",
-      "accepting": [
-        "(zero)()",
-        "()(one)"
-      ],
+      "accepting": [ "(zero)()", "()(one)" ],
       "transitions": [
-        {
-          "from": "(emptyA)(emptyB)",
-          "consume": "0",
-          "to": "(zero)()"
-        },
-        {
-          "from": "(emptyA)(emptyB)",
-          "consume": "1",
-          "to": "()(one)"
-        },
-        {
-          "from": "(zero)()",
-          "consume": "0",
-          "to": "(zero)()"
-        },
-        {
-          "from": "()(one)",
-          "consume": "1",
-          "to": "()(one)"
-        }
+        { "from": "(emptyA)(emptyB)", "consume": "0", "to": "(zero)()" },
+        { "from": "(emptyA)(emptyB)", "consume": "1", "to": "()(one)" },
+        { "from": "(zero)()", "consume": "0", "to": "(zero)()" },
+        { "from": "()(one)", "consume": "1", "to": "()(one)" }
       ]
     }
 ```
@@ -1063,10 +1028,10 @@ This transformation complete, we can then remove the ε-transitions. For each ε
 Here's some code to resolve conflicts between the state names of two recognizers:
 
 ```javascript
-function renameStates (nameDictionary, { start, accepting, transitions }) {
+function renameStates (nameMap, { start, accepting, transitions }) {
   const translate =
     before =>
-      (nameDictionary[before] != null) ? nameDictionary[before] : before;
+      nameMap.has(before) ? nameMap.get(before) : before;
 
   return {
     start: translate(start),
@@ -1087,19 +1052,19 @@ function resolveConflicts (first, second) {
   const { stateSet: firstStatesSet } = validatedAndProcessed(first);
   const { stateSet: secondStatesSet } = validatedAndProcessed(second);
 
-  const nameMap = {};
+  const nameMap = new Map();
 
   // build the map to resolve overlaps with reserved names
   for (const secondState of secondStatesSet) {
-    const match = /^(.*)(\d+)$/.exec(secondState);
+    const match = /^(.*)-(\d+)$/.exec(secondState);
     let base = match == null ? secondState : match[1];
     let counter = match == null ? 1 : Number.parseInt(match[2], 10);
     let resolved = secondState;
     while (firstStatesSet.has(resolved)) {
-      resolved = `${base}${++counter}`;
+      resolved = `${base}-${++counter}`;
     }
     if (resolved !== secondState) {
-  		nameMap[secondState] = resolved;
+  		nameMap.set(secondState, resolved);
     }
     firstStatesSet.add(resolved);
   }
@@ -1293,10 +1258,10 @@ And consider this recognizer that recognizes a binary number:
   stateDiagram
     [*] --> empty
     empty --> zero : 0
-    empty --> one : 1
-    one --> one : 0, 1
+    empty --> notZero : 1
+    notZero --> notZero : 0, 1
     zero --> [*]
-    one --> [*]
+    notZero --> [*]
 </div>
 
 What happens when we use our functions to catenate them?
@@ -1313,12 +1278,12 @@ const ones = {
 
 const binary = {
   "start": "empty",
-  "accepting": ["zero", "one or more"],
+  "accepting": ["zero", "notZero"],
   "transitions": [
     { "from": "empty", "consume": "0", "to": "zero" },
-    { "from": "empty", "consume": "1", "to": "one or more" },
-    { "from": "one or more", "consume": "0", "to": "one or more" },
-    { "from": "one or more", "consume": "1", "to": "one or more" }
+    { "from": "empty", "consume": "1", "to": "notZero" },
+    { "from": "notZero", "consume": "0", "to": "notZero" },
+    { "from": "notZero", "consume": "1", "to": "notZero" }
   ]
 }
 
@@ -1326,16 +1291,16 @@ epsilonsRemoved(epsilonJoin(ones, binary))
   //=>
     {
       "empty": "empty",
-      "accepting": [ "zero", "one or more" ],
+      "accepting": [ "zero", "notZero" ],
       "transitions": [
         { "from": "empty", "consume": "1", "to": "ones" },
         { "from": "ones", "consume": "0", "to": "zero" },
         { "from": "ones", "consume": "1", "to": "ones" },
-        { "from": "ones", "consume": "1", "to": "one or more" },
+        { "from": "ones", "consume": "1", "to": "notZero" },
         { "from": "empty2", "consume": "0", "to": "zero" },
-        { "from": "empty2", "consume": "1" , "to": "one or more"},
-        { "from": "one or more", "consume": "0", "to": "one or more" },
-        { "from": "one or more", "consume": "1", "to": "one or more" }
+        { "from": "empty2", "consume": "1" , "to": "notZero"},
+        { "from": "notZero", "consume": "0", "to": "notZero" },
+        { "from": "notZero", "consume": "1", "to": "notZero" }
       ]
     }
 ```
@@ -1348,10 +1313,10 @@ And here's a diagram of the result (omitting the unreachable `empty2` to aid cla
     empty-->ones : 1
     ones-->ones : 1
     ones --> zero : 0
-    ones --> one : 1
-    one --> one : 0, 1
+    ones --> notZero : 1
+    one --> notZero : 0, 1
     zero --> [*]
-    one --> [*]
+    notZero --> [*]
 </div>
 
 The problem is that there are two transitions from `ones` when consuming a `1`. We started with two deterministic finite state recognizers, but ended up with a nondeterministic finite state recognizer. We can always find a manual way to fix these things, but there is no simple rule for fixing them.
@@ -1367,6 +1332,179 @@ As noted, our procedure for joining two recognizers with ε-transitions can crea
 We have already solved a subset of this problem, in a way. Consider the problem of taking the union of two recognizers. We did this with the product of the two recognizers. The way "product" worked was that it modelled two recognizers being in two different states at a time by creating new states that represented the pair of states each recognizer could be in.
 
 We can use this approach with NFAs as well: We need a new kind of state to represent when an NFA can be in more than one state at once.
+
+<!-- for later -->
+
+```javascript
+function isDeterministic (description) {
+  const { stateMap } = validatedAndProcessed(description, true);
+
+  const transitionsGroupedByFromState = [...stateMap.values()];
+
+  const consumptions =
+    transitionsGroupedByFromState
+      .map(
+        transitions => transitions.map( ({ consume }) => consume )
+      );
+
+  return consumptions.every(
+    consumes => consumes.length === new Set(consumes).size
+  );
+}
+
+function parenthesizedStates (description) {
+  const { states } = validatedAndProcessed(description, true);
+
+  // produces a map from each state's name to the name in parentheses,
+  // e.g. 'empty' => '(empty)'
+  const parenthesizeMap =
+    states
+      .reduce(
+        (acc, s) => (acc.set(s, `(${s})`), acc),
+        new Map()
+      );
+
+  // rename all the states
+  return renameStates(parenthesizeMap, description);
+}
+
+function dfa (description) {
+  // optional, but it avoids a lot of excess (())
+  if (isDeterministic(description)) {
+    return description;
+  }
+
+  const renamedDescription = parenthesizedStates(description);
+
+  const {
+    start: nfaStart,
+    acceptingSet: nfaAcceptingSet,
+    stateMap: nfaStateMap
+  } = validatedAndProcessed(renamedDescription, true);
+
+  // the final set of accepting states
+  const dfaAcceptingSet = new Set();
+
+  // R is the work "remaining" to be analyzed
+  // organized as a map from a name to a set of states.
+  // initialized with a map from the start state's
+  // name to a degenerate set containing only the start state
+  const R = new Map([
+    [nfaStart, new Set([nfaStart])]
+  ]);
+
+  // T is a collection of states already analyzed
+  // it is a map from the state name to the transitions
+  // from that state
+  const T = new Map();
+
+  while (R.size > 0) {
+    const [[stateName, stateSet]] = R.entries();
+    R.delete(stateName);
+
+    // get the aggregate transitions across all states
+    // in the set
+    const aggregateTransitions =
+      [...stateSet].flatMap(s => nfaStateMap.get(s) || []);
+
+    // a map from a symbol consumed to the set of
+    // destination states
+    const symbolToStates =
+      aggregateTransitions
+        .reduce(
+          (acc, { consume, to }) => {
+            const toStates = acc.has(consume) ? acc.get(consume) : new Set();
+
+            toStates.add(to);
+            acc.set(consume, toStates);
+            return acc;
+          },
+          new Map()
+        );
+
+    const dfaTransitions = [];
+
+  	for (const [consume, toStates] of symbolToStates.entries()) {
+      const toStatesName = [...toStates].sort().join('');
+
+      dfaTransitions.push({ from: stateName, consume, to: toStatesName });
+
+      const hasBeenDone = T.has(toStatesName);
+      const isInRemainingQueue = R.has(toStatesName)
+
+      if (!hasBeenDone && !isInRemainingQueue) {
+        R.set(toStatesName, toStates);
+      }
+    }
+
+    T.set(stateName, dfaTransitions);
+
+    const anyStateIsAccepting =
+      [...stateSet].some(s => nfaAcceptingSet.has(s));
+
+    if (anyStateIsAccepting) {
+      dfaAcceptingSet.add(stateName);
+    }
+
+  }
+
+  return {
+    start: nfaStart,
+    accepting: [...dfaAcceptingSet],
+    transitions:
+      [...T.values()]
+        .flatMap(tt => tt)
+  };
+}
+```
+
+```json
+{
+  "start": "(empty)",
+  "accepting": [
+    "(notZero)(ones)",
+    "(zero)",
+    "(notZero)(zero)",
+    "(notZero)"
+  ],
+  "transitions": [
+    { "from": "(empty)", "consume": "1", "to": "(ones)" },
+    { "from": "(ones)", "consume": "1", "to": "(notZero)(ones)" },
+    { "from": "(ones)", "consume": "0", "to": "(zero)" },
+    { "from": "(notZero)(ones)", "consume": "1", "to": "(notZero)(ones)" },
+    { "from": "(notZero)(ones)", "consume": "0", "to": "(notZero)(zero)" },
+    { "from": "(notZero)(zero)", "consume": "0", "to": "(notZero)" },
+    { "from": "(notZero)(zero)", "consume": "1", "to": "(notZero)" },
+    { "from": "(notZero)", "consume": "0", "to": "(notZero)" },
+    { "from": "(notZero)", "consume": "1", "to": "(notZero)" }
+  ]
+}
+```
+
+
+```javascript
+const nondeterministic = epsilonsRemoved(epsilonJoin(ones, binary));
+
+const deterministic = dfa(nondeterministic);
+
+test(deterministic, [
+  '', '0', '1', '00', '10', '11',
+  '001', '010', '011', '100', '101', '111'
+])
+  //=>
+    '' => false
+    '0' => false
+    '1' => false
+    '00' => false
+    '10' => true
+    '11' => true
+    '001' => false
+    '010' => false
+    '011' => false
+    '100' => false
+    '101' => false
+    '111' => true
+```
 
 <!-- UNFINISHED STUFF BELOW -->
 
@@ -1484,7 +1622,7 @@ That allows us to reason more easily about what our recognizers can and cannot r
 
 ### recognizing emptiness
 
-The simplest possible recognizer is one that doesn't recognize anything at all. It is called `EMPTY`, because as we'll see below, it recognizes the "empty language," the language that has no sentences at all:
+The simplest possible recognizer is one that doesn't recognize anything at all. It is called `EMPTY`, because as we'll see below, it recognizes the "empty language," the language that has no sentences:
 
 <div class="mermaid">
   graph LR

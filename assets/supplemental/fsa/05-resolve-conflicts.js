@@ -1,10 +1,10 @@
 // given a mapping of individual names, renames all the states in
 // an fas, including the start and accepting. any names not in the map
 // rename unchanged
-function renameStates (nameDictionary, { start, accepting, transitions }) {
+function renameStates (nameMap, { start, accepting, transitions }) {
   const translate =
     before =>
-      (nameDictionary[before] != null) ? nameDictionary[before] : before;
+      nameMap.has(before) ? nameMap.get(before) : before;
 
   return {
     start: translate(start),
@@ -28,19 +28,19 @@ function resolveConflicts (first, second) {
   const { stateSet: firstStatesSet } = validatedAndProcessed(first);
   const { stateSet: secondStatesSet } = validatedAndProcessed(second);
 
-  const nameMap = {};
+  const nameMap = new Map();
 
   // build the map to resolve overlaps with reserved names
   for (const secondState of secondStatesSet) {
-    const match = /^(.*)(\d+)$/.exec(secondState);
+    const match = /^(.*)-(\d+)$/.exec(secondState);
     let base = match == null ? secondState : match[1];
     let counter = match == null ? 1 : Number.parseInt(match[2], 10);
     let resolved = secondState;
     while (firstStatesSet.has(resolved)) {
-      resolved = `${base}${++counter}`;
+      resolved = `${base}-${++counter}`;
     }
     if (resolved !== secondState) {
-  		nameMap[secondState] = resolved;
+  		nameMap.set(secondState, resolved);
     }
     firstStatesSet.add(resolved);
   }
