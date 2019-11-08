@@ -1151,10 +1151,11 @@ epsilonJoin(reg, exclamations)
     }
 ```
 
-And then a function to remove ε-transitions. Its a little busier than we might expect from our simple examples, but it has to handle weird edge cases like chains of epsilon transitions and detecting loops in epsilon transitions:
+And then a function to remove ε-transitions. Its a little busier than we might expect from our simple examples, but it has to handle cases such resolving chains of epsilons:
 
 ```javascript
 function epsilonsRemoved ({ start, accepting, transitions }) {
+  const acceptingSet = new Set(accepting);
   const transitionsWithoutEpsilon =
     transitions
       .filter(({ consume }) => consume != null);
@@ -1162,50 +1163,55 @@ function epsilonsRemoved ({ start, accepting, transitions }) {
   const epsilonMap =
     transitions
       .filter(({ consume }) => consume == null)
-      .reduce((acc, { from, to }) => (acc.set(from, to), acc), new Map());
-  const acceptingSet = new Set(accepting);
+      .reduce(
+          (acc, { from, to }) => {
+            const toStates = acc.has(from) ? acc.get(from) : new Set();
 
-  while (epsilonMap.size > 0) {
-    let [[epsilonFrom, epsilonTo]] = [...epsilonMap.entries()];
+            toStates.add(to);
+            acc.set(from, toStates);
+            return acc;
+          },
+          new Map()
+        );
 
-    const seen = new Set([epsilonFrom]);
+  const epsilonQueue = [...epsilonMap.entries()];
+  const epsilonFromStatesSet = new Set(epsilonMap.values());
 
-    while (epsilonMap.has(epsilonTo)) {
-      if (seen.has(epsilonTo)) {
-        const display =
-          [...seen]
-            .map(f => `${f} -> ${epsilonMap.get(f)}`)
-            .join(', ');
-        error(`The epsilon path { ${display} } includes a loop. This is invalid.`);
+  while (epsilonQueue.length > 0) {
+    let [epsilonFrom, epsilonToSet] = epsilonQueue.shift();
+    const epsilonToStates = [...epsilonToSet];
+    // we can immediately resolve destinations that themselves don't have epsilon transitions
+    const immediateEpsilonToStates = epsilonToStates.filter(s => !epsilonFromStatesSet.has(s));
+    // we defer resolving destinations that have epsilon transitions
+    const deferredEpsilonToStates = epsilonToStates.filter(s => epsilonFromStatesSet.has(s));
+
+    if (deferredEpsilonToStates.length > 0) {
+      // defer them
+      epsilonQueue.push([epsilonFrom, deferredEpsilonToStates]);
+    } else {
+      // if nothing to defer, remove this from the set
+      epsilonFromStatesSet.delete(epsilonFrom);
+    }
+
+    // now add all the transitions
+    for (const epsilonTo of epsilonToStates) {
+      const source =
+        stateMapWithoutEpsilon.get(epsilonTo) || [];
+      const moved =
+        source.map(
+          ({ consume, to }) => ({ from: epsilonFrom, consume, to })
+        );
+
+      const existingTransitions = stateMapWithoutEpsilon.get(epsilonFrom) || [];
+
+      // now add the moved transitions
+      stateMapWithoutEpsilon.set(epsilonFrom, existingTransitions.concat(moved));
+
+      // special case!
+      if (acceptingSet.has(epsilonTo)) {
+        acceptingSet.add(epsilonFrom);
       }
-      epsilonFrom = epsilonTo;
-      epsilonTo = epsilonMap.get(epsilonFrom);
-      seen.add(epsilonFrom);
     }
-
-    // from -> to is a valid epsilon transition
-    // remove it by making a copy of the destination
-    // (destination must not be an epsilon, by viture of above code)
-
-    const source =
-      stateMapWithoutEpsilon.get(epsilonTo) || [];
-    const moved =
-      source.map(
-        ({ consume, to }) => ({ from: epsilonFrom, consume, to })
-      );
-
-    const existingTransitions = stateMapWithoutEpsilon.get(epsilonFrom) || [];
-
-    // now add the moved transitions
-    stateMapWithoutEpsilon.set(epsilonFrom, existingTransitions.concat(moved));
-
-    // special case!
-    if (acceptingSet.has(epsilonTo)) {
-      acceptingSet.add(epsilonFrom);
-    }
-
-    // and remove the original from our epsilonMap
-    epsilonMap.delete(epsilonFrom);
   }
 
   return {
@@ -1331,7 +1337,40 @@ As noted, our procedure for joining two recognizers with ε-transitions can crea
 
 We have already solved a subset of this problem, in a way. Consider the problem of taking the union of two recognizers. We did this with the product of the two recognizers. The way "product" worked was that it modelled two recognizers being in two different states at a time by creating new states that represented the pair of states each recognizer could be in.
 
-We can use this approach with NFAs as well: We need a new kind of state to represent when an NFA can be in more than one state at once.
+We can use this approach with NFAs as well.
+
+---
+
+### taking the product of a recognizer... with itself
+
+Recall that when we wanted to simulate two recognizers acting in parallel on the same input, we imagined them running in parallel like this:
+
+<div class="mermaid">
+  stateDiagram
+    simultaneous
+
+  state simultaneous {
+    [*]-->empty
+    empty-->ones : 1
+    ones-->ones : 1
+    ones --> zero : 0
+    ones --> notZero : 1
+    one --> notZero : 0, 1
+    zero --> [*]
+    notZero --> [*]
+
+    --
+
+    [*]-->empty2
+    empty2-->ones2 : 1
+    ones2-->ones2 : 1
+    ones2 --> zero2 : 0
+    ones2 --> notZero2 : 1
+    one2 --> notZero2 : 0, 1
+    zero2 --> [*]
+    notZero2 --> [*]
+  }
+</div>
 
 <!-- for later -->
 
@@ -1368,7 +1407,7 @@ function parenthesizedStates (description) {
   return renameStates(parenthesizeMap, description);
 }
 
-function dfa (description) {
+function powerset (description) {
   // optional, but it avoids a lot of excess (())
   if (isDeterministic(description)) {
     return description;
@@ -1485,9 +1524,7 @@ function dfa (description) {
 ```javascript
 const nondeterministic = epsilonsRemoved(epsilonJoin(ones, binary));
 
-const deterministic = dfa(nondeterministic);
-
-test(deterministic, [
+test(dfa(nondeterministic), [
   '', '0', '1', '00', '10', '11',
   '001', '010', '011', '100', '101', '111'
 ])
