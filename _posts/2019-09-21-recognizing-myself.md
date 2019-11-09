@@ -123,11 +123,6 @@ Now that we have established that finite state automata can do much more than "j
   - [union](#union)
   - [intersection](#intersection)
 
-[Taking the Union of Two Descriptions](#taking-the-union-of-two-descriptions)
-
-  - [fixing a problem with union(first, second)](#fixing-a-problem-with-unionfirst-second)
-  - [what we have learned from taking the union of descriptions](#what-we-have-learned-from-taking-the-union-of-descriptions)
-
 [Catenating Descriptions](#catenating-descriptions)
 
   - [catenating descriptions with epsilon-transitions](#catenating-descriptions-with-epsilon-transitions)
@@ -1317,10 +1312,10 @@ And here's a diagram of the result (omitting the unreachable `empty2` to aid cla
   stateDiagram
     [*]-->empty
     empty-->ones : 1
+    ones-->zero : 0
     ones-->ones : 1
-    ones --> zero : 0
-    ones --> notZero : 1
-    one --> notZero : 0, 1
+    ones-->notZero : 1
+    notZero --> notZero : 0, 1
     zero --> [*]
     notZero --> [*]
 </div>
@@ -1343,7 +1338,30 @@ We can use this approach with NFAs as well.
 
 ### taking the product of a recognizer... with itself
 
-Recall that when we wanted to simulate two recognizers acting in parallel on the same input, we imagined them running in parallel like this:
+Recall that when we wanted to simulate two recognizers acting in parallel on the same input, we imagined them running in parallel. So the two recognizers:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->zeroes : 0
+    zeroes--> zeroes : 0
+    zeroes --> [*]
+</div>
+
+and:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->zero : 0
+    empty-->notZero : 1
+    notZero-->notZero : 0,1
+    zero-->[*]
+    notZero-->[*]
+</div>
+
+Would operate in parallel as:
+
 
 <div class="mermaid">
   stateDiagram
@@ -1351,28 +1369,47 @@ Recall that when we wanted to simulate two recognizers acting in parallel on the
 
   state simultaneous {
     [*]-->empty
-    empty-->ones : 1
-    ones-->ones : 1
-    ones --> zero : 0
-    ones --> notZero : 1
-    one --> notZero : 0, 1
-    zero --> [*]
-    notZero --> [*]
+    empty-->zeroes : 0
+    zeroes--> zeroes : 0
+    zeroes --> [*]
 
     --
 
-    [*]-->empty2
-    empty2-->ones2 : 1
-    ones2-->ones2 : 1
-    ones2 --> zero2 : 0
-    ones2 --> notZero2 : 1
-    one2 --> notZero2 : 0, 1
-    zero2 --> [*]
-    notZero2 --> [*]
+    [*]-->empty
+    empty-->zero : 0
+    empty-->notZero : 1
+    notZero-->notZero : 0,1
+    zero-->[*]
+    notZero-->[*]
   }
 </div>
 
 <!-- for later -->
+
+```javascript
+{
+  "start": "empty",
+  "accepting": [ "zeroes" ],
+  "transitions": [
+    { "from": "empty", "consume": "0", "to": "zeroes" },
+    { "from": "zeroes", "consume": "0", "to": "zeroes" }
+  ]
+}
+```
+
+and:
+
+```javascript
+{
+  "start": "start",
+  "accepting": [ "zero", "notZero" ],
+  "transitions": [
+    { "from": "start", "consume": "0", "to": "zero" },
+    { "from": "start", "consume": "1", "to": "notZero" },
+    { "from": "notZero", "consume": "0", "to": "notZero" },
+    { "from": "notZero", "consume": "1", "to": "notZero" }
+  ]
+}
 
 ```javascript
 function isDeterministic (description) {
