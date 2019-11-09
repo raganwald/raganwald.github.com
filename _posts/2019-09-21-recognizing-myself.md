@@ -130,7 +130,7 @@ Now that we have established that finite state automata can do much more than "j
   - [implementing catenation](#implementing-catenation)
   - [the catch with catenation](#the-catch-with-catenation)
 
-[Coverting Nondeterministic to Deterministic Finite-State Recognizers](#coverting-nondeterministic-to-deterministic-finte-state-recognizers)
+[Converting Nondeterministic to Deterministic Finite-State Recognizers](#converting-nondeterministic-to-deterministic-finite-state-recognizers)
 
 [Building Language Recognizers](#building-language-recognizers)
 
@@ -1326,7 +1326,7 @@ We want to catenate two deterministic finite state recognizers, and wind up with
 
 ---
 
-## Coverting Nondeterministic to Deterministic Finite-State Recognizers
+## Converting Nondeterministic to Deterministic Finite-State Recognizers
 
 As noted, our procedure for joining two recognizers with ε-transitions can create nondeterministic finite-state automata ("NFAs"). We wish to convert these NFAs to deterministic finite-state automata ("DFAs") so that we end up with a catenation algorithm that can take any two DFA recognizers and return a DFA recognizer for the catenation of the recognizers' languages.
 
@@ -1348,20 +1348,17 @@ Recall that when we wanted to simulate two recognizers acting in parallel on the
     zeroes --> [*]
 </div>
 
-and:
-
 <div class="mermaid">
   stateDiagram
-    [*]-->empty
-    empty-->zero : 0
-    empty-->notZero : 1
+    [*]-->empty2
+    empty2-->zero : 0
+    empty2-->notZero : 1
     notZero-->notZero : 0,1
     zero-->[*]
     notZero-->[*]
 </div>
 
 Would operate in parallel as:
-
 
 <div class="mermaid">
   stateDiagram
@@ -1375,9 +1372,9 @@ Would operate in parallel as:
 
     --
 
-    [*]-->empty
-    empty-->zero : 0
-    empty-->notZero : 1
+    [*]-->empty2
+    empty2-->zero : 0
+    empty2-->notZero : 1
     notZero-->notZero : 0,1
     zero-->[*]
     notZero-->[*]
