@@ -1358,7 +1358,7 @@ Recall that when we wanted to simulate two recognizers acting in parallel on the
     notZero-->[*]
 </div>
 
-Would operate in parallel as:
+Could be imagined as operating in parallel like this:
 
 <div class="mermaid">
   stateDiagram
