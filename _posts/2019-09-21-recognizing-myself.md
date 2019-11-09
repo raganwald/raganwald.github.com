@@ -79,7 +79,7 @@ The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that la
 
 ---
 
-![Placeholder figs](/assets/images/pushdown/figs.jpg)
+![Placeholder figs](/assets/images/fsa/figs.jpg)
 
 *Placeholder for figs to be added later*
 
@@ -524,6 +524,10 @@ It will look something like this:
     state8 : 'zero' and 'emptyB'
     state9 : 'zero' and 'one'
 </div>
+
+The reason this is called the **product** of `a` and `b`, is that when we take the product of the sets `{ '', 'emptyA', 'zero' }` and `{'', 'emptyB', 'one' }` is the set of tuples `{ ('', ''), ('', 'emptyB'), ('', 'one'), ('emptyA', ''), ('emptyA', 'emptyB'), ('emptyA', 'one'), ('zero', ''), ('zero', 'emptyB'), ('zero', 'one')}`.
+
+There will be (at most) one set in the product state machine for each tuple in the product of the sets of states for `a` and `b`.
 
 We haven't decided where such an automaton would start, how it transitions between its states, and which states should be accepting states. We'll go through those in that order.
 
@@ -1243,14 +1247,14 @@ We have now implemented catenating two deterministic finite recognizers. Mind yo
 
 ### the catch with catenation
 
-Consider this recognizer that recognizes one or more `1`s:
+Consider this recognizer that recognizes one or more `0`s:
 
 <div class="mermaid">
   stateDiagram
     [*]-->empty
-    empty-->ones : 1
-    ones-->ones : 1
-    ones-->[*]
+    empty-->zeroes : 0
+    zeroes--> zeroes : 0
+    zeroes --> [*]
 </div>
 
 And consider this recognizer that recognizes a binary number:
@@ -1268,12 +1272,12 @@ And consider this recognizer that recognizes a binary number:
 What happens when we use our functions to catenate them?
 
 ```javascript
-const ones = {
+const zeroes = {
   "start": "empty",
-  "accepting": ["ones"],
+  "accepting": [ "zeroes" ],
   "transitions": [
-    { "from": "empty", "consume": "1", "to": "ones" },
-    { "from": "ones", "consume": "1", "to": "ones" }
+    { "from": "empty", "consume": "0", "to": "zeroes" },
+    { "from": "zeroes", "consume": "0", "to": "zeroes" }
   ]
 };
 
@@ -1288,20 +1292,20 @@ const binary = {
   ]
 }
 
-epsilonsRemoved(epsilonJoin(ones, binary))
+epsilonsRemoved(epsilonJoin(zeroes, binary))
   //=>
     {
-      "empty": "empty",
+      "start": "empty",
       "accepting": [ "zero", "notZero" ],
       "transitions": [
-        { "from": "empty", "consume": "1", "to": "ones" },
-        { "from": "ones", "consume": "0", "to": "zero" },
-        { "from": "ones", "consume": "1", "to": "ones" },
-        { "from": "ones", "consume": "1", "to": "notZero" },
-        { "from": "empty2", "consume": "0", "to": "zero" },
-        { "from": "empty2", "consume": "1" , "to": "notZero"},
-        { "from": "notZero", "consume": "0", "to": "notZero" },
-        { "from": "notZero", "consume": "1", "to": "notZero" }
+        { "from": "empty", "consume": "0", "to": "zeroes" },
+        { "from": "zeroes", "consume": "0", "to": "zeroes" },
+        { "from": "zeroes", "consume": "0", "to": "zero" },
+        { "from": "zeroes", "consume": "1", "to": "notZero" },
+        { "from": "start", "to": "zero", "consume": "0" },
+        { "from": "start", "to": "notZero", "consume": "1" },
+        { "from": "notZero", "to": "notZero", "consume": "0" },
+        { "from": "notZero", "to": "notZero", "consume": "1" }
       ]
     }
 ```
@@ -1311,16 +1315,17 @@ And here's a diagram of the result (omitting the unreachable `empty2` to aid cla
 <div class="mermaid">
   stateDiagram
     [*]-->empty
-    empty-->ones : 1
-    ones-->zero : 0
-    ones-->ones : 1
-    ones-->notZero : 1
-    notZero --> notZero : 0, 1
-    zero --> [*]
-    notZero --> [*]
+    empty-->zeroes : 0
+    zeroes-->zeroes : 0
+    zeroes-->zero : 0
+    zeroes-->notZero : 1
+    notZero-->notZero : 0
+    notZero-->notZero : 1
+    zero-->[*]
+    notZero-->[*]
 </div>
 
-The problem is that there are two transitions from `ones` when consuming a `1`. We started with two deterministic finite state recognizers, but ended up with a nondeterministic finite state recognizer. We can always find a manual way to fix these things, but there is no simple rule for fixing them.
+The problem is that there are two transitions from `zeroes` when consuming a `0`. That makes this transition _nondeterministic_. Deterministic state machines always have exactly one possible transition from any state for each symbol consumed in that state.
 
 We want to catenate two deterministic finite state recognizers, and wind up with a finite state recognizer. To do that, we'll need a way to convert nondeterministic finite state recognizers into deterministic finite state recognizers.
 
@@ -1338,7 +1343,7 @@ We can use this approach with NFAs as well.
 
 ### taking the product of a recognizer... with itself
 
-Recall that when we wanted to simulate two recognizers acting in parallel on the same input, we imagined them running in parallel. So the two recognizers:
+Recall that for computing the union of two recognizers, when we wanted to simulate two recognizers acting in parallel on the same input, we imagined them running in parallel. So the same two recognizers:
 
 <div class="mermaid">
   stateDiagram
@@ -1380,6 +1385,258 @@ Could be imagined as operating in parallel like this:
     notZero-->[*]
   }
 </div>
+
+The key to simulating the two recognizers operating in parallel is imagining that there is a state for every pair of states the two recognizers could be simultaneously in. This approach was called taking the *product* of the two recognizers.
+
+Now let's imagine running a nondeterministic state machine in parallel with itself. It would start with just one copy of itself, like this:
+
+<div class="mermaid">
+  stateDiagram
+    simultaneous
+
+  state simultaneous {
+    [*]-->empty
+    empty-->zeroes : 0
+    zeroes-->zeroes : 0
+    zeroes-->zero : 0
+    zeroes-->notZero : 1
+    notZero-->notZero : 0
+    notZero-->notZero : 1
+    zero-->[*]
+    notZero-->[*]
+  }
+</div>
+
+It could operate as a single machine as long as every transition it took would be deterministic. For example, it could consume the empty string and halt, that would be deterministic. Same for the string `0` and all strings beginning with `01...`.
+
+But what would happen when it consumed the string `00`? the first `0` would take it from state `'empty'` to `'zeroes'`, but the second `0` is nondeterministic: It should transition to both `'zero'` and back to `'zeroes'`.
+
+If we had a second parallel state machine, we could have one transition to `'zero'` while the other transitions back to `'zeroes'`:
+
+<div class="mermaid">
+  stateDiagram
+    simultaneous
+
+  state simultaneous {
+    [*]-->empty
+    empty-->zeroes : 0
+    zeroes-->zeroes : 0
+    zeroes-->zero : 0
+    zeroes-->notZero : 1
+    notZero-->notZero : 0
+    notZero-->notZero : 1
+    zero-->[*]
+    notZero-->[*]
+
+    --
+
+    [*]-->empty
+    empty-->zeroes : 0
+    zeroes-->zeroes : 0
+    zeroes-->zero : 0
+    zeroes-->notZero : 1
+    notZero-->notZero : 0
+    notZero-->notZero : 1
+    zero-->[*]
+    notZero-->[*]
+  }
+</div>
+
+From our implementation of `product`, we know how to hadle this: we need a new state representing the two machines simultaneously being in states `'zero'` and `'zeroes'`, the tuple `('zero', 'zeroes')`.
+
+Using similar logic as we used with `product`, we can work out that from our new tuple state, we need to draw in all the transitions from either of its states. In this case, that's ridiculously easy, since `'zero'` doesn't have any outbound transitions, so `('zero', 'zeroes')` would have the same transitions as `'zeroes'`.
+
+Now this is a very simple example. What is the **worst** case for using an algorithm like this?
+
+Well, given a state machine with _n_ states, there could be a state for every possible subset of states. Consider this pathological example with three states:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->one
+    one-->two : 1
+    one-->three : 2
+    two-->one : 3
+    two-->two : 3
+    two-->one : 4
+    two-->three : 4
+    two-->two : 5
+    two-->three : 5
+    three-->one : 6
+    three-->two : 6
+    three-->three : 6
+    three-->[*]
+</div>
+
+If we work our way through it by hand, we see that we need seven states to represent all the possible subsets of states this recognizer can reach: `('one'), ('two'), ('three'), ('one', 'two'), ('one', 'three'), ('two', 'three'), ('one', 'two', 'three')`.
+
+The set of all possible subsets of a set is called the [powerset] of a set. The powerset of a set includes the empty set and the set itself. Our diagram and list do not include the empty set, because that represents the machine halting, so it is an _implied_ state of the machine.
+
+[powerset]: https://en.wikipedia.org/wiki/Power_set
+
+We can also work out all the transitions just as we did with `product`. It ends up as this plate of spaghetti:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->one
+    one-->two : 1
+    one-->three : 2
+    two-->onetwo : 3
+    two-->onethree : 4
+    two-->twothree : 5
+    three-->onetwothree : 6
+    onetwo-->two : 1
+    onetwo-->three : 2
+    onetwo-->onetwo : 3
+    onetwo-->onethree : 4
+    onetwo-->twothree : 5
+    onethree-->two : 1
+    onethree-->three : 2
+    onethree-->onetwothree : 6
+    twothree-->onetwo : 3
+    twothree-->onethree : 4
+    twothree-->twothree : 5
+    twothree-->onetwothree : 6
+    three-->[*]
+</div>
+
+But while we may call it the "worst case" as far as the number of states is concerned, it is now a deterministic state machine that has the exact same semantics as its nondeterministic predecessor. Furthermore, although it appears to be much more complicated at a glance, the truth is that it is merely making the complexity apparent. It's actually easier to follow along by hand, since we don't have to keep as many as three simultaneous states in our heads at any one time.
+
+---
+
+### computing the powerset of a nondeterministic finite-state recognizer
+
+Using this approach, our algorithm for computing the powerset of a nondeterministic finite-state recognizer will use queue of states.
+
+We begin by placing the start state in the queue, and then:
+
+1. If the queue is empty, we're done.
+2. Remove the state from the front of the queue, call it "this state."
+3. If this state is already in the powerset recognizer, discard it and go back to step 1.
+4. If this is the name of a single state in the nondeterministic finite-state recognizer:
+   1. Collect the transitions from this state.
+   2. If the state is an accepting state in the nondeterministic finite-state recognizer, add this state to the powerset recognizer's accepting states.
+5. If this is the name of several states in the nondeterministic finite-state recognizer:
+   1. collect the transitions from each of these states.
+   2. If any of the states is an accepting state in the nondeterministic finite-state recognizer, add this state to the powerset recognizer's accepting states.
+5. For each deterministic transition from this state (i.e. there is only one transition for a particular symbol from this state):
+  1. Add the transition to the powerset recognizer.
+  2. Add the destination set to the queue.
+6. For each nondeterministic transition from this state (i.e. there is more than one transition for a particular symbol from this state):
+  1. Collect the set of destination states for this symbol from this state.
+  2. Create a name for the set of destination states.
+  3. Create a transition from this state to the name for the set of destination states.
+  4. Add the transition to the powerset recognizer.
+  5. Add the name for the set of destination states to the queue.
+
+We can encode this as a function, `powerset`. The source code is [here](/assets/supplementa/fas/07-powerset.js). We can try it:
+
+```javascript
+const zeroes = {
+  "start": 'empty',
+  "accepting": ['zeroes'],
+  "transitions": [
+    { "from": 'empty', "consume": '0', "to": 'zeroes' },
+    { "from": 'zeroes', "consume": '0', "to": 'zeroes' }
+  ]
+};
+
+const binary = {
+  "start": "empty",
+  "accepting": ["zero", "notZero"],
+  "transitions": [
+    { "from": "empty", "consume": "0", "to": "zero" },
+    { "from": "empty", "consume": "1", "to": "notZero" },
+    { "from": "notZero", "consume": "0", "to": "notZero" },
+    { "from": "notZero", "consume": "1", "to": "notZero" }
+  ]
+}
+
+const nondeterministic = epsilonsRemoved(epsilonJoin(zeroes, binary));
+
+nondeterministic
+  //=>
+    {
+      "start": "empty",
+      "accepting": [ "zero", "notZero" ],
+      "transitions": [
+        { "from": "empty", "consume": "0", "to": "zeroes" },
+        { "from": "zeroes", "consume": "0", "to": "zeroes" },
+        { "from": "zeroes", "consume": "0", "to": "zero" },
+        { "from": "zeroes", "consume": "1", "to": "notZero" },
+        { "from": "empty-2", "to": "zero", "consume": "0" },
+        { "from": "empty-2", "to": "notZero", "consume": "1" },
+        { "from": "notZero", "to": "notZero", "consume": "0" },
+        { "from": "notZero", "to": "notZero", "consume": "1" }
+      ]
+    }
+
+const deterministic = powerset(nondeterministic);
+
+deterministic
+  //=>
+    {
+      "start": "(empty)",
+      "accepting": [ "(zero)(zeroes)", "(notZero)" ],
+      "transitions": [
+        { "from": "(empty)", "consume": "0", "to": "(zeroes)" },
+        { "from": "(zeroes)", "consume": "0", "to": "(zero)(zeroes)" },
+        { "from": "(zeroes)", "consume": "1", "to": "(notZero)" },
+        { "from": "(zero)(zeroes)", "consume": "0", "to": "(zero)(zeroes)" },
+        { "from": "(zero)(zeroes)", "consume": "1", "to": "(notZero)" },
+        { "from": "(notZero)", "consume": "0", "to": "(notZero)" },
+        { "from": "(notZero)", "consume": "1", "to": "(notZero)" }
+      ]
+    }
+
+test(deterministic, [
+  '', '0', '1', '00', '01', '10', '11', '000', '001',
+  '010', '011', '100', '101', '110', '111'
+])
+  //=>
+    '' => false
+    '0' => false
+    '1' => false
+    '00' => true
+    '01' => true
+    '10' => false
+    '11' => false
+    '000' => true
+    '001' => true
+    '010' => true
+    '011' => true
+    '100' => false
+    '101' => false
+    '110' => false
+    '111' => false
+```
+
+The `powerset` function converts any nondeterministic finite-state recognizer into a deterministic finite-state recognizer.
+
+---
+
+### catenation without the catch, and an obervation
+
+Computing the catenation of any two deterministic finite-state recognizers is thus:
+
+```javascript
+function catenate (first, second) {
+  return powerset(
+    epsilonsRemoved(
+      epsilonJoin(first, second)
+    )
+  );
+}
+```
+
+And this allows us to draw an important conclusion: *The set of deterministic finite-state recognizers is closed under catenation*, meaning that given two finite state recognizers, we can always construct a finite state recognizer representing the catenation of the two recognizers.
+
+We earlier showed the same thing for union and intersection, so we now know that we can compose recognizers using union, intersection, and catenation at will.
+
+From this we can also deduce that although we only wrote functions to take the union, intersection, or catenation of two deterministic finite-state recognizers, we can take the union, intersection, or catenation of more than two recognizers and always end up with another deterministic finite-state recognizers.
+
+---
+
+# FOR LATER
 
 <!-- for later -->
 
@@ -1556,7 +1813,7 @@ function powerset (description) {
 
 
 ```javascript
-const nondeterministic = epsilonsRemoved(epsilonJoin(ones, binary));
+const nondeterministic = epsilonsRemoved(epsilonJoin(zeroes, binary));
 
 test(dfa(nondeterministic), [
   '', '0', '1', '00', '10', '11',
@@ -2527,7 +2784,7 @@ const description = catenation(
 );
 ```
 
-This "compiles" to a description of a recognizer with [2,361,529 states](/assets/supplementa/pushdown/description.pp.json.zip)!
+This "compiles" to a description of a recognizer with [2,361,529 states](/assets/supplemental/fsa/description.pp.json.zip)!
 
 We'll get back to its size in a moment. Does it work? Yes it does, although it is slow:
 
