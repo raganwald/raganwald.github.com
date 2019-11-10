@@ -129,9 +129,12 @@ Now that we have established that finite state automata can do much more than "j
   - [removing epsilon-transitions](#removing-epsilon-transitions)
   - [implementing catenation](#implementing-catenation)
   - [the catch with catenation](#the-catch-with-catenation)
-  - [catenation without the catch, and an observation](#catenation-without-the-catch,-and-an-observation)
 
 [Converting Nondeterministic to Deterministic Finite-State Recognizers](#converting-nondeterministic-to-deterministic-finite-state-recognizers)
+
+  - [taking the product of a recognizer... with itself](#taking-the-product-of-a-recognizer-with-itself)
+  - [computing the powerset of a nondeterministic finite-state recognizer](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer)
+  - [catenation without the catch, and an observation](#catenation-without-the-catch,-and-an-observation)
 
 [Building Language Recognizers](#building-language-recognizers)
 
