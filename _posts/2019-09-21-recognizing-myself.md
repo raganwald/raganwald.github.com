@@ -129,6 +129,7 @@ Now that we have established that finite state automata can do much more than "j
   - [removing epsilon-transitions](#removing-epsilon-transitions)
   - [implementing catenation](#implementing-catenation)
   - [the catch with catenation](#the-catch-with-catenation)
+  - [catenation without the catch, and an observation](#catenation-without-the-catch,-and-an-observation)
 
 [Converting Nondeterministic to Deterministic Finite-State Recognizers](#converting-nondeterministic-to-deterministic-finite-state-recognizers)
 
@@ -1614,7 +1615,7 @@ The `powerset` function converts any nondeterministic finite-state recognizer in
 
 ---
 
-### catenation without the catch, and an obervation
+### catenation without the catch, and an observation
 
 Computing the catenation of any two deterministic finite-state recognizers is thus:
 
@@ -1633,6 +1634,94 @@ And this allows us to draw an important conclusion: *The set of deterministic fi
 We earlier showed the same thing for union and intersection, so we now know that we can compose recognizers using union, intersection, and catenation at will.
 
 From this we can also deduce that although we only wrote functions to take the union, intersection, or catenation of two deterministic finite-state recognizers, we can take the union, intersection, or catenation of more than two recognizers and always end up with another deterministic finite-state recognizers.
+
+```javascript
+function union (a, ...args) {
+  if (args.length === 0) {
+    return a;
+  }
+
+  const [b, ...rest] = args;
+
+  const {
+    states: aDeclaredStates,
+    accepting: aAccepting
+  } = validatedAndProcessed(a);
+  const aStates = [''].concat(aDeclaredStates);
+  const {
+    states: bDeclaredStates,
+    accepting: bAccepting
+  } = validatedAndProcessed(b);
+  const bStates = [''].concat(bDeclaredStates);
+
+  const statesAAccepts =
+    aAccepting.flatMap(
+      aAcceptingState => bStates.map(bState => abToAB(aAcceptingState, bState))
+    );
+  const statesBAccepts =
+    bAccepting.flatMap(
+      bAcceptingState => aStates.map(aState => abToAB(aState, bAcceptingState))
+    );
+  const allAcceptingStates =
+    statesAAccepts.concat(
+      statesBAccepts.filter(
+        state => statesAAccepts.indexOf(state) === -1
+      )
+    );
+
+  const productAB = product(a, b);
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
+
+  const { start, transitions } = productAB;
+  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
+
+  return union({ start, accepting, transitions }, ...rest);
+}
+
+function intersection (a, ...args) {
+  if (args.length === 0) {
+    return a;
+  }
+
+  const [b, ...rest] = args;
+
+  const {
+    accepting: aAccepting
+  } = validatedAndProcessed(a);
+  const {
+    accepting: bAccepting
+  } = validatedAndProcessed(b);
+
+  const allAcceptingStates =
+    aAccepting.flatMap(
+      aAcceptingState => bAccepting.map(bAcceptingState => abToAB(aAcceptingState, bAcceptingState))
+    );
+
+  const productAB = product(a, b);
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
+
+  const { start, transitions } = productAB;
+  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
+
+  return intersection({ start, accepting, transitions }, ...rest);
+}
+
+function catenate (a, ...args) {
+  if (args.length === 0) {
+    return a;
+  }
+
+  const [b, ...rest] = args;
+
+  const ab = powerset(
+    epsilonsRemoved(
+      epsilonJoin(a, b)
+    )
+  );
+
+  return catenate(ab, ...rest);
+}
+```
 
 ---
 
