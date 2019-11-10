@@ -21,30 +21,41 @@ function renameStates (nameMap, { start, accepting, transitions }) {
   };
 }
 
-// given an iterable of names that are reserved,
-// renames any states in a name so that they no longer
-// overlap with reserved names
-function resolveConflicts (first, second) {
-  const { stateSet: firstStatesSet } = validatedAndProcessed(first);
-  const { stateSet: secondStatesSet } = validatedAndProcessed(second);
+const allStates =
+  ({ start, transitions }) => {
+    const stateSet = toStateSet(transitions);
+    stateSet.add(start);
+    return stateSet;
+  };
+
+function resolveConflictsWithNames (conflictingStates, description) {
+  const conflictingStatesSet = new Set(conflictingStates);
+  const descriptionStatesSet = allStates(description);
 
   const nameMap = new Map();
 
   // build the map to resolve overlaps with reserved names
-  for (const secondState of secondStatesSet) {
-    const match = /^(.*)-(\d+)$/.exec(secondState);
-    let base = match == null ? secondState : match[1];
+  for (const descriptionState of descriptionStatesSet) {
+    const match = /^(.*)-(\d+)$/.exec(descriptionState);
+    let base = match == null ? descriptionState : match[1];
     let counter = match == null ? 1 : Number.parseInt(match[2], 10);
-    let resolved = secondState;
-    while (firstStatesSet.has(resolved)) {
+    let resolved = descriptionState;
+    while (conflictingStatesSet.has(resolved)) {
       resolved = `${base}-${++counter}`;
     }
-    if (resolved !== secondState) {
-  		nameMap.set(secondState, resolved);
+    if (resolved !== descriptionState) {
+  		nameMap.set(descriptionState, resolved);
     }
-    firstStatesSet.add(resolved);
+    conflictingStatesSet.add(resolved);
   }
 
   // apply the built map
-  return renameStates(nameMap, second);
+  return renameStates(nameMap, description);
+}
+
+// given an iterable of names that are reserved,
+// renames any states in a name so that they no longer
+// overlap with reserved names
+function resolveConflicts (first, second) {
+  return resolveConflictsWithNames(allStates(first), second);
 }

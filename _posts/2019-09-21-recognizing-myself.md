@@ -1031,6 +1031,9 @@ This transformation complete, we can then remove the ε-transitions. For each ε
 Here's some code to resolve conflicts between the state names of two recognizers:
 
 ```javascript
+// given a mapping of individual names, renames all the states in
+// an fas, including the start and accepting. any names not in the map
+// rename unchanged
 function renameStates (nameMap, { start, accepting, transitions }) {
   const translate =
     before =>
@@ -1051,29 +1054,43 @@ function renameStates (nameMap, { start, accepting, transitions }) {
   };
 }
 
-function resolveConflicts (first, second) {
-  const { stateSet: firstStatesSet } = validatedAndProcessed(first);
-  const { stateSet: secondStatesSet } = validatedAndProcessed(second);
+const allStates =
+  ({ start, transitions }) => {
+    const stateSet = toStateSet(transitions);
+    stateSet.add(start);
+    return stateSet;
+  };
+
+function resolveConflictsWithNames (conflictingStates, description) {
+  const conflictingStatesSet = new Set(conflictingStates);
+  const descriptionStatesSet = allStates(description);
 
   const nameMap = new Map();
 
   // build the map to resolve overlaps with reserved names
-  for (const secondState of secondStatesSet) {
-    const match = /^(.*)-(\d+)$/.exec(secondState);
-    let base = match == null ? secondState : match[1];
+  for (const descriptionState of descriptionStatesSet) {
+    const match = /^(.*)-(\d+)$/.exec(descriptionState);
+    let base = match == null ? descriptionState : match[1];
     let counter = match == null ? 1 : Number.parseInt(match[2], 10);
-    let resolved = secondState;
-    while (firstStatesSet.has(resolved)) {
+    let resolved = descriptionState;
+    while (conflictingStatesSet.has(resolved)) {
       resolved = `${base}-${++counter}`;
     }
-    if (resolved !== secondState) {
-  		nameMap.set(secondState, resolved);
+    if (resolved !== descriptionState) {
+  		nameMap.set(descriptionState, resolved);
     }
-    firstStatesSet.add(resolved);
+    conflictingStatesSet.add(resolved);
   }
 
   // apply the built map
-  return renameStates(nameMap, second);
+  return renameStates(nameMap, description);
+}
+
+// given an iterable of names that are reserved,
+// renames any states in a name so that they no longer
+// overlap with reserved names
+function resolveConflicts (first, second) {
+  return resolveConflictsWithNames(allStates(first), second);
 }
 ```
 
@@ -1641,6 +1658,12 @@ We earlier showed the same thing for union and intersection, so we now know that
 
 From this we can also deduce that although we only wrote functions to take the union, intersection, or catenation of two deterministic finite-state recognizers, we can take the union, intersection, or catenation of more than two recognizers and always end up with another deterministic finite-state recognizers.
 
+---
+
+### interlude: updated `union`, `intersection`, and `catenation`
+
+Here are our `union`, `intersection`, and `catenation` functions, updated to take one or more arguments:
+
 ```javascript
 function union (a, ...args) {
   if (args.length === 0) {
@@ -1728,6 +1751,70 @@ function catenate (a, ...args) {
   return catenate(ab, ...rest);
 }
 ```
+
+---
+
+### try this at home: use `powerset` to create `union`, instead of `product`
+
+Now that we have `powerset`, another formulation of `union` comes to mind. Once again, our two recognizers:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->zeroes : 0
+    zeroes--> zeroes : 0
+    zeroes --> [*]
+</div>
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty2
+    empty2-->zero : 0
+    empty2-->notZero : 1
+    notZero-->notZero : 0,1
+    zero-->[*]
+    notZero-->[*]
+</div>
+
+When formulating `union` the first time, we imagined them running side-by-side. Then we took their `product` because a deterministic finite-state recognizer cannot do two things at once. But a _nondeterministic_ finite-state recognizer _can_ do two things at once. So consider this:
+
+What if we create this?
+
+<div class="mermaid">
+  stateDiagram
+    state fork_start <<fork>>
+    [*]-->fork_start
+    fork_start-->empty
+    empty-->zeroes : 0
+    zeroes--> zeroes : 0
+    zeroes --> [*]
+    fork_start-->empty2
+    empty2-->zero : 0
+    empty2-->notZero : 1
+    notZero-->notZero : 0,1
+    zero-->[*]
+    notZero-->[*]
+</div>
+
+By forking the start, we can run both recognizers at once. We'd need to simulate the fork by creating a new start state, something like this:
+
+<div class="mermaid">
+    [*]-->fork_start
+    fork_start-->empty
+    empty-->zeroes : 0
+    zeroes--> zeroes : 0
+    zeroes --> [*]
+    fork_start-->empty2
+    empty2-->zero : 0
+    empty2-->notZero : 1
+    notZero-->notZero : 0,1
+    zero-->[*]
+    notZero-->[*]
+</div>
+
+This is a nondeterministic finite-state recognizer that is the union of our two deterministic finite-state recognizers. If we had a function that could take any two recognizers and return a nondeterministic finite-state recognizer, we could then use `powerset` to turn it back into a deterministic finite-state recognizer.
+
+If you're reading this and want to get some practice writing functions that create recognizers, try writing this yourself. You may want to use `resolveConflictsWithNames`, and `powerset`, of course.
 
 ---
 
