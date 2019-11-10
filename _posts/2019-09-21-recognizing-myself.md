@@ -1501,6 +1501,9 @@ We can also work out all the transitions just as we did with `product`. It ends 
     twothree-->twothree : 5
     twothree-->onetwothree : 6
     three-->[*]
+    onethree-->[*]
+    twothree-->[*]
+    onetwothree-->[*]
 </div>
 
 But while we may call it the "worst case" as far as the number of states is concerned, it is now a deterministic state machine that has the exact same semantics as its nondeterministic predecessor. Furthermore, although it appears to be much more complicated at a glance, the truth is that it is merely making the complexity apparent. It's actually easier to follow along by hand, since we don't have to keep as many as three simultaneous states in our heads at any one time.
