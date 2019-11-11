@@ -1552,7 +1552,7 @@ We begin by placing the start state in the queue, and then:
   4. Add the transition to the powerset recognizer.
   5. Add the name for the set of destination states to the queue.
 
-We can encode this as a function, `powerset`. The source code is [here](/assets/supplementa/fas/07-powerset.js). We can try it:
+We can encode this as a function, `powerset`. The source code is [here](/assets/supplementa/fsa/07-powerset.js). We can try it:
 
 ```javascript
 const zeroes = {
