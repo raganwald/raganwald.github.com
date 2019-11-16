@@ -155,9 +155,9 @@ Now that we have established that finite state automata can do much more than "j
   - [interlude: updated union, intersection, and catenation](#interlude-updated-union-intersection-and-catenation)
   - [try this at home: use powerset to create union, instead of product](#try-this-at-home-use-powerset-to-create-union-instead-of-product)
 
-### [Building Blocks](#building-blocks-1)
+### [Building Blocks and Decorators](#building-blocks-and-decorators-1)
 
-  -[the empty recognizer](#the-empty-recognizer)
+  - [the empty recognizer](#the-empty-recognizer)
 
 ---
 
