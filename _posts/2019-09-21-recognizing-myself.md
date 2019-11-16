@@ -450,7 +450,7 @@ Or in colloquial terms, a sentence is recognized by `union(a, b)` if and only if
 
 What about `catenation(a, b)`? If we have some sentence `xy`, where `x` and `y` are strings of zero or more symbols, then `xy` is recognized by `catenation(a, b)` is and only if `x` is recognized by `a` and `y` is recognized by `b`.
 
-We'll get started with union and catenation, because they both are built on a common operation, *taking the product of two finite state automata*.
+We'll get started with union and intersection, because they both are built on a common operation, *taking the product of two finite state automata*.
 
 ---
 
@@ -1025,7 +1025,7 @@ This is clearly a recognizer that recognizes the name "reg" followed by one or m
 1. Rename any states in the second recognizer to avoid conflicts with names of states in the first recognizer.
 2. Connect the two recognizers with an ε-transition from each accepting state from the first recognizer to the start state from the second recognizer.
 3. The start state of the first recognizer becomes the start state of the catenated recognizers.
-4. The accepting states of the second recognizer become the accepting states of the catenated recognizers.\
+4. The accepting states of the second recognizer become the accepting states of the catenated recognizers.
 
 This transformation complete, we can then remove the ε-transitions. For each ε-transition between an origin and destination state:
 
@@ -1375,58 +1375,12 @@ We can use this approach with NFAs as well.
 
 ### taking the product of a recognizer... with itself
 
-Recall that for computing the union of two recognizers, when we wanted to simulate two recognizers acting in parallel on the same input, we imagined them running in parallel. So the same two recognizers:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->zeroes : 0
-    zeroes--> zeroes : 0
-    zeroes --> [*]
-</div>
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty2
-    empty2-->zero : 0
-    empty2-->notZero : 1
-    notZero-->notZero : 0,1
-    zero-->[*]
-    notZero-->[*]
-</div>
-
-Could be imagined as operating in parallel like this:
-
-<div class="mermaid">
-  stateDiagram
-    simultaneous
-
-  state simultaneous {
-    [*]-->empty
-    empty-->zeroes : 0
-    zeroes--> zeroes : 0
-    zeroes --> [*]
-
-    --
-
-    [*]-->empty2
-    empty2-->zero : 0
-    empty2-->notZero : 1
-    notZero-->notZero : 0,1
-    zero-->[*]
-    notZero-->[*]
-  }
-</div>
-
-The key to simulating the two recognizers operating in parallel is imagining that there is a state for every pair of states the two recognizers could be simultaneously in. This approach was called taking the *product* of the two recognizers.
+Recall that for computing the union of two recognizers, when we wanted to simulate two recognizers acting in parallel on the same input, we imagined that there was a state for every pair of states the two recognizers could be simultaneously in. This approach was called taking the *product* of the two recognizers.
 
 Now let's imagine running a nondeterministic state machine in parallel with itself. It would start with just one copy of itself, like this:
 
 <div class="mermaid">
   stateDiagram
-    simultaneous
-
-  state simultaneous {
     [*]-->empty
     empty-->zeroes : 0
     zeroes-->zeroes : 0
@@ -1436,45 +1390,13 @@ Now let's imagine running a nondeterministic state machine in parallel with itse
     notZero-->notZero : 1
     zero-->[*]
     notZero-->[*]
-  }
 </div>
 
 It could operate as a single machine as long as every transition it took would be deterministic. For example, it could consume the empty string and halt, that would be deterministic. Same for the string `0` and all strings beginning with `01...`.
 
 But what would happen when it consumed the string `00`? the first `0` would take it from state `'empty'` to `'zeroes'`, but the second `0` is nondeterministic: It should transition to both `'zero'` and back to `'zeroes'`.
 
-If we had a second parallel state machine, we could have one transition to `'zero'` while the other transitions back to `'zeroes'`:
-
-<div class="mermaid">
-  stateDiagram
-    simultaneous
-
-  state simultaneous {
-    [*]-->empty
-    empty-->zeroes : 0
-    zeroes-->zeroes : 0
-    zeroes-->zero : 0
-    zeroes-->notZero : 1
-    notZero-->notZero : 0
-    notZero-->notZero : 1
-    zero-->[*]
-    notZero-->[*]
-
-    --
-
-    [*]-->empty
-    empty-->zeroes : 0
-    zeroes-->zeroes : 0
-    zeroes-->zero : 0
-    zeroes-->notZero : 1
-    notZero-->notZero : 0
-    notZero-->notZero : 1
-    zero-->[*]
-    notZero-->[*]
-  }
-</div>
-
-From our implementation of `product`, we know how to hadle this: we need a new state representing the two machines simultaneously being in states `'zero'` and `'zeroes'`, the tuple `('zero', 'zeroes')`.
+If we had a second parallel state machine, we could have one transition to `'zero'` while the other transitions back to `'zeroes'`. From our implementation of `product`, we know how to hadle this: we need a new state representing the two machines simultaneously being in states `'zero'` and `'zeroes'`, the tuple `('zero', 'zeroes')`.
 
 Using similar logic as we used with `product`, we can work out that from our new tuple state, we need to draw in all the transitions from either of its states. In this case, that's ridiculously easy, since `'zero'` doesn't have any outbound transitions, so `('zero', 'zeroes')` would have the same transitions as `'zeroes'`.
 
@@ -1787,25 +1709,7 @@ Now that we have `powerset`, another formulation of `union` comes to mind. Once 
     notZero-->[*]
 </div>
 
-When formulating `union` the first time, we imagined them running side-by-side. Then we took their `product` because a deterministic finite-state recognizer cannot do two things at once. But a _nondeterministic_ finite-state recognizer _can_ do two things at once. So consider this:
-
-What if we create this?
-
-<div class="mermaid">
-  stateDiagram
-    state fork_start <<fork>>
-    [*]-->fork_start
-    fork_start-->empty
-    empty-->zeroes : 0
-    zeroes--> zeroes : 0
-    zeroes --> [*]
-    fork_start-->empty2
-    empty2-->zero : 0
-    empty2-->notZero : 1
-    notZero-->notZero : 0,1
-    zero-->[*]
-    notZero-->[*]
-</div>
+When formulating `union` the first time, we imagined them running side-by-side. Then we took their `product` because a deterministic finite-state recognizer cannot do two things at once. But a _nondeterministic_ finite-state recognizer _can_ do two things at once. So consider this approach:
 
 By forking the start, we can run both recognizers at once. We'd need to simulate the fork by creating a new start state, something like this:
 
