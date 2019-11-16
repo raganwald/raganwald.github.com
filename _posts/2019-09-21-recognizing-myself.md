@@ -29,7 +29,7 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the ideal machine needed to recognize it, and we explored example languages that needed finite state automata, deterministic pushdown automata, and pushdown automata respectively.[^tm]
 
-[^Tm]: [a Brutal Look at Balanced Parentheses, ...][Brutal] did not explore two other classes of languages. there is a class of formal languages that requires a turing machine to recognize its sentences. Turing machines are more powerful than pushdown automata. And there is a class of formal languages that cannot be recognized by Turing Machines, and therefore cannot be recognized at all! Famously, the latter class includes a machine that takes as its sentences descriptions of Turing Machines, and recognizes those that halt.
+[^tm]: [a Brutal Look at Balanced Parentheses, ...][Brutal] did not explore two other classes of languages. The fourth class of formal languages require a Turing machine to recognize their sentences, because Turing machines are more powerful than pushdown automata. In fact, Turing machines can compute anything that can be computed. And there is a fifth class of formal languages. languages that cannot be recognized by Turing machines, and therefore cannot be recognized at all! Famously, the latter class includes a language that describes Turing machines, and only includes those descriptions that are of Turing machines that halt.
 
 ---
 
@@ -65,7 +65,7 @@ Regexen are more than just descriptions of machines that recognize sentences in 
 
 It is easy to write a function that recognizes valid regex given any regex engine: Give the engine the regex, and see if it returns an error. That is practical, but unsatisfying. All it tells us is that a Turing Machine can be devised to recognize regexen. But not all flavours of regexen are as powerful as Turing Machines.
 
-It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite state automata, thus the original regexen described finite state automata.
+It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour for regexen. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite state automata, thus the original regexen described finite state automata.
 
 But just because a flavour of regex only describes finite state automata, does not mean that descriptions of those regexen can be recognized by finite state automata. Consider, for example, a flavour of regex that permits characters (such as `a`, `b`, `c`, ..., `x`, `y`, `z`), the wildcard operator `.`, the zero-or more operator `*`, and non-capturing groups `(?: ... )`. Here's an example of such a regex:
 
@@ -73,30 +73,34 @@ But just because a flavour of regex only describes finite state automata, does n
 /(?:<(?:ab*c)>)+/
 ```
 
-As we will see in this essay, the above regex can most certainly be implemented by a finite state automaton, meaning that we can write a finite state automaton that recognizes all the same sentances of symbols that this regex recognizes. In fact, any regex written with this flavour (characters, wildcards, zero-or more operator, and non-capturing groups) can be implemented with a finite state automaton.
+As we will see in this essay, the above regex can most certainly be implemented by a finite state automaton, meaning that we can write a finite state automaton that recognizes all the same sentences of symbols that this regex recognizes. In fact, any regex written with this flavour (characters, wildcards, zero-or more operator, and non-capturing groups) can be implemented with a finite state automaton.
 
 But what if we want to recognize regexen like this? meaning, we want to write a finite state automation that can recognize regexen of this flavour, not what the regexen recognize?
 
-There is a problem: This flavour of regexen can contain parentheses, and these parentheses have to be balanced. Recalling [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal], we discovered that finite state automata cannot recognize sentances that contain parentheses that must be balanced. That requires a pushdoiwn automaton, a state machine that has a stack.
+---
+
+### the problem with regexen recognizing themselves
+
+There is a problem: This flavour of regexen can contain parentheses, and these parentheses have to be balanced. Recalling [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal], we discovered that finite state automata cannot recognize sentences that contain parentheses that must be balanced. That requires a pushdown automaton, a state machine that has a stack.
 
 So, every language a regexen of this flavour can recognize, can be recognized with a finite state automaton, and the language of writing this flavour regexen cannot be recognized with a finite state automaton. From this we can deduce that no regexen of this flavour can recognize regexen of this flavour.
 
-Why? Consider the proposition that there _is_ a regex of this flavour (characters, wildcards, zero-or-more, and non-capturing groups) that recognizes regexen of this flavour. Since any regex of this flavour can be implemented with a finite state automaton, it follows that there is a finite state automaton that recognzies regexen of this flavour.
+Why? Consider the proposition that there _is_ a regex of this flavour (characters, wildcards, zero-or-more, and non-capturing groups) that recognizes regexen of this flavour. Since any regex of this flavour can be implemented with a finite state automaton, it follows that there is a finite state automaton that recognizes regexen of this flavour.
 
-However, we provied in [A Brutal Look at Balanced Parentheses...][brutal] that no finite state automnaton can recognize languages containing balanced parentheses, so the proposition leads directly to a contradiction. Hence, the proposition that there is a regex of this flavour that recognizes regexen of this flavour, is false.
+However, we provide in [A Brutal Look at Balanced Parentheses...][brutal] that no finite state automaton can recognize languages containing balanced parentheses, so the proposition leads directly to a contradiction. Hence, the proposition that there is a regex of this flavour that recognizes regexen of this flavour, is false.
 
 This leads us to a few questions:
 
 1. What features must a flavour of regexen have, such that it can recognize itself?
 2. How much power must such a flavour of regexen have? We know that if the flavour includes balanced parentheses, it must at least be equivalent to the power of a deterministic pushdown automaton. But might it require a non-deterministic pushdown automaton? Or a Turing machine?
 
-These questiohns are deep enough that exploring their answers will prod us to learn a lot more about finite state automata, composition, and building tools for ourselves.
+These questions are deep enough that exploring their answers will prod us to learn a lot more about finite state automata, composition, and building tools for ourselves.
 
 ---
 
 ### terminology
 
-In this essay will will play a little loose with terminology. We are concerned with [finite state machines][fsm], also called *finite state automata*. Finite state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite state automata that recognize statements in a language are also called _finite state recognizers_.
+In this essay will will play a little loose with terminology. We are concerned with [finite state machines][fsa], also called *finite state automata*. Finite state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite state automata that recognize statements in a language are also called _finite state recognizers_.
 
 Finite state automata can slo do thing that are not of interest to our essay today. A finite state recognizer recognizes whether a sentence is a sentence in a language. A finite state automaton can also be devised that not only recognizes whether a sentence is in a language, but also recognizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.
 
@@ -106,12 +110,15 @@ Now that we have established that finite state automata can do much more than "j
 
 [fsa]: https://en.wikipedia.org/wiki/Finite-state_machine
 
+---
+
 # [Table of Contents](#table-of-contents)
 
 ### [Prelude](#prelude)
 
   - [before we get started, a brief recapitulation of the previous essay](#before-we-get-started-a-brief-recapitulation-of-the-previous-essay)
   - [recognizers that recognize themselves](#recognizers-that-recognize-themselves)
+  - [the problem with regexen recognizing themselves](#the-problem-with-regexen-recognizing-themselves)
   - [terminology](#terminology)
 
 ### [The Problem Statement](#the-problem-statement-1)
@@ -333,7 +340,7 @@ This finite state recognizer recognizes binary numbers.
 
 ### implementing our example recognizer
 
-Here is a function that takes as its input the definition of a recognizer, and returns a Javascript recognizer *function*:[^vap]
+Here is a function that takes as its input the definition of a recognizer, and returns a Javascript recognizer *function*:[^cap]
 
 ```javascript
 function automate (description) {
