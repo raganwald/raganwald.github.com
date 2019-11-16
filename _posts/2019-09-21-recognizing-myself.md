@@ -118,6 +118,7 @@ Now that we have established that finite state automata can do much more than "j
 
   - [a language for describing finite state recognizers](#a-language-for-describing-finite-state-recognizers)
   - [implementing our example recognizer](#implementing-our-example-recognizer)
+  - [a more specific problem statement](#a-more-specific-problem-statement)
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
 
@@ -170,7 +171,7 @@ Now that we have established that finite state automata can do much more than "j
 
 # The Problem Statement
 
-The problem of flavours of regexen that can recognize themselves is interesting, but getting there from zero is difficulty without presupposing a lot of knowledge. We like to learn (or re-learn) things for ourselves, in a hands-on way, so in this essay we will tackle a much smaller version of this problem:
+The problem of "flavours of regexen that can recognize themselves" is interesting, but getting there from zero is difficulty without presupposing a lot of knowledge. We like to learn (or re-learn) things for ourselves, in a hands-on way, so in this essay we will tackle a much smaller version of this problem:
 
 > Can a finite state automaton recognize valid finite state automata?
 
@@ -429,6 +430,26 @@ test(binaryNumber, [
 ```
 
 We now have a function, `automate`, that takes a data description of a finite state automaton/recognizer, and returns a Javascript recognizer function we can play with.
+
+---
+
+### a more specific problem statement
+
+Given our language for describing finite state recognizers, a more specific problem statement becomes:
+
+> Using our description language, write a finite state recognizer that recognizes valid descriptions of finute state recognizers.
+
+Armed with things like regular expressions, this is not difficult. Armed with finite state automata, this is still not difficult, but it is exceedingly labourious. Finite state automata live in the Turing Tar-Pit, a place where "Everything is possible, but nothing of interest is easy."[^ttp] Well, everything that a finite-state recognizer can recognize is possible, but still, nothing of interest is easy.
+
+[^ttp]: Perlisisms—"Epigrams in Programming" by Alan Perlis http://www.cs.yale.edu/homes/perlis-alan/quotes.html
+
+Given a problem that takes an hour to solve, a programmer is a person who spends three days writing tooling so that the problem can be solved in half an hour. We're programmers, so insted of griding away trying to make a huge, monoithic finite-state recognizer by hand, we'll build some tooling to write the finite state recognizer's description for us.
+
+The simplest place to start is the foundation of all practical software development: **Composition**. If we have ways of breakinga problem down into smaller problems, solving the smaller problems, and then putting the parts back together, we can solve very, very big problems.
+
+We'll do that here. We will start by learning how to compose recognizers. If we can write small recognizers (such as "a quoted string") and then compose them (using operations like union or catenation), it will be much easier to write a recognizer for valid descriptions of finite state automata.
+
+---
 
 # Composeable Recognizers
 
