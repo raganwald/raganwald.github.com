@@ -428,7 +428,7 @@ Given a problem that takes an hour to solve, a programmer is a person who spends
 
 The simplest place to start is the foundation of all practical software development: **Composition**. If we have ways of breakinga problem down into smaller problems, solving the smaller problems, and then putting the parts back together, we can solve very, very big problems.
 
-We'll do that here. We will start by learning how to compose recognizers. If we can write small recognizers (such as "a quoted string") and then compose them (using operations like union or catenation), it will be much easier to write a recognizer for valid descriptions of finite state automata.
+We'll do that here. We will start by learning how to compose recognizers. If we can write small recognizers (such as "a quoted string"), and then compose them (using operations like union or catenation), it will be much easier to write a recognizer for valid descriptions of finite state automata.
 
 ---
 
