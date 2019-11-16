@@ -151,7 +151,9 @@ Now that we have established that finite state automata can do much more than "j
 
   - [taking the product of a recognizer... with itself](#taking-the-product-of-a-recognizer-with-itself)
   - [computing the powerset of a nondeterministic finite-state recognizer](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer)
-  - [catenation without the catch, and an observation](#catenation-without-the-catch,-and-an-observation)
+  - [catenation without the catch, and an observation](#catenation-without-the-catch-and-an-observation)
+  - [interlude: updated union, intersection, and catenation](#interlude-updated-union-intersection-and-catenation)
+  - [try this at home: use powerset to create union, instead of product](#try-this-at-home-use-powerset-to-create-union-instead-of-product)
 
 [Building Language Recognizers](#building-language-recognizers)
 
@@ -1593,7 +1595,7 @@ From this we can also deduce that although we only wrote functions to take the u
 
 ---
 
-### interlude: updated `union`, `intersection`, and `catenation`
+### interlude: updated union, intersection, and catenation
 
 Here are our `union`, `intersection`, and `catenation` functions, updated to take one or more arguments:
 
@@ -1687,7 +1689,7 @@ function catenate (a, ...args) {
 
 ---
 
-### try this at home: use `powerset` to create `union`, instead of `product`
+### try this at home: use powerset to create union, instead of product
 
 Now that we have `powerset`, another formulation of `union` comes to mind. Once again, our two recognizers:
 
