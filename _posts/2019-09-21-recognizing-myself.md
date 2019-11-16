@@ -316,7 +316,7 @@ This finite state recognizer recognizes binary numbers.
 
 ### implementing our example recognizer
 
-Here is a function that takes as its input the definition of a recognizer, and returns a Javascript recognizer *function*:[^cap]
+Here is a function that takes as its input the definition of a recognizer, and returns a Javascript recognizer *function*:[^vap]
 
 ```javascript
 function automate (description) {
@@ -361,7 +361,7 @@ function automate (description) {
 }
 ```
 
-[^vap]: `automate` relies on `validatedAndProcessed`, a utility function that does some general-purpose processing useful to many of the things we will build along the way. The source code is [here](/assets/supplemental/fsa/01-validated-and-processed.js).)
+[^vap]: `automate` relies on `validatedAndProcessed`, a utility function that does some general-purpose processing useful to many of the things we will build along the way. The source code is [here](/assets/supplemental/fsa/01-validated-and-processed.js). Throughout this essay, we will publish the most important snippets of code, but link to the full source.
 
 Here we are using `automate` with our definition for recognizing binary numbers:
 
@@ -420,23 +420,21 @@ Given our language for describing finite state recognizers, a more specific prob
 
 > Using our description language, write a finite state recognizer that recognizes valid descriptions of finite state recognizers.
 
-Armed with things like regular expressions, this is not difficult. Armed with finite state automata, this is still not difficult, but it is exceedingly laborious. Finite state automata live in the Turing Tar-Pit, a place where "Everything is possible, but nothing of interest is easy."[^ttp] Well, everything that a finite-state recognizer can recognize is possible, but still, nothing of interest is easy.
+Armed with things like regular expressions, this is not difficult. Armed with finite state automata, this is still not difficult, but it is exceedingly laborious. Finite state automata live in the Turing Tar-Pit, a place where "Everything is possible, but nothing of interest is easy."[^ttp]
 
 [^ttp]: Perlisisms—"Epigrams in Programming" by Alan Perlis http://www.cs.yale.edu/homes/perlis-alan/quotes.html
 
-Given a problem that takes an hour to solve, a programmer is a person who spends three days writing tooling so that the problem can be solved in half an hour. We're programmers, so insted of griding away trying to make a huge, monolithic finite-state recognizer by hand, we'll build some tooling to write the finite state recognizer's description for us.
+_Given a problem that takes an hour to solve, a programmer is a person who spends three days writing tooling so that the problem can be solved in half an hour._ We're programmers, so instead of grinding away trying to make a huge, monolithic finite-state recognizer by hand, we'll build some tooling to write the finite state recognizer's description for us.
 
-The simplest place to start is the foundation of all practical software development: **Composition**. If we have ways of breakinga problem down into smaller problems, solving the smaller problems, and then putting the parts back together, we can solve very, very big problems.
+The simplest place to start is the foundation of all practical software development: **Composition**. If we have ways of breaking a problem down into smaller problems, solving the smaller problems, and then putting the parts back together, we can solve very, very big problems.
+
+Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
 
 We'll do that here. We will start by learning how to compose recognizers. If we can write small recognizers (such as "a quoted string"), and then compose them (using operations like union or catenation), it will be much easier to write a recognizer for valid descriptions of finite state automata.
 
 ---
 
 # Composeable Recognizers
-
-One of programming's "superpowers" is _composition_, the ability to build things out of smaller things, and especially, to reuse those smaller things to build other things.
-
-Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
 
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
 
