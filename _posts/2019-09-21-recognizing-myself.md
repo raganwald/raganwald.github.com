@@ -1561,7 +1561,7 @@ The `powerset` function converts any nondeterministic finite-state recognizer in
 Computing the catenation of any two deterministic finite-state recognizers is thus:
 
 ```javascript
-function catenate (first, second) {
+function catenation (first, second) {
   return powerset(
     removeEpsilonTransitions(
       epsilonJoin(first, second)
@@ -1653,7 +1653,7 @@ function intersection (a, ...args) {
   return intersection({ start, accepting, transitions }, ...rest);
 }
 
-function catenate (a, ...args) {
+function catenation (a, ...args) {
   if (args.length === 0) {
     return a;
   }
@@ -1666,7 +1666,7 @@ function catenate (a, ...args) {
     )
   );
 
-  return catenate(ab, ...rest);
+  return catenation(ab, ...rest);
 }
 ```
 
@@ -1738,19 +1738,95 @@ Here we go.
 
 ### the empty recognizer
 
-The simplest recognizer of all doesn't recognize anything. It's language is the empty set. Here's a function for making it whenever we like:
+The simplest recognizer of all is `FAIL`: It doesn't recognize anything. Its language is the empty set:
 
 ```javascript
-function empty () {
-   return {
-    "start": "empty",
-    "transitions": {},
-    "accepting": []
-  };
-}
+const FAIL = {
+  "start": "failure",
+  "transitions": [],
+  "accepting": []
+};
+
+test(FAIL, ['', '0', '1', '01', '10', '11'])
+  //=>
+    '' => false
+    '0' => false
+    '1' => false
+    '01' => false
+    '10' => false
+    '11' => false
 ```
 
-It's possible to improve it by not having it return unique instances of the empty recognizer, but that's not particularly important right now.
+When we compose `FAIL` with other recognizers, we get interesting results. the `union` of `FAIL` and any other recognizer is always the same thing as the other recognizer:
+
+```javascript
+test(union(binary, FAIL), ['', '0', '1', '01', '10', '11'])
+  //=>
+    '' => false
+    '0' => true
+    '1' => true
+    '01' => false
+    '10' => true
+    '11' => true
+```
+
+Not so for `interesection` or `catenation`:
+
+```javascript
+test(intersection(binary, FAIL), ['', '0', '1', '01', '10', '11'])
+  //=>
+    '' => false
+    '0' => false
+    '1' => false
+    '01' => false
+    '10' => false
+    '11' => false
+
+test(intersection(binary, FAIL), ['', '0', '1', '01', '10', '11'])
+  //=>
+    '' => false
+    '0' => false
+    '1' => false
+    '01' => false
+    '10' => false
+    '11' => false
+
+test(catenation(binary, FAIL), ['', '0', '1', '01', '10', '11'])
+  //=>
+    '' => false
+    '0' => false
+    '1' => false
+    '01' => false
+    '10' => false
+    '11' => false
+```
+
+The second-simplest recognizer is `EMPTY`, which recognizes only the empty string:
+
+```javascript
+const EMPTY = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": ["empty"]
+};
+
+test(EMPTY, ['', '0', '1', '01', '10', '11'])
+  //=>
+    '' => true
+    '0' => false
+    '1' => false
+    '01' => false
+    '10' => false
+    '11' => false
+```
+
+`EMPTY` can be quite useful. As we're about to see:
+
+---
+
+### our first decorator: zeroOrOne
+
+
 
 ---
 
@@ -2560,7 +2636,7 @@ Since we built `oneOrMore` as a convenience for writing `catenation` and `zeroOr
 
 ### implementing permute
 
-Languages often have rules that allow for a certan number of things, but in any order. We can recognize such languages using catenation and alternation. For example, if we want to allow the letters `c`, `a`, and `t` in any order, we can write:
+Languages often have rules that allow for a certain number of things, but in any order. We can recognize such languages using catenation and alternation. For example, if we want to allow the letters `c`, `a`, and `t` in any order, we can write:
 
 ```javascript
 union(

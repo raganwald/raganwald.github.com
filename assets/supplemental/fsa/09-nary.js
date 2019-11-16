@@ -68,7 +68,7 @@ function intersection (a, ...args) {
   return intersection({ start, accepting, transitions }, ...rest);
 }
 
-function catenate (a, ...args) {
+function catenation (a, ...args) {
   if (args.length === 0) {
     return a;
   }
@@ -81,5 +81,5 @@ function catenate (a, ...args) {
     )
   );
 
-  return catenate(ab, ...rest);
+  return catenation(ab, ...rest);
 }
