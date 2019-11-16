@@ -224,9 +224,11 @@ Now what do we need to encode? Finite state recognizers are defined as a quintup
   - `ẟ` is the recognizer's "state transition function" that governs how the recognizer changes states while it consumes symbols from the sentence it is attempting to recognize.
   - `F` is the set of "final" states. If the recognizer is in one of these states when the input ends, it has recognized the sentence.
 
+For our immediate purposes, we do not need to encode the alphabet of symbols, and the set of states can always be derived from the rest of the description, so we don't need to encode that either. This leaves us with describing the start state, transition function, and set of final states.
+
 We can encode these with JSON. We'll use descriptive words rather than mathematical symbols, but note that if we wanted to use the mathematical symbols, everything we're doing would work just as well.
 
-Or JSON representation will represent the quintuple as a Plain Old JavaScript Object (or "POJO"), rather than an array. This makes it easier to document what each element means, and it also makes it easy for some of the elements to be optional:
+Or JSON representation will represent the start state, transition function, and set of final states as a Plain Old JavaScript Object (or "POJO"), rather than an array. This makes it easier to document what each element means:
 
 ```javascript
 {
@@ -234,43 +236,11 @@ Or JSON representation will represent the quintuple as a Plain Old JavaScript Ob
 }
 ```
 
-The recognizer's `alphabet`, `Σ`, will be _optional_. If present, it will be encoded as a string. In this example, we are encoding the alphabet of a recognizer that operates on zeroes and ones:
-
-```json
-{
-  "alphabet": "01"
-}
-```
-
-If `alphabet` is present, it must be complete:[^complete-alphabet]
-
-[^complete-alphabet]: A complete alphabet is one in which every symbol used by the transition function is a member of the alphabet.
-
-The recognizer's `states`, `S`, will also be _optional_. If present, it will be encoded as list of strings representing the names of the states. States in our recognizer must have unique names. The names need not be constructed from the recognizer's alphabet, they are for our convenience:
-
-```json
-{
-  "states": ["start", "zero", "notZero"]
-}
-```
-
-As with `alphabet`, if `states` is present, the set of states must be complete.[^complete-states]
-
-[^complete-states]: For the set of states to be complete, it must contain the start or initial state, all of the final states, and every state used by the transition function.
-
 The recognizer's initial, or `start` state is required. It is a string representing the name of the initial state:
 
 ```json
 {
   "start": "start"
-}
-```
-
-The recognizer's set of final, or `accepting` states is required. It is encoded as a list of strings representing the names of the final states. If the recognizer is in any of the `accepting` (or "final") states when the end of the sentence is reached (or equivalently, when there are no more symbols to consume), the recognizer accepts or "recognizes" the sentence.
-
-```json
-{
-  "accepting": ["zero", "notZero"]
 }
 ```
 
@@ -284,7 +254,7 @@ The recognizer's state transition function, `ẟ`, is represented as a set of `t
 }
 ```
 
-Each transition defines a change in the recognizer's state. Transitions are formally defined as triples of the form `(p,a, q)`:
+Each transition defines a change in the recognizer's state. Transitions are formally defined as triples of the form `(p, a, q)`:
 
  - `p` is the state the recognizer is currently in.
  - `a` is the input symbol  consumed.
@@ -305,12 +275,18 @@ Thus, one possible set of transitions might be encoded like this:
 }
 ```
 
+The recognizer's set of final, or `accepting` states is required. It is encoded as a list of strings representing the names of the final states. If the recognizer is in any of the `accepting` (or "final") states when the end of the sentence is reached (or equivalently, when there are no more symbols to consume), the recognizer accepts or "recognizes" the sentence.
+
+```json
+{
+  "accepting": ["zero", "notZero"]
+}
+```
+
 Putting it all together, we have:
 
 ```javascript
 const binaryNumber = {
-  "alphabet": "01",
-  "states": ["start", "zero", "notZero"],
   "start": "start",
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
@@ -399,8 +375,6 @@ function test (description, examples) {
 }
 
 const binaryNumber = {
-  "alphabet": "01",
-  "states": ["start", "zero", "notZero"],
   "start": "start",
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
@@ -444,13 +418,13 @@ We now have a function, `automate`, that takes a data description of a finite st
 
 Given our language for describing finite state recognizers, a more specific problem statement becomes:
 
-> Using our description language, write a finite state recognizer that recognizes valid descriptions of finute state recognizers.
+> Using our description language, write a finite state recognizer that recognizes valid descriptions of finite state recognizers.
 
-Armed with things like regular expressions, this is not difficult. Armed with finite state automata, this is still not difficult, but it is exceedingly labourious. Finite state automata live in the Turing Tar-Pit, a place where "Everything is possible, but nothing of interest is easy."[^ttp] Well, everything that a finite-state recognizer can recognize is possible, but still, nothing of interest is easy.
+Armed with things like regular expressions, this is not difficult. Armed with finite state automata, this is still not difficult, but it is exceedingly laborious. Finite state automata live in the Turing Tar-Pit, a place where "Everything is possible, but nothing of interest is easy."[^ttp] Well, everything that a finite-state recognizer can recognize is possible, but still, nothing of interest is easy.
 
 [^ttp]: Perlisisms—"Epigrams in Programming" by Alan Perlis http://www.cs.yale.edu/homes/perlis-alan/quotes.html
 
-Given a problem that takes an hour to solve, a programmer is a person who spends three days writing tooling so that the problem can be solved in half an hour. We're programmers, so insted of griding away trying to make a huge, monoithic finite-state recognizer by hand, we'll build some tooling to write the finite state recognizer's description for us.
+Given a problem that takes an hour to solve, a programmer is a person who spends three days writing tooling so that the problem can be solved in half an hour. We're programmers, so insted of griding away trying to make a huge, monolithic finite-state recognizer by hand, we'll build some tooling to write the finite state recognizer's description for us.
 
 The simplest place to start is the foundation of all practical software development: **Composition**. If we have ways of breakinga problem down into smaller problems, solving the smaller problems, and then putting the parts back together, we can solve very, very big problems.
 
