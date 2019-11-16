@@ -157,26 +157,7 @@ Now that we have established that finite state automata can do much more than "j
 
 ### [Building Blocks](#building-blocks-1)
 
-[Building Language Recognizers](#building-language-recognizers)
-
-  - [recognizing emptiness](#recognizing-emptiness)
-  - [recognizing symbols](#recognizing-symbols)
-  - [implementing zero-or-more](#implementing-zero-or-more)
-
-### [Regular Languages](#regular-languages-1)
-
-  - [what is a regular language?](#what-is-a-regular-language)
-
-[Making Regular Expressions More Convenient](#making-regular-expressions-more-convenient)
-
-  - [upping our catenation and union game](#upping-our-catenation-and-union-game)
-  - [implementing a recognizer for a set of symbols](#implementing-a-recognizer-for-a-set-of-symbols)
-  - [implementing a recognizer for strings](#implementing-a-recognizer-for-strings)
-  - [implementing one-or-more](#implementing-one-or-more)
-  - [implementing permute](#implementing-permute)
-  - [summarizing our conveniences](#summarizing-our-conveniences)
-
-[A Recognizer That Recognizes Finite State Machine Descriptions](#a-recognizer-that-recognizes-finite-state-machine-descriptions)
+  -[the empty recognizer](#the-empty-recognizer)
 
 ---
 
@@ -1755,7 +1736,7 @@ Here we go.
 
 ---
 
-### the degenerate recognizer
+### the empty recognizer
 
 The simplest recognizer of all doesn't recognize anything. It's language is the empty set. Here's a function for making it whenever we like:
 
