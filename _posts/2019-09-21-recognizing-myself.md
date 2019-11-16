@@ -155,6 +155,8 @@ Now that we have established that finite state automata can do much more than "j
   - [interlude: updated union, intersection, and catenation](#interlude-updated-union-intersection-and-catenation)
   - [try this at home: use powerset to create union, instead of product](#try-this-at-home-use-powerset-to-create-union-instead-of-product)
 
+### [Building Blocks](#building-blocks-1)
+
 [Building Language Recognizers](#building-language-recognizers)
 
   - [recognizing emptiness](#recognizing-emptiness)
@@ -1732,13 +1734,46 @@ By forking the start, we can run both recognizers at once. We'd need to simulate
 
 This is a nondeterministic finite-state recognizer that is the union of our two deterministic finite-state recognizers. If we had a function that could take any two recognizers and return a nondeterministic finite-state recognizer, we could then use `powerset` to turn it back into a deterministic finite-state recognizer.
 
-If you're reading this and want to get some practice writing functions that create recognizers, try writing this yourself. You may want to use `resolveConflictsWithNames`, and `powerset`, of course.
+If you're reading this and want to get some practice writing functions that create recognizers, try writing this yourself. You may want to use `resolveConflictsWithNames`, and `powerset`, of course. When you're done, compare it to [this example solution](/assets/supplemental/fsa/08-epsilon-union.js).
+
+---
+
+# Building Blocks and Decorators
+
+To summarize what we have accomplished so far:
+
+- We set ourselves the task of writing a finite state recognizer that recognizes valid descriptions of finite state recognizers.
+- To break it down into manageable parts, we wrote functions that compose finite state recognizers from other finite state recognizers: We wrote `union`, `intersection`, and `catenation`.
+
+This is very much like wanting to build a big lego set, and first figuring out how to click the blocks together. if we stopped here, we would have to custom-make every lego block we wish to use.
+
+It's the same with recognizers. If we got to work on using `union`, `intersection`, and `catenation` to compose a finite state recognizer that recognizes valid descriptions of finte state recognizers, we would have to hand-write lots of small recognizers that we could then lick together with `union`, `intersection`, and `catenation`.
+
+That's a lot less work than writing a finite state recognizer that recognizes valid descriptions of finte state recognizers from scratch, by hand, but we can make it even less work by building some tooling for creating small recognizers, and some more tooling for "decorating" recognizers.
+
+Here we go.
+
+---
+
+### the degenerate recognizer
+
+The simplest recognizer of all doesn't recognize anything. It's language is the empty set. Here's a function for making it whenever we like:
+
+```javascript
+function empty () {
+   return {
+    "start": "empty",
+    "transitions": {},
+    "accepting": []
+  };
+}
+```
+
+It's possible to improve it by not having it return unique instances of the empty recognizer, but that's not particularly important right now.
 
 ---
 
 # FOR LATER
-
-<!-- for later -->
 
 ```javascript
 {
