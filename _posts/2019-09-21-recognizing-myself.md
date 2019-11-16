@@ -1714,6 +1714,7 @@ When formulating `union` the first time, we imagined them running side-by-side. 
 By forking the start, we can run both recognizers at once. We'd need to simulate the fork by creating a new start state, something like this:
 
 <div class="mermaid">
+  stateDiagram
     [*]-->fork_start
     fork_start-->empty
     empty-->zeroes : 0
