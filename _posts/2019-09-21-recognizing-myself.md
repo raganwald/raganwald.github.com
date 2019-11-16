@@ -7,11 +7,39 @@ tags: [recursion,allonge,mermaid,noindex]
 
 (If you wish to skip the prelude, you can jump directly to the [Table of Contents](#table-of-contents))
 
+---
+
+### before we get started, a brief recapitulation of the previous essay
+
+In [A Brutal Look at Balanced Parentheses...][brutal], we began with a well-known programming puzzle: _Write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested._
+
+[brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
+
+In pursuing the solution to this problem, we constructed machines that could recognize "sentences" in languages. We saw that some languages can be recognized with Finite State Automata. Languages that require a finite state automaton to recognize them are _regular languages_.
+
+We also saw that balanced parentheses required a more powerful recognizer, a Deterministic Pushdown Automaton. Languages that require a deterministic pushdown automaton to recognize them are _deterministic context-free languages_.
+
+We then went a step further and considered the palindrome problem, and saw that there were languages--like palindromes with a vocabulary of two or more symbols--that could not be recognized with Deterministic Pushdown Automata, and we needed to construct a [Pushdown Automaton] to recognize palindromes. Languages that require a pushdown automaton to recognize them are _context-free languages_.
+
+[Pushdown Automaton]: https://en.wikipedia.org/wiki/Pushdown_automaton
+
+We implemented pushdown automata using a classes-with-methods approach, the complete code is [here][pushdown.oop.es6].
+
+[pushdown.oop.es6]: https://gist.github.com/raganwald/41ae26b93243405136b786298bafe8e9#file-pushdown-oop-es6
+
+The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the ideal machine needed to recognize it, and we explored example languages that needed finite state automata, deterministic pushdown automata, and pushdown automata respectively.[^tm]
+
+[^Tm]: [a Brutal Look at Balanced Parentheses, ...][Brutal] did not explore two other classes of languages. there is a class of formal languages that requires a turing machine to recognize its sentences. Turing machines are more powerful than pushdown automata. And there is a class of formal languages that cannot be recognized by Turing Machines, and therefore cannot be recognized at all! Famously, the latter class includes a machine that takes as its sentences descriptions of Turing Machines, and recognizes those that halt.
+
+---
+
+### recognizers that recognize themselves
+
 In casual programming conversation, a [Regular Expression], or *regex* (plural "regexen"),[^regex] is a sequence of characters that define a search pattern. They can also be used to validate that a string has a particular form. For example, `/ab*c/` is a regex that matches an `a`, zero or more `b`s, and then a `c`, anywhere in a string.
 
 [Regular Expression]: https://en.wikipedia.org/wiki/Regular_expression
 
-[^regex]: In common programming jargon, a "regular expression" refers any of a family of pattern-matching and extraction languages, that can match a variety of languages. In computer science, a "regular expression" is a specific pattern matching language that recognizes regular languages only. To avoid confusion, in this essay we will use the word "regex" to refer to the programming construct.
+[^regex]: In common programming jargon, a "regular expression" refers any of a family of pattern-matching and extraction languages, that can match a variety of languages. In computer science, a "regular expression" is a specific pattern matching language that recognizes regular languages only. To avoid confusion, in this essay we will use the word "regex" (plural "regexen") to refer to the programming construct.
 
 Regexen are fundamentally descriptions of machines that recognize sentences in languages, where the sentences are strings of text symbols.
 
@@ -39,49 +67,30 @@ It is easy to write a function that recognizes valid regex given any regex engin
 
 It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite state automata, thus the original regexen described finite state automata.
 
-But just because a flavour of regex only describes finite state automata, does not mean that descriptions of those regexen can be recognized by finite state automata. Consider, for example, a flavour of regex that permits characters, the wildcard operator `.`, the zero-or more operator `*`, and non-capturing groups `(?: ... )`. Here's an example:
+But just because a flavour of regex only describes finite state automata, does not mean that descriptions of those regexen can be recognized by finite state automata. Consider, for example, a flavour of regex that permits characters (such as `a`, `b`, `c`, ..., `x`, `y`, `z`), the wildcard operator `.`, the zero-or more operator `*`, and non-capturing groups `(?: ... )`. Here's an example of such a regex:
 
 ```
 /(?:<(?:ab*c)>)+/
 ```
 
-The above regex can most certainly be implemented by a finite state automaton, but recognizing descriptions that include nested non-capturing groups cannot be recognized by a finite state automaton, as we saw in [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal]. Therefore, we know that this simple flavour of regexen cannot recognize itself.
+As we will see in this essay, the above regex can most certainly be implemented by a finite state automaton, meaning that we can write a finite state automaton that recognizes all the same sentances of symbols that this regex recognizes. In fact, any regex written with this flavour (characters, wildcards, zero-or more operator, and non-capturing groups) can be implemented with a finite state automaton.
 
----
+But what if we want to recognize regexen like this? meaning, we want to write a finite state automation that can recognize regexen of this flavour, not what the regexen recognize?
 
-### today's essay
+There is a problem: This flavour of regexen can contain parentheses, and these parentheses have to be balanced. Recalling [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal], we discovered that finite state automata cannot recognize sentances that contain parentheses that must be balanced. That requires a pushdoiwn automaton, a state machine that has a stack.
 
-In [A Brutal Look at Balanced Parentheses...][brutal], we constructed recognizers by hand. In this essay, we are going to focus on <!-- TODO: Introduction -->
+So, every language a regexen of this flavour can recognize, can be recognized with a finite state automaton, and the language of writing this flavour regexen cannot be recognized with a finite state automaton. From this we can deduce that no regexen of this flavour can recognize regexen of this flavour.
 
----
+Why? Consider the proposition that there _is_ a regex of this flavour (characters, wildcards, zero-or-more, and non-capturing groups) that recognizes regexen of this flavour. Since any regex of this flavour can be implemented with a finite state automaton, it follows that there is a finite state automaton that recognzies regexen of this flavour.
 
-### before we get started, a brief recapitulation of the previous essay
+However, we provied in [A Brutal Look at Balanced Parentheses...][brutal] that no finite state automnaton can recognize languages containing balanced parentheses, so the proposition leads directly to a contradiction. Hence, the proposition that there is a regex of this flavour that recognizes regexen of this flavour, is false.
 
-In [A Brutal Look at Balanced Parentheses...][brutal], we began with a well-known programming puzzle: _Write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested._
+This leads us to a few questions:
 
-[brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
+1. What features must a flavour of regexen have, such that it can recognize itself?
+2. How much power must such a flavour of regexen have? We know that if the flavour includes balanced parentheses, it must at least be equivalent to the power of a deterministic pushdown automaton. But might it require a non-deterministic pushdown automaton? Or a Turing machine?
 
-In pursuing the solution to this problem, we constructed machines that could recognize "sentences" in languages. We saw that some languages can be recognized with Finite State Automata. Languages that require a finite state automaton to recognize them are _regular languages_.
-
-We also saw that balanced parentheses required a more powerful recognizer, a Deterministic Pushdown Automaton. Languages that require a deterministic pushdown automaton to recognize them are _deterministic context-free languages_.
-
-We then went a step further and considered the palindrome problem, and saw that there were languages--like palindromes with a vocabulary of two or more symbols--that could not be recognized with Deterministic Pushdown Automata, and we needed to construct a [Pushdown Automaton] to recognize palindromes. Languages that require a pushdown automaton to recognize them are _context-free languages_.
-
-[Pushdown Automaton]: https://en.wikipedia.org/wiki/Pushdown_automaton
-
-We implemented pushdown automata using a classes-with-methods approach, the complete code is [here][pushdown.oop.es6].
-
-[pushdown.oop.es6]: https://gist.github.com/raganwald/41ae26b93243405136b786298bafe8e9#file-pushdown-oop-es6
-
-The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the ideal machine needed to recognize it, and we explored example languages that needed finite state automata, deterministic pushdown automata, and pushdown automata respectively.[^tm]
-
-[^Tm]: [a Brutal Look at Balanced Parentheses, ...][Brutal] did not explore two other classes of languages. there is a class of formal languages that requires a turing machine to recognize its sentences. turing machines are more powerful than pushdown automata. And there is a class of formal languages that cannot be recognized by Turing Machines, and therefore cannot be recognized at all! Famously, the latter class includes a machine that takes as its sentences descriptions of Turing Machines, and recognizes those that halt.
-
----
-
-![Placeholder figs](/assets/images/fsa/figs.jpg)
-
-*Placeholder for figs to be added later*
+These questiohns are deep enough that exploring their answers will prod us to learn a lot more about finite state automata, composition, and building tools for ourselves.
 
 ---
 
@@ -101,8 +110,8 @@ Now that we have established that finite state automata can do much more than "j
 
 ### [Prelude](#prelude)
 
-  - [today's essay](#todays-essay)
   - [before we get started, a brief recapitulation of the previous essay](#before-we-get-started-a-brief-recapitulation-of-the-previous-essay)
+  - [recognizers that recognize themselves](#recognizers-that-recognize-themselves)
   - [terminology](#terminology)
 
 ### [The Problem Statement](#the-problem-statement-1)
@@ -161,7 +170,9 @@ Now that we have established that finite state automata can do much more than "j
 
 # The Problem Statement
 
-We will begin by stating the problem we are going to solve: We wish to answer the question, *Can a finite state automaton recognize valid finite state automata?*
+The problem of flavours of regexen that can recognize themselves is interesting, but getting there from zero is difficulty without presupposing a lot of knowledge. We like to learn (or re-learn) things for ourselves, in a hands-on way, so in this essay we will tackle a much smaller version of this problem:
+
+> Can a finite state automaton recognize valid finite state automata?
 
 We'll need to be a bit more specific. Finite state automata can do a lot of things. Some finite state automata recognize statements in languages, where the statements consist of ordered and finite collections of symbols. We will call these **finite state recognizers**, and we are only concerned with finite state recognizers in this essay.
 
@@ -1174,7 +1185,7 @@ epsilonJoin(reg, exclamations)
 And then a function to remove ε-transitions. Its a little busier than we might expect from our simple examples, but it has to handle cases such resolving chains of epsilons:
 
 ```javascript
-function epsilonsRemoved ({ start, accepting, transitions }) {
+function removeEpsilonTransitions ({ start, accepting, transitions }) {
   const acceptingSet = new Set(accepting);
   const transitionsWithoutEpsilon =
     transitions
@@ -1243,7 +1254,7 @@ function epsilonsRemoved ({ start, accepting, transitions }) {
   };
 }
 
-epsilonsRemoved(epsilonJoin(reg, exclamations))
+removeEpsilonTransitions(epsilonJoin(reg, exclamations))
   //=>
     {
       "start": "empty",
@@ -1313,7 +1324,7 @@ const binary = {
   ]
 }
 
-epsilonsRemoved(epsilonJoin(zeroes, binary))
+removeEpsilonTransitions(epsilonJoin(zeroes, binary))
   //=>
     {
       "start": "empty",
@@ -1575,7 +1586,7 @@ const binary = {
   ]
 }
 
-const nondeterministic = epsilonsRemoved(epsilonJoin(zeroes, binary));
+const nondeterministic = removeEpsilonTransitions(epsilonJoin(zeroes, binary));
 
 nondeterministic
   //=>
@@ -1645,7 +1656,7 @@ Computing the catenation of any two deterministic finite-state recognizers is th
 ```javascript
 function catenate (first, second) {
   return powerset(
-    epsilonsRemoved(
+    removeEpsilonTransitions(
       epsilonJoin(first, second)
     )
   );
@@ -1743,7 +1754,7 @@ function catenate (a, ...args) {
   const [b, ...rest] = args;
 
   const ab = powerset(
-    epsilonsRemoved(
+    removeEpsilonTransitions(
       epsilonJoin(a, b)
     )
   );
@@ -1995,7 +2006,7 @@ function powerset (description) {
 
 
 ```javascript
-const nondeterministic = epsilonsRemoved(epsilonJoin(zeroes, binary));
+const nondeterministic = removeEpsilonTransitions(epsilonJoin(zeroes, binary));
 
 test(dfa(nondeterministic), [
   '', '0', '1', '00', '10', '11',

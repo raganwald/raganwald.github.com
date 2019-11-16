@@ -16,7 +16,7 @@ function epsilonJoin (first, second) {
   };
 }
 
-function epsilonsRemoved ({ start, accepting, transitions }) {
+function removeEpsilonTransitions ({ start, accepting, transitions }) {
   const acceptingSet = new Set(accepting);
   const transitionsWithoutEpsilon =
     transitions

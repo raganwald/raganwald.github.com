@@ -76,7 +76,7 @@ function catenate (a, ...args) {
   const [b, ...rest] = args;
 
   const ab = powerset(
-    epsilonsRemoved(
+    removeEpsilonTransitions(
       epsilonJoin(a, b)
     )
   );
