@@ -885,6 +885,52 @@ We now have `union` and `intersection` functions, each of which takes two descri
 
 ---
 
+### product's fan-out problem
+
+Consider taking the union of:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->zero : 0
+    zero-->[*]
+</div>
+
+and:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->one : 1
+    one-->[*]
+</div>
+
+Which is:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->emptyAndEmpty
+    emptyAndEmpty-->zeroAndHalted : 0
+    emptyAndEmpty-->haltedAndOne : 1
+    zeroAndHalted-->[*]
+    haltedAndOne-->[*]
+</div>
+
+It works perfectly well, however it has an extra, unecessary state: Both `zeroAndhalted` and `haltedAndOne` are equivalent states. This is a consequence of the way `product` replicates all of the possible outcomes.
+
+However, for practical purposes a smaller number of accepting states is better, as is a smaller number of states in general. We'll move on without making any changes at the moment, howevee later we will revisit this and look at how we could optimize finite-state machines by eliminating duplicate states.
+
+With such an optimization, we could take the union of those two recognizers and end up with:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->emptyAndEmpty
+    emptyAndEmpty--> zeroAndHaltedAndHaltedAndOne : 0,1
+    zeroAndHaltedAndHaltedAndOne-->[*]
+</div>
+
+---
+
 ## Catenating Descriptions
 
 And now we turn our attention to catenating descriptions. Let's begin by informally defining what we mean  by "catenating descriptions:"
@@ -1995,8 +2041,6 @@ test(reg, ['', 'r', 'R', 'reg', 'Reg', 'REG', 'Reginald'])
 ```
 
 `any` generates a recognizer that recognizes any of the symbols in the strings we pass it. And if none are supplied, it always fails.
-
-
 
 Bwfore we move on to decorators, let's think about regexen. One of the affordances of regexen is that we can use a `.` to represent any chacter, any character at all. This is easy to implement when writing a regex engine, but there's no such capability in a standard finite-state machine.
 
