@@ -1856,10 +1856,10 @@ What makes recognizers really useful is recognizing strings of one kind or anith
     recognized-->[*]
 </div>
 
-We could assign this to a constant, and then make a constant for every other symbol we might want to use in a recognizer, but this would be tedious. Instead, here's a function that makes recognizers that recognize "just" one symbol:
+We could assign this to a constant, and then make a constant for every other symbol we might want to use in a recognizer, but this would be tedious. Instead, here's a function that makes recognizers that recognize "just one" symbol:
 
 ```javascript
-function just (symbol) {
+function just1 (symbol) {
   return {
     "start": "empty",
     "transitions": [
@@ -1869,7 +1869,7 @@ function just (symbol) {
   };
 }
 
-test(just('0'), ['', '0', '1', '01', '10', '11'])
+test(just1('0'), ['', '0', '1', '01', '10', '11'])
   //=>
     '' => false
     '0' => true
@@ -1883,14 +1883,14 @@ That is less code than making one constant for each symbol, but it's still plent
 
 ```javascript
 const reginald = catenation(
-  just('r'),
-  just('e'),
-  just('g'),
-  just('i'),
-  just('n'),
-  just('a'),
-  just('l'),
-  just('d')
+  just1('r'),
+  just1('e'),
+  just1('g'),
+  just1('i'),
+  just1('n'),
+  just1('a'),
+  just1('l'),
+  just1('d')
 );
 
 test(reginald, ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
@@ -1903,27 +1903,19 @@ test(reginald, ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
     'reginaldus' => false
 ```
 
-These tools exist for our convenience, so let's make `just` convenient to use:
+These tools exist for our convenience, so let's make `just`, a version of `just1` that is convenient to use:
 
 ```javascript
-function just (str = "") {
-  const just1 =
-    symbol => ({
-      "start": "empty",
-      "transitions": [
-        { "from": "empty", "consume": symbol, "to": symbol }
-      ],
-      "accepting": [symbol]
-    });
-  const empty = {
-    "start": "empty",
-    "transitions": [],
-    "accepting": ["empty"]
-  };
+const EMPTY = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": ["empty"]
+};
 
+function just (str = "") {
   const recognizers = str.split('').map(just1);
 
-  return catenation(empty, ...recognizers);
+  return catenation(EMPTY, ...recognizers);
 }
 
 test(just(''), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
@@ -1965,46 +1957,111 @@ As we know from the implementation, `just` takes a string, and generating the `c
 We could take their `intersection`, but unless there was only one symbol, that wouldn't help. What about taking their union?
 
 ```javascript
-function any (str = "") {
-  const just1 =
-    symbol => ({
-      "start": "empty",
-      "transitions": [
-        { "from": "empty", "consume": symbol, "to": symbol }
-      ],
-      "accepting": [symbol]
-    });
-  const fail = {
-    "start": "failure",
-    "transitions": [],
-    "accepting": []
-  };
+const FAIL = {
+  "start": "failure",
+  "transitions": [],
+  "accepting": []
+};
 
+function any (str = "") {
   const recognizers = str.split('').map(just1);
 
-  return union(fail, ...recognizers);
+  return union(FAIL, ...recognizers);
 }
 
-test(any(), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
+test(any(), ['', 'r', 'reg'])
   //=>
     '' => false
     'r' => false
     'reg' => false
-    'reggie' => false
-    'reginald' => false
-    'reginaldus' => false
 
-test(any('reg'), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
+test(any('r'), ['', 'r', 'reg'])
   //=>
     '' => false
     'r' => true
     'reg' => false
-    'reggie' => false
-    'reginald' => false
-    'reginaldus' => false
+
+const reg = catenation(any('Rr'), just('eg'));
+
+test(reg, ['', 'r', 'R', 'reg', 'Reg', 'REG', 'Reginald'])
+  //=>
+    '' => false
+    'r' => false
+    'R' => false
+    'reg' => true
+    'Reg' => true
+    'REG' => false
+    'Reginald' => false
 ```
 
 `any` generates a recognizer that recognizes any of the symbols in the strings we pass it. And if none are supplied, it always fails.
+
+
+
+Bwfore we move on to decorators, let's think about regexen. One of the affordances of regexen is that we can use a `.` to represent any chacter, any character at all. This is easy to implement when writing a regex engine, but there's no such capability in a standard finite-state machine.
+
+What we can do, with complete disregard for the size of the finite-state recognizers we create, is _emulate_ the `.` by supplying a string containing every character we care about:
+
+```javascript
+const ALPHANUMERIC =
+  'abcdefghijklmnopqrstuvwxyz' +
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+  '1234567890';
+
+const dot = any(ALPHANUMERIC);
+
+const threeLettersLong = catenation(dot, dot, dot);
+
+test(threeLettersLong, [
+  '', 'r', 're', 'Reg', 'TLA',
+  'AST', 'foo', 'bar', 'baz', 'bash']
+)
+  //=>
+    '' => false
+    'r' => false
+    're' => false
+    'Reg' => true
+    'TLA' => true
+    'AST' => true
+    'foo' => true
+    'bar' => true
+    'baz' => true
+    'bash' => false
+```
+
+We are not kidding about the size. `threeLettersLong` has 7,750 transitions!
+
+---
+
+### optional
+
+And now we turn our attention to _decorating_ finite-state recognizers. In programming jargon, a decorator is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining somethinmg of its orginal character.
+
+For example, `negation` is a function that decorates a boolean function by negating its result:
+
+```javascript
+const negation =
+  fn =>
+    (...args) => !fn(...args);
+
+const weekdays = new Set(['M', 'Tu', 'W', 'Th', 'F']);
+
+const isWeekday = day => weekdays.has(day);
+const isntWeekday = negation(isWeekday);
+
+[isWeekday('Su'), isWeekday('M'), isntWeekday('Su'), isntWeekday('M')]
+  //=>
+    [false, true, true, false]
+```
+
+A decorator for functions takes a function as an argument and returns returns a new function with some relationship to the original function's semantics. A decorator for finite-state recognizers takes the description of a finite-state recognzier and returns as its argument a new finite-state recognizer with some relationship to the original finite-state recognizer's semantics.
+
+There is such a thing as the negation of a finite-state recognizer, it is normally called `complementation`, but it is a bt of a handful, so let's look at an easier example to begin with:
+
+```javascript
+const optional =
+  recognizer => union(EMPTY, recognizer);
+```
 
 ---
 
