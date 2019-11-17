@@ -157,7 +157,8 @@ Now that we have established that finite state automata can do much more than "j
 
 ### [Building Blocks and Decorators](#building-blocks-and-decorators-1)
 
-  - [the empty recognizer](#the-empty-recognizer)
+  - [FAIL](#fail)
+  - [EMPTY](#empty)
 
 ---
 
@@ -1258,7 +1259,112 @@ removeEpsilonTransitions(epsilonJoin(reg, exclamations))
     }
 ```
 
-We have now implemented catenating two deterministic finite recognizers. Mind you, there's a catch.
+We have now implemented catenating two deterministic finite recognizers.
+
+---
+
+### unreachable states
+
+Our "epsilon join/remove epsilons" technique has a small drawback: It can create an unreachable state when the starting state of the second recognizer is not the destination of any other transitions.
+
+Consider:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->zero : 0
+    zero --> [*]
+</div>
+
+And:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->one : 1
+    one --> [*]
+</div>
+
+When we join them and remove transitions, we end up with an unreachable state, `empty-2`:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->zero : 0
+    zero --> one : 1
+    empty2-->one : 1
+    one --> [*]
+</div>
+
+We could implementa  very specific fix, but the code to do a general elimination of unreachable states is straightforward:
+
+
+```javascript
+function reachableFromStart ({ start, accepting, transitions: allTransitions }) {
+  const stateMap = toStateMap(allTransitions);
+  const reachableMap = new Map();
+  const R = new Set([start]);
+
+  while (R.size > 0) {
+    const [state] = [...R];
+    R.delete(state);
+    const transitions = stateMap.get(state) || [];
+
+    // this state is reacdhable
+    reachableMap.set(state, transitions);
+
+    const reachableFromThisState =
+      transitions.map(({ to }) => to);
+
+    const unprocessedReachableFromThisState =
+      reachableFromThisState
+        .filter(to => !reachableMap.has(to) && !R.has(to));
+
+    for (const reachableState of unprocessedReachableFromThisState) {
+      R.add(reachableState);
+    }
+  }
+
+  return {
+    start,
+    accepting,
+    transitions: [...reachableMap.values()].flatMap(tt => tt)
+  };
+}
+```
+
+And we can test it out:
+
+```javascript
+const zero = {
+  "start": "empty",
+  "transitions": [
+    { "from": "empty", "consume": "0", "to": "zero" }
+  ],
+  "accepting": ["zero"]
+};
+
+const one = {
+  "start": "empty",
+  "transitions": [
+    { "from": "empty", "consume": "1", "to": "one" }
+  ],
+  "accepting": ["one"]
+};
+
+reachableFromStart(removeEpsilonTransitions(epsilonJoin(zero, one)))
+  //=>
+    {
+      "start":"empty",
+      "transitions":[
+        {"from":"empty","consume":"0","to":"zero"},
+        {"from":"zero","consume":"1","to":"one"}
+      ],
+      "accepting":["one"]
+    }
+```
+
+No unreachable states!
 
 ---
 
@@ -1309,7 +1415,7 @@ const binary = {
   ]
 }
 
-removeEpsilonTransitions(epsilonJoin(zeroes, binary))
+reachableFromStart(removeEpsilonTransitions(epsilonJoin(zeroes, binary)))
   //=>
     {
       "start": "empty",
@@ -1327,7 +1433,7 @@ removeEpsilonTransitions(epsilonJoin(zeroes, binary))
     }
 ```
 
-And here's a diagram of the result (omitting the unreachable `empty2` to aid clarity):
+And here's a diagram of the result:
 
 <div class="mermaid">
   stateDiagram
@@ -1493,7 +1599,8 @@ const binary = {
   ]
 }
 
-const nondeterministic = removeEpsilonTransitions(epsilonJoin(zeroes, binary));
+const nondeterministic =
+  reachableFromStrart(removeEpsilonTransitions(epsilonJoin(zeroes, binary)));
 
 nondeterministic
   //=>
@@ -1505,8 +1612,6 @@ nondeterministic
         { "from": "zeroes", "consume": "0", "to": "zeroes" },
         { "from": "zeroes", "consume": "0", "to": "zero" },
         { "from": "zeroes", "consume": "1", "to": "notZero" },
-        { "from": "empty-2", "to": "zero", "consume": "0" },
-        { "from": "empty-2", "to": "notZero", "consume": "1" },
         { "from": "notZero", "to": "notZero", "consume": "0" },
         { "from": "notZero", "to": "notZero", "consume": "1" }
       ]
@@ -1563,8 +1668,10 @@ Computing the catenation of any two deterministic finite-state recognizers is th
 ```javascript
 function catenation (first, second) {
   return powerset(
-    removeEpsilonTransitions(
-      epsilonJoin(first, second)
+    reachableFromSytart(
+      removeEpsilonTransitions(
+        epsilonJoin(first, second)
+      )
     )
   );
 }
@@ -1661,8 +1768,10 @@ function catenation (a, ...args) {
   const [b, ...rest] = args;
 
   const ab = powerset(
-    removeEpsilonTransitions(
-      epsilonJoin(a, b)
+    reachableFromStart(
+      removeEpsilonTransitions(
+        epsilonJoin(a, b)
+      )
     )
   );
 
@@ -1736,9 +1845,16 @@ Here we go.
 
 ---
 
-### the empty recognizer
+### FAIL
 
 The simplest recognizer of all is `FAIL`: It doesn't recognize anything. Its language is the empty set:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->failure
+</div>
+
+And here is our helper, we assign it to a constant:
 
 ```javascript
 const FAIL = {
@@ -1801,7 +1917,19 @@ test(catenation(binary, FAIL), ['', '0', '1', '01', '10', '11'])
     '11' => false
 ```
 
+---
+
+### EMPTY
+
 The second-simplest recognizer is `EMPTY`, which recognizes only the empty string:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->[*]
+</div>
+
+Once again, we can assign it to a constant:
 
 ```javascript
 const EMPTY = {
@@ -1820,13 +1948,122 @@ test(EMPTY, ['', '0', '1', '01', '10', '11'])
     '11' => false
 ```
 
-`EMPTY` can be quite useful. As we're about to see:
+`EMPTY` can be quite useful, we'll use it when we get to decorators.
 
 ---
 
-### our first decorator: zeroOrOne
+### recognizing symbols
 
+The language consisting of the empty string may be useful, but what makes recognizers really useful is recognizing symbols. Here's an example of a recognizer that recognizes a zero:
 
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : 0
+    recognized-->[*]
+</div>
+
+We could assign this to a constant, and then make a constant for every other symbol we might want to use in a recognizer, but this would be tedious. Instead, here's a function that makes recognizers that recognize "just" one symbol:
+
+```javascript
+function just (symbol) {
+  return {
+    "start": "empty",
+    "transitions": [
+      { "from": "empty", "consume": symbol, "to": "recognized" }
+    ],
+    "accepting": ["recognized"]
+  };
+}
+
+test(just('0'), ['', '0', '1', '01', '10', '11'])
+  //=>
+    '' => false
+    '0' => true
+    '1' => false
+    '01' => false
+    '10' => false
+    '11' => false
+```
+
+That is less code than making one constant for each symbol, but it's still plenty tedious, for example:
+
+```javascript
+const reginald = catenation(
+  just('r'),
+  just('e'),
+  just('g'),
+  just('i'),
+  just('n'),
+  just('a'),
+  just('l'),
+  just('d')
+);
+
+test(reginald, ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
+  //=>
+    '' => false
+    'r' => false
+    'reg' => false
+    'reggie' => false
+    'reginald' => true
+    'reginaldus' => false
+```
+
+These tools exist for our convenience, so let's make `just` convenient to use:
+
+```javascript
+function just (str) {
+  const symbols = str.split('');
+  const just1 =
+    symbol => {
+      "start": "empty",
+      "transitions": [
+        { "from": "empty", "consume": symbol, "to": symbol }
+      ],
+      "accepting": [symbol]
+    };
+  const empty = {
+    "start": "empty",
+    "transitions": [],
+    "accepting": ["empty"]
+  };
+
+  return symbols.reduce(
+    (recognizer, symbol) => catenation(recognizer, just1(symbol)),
+    empty
+  );
+}
+
+test(just(''), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
+  //=>
+    '' => true
+    'r' => false
+    'reg' => false
+    'reggie' => false
+    'reginald' => false
+    'reginaldus' => false
+
+test(just('r'), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
+  //=>
+    '' => false
+    'r' => true
+    'reg' => false
+    'reggie' => false
+    'reginald' => false
+    'reginaldus' => false
+
+test(just('reginald'), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
+  //=>
+    '' => false
+    'r' => false
+    'reg' => false
+    'reggie' => false
+    'reginald' => true
+    'reginaldus' => false
+```
+
+Now `just` generates a recognizer that recognizes whatever string you give it, including the empty string. This eliminates the need for `EMPTY`, we can always use `just('')`.
 
 ---
 
