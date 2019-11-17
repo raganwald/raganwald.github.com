@@ -157,8 +157,8 @@ Now that we have established that finite state automata can do much more than "j
 
 ### [Building Blocks and Decorators](#building-blocks-and-decorators-1)
 
-  - [FAIL](#fail)
-  - [EMPTY](#empty)
+  - [recognizing strings](#recognizing-strings)
+  - [recognizing symbols](#recognizing-symbols)
 
 ---
 
@@ -1845,116 +1845,9 @@ Here we go.
 
 ---
 
-### FAIL
+### recognizing strings
 
-The simplest recognizer of all is `FAIL`: It doesn't recognize anything. Its language is the empty set:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->failure
-</div>
-
-And here is our helper, we assign it to a constant:
-
-```javascript
-const FAIL = {
-  "start": "failure",
-  "transitions": [],
-  "accepting": []
-};
-
-test(FAIL, ['', '0', '1', '01', '10', '11'])
-  //=>
-    '' => false
-    '0' => false
-    '1' => false
-    '01' => false
-    '10' => false
-    '11' => false
-```
-
-When we compose `FAIL` with other recognizers, we get interesting results. the `union` of `FAIL` and any other recognizer is always the same thing as the other recognizer:
-
-```javascript
-test(union(binary, FAIL), ['', '0', '1', '01', '10', '11'])
-  //=>
-    '' => false
-    '0' => true
-    '1' => true
-    '01' => false
-    '10' => true
-    '11' => true
-```
-
-Not so for `interesection` or `catenation`:
-
-```javascript
-test(intersection(binary, FAIL), ['', '0', '1', '01', '10', '11'])
-  //=>
-    '' => false
-    '0' => false
-    '1' => false
-    '01' => false
-    '10' => false
-    '11' => false
-
-test(intersection(binary, FAIL), ['', '0', '1', '01', '10', '11'])
-  //=>
-    '' => false
-    '0' => false
-    '1' => false
-    '01' => false
-    '10' => false
-    '11' => false
-
-test(catenation(binary, FAIL), ['', '0', '1', '01', '10', '11'])
-  //=>
-    '' => false
-    '0' => false
-    '1' => false
-    '01' => false
-    '10' => false
-    '11' => false
-```
-
----
-
-### EMPTY
-
-The second-simplest recognizer is `EMPTY`, which recognizes only the empty string:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->[*]
-</div>
-
-Once again, we can assign it to a constant:
-
-```javascript
-const EMPTY = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": ["empty"]
-};
-
-test(EMPTY, ['', '0', '1', '01', '10', '11'])
-  //=>
-    '' => true
-    '0' => false
-    '1' => false
-    '01' => false
-    '10' => false
-    '11' => false
-```
-
-`EMPTY` can be quite useful, we'll use it when we get to decorators.
-
----
-
-### recognizing symbols
-
-The language consisting of the empty string may be useful, but what makes recognizers really useful is recognizing symbols. Here's an example of a recognizer that recognizes a zero:
+What makes recognizers really useful is recognizing strings of one kind or anither. Here's an example of a recognizer that recognizes a single zero:
 
 <div class="mermaid">
   stateDiagram
@@ -2013,26 +1906,24 @@ test(reginald, ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
 These tools exist for our convenience, so let's make `just` convenient to use:
 
 ```javascript
-function just (str) {
-  const symbols = str.split('');
+function just (str = "") {
   const just1 =
-    symbol => {
+    symbol => ({
       "start": "empty",
       "transitions": [
         { "from": "empty", "consume": symbol, "to": symbol }
       ],
       "accepting": [symbol]
-    };
+    });
   const empty = {
     "start": "empty",
     "transitions": [],
     "accepting": ["empty"]
   };
 
-  return symbols.reduce(
-    (recognizer, symbol) => catenation(recognizer, just1(symbol)),
-    empty
-  );
+  const recognizers = str.split('').map(just1);
+
+  return catenation(empty, ...recognizers);
 }
 
 test(just(''), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
@@ -2063,7 +1954,57 @@ test(just('reginald'), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
     'reginaldus' => false
 ```
 
-Now `just` generates a recognizer that recognizes whatever string you give it, including the empty string. This eliminates the need for `EMPTY`, we can always use `just('')`.
+The improved `just` generates a recognizer that recognizes whatever string you give it, including the empty string.
+
+---
+
+### recognizing symbols
+
+As we know from the implementation, `just` takes a string, and generating the `catenation` of recognizers for the symbols in the string. What else could we do with the recognizers for the symbols in a string?
+
+We could take their `intersection`, but unless there was only one symbol, that wouldn't help. What about taking their union?
+
+```javascript
+function any (str = "") {
+  const just1 =
+    symbol => ({
+      "start": "empty",
+      "transitions": [
+        { "from": "empty", "consume": symbol, "to": symbol }
+      ],
+      "accepting": [symbol]
+    });
+  const fail = {
+    "start": "failure",
+    "transitions": [],
+    "accepting": []
+  };
+
+  const recognizers = str.split('').map(just1);
+
+  return union(fail, ...recognizers);
+}
+
+test(any(), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
+  //=>
+    '' => false
+    'r' => false
+    'reg' => false
+    'reggie' => false
+    'reginald' => false
+    'reginaldus' => false
+
+test(any('reg'), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
+  //=>
+    '' => false
+    'r' => true
+    'reg' => false
+    'reggie' => false
+    'reginald' => false
+    'reginaldus' => false
+```
+
+`any` generates a recognizer that recognizes any of the symbols in the strings we pass it. And if none are supplied, it always fails.
 
 ---
 
