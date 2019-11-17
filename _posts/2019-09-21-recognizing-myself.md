@@ -1,5 +1,5 @@
 ---
-title: "Computing Machines that Recognize Themselves, Part I: Finite state automata"
+title: "Computing Machines that Recognize Themselves, Part I: Finite-state automata"
 tags: [recursion,allonge,mermaid,noindex]
 ---
 
@@ -15,7 +15,7 @@ In [A Brutal Look at Balanced Parentheses...][brutal], we began with a well-know
 
 [brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
 
-In pursuing the solution to this problem, we constructed machines that could recognize "sentences" in languages. We saw that some languages can be recognized with Finite State Automata. Languages that require a finite state automaton to recognize them are _regular languages_.
+In pursuing the solution to this problem, we constructed machines that could recognize "sentences" in languages. We saw that some languages can be recognized with Finite-State Automata. Languages that require a finite-state automaton to recognize them are _regular languages_.
 
 We also saw that balanced parentheses required a more powerful recognizer, a Deterministic Pushdown Automaton. Languages that require a deterministic pushdown automaton to recognize them are _deterministic context-free languages_.
 
@@ -27,7 +27,7 @@ We implemented pushdown automata using a classes-with-methods approach, the comp
 
 [pushdown.oop.es6]: https://gist.github.com/raganwald/41ae26b93243405136b786298bafe8e9#file-pushdown-oop-es6
 
-The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the ideal machine needed to recognize it, and we explored example languages that needed finite state automata, deterministic pushdown automata, and pushdown automata respectively.[^tm]
+The takeaway from [A Brutal Look at Balanced Parentheses...][brutal] was that languages could be classified according to the power of the ideal machine needed to recognize it, and we explored example languages that needed finite-state automata, deterministic pushdown automata, and pushdown automata respectively.[^tm]
 
 [^tm]: [a Brutal Look at Balanced Parentheses, ...][Brutal] did not explore two other classes of languages. The fourth class of formal languages require a Turing machine to recognize their sentences, because Turing machines are more powerful than pushdown automata. In fact, Turing machines can compute anything that can be computed. And there is a fifth class of formal languages. languages that cannot be recognized by Turing machines, and therefore cannot be recognized at all! Famously, the latter class includes a language that describes Turing machines, and only includes those descriptions that are of Turing machines that halt.
 
@@ -65,48 +65,48 @@ Regexen are more than just descriptions of machines that recognize sentences in 
 
 It is easy to write a function that recognizes valid regex given any regex engine: Give the engine the regex, and see if it returns an error. That is practical, but unsatisfying. All it tells us is that a Turing Machine can be devised to recognize regexen. But not all flavours of regexen are as powerful as Turing Machines.
 
-It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour for regexen. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite state automata, thus the original regexen described finite state automata.
+It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour for regexen. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite-state automata, thus the original regexen described finite-state automata.
 
-But just because a flavour of regex only describes finite state automata, does not mean that descriptions of those regexen can be recognized by finite state automata. Consider, for example, a flavour of regex that permits characters (such as `a`, `b`, `c`, ..., `x`, `y`, `z`), the wildcard operator `.`, the zero-or more operator `*`, and non-capturing groups `(?: ... )`. Here's an example of such a regex:
+But just because a flavour of regex only describes finite-state automata, does not mean that descriptions of those regexen can be recognized by finite-state automata. Consider, for example, a flavour of regex that permits characters (such as `a`, `b`, `c`, ..., `x`, `y`, `z`), the wildcard operator `.`, the zero-or more operator `*`, and non-capturing groups `(?: ... )`. Here's an example of such a regex:
 
 ```
 /(?:<(?:ab*c)>)+/
 ```
 
-As we will see in this essay, the above regex can most certainly be implemented by a finite state automaton, meaning that we can write a finite state automaton that recognizes all the same sentences of symbols that this regex recognizes. In fact, any regex written with this flavour (characters, wildcards, zero-or more operator, and non-capturing groups) can be implemented with a finite state automaton.
+As we will see in this essay, the above regex can most certainly be implemented by a finite-state automaton, meaning that we can write a finite-state automaton that recognizes all the same sentences of symbols that this regex recognizes. In fact, any regex written with this flavour (characters, wildcards, zero-or more operator, and non-capturing groups) can be implemented with a finite-state automaton.
 
-But what if we want to recognize regexen like this? meaning, we want to write a finite state automation that can recognize regexen of this flavour, not what the regexen recognize?
+But what if we want to recognize regexen like this? meaning, we want to write a finite-state automation that can recognize regexen of this flavour, not what the regexen recognize?
 
 ---
 
 ### the problem with regexen recognizing themselves
 
-There is a problem: This flavour of regexen can contain parentheses, and these parentheses have to be balanced. Recalling [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal], we discovered that finite state automata cannot recognize sentences that contain parentheses that must be balanced. That requires a pushdown automaton, a state machine that has a stack.
+There is a problem: This flavour of regexen can contain parentheses, and these parentheses have to be balanced. Recalling [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal], we discovered that finite-state automata cannot recognize sentences that contain parentheses that must be balanced. That requires a pushdown automaton, a state machine that has a stack.
 
-So, every language a regexen of this flavour can recognize, can be recognized with a finite state automaton, and the language of writing this flavour regexen cannot be recognized with a finite state automaton. From this we can deduce that no regexen of this flavour can recognize regexen of this flavour.
+So, every language a regexen of this flavour can recognize, can be recognized with a finite-state automaton, and the language of writing this flavour regexen cannot be recognized with a finite-state automaton. From this we can deduce that no regexen of this flavour can recognize regexen of this flavour.
 
-Why? Consider the proposition that there _is_ a regex of this flavour (characters, wildcards, zero-or-more, and non-capturing groups) that recognizes regexen of this flavour. Since any regex of this flavour can be implemented with a finite state automaton, it follows that there is a finite state automaton that recognizes regexen of this flavour.
+Why? Consider the proposition that there _is_ a regex of this flavour (characters, wildcards, zero-or-more, and non-capturing groups) that recognizes regexen of this flavour. Since any regex of this flavour can be implemented with a finite-state automaton, it follows that there is a finite-state automaton that recognizes regexen of this flavour.
 
-However, we provide in [A Brutal Look at Balanced Parentheses...][brutal] that no finite state automaton can recognize languages containing balanced parentheses, so the proposition leads directly to a contradiction. Hence, the proposition that there is a regex of this flavour that recognizes regexen of this flavour, is false.
+However, we provide in [A Brutal Look at Balanced Parentheses...][brutal] that no finite-state automaton can recognize languages containing balanced parentheses, so the proposition leads directly to a contradiction. Hence, the proposition that there is a regex of this flavour that recognizes regexen of this flavour, is false.
 
 This leads us to a few questions:
 
 1. What features must a flavour of regexen have, such that it can recognize itself?
 2. How much power must such a flavour of regexen have? We know that if the flavour includes balanced parentheses, it must at least be equivalent to the power of a deterministic pushdown automaton. But might it require a non-deterministic pushdown automaton? Or a Turing machine?
 
-These questions are deep enough that exploring their answers will prod us to learn a lot more about finite state automata, composition, and building tools for ourselves.
+These questions are deep enough that exploring their answers will prod us to learn a lot more about finite-state automata, composition, and building tools for ourselves.
 
 ---
 
 ### terminology
 
-In this essay will will play a little loose with terminology. We are concerned with [finite state machines][fsa], also called *finite state automata*. Finite state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite state automata that recognize statements in a language are also called _finite state recognizers_.
+In this essay will will play a little loose with terminology. We are concerned with [finite state machines][fsa], also called *finite-state automata*. Finite-state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite-state automata that recognize statements in a language are also called _finite-state recognizers_.
 
-Finite state automata can slo do thing that are not of interest to our essay today. A finite state recognizer recognizes whether a sentence is a sentence in a language. A finite state automaton can also be devised that not only recognizes whether a sentence is in a language, but also recognizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.
+Finite-state automata can also do thing that are not of interest to our essay today. A finite-state recognizer recognizes whether a sentence is a sentence in a language. A finite-state automaton can also be devised that not only recognizes whether a sentence is in a language, but also recognizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.
 
-Other automata can generate strings, transform strings, and so forth. These are not of interest to us.
+(Other automata can generate strings, transform strings, and so forth. These are also not of interest to us here.)
 
-Now that we have established that finite state automata can do much more than "just" recognize statements in languages, we will continue on for the rest of the essay using the terms "finite state automaton," "finite state machine," and "finite state recognizer" interchangeably.
+Now that we have established that finite-state automata can do much more than "just" recognize statements in languages, we will continue on for the rest of the essay using the terms "finite-state automaton," "finite state machine," and "finite-state recognizer" interchangeably.
 
 [fsa]: https://en.wikipedia.org/wiki/Finite-state_machine
 
@@ -123,13 +123,13 @@ Now that we have established that finite state automata can do much more than "j
 
 ### [The Problem Statement](#the-problem-statement-1)
 
-  - [a language for describing finite state recognizers](#a-language-for-describing-finite-state-recognizers)
+  - [a language for describing finite-state recognizers](#a-language-for-describing-finite-state-recognizers)
   - [implementing our example recognizer](#implementing-our-example-recognizer)
   - [a more specific problem statement](#a-more-specific-problem-statement)
 
 ### [Composeable Recognizers](#composeable-recognizers-1)
 
-[Taking the Product of Two Finite State Automata](#taking-the-product-of-two-finite-state-automata)
+[Taking the Product of Two Finite-State Automata](#taking-the-product-of-two-finite-state-automata)
 
   - [starting the product](#starting-the-product)
   - [transitions](#transitions)
@@ -166,11 +166,11 @@ Now that we have established that finite state automata can do much more than "j
 
 The problem of "flavours of regexen that can recognize themselves" is interesting, but getting there from zero is difficulty without presupposing a lot of knowledge. We like to learn (or re-learn) things for ourselves, in a hands-on way, so in this essay we will tackle a much smaller version of this problem:
 
-> Can a finite state automaton recognize valid finite state automata?
+> Can a finite-state automaton recognize valid finite-state automata?
 
-We'll need to be a bit more specific. Finite state automata can do a lot of things. Some finite state automata recognize statements in languages, where the statements consist of ordered and finite collections of symbols. We will call these **finite state recognizers**, and we are only concerned with finite state recognizers in this essay.
+We'll need to be a bit more specific. Finite-state automata can do a lot of things. Some finite-state automata recognize statements in languages, where the statements consist of ordered and finite collections of symbols. We will call these **finite-state recognizers**, and we are only concerned with finite-state recognizers in this essay.
 
-Thus, we will not—of course—ask whether a finite state automaton can be hooked up to cameras and recognize whether a physical scene contains a physical state machine. We also will not ask whether a finite state automaton can recognize a `.png` encoding of a diagram, and recognize whether it is a diagram of a valid finite state state machine:
+Thus, we will not—of course—ask whether a finite-state automaton can be hooked up to cameras and recognize whether a physical scene contains a physical state machine. We also will not ask whether a finite-state automaton can recognize a `.png` encoding of a diagram, and recognize whether it is a diagram of a valid finite state state machine:
 
 <div class="mermaid">
   stateDiagram
@@ -182,27 +182,27 @@ Thus, we will not—of course—ask whether a finite state automaton can be hook
     one --> [*]
 </div>
 
-Instead, we will formulate a language for describing finite state recognizers, and ask whether a finite state recognizer can be devised to recognize valid statements in the language that describes finite state recognizers. If we can make such a recognizer, we will have shown that in at least one sense, a finite state recognizer can recognize finite state recognizers.
+Instead, we will formulate a language for describing finite-state recognizers, and ask whether a finite-state recognizer can be devised to recognize valid statements in the language that describes finite-state recognizers. If we can make such a recognizer, we will have shown that in at least one sense, a finite-state recognizer can recognize finite-state recognizers.
 
-That is not, of course, the exact same thing as asking whether a regex can recognize a valid regex. Regexen are a language of their own, and it is possible that a regular expression might be more powerful than a finite state recognizer, and it is equally possible (certain, in fact) that the language used to describe a regex cannot be parsed with finite state recognizers.[^cannot-parse]
+That is not, of course, the exact same thing as asking whether a regex can recognize a valid regex. Regexen are a language of their own, and it is possible that a regular expression might be more powerful than a finite-state recognizer, and it is equally possible (certain, in fact) that the language used to describe a regex cannot be parsed with finite-state recognizers.[^cannot-parse]
 
-[^cannot-parse]: How certain? Well, all regular expression languages in wide usage have the ability to create *groups* using parentheses, e.g. `/Reg(?:inald)?/` is a regular expression containing an optional non-capturing group. Groups in regex can be nested, and must be properly nested and balanced for a regex to be valid. We know from [A Brutal Look at Balanced Parentheses...][brutal] that we cannot recognize balanced (or even nested) parentheses with just a finite state recognizer, so therefore we cannot recognize valid regexen with a finite state recognizer.
+[^cannot-parse]: How certain? Well, all regular expression languages in wide usage have the ability to create *groups* using parentheses, e.g. `/Reg(?:inald)?/` is a regular expression containing an optional non-capturing group. Groups in regex can be nested, and must be properly nested and balanced for a regex to be valid. We know from [A Brutal Look at Balanced Parentheses...][brutal] that we cannot recognize balanced (or even nested) parentheses with just a finite-state recognizer, so therefore we cannot recognize valid regexen with a finite-state recognizer.
 
-But we'll start with devising a finite state recognizer that recognizes syntactically valid descriptions of finite state recognizers, and see where that takes us.
+But we'll start with devising a finite-state recognizer that recognizes syntactically valid descriptions of finite-state recognizers, and see where that takes us.
 
-### a language for describing finite state recognizers
+### a language for describing finite-state recognizers
 
-Before we can write finite state recognizers that recognize syntactically valid descriptions of finite state recognizers, we need a language for describing finite state recognizers.
+Before we can write finite-state recognizers that recognize syntactically valid descriptions of finite-state recognizers, we need a language for describing finite-state recognizers.
 
 We don't need to invent a brand-new format, there is already an accepted [formal definition][fdfsa] for Pushdown Automata. Mind you, it involves mathematical symbols that are unfamiliar to some programmers, so without dumbing it down, we will create our own language that is equivalent to the full formal definition, but expressed in JSON.
 
 [fdfsa]: https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model
 
-JSON has the advantage that it is a language in the exact sense we want: An ordered set of symbols. So we will describe finite state recognizers using JSON, and we will attempt to write a finite state recognizer that recognizes strings that are valid JSON descriptions of finite state recognizers.[^natch]
+JSON has the advantage that it is a language in the exact sense we want: An ordered set of symbols. So we will describe finite-state recognizers using JSON, and we will attempt to write a finite-state recognizer that recognizes strings that are valid JSON descriptions of finite-state recognizers.[^natch]
 
-[^natch]: Naturally, if we have a valid description of a finite-state recognizer that recognizes vald descriptions of finite state recognizers... We expect it to recognize itself.
+[^natch]: Naturally, if we have a valid description of a finite-state recognizer that recognizes vald descriptions of finite-state recognizers... We expect it to recognize itself.
 
-Now what do we need to encode? Finite state recognizers are defined as a quintuple of `(Σ, S, s, ẟ, F)`, where:
+Now what do we need to encode? Finite-state recognizers are defined as a quintuple of `(Σ, S, s, ẟ, F)`, where:
 
   - `Σ` is the alphabet of symbols this recognizer operates upon.
   - `S` is the set of states this recognizer can be in.
@@ -296,7 +296,7 @@ Our representation translates directly to this simplified state diagram:
     notZero --> [*]
 </div>
 
-This finite state recognizer recognizes binary numbers.
+This finite-state recognizer recognizes binary numbers.
 
 ---
 
@@ -396,27 +396,27 @@ test(binaryNumber, [
     '10100011011000001010011100101110111' => true
 ```
 
-We now have a function, `automate`, that takes a data description of a finite state automaton/recognizer, and returns a Javascript recognizer function we can play with.
+We now have a function, `automate`, that takes a data description of a finite-state automaton/recognizer, and returns a Javascript recognizer function we can play with.
 
 ---
 
 ### a more specific problem statement
 
-Given our language for describing finite state recognizers, a more specific problem statement becomes:
+Given our language for describing finite-state recognizers, a more specific problem statement becomes:
 
-> Using our description language, write a finite state recognizer that recognizes valid descriptions of finite state recognizers.
+> Using our description language, write a finite-state recognizer that recognizes valid descriptions of finite-state recognizers.
 
-Armed with things like regular expressions, this is not difficult. Armed with finite state automata, this is still not difficult, but it is exceedingly laborious. Finite state automata live in the Turing Tar-Pit, a place where "Everything is possible, but nothing of interest is easy."[^ttp]
+Armed with things like regular expressions, this is not difficult. Armed with finite-state automata, this is still not difficult, but it is exceedingly laborious. Finite-state automata live in the Turing Tar-Pit, a place where "Everything is possible, but nothing of interest is easy."[^ttp]
 
 [^ttp]: Perlisisms—"Epigrams in Programming" by Alan Perlis http://www.cs.yale.edu/homes/perlis-alan/quotes.html
 
-_Given a problem that takes an hour to solve, a programmer is a person who spends three days writing tooling so that the problem can be solved in half an hour._ We're programmers, so instead of grinding away trying to make a huge, monolithic finite-state recognizer by hand, we'll build some tooling to write the finite state recognizer's description for us.
+_Given a problem that takes an hour to solve, a programmer is a person who spends three days writing tooling so that the problem can be solved in half an hour._ We're programmers, so instead of grinding away trying to make a huge, monolithic finite-state recognizer by hand, we'll build some tooling to write the finite-state recognizer's description for us.
 
 The simplest place to start is the foundation of all practical software development: **Composition**. If we have ways of breaking a problem down into smaller problems, solving the smaller problems, and then putting the parts back together, we can solve very, very big problems.
 
 Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
 
-We'll do that here. We will start by learning how to compose recognizers. If we can write small recognizers (such as "a quoted string"), and then compose them (using operations like union or catenation), it will be much easier to write a recognizer for valid descriptions of finite state automata.
+We'll do that here. We will start by learning how to compose recognizers. If we can write small recognizers (such as "a quoted string"), and then compose them (using operations like union or catenation), it will be much easier to write a recognizer for valid descriptions of finite-state automata.
 
 ---
 
@@ -436,13 +436,13 @@ Or in colloquial terms, a sentence is recognized by `union(a, b)` if and only if
 
 What about `catenation(a, b)`? If we have some sentence `xy`, where `x` and `y` are strings of zero or more symbols, then `xy` is recognized by `catenation(a, b)` is and only if `x` is recognized by `a` and `y` is recognized by `b`.
 
-We'll get started with union and intersection, because they both are built on a common operation, *taking the product of two finite state automata*.
+We'll get started with union and intersection, because they both are built on a common operation, *taking the product of two finite-state automata*.
 
 ---
 
-## Taking the Product of Two Finite State Automata
+## Taking the Product of Two Finite-State Automata
 
-Consider two finite state recognizers. The first, `a`, recognizes a string of one or more zeroes:
+Consider two finite-state recognizers. The first, `a`, recognizes a string of one or more zeroes:
 
 <div class="mermaid">
   stateDiagram
@@ -501,7 +501,7 @@ At any one time, there are nine possible combinations of states the two machines
 |`'zero'`|`'emptyB'`|
 |`'zero'`|`'one'`|
 
-If we wish to simulate the actions of the two recognizers operating concurrently, we could do so if we had a finite state automaton with nine states, one for each of the pairs of states that `a` and `b` could be in.
+If we wish to simulate the actions of the two recognizers operating concurrently, we could do so if we had a finite-state automaton with nine states, one for each of the pairs of states that `a` and `b` could be in.
 
 It will look something like this:
 
@@ -899,11 +899,11 @@ A hypothetical recognizer for JavaScript function expressions would be composed 
 
 ### catenating descriptions with epsilon-transitions
 
-Our finite state automata are very simple: They are deterministic, meaning that in every state, there is one and only one transition for each unique symbol. And they always consume a symbol when they transition.
+Our finite-state automata are very simple: They are deterministic, meaning that in every state, there is one and only one transition for each unique symbol. And they always consume a symbol when they transition.
 
-Some finite state automata relax the second constraint. They allow a transition between states without consuming a symbol. If a transition with a symbol to be consumed is like an "if statement," a transition without a symbol to consume is like a "goto."
+Some finite-state automata relax the second constraint. They allow a transition between states without consuming a symbol. If a transition with a symbol to be consumed is like an "if statement," a transition without a symbol to consume is like a "goto."
 
-Such transitions are called "ε-transitions," or "epsilon transitions" for those who prefer to avoid greek letters. As we'll see, ε-transitions do not add any power to finite state automata, but they do sometimes help make diagrams a little easier to understand and formulate.
+Such transitions are called "ε-transitions," or "epsilon transitions" for those who prefer to avoid greek letters. As we'll see, ε-transitions do not add any power to finite-state automata, but they do sometimes help make diagrams a little easier to understand and formulate.
 
 Recall our recognizer that recognizes variations on the name "reg." Here it is as a diagram:
 
@@ -1450,7 +1450,7 @@ And here's a diagram of the result:
 
 The problem is that there are two transitions from `zeroes` when consuming a `0`. That makes this transition _nondeterministic_. Deterministic state machines always have exactly one possible transition from any state for each symbol consumed in that state.
 
-We want to catenate two deterministic finite state recognizers, and wind up with a finite state recognizer. To do that, we'll need a way to convert nondeterministic finite state recognizers into deterministic finite state recognizers.
+We want to catenate two deterministic finite-state recognizers, and wind up with a finite-state recognizer. To do that, we'll need a way to convert nondeterministic finite-state recognizers into deterministic finite-state recognizers.
 
 ---
 
@@ -1677,7 +1677,7 @@ function catenation (first, second) {
 }
 ```
 
-And this allows us to draw an important conclusion: *The set of deterministic finite-state recognizers is closed under catenation*, meaning that given two finite state recognizers, we can always construct a finite state recognizer representing the catenation of the two recognizers.
+And this allows us to draw an important conclusion: *The set of deterministic finite-state recognizers is closed under catenation*, meaning that given two finite-state recognizers, we can always construct a finite-state recognizer representing the catenation of the two recognizers.
 
 We earlier showed the same thing for union and intersection, so we now know that we can compose recognizers using union, intersection, and catenation at will.
 
@@ -1832,14 +1832,14 @@ If you're reading this and want to get some practice writing functions that crea
 
 To summarize what we have accomplished so far:
 
-- We set ourselves the task of writing a finite state recognizer that recognizes valid descriptions of finite state recognizers.
-- To break it down into manageable parts, we wrote functions that compose finite state recognizers from other finite state recognizers: We wrote `union`, `intersection`, and `catenation`.
+- We set ourselves the task of writing a finite-state recognizer that recognizes valid descriptions of finite-state recognizers.
+- To break it down into manageable parts, we wrote functions that compose finite-state recognizers from other finite-state recognizers: We wrote `union`, `intersection`, and `catenation`.
 
 This is very much like wanting to build a big lego set, and first figuring out how to click the blocks together. if we stopped here, we would have to custom-make every lego block we wish to use.
 
-It's the same with recognizers. If we got to work on using `union`, `intersection`, and `catenation` to compose a finite state recognizer that recognizes valid descriptions of finte state recognizers, we would have to hand-write lots of small recognizers that we could then lick together with `union`, `intersection`, and `catenation`.
+It's the same with recognizers. If we got to work on using `union`, `intersection`, and `catenation` to compose a finite-state recognizer that recognizes valid descriptions of finte state recognizers, we would have to hand-write lots of small recognizers that we could then lick together with `union`, `intersection`, and `catenation`.
 
-That's a lot less work than writing a finite state recognizer that recognizes valid descriptions of finte state recognizers from scratch, by hand, but we can make it even less work by building some tooling for creating small recognizers, and some more tooling for "decorating" recognizers.
+That's a lot less work than writing a finite-state recognizer that recognizes valid descriptions of finte state recognizers from scratch, by hand, but we can make it even less work by building some tooling for creating small recognizers, and some more tooling for "decorating" recognizers.
 
 Here we go.
 
@@ -2212,11 +2212,11 @@ test(dfa(nondeterministic), [
 
 Now that we have written `catenation` for descriptions, we can reason as follows:[^reason]
 
-- A finite state automaton can recognize any regular language.
-- The catenation of two finite state recognizers is a finite state recognizer.
+- A finite-state automaton can recognize any regular language.
+- The catenation of two finite-state recognizers is a finite-state recognizer.
 - Therefore, a language defined by catenating two regular languages, will be regular.
 
-[^reason]: Well, actually, this is not strictly true. Building a catenation function certainly gives us confidence that a language formed by catenating the rules for two regular language ought to be regular, but it is always possible that our algorithm has a bug and cannot correctly catenate any two finite state recognizers. Finding such a bug would be akin to finding a counter-example to something thought to have been proven, or a conjecture thought to be true, but unproven. This is the nature of "experimental computing science," it is always easier to demonstrate that certain things are impossible--by finding just one counter-example--than to prove that no counter-examples exist.
+[^reason]: Well, actually, this is not strictly true. Building a catenation function certainly gives us confidence that a language formed by catenating the rules for two regular language ought to be regular, but it is always possible that our algorithm has a bug and cannot correctly catenate any two finite-state recognizers. Finding such a bug would be akin to finding a counter-example to something thought to have been proven, or a conjecture thought to be true, but unproven. This is the nature of "experimental computing science," it is always easier to demonstrate that certain things are impossible--by finding just one counter-example--than to prove that no counter-examples exist.
 
 Likewise, we can reason:
 
@@ -2314,7 +2314,7 @@ If it is possible, our `catenation` function doesn't tell us that it's possible.
 
 `catenation` and `union` are binary combinators: They compose a new description, given two existing descriptions. But we don't have any functions for making descriptions from scratch. Up to here, we have always written such descriptions by hand.
 
-But now we'll turn our attention to making new descriptions from scratch. If we have a way to manufacture new descriptions, and ways to combine existing descriptions, we have a way to build recognizers in a more structured fashion than coding finite state automata by hand.
+But now we'll turn our attention to making new descriptions from scratch. If we have a way to manufacture new descriptions, and ways to combine existing descriptions, we have a way to build recognizers in a more structured fashion than coding finite-state automata by hand.
 
 That allows us to reason more easily about what our recognizers can and cannot recognize.
 
@@ -2525,9 +2525,9 @@ Having defined `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, it fo
 
 Regular expressions define regular languages. Therefore, every regular language has an equivalent JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`.
 
-Now consider what we know from our implementation so far: `EMPTY` is a finite state automaton, and `symbol` only creates finite state automata. And we know that `catenation`, `union`, and `zeroOrMore` create finite state automata if given finite state automata as input. Therefore, every JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` evaluates to the description of a finite state automaton that recognizes the regular language.
+Now consider what we know from our implementation so far: `EMPTY` is a finite-state automaton, and `symbol` only creates finite-state automata. And we know that `catenation`, `union`, and `zeroOrMore` create finite-state automata if given finite-state automata as input. Therefore, every JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` evaluates to the description of a finite-state automaton that recognizes the regular language.
 
-Therefore, *All regular languages can be recognized by finite state automata*. If someone says, "Oh no, this regular language cannot be recognized by a finite state automaton," we ask them to write out the regular expression for that language. We then translate the symbols into invocations of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, then evaluate the JavaScript expression. The result will be a finite state automaton recognizing the language, disproving their claim.
+Therefore, *All regular languages can be recognized by finite-state automata*. If someone says, "Oh no, this regular language cannot be recognized by a finite-state automaton," we ask them to write out the regular expression for that language. We then translate the symbols into invocations of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, then evaluate the JavaScript expression. The result will be a finite-state automaton recognizing the language, disproving their claim.
 
 ---
 
@@ -2883,13 +2883,13 @@ test(scrambledFeline, [
 
 ### summarizing our conveniences
 
-We've transformed `catenation` and `union` from binary to n-ary functions. Because we did so by applyimnhg the binary functions we already had, we preserve what we have learned about them, that given descriptions for two or more finite state automata as arguments, the description returned will be for a finite state automaton.
+We've transformed `catenation` and `union` from binary to n-ary functions. Because we did so by applyimnhg the binary functions we already had, we preserve what we have learned about them, that given descriptions for two or more finite-state automata as arguments, the description returned will be for a finite-state automaton.
 
 We also created `any` and `string`, recognizers for sets of symbols and strings of symbols. Since we implemented these with `symbol`, `union`, and `catenation`, we know that the descriptions they produce are for finite-state automata.
 
-We created `zeroOrOne` and `oneOrMore`, functions that transform recognizers. Since wwe implemented these with `EMPTY`, `union`, and `catenation`, we know that given descriptions of finite state automata, they return descriptions of finite state automata.
+We created `zeroOrOne` and `oneOrMore`, functions that transform recognizers. Since wwe implemented these with `EMPTY`, `union`, and `catenation`, we know that given descriptions of finite-state automata, they return descriptions of finite-state automata.
 
-In sum, we now have some very convenient tools for building finite state automata that recognize languages. Tools that are very familiar to regex users:
+In sum, we now have some very convenient tools for building finite-state automata that recognize languages. Tools that are very familiar to regex users:
 
 - Regex allows us to specify strings of symbols, e.g. `/foo/`;
 - Regex allows us to specify sets of symbols, e.g. `/[abc]/`;
@@ -2897,13 +2897,13 @@ In sum, we now have some very convenient tools for building finite state automat
 - Regex allows us to catenate specifications by default, e.g. `/[abc][def]/`;
 - Regex allows us to alternate specifications, e.g. `/[abc]|[def]/`.
 
-We also created `permute`. It recognizes any permutation of a set of descriptions. As it builds the result by taking the union of the catenation of existing descriptions, we know that if `permute` is given descriptions of finite state automata, it also returns a description of a finite state automaton.
+We also created `permute`. It recognizes any permutation of a set of descriptions. As it builds the result by taking the union of the catenation of existing descriptions, we know that if `permute` is given descriptions of finite-state automata, it also returns a description of a finite-state automaton.
 
 ---
 
 ## A Recognizer That Recognizes Finite State Machine Descriptions
 
-Armed with our tools, we can build a finite state automaton that recognizes descriptions of finite state automata. It recognizes a subset of all of the possible ASCII characters we might build such recognizers to recognize, but it gets the point across:
+Armed with our tools, we can build a finite-state automaton that recognizes descriptions of finite-state automata. It recognizes a subset of all of the possible ASCII characters we might build such recognizers to recognize, but it gets the point across:
 
 ```javascript
 let startMap = symbol('{');
