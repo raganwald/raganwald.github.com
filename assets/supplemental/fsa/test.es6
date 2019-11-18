@@ -444,7 +444,7 @@ function resolveConflicts (first, second) {
   return resolveConflictsWithNames(allStates(first), second);
 }
 
-function epsilonJoin (first, second) {
+function epsilonCatenate (first, second) {
   const unconflictedSecond =  resolveConflicts(first, second);
 
   const joinTransitions =
@@ -808,7 +808,7 @@ function catenation (a, ...args) {
 
   const ab = powerset(
     removeEpsilonTransitions(
-      epsilonJoin(a, b)
+      epsilonCatenate(a, b)
     )
   );
 

@@ -139,6 +139,7 @@ Now that we have established that finite-state automata can do much more than "j
 
   - [union](#union)
   - [intersection](#intersection)
+  - [product's fan-out problem](#products-fan-out-problem)
 
 [Catenating Descriptions](#catenating-descriptions)
 
@@ -152,8 +153,8 @@ Now that we have established that finite-state automata can do much more than "j
   - [taking the product of a recognizer... with itself](#taking-the-product-of-a-recognizer-with-itself)
   - [computing the powerset of a nondeterministic finite-state recognizer](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer)
   - [catenation without the catch, and an observation](#catenation-without-the-catch-and-an-observation)
-  - [interlude: updated union, intersection, and catenation](#interlude-updated-union-intersection-and-catenation)
-  - [try this at home: use powerset to create union, instead of product](#try-this-at-home-use-powerset-to-create-union-instead-of-product)
+  - [from powerset to union](#from-powerset-to-union)
+  - [the final union, intersection, and catenation](#the-final-union-intersection-and-catenation)
 
 ### [Building Blocks and Decorators](#building-blocks-and-decorators-1)
 
@@ -1177,7 +1178,7 @@ resolveConflicts(reg, exclamations)
 With this, we can write a function to join the two recognizers with ε-transitions:
 
 ```javascript
-function epsilonJoin (first, second) {
+function epsilonCatenate (first, second) {
   const unconflictedSecond =  resolveConflicts(first, second);
 
   const joinTransitions =
@@ -1195,7 +1196,7 @@ function epsilonJoin (first, second) {
   };
 }
 
-epsilonJoin(reg, exclamations)
+epsilonCatenate(reg, exclamations)
   //=>
     {
       "start": "empty",
@@ -1286,7 +1287,7 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
   };
 }
 
-removeEpsilonTransitions(epsilonJoin(reg, exclamations))
+removeEpsilonTransitions(epsilonCatenate(reg, exclamations))
   //=>
     {
       "start": "empty",
@@ -1398,7 +1399,7 @@ const one = {
   "accepting": ["one"]
 };
 
-reachableFromStart(removeEpsilonTransitions(epsilonJoin(zero, one)))
+reachableFromStart(removeEpsilonTransitions(epsilonCatenate(zero, one)))
   //=>
     {
       "start":"empty",
@@ -1461,7 +1462,7 @@ const binary = {
   ]
 }
 
-reachableFromStart(removeEpsilonTransitions(epsilonJoin(zeroes, binary)))
+reachableFromStart(removeEpsilonTransitions(epsilonCatenate(zeroes, binary)))
   //=>
     {
       "start": "empty",
@@ -1646,7 +1647,7 @@ const binary = {
 }
 
 const nondeterministic =
-  reachableFromStrart(removeEpsilonTransitions(epsilonJoin(zeroes, binary)));
+  reachableFromStrart(removeEpsilonTransitions(epsilonCatenate(zeroes, binary)));
 
 nondeterministic
   //=>
@@ -1714,9 +1715,9 @@ Computing the catenation of any two deterministic finite-state recognizers is th
 ```javascript
 function catenation (first, second) {
   return powerset(
-    reachableFromSytart(
+    reachableFromStart(
       removeEpsilonTransitions(
-        epsilonJoin(first, second)
+        epsilonCatenate(first, second)
       )
     )
   );
@@ -1731,105 +1732,9 @@ From this we can also deduce that although we only wrote functions to take the u
 
 ---
 
-### interlude: updated union, intersection, and catenation
+### from powerset to union
 
-Here are our `union`, `intersection`, and `catenation` functions, updated to take one or more arguments:
-
-```javascript
-function union (a, ...args) {
-  if (args.length === 0) {
-    return a;
-  }
-
-  const [b, ...rest] = args;
-
-  const {
-    states: aDeclaredStates,
-    accepting: aAccepting
-  } = validatedAndProcessed(a);
-  const aStates = [''].concat(aDeclaredStates);
-  const {
-    states: bDeclaredStates,
-    accepting: bAccepting
-  } = validatedAndProcessed(b);
-  const bStates = [''].concat(bDeclaredStates);
-
-  const statesAAccepts =
-    aAccepting.flatMap(
-      aAcceptingState => bStates.map(bState => abToAB(aAcceptingState, bState))
-    );
-  const statesBAccepts =
-    bAccepting.flatMap(
-      bAcceptingState => aStates.map(aState => abToAB(aState, bAcceptingState))
-    );
-  const allAcceptingStates =
-    statesAAccepts.concat(
-      statesBAccepts.filter(
-        state => statesAAccepts.indexOf(state) === -1
-      )
-    );
-
-  const productAB = product(a, b);
-  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
-
-  const { start, transitions } = productAB;
-  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
-
-  return union({ start, accepting, transitions }, ...rest);
-}
-
-function intersection (a, ...args) {
-  if (args.length === 0) {
-    return a;
-  }
-
-  const [b, ...rest] = args;
-
-  const {
-    accepting: aAccepting
-  } = validatedAndProcessed(a);
-  const {
-    accepting: bAccepting
-  } = validatedAndProcessed(b);
-
-  const allAcceptingStates =
-    aAccepting.flatMap(
-      aAcceptingState => bAccepting.map(bAcceptingState => abToAB(aAcceptingState, bAcceptingState))
-    );
-
-  const productAB = product(a, b);
-  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
-
-  const { start, transitions } = productAB;
-  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
-
-  return intersection({ start, accepting, transitions }, ...rest);
-}
-
-function catenation (a, ...args) {
-  if (args.length === 0) {
-    return a;
-  }
-
-  const [b, ...rest] = args;
-
-  const ab = powerset(
-    reachableFromStart(
-      removeEpsilonTransitions(
-        epsilonJoin(a, b)
-      )
-    )
-  );
-
-  return catenation(ab, ...rest);
-}
-```
-
----
-
-### try this at home: use powerset to create union, instead of product
-
-Now that we have `powerset`, another formulation of `union` comes to mind. Once again, our two recognizers:
+Now that we have `powerset`, another formulation of `union` becomes easy. Once again, our two recognizers:
 
 <div class="mermaid">
   stateDiagram
@@ -1870,7 +1775,228 @@ By forking the start, we can run both recognizers at once. We'd need to simulate
 
 This is a nondeterministic finite-state recognizer that is the union of our two deterministic finite-state recognizers. If we had a function that could take any two recognizers and return a nondeterministic finite-state recognizer, we could then use `powerset` to turn it back into a deterministic finite-state recognizer.
 
-If you're reading this and want to get some practice writing functions that create recognizers, try writing this yourself. You may want to use `resolveConflictsWithNames`, and `powerset`, of course. When you're done, compare it to [this example solution](/assets/supplemental/fsa/08-epsilon-union.js).
+Here's `epsilonUnion`:
+
+```javascript
+function avoidReservedNames (reservedStates, second) {
+  const reservedStateSet = new Set(reservedStates);
+  const { stateSet: secondStatesSet } = validatedAndProcessed(second);
+
+  const nameMap = new Map();
+
+  // build the map to resolve overlaps with reserved names
+  for (const secondState of secondStatesSet) {
+    const match = /^(.*)-(\d+)$/.exec(secondState);
+    let base = match == null ? secondState : match[1];
+    let counter = match == null ? 1 : Number.parseInt(match[2], 10);
+    let resolved = secondState;
+    while (reservedStateSet.has(resolved)) {
+      resolved = `${base}-${++counter}`;
+    }
+    if (resolved !== secondState) {
+  		nameMap.set(secondState, resolved);
+    }
+    reservedStateSet.add(resolved);
+  }
+
+  // apply the built map
+  return renameStates(nameMap, second);
+}
+
+function epsilonUnion (first, second) {
+  const newStartState = 'empty';
+  const cleanFirst = avoidReservedNames([newStartState], first);
+  const cleanSecond = resolveConflicts(cleanFirst, avoidReservedNames([newStartState], second));
+
+  const concurrencyTransitions = [
+    { "from": newStartState, "to": cleanFirst.start },
+    { "from": newStartState, "to": cleanSecond.start },
+  ];
+
+  return {
+    start: newStartState,
+    accepting: cleanFirst.accepting.concat(cleanSecond.accepting),
+    transitions:
+      concurrencyTransitions
+    	.concat(cleanFirst.transitions)
+        .concat(cleanSecond.transitions)
+  };
+}
+```
+
+And we use it to build `union` from `powerset` much as we built `catenation` with `powerset`:
+
+```javascript
+function union (first, second) {
+  return powerset(
+    reachableFromStart(
+      removeEpsilonTransitions(
+        epsilonUnion(first, second)
+      )
+    )
+  );
+}
+```
+
+---
+
+### solving the fan-out problem
+
+```javascript
+const keyS =
+  (transitions, accepting) => {
+    const stringifiedTransitions =
+      transitions
+        .map(({ consume, to }) => `${consume}-->${to}`)
+        .sort()
+        .join(', ');
+    const acceptingSuffix = accepting ? '-->*' : '';
+
+    return `[${stringifiedTransitions}]${acceptingSuffix}`;
+  };
+
+function deDup (description) {
+  searchForDuplicate: while (true) {
+    let {
+      start,
+      transitions: allTransitions,
+      accepting,
+      states,
+      stateMap,
+      acceptingSet
+    } = validatedAndProcessed(description);
+
+    const statesByKey = new Map();
+
+    for (const state of states) {
+      const stateTransitions = stateMap.get(state) || [];
+      const isAccepting = acceptingSet.has(state);
+      const key = keyS(stateTransitions, isAccepting);
+
+      if (statesByKey.has(key)) {
+        // found a dup!
+        const originalState = statesByKey.get(key);
+
+      	console.log({ state, originalState, isAccepting })
+
+        if (start === state) {
+          // point start to original
+          start = originalState;
+        }
+
+        // remove duplicate's transitions
+        allTransitions = allTransitions.filter(
+          ({ from }) => from !== state
+        );
+
+        // rewire all former incoming transitions
+        allTransitions = allTransitions.map(
+          ({ from, consume, to }) => ({
+            from, consume, to: (to === state ? originalState : to)
+          })
+        );
+
+        if (isAccepting) {
+          // remove state from accepting
+          accepting = accepting.filter(s => s !== state)
+        }
+
+        // reset description
+        description = { start, transitions: allTransitions, accepting };
+
+        // and then start all over again
+        continue searchForDuplicate;
+      } else {
+        statesByKey.set(key, state);
+      }
+    }
+    // no duplicates found
+    break;
+  }
+
+  return description;
+}
+```
+
+---
+
+### the final union, intersection, and catenation
+
+Here are our `union`, `intersection`, and `catenation` functions, updated to take one or more arguments and using everything we have:
+
+```javascript
+function union (a, ...args) {
+  if (args.length === 0) {
+    return a;
+  }
+
+  const [b, ...rest] = args;
+
+  const ab =
+    deDup(
+      reachableFromStart(
+        powerset(
+          removeEpsilonTransitions(
+            epsilonUnion(a, b)
+          )
+        )
+      )
+    );
+
+  return union(ab, ...rest);
+}
+
+function intersection (a, ...args) {
+  if (args.length === 0) {
+    return a;
+  }
+
+  const [b, ...rest] = args;
+
+  const {
+    accepting: aAccepting
+  } = validatedAndProcessed(a);
+  const {
+    accepting: bAccepting
+  } = validatedAndProcessed(b);
+
+  const allAcceptingStates =
+    aAccepting.flatMap(
+      aAcceptingState => bAccepting.map(bAcceptingState => abToAB(aAcceptingState, bAcceptingState))
+    );
+
+  const productAB = product(a, b);
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
+
+  const { start, transitions } = productAB;
+  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
+
+  const ab = deDup({ start, accepting, transitions });
+
+  return intersection(ab, ...rest);
+}
+
+function catenation (a, ...args) {
+  if (args.length === 0) {
+    return a;
+  }
+
+  const [b, ...rest] = args;
+
+  const ab =
+    deDup(
+      powerset(
+        reachableFromStart(
+          removeEpsilonTransitions(
+            epsilonCatenate(a, b)
+          )
+        )
+      )
+    );
+
+  return catenation(ab, ...rest);
+}
+```
 
 ---
 
@@ -2284,7 +2410,7 @@ function powerset (description) {
 
 
 ```javascript
-const nondeterministic = removeEpsilonTransitions(epsilonJoin(zeroes, binary));
+const nondeterministic = removeEpsilonTransitions(epsilonCatenate(zeroes, binary));
 
 test(dfa(nondeterministic), [
   '', '0', '1', '00', '10', '11',

@@ -1,4 +1,4 @@
-function epsilonJoin (first, second) {
+function epsilonCatenate (first, second) {
   const unconflictedSecond =  resolveConflicts(first, second);
 
   const joinTransitions =

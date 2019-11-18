@@ -78,7 +78,7 @@ function catenation (a, ...args) {
   const ab = powerset(
     reachableFromStart(
       removeEpsilonTransitions(
-        epsilonJoin(a, b)
+        epsilonCatenate(a, b)
       )
     )
   );
