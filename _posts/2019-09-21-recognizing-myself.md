@@ -2364,11 +2364,11 @@ test(reg, ['', 'r', 're', 'reg', 'reggie', 'reginald'])
 
 ### kleene* and kleene+
 
-Another very common decorator is used when we want to have a recognizer recognize zero or more strings of symbols. This is called the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or "Kleene Star." It is also often called "zero-or-more."
+Another very common decorator is used when we want to have a recognizer recognize zero or more strings of symbols. This is called the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or `kleeneStar`. It is also often called "zero-or-more."
 
-One way to build `kleene*` is to start with `kleene+`, which takes a recognizer and returns a recognizer that returns one or more instances of a string.
+One way to build `kleeneStar` is to start with [kleene+](https://en.wikipedia.org/wiki/Kleene_star#Kleene_plus), or `kleenePlus`. `kleenePlus` takes a recognizer, and returns a recognizer that returns one or more instances of a string.
 
-Our strategy for building `kleene+` will be to take a recognizer, and then add  epsilon transitions between its accepting states and its start state. In effect, we will createa "loops" back to the start state from all accepting states.
+Our strategy for building `kleenePlus` will be to take a recognizer, and then add  epsilon transitions between its accepting states and its start state. In effect, we will createa "loops" back to the start state from all accepting states.
 
 For example, if we have:
 
@@ -2473,118 +2473,7 @@ kleeneStar(any('Aa'))
     }
 ```
 
----
-
-# FOR LATER
-
-
-
-### implementing zero-or-more
-
-With `EMPTY`, `symbol`, `catenate`, and `alternate` we can write recognizers that recognize any language that has a finite alphabet, and contains a finite number of sentences, each of which is of finite length.[^proof]
-
-[^proof]: To prove this, consider that given a finite set of sentences of finte length, we can construct a recognizer for each sentence using `symbol` and `catenate`, then we can use `alternate` to create a recognizer for the entire language.
-
-In order to recognize some sentences of infinite length, we need something more than `EMPTY`, `symbol`, `catenate`, and `alternate`. The original tool for recognizing strings of infinite length is formally called the [Kleene star]. We'll call it `zeroOrMore`, because that is the way most programmers describe its behaviour.
-
-[Kleene star]: https://en.wikipedia.org/wiki/Kleene_star
-
-Consider this description of a recognizer that recognizes a single zero. We could write it out by hand, of course, or generate it with `symbol("0")`:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|0|0
-    0-.->|end|recognized(recognized)
-</div>
-
-We can transform it into a recognizer for zero or one zeroes allowing it to recognize the empty string. This is the same result that we would get from `union(EMPTY, symbol("0)"))`:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|0|0
-    start-.->recognized(recognized)
-    0-.->|end|recognized
-</div>
-
-Now what happens if we make the following change: After recognizing a zero, what if we start all over again, rather than waiting for the string to end?
-
-<div class="mermaid">
-  graph LR
-    start-.->recognized(recognized)
-    start(start)-->|0|0
-    0-->start
-</div>
-
-This recognizes *zero or more* zeroes. And we can write a function to perform this transformation:
-
-```javascript
-function zeroOrMore (description) {
-  const { start, accepting, transitions } = description;
-
-  const loopsBackToStart = ({
-    start,
-    accepting,
-    transitions:
-      transitions.map(
-        ({ from, consume, pop, to, push }) => {
-          const transition = { from };
-          if (pop != null) transition.pop = pop;
-          if (push != null) transition.push = push;
-          if (to === accepting && consume === "") {
-            transition.to = start
-          } else {
-            if (consume != null) transition.consume = consume;
-            if (to != null) transition.to = to;
-          }
-
-          return transition;
-        }
-      )
-  });
-
-  return union(EMPTY, loopsBackToStart);
-}
-```
-
-Here it is in use to define `binary` using only the tools we've created:
-
-```javascript
-const binary = union(
-  symbol("0"),
-  catenation(
-    symbol("1"),
-    zeroOrMore(
-      union(symbol("0"), symbol("1"))
-    )
-  )
-);
-
-test(binary, [
-  '', '0', '1', '00', '01', '10', '11',
-  '000', '001', '010', '011', '100',
-  '101', '110', '111',
-  '10100011011000001010011100101110111'
-]);
-  //=>
-    '' => false
-    '0' => true
-    '1' => true
-    '00' => false
-    '01' => false
-    '10' => true
-    '11' => true
-    '000' => false
-    '001' => false
-    '010' => false
-    '011' => false
-    '100' => true
-    '101' => true
-    '110' => true
-    '111' => true
-    '10100011011000001010011100101110111' => true
-```
-
-Notice that `zeroOrMore(union(symbol("0"), symbol("1")))` recognizes the empty string, or a string of any length of zeroes and/or ones.
+<!-- UNFINISHED WORK STARTS HERE -->
 
 ---
 
@@ -2613,7 +2502,7 @@ A language is regular if and only if it conforms with the above rules. And since
 
 But wait, there's more!
 
-A formal *regular expression* is an expression formed by combining `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`. Of coure, computer scientists prefer mathematical symbols to make regular expressions, but for our purposes, this is both JavaScript and a regular expression:
+A formal *regular expression* is an expression formed by combining `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`. Of course, computer scientists prefer mathematical symbols to make regular expressions, but for our purposes, this is both JavaScript and a regular expression:
 
 ```javascript
 union(
