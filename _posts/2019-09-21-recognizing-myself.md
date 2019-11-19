@@ -2501,11 +2501,11 @@ We'll start our work by considering this: Our recognizers fail to recognize a se
 
 Let's eliminate the second possibility. Given a recognizer that halts for some input, can we make it never halt? The answer in theory is **no**, because there are an infinite number of symbols that might be passed to a recognizer, and there is no way for our recognizers to encode an infinite number of transitions, one for each possible symbol.
 
-But in practice, we can say that given a recognizer `x`, and some alphabet `A`, we can return a version of `x` that never halts.
+But in practice, we can say that given a recognizer `x`, and some alphabet `A`, we can return a version of `x` that never halts, _provided that every symbol in the input belongs to `A`_.
 
-Our method is simply to create a state for `halted`, and make sure that every state the recognizer has--including the new `halted` state--has transitions to `halted` for any symbols not already consumed.
+Our method is simply to create a state for `halted`, and make sure that every state the recognizer has--including the new `halted` state--has transitions to `halted` for any symbols belonging to `A`, but not already consumed.
 
-For example, given the recognizer `EMPTY` and the alphabet `1234567890` (the numerals), we would transform:
+For example, given the recognizer `EMPTY` and the `A` consisting of teh symbols `1234567890` (the numerals), we would transform:
 
 <div class="mermaid">
   stateDiagram
@@ -2551,7 +2551,7 @@ We would transform it into:
     notZero --> [*]
 </div>
 
-"Unorthodox, but effective," as Williams would say. Here's a decorator that turns a description of a recognizer, into a descripttion of a recognizer that never halts:
+"Unorthodox, but effective," as Williams would say. Here's a decorator that turns a description of a recognizer, into a description of a recognizer that never halts given a sentance in its alphabet:
 
 ```javascript
 function nonhalting (alphabet, description) {
@@ -2678,17 +2678,20 @@ function complementation (alphabet, description) {
 
 const numberButNotBinary = complementation('1234567890', binaryNumber)
 
-test(numberButNotBinary, ['', '0', '1', '01', '10', 'two'])
+test(numberButNotBinary, ['', '0', '1', '01', '10', '2', 'two'])
   //=>
     '' => true
     '0' => false
     '1' => false
     '01' => true
     '10' => false
+    '2' => true
     'two' => false
 ```
 
-Note that we do not have a perfect or "ideal" `complementation`, we have "complementation over the alphabet `1234567890`." But that is good enough for our purposes.
+Note that we do not have a perfect or "ideal" `complementation`, we have "complementation over the alphabet `1234567890`." You can see, for example, that it fails to recognize `'two'`, because letters are not part of its alphabet.
+
+But as we will see, complementation over a declared alphabet is good enough for our purposes.
 
 <!-- UNFINISHED WORK STARTS HERE -->
 
