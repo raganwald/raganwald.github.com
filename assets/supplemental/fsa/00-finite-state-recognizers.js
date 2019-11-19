@@ -747,3 +747,225 @@ function epsilonUnion (first, second) {
 
 // 09-merge-equivalent-states.js
 
+const keyS =
+  (transitions, accepting) => {
+    const stringifiedTransitions =
+      transitions
+        .map(({ consume, to }) => `${consume}-->${to}`)
+        .sort()
+        .join(', ');
+    const acceptingSuffix = accepting ? '-->*' : '';
+
+    return `[${stringifiedTransitions}]${acceptingSuffix}`;
+  };
+
+function mergeEquivalentStates (description) {
+  searchForDuplicate: while (true) {
+    let {
+      start,
+      transitions: allTransitions,
+      accepting,
+      states,
+      stateMap,
+      acceptingSet
+    } = validatedAndProcessed(description);
+
+    const statesByKey = new Map();
+
+    for (const state of states) {
+      const stateTransitions = stateMap.get(state) || [];
+      const isAccepting = acceptingSet.has(state);
+      const key = keyS(stateTransitions, isAccepting);
+
+      if (statesByKey.has(key)) {
+        // found a dup!
+        const originalState = statesByKey.get(key);
+
+      	console.log({ state, originalState, isAccepting })
+
+        if (start === state) {
+          // point start to original
+          start = originalState;
+        }
+
+        // remove duplicate's transitions
+        allTransitions = allTransitions.filter(
+          ({ from }) => from !== state
+        );
+
+        // rewire all former incoming transitions
+        allTransitions = allTransitions.map(
+          ({ from, consume, to }) => ({
+            from, consume, to: (to === state ? originalState : to)
+          })
+        );
+
+        if (isAccepting) {
+          // remove state from accepting
+          accepting = accepting.filter(s => s !== state)
+        }
+
+        // reset description
+        description = { start, transitions: allTransitions, accepting };
+
+        // and then start all over again
+        continue searchForDuplicate;
+      } else {
+        statesByKey.set(key, state);
+      }
+    }
+    // no duplicates found
+    break;
+  }
+
+  return description;
+}
+
+// 10-nary.js
+
+function union (a, ...args) {
+  if (args.length === 0) {
+    return a;
+  }
+
+  const [b, ...rest] = args;
+
+  const ab =
+    mergeEquivalentStates(
+      reachableFromStart(
+        powerset(
+          removeEpsilonTransitions(
+            epsilonUnion(a, b)
+          )
+        )
+      )
+    );
+
+  return union(ab, ...rest);
+}
+
+function intersection (a, ...args) {
+  if (args.length === 0) {
+    return a;
+  }
+
+  const [b, ...rest] = args;
+
+  const {
+    accepting: aAccepting
+  } = validatedAndProcessed(a);
+  const {
+    accepting: bAccepting
+  } = validatedAndProcessed(b);
+
+  const allAcceptingStates =
+    aAccepting.flatMap(
+      aAcceptingState => bAccepting.map(bAcceptingState => abToAB(aAcceptingState, bAcceptingState))
+    );
+
+  const productAB = product(a, b);
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
+
+  const { start, transitions } = productAB;
+  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
+
+  const ab = mergeEquivalentStates({ start, accepting, transitions });
+
+  return intersection(ab, ...rest);
+}
+
+function catenation (a, ...args) {
+  if (args.length === 0) {
+    return a;
+  }
+
+  const [b, ...rest] = args;
+
+  const ab =
+    mergeEquivalentStates(
+      powerset(
+        reachableFromStart(
+          removeEpsilonTransitions(
+            epsilonCatenate(a, b)
+          )
+        )
+      )
+    );
+
+  return catenation(ab, ...rest);
+}
+
+// 11-building-blocks.js
+
+const EMPTY = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": ["empty"]
+};
+
+const FAIL = {
+  "start": "failure",
+  "transitions": [],
+  "accepting": []
+};
+
+const ALPHANUMERIC =
+  'abcdefghijklmnopqrstuvwxyz' +
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
+  '1234567890';
+
+function just1 (symbol) {
+  return {
+    "start": "empty",
+    "transitions": [
+      { "from": "empty", "consume": symbol, "to": "recognized" }
+    ],
+    "accepting": ["recognized"]
+  };
+}
+
+function just (str = "") {
+  const recognizers = str.split('').map(just1);
+
+  return catenation(EMPTY, ...recognizers);
+}
+
+function any (str = "") {
+  const recognizers = str.split('').map(just1);
+
+  return union(FAIL, ...recognizers);
+}
+
+// 12-decorators.js
+
+const optional =
+  recognizer => union(EMPTY, recognizer);
+
+function kleenePlus (description) {
+  const { start, transitions, accepting } = avoidReservedNames(['empty'], description);
+
+  const looped = {
+    start: "empty",
+    transitions:
+    	transitions.concat(
+          accepting.map(
+            state => ({ from: state, to: start })
+          )
+        ).concat([
+          { "from": "empty", "to": start }
+        ]),
+    accepting
+  };
+
+  return mergeEquivalentStates(
+    powerset(
+      removeEpsilonTransitions(
+        looped
+      )
+    )
+  );
+}
+
+function kleeneStar (description) {
+  return optional(kleenePlus(description));
+}
