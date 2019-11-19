@@ -154,6 +154,7 @@ Now that we have established that finite-state automata can do much more than "j
   - [computing the powerset of a nondeterministic finite-state recognizer](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer)
   - [catenation without the catch, and an observation](#catenation-without-the-catch-and-an-observation)
   - [from powerset to union](#from-powerset-to-union)
+  - [solving the fan-out problem](#solving-the-fan-out-problem)
   - [the final union, intersection, and catenation](#the-final-union-intersection-and-catenation)
 
 ### [Building Blocks and Decorators](#building-blocks-and-decorators-1)
@@ -917,9 +918,18 @@ Which is:
     haltedAndOne-->[*]
 </div>
 
-It works perfectly well, however it has an extra, unecessary state: Both `zeroAndhalted` and `haltedAndOne` are equivalent states. This is a consequence of the way `product` replicates all of the possible outcomes.
+It works perfectly well, however it has an extra, unecessary state: Both `zeroAndhalted` and `haltedAndOne` are equivalent states.
 
-However, for practical purposes a smaller number of accepting states is better, as is a smaller number of states in general. We'll move on without making any changes at the moment, howevee later we will revisit this and look at how we could optimize finite-state machines by eliminating duplicate states.
+What do we mean by "equivalent?" Although they have different names, and different incoming transitions, two states are equivalent if and only if:
+
+1. They have the exact same set of outgoing transitions (including transitions back to themselves), and;
+2. Either they are both acceptimng states, or neither is an accepting state.
+
+Both `zeroAndHalted` and `haltedAndOne` have no outgoing transitions, and they ar eboth accepting states, therefore they are equivalent states.
+
+Because of the way `product` replicates all of the possible outcomes, it tends to generate equivalent states. This has no effect on the function of the finite-state recognizer, but for practical purposes a smaller number of accepting states is better, as is a smaller number of states in general.
+
+Ideally, we could automatically detect equivalent states and "merge" them. If two states are equivalent, we can always get rid of one of them and redirect all transitions to the remaining state.
 
 With such an optimization, we could take the union of those two recognizers and end up with:
 
@@ -929,6 +939,8 @@ With such an optimization, we could take the union of those two recognizers and 
     emptyAndEmpty--> zeroAndHaltedAndHaltedAndOne : 0,1
     zeroAndHaltedAndHaltedAndOne-->[*]
 </div>
+
+We'll move on without making any changes at the moment, howevee later we will revisit this and look at how we could optimize finite-state machines by eliminating duplicate states.
 
 ---
 
@@ -1239,7 +1251,7 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
         );
 
   const epsilonQueue = [...epsilonMap.entries()];
-  const epsilonFromStatesSet = new Set(epsilonMap.values());
+  const epsilonFromStatesSet = new Set(epsilonMap.keys());
 
   while (epsilonQueue.length > 0) {
     let [epsilonFrom, epsilonToSet] = epsilonQueue.shift();
@@ -1842,6 +1854,66 @@ function union (first, second) {
 
 ### solving the fan-out problem
 
+[Recall](#products-fan-out-problem) that when we take the union of two recognizers, we often end up with equivalent states, especially equivalent accepting states.
+
+For example:
+
+```javascript
+const A = {
+  "start": "empty",
+  "transitions": [
+    { "from": "empty", "consume": "A", "to": "recognized" }
+  ],
+  "accepting": ["recognized"]
+};
+
+const a = {
+  "start": "empty",
+  "transitions": [
+    { "from": "empty", "consume": "a", "to": "recognized" }
+  ],
+  "accepting": ["recognized"]
+};
+
+union(A, a)
+  //=>
+    {
+      "start": "empty",
+      "transitions": [
+        { "from": "empty", "consume": "A", "to": "recognized" },
+        { "from": "empty", "consume": "a", "to": "recognized-2" }
+      ],
+      "accepting": ["recognized", "recognized-2"]
+    }
+```
+
+`union(A, a)` has two equivalent accepting states, `recognized` and `recognized-2`. This would be a minor distraction, but consider:
+
+```javascript
+catenation(union(A, a), union(A, a), union(A, a));
+  //=>
+    {
+      "start": "empty",
+      "accepting": [ "recognized-5", "recognized-6" ],
+      "transitions": [
+        { "from": "empty", "consume": "A", "to": "recognized" },
+        { "from": "empty", "consume": "a", "to": "recognized-2" },
+        { "from": "recognized", "consume": "A", "to": "recognized-3" },
+        { "from": "recognized", "consume": "a", "to": "recognized-4" },
+        { "from": "recognized-2", "consume": "A", "to": "recognized-3" },
+        { "from": "recognized-2", "consume": "a", "to": "recognized-4" },
+        { "from": "recognized-3", "consume": "A", "to": "recognized-5" },
+        { "from": "recognized-3", "consume": "a", "to": "recognized-6" },
+        { "from": "recognized-4", "consume": "A", "to": "recognized-5" },
+        { "from": "recognized-4", "consume": "a", "to": "recognized-6" }
+      ]
+    }
+```
+
+The extra accepting states cause additional duplication with every recognizer catenated together. This can get very expensive, very quickly.
+
+As discussed [above](#products-fan-out-problem), what we want to do is merge equivalent states. Here's one function that repeatedly merges states until there are no more mergeable states:
+
 ```javascript
 const keyS =
   (transitions, accepting) => {
@@ -1918,11 +1990,59 @@ function deDup (description) {
 }
 ```
 
+Armed with this, we can enhance our `union` function:
+
+```javascript
+function union (first, second) {
+  return deDup(
+    powerset(
+      reachableFromStart(
+        removeEpsilonTransitions(
+          epsilonUnion(first, second)
+        )
+      )
+    )
+  );
+}
+```
+
+And now:
+
+```javascript
+union(A, a)
+  //=>
+    {
+      "start": "empty"
+      "transitions": [
+        { "from": "empty", "consume": "A", "to": "recognized" },
+        { "from": "empty", "consume": "a", "to": "recognized" }
+      ],
+      "accepting": [ "recognized" ],
+    }
+
+catenation(union(A, a), union(A, a), union(A, a));
+  //=>
+    {
+      "start": "empty"
+      "transitions": [
+        { "from": "empty", "consume": "A", "to": "recognized" },
+        { "from": "empty", "consume": "a", "to": "recognized" },
+        { "from": "recognized", "consume": "A", "to": "recognized-2" },
+        { "from": "recognized", "consume": "a", "to": "recognized-2" },
+        { "from": "recognized-2", "consume": "A", "to": "recognized-3" },
+        { "from": "recognized-2", "consume": "a", "to": "recognized-3" }
+      ],
+      "accepting": [ "recognized-3" ],
+    }
+```
+
+Our enhanced `union` creates the minimum number of transitions and states, and thanks to merging the equivalent accepting states, the number of states and transitions in catenated recognizers grows linearly.
+
 ---
 
 ### the final union, intersection, and catenation
 
-Here are our `union`, `intersection`, and `catenation` functions, updated to take one or more arguments and using everything we have:
+Here are our `union`, `intersection`, and `catenation` functions, updated to take one or more arguments and using everything we have so far:
 
 ```javascript
 function union (a, ...args) {
@@ -2180,32 +2300,28 @@ const ALPHANUMERIC =
 
 const dot = any(ALPHANUMERIC);
 
-const threeLettersLong = catenation(dot, dot, dot);
+const rSomethingG = catenation(any('Rr'), dot, any('Gg'));
 
-test(threeLettersLong, [
-  '', 'r', 're', 'Reg', 'TLA',
-  'AST', 'foo', 'bar', 'baz', 'bash']
+test(rSomethingG, [
+  '', 'r', 're', 'Reg', 'Rog', 'RYG', 'Rej']
 )
   //=>
     '' => false
     'r' => false
     're' => false
     'Reg' => true
-    'TLA' => true
-    'AST' => true
-    'foo' => true
-    'bar' => true
-    'baz' => true
-    'bash' => false
+    'Rog' => true
+    'RYG' => true
+    'Rej' => false
 ```
 
-We are not kidding about the size. `threeLettersLong` has 7,750 transitions!
+And now we turn our attention to _decorating_ finite-state recognizers.
 
 ---
 
 ### optional
 
-And now we turn our attention to _decorating_ finite-state recognizers. In programming jargon, a decorator is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining somethinmg of its orginal character.
+In programming jargon, a decorator is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining somethinmg of its orginal character.
 
 For example, `negation` is a function that decorates a boolean function by negating its result:
 
@@ -2226,380 +2342,147 @@ const isntWeekday = negation(isWeekday);
 
 A decorator for functions takes a function as an argument and returns returns a new function with some relationship to the original function's semantics. A decorator for finite-state recognizers takes the description of a finite-state recognzier and returns as its argument a new finite-state recognizer with some relationship to the original finite-state recognizer's semantics.
 
-There is such a thing as the negation of a finite-state recognizer, it is normally called `complementation`, but it is a bt of a handful, so let's look at an easier example to begin with:
+There is such a thing as the negation of a finite-state recognizer, it is normally called `complementation`, but it is a bit of a handful, so let's look at an easier example to begin with:
 
 ```javascript
 const optional =
   recognizer => union(EMPTY, recognizer);
+
+const reg = catenation(
+  just('reg'),
+  optional(just('inald'))
+)
+
+test(reg, ['', 'r', 're', 'reg', 'reggie', 'reginald'])
+  //=>
+    '' => false
+    'r' => false
+    're' => false
+    'reg' => true
+    'reggie' => false
+    'reginald' => true
+```
+
+`optional` decorates a recognizer by making it, well, optional. It is often called "zero-or-one," and in regexen it is represented by placing a `?` after the pattern you wish to be optional, e.g. `/reg(?:inald)?/`.
+
+---
+
+### kleene*
+
+Another very common decorator is used when we want to have a recognizer recognize zero or more strings of symbols. This is called the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or "Kleene Star." It is often called "zero-or-more."
+
+To build the kleene*, we start with kleene+, which takes a recognizer and returns a recognizer that returns one or more instances of a string. Our strategy will be to take the recognizer, and then add some epsilon transitions between its accepting states and its start state. In effect, this is creating a "loop" back to the beginning.
+
+For example, if we have:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : A, a
+    recognized-->[*]
+</div>
+
+We will turn it into:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : A, a
+    recognized-->empty
+    recognized-->[*]
+</div>
+
+This will produce some non-determinism, so we'll remove the epsilon transitions, take the powerset of the result, and remove equivalent states:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : A, a
+    recognized-->recognized : A, a
+    recognized-->[*]
+</div>
+
+The Javascript is slightly more complicated, because we have to account for recognizers that might already loop back to their start state. So we actually start by making a loop that looks like this:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->empty2
+    empty2-->recognized : A, a
+    recognized-->empty
+    recognized-->[*]
+</div>
+
+Here's the full code:
+
+```javascript
+function kleenePlus (description) {
+  const newStart = "empty";
+  const { start: oldStart, transitions, accepting } =
+        avoidReservedNames([newStart], description);
+
+  const looped = {
+    start: newStart,
+    transitions:
+    	transitions.concat(
+          accepting.map(
+            state => ({ from: state, to: newStart })
+          )
+        ).concat([
+          { "from": newStart, "to": oldStart }
+        ]),
+    accepting
+  };
+
+  return deDup(
+    powerset(
+      removeEpsilonTransitions(
+        looped
+      )
+    )
+  );
+}
+
+kleenePlus(any('Aa'))
+  //=>
+    {
+      "start": "empty-2",
+      "transitions": [
+        { "from": "empty-2", "consume": "A", "to": "recognized" },
+        { "from": "empty-2", "consume": "a", "to": "recognized" },
+        { "from": "recognized", "consume": "A", "to": "recognized" },
+        { "from": "recognized", "consume": "a", "to": "recognized" }
+      ],
+      "accepting": ["recognized"]
+    }
+```
+
+Armed with `kleenePlus`, we can make `kleeneStar` with `optional`:
+
+```javascript
+function kleeneStar (description) {
+  return optional(kleenePlus(description));
+}
+
+kleeneStar(any('Aa'))
+  //=>
+    {
+      "start": "empty-2",
+      "transitions": [
+        { "from": "empty-2", "consume": "A", "to": "recognized" },
+        { "from": "empty-2", "consume": "a", "to": "recognized" },
+        { "from": "recognized", "consume": "A", "to": "recognized" },
+        { "from": "recognized", "consume": "a", "to": "recognized" }
+      ],
+      "accepting": ["recognized"]
+    }
 ```
 
 ---
 
 # FOR LATER
 
-```javascript
-{
-  "start": "empty",
-  "accepting": [ "zeroes" ],
-  "transitions": [
-    { "from": "empty", "consume": "0", "to": "zeroes" },
-    { "from": "zeroes", "consume": "0", "to": "zeroes" }
-  ]
-}
-```
 
-and:
-
-```javascript
-{
-  "start": "start",
-  "accepting": [ "zero", "notZero" ],
-  "transitions": [
-    { "from": "start", "consume": "0", "to": "zero" },
-    { "from": "start", "consume": "1", "to": "notZero" },
-    { "from": "notZero", "consume": "0", "to": "notZero" },
-    { "from": "notZero", "consume": "1", "to": "notZero" }
-  ]
-}
-
-```javascript
-function isDeterministic (description) {
-  const { stateMap } = validatedAndProcessed(description, true);
-
-  const transitionsGroupedByFromState = [...stateMap.values()];
-
-  const consumptions =
-    transitionsGroupedByFromState
-      .map(
-        transitions => transitions.map( ({ consume }) => consume )
-      );
-
-  return consumptions.every(
-    consumes => consumes.length === new Set(consumes).size
-  );
-}
-
-function parenthesizedStates (description) {
-  const { states } = validatedAndProcessed(description, true);
-
-  // produces a map from each state's name to the name in parentheses,
-  // e.g. 'empty' => '(empty)'
-  const parenthesizeMap =
-    states
-      .reduce(
-        (acc, s) => (acc.set(s, `(${s})`), acc),
-        new Map()
-      );
-
-  // rename all the states
-  return renameStates(parenthesizeMap, description);
-}
-
-function powerset (description) {
-  // optional, but it avoids a lot of excess (())
-  if (isDeterministic(description)) {
-    return description;
-  }
-
-  const renamedDescription = parenthesizedStates(description);
-
-  const {
-    start: nfaStart,
-    acceptingSet: nfaAcceptingSet,
-    stateMap: nfaStateMap
-  } = validatedAndProcessed(renamedDescription, true);
-
-  // the final set of accepting states
-  const dfaAcceptingSet = new Set();
-
-  // R is the work "remaining" to be analyzed
-  // organized as a map from a name to a set of states.
-  // initialized with a map from the start state's
-  // name to a degenerate set containing only the start state
-  const R = new Map([
-    [nfaStart, new Set([nfaStart])]
-  ]);
-
-  // T is a collection of states already analyzed
-  // it is a map from the state name to the transitions
-  // from that state
-  const T = new Map();
-
-  while (R.size > 0) {
-    const [[stateName, stateSet]] = R.entries();
-    R.delete(stateName);
-
-    // get the aggregate transitions across all states
-    // in the set
-    const aggregateTransitions =
-      [...stateSet].flatMap(s => nfaStateMap.get(s) || []);
-
-    // a map from a symbol consumed to the set of
-    // destination states
-    const symbolToStates =
-      aggregateTransitions
-        .reduce(
-          (acc, { consume, to }) => {
-            const toStates = acc.has(consume) ? acc.get(consume) : new Set();
-
-            toStates.add(to);
-            acc.set(consume, toStates);
-            return acc;
-          },
-          new Map()
-        );
-
-    const dfaTransitions = [];
-
-  	for (const [consume, toStates] of symbolToStates.entries()) {
-      const toStatesName = [...toStates].sort().join('');
-
-      dfaTransitions.push({ from: stateName, consume, to: toStatesName });
-
-      const hasBeenDone = T.has(toStatesName);
-      const isInRemainingQueue = R.has(toStatesName)
-
-      if (!hasBeenDone && !isInRemainingQueue) {
-        R.set(toStatesName, toStates);
-      }
-    }
-
-    T.set(stateName, dfaTransitions);
-
-    const anyStateIsAccepting =
-      [...stateSet].some(s => nfaAcceptingSet.has(s));
-
-    if (anyStateIsAccepting) {
-      dfaAcceptingSet.add(stateName);
-    }
-
-  }
-
-  return {
-    start: nfaStart,
-    accepting: [...dfaAcceptingSet],
-    transitions:
-      [...T.values()]
-        .flatMap(tt => tt)
-  };
-}
-```
-
-```json
-{
-  "start": "(empty)",
-  "accepting": [
-    "(notZero)(ones)",
-    "(zero)",
-    "(notZero)(zero)",
-    "(notZero)"
-  ],
-  "transitions": [
-    { "from": "(empty)", "consume": "1", "to": "(ones)" },
-    { "from": "(ones)", "consume": "1", "to": "(notZero)(ones)" },
-    { "from": "(ones)", "consume": "0", "to": "(zero)" },
-    { "from": "(notZero)(ones)", "consume": "1", "to": "(notZero)(ones)" },
-    { "from": "(notZero)(ones)", "consume": "0", "to": "(notZero)(zero)" },
-    { "from": "(notZero)(zero)", "consume": "0", "to": "(notZero)" },
-    { "from": "(notZero)(zero)", "consume": "1", "to": "(notZero)" },
-    { "from": "(notZero)", "consume": "0", "to": "(notZero)" },
-    { "from": "(notZero)", "consume": "1", "to": "(notZero)" }
-  ]
-}
-```
-
-
-```javascript
-const nondeterministic = removeEpsilonTransitions(epsilonCatenate(zeroes, binary));
-
-test(dfa(nondeterministic), [
-  '', '0', '1', '00', '10', '11',
-  '001', '010', '011', '100', '101', '111'
-])
-  //=>
-    '' => false
-    '0' => false
-    '1' => false
-    '00' => false
-    '10' => true
-    '11' => true
-    '001' => false
-    '010' => false
-    '011' => false
-    '100' => false
-    '101' => false
-    '111' => true
-```
-
-<!-- UNFINISHED STUFF BELOW -->
-
----
-
-### what we have learned from catenating descriptions
-
-Now that we have written `catenation` for descriptions, we can reason as follows:[^reason]
-
-- A finite-state automaton can recognize any regular language.
-- The catenation of two finite-state recognizers is a finite-state recognizer.
-- Therefore, a language defined by catenating two regular languages, will be regular.
-
-[^reason]: Well, actually, this is not strictly true. Building a catenation function certainly gives us confidence that a language formed by catenating the rules for two regular language ought to be regular, but it is always possible that our algorithm has a bug and cannot correctly catenate any two finite-state recognizers. Finding such a bug would be akin to finding a counter-example to something thought to have been proven, or a conjecture thought to be true, but unproven. This is the nature of "experimental computing science," it is always easier to demonstrate that certain things are impossible--by finding just one counter-example--than to prove that no counter-examples exist.
-
-Likewise, we can reason:
-
-- A pushdown automaton can recognize any context-free language.
-- The catenation of two pushdown automaton recognizers is a pushdown automaton recognizer.
-- Therefore, a language defined by catenating two context-free languages, will be context-free.
-
-As noted, we could not have come to these conclusions from functional composition alone. But we're leaving something out. What about catenating any two deterministic pushdown automata? Is the result also a deterministic pushdown automaton?
-
-Recall our balanced parentheses recognizer:
-
-```javascript
-const balanced = {
-  "start": "start",
-  "accepting": "accepting",
-  "transitions": [
-    { "from": "start", "push": "⚓︎", "to": "read" },
-    { "from": "read", "consume": "(", "push": "(", "to": "read" },
-    { "from": "read", "consume": ")", "pop": "(", "to": "read" },
-    { "from": "read", "consume": "[", "push": "[", "to": "read" },
-    { "from": "read", "consume": "]", "pop": "[", "to": "read" },
-    { "from": "read", "consume": "{", "push": "{", "to": "read" },
-    { "from": "read", "consume": "}", "pop": "{", "to": "read" },
-    { "from": "read", "consume": "", "pop": "⚓︎", "to": "accepting" }
-  ]
-};
-```
-
-It is clearly deterministic, there is only one unambiguous transition that cana be performed at any time. Now, here is a recognizer that recognizes a single pair of parentheses, it is very obviously a finite-state automaton:
-
-```javascript
-const pair = {
-  "start": "start",
-  "accepting": "accepting",
-  "transitions": [
-    { "from": "start", "consume": "(", "to": "closing" },
-    { "from": "closing", "consume": ")", "to": "closed" },
-    { "from": "closed", "consume": "", "to": "accepting" }
-  ]
-};
-
-test(pair, [
-  '', '(', ')', '()', ')(', '())'
-]);
-  //=>
-    '' => false
-    '(' => false
-    ')' => false
-    '()' => true
-    ')(' => false
-    '())' => false
-```
-
-What happens when we catenate them?
-
-```javascript
-catenation(balanced, pair)
-  //=>
-    {
-      "start": "start",
-      "accepting": "accepting-2",
-      "transitions": [
-        { "from": "start", "to": "read", "push": "⚓︎" },
-        { "from": "read", "consume": "(", "to": "read", "push": "(" },
-        { "from": "read", "consume": ")", "pop": "(", "to": "read" },
-        { "from": "read", "consume": "[", "to": "read", "push": "[" },
-        { "from": "read", "consume": "]", "pop": "[", "to": "read" },
-        { "from": "read", "consume": "{", "to": "read", "push": "{" },
-        { "from": "read", "consume": "}", "pop": "{", "to": "read" },
-        { "from": "read", "pop": "⚓︎", "to": "start-2" },
-        { "from": "start-2", "consume": "(", "to": "closing" },
-        { "from": "closing", "consume": ")", "to": "closed" },
-        { "from": "closed", "consume": "", "to": "accepting-2" }
-      ]
-    }
-
-test(catenation(balanced, pair), [
-  '', '()', '()()'
-]);
-  //=>
-    '' => false
-    '()' => true
-    '()()' => true
-```
-
-Our `catenation` function has transformed a deterministic pushdown automaton into a pushdown automaton.  How do we know this? Consider the fact that it recognized both `()` and `()()`. To recognize `()`, it transitioned from `read` to `start-2` while popping `⚓︎`, even though it could also have consumed `(` and pushed it onto the stack.
-
-But to recognize `()()`, it consumed the first `(` and pushed it onto the stack, but not the second `(`. This is only possible in a Pushdown Automaton. So our `catenation` function doesn't tell us anything about whether two deterministic pushdown automata can always be catenated in such a way to produce a deterministic pushdown automaton.
-
-If it is possible, our `catenation` function doesn't tell us that it's possible. Mind you, this reasoning doesn't prove that it's impossible. We just cannot tell from this particular `catenation` function alone.
-
----
-
-## Building Language Recognizers
-
-`catenation` and `union` are binary combinators: They compose a new description, given two existing descriptions. But we don't have any functions for making descriptions from scratch. Up to here, we have always written such descriptions by hand.
-
-But now we'll turn our attention to making new descriptions from scratch. If we have a way to manufacture new descriptions, and ways to combine existing descriptions, we have a way to build recognizers in a more structured fashion than coding finite-state automata by hand.
-
-That allows us to reason more easily about what our recognizers can and cannot recognize.
-
-### recognizing emptiness
-
-The simplest possible recognizer is one that doesn't recognize anything at all. It is called `EMPTY`, because as we'll see below, it recognizes the "empty language," the language that has no sentences:
-
-<div class="mermaid">
-  graph LR
-    start(start)-.->|end|recognized(recognized)
-</div>
-
-And here's our implementation:
-
-```javascript
-const EMPTY = {
-  start: "start",
-  accepting: "accepting",
-  transitions: [{ from: "start", consume: "", to: "accepting" }]
-};
-
-test(EMPTY, [
-  '', 'r', 'reg'
-]);
-  //=>
-    '' => true
-    'r' => false
-    'reg' => false
-```
-
-It does just one thing, but as we'll see shortly, that thoing is essential. `EMPTY` is also useful for creating convenience functions like `zeroOrOne`, but let's not get ahead of ourselves.
-
-### recognizing symbols
-
-Most of the time, we're interested in recognizing strings of characters, called "symbols" in formal computer science. To get started recognizing strings, we need to be able to recognize single symbols.
-
-Like this:
-
-```javascript
-function symbol (s) {
-  return {
-    start: "start",
-    accepting: "accepting",
-    transitions: [
-      { from: "start", consume: s, to: s },
-      { from: s, consume: "", to: "accepting" }
-    ]
-  };
-}
-```
-
-With `symbol`, we can manufacture a description of a recognizer that recognizes any one symbol. For example, `symbol("r")` gives us:
-
-<div class="mermaid">
-  graph LR
-    start(start)-->|r|r
-    r-.->|end|recognized(recognized)
-</div>
 
 ### implementing zero-or-more
 

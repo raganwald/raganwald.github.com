@@ -37,7 +37,7 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
         );
 
   const epsilonQueue = [...epsilonMap.entries()];
-  const epsilonFromStatesSet = new Set(epsilonMap.values());
+  const epsilonFromStatesSet = new Set(epsilonMap.keys());
 
   while (epsilonQueue.length > 0) {
     let [epsilonFrom, epsilonToSet] = epsilonQueue.shift();
