@@ -699,7 +699,7 @@ Of course, only two of these (`'zero'` and `''`, `''` and `'one'`) are reachable
 Here's a union function that makes use of `product` and some of the helpers we've already written:
 
 ```javascript
-function union (a, b) {
+function productUnion (a, b) {
   const {
     states: aDeclaredStates,
     accepting: aAccepting
@@ -739,7 +739,7 @@ function union (a, b) {
 And when we try it:
 
 ```javascript
-union(a, b)
+productUnion(a, b)
   //=>
     {
       "start": "(emptyA)(emptyB)",
@@ -760,7 +760,7 @@ union(a, b)
 The accepting set for the _Intersection_ of two recognizers is equally straightforward. While the accepting set for the union is all those reachable states of the product where either (or both) of the two states is an accepting state, the accepting set for the intersection is all those reachable states of the product where both of the two states is an accepting state:
 
 ```javascript
-function intersection (a, b) {
+function productIntersection (a, b) {
   const {
     accepting: aAccepting
   } = validatedAndProcessed(a);
@@ -862,7 +862,7 @@ test(uppercase, ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
 Now we can try their union and intersection:
 
 ```javascript
-test(union(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
+test(productUnion(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
   //=>
     '' => true
     'r' => false
@@ -872,7 +872,7 @@ test(union(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD']
     'Reginald' => false
     'REGINALD' => true
 
-test(intersection(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
+test(productIntersection(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
   //=>
     '' => false
     'r' => false
@@ -2073,25 +2073,7 @@ function intersection (a, ...args) {
 
   const [b, ...rest] = args;
 
-  const {
-    accepting: aAccepting
-  } = validatedAndProcessed(a);
-  const {
-    accepting: bAccepting
-  } = validatedAndProcessed(b);
-
-  const allAcceptingStates =
-    aAccepting.flatMap(
-      aAcceptingState => bAccepting.map(bAcceptingState => abToAB(aAcceptingState, bAcceptingState))
-    );
-
-  const productAB = product(a, b);
-  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
-
-  const { start, transitions } = productAB;
-  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
-
-  const ab = mergeEquivalentStates({ start, accepting, transitions });
+  const ab = mergeEquivalentStates(productIntersection(a, b));
 
   return intersection(ab, ...rest);
 }

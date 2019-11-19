@@ -10,11 +10,6 @@ const FAIL = {
   "accepting": []
 };
 
-const ALPHANUMERIC =
-  'abcdefghijklmnopqrstuvwxyz' +
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
-  '1234567890';
-
 function just1 (symbol) {
   return {
     "start": "empty",

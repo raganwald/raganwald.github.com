@@ -332,7 +332,7 @@ function product (a, b, mode = 'union') {
 
 // 04-union-and-intersection.js
 
-function union (a, b) {
+function productUnion (a, b) {
   const {
     states: aDeclaredStates,
     accepting: aAccepting
@@ -368,7 +368,7 @@ function union (a, b) {
   return { start, accepting, transitions };
 }
 
-function intersection (a, b) {
+function productIntersection (a, b) {
   const {
     accepting: aAccepting
   } = validatedAndProcessed(a);
@@ -851,25 +851,7 @@ function intersection (a, ...args) {
 
   const [b, ...rest] = args;
 
-  const {
-    accepting: aAccepting
-  } = validatedAndProcessed(a);
-  const {
-    accepting: bAccepting
-  } = validatedAndProcessed(b);
-
-  const allAcceptingStates =
-    aAccepting.flatMap(
-      aAcceptingState => bAccepting.map(bAcceptingState => abToAB(aAcceptingState, bAcceptingState))
-    );
-
-  const productAB = product(a, b);
-  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
-
-  const { start, transitions } = productAB;
-  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
-
-  const ab = mergeEquivalentStates({ start, accepting, transitions });
+  const ab = mergeEquivalentStates(productIntersection(a, b));
 
   return intersection(ab, ...rest);
 }
@@ -908,11 +890,6 @@ const FAIL = {
   "transitions": [],
   "accepting": []
 };
-
-const ALPHANUMERIC =
-  'abcdefghijklmnopqrstuvwxyz' +
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
-  '1234567890';
 
 function just1 (symbol) {
   return {

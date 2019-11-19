@@ -1,4 +1,4 @@
-function union (a, b) {
+function productUnion (a, b) {
   const {
     states: aDeclaredStates,
     accepting: aAccepting
@@ -34,7 +34,7 @@ function union (a, b) {
   return { start, accepting, transitions };
 }
 
-function intersection (a, b) {
+function productIntersection (a, b) {
   const {
     accepting: aAccepting
   } = validatedAndProcessed(a);
