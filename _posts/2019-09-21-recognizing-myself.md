@@ -161,6 +161,8 @@ Now that we have established that finite-state automata can do much more than "j
 
   - [recognizing strings](#recognizing-strings)
   - [recognizing symbols](#recognizing-symbols)
+  - [optional](#optional)
+  - [kleene* and kleene+](#kleene-and-kleene)
 
 ---
 
@@ -2360,11 +2362,13 @@ test(reg, ['', 'r', 're', 'reg', 'reggie', 'reginald'])
 
 ---
 
-### kleene*
+### kleene* and kleene+
 
-Another very common decorator is used when we want to have a recognizer recognize zero or more strings of symbols. This is called the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or "Kleene Star." It is often called "zero-or-more."
+Another very common decorator is used when we want to have a recognizer recognize zero or more strings of symbols. This is called the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or "Kleene Star." It is also often called "zero-or-more."
 
-To build the kleene*, we start with kleene+, which takes a recognizer and returns a recognizer that returns one or more instances of a string. Our strategy will be to take the recognizer, and then add some epsilon transitions between its accepting states and its start state. In effect, this is creating a "loop" back to the beginning.
+One way to build `kleene*` is to start with `kleene+`, which takes a recognizer and returns a recognizer that returns one or more instances of a string.
+
+Our strategy for building `kleene+` will be to take a recognizer, and then add  epsilon transitions between its accepting states and its start state. In effect, we will createa "loops" back to the start state from all accepting states.
 
 For example, if we have:
 
@@ -2446,7 +2450,7 @@ kleenePlus(any('Aa'))
         { "from": "recognized", "consume": "A", "to": "recognized" },
         { "from": "recognized", "consume": "a", "to": "recognized" }
       ],
-      "accepting": ["recognized"]
+      "accepting": [ "recognized" ]
     }
 ```
 
@@ -2460,14 +2464,12 @@ function kleeneStar (description) {
 kleeneStar(any('Aa'))
   //=>
     {
-      "start": "empty-2",
+      "start": "empty",
       "transitions": [
-        { "from": "empty-2", "consume": "A", "to": "recognized" },
-        { "from": "empty-2", "consume": "a", "to": "recognized" },
-        { "from": "recognized", "consume": "A", "to": "recognized" },
-        { "from": "recognized", "consume": "a", "to": "recognized" }
+        { "from": "empty", "consume": "A", "to": "empty" },
+        { "from": "empty", "consume": "a", "to": "empty" }
       ],
-      "accepting": ["recognized"]
+      "accepting": [ "empty" ]
     }
 ```
 
