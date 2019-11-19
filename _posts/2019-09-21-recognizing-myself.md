@@ -1227,7 +1227,7 @@ epsilonCatenate(reg, exclamations)
     }
 ```
 
-And then a function to remove ε-transitions. Its a little busier than we might expect from our simple examples, but it has to handle cases such resolving chains of epsilons:
+And then a function to remove ε-transitions. Its a little busier than we might expect from our simple examples, but it has to handle cases such resolving chains of epsilons and detecting loops:
 
 ```javascript
 function removeEpsilonTransitions ({ start, accepting, transitions }) {
@@ -1253,14 +1253,20 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
   const epsilonQueue = [...epsilonMap.entries()];
   const epsilonFromStatesSet = new Set(epsilonMap.keys());
 
-  while (epsilonQueue.length > 0) {
+  const outerBoundsOnNumberOfRemovals = transitions.length;
+  let loops = 0;
+
+  while (epsilonQueue.length > 0 && loops++ <= outerBoundsOnNumberOfRemovals) {
     let [epsilonFrom, epsilonToSet] = epsilonQueue.shift();
-    const epsilonToStates = [...epsilonToSet];
-    // we can immediately resolve destinations that themselves don't have epsilon transitions
-    const immediateEpsilonToStates = epsilonToStates.filter(s => !epsilonFromStatesSet.has(s));
+    const allEpsilonToStates = [...epsilonToSet];
+
+    // special case: We can ignore self-epsilon transitions (e.g. a-->a)
+    const epsilonToStates = allEpsilonToStates.filter(
+      toState => toState !== epsilonFrom
+    );
+
     // we defer resolving destinations that have epsilon transitions
     const deferredEpsilonToStates = epsilonToStates.filter(s => epsilonFromStatesSet.has(s));
-
     if (deferredEpsilonToStates.length > 0) {
       // defer them
       epsilonQueue.push([epsilonFrom, deferredEpsilonToStates]);
@@ -1269,8 +1275,9 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
       epsilonFromStatesSet.delete(epsilonFrom);
     }
 
-    // now add all the transitions
-    for (const epsilonTo of epsilonToStates) {
+    // we can immediately resolve destinations that themselves don't have epsilon transitions
+    const immediateEpsilonToStates = epsilonToStates.filter(s => !epsilonFromStatesSet.has(s));
+    for (const epsilonTo of immediateEpsilonToStates) {
       const source =
         stateMapWithoutEpsilon.get(epsilonTo) || [];
       const moved =
@@ -1290,13 +1297,17 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
     }
   }
 
-  return {
-    start,
-    accepting: [...acceptingSet],
-    transitions: [
-      ...stateMapWithoutEpsilon.values()
-    ].flatMap( tt => tt )
-  };
+  if (loops > outerBoundsOnNumberOfRemovals) {
+    error("Attempted to remove too many epsilon transitions. Investigate possible loop.");
+  } else {
+    return {
+      start,
+      accepting: [...acceptingSet],
+      transitions: [
+        ...stateMapWithoutEpsilon.values()
+      ].flatMap( tt => tt )
+    };
+  }
 }
 
 removeEpsilonTransitions(epsilonCatenate(reg, exclamations))
