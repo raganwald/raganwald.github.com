@@ -32,8 +32,6 @@ function mergeEquivalentStates (description) {
         // found a dup!
         const originalState = statesByKey.get(key);
 
-      	console.log({ state, originalState, isAccepting })
-
         if (start === state) {
           // point start to original
           start = originalState;
