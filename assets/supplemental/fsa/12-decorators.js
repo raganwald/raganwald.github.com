@@ -17,7 +17,7 @@ function kleenePlus (description) {
     accepting
   };
 
-  return deDup(
+  return mergeEquivalentStates(
     powerset(
       removeEpsilonTransitions(
         looped

@@ -1927,7 +1927,7 @@ const keyS =
     return `[${stringifiedTransitions}]${acceptingSuffix}`;
   };
 
-function deDup (description) {
+function mergeEquivalentStates (description) {
   searchForDuplicate: while (true) {
     let {
       start,
@@ -1994,7 +1994,7 @@ Armed with this, we can enhance our `union` function:
 
 ```javascript
 function union (first, second) {
-  return deDup(
+  return mergeEquivalentStates(
     powerset(
       reachableFromStart(
         removeEpsilonTransitions(
@@ -2053,7 +2053,7 @@ function union (a, ...args) {
   const [b, ...rest] = args;
 
   const ab =
-    deDup(
+    mergeEquivalentStates(
       reachableFromStart(
         powerset(
           removeEpsilonTransitions(
@@ -2091,7 +2091,7 @@ function intersection (a, ...args) {
   const { start, transitions } = productAB;
   const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
 
-  const ab = deDup({ start, accepting, transitions });
+  const ab = mergeEquivalentStates({ start, accepting, transitions });
 
   return intersection(ab, ...rest);
 }
@@ -2104,7 +2104,7 @@ function catenation (a, ...args) {
   const [b, ...rest] = args;
 
   const ab =
-    deDup(
+    mergeEquivalentStates(
       powerset(
         reachableFromStart(
           removeEpsilonTransitions(
@@ -2434,7 +2434,7 @@ function kleenePlus (description) {
     accepting
   };
 
-  return deDup(
+  return mergeEquivalentStates(
     powerset(
       removeEpsilonTransitions(
         looped

@@ -10,7 +10,7 @@ const keyS =
     return `[${stringifiedTransitions}]${acceptingSuffix}`;
   };
 
-function deDup (description) {
+function mergeEquivalentStates (description) {
   searchForDuplicate: while (true) {
     let {
       start,
