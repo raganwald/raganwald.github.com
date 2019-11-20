@@ -921,14 +921,14 @@ Which is:
     haltedAndOne-->[*]
 </div>
 
-It works perfectly well, however it has an extra, unecessary state: Both `zeroAndhalted` and `haltedAndOne` are equivalent states.
+It works perfectly well, however it has an extra, unnecessary state: Both `zeroAndhalted` and `haltedAndOne` are equivalent states.
 
 What do we mean by "equivalent?" Although they have different names, and different incoming transitions, two states are equivalent if and only if:
 
 1. They have the exact same set of outgoing transitions (including transitions back to themselves), and;
-2. Either they are both acceptimng states, or neither is an accepting state.
+2. Either they are both accepting states, or neither is an accepting state.
 
-Both `zeroAndHalted` and `haltedAndOne` have no outgoing transitions, and they ar eboth accepting states, therefore they are equivalent states.
+Both `zeroAndHalted` and `haltedAndOne` have no outgoing transitions, and they are both accepting states, therefore they are equivalent states.
 
 Because of the way `product` replicates all of the possible outcomes, it tends to generate equivalent states. This has no effect on the function of the finite-state recognizer, but for practical purposes a smaller number of accepting states is better, as is a smaller number of states in general.
 
@@ -943,7 +943,7 @@ With such an optimization, we could take the union of those two recognizers and 
     zeroAndHaltedAndHaltedAndOne-->[*]
 </div>
 
-We'll move on without making any changes at the moment, howevee later we will revisit this and look at how we could optimize finite-state machines by eliminating duplicate states.
+We'll move on without making any changes at the moment: Later, we will revisit this and look at how we could optimize finite-state machines by eliminating duplicate states.
 
 ---
 
@@ -2135,7 +2135,7 @@ Here we go.
 
 ### recognizing strings
 
-What makes recognizers really useful is recognizing strings of one kind or anither. Here's an example of a recognizer that recognizes a single zero:
+What makes recognizers really useful is recognizing strings of one kind or another. Here's an example of a recognizer that recognizes a single zero:
 
 <div class="mermaid">
   stateDiagram
@@ -2284,7 +2284,7 @@ test(reg, ['', 'r', 'R', 'reg', 'Reg', 'REG', 'Reginald'])
 
 `any` generates a recognizer that recognizes any of the symbols in the strings we pass it. And if none are supplied, it always fails.
 
-Bwfore we move on to decorators, let's think about regexen. One of the affordances of regexen is that we can use a `.` to represent any chacter, any character at all. This is easy to implement when writing a regex engine, but there's no such capability in a standard finite-state machine.
+Before we move on to decorators, let's think about regexen. One of the affordances of regexen is that we can use a `.` to represent any character, any character at all. This is easy to implement when writing a regex engine, but there's no such capability in a standard finite-state machine.
 
 What we can do, with complete disregard for the size of the finite-state recognizers we create, is _emulate_ the `.` by supplying a string containing every character we care about:
 
@@ -2317,7 +2317,7 @@ And now we turn our attention to _decorating_ finite-state recognizers.
 
 ### optional
 
-In programming jargon, a decorator is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining somethinmg of its orginal character.
+In programming jargon, a decorator is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining something of its original character.
 
 For example, `negation` is a function that decorates a boolean function by negating its result:
 
@@ -2336,7 +2336,7 @@ const isntWeekday = negation(isWeekday);
     [false, true, true, false]
 ```
 
-A decorator for functions takes a function as an argument and returns returns a new function with some relationship to the original function's semantics. A decorator for finite-state recognizers takes the description of a finite-state recognzier and returns as its argument a new finite-state recognizer with some relationship to the original finite-state recognizer's semantics.
+A decorator for functions takes a function as an argument and returns returns a new function with some relationship to the original function's semantics. A decorator for finite-state recognizers takes the description of a finite-state recognizer and returns as its argument a new finite-state recognizer with some relationship to the original finite-state recognizer's semantics.
 
 There is such a thing as the negation of a finite-state recognizer, it is normally called `complementation`, but it is a bit of a handful, so let's look at an easier example to begin with:
 
@@ -2369,7 +2369,7 @@ Another very common decorator is used when we want to have a recognizer recogniz
 
 One way to build `kleeneStar` is to start with [kleene+](https://en.wikipedia.org/wiki/Kleene_star#Kleene_plus), or `kleenePlus`. `kleenePlus` takes a recognizer, and returns a recognizer that returns one or more instances of a string.
 
-Our strategy for building `kleenePlus` will be to take a recognizer, and then add  epsilon transitions between its accepting states and its start state. In effect, we will createa "loops" back to the start state from all accepting states.
+Our strategy for building `kleenePlus` will be to take a recognizer, and then add  epsilon transitions between its accepting states and its start state. In effect, we will create "loops" back to the start state from all accepting states.
 
 For example, if we have:
 
@@ -2492,9 +2492,9 @@ const negation =
 
 `negation` takes a function as an argument, and returns a function that returns the negation of the argument's result.
 
-`complementation` does the same thing for recognizers. What do recognizers do? They recognize sentances that belong to a language. Consider some recognizer `x` that recognizes whether a sentance belongs to some language `X`. The complementation of `x` would be a recognizer that recognizes sentances that do _not_ belong to `X`.
+`complementation` does the same thing for recognizers. What do recognizers do? They recognize sentences that belong to a language. Consider some recognizer `x` that recognizes whether a sentence belongs to some language `X`. The complementation of `x` would be a recognizer that recognizes sentences that do _not_ belong to `X`.
 
-We'll start our work by considering this: Our recognizers fail to recognize a sentance if, when the input ends, they are not in an accepting state. There are two ways this could be true:
+We'll start our work by considering this: Our recognizers fail to recognize a sentence if, when the input ends, they are not in an accepting state. There are two ways this could be true:
 
 1. If the recognizer is in a state that is not an accepting state, or;
 2. If the recognizer has halted.
@@ -2505,7 +2505,7 @@ But in practice, we can say that given a recognizer `x`, and some alphabet `A`, 
 
 Our method is simply to create a state for `halted`, and make sure that every state the recognizer has--including the new `halted` state--has transitions to `halted` for any symbols belonging to `A`, but not already consumed.
 
-For example, given the recognizer `EMPTY` and the `A` consisting of teh symbols `1234567890` (the numerals), we would transform:
+For example, given the recognizer `EMPTY` and the `A` consisting of the symbols `1234567890` (the numerals), we would transform:
 
 <div class="mermaid">
   stateDiagram
@@ -2551,7 +2551,7 @@ We would transform it into:
     notZero --> [*]
 </div>
 
-"Unorthodox, but effective," as Williams would say. Here's a decorator that turns a description of a recognizer, into a description of a recognizer that never halts given a sentance in its alphabet:
+"Unorthodox, but effective," as Williams would say. Here's a decorator that turns a description of a recognizer, into a description of a recognizer that never halts given a sentence in its alphabet:
 
 ```javascript
 function nonhalting (alphabet, description) {
@@ -2656,7 +2656,7 @@ nonhalting('1234567890', binaryNumber)
     }
 ```
 
-Now given a recognizer that never halts, what is the `complementation` of that recognizer? Well, given that it is always going to be in one of its states when the input stops, if it is a state that is not one of the original recognizer's accepting states, then it must have failed to recognize the sentance.
+Now given a recognizer that never halts, what is the `complementation` of that recognizer? Well, given that it is always going to be in one of its states when the input stops, if it is a state that is not one of the original recognizer's accepting states, then it must have failed to recognize the sentence.
 
 This points very clearly to how to implement `complementation`:
 
@@ -2703,7 +2703,7 @@ But as we will see, complementation over a declared alphabet is good enough for 
 
 As described above, `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` are all fundamental. They each give us something that could not be constructed from the remaining functions. In an homage, we will call these "special forms."[^special-form]
 
-[^special-form]: Literally speaking, they are not special forms, we're just using the expression. In Lisp dialects, the expression `(FUN ARG1 ARG2 ARG3... ARGN)` is evaluated as invoking function `FUN` wwith arguments `ARG1 ARG2 ARG3... ARGN` by default. However, there are certain "special forms" that share the same syntax, but are evaluated in special ways. The special forms vary from dialect to dialect, but function definition/lambdas are always a special form of some kind, some kind of conditional (such as `COND` or `IF`) is usually another because of its short-circuit semantics, `SET!` or its equivalent is usually a special form, and so forth.<br/><br/>Our "special forms" are just JavaScript, there is nothing special about they way they're evaulated. However, what they share with Lisp's special forms is that we can build everything else in the language from them.
+[^special-form]: Literally speaking, they are not special forms, we're just using the expression. In Lisp dialects, the expression `(FUN ARG1 ARG2 ARG3... ARGN)` is evaluated as invoking function `FUN` with arguments `ARG1 ARG2 ARG3... ARGN` by default. However, there are certain "special forms" that share the same syntax, but are evaluated in special ways. The special forms vary from dialect to dialect, but function definition/lambdas are always a special form of some kind, some kind of conditional (such as `COND` or `IF`) is usually another because of its short-circuit semantics, `SET!` or its equivalent is usually a special form, and so forth.<br/><br/>Our "special forms" are just JavaScript, there is nothing special about they way they're evaluated. However, what they share with Lisp's special forms is that we can build everything else in the language from them.
 
 In formal computer science, **regular languages** are defined using the following rules. Given some alphabet of symbols Σ:[^alphabet]
 
@@ -2714,9 +2714,9 @@ In formal computer science, **regular languages** are defined using the followin
 
 Now consider two languages `A` and `B`. We are given that `A` and `B` are already defined, and are known to be regular. By this we mean, that they are defined by some combination of the two rules just given, or the three rules that follow. Each has its own alphabet.
 
-- If `A` and `B` are regular languages, the language `AB` formed by catenating `A` and `B` is a regular language. Meaning, if the sentance `ab` belongs to the language `AB` if and only if `a` belongs to `A` and `b` belongs to `B`, then the language `AB` is a regular language if and only if both `A` and `B` are regular languages. If we have a recognizer for `A` and `B`, we can construct a recognizer for the catenation of `A` and `B` by invoking `catenation(A, B)`.
-- If `A` and `B` are regular languages, the union of `A` and `B` is a regular language. Meaning, if the sentance `x` belongs to the language `A|B` if and only if `x` belongs to `A` or `x` belongs to `B`, then the language `A|B` is a regular language if and only if both `A` and `B` are regular languages. If we have a recognizer for `A` and `B`, we can construct a recognizer for the union of `A` and `B` by invoking `union(A, B)`.
-- If `A` is a regular language, the language `A*` is formed by taking the Kleene Star of `A`. Meaning, if the empty sentence belongs to `A*`, and the sentance `ab` belongs to `A*` if and only if the sentance `a` belongs to `A` and `b` belongs to `A*`, then `A*` is a regular language. If we have a recognizer for `A`, we can construct a recognizer for the Kleene Star of `A` by invoking `zeroOrMore(A)`.
+- If `A` and `B` are regular languages, the language `AB` formed by catenating `A` and `B` is a regular language. Meaning, if the sentence `ab` belongs to the language `AB` if and only if `a` belongs to `A` and `b` belongs to `B`, then the language `AB` is a regular language if and only if both `A` and `B` are regular languages. If we have a recognizer for `A` and `B`, we can construct a recognizer for the catenation of `A` and `B` by invoking `catenation(A, B)`.
+- If `A` and `B` are regular languages, the union of `A` and `B` is a regular language. Meaning, if the sentence `x` belongs to the language `A|B` if and only if `x` belongs to `A` or `x` belongs to `B`, then the language `A|B` is a regular language if and only if both `A` and `B` are regular languages. If we have a recognizer for `A` and `B`, we can construct a recognizer for the union of `A` and `B` by invoking `union(A, B)`.
+- If `A` is a regular language, the language `A*` is formed by taking the Kleene Star of `A`. Meaning, if the empty sentence belongs to `A*`, and the sentence `ab` belongs to `A*` if and only if the sentence `a` belongs to `A` and `b` belongs to `A*`, then `A*` is a regular language. If we have a recognizer for `A`, we can construct a recognizer for the Kleene Star of `A` by invoking `zeroOrMore(A)`.
 
 A language is regular if and only if it conforms with the above rules. And since we can construct all the languages formed by the above rules, we can construct all possible regular languages using our five special forms `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`.
 
