@@ -161,8 +161,9 @@ Now that we have established that finite-state automata can do much more than "j
 
   - [recognizing strings](#recognizing-strings)
   - [recognizing symbols](#recognizing-symbols)
+  - [decorating finite-state recognizers]](#decorating-finite-state-recognizers)
+  - [kleene* (and kleene+)](#kleene-and-kleene)
   - [optional](#optional)
-  - [kleene* and kleene+](#kleene-and-kleene)
   - [complementation](#complementation)
 
 ---
@@ -2135,7 +2136,33 @@ Here we go.
 
 ### recognizing strings
 
-What makes recognizers really useful is recognizing strings of one kind or another. Here's an example of a recognizer that recognizes a single zero:
+What makes recognizers really useful is recognizing strings of one kind or another. Let's start with a recognizer for the simplest possible string, `''`, a/k/a "The Empty String:"
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->[*]
+</div>
+
+We can hard-code a description for the empty string:
+
+```javascript
+const EMPTY = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": ["empty"]
+};
+
+test(EMPTY, ['', '0', '1', '01', '10'])
+  //=>
+    '' => true
+    '0' => false
+    '1' => false
+    '01' => false
+    '10' => false
+```
+
+What about non-empty strings? Here's an example of a recognizer that recognizes a single zero:
 
 <div class="mermaid">
   stateDiagram
@@ -2167,7 +2194,7 @@ test(just1('0'), ['', '0', '1', '01', '10', '11'])
     '11' => false
 ```
 
-That is less code than making one constant for each symbol, but it's still plenty tedious, for example:
+Armed with `EMPTY` and `just1`, we can use catenation to make recognizers for any string we might want. So let's think of `EMPTY` and `just1` as **essential** building blocks for recognizing symbols.
 
 ```javascript
 const reginald = catenation(
@@ -2191,7 +2218,9 @@ test(reginald, ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
     'reginaldus' => false
 ```
 
-These tools exist for our convenience, so let's make `just`, a version of `just1` that is convenient to use:
+Even though we don't need anything else to build recognizers for strings and symbols, our tools exist for our convenience, so it's ok to make "inessential" tools that simplify our lives and make our code easier to read.
+
+Let's make `just`, a version of `just1` that is convenient to use:
 
 ```javascript
 const EMPTY = {
@@ -2311,11 +2340,13 @@ test(rSomethingG, [
     'Rej' => false
 ```
 
+`any` is very useful, but since we can always write things like `union(just1('a'), just1('b')... )`, we know that `any` is another inessential-but-useful tool.
+
 And now we turn our attention to _decorating_ finite-state recognizers.
 
 ---
 
-### optional
+### decorating finite-state recognizers
 
 In programming jargon, a decorator is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining something of its original character.
 
@@ -2338,7 +2369,203 @@ const isntWeekday = negation(isWeekday);
 
 A decorator for functions takes a function as an argument and returns returns a new function with some relationship to the original function's semantics. A decorator for finite-state recognizers takes the description of a finite-state recognizer and returns as its argument a new finite-state recognizer with some relationship to the original finite-state recognizer's semantics.
 
-There is such a thing as the negation of a finite-state recognizer, it is normally called `complementation`, but it is a bit of a handful, so let's look at an easier example to begin with:
+We'll start with an essential decorator, the "Kleene Star."
+
+---
+
+### kleene* (and kleene+)
+
+Given `EMPTY`, `just1`, `union`, and `catenation`, we can make recognizers that recognize any language that contains a _finite_ set of sentences.[^wvrst-case]
+
+[^wvrst-case]: If a language has a finite set of sentences, we can make a list of every sentence in the language, and then write a recognizer that uses `catenation` and `just1` (or equivalently, `just`) for each sentence in the language. Then we can take the union of all those recognziers, to get the recognizer for every sentence in the language.
+
+But if we want to recognize languages that have an **infinite** number of sentences, we need to go beyond `EMPTY`, `just1`, `union`, and `catenation`.  We can't recognize all langauges that have an infinite number of sentences: We know that languages like "balanced parentheses" cannot be recognized with a finite-state automata.
+
+But finite-state automata can recognize some languages containing an infinite number of sentences. We've seen some already, for example recognizing binary numbers:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    notZero --> notZero : 0, 1
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+There are an infnite number of strings representing binary numbers, and this recognizer will recognize them all. The salient difference between this recognizer and the recognizers we can build with `EMPTY`, `just1`, `union`, and `catenation`, is that this recognizer has "loops" in it, whereas recognizerrs we build with `EMPTY`, `just1`, `union`, and `catenation` will not have any loops.
+
+If a recognizer does not have any loops, the maximum number of sentences it can recognize will be equal to the number of states it has, and the maximum length of any sentence it recognizes will be the number of states it has, minus one.
+
+So what we need is a way to make recognizers with loops. And that's exactly what the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or `kleeneStar` does: **`kleene*` is a decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of zero or more sentences its argument recognizes**.
+
+We'll build it step-by-step, starting with handling the "zero or one" case. Consider this recognizer:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : " "
+    recognized-->[*]
+</div>
+
+It recognizes exactly one space. Let's start by making it recognize zero or one spaces. It's easy, we just make its start state an accepting state:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : " "
+    empty-->[*]
+    recognized-->[*]
+</div>
+
+In practice we might have a recognizer that has loops back to its start state, and the above transformation will not work correctly. So what we'll do is add a new start state, and provide an epsilon transition to the original start state.
+
+With some renaming, it will look like this:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->empty2
+    empty-->[*]
+    empty2-->recognized : " "
+    recognized-->[*]
+</div>
+
+After removing epsilon transitions and unreachable states and so on, we end up back where we started:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : " "
+    empty-->[*]
+    recognized-->[*]
+</div>
+
+But although we won't show it here, we can handle those cases where there is already a loop back to the start state.
+
+Now what about handling one or more sentences that the argument recognizes? Our strategy will be to take a recognizer, and then add epsilon transitions between its accepting states and its start state. In effect, we will create "loops" back to the start state from all accepting states.
+
+For example, if we have:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : A, a
+    recognized-->[*]
+</div>
+
+We will turn it into this to handle the zero case:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->empty2
+    empty-->[*]
+    empty2-->recognized : A, a
+    recognized-->[*]
+</div>
+
+And then we will turn it into this to handle the one or more cases:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->empty2
+    empty-->[*]
+    empty2-->recognized : A, a
+    recognized-->empty
+    recognized-->[*]
+</div>
+
+This will produce some non-determinism, so we'll remove the epsilon transitions, take the powerset of the result, remove equivalent states, and remove unreachable states:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->recognized
+    recognized-->recognized : A, a
+    recognized-->[*]
+</div>
+
+Presto, a loop!
+
+Here's the full code:
+
+```javascript
+function kleeneStar (description) {
+  const newStart = "empty";
+  const { start: oldStart, transitions, accepting: oldAccepting } =
+        avoidReservedNames([newStart], description);
+
+  const looped = {
+    start: newStart,
+    transitions:
+    	transitions.concat(
+          oldAccepting.map(
+            state => ({ from: state, to: newStart })
+          )
+        ).concat([
+          { "from": newStart, "to": oldStart }
+        ]),
+    accepting: oldAccepting.concat([newStart])
+  };
+
+  return reachableFromStart(
+    mergeEquivalentStates(
+      powerset(
+        removeEpsilonTransitions(
+          looped
+        )
+      )
+    )
+  );
+}
+
+kleeneStar(any('Aa'))
+  //=>
+    {
+      "start": "recognized",
+      "transitions": [
+        { "from": "recognized", "consume": "a", "to": "recognized" },
+        { "from": "recognized", "consume": "A", "to": "recognized" }
+      ],
+      "accepting": [ "recognized" ]
+    }
+```
+
+`kleene*` is an **essential** decorator. We need it in order to make recognizers that recognzie infinitely large languages.
+
+There are also inessential decorators, of course. For example regexen have a postfix `*` character to reprepresent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes.
+
+We can make `kleene+` using the essentials we already have, so it is clearly inessential:
+
+```javascript
+function kleenePlus (description) {
+  return catenation(description, kleeneStar(description));
+}
+
+kleenePlus(any('Aa'))
+  //=>
+    {
+      "start": "empty",
+      "transitions": [
+        { "from": "empty", "consume": "a", "to": "recognized" },
+        { "from": "empty", "consume": "A", "to": "recognized" },
+        { "from": "recognized", "consume": "a", "to": "recognized" },
+        { "from": "recognized", "consume": "A", "to": "recognized" }
+      ],
+      "accepting": [ "recognized" ]
+    }
+```
+
+There is one more inessential decorator we can look at we can turn our attention back to complementation.
+
+---
+
+### optional
+
+We've covered the decorators for regexen's `*` postfix operator (`kleene*`), and `+` operator (`kleene+`). Regexen also have a third postfix operator, `?`, that represents a decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _zero or one_ sentences its argument recognizes.
+
+We call this `optional`, and as we can build it out of essentials we have already defined, we know that it is inessential. But useful!
 
 ```javascript
 const optional =
@@ -2359,122 +2586,9 @@ test(reg, ['', 'r', 're', 'reg', 'reggie', 'reginald'])
     'reginald' => true
 ```
 
-`optional` decorates a recognizer by making it, well, optional. It is often called "zero-or-one," and in regexen it is represented by placing a `?` after the pattern you wish to be optional, e.g. `/reg(?:inald)?/`.
+`optional` decorates a recognizer by making it--well--"optional."
 
----
-
-### kleene* and kleene+
-
-Another very common decorator is used when we want to have a recognizer recognize zero or more strings of symbols. This is called the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or `kleeneStar`. It is also often called "zero-or-more."
-
-One way to build `kleeneStar` is to start with [kleene+](https://en.wikipedia.org/wiki/Kleene_star#Kleene_plus), or `kleenePlus`. `kleenePlus` takes a recognizer, and returns a recognizer that returns one or more instances of a string.
-
-Our strategy for building `kleenePlus` will be to take a recognizer, and then add  epsilon transitions between its accepting states and its start state. In effect, we will create "loops" back to the start state from all accepting states.
-
-For example, if we have:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : A, a
-    recognized-->[*]
-</div>
-
-We will turn it into:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : A, a
-    recognized-->empty
-    recognized-->[*]
-</div>
-
-This will produce some non-determinism, so we'll remove the epsilon transitions, take the powerset of the result, and remove equivalent states:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : A, a
-    recognized-->recognized : A, a
-    recognized-->[*]
-</div>
-
-The Javascript is slightly more complicated, because we have to account for recognizers that might already loop back to their start state. So we actually start by making a loop that looks like this:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->empty2
-    empty2-->recognized : A, a
-    recognized-->empty
-    recognized-->[*]
-</div>
-
-Here's the full code:
-
-```javascript
-function kleenePlus (description) {
-  const newStart = "empty";
-  const { start: oldStart, transitions, accepting } =
-        avoidReservedNames([newStart], description);
-
-  const looped = {
-    start: newStart,
-    transitions:
-    	transitions.concat(
-          accepting.map(
-            state => ({ from: state, to: newStart })
-          )
-        ).concat([
-          { "from": newStart, "to": oldStart }
-        ]),
-    accepting
-  };
-
-  return mergeEquivalentStates(
-    powerset(
-      removeEpsilonTransitions(
-        looped
-      )
-    )
-  );
-}
-
-kleenePlus(any('Aa'))
-  //=>
-    {
-      "start": "empty-2",
-      "transitions": [
-        { "from": "empty-2", "consume": "A", "to": "recognized" },
-        { "from": "empty-2", "consume": "a", "to": "recognized" },
-        { "from": "recognized", "consume": "A", "to": "recognized" },
-        { "from": "recognized", "consume": "a", "to": "recognized" }
-      ],
-      "accepting": [ "recognized" ]
-    }
-```
-
-Armed with `kleenePlus`, we can make `kleeneStar` with `optional`:
-
-```javascript
-function kleeneStar (description) {
-  return optional(kleenePlus(description));
-}
-
-kleeneStar(any('Aa'))
-  //=>
-    {
-      "start": "empty",
-      "transitions": [
-        { "from": "empty", "consume": "A", "to": "empty" },
-        { "from": "empty", "consume": "a", "to": "empty" }
-      ],
-      "accepting": [ "empty" ]
-    }
-```
-
-And now we can turn our attention back to complementation.
+Now we'll look at `complementation`, a decorator that is inessential in a theoretical sense, but when we need it, extremely handy.
 
 ---
 

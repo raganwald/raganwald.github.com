@@ -1,34 +1,38 @@
-const optional =
-  recognizer => union(EMPTY, recognizer);
-
-function kleenePlus (description) {
-  const { start, transitions, accepting } = avoidReservedNames(['empty'], description);
+function kleeneStar (description) {
+  const newStart = "empty";
+  const { start: oldStart, transitions, accepting: oldAccepting } =
+        avoidReservedNames([newStart], description);
 
   const looped = {
-    start: "empty",
+    start: newStart,
     transitions:
     	transitions.concat(
-          accepting.map(
-            state => ({ from: state, to: start })
+          oldAccepting.map(
+            state => ({ from: state, to: newStart })
           )
         ).concat([
-          { "from": "empty", "to": start }
+          { "from": newStart, "to": oldStart }
         ]),
-    accepting
+    accepting: oldAccepting.concat([newStart])
   };
 
-  return mergeEquivalentStates(
-    powerset(
-      removeEpsilonTransitions(
-        looped
+  return reachableFromStart(
+    mergeEquivalentStates(
+      powerset(
+        removeEpsilonTransitions(
+          looped
+        )
       )
     )
   );
 }
 
-function kleeneStar (description) {
-  return optional(kleenePlus(description));
+function kleenePlus (description) {
+  return catenation(description, kleeneStar(description));
 }
+
+const optional =
+  recognizer => union(EMPTY, recognizer);
 
 function nonhalting (alphabet, description) {
   const descriptionWithoutHaltedState = avoidReservedNames(["halted"], description);
