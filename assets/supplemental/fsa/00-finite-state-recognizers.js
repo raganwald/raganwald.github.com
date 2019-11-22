@@ -217,6 +217,37 @@ function test(description, examples) {
   }
 }
 
+function verify (description, tests) {
+  try {
+    const recognizer = automate(description);
+    const testList = Object.entries(tests);
+    const numberOfTests = testList.length;
+
+    const outcomes = testList.map(
+      ([example, expected]) => {
+        const actual = recognizer(example);
+        if (actual === expected) {
+          return 'pass';
+        } else {
+          return JSON.stringify({ example, expected, actual });
+        }
+      }
+    )
+
+    const failures = outcomes.filter(result => result !== 'pass');
+    const numberOfFailures = failures.length;
+    const numberOfPasses = numberOfTests - numberOfFailures;
+
+    if (numberOfFailures === 0) {
+      console.log(`All ${numberOfPasses} tests passing`);
+    } else {
+      console.log(`${numberOfFailures} tests failing: ${failures.join('; ')}`);
+    }
+  } catch(error) {
+    console.log(`Failed to validate the description: ${error}`)
+  }
+}
+
 // 03-product.js
 
 // This function computes a state name for the product given
@@ -524,15 +555,21 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
     for (const epsilonTo of immediateEpsilonToStates) {
       const source =
         stateMapWithoutEpsilon.get(epsilonTo) || [];
-      const moved =
+      const potentialToMove =
         source.map(
           ({ consume, to }) => ({ from: epsilonFrom, consume, to })
         );
-
       const existingTransitions = stateMapWithoutEpsilon.get(epsilonFrom) || [];
 
+      // filter out duplicates
+      const needToMove = potentialToMove.filter(
+        ({ consume: pConsume, to: pTo }) =>
+          !existingTransitions.some(
+            ({ consume: eConsume, to: eTo }) => pConsume === eConsume && pTo === eTo
+          )
+      );
       // now add the moved transitions
-      stateMapWithoutEpsilon.set(epsilonFrom, existingTransitions.concat(moved));
+      stateMapWithoutEpsilon.set(epsilonFrom, existingTransitions.concat(needToMove));
 
       // special case!
       if (acceptingSet.has(epsilonTo)) {
@@ -555,7 +592,7 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
 }
 
 function reachableFromStart ({ start, accepting, transitions: allTransitions }) {
-  const stateMap = toStateMap(allTransitions);
+  const stateMap = toStateMap(allTransitions, true);
   const reachableMap = new Map();
   const R = new Set([start]);
 
@@ -924,41 +961,68 @@ function any (str = "") {
 
 // 12-decorators.js
 
-const optional =
-  recognizer => union(EMPTY, recognizer);
-
 function kleeneStar (description) {
   const newStart = "empty";
-  const { start: oldStart, transitions, accepting: oldAccepting } =
-        avoidReservedNames([newStart], description);
 
-  const looped = {
+  const {
+    start: oldStart,
+    transitions: oldTransitions,
+    accepting: oldAccepting
+  } = avoidReservedNames([newStart], description);
+
+  const optionalBefore = {
     start: newStart,
     transitions:
-    	transitions.concat(
-          oldAccepting.map(
-            state => ({ from: state, to: newStart })
-          )
-        ).concat([
-          { "from": newStart, "to": oldStart }
-        ]),
+      [ { "from": newStart, "to": oldStart } ].concat(oldTransitions),
     accepting: oldAccepting.concat([newStart])
   };
 
-  return reachableFromStart(
+  const optional = reachableFromStart(
     mergeEquivalentStates(
       powerset(
         removeEpsilonTransitions(
-          looped
+          optionalBefore
         )
       )
     )
   );
+
+  const {
+    start: optionalStart,
+    transitions: optionalTransitions,
+    accepting: optionalAccepting
+  } = optional;
+
+  const loopedBefore = {
+    start: optionalStart,
+    transitions:
+      optionalTransitions.concat(
+        optionalAccepting.map(
+          state => ({ from: state, to: optionalStart })
+        )
+      ),
+    accepting: optionalAccepting
+  };
+
+  const looped = reachableFromStart(
+    mergeEquivalentStates(
+      powerset(
+        removeEpsilonTransitions(
+          loopedBefore
+        )
+      )
+    )
+  );
+
+  return looped;
 }
 
 function kleenePlus (description) {
   return catenation(description, kleeneStar(description));
 }
+
+const optional =
+  recognizer => union(EMPTY, recognizer);
 
 function nonhalting (alphabet, description) {
   const descriptionWithoutHaltedState = avoidReservedNames(["halted"], description);

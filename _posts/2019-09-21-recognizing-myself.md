@@ -278,7 +278,7 @@ The recognizer's set of final, or `accepting` states is required. It is encoded 
 Putting it all together, we have:
 
 ```javascript
-const binaryNumber = {
+const binary = {
   "start": "start",
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
@@ -366,7 +366,7 @@ function test (description, examples) {
   }
 }
 
-const binaryNumber = {
+const binary = {
   "start": "start",
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
@@ -377,29 +377,25 @@ const binaryNumber = {
   "accepting": ["zero", "notZero"]
 };
 
-test(binaryNumber, [
-  '', '0', '1', '00', '01', '10', '11',
-  '000', '001', '010', '011', '100',
-  '101', '110', '111',
-  '10100011011000001010011100101110111'
-]);
-  //=>
-    '' => false
-    '0' => true
-    '1' => true
-    '00' => false
-    '01' => false
-    '10' => true
-    '11' => true
-    '000' => false
-    '001' => false
-    '010' => false
-    '011' => false
-    '100' => true
-    '101' => true
-    '110' => true
-    '111' => true
-    '10100011011000001010011100101110111' => true
+verify(binary, {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': true,
+  '11': true,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true,
+  '10100011011000001010011100101110111': true
+})
+  //=> All 16 tests passing
 ```
 
 We now have a function, `automate`, that takes a data description of a finite-state automaton/recognizer, and returns a Javascript recognizer function we can play with.
@@ -805,15 +801,16 @@ const reg = {
   ]
 };
 
-test(reg, ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD']))
-  //=>
-    '' => false
-    'r' => false
-    'R' => false
-    'Reg' => true
-    'REG' => true
-    'Reginald' => false
-    'REGINALD' => false
+verify(reg, {
+  '': false,
+  'r': false,
+  'R': false,
+  'Reg': true,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': false
+})
+  //=> All 7 tests passing
 ```
 
 Second, here is a recognizer that recognizes uppercase words:
@@ -852,39 +849,42 @@ const uppercase = {
   ]
 };
 
-test(uppercase, ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
-  //=>
-    '' => true
-    'r' => false
-    'R' => true
-    'Reg' => false
-    'REG' => true
-    'Reginald' => false
-    'REGINALD' => true
+verify(uppercase, {
+  '': true,
+  'r': false,
+  'R': true,
+  'Reg': false,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': true
+})
+  //=> All 7 tests passing
 ```
 
 Now we can try their union and intersection:
 
 ```javascript
-test(productUnion(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
-  //=>
-    '' => true
-    'r' => false
-    'R' => true
-    'Reg' => true
-    'REG' => true
-    'Reginald' => false
-    'REGINALD' => true
+verify(productUnion(reg, uppercase), {
+  '': true,
+  'r': false,
+  'R': true,
+  'Reg': true,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': true
+})
+  //=> All 7 tests passing
 
-test(productIntersection(reg, uppercase), ['', 'r', 'R', 'Reg', 'REG', 'Reginald', 'REGINALD'])
-  //=>
-    '' => false
-    'r' => false
-    'R' => false
-    'Reg' => false
-    'REG' => true
-    'Reginald' => false
-    'REGINALD' => false
+verify(productIntersection(reg, uppercase), {
+  '': false,
+  'r': false,
+  'R': false,
+  'Reg': false,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': false
+})
+  //=> All 7 tests passing
 ```
 
 We now have `union` and `intersection` functions, each of which takes two descriptions and returns a description.
@@ -1284,15 +1284,21 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
     for (const epsilonTo of immediateEpsilonToStates) {
       const source =
         stateMapWithoutEpsilon.get(epsilonTo) || [];
-      const moved =
+      const potentialToMove =
         source.map(
           ({ consume, to }) => ({ from: epsilonFrom, consume, to })
         );
-
       const existingTransitions = stateMapWithoutEpsilon.get(epsilonFrom) || [];
 
+      // filter out duplicates
+      const needToMove = potentialToMove.filter(
+        ({ consume: pConsume, to: pTo }) =>
+          !existingTransitions.some(
+            ({ consume: eConsume, to: eTo }) => pConsume === eConsume && pTo === eTo
+          )
+      );
       // now add the moved transitions
-      stateMapWithoutEpsilon.set(epsilonFrom, existingTransitions.concat(moved));
+      stateMapWithoutEpsilon.set(epsilonFrom, existingTransitions.concat(needToMove));
 
       // special case!
       if (acceptingSet.has(epsilonTo)) {
@@ -1375,7 +1381,7 @@ We could implementa  very specific fix, but the code to do a general elimination
 
 ```javascript
 function reachableFromStart ({ start, accepting, transitions: allTransitions }) {
-  const stateMap = toStateMap(allTransitions);
+  const stateMap = toStateMap(allTransitions, true);
   const reachableMap = new Map();
   const R = new Set([start]);
 
@@ -1674,7 +1680,7 @@ const binary = {
 }
 
 const nondeterministic =
-  reachableFromStrart(removeEpsilonTransitions(epsilonCatenate(zeroes, binary)));
+  reachableFromStart(removeEpsilonTransitions(epsilonCatenate(zeroes, binary)));
 
 nondeterministic
   //=>
@@ -1709,26 +1715,24 @@ deterministic
       ]
     }
 
-test(deterministic, [
-  '', '0', '1', '00', '01', '10', '11', '000', '001',
-  '010', '011', '100', '101', '110', '111'
-])
-  //=>
-    '' => false
-    '0' => false
-    '1' => false
-    '00' => true
-    '01' => true
-    '10' => false
-    '11' => false
-    '000' => true
-    '001' => true
-    '010' => true
-    '011' => true
-    '100' => false
-    '101' => false
-    '110' => false
-    '111' => false
+verify(deterministic, {
+  '': false,
+  '0': false,
+  '1': false,
+  '00': true,
+  '01': true,
+  '10': false,
+  '11': false,
+  '000': true,
+  '001': true,
+  '010': true,
+  '011': true,
+  '100': false,
+  '101': false,
+  '110': false,
+  '111': false
+})
+  //=> All 15 tests passing
 ```
 
 The `powerset` function converts any nondeterministic finite-state recognizer into a deterministic finite-state recognizer.
@@ -2153,13 +2157,14 @@ const EMPTY = {
   "accepting": ["empty"]
 };
 
-test(EMPTY, ['', '0', '1', '01', '10'])
-  //=>
-    '' => true
-    '0' => false
-    '1' => false
-    '01' => false
-    '10' => false
+verify(EMPTY, {
+  '': true,
+  '0': false,
+  '1': false,
+  '01': false,
+  '10': false
+});
+  //=> All 5 tests passing
 ```
 
 What about non-empty strings? Here's an example of a recognizer that recognizes a single zero:
@@ -2184,14 +2189,15 @@ function just1 (symbol) {
   };
 }
 
-test(just1('0'), ['', '0', '1', '01', '10', '11'])
-  //=>
-    '' => false
-    '0' => true
-    '1' => false
-    '01' => false
-    '10' => false
-    '11' => false
+verify(just1('0'), {
+  '': false,
+  '0': true,
+  '1': false,
+  '01': false,
+  '10': false,
+  '11': false
+});
+  //=> All 6 tests passing
 ```
 
 Armed with `EMPTY` and `just1`, we can use catenation to make recognizers for any string we might want. So let's think of `EMPTY` and `just1` as **essential** building blocks for recognizing symbols.
@@ -2208,14 +2214,15 @@ const reginald = catenation(
   just1('d')
 );
 
-test(reginald, ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
-  //=>
-    '' => false
-    'r' => false
-    'reg' => false
-    'reggie' => false
-    'reginald' => true
-    'reginaldus' => false
+verify(reginald, {
+  '': false,
+  'r': false,
+  'reg': false,
+  'reggie': false,
+  'reginald': true,
+  'reginaldus': false
+});
+  //=> All 6 tests passing
 ```
 
 Even though we don't need anything else to build recognizers for strings and symbols, our tools exist for our convenience, so it's ok to make "inessential" tools that simplify our lives and make our code easier to read.
@@ -2235,32 +2242,35 @@ function just (str = "") {
   return catenation(EMPTY, ...recognizers);
 }
 
-test(just(''), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
-  //=>
-    '' => true
-    'r' => false
-    'reg' => false
-    'reggie' => false
-    'reginald' => false
-    'reginaldus' => false
+verify(just(''), {
+  '': true,
+  'r': false,
+  'reg': false,
+  'reggie': false,
+  'reginald': false,
+  'reginaldus': false
+});
+  //=> All 6 tests passing
 
-test(just('r'), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
-  //=>
-    '' => false
-    'r' => true
-    'reg' => false
-    'reggie' => false
-    'reginald' => false
-    'reginaldus' => false
+verify(just('r'), {
+  '': false,
+  'r': true,
+  'reg': false,
+  'reggie': false,
+  'reginald': false,
+  'reginaldus': false
+});
+  //=> All 6 tests passing
 
-test(just('reginald'), ['', 'r', 'reg', 'reggie', 'reginald', 'reginaldus'])
-  //=>
-    '' => false
-    'r' => false
-    'reg' => false
-    'reggie' => false
-    'reginald' => true
-    'reginaldus' => false
+verify(just('reginald'), {
+  '': false,
+  'r': false,
+  'reg': false,
+  'reggie': false,
+  'reginald': true,
+  'reginaldus': false
+});
+  //=> All 6 tests passing
 ```
 
 The improved `just` generates a recognizer that recognizes whatever string you give it, including the empty string.
@@ -2286,29 +2296,32 @@ function any (str = "") {
   return union(FAIL, ...recognizers);
 }
 
-test(any(), ['', 'r', 'reg'])
-  //=>
-    '' => false
-    'r' => false
-    'reg' => false
+verify(any(), {
+  '': false,
+  'r': false,
+  'reg': false
+});
+  //=> All 3 tests passing
 
-test(any('r'), ['', 'r', 'reg'])
-  //=>
-    '' => false
-    'r' => true
-    'reg' => false
+verify(any('r'), {
+  '': false,
+  'r': true,
+  'reg': false
+});
+  //=> All 3 tests passing
 
-const reg = catenation(any('Rr'), just('eg'));
+const capitalArrReg = catenation(any('Rr'), just('eg'));
 
-test(reg, ['', 'r', 'R', 'reg', 'Reg', 'REG', 'Reginald'])
-  //=>
-    '' => false
-    'r' => false
-    'R' => false
-    'reg' => true
-    'Reg' => true
-    'REG' => false
-    'Reginald' => false
+verify(capitalArrReg, {
+  '': false,
+  'r': false,
+  'R': false,
+  'reg': true,
+  'Reg': true,
+  'REG': false,
+  'Reginald': false
+});
+  //=> All 7 tests passing
 ```
 
 `any` generates a recognizer that recognizes any of the symbols in the strings we pass it. And if none are supplied, it always fails.
@@ -2327,17 +2340,17 @@ const dot = any(ALPHANUMERIC);
 
 const rSomethingG = catenation(any('Rr'), dot, any('Gg'));
 
-test(rSomethingG, [
-  '', 'r', 're', 'Reg', 'Rog', 'RYG', 'Rej']
-)
-  //=>
-    '' => false
-    'r' => false
-    're' => false
-    'Reg' => true
-    'Rog' => true
-    'RYG' => true
-    'Rej' => false
+verify(rSomethingG, {
+  '': false,
+  'r': false,
+  're': false,
+  'Reg': true,
+  'Rog': true,
+  'RYG': true,
+  'Rej': false
+});
+  //=> All 7 tests passing
+
 ```
 
 `any` is very useful, but since we can always write things like `union(just1('a'), just1('b')... )`, we know that `any` is another inessential-but-useful tool.
@@ -2493,31 +2506,58 @@ Here's the full code:
 ```javascript
 function kleeneStar (description) {
   const newStart = "empty";
-  const { start: oldStart, transitions, accepting: oldAccepting } =
-        avoidReservedNames([newStart], description);
 
-  const looped = {
+  const {
+    start: oldStart,
+    transitions: oldTransitions,
+    accepting: oldAccepting
+  } = avoidReservedNames([newStart], description);
+
+  const optionalBefore = {
     start: newStart,
     transitions:
-    	transitions.concat(
-          oldAccepting.map(
-            state => ({ from: state, to: newStart })
-          )
-        ).concat([
-          { "from": newStart, "to": oldStart }
-        ]),
+      [ { "from": newStart, "to": oldStart } ].concat(oldTransitions),
     accepting: oldAccepting.concat([newStart])
   };
 
-  return reachableFromStart(
+  const optional = reachableFromStart(
     mergeEquivalentStates(
       powerset(
         removeEpsilonTransitions(
-          looped
+          optionalBefore
         )
       )
     )
   );
+
+  const {
+    start: optionalStart,
+    transitions: optionalTransitions,
+    accepting: optionalAccepting
+  } = optional;
+
+  const loopedBefore = {
+    start: optionalStart,
+    transitions:
+      optionalTransitions.concat(
+        optionalAccepting.map(
+          state => ({ from: state, to: optionalStart })
+        )
+      ),
+    accepting: optionalAccepting
+  };
+
+  const looped = reachableFromStart(
+    mergeEquivalentStates(
+      powerset(
+        removeEpsilonTransitions(
+          loopedBefore
+        )
+      )
+    )
+  );
+
+  return looped;
 }
 
 kleeneStar(any('Aa'))
@@ -2530,9 +2570,22 @@ kleeneStar(any('Aa'))
       ],
       "accepting": [ "recognized" ]
     }
+
+verify(kleeneStar(any('Aa')), {
+  '': true,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
 ```
 
-`kleene*` is an **essential** decorator. We need it in order to make recognizers that recognzie infinitely large languages.
+`kleene*` is an **essential** decorator. We need it in order to make recognizers that recognize infinitely large languages.
 
 There are also inessential decorators, of course. For example regexen have a postfix `*` character to reprepresent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes.
 
@@ -2555,6 +2608,19 @@ kleenePlus(any('Aa'))
       ],
       "accepting": [ "recognized" ]
     }
+
+verify(kleenePlus(any('Aa')), {
+  '': false,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
 ```
 
 There is one more inessential decorator we can look at we can turn our attention back to complementation.
@@ -2571,19 +2637,21 @@ We call this `optional`, and as we can build it out of essentials we have alread
 const optional =
   recognizer => union(EMPTY, recognizer);
 
-const reg = catenation(
+const regMaybeReginald = catenation(
   just('reg'),
   optional(just('inald'))
-)
+);
 
-test(reg, ['', 'r', 're', 'reg', 'reggie', 'reginald'])
-  //=>
-    '' => false
-    'r' => false
-    're' => false
-    'reg' => true
-    'reggie' => false
-    'reginald' => true
+verify(regMaybeReginald, {
+  '': false,
+  'r': false,
+  're': false,
+  'reg': true,
+  'reggie': false,
+  'reginald': true
+});
+  //=> All 6 tests passing
+
 ```
 
 `optional` decorates a recognizer by making it--well--"optional."
@@ -2604,40 +2672,24 @@ const negation =
     (...args) => !fn(...args);
 ```
 
-`negation` takes a function as an argument, and returns a function that returns the negation of the argument's result.
+`negation` takes a function as an argument, and returns a function that returns the negation of the argument's result. `complementation` does the same thing for recognizers.
 
-`complementation` does the same thing for recognizers. What do recognizers do? They recognize sentences that belong to a language. Consider some recognizer `x` that recognizes whether a sentence belongs to some language `X`. The complementation of `x` would be a recognizer that recognizes sentences that do _not_ belong to `X`.
+What do recognizers do? They recognize sentences that belong to a language. Consider some recognizer `x` that recognizes whether a sentence belongs to some language `X`. The complementation of `x` would be a recognizer that recognizes sentences that do _not_ belong to `X`.
 
 We'll start our work by considering this: Our recognizers fail to recognize a sentence if, when the input ends, they are not in an accepting state. There are two ways this could be true:
 
 1. If the recognizer is in a state that is not an accepting state, or;
 2. If the recognizer has halted.
 
-Let's eliminate the second possibility. Given a recognizer that halts for some input, can we make it never halt? The answer in theory is **no**, because there are an infinite number of symbols that might be passed to a recognizer, and there is no way for our recognizers to encode an infinite number of transitions, one for each possible symbol.
+Let's eliminate the second possibility.
+
+Given a recognizer that halts for some input, can we make it never halt? The answer in theory is **no**, because there are an infinite number of symbols that might be passed to a recognizer, and there is no way for our recognizers to encode an infinite number of transitions, one for each possible symbol.
 
 But in practice, we can say that given a recognizer `x`, and some alphabet `A`, we can return a version of `x` that never halts, _provided that every symbol in the input belongs to `A`_.
 
 Our method is simply to create a state for `halted`, and make sure that every state the recognizer has--including the new `halted` state--has transitions to `halted` for any symbols belonging to `A`, but not already consumed.
 
-For example, given the recognizer `EMPTY` and the `A` consisting of the symbols `1234567890` (the numerals), we would transform:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->[*]
-</div>
-
-Into:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->halted : 1,2,3,4,5,6,7,8,9,0
-    halted-->halted : 1,2,3,4,5,6,7,8,9,0
-    empty-->[*]
-</div>
-
-Likewise, given a recognizer for binary numbers:
+For example, given the recognizer for binary numbers:
 
 <div class="mermaid">
   stateDiagram
@@ -2649,7 +2701,9 @@ Likewise, given a recognizer for binary numbers:
     notZero --> [*]
 </div>
 
-We would transform it into:
+Let's consider its behaviour whnen its input consists solely of symbols in the alphabet of numerals, `1234567890`. When the input it empty, it does not halt, it is in the `start` state. If the first symbol it reads is a `0` or `1`, it transitions to `zero` and `notZero` respectively. But if the input is one of `23456789`, it halts.
+
+So the first thing to do is create a `halted` state and add transitions to that state from `start`:
 
 <div class="mermaid">
   stateDiagram
@@ -2658,14 +2712,56 @@ We would transform it into:
     start --> notZero : 1
     start-->halted : 2,3,4,5,6,7,8,9
     notZero --> notZero : 0, 1
-    notZero-->halted : 2,3,4,5,6,7,8,9
-    zero-->halted : 1, 2,3,4,5,6,7,8,9, 0
-    halted-->halted : 1, 2,3,4,5,6,7,8,9, 0
     zero --> [*]
     notZero --> [*]
 </div>
 
-"Unorthodox, but effective," as Williams would say. Here's a decorator that turns a description of a recognizer, into a description of a recognizer that never halts given a sentence in its alphabet:
+Next, we turn our attention to state `zero`. When the recognizer is in this state, any numeral will cause it to halt, so we add transitions for that:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    start-->halted : 2,3,4,5,6,7,8,9
+    zero-->halted : 1,2,3,4,5,6,7,8,9,0
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+If the recognizer is in state `notZero`, only the numerals `23456789` it to halt, so we add transitions for those:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    start-->halted : 2,3,4,5,6,7,8,9
+    zero-->halted : 1,2,3,4,5,6,7,8,9,0
+    notZero-->halted : 2,3,4,5,6,7,8,9
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+And finally, when the recognizer is in the new state `halted`, any numeral causes it to remain in the state halted, so we add transsitions for those:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    start-->halted : 2,3,4,5,6,7,8,9
+    zero-->halted : 1,2,3,4,5,6,7,8,9,0
+    notZero --> notZero : 0, 1
+    notZero-->halted : 2,3,4,5,6,7,8,9
+    halted-->halted : 1,2,3,4,5,6,7,8,9,0
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+The final result is "Unorthodox, but effective," as Williams would say.
+
+Using this methods, here's a decorator that turns a description of a recognizer, into a description of a recognizer that never halts given a sentence in its alphabet:
 
 ```javascript
 function nonhalting (alphabet, description) {
@@ -2709,7 +2805,7 @@ function nonhalting (alphabet, description) {
 The result is correct, if considerably larger:
 
 ```javascript
-const binaryNumber = {
+const binary = {
   "start": "start",
   "transitions": [
     { "from": "start", "consume": "0", "to": "zero" },
@@ -2720,7 +2816,7 @@ const binaryNumber = {
   "accepting": ["zero", "notZero"]
 }
 
-nonhalting('1234567890', binaryNumber)
+nonhalting('1234567890', binary);
   //=>
     {
       "start": "start",
@@ -2770,6 +2866,30 @@ nonhalting('1234567890', binaryNumber)
     }
 ```
 
+Let's verify that it still recognizes the same "language:"
+
+```javascript
+verify(nonhalting('1234567890', binary), {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': true,
+  '11': true,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true,
+  '10100011011000001010011100101110111': true
+});
+  //=> All 16 tests passing
+```
+
 Now given a recognizer that never halts, what is the `complementation` of that recognizer? Well, given that it is always going to be in one of its states when the input stops, if it is a state that is not one of the original recognizer's accepting states, then it must have failed to recognize the sentence.
 
 This points very clearly to how to implement `complementation`:
@@ -2790,22 +2910,60 @@ function complementation (alphabet, description) {
   return { start, transitions, accepting }
 }
 
-const numberButNotBinary = complementation('1234567890', binaryNumber)
-
-test(numberButNotBinary, ['', '0', '1', '01', '10', '2', 'two'])
-  //=>
-    '' => true
-    '0' => false
-    '1' => false
-    '01' => true
-    '10' => false
-    '2' => true
-    'two' => false
+verify(complementation('1234567890', binary), {
+  '': true,
+  '0': false,
+  '1': false,
+  '01': true,
+  '10': false,
+  '2': true,
+  'two': false
+});
 ```
 
 Note that we do not have a perfect or "ideal" `complementation`, we have "complementation over the alphabet `1234567890`." You can see, for example, that it fails to recognize `'two'`, because letters are not part of its alphabet.
 
-But as we will see, complementation over a declared alphabet is good enough for our purposes.
+But complementation over a declared alphabet is still very useful. In this example, we have a recognizer for quoted strings that defines them as a doubel quote, a bunch of things that are not a double quote, and then a double quote:
+
+```javascript
+const doubleQuote = just('"');
+const SYMBOLIC = `~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/`;
+const WHITESPACE = ` \r\n\t`;
+const EVERYTHING_BAGEL = ALPHANUMERIC + SYMBOLIC + WHITESPACE;
+const notDoubleQuote = complementation(EVERYTHING_BAGEL, doubleQuote);
+const quotedString = catenation(
+  doubleQuote,
+  kleeneStar(notDoubleQuote),
+  doubleQuote
+);
+
+verify(quotedString, {
+  [`""`]: true,
+  [`"Hello!"`]: true,
+  [`"This is a double quote: \"."`]: true
+});
+```
+
+```javascript
+const doubleQuote = just('"');
+const escape = just('\\');
+const SYMBOLIC = `~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/`;
+const WHITESPACE = ` \r\n\t`;
+const EVERYTHING_BAGEL = ALPHANUMERIC + SYMBOLIC + WHITESPACE;
+const notDoubleQuoteOrEscape = complementation(EVERYTHING_BAGEL, union(doubleQuote, escape));
+const escapedCharacter = catenation(escape, any(EVERYTHING_BAGEL));
+const quotedStringWithEscapes = catenation(
+  doubleQuote,
+  kleeneStar(union(notDoubleQuoteOrEscape, escapedCharacter)),
+  doubleQuote
+);
+
+verify(quotedStringWithEscapes, {
+  [`""`]: true,
+  [`"Hello!"`]: true,
+  [`"This is a double quote: \"."`]: true
+});
+```
 
 <!-- UNFINISHED WORK STARTS HERE -->
 

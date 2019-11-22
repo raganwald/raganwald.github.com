@@ -39,10 +39,41 @@ function automate (description) {
   }
 }
 
-function test(description, examples) {
+function test (description, examples) {
   const recognizer = automate(description);
 
   for (const example of examples) {
     console.log(`'${example}' => ${recognizer(example)}`);
+  }
+}
+
+function verify (description, tests) {
+  try {
+    const recognizer = automate(description);
+    const testList = Object.entries(tests);
+    const numberOfTests = testList.length;
+
+    const outcomes = examples.entries().map(
+      ([example, expected]) => {
+        const actual = recognizer(example);
+        if (actual === expected) {
+          return 'pass';
+        } else {
+          return `fail: ${JSON.stringify({ example, expected, actual })}`;
+        }
+      }
+    )
+
+    const failures = outcomes.filter(result => result !== 'pass');
+    const numberOfFailures = failures.length;
+    const numberOfPasses = numberOfTests - numberOfFailures;
+
+    if (numberOfFailures === 0) {
+      console.log(`All ${numberOfPasses} tests passing`);
+    } else {
+      console.log(`${numberOfFailures} tests failing: ${failures.split('; ')}`);
+    }
+  } catch(error) {
+    console.log(`Failed to validate the description: ${error}`)
   }
 }

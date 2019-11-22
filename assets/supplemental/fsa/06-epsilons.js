@@ -66,15 +66,21 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
     for (const epsilonTo of immediateEpsilonToStates) {
       const source =
         stateMapWithoutEpsilon.get(epsilonTo) || [];
-      const moved =
+      const potentialToMove =
         source.map(
           ({ consume, to }) => ({ from: epsilonFrom, consume, to })
         );
-
       const existingTransitions = stateMapWithoutEpsilon.get(epsilonFrom) || [];
 
+      // filter out duplicates
+      const needToMove = potentialToMove.filter(
+        ({ consume: pConsume, to: pTo }) =>
+          !existingTransitions.some(
+            ({ consume: eConsume, to: eTo }) => pConsume === eConsume && pTo === eTo
+          )
+      );
       // now add the moved transitions
-      stateMapWithoutEpsilon.set(epsilonFrom, existingTransitions.concat(moved));
+      stateMapWithoutEpsilon.set(epsilonFrom, existingTransitions.concat(needToMove));
 
       // special case!
       if (acceptingSet.has(epsilonTo)) {
@@ -97,7 +103,7 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
 }
 
 function reachableFromStart ({ start, accepting, transitions: allTransitions }) {
-  const stateMap = toStateMap(allTransitions);
+  const stateMap = toStateMap(allTransitions, true);
   const reachableMap = new Map();
   const R = new Set([start]);
 

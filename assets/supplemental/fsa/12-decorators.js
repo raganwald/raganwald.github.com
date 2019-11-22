@@ -1,30 +1,57 @@
 function kleeneStar (description) {
   const newStart = "empty";
-  const { start: oldStart, transitions, accepting: oldAccepting } =
-        avoidReservedNames([newStart], description);
 
-  const looped = {
+  const {
+    start: oldStart,
+    transitions: oldTransitions,
+    accepting: oldAccepting
+  } = avoidReservedNames([newStart], description);
+
+  const optionalBefore = {
     start: newStart,
     transitions:
-    	transitions.concat(
-          oldAccepting.map(
-            state => ({ from: state, to: newStart })
-          )
-        ).concat([
-          { "from": newStart, "to": oldStart }
-        ]),
+      [ { "from": newStart, "to": oldStart } ].concat(oldTransitions),
     accepting: oldAccepting.concat([newStart])
   };
 
-  return reachableFromStart(
+  const optional = reachableFromStart(
     mergeEquivalentStates(
       powerset(
         removeEpsilonTransitions(
-          looped
+          optionalBefore
         )
       )
     )
   );
+
+  const {
+    start: optionalStart,
+    transitions: optionalTransitions,
+    accepting: optionalAccepting
+  } = optional;
+
+  const loopedBefore = {
+    start: optionalStart,
+    transitions:
+      optionalTransitions.concat(
+        optionalAccepting.map(
+          state => ({ from: state, to: optionalStart })
+        )
+      ),
+    accepting: optionalAccepting
+  };
+
+  const looped = reachableFromStart(
+    mergeEquivalentStates(
+      powerset(
+        removeEpsilonTransitions(
+          loopedBefore
+        )
+      )
+    )
+  );
+
+  return looped;
 }
 
 function kleenePlus (description) {
