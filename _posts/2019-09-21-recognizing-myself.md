@@ -308,46 +308,50 @@ This finite-state recognizer recognizes binary numbers.
 
 ### implementing our example recognizer
 
-Here is a function that takes as its input the definition of a recognizer, and returns a Javascript recognizer *function*:[^vap]
+Here is a function that takes as its input the definition of a recognizer, and returns a Javascript recognizer *function*:[^vap][^regexp]
 
 ```javascript
 function automate (description) {
-  const {
-    stateMap,
-    start,
-    acceptingSet,
-    transitions
-  } = validatedAndProcessed(description);
+  if (description instanceof Regexp) {
+    return string => !!description.exec(string)
+  } else {
+    const {
+      stateMap,
+      start,
+      acceptingSet,
+      transitions
+    } = validatedAndProcessed(description);
 
-  return function (string) {
-    let state = start;
-    let unconsumed = string;
+    return function (string) {
+      let state = start;
+      let unconsumed = string;
 
-    while (unconsumed !== '') {
-      const transitionsForThisState = stateMap.get(state) || [];
-      const transition =
-      	transitionsForThisState.find(
-          ({ consume }) => consume === unconsumed[0]
-      	);
+      while (unconsumed !== '') {
+        const transitionsForThisState = stateMap.get(state) || [];
+        const transition =
+        	transitionsForThisState.find(
+            ({ consume }) => consume === unconsumed[0]
+        	);
 
-      if (transition == null) {
-        // the machine stops
-      	break;
+        if (transition == null) {
+          // the machine stops
+        	break;
+        }
+
+        const { to } = transition;
+        unconsumed = unconsumed.substring(1);
+
+        state = to;
       }
 
-      const { to } = transition;
-      unconsumed = unconsumed.substring(1);
-
-      state = to;
-    }
-
-    // machine has reached a terminal state.
-    if (unconsumed === '') {
-      // reached the end. do we accept?
-      return acceptingSet.has(state);
-    } else {
-      // stopped before reaching the end is a fail
-      return false;
+      // machine has reached a terminal state.
+      if (unconsumed === '') {
+        // reached the end. do we accept?
+        return acceptingSet.has(state);
+      } else {
+        // stopped before reaching the end is a fail
+        return false;
+      }
     }
   }
 }
@@ -355,14 +359,39 @@ function automate (description) {
 
 [^vap]: `automate` relies on `validatedAndProcessed`, a utility function that does some general-purpose processing useful to many of the things we will build along the way. The source code is [here](/assets/supplemental/fsa/01-validated-and-processed.js). Throughout this essay, we will publish the most important snippets of code, but link to the full source.
 
-Here we are using `automate` with our definition for recognizing binary numbers:
+[^regexp]: `automate` can also take a JavaScript `RegExp` as an argument and return a recognizer function. This is not central to developing finite-sytate recognizers, but is sometimes useful when comparing JavaScript regexen to our recognizers.
+
+Here we are using `automate` with our definition for recognizing binary numbers. We'll use the `verify` function throughout our exploration to build simple tests-by-example:
 
 ```javascript
-function test (description, examples) {
-  const recognizer = automate(description);
+function verify (description, tests) {
+  try {
+    const recognizer = automate(description);
+    const testList = Object.entries(tests);
+    const numberOfTests = testList.length;
 
-  for (const example of examples) {
-    console.log(`'${example}' => ${recognizer(example)}`);
+    const outcomes = examples.entries().map(
+      ([example, expected]) => {
+        const actual = recognizer(example);
+        if (actual === expected) {
+          return 'pass';
+        } else {
+          return `fail: ${JSON.stringify({ example, expected, actual })}`;
+        }
+      }
+    )
+
+    const failures = outcomes.filter(result => result !== 'pass');
+    const numberOfFailures = failures.length;
+    const numberOfPasses = numberOfTests - numberOfFailures;
+
+    if (numberOfFailures === 0) {
+      console.log(`All ${numberOfPasses} tests passing`);
+    } else {
+      console.log(`${numberOfFailures} tests failing: ${failures.split('; ')}`);
+    }
+  } catch(error) {
+    console.log(`Failed to validate the description: ${error}`)
   }
 }
 
@@ -398,7 +427,7 @@ verify(binary, {
   //=> All 16 tests passing
 ```
 
-We now have a function, `automate`, that takes a data description of a finite-state automaton/recognizer, and returns a Javascript recognizer function we can play with.
+We now have a function, `automate`, that takes a data description of a finite-state automaton/recognizer, and returns a Javascript recognizer function we can play with and verifys.
 
 ---
 
@@ -1195,9 +1224,7 @@ With this, we can write a function to join the two recognizers with ε-transitio
 
 ```javascript
 function epsilonCatenate (first, second) {
-  const unconflictedSecond =  resolveConflicts(first, second);
-
-  const joinTransitions =
+  const unconflictedSecond =  resolveConflicts(fiinstanceof RegExptions =
     first.accepting.map(
       from => ({ from, to: unconflictedSecond.start })
     );
@@ -2140,7 +2167,22 @@ Here we go.
 
 ### recognizing strings
 
-What makes recognizers really useful is recognizing strings of one kind or another. Let's start with a recognizer for the simplest possible string, `''`, a/k/a "The Empty String:"
+What makes recognizers really useful is recognizing strings of one kind or another. This use case s so common, regexen are designed to make recognizimng strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
+
+```javascript
+verify(/^abc$/, {
+  '': false,
+  'a': false,
+  'ab': false,
+  'abc': true,
+  '_abc': false,
+  '_abc_': false,
+  'abc_': false
+})
+  //=> All 7 tests passing
+```
+
+But before we work our way up to arbitrary strings, let's start with a recognizer for the simplest possible string, `''`, a/k/a "The Empty String." Our finite state recognizer looks like this:
 
 <div class="mermaid">
   stateDiagram
@@ -2148,7 +2190,7 @@ What makes recognizers really useful is recognizing strings of one kind or anoth
     empty-->[*]
 </div>
 
-We can hard-code a description for the empty string:
+We can hard-code a description for this empty string recognizer:
 
 ```javascript
 const EMPTY = {
@@ -2273,7 +2315,19 @@ verify(just('reginald'), {
   //=> All 6 tests passing
 ```
 
-The improved `just` generates a recognizer that recognizes whatever string you give it, including the empty string.
+The improved `just` generates a recognizer that recognizes whatever string you give it, including the empty string. And it's almost exactly like using regexen to recognize strings:
+
+```javascript
+verify(/^reginald$/, {
+  '': false,
+  'r': false,
+  'reg': false,
+  'reggie': false,
+  'reginald': true,
+  'reginaldus': false
+});
+  //=> All 6 tests passing
+```
 
 ---
 
@@ -2324,11 +2378,34 @@ verify(capitalArrReg, {
   //=> All 7 tests passing
 ```
 
-`any` generates a recognizer that recognizes any of the symbols in the strings we pass it. And if none are supplied, it always fails.
+`any` generates a recognizer that recognizes any of the symbols in the strings we pass it. And if none are supplied, it always fails. This is extremely useful, and regexen have an affordance for easily recognizing one of a set of symbols, `[]`. If we want to represent, say, the letter `x`, `y`, or `z`, we can write `[xyz]`, and this will recognize a single `x`, a single `y`, or a single `z`. There are some other useful affordances, such as `[a-z]` matching any letter from `a` through `z` inclusively, but at its most basic level, `[xyz]` works just like `any('xyz)`:
 
-Before we move on to decorators, let's think about regexen. One of the affordances of regexen is that we can use a `.` to represent any character, any character at all. This is easy to implement when writing a regex engine, but there's no such capability in a standard finite-state machine.
+```javascript
+verify(/^[xyz]$/, {
+  '': false,
+  'x': true,
+  'y': true,
+  'z': true,
+  'xyz': false
+});
+  //=> All 5 tests passsing
+```
 
-What we can do, with complete disregard for the size of the finite-state recognizers we create, is _emulate_ the `.` by supplying a string containing every character we care about:
+Before we move on to decorators, let's think about another regexen feature. One of the affordances of regexen is that we can use a `.` to represent any character, any character at all:
+
+```javascript
+verify(/^.$/, {
+  '': false,
+  'a': true,
+  'b': true,
+  'x': true,
+  'y': true,
+  'xyz': false
+});
+  //=> All 6 tests passsing
+```
+
+This is easy to implement when writing a regex engine, but there's no such capability in a standard finite-state machine. What we can do, with complete disregard for the size of the finite-state recognizers we create, is _emulate_ the `.` by supplying a string containing every character we care about:
 
 ```javascript
 const ALPHANUMERIC =
@@ -2585,9 +2662,48 @@ verify(kleeneStar(any('Aa')), {
   //=> All 9 tests passing
 ```
 
-`kleene*` is an **essential** decorator. We need it in order to make recognizers that recognize infinitely large languages.
+`kleene*` is an **essential** decorator. We need it in order to make recognizers that recognize infinitely large languages. Naturally, regexen have an affordance for `kleene*`, it's the `*` postfix operator:
 
-There are also inessential decorators, of course. For example regexen have a postfix `*` character to reprepresent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes.
+```javascript
+verify(/^x*$/, {
+  '': true,
+  'x': true,
+  'xx': true,
+  'xxx': true,
+  'xyz': false
+});
+  //=> All 5 tests passing
+
+verify(/^[Aa]*$/, {
+  '': true,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
+```
+
+There are also inessential decorators, of course. For example regexen have a postfix `*` character to reprepresent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes:
+
+```javascript
+verify(/^[Aa]+$/, {
+  '': false,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
+```
 
 We can make `kleene+` using the essentials we already have, so it is clearly inessential:
 
@@ -2629,7 +2745,19 @@ There is one more inessential decorator we can look at we can turn our attention
 
 ### optional
 
-We've covered the decorators for regexen's `*` postfix operator (`kleene*`), and `+` operator (`kleene+`). Regexen also have a third postfix operator, `?`, that represents a decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _zero or one_ sentences its argument recognizes.
+We've covered the decorators for regexen's `*` postfix operator (`kleene*`), and `+` operator (`kleene+`). Regexen also have a third postfix operator, `?`, that represents a decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _zero or one_ sentences its argument recognizes:
+
+```javascript
+verify(/^x?$/, {
+  '': true,
+  'x': true,
+  'y': false,
+  'xy': false,
+  'wx': false,
+  'xxx': false
+});
+  //=>  All 6 tests passing
+```
 
 We call this `optional`, and as we can build it out of essentials we have already defined, we know that it is inessential. But useful!
 
@@ -2922,6 +3050,55 @@ verify(complementation('1234567890', binary), {
 ```
 
 Note that we do not have a perfect or "ideal" `complementation`, we have "complementation over the alphabet `1234567890`." You can see, for example, that it fails to recognize `'two'`, because letters are not part of its alphabet.
+
+---
+
+### complementation has a catch, too
+
+As we saw, rgexen have an affordance for recognizing any of a bunch of symbols, `[]`. For example, `/^[xyz]$/` matches an `x`, `y`, or `z`. Regexen's `[]` also have another affordance: If we write `/^[^xyz]$/`, this matches any single character *except* an `x`, `y`, or `z`:
+
+```javascript
+verify(/^[^xyz]$/, {
+  '': false,
+  'a': true,
+  'b': true,
+  'c': true,
+  'x': false,
+  'y': false,
+  'z': false,
+  'abc': false,
+  'xyz': false
+});
+  //=> All nine test passing
+```
+
+Two observations of note: First, in regexen, `^` sometimes means "anchor this expression at the beginning of the string," and it sometimes means "match anyc character except these."[^intertia] Second, `[^xyz]` matches just a single character that is not an `x`, `y`, or `z`, so `/^[^xyz]$/` does not match the string `'abc'`.
+
+[^inertia]: Using one operator to mean two completely unrelated things is now understood to be a poor design practice, but in programming languages, old ideas have an enormous amount of inertia. Most of our programming languages seem to be rooted in the paradigm of encoding programs on 80 column punch cards.
+
+Now we might think that `complementation` is the perfect tool for building our own equivalent to `[^xyz]`. Let's try it:
+
+```javascript
+const notXyOrZ = complementation(ALPHANUMERIC, any('xyz'));
+
+verify(notXyOrZ, {
+  '': false,
+  'a': true,
+  'b': true,
+  'c': true,
+  'x': false,
+  'y': false,
+  'z': false,
+  'abc': false,
+  'xyz': false
+});
+  //=> 3 tests failing:
+    {"example":"", "expected":false, "actual":true};
+    {"example":"abc", "expected":false, "actual":true};
+    {"example":"xyz", "expected":false, "actual":true}
+```
+
+It's not the same! `[^xyz]` matches a single character that is not an `x`, `y`, or `z`, whereas `complementation(ALPHANUMERIC, any('xyz'))` matches any string of any length (includng the empty string) that is not a single `x`, `y`, or `z`.
 
 But complementation over a declared alphabet is still very useful. In this example, we have a recognizer for quoted strings that defines them as a doubel quote, a bunch of things that are not a double quote, and then a double quote:
 
