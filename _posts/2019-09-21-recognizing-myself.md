@@ -161,7 +161,7 @@ Now that we have established that finite-state automata can do much more than "j
 
   - [recognizing strings](#recognizing-strings)
   - [recognizing symbols](#recognizing-symbols)
-  - [decorating finite-state recognizers]](#decorating-finite-state-recognizers)
+  - [decorating finite-state recognizers](#decorating-finite-state-recognizers)
   - [kleene* (and kleene+)](#kleene-and-kleene)
   - [optional](#optional)
   - [complementation](#complementation)
@@ -3058,7 +3058,7 @@ Note that we do not have a perfect or "ideal" `complementation`, we have "comple
 
 ### none
 
-As we saw, regexen have an affordance for recognizing any of a bunch of symbols, `[]`. For example, `/^[xyz]$/` matches an `x`, `y`, or `z`. Regexen's `[]` also have another affordance: If we write `/^[^xyz]$/`, this matches any single character *except* an `x`, `y`, or `z`:
+As we saw, regexen have an affordance for recognizing any of a set of symbols, `[]`. For example, `/^[xyz]$/` matches an `x`, `y`, or `z`. Regexen's `[]` also have another affordance: If we write `/^[^xyz]$/`, this matches any single character *except* an `x`, `y`, or `z`:
 
 ```javascript
 verify(/^[^xyz]$/, {
