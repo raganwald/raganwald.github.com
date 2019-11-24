@@ -165,6 +165,7 @@ Now that we have established that finite-state automata can do much more than "j
   - [kleene* (and kleene+)](#kleene-and-kleene)
   - [optional](#optional)
   - [complementation](#complementation)
+  - [none](#none)
 
 ---
 
@@ -3053,7 +3054,7 @@ Note that we do not have a perfect or "ideal" `complementation`, we have "comple
 
 ---
 
-### complementation has a catch, too
+### none
 
 As we saw, rgexen have an affordance for recognizing any of a bunch of symbols, `[]`. For example, `/^[xyz]$/` matches an `x`, `y`, or `z`. Regexen's `[]` also have another affordance: If we write `/^[^xyz]$/`, this matches any single character *except* an `x`, `y`, or `z`:
 
@@ -3100,45 +3101,103 @@ verify(notXyOrZ, {
 
 It's not the same! `[^xyz]` matches a single character that is not an `x`, `y`, or `z`, whereas `complementation(ALPHANUMERIC, any('xyz'))` matches any string of any length (includng the empty string) that is not a single `x`, `y`, or `z`.
 
-But complementation over a declared alphabet is still very useful. In this example, we have a recognizer for quoted strings that defines them as a doubel quote, a bunch of things that are not a double quote, and then a double quote:
+To emulate `[^...]`, we need to take one of two approaches. If we just want to use the tools we already have, we need a way to say that we want a recognizer that matches just the one-symbol strings that are not an `x`, `y`, or `z`.
+
+One way to do that is to use `intersection` and `dot`:
 
 ```javascript
-const doubleQuote = just('"');
-const SYMBOLIC = `~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/`;
-const WHITESPACE = ` \r\n\t`;
-const EVERYTHING_BAGEL = ALPHANUMERIC + SYMBOLIC + WHITESPACE;
-const notDoubleQuote = complementation(EVERYTHING_BAGEL, doubleQuote);
-const quotedString = catenation(
-  doubleQuote,
-  kleeneStar(notDoubleQuote),
-  doubleQuote
-);
+const caretXYZ = intersection(dot, notXyOrZ);
 
-verify(quotedString, {
-  [`""`]: true,
-  [`"Hello!"`]: true,
-  [`"This is a double quote: \"."`]: true
+verify(caretXYZ, {
+  '': false,
+  'a': true,
+  'b': true,
+  'c': true,
+  'x': false,
+  'y': false,
+  'z': false,
+  'abc': false,
+  'xyz': false
 });
+  //=> All 9 tests passing
 ```
 
+Another way to do that is to write a new, inessential tool:
+
 ```javascript
-const doubleQuote = just('"');
-const escape = just('\\');
+function none (alphabet, string) {
+  const exclusionSet = new Set([...string.split('')]);
+  const inclusionList = alphabet.split('').filter(c => !exclusionSet.has(c));
+  const inclusionString = inclusionList.join('');
+
+  return any(inclusionString);
+}
+
+verify(none(ALPHANUMERIC, 'xyz'), {
+  '': false,
+  'a': true,
+  'b': true,
+  'c': true,
+  'x': false,
+  'y': false,
+  'z': false,
+  'abc': false,
+  'xyz': false
+});
+  //=> All 9 tests passing
+```
+
+`none` will be especially handy for building a recognizer that recognizes descriptions of recognizers. For example, one of the earliest programmoing languages to incoporate string pattern matching was [SNOBOL]. Like JavaScript, string literals could be delimited with single or double quotes, but there was no syntax for "escaping" quotes.
+
+[SNOBOL]: http://www.snobol4.org
+
+So if you wanted a string literal containing a single quote, you'd delimit it with double quotes:
+
+```
+doubleQuotedString = "This string's delimiters are double quotes"
+```
+
+And if you wanted a string literal containing double quotes, you'd delimit it with single quotes:
+
+```
+singleQuotedString = 'For so-called "scare quotes," modern culture is to use ✌🏽peace emoji✌🏽.'
+```
+
+JavaScript works like this today, although it also adds escape characters. But sticking to SNOBOL-style string literals for the moment, we can implement a recognizer for string literals with `none`:
+
+```javascript
 const SYMBOLIC = `~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/`;
 const WHITESPACE = ` \r\n\t`;
-const EVERYTHING_BAGEL = ALPHANUMERIC + SYMBOLIC + WHITESPACE;
-const notDoubleQuoteOrEscape = complementation(EVERYTHING_BAGEL, union(doubleQuote, escape));
-const escapedCharacter = catenation(escape, any(EVERYTHING_BAGEL));
-const quotedStringWithEscapes = catenation(
-  doubleQuote,
-  kleeneStar(union(notDoubleQuoteOrEscape, escapedCharacter)),
-  doubleQuote
+const EVERYTHING = ALPHANUMERIC + SYMBOLIC + WHITESPACE;
+const sQuote = just("'");
+const dQuote = just('"');
+
+const sQuotedString = catenation(
+  sQuote,
+  kleeneStar(none(EVERYTHING, "'")),
+  sQuote
 );
 
-verify(quotedStringWithEscapes, {
+const dQuotedString = catenation(
+  dQuote,
+  kleeneStar(none(EVERYTHING, '"')),
+  dQuote
+);
+
+const stringLiteral = union(
+  sQuotedString,
+  dQuotedString
+);
+
+verify(stringLiteral, {
+  [``]: false,
+  [`'`]: false,
+  [`"`]: false,
+  [`''`]: true,
   [`""`]: true,
-  [`"Hello!"`]: true,
-  [`"This is a double quote: \"."`]: true
+  [`"""`]: false,
+  [`""""`]: false,
+  [`"Hello, recognizer"`]: true
 });
 ```
 
