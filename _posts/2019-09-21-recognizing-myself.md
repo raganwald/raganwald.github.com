@@ -41,7 +41,7 @@ Regexen are more than just descriptions of machines that recognize sentences in 
 
 It is easy to write a function that recognizes valid regex given any regex engine: Give the engine the regex, and see if it returns an error. That is practical, but unsatisfying. All it tells us is that a Turing Machine can be devised to recognize regexen. But not all flavours of regexen are as powerful as Turing Machines.
 
-It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour for regexen. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite-state automata, thus the original regexen described finite-state automata.
+It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour for regexen. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite-state automata,[^terminology] thus the original regexen described finite-state automata.
 
 But just because a flavour of regex only describes finite-state automata, does not mean that descriptions of those regexen can be recognized by finite-state automata. Consider, for example, a flavour of regex that permits characters (such as `a`, `b`, `c`, ..., `x`, `y`, `z`), the wildcard operator `.`, the zero-or more operator `*`, and non-capturing groups `(?: ... )`. Here's an example of such a regex:
 
@@ -74,17 +74,7 @@ This leads us to a few questions:
 
 These questions are deep enough that exploring their answers will prod us to learn a lot more about finite-state automata, composition, and building tools for ourselves.
 
----
-
-### terminology
-
-In this essay will will play a little loose with terminology. We are concerned with [finite-state machines][fsa], also called *finite-state automata*. Finite-state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite-state automata that recognize statements in a language are also called _finite-state recognizers_.
-
-Finite-state automata can also do thing that are not of interest to our essay today. A finite-state recognizer recognizes whether a sentence is a sentence in a language. A finite-state automaton can also be devised that not only recognizes whether a sentence is in a language, but also recognizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.
-
-(Other automata can generate strings, transform strings, and so forth. These are also not of interest to us here.)
-
-Now that we have established that finite-state automata can do much more than "just" recognize statements in languages, we will continue on for the rest of the essay using the terms "finite-state automaton," "finite state machine," and "finite-state recognizer" interchangeably.
+[^terminology]: In this essay will will play a little loose with terminology. We are concerned with [finite-state machines][fsa], also called *finite-state automata*. Finite-state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite-state automata that recognize statements in a language are also called _finite-state recognizers_.<br/<br/>Finite-state automata can also do thing that are not of interest to our essay today. A finite-state recognizer recognizes whether a sentence is a sentence in a language. A finite-state automaton can also be devised that not only recognizes whether a sentence is in a language, but also recognizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.<br/><br/>Now that we have established that finite-state automata can do much more than "just" recognize statements in languages, we will continue on for the rest of the essay using the terms "finite-state automaton," "finite-state machine," and "finite-state recognizer" interchangeably.
 
 [fsa]: https://en.wikipedia.org/wiki/Finite-state_machine
 
@@ -96,7 +86,6 @@ Now that we have established that finite-state automata can do much more than "j
 
   - [recognizers that recognize themselves](#recognizers-that-recognize-themselves)
   - [the problem with regexen recognizing themselves](#the-problem-with-regexen-recognizing-themselves)
-  - [terminology](#terminology)
 
 ### [The Problem Statement](#the-problem-statement-1)
 
@@ -159,7 +148,7 @@ The problem of "flavours of regexen that can recognize themselves" is interestin
 
 We'll need to be a bit more specific. Finite-state automata can do a lot of things. Some finite-state automata recognize statements in languages, where the statements consist of ordered and finite collections of symbols. We will call these **finite-state recognizers**, and we are only concerned with finite-state recognizers in this essay.
 
-Thus, we will not—of course—ask whether a finite-state automaton can be hooked up to cameras and recognize whether a physical scene contains a physical state machine. We also will not ask whether a finite-state automaton can recognize a `.png` encoding of a diagram, and recognize whether it is a diagram of a valid finite state state machine:
+Thus, we will not—of course—ask whether a finite-state automaton can be hooked up to cameras and recognize whether a physical scene contains a physical state machine. We also will not ask whether a finite-state automaton can recognize a `.png` encoding of a diagram, and recognize whether it is a diagram of a valid finite-state state machine:
 
 <div class="mermaid">
   stateDiagram
@@ -1039,7 +1028,7 @@ And now we can connect the two recognizers with ε-transitions between the first
     bang-->[*]
 </div>
 
-This works like a charm, and we could code this algorithm up for our actual descriptions. However, our `automate` function doesn't permit ε-transitions. We could add that as a feature, but before we do that, let's look at an algorithm for removing ε-transitions from finite state machines.
+This works like a charm, and we could code this algorithm up for our actual descriptions. However, our `automate` function doesn't permit ε-transitions. We could add that as a feature, but before we do that, let's look at an algorithm for removing ε-transitions from finite-state machines.
 
 ---
 
