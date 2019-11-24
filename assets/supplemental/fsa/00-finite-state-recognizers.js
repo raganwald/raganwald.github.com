@@ -169,7 +169,7 @@ function validatedAndProcessed ({
 // 02-automate.js
 
 function automate (description) {
-  if (description instanceof Regexp) {
+  if (description instanceof RegExp) {
     return string => !!description.exec(string)
   } else {
     const {
@@ -219,7 +219,7 @@ function verify (description, tests) {
     const testList = Object.entries(tests);
     const numberOfTests = testList.length;
 
-    const outcomes = examples.entries().map(
+    const outcomes = testList.map(
       ([example, expected]) => {
         const actual = recognizer(example);
         if (actual === expected) {
@@ -499,7 +499,9 @@ function epsilonCatenate (first, second) {
         .concat(joinTransitions)
         .concat(unconflictedSecond.transitions)
   };
-}instanceof RegExpns ({ start, accepting, transitions }) {
+}
+
+function removeEpsilonTransitions ({ start, accepting, transitions }) {
   const acceptingSet = new Set(accepting);
   const transitionsWithoutEpsilon =
     transitions
@@ -919,16 +921,16 @@ function catenation (a, ...args) {
 
 // 11-building-blocks.js
 
-const EMPTY = {
+const EMPTY_SET = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": []
+};
+
+const EMPTY_STRING = {
   "start": "empty",
   "transitions": [],
   "accepting": ["empty"]
-};
-
-const FAIL = {
-  "start": "failure",
-  "transitions": [],
-  "accepting": []
 };
 
 function just1 (symbol) {
@@ -944,13 +946,13 @@ function just1 (symbol) {
 function just (str = "") {
   const recognizers = str.split('').map(just1);
 
-  return catenation(EMPTY, ...recognizers);
+  return catenation(...recognizers);
 }
 
 function any (str = "") {
   const recognizers = str.split('').map(just1);
 
-  return union(FAIL, ...recognizers);
+  return union(...recognizers);
 }
 
 // 12-decorators.js
@@ -1016,7 +1018,7 @@ function kleenePlus (description) {
 }
 
 const optional =
-  recognizer => union(EMPTY, recognizer);
+  recognizer => union(EMPTY_STRING, recognizer);
 
 function nonhalting (alphabet, description) {
   const descriptionWithoutHaltedState = avoidReservedNames(["halted"], description);

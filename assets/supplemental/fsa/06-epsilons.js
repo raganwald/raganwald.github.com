@@ -1,3 +1,5 @@
+// 06-epsilons.js
+
 function epsilonCatenate (first, second) {
   const unconflictedSecond =  resolveConflicts(first, second);
 

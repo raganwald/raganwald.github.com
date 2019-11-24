@@ -148,14 +148,18 @@ verify(deterministic, {
   '101': false,
   '110': false,
   '111': false
-})
+});
 
-verify(EMPTY, {
+verify(EMPTY_SET, {
+  '': false,
+  '0': false,
+  '1': false
+});
+
+verify(EMPTY_STRING, {
   '': true,
   '0': false,
-  '1': false,
-  '01': false,
-  '10': false
+  '1': false
 });
 
 verify(just1('0'), {
@@ -187,15 +191,6 @@ verify(reginald, {
   'reginaldus': false
 });
 
-verify(just(''), {
-  '': true,
-  'r': false,
-  'reg': false,
-  'reggie': false,
-  'reginald': false,
-  'reginaldus': false
-});
-
 verify(just('r'), {
   '': false,
   'r': true,
@@ -212,12 +207,6 @@ verify(just('reginald'), {
   'reggie': false,
   'reginald': true,
   'reginaldus': false
-});
-
-verify(any(), {
-  '': false,
-  'r': false,
-  'reg': false
 });
 
 verify(any('r'), {

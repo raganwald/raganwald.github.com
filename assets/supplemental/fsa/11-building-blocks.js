@@ -1,13 +1,15 @@
-const EMPTY = {
+// 11-building-blocks.js
+
+const EMPTY_SET = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": []
+};
+
+const EMPTY_STRING = {
   "start": "empty",
   "transitions": [],
   "accepting": ["empty"]
-};
-
-const FAIL = {
-  "start": "failure",
-  "transitions": [],
-  "accepting": []
 };
 
 function just1 (symbol) {
@@ -23,11 +25,11 @@ function just1 (symbol) {
 function just (str = "") {
   const recognizers = str.split('').map(just1);
 
-  return catenation(EMPTY, ...recognizers);
+  return catenation(...recognizers);
 }
 
 function any (str = "") {
   const recognizers = str.split('').map(just1);
 
-  return union(FAIL, ...recognizers);
+  return union(...recognizers);
 }

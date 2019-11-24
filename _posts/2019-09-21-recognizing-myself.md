@@ -2170,9 +2170,57 @@ Here we go.
 
 ---
 
+### in the beginning
+
+What is the absolutely minimal recognizer? One might think, "a recognizer for empty strings," and as we will see, such a recognizer is useful. But there is an even more minimal recogner than that. The recognizer that recognizes empty strings recognizes a language with only one sentence in it.
+
+But what is the language with no sentences whatsoever? This language is often called the _empty set_, and in mathematical notation it is denoted with ∅. If we want to make tools for building finite-state recognizers, we'll need a way to build a recognizer for the empty set.
+
+There are ways to derive it from our other tools, but we'll just boldly declare it as a constant:
+
+```javascript
+const EMPTY_SET = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": []
+};
+
+verify(EMPTY_SET, {
+  '': false,
+  '0': false,
+  '1': false
+});x
+  //=> All 3 tests passing
+```
+
+With `EMPTY_SET` out of the way, we'll turn our attention to more practical recognizers, those that recognize actual sentences of symbols.
+
+What's the simplest possible language that contains sentences? A language containing only one sentence. Such languages include `{ 'balderdash' }`, `{ 'billingsgate' }`, and even `{ 'bafflegab' }`.
+
+Of all the one-sentence languages, the simplest would be the language containing the shortest possible string, `''`. We will also boldly declare this as a constant:
+
+```javascript
+const EMPTY_STRING = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": ["empty"]
+};
+
+verify(EMPTY_STRING, {
+  '': true,
+  '0': false,
+  '1': false
+});
+  //=> All 3 tests passing
+```
+
+`EMPTY_SET` and `EMPTY_STRING` are both **essential**, even if we use them somewhat infrequently. We can now move on to build more complex recognizers with functions.
+
+---
+
 ### recognizing strings
 
-What makes recognizers really useful is recognizing strings of one kind or another. This use case s so common, regexen are designed to make recognizing strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
+What makes recognizers really useful is recognizing non-empty strings of one kind or another. This use case s so common, regexen are designed to make recognizing strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
 
 ```javascript
 verify(/^abc$/, {
@@ -2187,34 +2235,7 @@ verify(/^abc$/, {
   //=> All 7 tests passing
 ```
 
-But before we work our way up to arbitrary strings, let's start with a recognizer for the simplest possible string, `''`, a/k/a "The Empty String." Our finite state recognizer looks like this:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->[*]
-</div>
-
-We can hard-code a description for this empty string recognizer:
-
-```javascript
-const EMPTY = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": ["empty"]
-};
-
-verify(EMPTY, {
-  '': true,
-  '0': false,
-  '1': false,
-  '01': false,
-  '10': false
-});
-  //=> All 5 tests passing
-```
-
-What about non-empty strings? Here's an example of a recognizer that recognizes a single zero:
+Here's an example of a recognizer that recognizes a single zero:
 
 <div class="mermaid">
   stateDiagram
@@ -2247,7 +2268,7 @@ verify(just1('0'), {
   //=> All 6 tests passing
 ```
 
-Armed with `EMPTY` and `just1`, we can use catenation to make recognizers for any string we might want. So let's think of `EMPTY` and `just1` as **essential** building blocks for recognizing symbols.
+Armed with `EMPTY_STRING` and `just1`, we can use catenation to make recognizers for any string we might want. So let's add `just1` to our collection of essential building blocks for recognizing symbols.
 
 ```javascript
 const reginald = catenation(
@@ -2286,18 +2307,8 @@ const EMPTY = {
 function just (str = "") {
   const recognizers = str.split('').map(just1);
 
-  return catenation(EMPTY, ...recognizers);
+  return catenation(...recognizers);
 }
-
-verify(just(''), {
-  '': true,
-  'r': false,
-  'reg': false,
-  'reggie': false,
-  'reginald': false,
-  'reginaldus': false
-});
-  //=> All 6 tests passing
 
 verify(just('r'), {
   '': false,
@@ -2343,24 +2354,11 @@ As we know from the implementation, `just` takes a string, and generating the `c
 We could take their `intersection`, but unless there was only one symbol, that wouldn't help. What about taking their union?
 
 ```javascript
-const FAIL = {
-  "start": "failure",
-  "transitions": [],
-  "accepting": []
-};
-
 function any (str = "") {
   const recognizers = str.split('').map(just1);
 
-  return union(FAIL, ...recognizers);
+  return union(...recognizers);
 }
-
-verify(any(), {
-  '': false,
-  'r': false,
-  'reg': false
-});
-  //=> All 3 tests passing
 
 verify(any('r'), {
   '': false,
@@ -2383,7 +2381,7 @@ verify(capitalArrReg, {
   //=> All 7 tests passing
 ```
 
-`any` generates a recognizer that recognizes any of the symbols in the strings we pass it. And if none are supplied, it always fails. This is extremely useful, and regexen have an affordance for easily recognizing one of a set of symbols, `[]`. If we want to represent, say, the letter `x`, `y`, or `z`, we can write `[xyz]`, and this will recognize a single `x`, a single `y`, or a single `z`. There are some other useful affordances, such as `[a-z]` matching any letter from `a` through `z` inclusively, but at its most basic level, `[xyz]` works just like `any('xyz)`:
+`any` generates a recognizer that recognizes any of the symbols in the strings we pass it. This is extremely useful, and regexen have an affordance for easily recognizing one of a set of symbols, `[]`. If we want to represent, say, the letter `x`, `y`, or `z`, we can write `/^[xyz]$/`, and this will recognize a single `x`, a single `y`, or a single `z`. There are some other useful affordances, such as `[a-z]` matching any letter from `a` through `z` inclusively, but at its most basic level, `/^[xyz]$/` works just like `any('xyz)`:
 
 ```javascript
 verify(/^[xyz]$/, {
@@ -2470,11 +2468,11 @@ We'll start with an essential decorator, the "Kleene Star."
 
 ### kleene* (and kleene+)
 
-Given `EMPTY`, `just1`, `union`, and `catenation`, we can make recognizers that recognize any language that contains a _finite_ set of sentences.[^wvrst-case]
+Given `EMPTY_SET`, `EMPTY_STRING`, `just1`, `union`, and `catenation`, we can make recognizers that recognize any language that contains a _finite_ set of sentences.[^wvrst-case]
 
 [^wvrst-case]: If a language has a finite set of sentences, we can make a list of every sentence in the language, and then write a recognizer that uses `catenation` and `just1` (or equivalently, `just`) for each sentence in the language. Then we can take the union of all those recognizers, to get the recognizer for every sentence in the language.
 
-But if we want to recognize languages that have an **infinite** number of sentences, we need to go beyond `EMPTY`, `just1`, `union`, and `catenation`.  We can't recognize all languages that have an infinite number of sentences: We know that languages like "balanced parentheses" cannot be recognized with a finite-state automata.
+But if we want to recognize languages that have an **infinite** number of sentences, we need to go beyond `EMPTY_STRING`, `just1`, `union`, and `catenation`.  We can't recognize all languages that have an infinite number of sentences: We know that languages like "balanced parentheses" cannot be recognized with a finite-state automata.
 
 But finite-state automata can recognize some languages containing an infinite number of sentences. We've seen some already, for example recognizing binary numbers:
 
@@ -2488,7 +2486,7 @@ But finite-state automata can recognize some languages containing an infinite nu
     notZero --> [*]
 </div>
 
-There are an infinite number of strings representing binary numbers, and this recognizer will recognize them all. The salient difference between this recognizer and the recognizers we can build with `EMPTY`, `just1`, `union`, and `catenation`, is that this recognizer has "loops" in it, whereas recognizers we build with `EMPTY`, `just1`, `union`, and `catenation` will not have any loops.
+There are an infinite number of strings representing binary numbers, and this recognizer will recognize them all. The salient difference between this recognizer and the recognizers we can build with `EMPTY_STRING`, `just1`, `union`, and `catenation`, is that this recognizer has "loops" in it, whereas recognizers we build with `EMPTY_STRING`, `just1`, `union`, and `catenation` will not have any loops.
 
 If a recognizer does not have any loops, the maximum number of sentences it can recognize will be equal to the number of states it has, and the maximum length of any sentence it recognizes will be the number of states it has, minus one.
 
@@ -2768,7 +2766,7 @@ We call this `optional`, and as we can build it out of essentials we have alread
 
 ```javascript
 const optional =
-  recognizer => union(EMPTY, recognizer);
+  recognizer => union(EMPTY_STRING, recognizer);
 
 const regMaybeReginald = catenation(
   just('reg'),
@@ -3217,11 +3215,21 @@ We've classified the tools we've built so far as being ether _essential_, or _in
 |:--------|:----------|
 |`union`|`intersection`|
 |`catenation`|`just`|
-|`EMPTY`|`any`|
-|`just1`|`kleene+`|
-|`kleene*`|`optional`|
-| | |`complementation`|
-| | |`none`|
+|`EMPTY_SET`|`any`|
+|`EMPTY_STRING`|`kleene+`|
+|`just1`|`optional`|
+|`kleene*`|`complementation`|
+| |`none`|
+
+There's something special about the essential tools `union`, `cantenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*`, and what makes them special is this:
+
+> If a language can be recognized by a finite-state recognizer, then it is possible to use the tools `union`, `cantenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*` to make a finite-state recognizer that recognizes that same language.
+
+In other words, once we have `union`, `cantenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*`, we don't need to write any finite-state recognizer by hand, and we don't need any of the other tools. `union`, `cantenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*` are sufficient to write a recognizer for any language recognized by any finite-state recognizer.[^equivalent]
+
+[^equivalent]: `union`, `cantenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*` are not the only possible set of essential tools. We could, for example, replace `kleene*` with `kleene+`, as anywhere we would otherwise use `kleene*`, we can use `kleene+`, `union`, and `EMPTY_STRING`.
+
+
 
 
 <!-- UNFINISHED WORK STARTS HERE -->
@@ -3232,7 +3240,7 @@ We've classified the tools we've built so far as being ether _essential_, or _in
 
 ### what is a regular language?
 
-As described above, `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` are all fundamental. They each give us something that could not be constructed from the remaining functions. In an homage, we will call these "special forms."[^special-form]
+As described above, `EMPTY_STRING`, `symbol`, `catenation`, `union`, and `zeroOrMore` are all fundamental. They each give us something that could not be constructed from the remaining functions. In an homage, we will call these "special forms."[^special-form]
 
 [^special-form]: Literally speaking, they are not special forms, we're just using the expression. In Lisp dialects, the expression `(FUN ARG1 ARG2 ARG3... ARGN)` is evaluated as invoking function `FUN` with arguments `ARG1 ARG2 ARG3... ARGN` by default. However, there are certain "special forms" that share the same syntax, but are evaluated in special ways. The special forms vary from dialect to dialect, but function definition/lambdas are always a special form of some kind, some kind of conditional (such as `COND` or `IF`) is usually another because of its short-circuit semantics, `SET!` or its equivalent is usually a special form, and so forth.<br/><br/>Our "special forms" are just JavaScript, there is nothing special about they way they're evaluated. However, what they share with Lisp's special forms is that we can build everything else in the language from them.
 
@@ -3240,7 +3248,7 @@ In formal computer science, **regular languages** are defined using the followin
 
 [^alphabet]: An alphabet is nothing more than a set of symbols. `{ 0, 1 }` is an alphabet often associated with binary numbers. `{ a, b, c ..., z, A, B, C, ... Z}` is an alphabet often associated with English words, and so forth.
 
-- The "empty language," often notated Ø, is a regular language. The empty language is either a language where no strings are accepted at all, or a language where the empty string is the only string accepted. We can make a recognizer for the empty language using `EMPTY`.
+- The "empty language," often notated Ø, is a regular language. The empty language is either a language where no strings are accepted at all, or a language where the empty string is the only string accepted. We can make a recognizer for the empty language using `EMPTY_STRING`.
 - A "singleton set" is a language where single symbols from its alphabet Σ are accepted. We can make a recognizer for a singleton language using `union` and `symbol`.
 
 Now consider two languages `A` and `B`. We are given that `A` and `B` are already defined, and are known to be regular. By this we mean, that they are defined by some combination of the two rules just given, or the three rules that follow. Each has its own alphabet.
@@ -3249,11 +3257,11 @@ Now consider two languages `A` and `B`. We are given that `A` and `B` are alread
 - If `A` and `B` are regular languages, the union of `A` and `B` is a regular language. Meaning, if the sentence `x` belongs to the language `A|B` if and only if `x` belongs to `A` or `x` belongs to `B`, then the language `A|B` is a regular language if and only if both `A` and `B` are regular languages. If we have a recognizer for `A` and `B`, we can construct a recognizer for the union of `A` and `B` by invoking `union(A, B)`.
 - If `A` is a regular language, the language `A*` is formed by taking the Kleene Star of `A`. Meaning, if the empty sentence belongs to `A*`, and the sentence `ab` belongs to `A*` if and only if the sentence `a` belongs to `A` and `b` belongs to `A*`, then `A*` is a regular language. If we have a recognizer for `A`, we can construct a recognizer for the Kleene Star of `A` by invoking `zeroOrMore(A)`.
 
-A language is regular if and only if it conforms with the above rules. And since we can construct all the languages formed by the above rules, we can construct all possible regular languages using our five special forms `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`.
+A language is regular if and only if it conforms with the above rules. And since we can construct all the languages formed by the above rules, we can construct all possible regular languages using our five special forms `EMPTY_STRING`, `symbol`, `catenation`, `union`, and `zeroOrMore`.
 
 But wait, there's more!
 
-A formal *regular expression* is an expression formed by combining `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`. Of course, computer scientists prefer mathematical symbols to make regular expressions, but for our purposes, this is both JavaScript and a regular expression:
+A formal *regular expression* is an expression formed by combining `EMPTY_STRING`, `symbol`, `catenation`, `union`, and `zeroOrMore`. Of course, computer scientists prefer mathematical symbols to make regular expressions, but for our purposes, this is both JavaScript and a regular expression:
 
 ```javascript
 union(
@@ -3266,19 +3274,19 @@ union(
   )
 )
 ```
-Having defined `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, it follows that any regular expression has an equivalent JavaScript expression formed by combining these functions with singe character string inputs for `symbol`.
+Having defined `EMPTY_STRING`, `symbol`, `catenation`, `union`, and `zeroOrMore`, it follows that any regular expression has an equivalent JavaScript expression formed by combining these functions with singe character string inputs for `symbol`.
 
-Regular expressions define regular languages. Therefore, every regular language has an equivalent JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`.
+Regular expressions define regular languages. Therefore, every regular language has an equivalent JavaScript regular expression made out of `EMPTY_STRING`, `symbol`, `catenation`, `union`, and `zeroOrMore`.
 
-Now consider what we know from our implementation so far: `EMPTY` is a finite-state automaton, and `symbol` only creates finite-state automata. And we know that `catenation`, `union`, and `zeroOrMore` create finite-state automata if given finite-state automata as input. Therefore, every JavaScript regular expression made out of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore` evaluates to the description of a finite-state automaton that recognizes the regular language.
+Now consider what we know from our implementation so far: `EMPTY_STRING` is a finite-state automaton, and `symbol` only creates finite-state automata. And we know that `catenation`, `union`, and `zeroOrMore` create finite-state automata if given finite-state automata as input. Therefore, every JavaScript regular expression made out of `EMPTY_STRING`, `symbol`, `catenation`, `union`, and `zeroOrMore` evaluates to the description of a finite-state automaton that recognizes the regular language.
 
-Therefore, *All regular languages can be recognized by finite-state automata*. If someone says, "Oh no, this regular language cannot be recognized by a finite-state automaton," we ask them to write out the regular expression for that language. We then translate the symbols into invocations of `EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`, then evaluate the JavaScript expression. The result will be a finite-state automaton recognizing the language, disproving their claim.
+Therefore, *All regular languages can be recognized by finite-state automata*. If someone says, "Oh no, this regular language cannot be recognized by a finite-state automaton," we ask them to write out the regular expression for that language. We then translate the symbols into invocations of `EMPTY_STRING`, `symbol`, `catenation`, `union`, and `zeroOrMore`, then evaluate the JavaScript expression. The result will be a finite-state automaton recognizing the language, disproving their claim.
 
 ---
 
 ## Making Regular Expressions More Convenient
 
-Our five special forms--`EMPTY`, `symbol`, `catenation`, `union`, and `zeroOrMore`--can make a recognizer for any regular language. But working with just those forms is tedious: That is why regex dialects include other mechanisms, like being able to specify a string of symbols to match, or the `?` operator that represents "zero or one," or the `+` operator that represents "one or more."
+Our five special forms--`EMPTY_STRING`, `symbol`, `catenation`, `union`, and `zeroOrMore`--can make a recognizer for any regular language. But working with just those forms is tedious: That is why regex dialects include other mechanisms, like being able to specify a string of symbols to match, or the `?` operator that represents "zero or one," or the `+` operator that represents "one or more."
 
 We are now going to define some helpful higher-order functions that work only with the five special forms and each other. Since everything we will now build is built on top of what we already have, we can rest assured that we aren't making anything that couldn't be done by hand with the five tools we already have.
 
@@ -3436,7 +3444,7 @@ test(string("reg"), [
     'reg' => true
 ```
 
-But what about the empty string? Let's incorporate `EMPTY`:
+But what about the empty string? Let's incorporate `EMPTY_STRING`:
 
 ```javascript
 function string (str = "") {
@@ -3463,7 +3471,7 @@ test(string(""), [
 
 ### implementing zero-or-one
 
-We can use `EMPTY` with alternation as well. Here's an automaton that recognizes `reg`:
+We can use `EMPTY_STRING` with alternation as well. Here's an automaton that recognizes `reg`:
 
 <div class="mermaid">
   graph LR
@@ -3473,7 +3481,7 @@ We can use `EMPTY` with alternation as well. Here's an automaton that recognizes
     reg-.->|end|recognized(recognized)
 </div>
 
-If we form the union of `reg` with `EMPTY`, we get:
+If we form the union of `reg` with `EMPTY_STRING`, we get:
 
 <div class="mermaid">
   graph LR
@@ -3503,7 +3511,7 @@ test(reginaldOrBust, [
     'reginald' => true
 ```
 
-Once again, `zeroOrOne` doesn't give us anything that we didn't already have with `EMPTY` and `union`. But it is a convenience.
+Once again, `zeroOrOne` doesn't give us anything that we didn't already have with `EMPTY_STRING` and `union`. But it is a convenience.
 
 ---
 
@@ -3632,7 +3640,7 @@ We've transformed `catenation` and `union` from binary to n-ary functions. Becau
 
 We also created `any` and `string`, recognizers for sets of symbols and strings of symbols. Since we implemented these with `symbol`, `union`, and `catenation`, we know that the descriptions they produce are for finite-state automata.
 
-We created `zeroOrOne` and `oneOrMore`, functions that transform recognizers. Since wwe implemented these with `EMPTY`, `union`, and `catenation`, we know that given descriptions of finite-state automata, they return descriptions of finite-state automata.
+We created `zeroOrOne` and `oneOrMore`, functions that transform recognizers. Since wwe implemented these with `EMPTY_STRING`, `union`, and `catenation`, we know that given descriptions of finite-state automata, they return descriptions of finite-state automata.
 
 In sum, we now have some very convenient tools for building finite-state automata that recognize languages. Tools that are very familiar to regex users:
 

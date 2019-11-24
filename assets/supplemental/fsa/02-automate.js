@@ -1,5 +1,7 @@
+// 02-automate.js
+
 function automate (description) {
-  if (description instanceof Regexp) {
+  if (description instanceof RegExp) {
     return string => !!description.exec(string)
   } else {
     const {
@@ -49,7 +51,7 @@ function verify (description, tests) {
     const testList = Object.entries(tests);
     const numberOfTests = testList.length;
 
-    const outcomes = examples.entries().map(
+    const outcomes = testList.map(
       ([example, expected]) => {
         const actual = recognizer(example);
         if (actual === expected) {
