@@ -74,18 +74,18 @@ This leads us to a few questions:
 
 These questions are deep enough that exploring their answers will prod us to learn a lot more about finite-state automata, composition, and building tools for ourselves.
 
-[^terminology]: In this essay will will play a little loose with terminology. We are concerned with [finite-state machines][fsa], also called *finite-state automata*. Finite-state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite-state automata that recognize statements in a language are also called _finite-state recognizers_.<br/<br/>Finite-state automata can also do thing that are not of interest to our essay today. A finite-state recognizer recognizes whether a sentence is a sentence in a language. A finite-state automaton can also be devised that not only recognizes whether a sentence is in a language, but also recognizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.<br/><br/>Now that we have established that finite-state automata can do much more than "just" recognize statements in languages, we will continue on for the rest of the essay using the terms "finite-state automaton," "finite-state machine," and "finite-state recognizer" interchangeably.
+[^terminology]: In this essay will will play a little loose with terminology. We are concerned with [finite-state machines][fsa], also called *finite-state automata*. Finite-state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite-state automata that recognize statements in a language are also called _finite-state recognizers_.<br/><br/>Finite-state automata can also do thing that are not of interest to our essay today. A finite-state recognizer recognizes whether a sentence is a sentence in a language. A finite-state automaton can also be devised that not only recognizes whether a sentence is in a language, but also recognizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.<br/><br/>Now that we have established that finite-state automata can do much more than "just" recognize statements in languages, we will continue on for the rest of the essay using the terms "finite-state automaton," "finite-state machine," and "finite-state recognizer" interchangeably.
 
 [fsa]: https://en.wikipedia.org/wiki/Finite-state_machine
 
 ---
 
-# [Table of Contents](#table-of-contents)
-
 ### [Prelude](#prelude)
 
   - [recognizers that recognize themselves](#recognizers-that-recognize-themselves)
   - [the problem with regexen recognizing themselves](#the-problem-with-regexen-recognizing-themselves)
+
+# [Table of Contents](#table-of-contents)
 
 ### [The Problem Statement](#the-problem-statement-1)
 
