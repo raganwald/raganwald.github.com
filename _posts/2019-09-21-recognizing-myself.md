@@ -167,6 +167,8 @@ Now that we have established that finite-state automata can do much more than "j
   - [complementation](#complementation)
   - [none](#none)
 
+### [Regular Languages and Regular Expressions](#regular-languages-and-regular-expressions-1)
+
 ---
 
 # The Problem Statement
@@ -2391,7 +2393,7 @@ verify(/^[xyz]$/, {
   'z': true,
   'xyz': false
 });
-  //=> All 5 tests passsing
+  //=> All 5 tests passing
 ```
 
 Before we move on to decorators, let's think about another regexen feature. One of the affordances of regexen is that we can use a `.` to represent any character, any character at all:
@@ -3202,6 +3204,25 @@ verify(stringLiteral, {
   [`"Hello, recognizer"`]: true
 });
 ```
+
+It may be "inessential," but `none` is certainly handy.
+
+---
+
+# Regular Languages and Regular Expressions
+
+We've classified the tools we've built so far as being ether _essential_, or _inessential_:
+
+|Essential|Inessential|
+|:--------|:----------|
+|`union`|`intersection`|
+|`catenation`|`just`|
+|`EMPTY`|`any`|
+|`just1`|`kleene+`|
+|`kleene*`|`optional`|
+| | |`complementation`|
+| | |`none`|
+
 
 <!-- UNFINISHED WORK STARTS HERE -->
 
