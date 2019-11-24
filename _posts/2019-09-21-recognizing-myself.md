@@ -360,7 +360,7 @@ function automate (description) {
 
 [^vap]: `automate` relies on `validatedAndProcessed`, a utility function that does some general-purpose processing useful to many of the things we will build along the way. The source code is [here](/assets/supplemental/fsa/01-validated-and-processed.js). Throughout this essay, we will publish the most important snippets of code, but link to the full source.
 
-[^regexp]: `automate` can also take a JavaScript `RegExp` as an argument and return a recognizer function. This is not central to developing finite-sytate recognizers, but is sometimes useful when comparing JavaScript regexen to our recognizers.
+[^regexp]: `automate` can also take a JavaScript `RegExp` as an argument and return a recognizer function. This is not central to developing finite-state recognizers, but is sometimes useful when comparing JavaScript regexen to our recognizers.
 
 Here we are using `automate` with our definition for recognizing binary numbers. We'll use the `verify` function throughout our exploration to build simple tests-by-example:
 
@@ -428,7 +428,7 @@ verify(binary, {
   //=> All 16 tests passing
 ```
 
-We now have a function, `automate`, that takes a data description of a finite-state automaton/recognizer, and returns a Javascript recognizer function we can play with and verifys.
+We now have a function, `automate`, that takes a data description of a finite-state automaton/recognizer, and returns a Javascript recognizer function we can play with and verify.
 
 ---
 
@@ -1225,7 +1225,9 @@ With this, we can write a function to join the two recognizers with ε-transitio
 
 ```javascript
 function epsilonCatenate (first, second) {
-  const unconflictedSecond =  resolveConflicts(fiinstanceof RegExptions =
+  const unconflictedSecond =  resolveConflicts(first, second);
+
+  const joinTransitions =
     first.accepting.map(
       from => ({ from, to: unconflictedSecond.start })
     );
@@ -2168,7 +2170,7 @@ Here we go.
 
 ### recognizing strings
 
-What makes recognizers really useful is recognizing strings of one kind or another. This use case s so common, regexen are designed to make recognizimng strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
+What makes recognizers really useful is recognizing strings of one kind or another. This use case s so common, regexen are designed to make recognizing strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
 
 ```javascript
 verify(/^abc$/, {
@@ -2403,7 +2405,7 @@ verify(/^.$/, {
   'y': true,
   'xyz': false
 });
-  //=> All 6 tests passsing
+  //=> All 6 tests passing
 ```
 
 This is easy to implement when writing a regex engine, but there's no such capability in a standard finite-state machine. What we can do, with complete disregard for the size of the finite-state recognizers we create, is _emulate_ the `.` by supplying a string containing every character we care about:
@@ -2468,9 +2470,9 @@ We'll start with an essential decorator, the "Kleene Star."
 
 Given `EMPTY`, `just1`, `union`, and `catenation`, we can make recognizers that recognize any language that contains a _finite_ set of sentences.[^wvrst-case]
 
-[^wvrst-case]: If a language has a finite set of sentences, we can make a list of every sentence in the language, and then write a recognizer that uses `catenation` and `just1` (or equivalently, `just`) for each sentence in the language. Then we can take the union of all those recognziers, to get the recognizer for every sentence in the language.
+[^wvrst-case]: If a language has a finite set of sentences, we can make a list of every sentence in the language, and then write a recognizer that uses `catenation` and `just1` (or equivalently, `just`) for each sentence in the language. Then we can take the union of all those recognizers, to get the recognizer for every sentence in the language.
 
-But if we want to recognize languages that have an **infinite** number of sentences, we need to go beyond `EMPTY`, `just1`, `union`, and `catenation`.  We can't recognize all langauges that have an infinite number of sentences: We know that languages like "balanced parentheses" cannot be recognized with a finite-state automata.
+But if we want to recognize languages that have an **infinite** number of sentences, we need to go beyond `EMPTY`, `just1`, `union`, and `catenation`.  We can't recognize all languages that have an infinite number of sentences: We know that languages like "balanced parentheses" cannot be recognized with a finite-state automata.
 
 But finite-state automata can recognize some languages containing an infinite number of sentences. We've seen some already, for example recognizing binary numbers:
 
@@ -2484,7 +2486,7 @@ But finite-state automata can recognize some languages containing an infinite nu
     notZero --> [*]
 </div>
 
-There are an infnite number of strings representing binary numbers, and this recognizer will recognize them all. The salient difference between this recognizer and the recognizers we can build with `EMPTY`, `just1`, `union`, and `catenation`, is that this recognizer has "loops" in it, whereas recognizerrs we build with `EMPTY`, `just1`, `union`, and `catenation` will not have any loops.
+There are an infinite number of strings representing binary numbers, and this recognizer will recognize them all. The salient difference between this recognizer and the recognizers we can build with `EMPTY`, `just1`, `union`, and `catenation`, is that this recognizer has "loops" in it, whereas recognizers we build with `EMPTY`, `just1`, `union`, and `catenation` will not have any loops.
 
 If a recognizer does not have any loops, the maximum number of sentences it can recognize will be equal to the number of states it has, and the maximum length of any sentence it recognizes will be the number of states it has, minus one.
 
@@ -2689,7 +2691,7 @@ verify(/^[Aa]*$/, {
   //=> All 9 tests passing
 ```
 
-There are also inessential decorators, of course. For example regexen have a postfix `*` character to reprepresent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes:
+There are also inessential decorators, of course. For example regexen have a postfix `*` character to represent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes:
 
 ```javascript
 verify(/^[Aa]+$/, {
@@ -2830,7 +2832,7 @@ For example, given the recognizer for binary numbers:
     notZero --> [*]
 </div>
 
-Let's consider its behaviour whnen its input consists solely of symbols in the alphabet of numerals, `1234567890`. When the input it empty, it does not halt, it is in the `start` state. If the first symbol it reads is a `0` or `1`, it transitions to `zero` and `notZero` respectively. But if the input is one of `23456789`, it halts.
+Let's consider its behaviour when its input consists solely of symbols in the alphabet of numerals, `1234567890`. When the input it empty, it does not halt, it is in the `start` state. If the first symbol it reads is a `0` or `1`, it transitions to `zero` and `notZero` respectively. But if the input is one of `23456789`, it halts.
 
 So the first thing to do is create a `halted` state and add transitions to that state from `start`:
 
@@ -2872,7 +2874,7 @@ If the recognizer is in state `notZero`, only the numerals `23456789` it to halt
     notZero --> [*]
 </div>
 
-And finally, when the recognizer is in the new state `halted`, any numeral causes it to remain in the state halted, so we add transsitions for those:
+And finally, when the recognizer is in the new state `halted`, any numeral causes it to remain in the state halted, so we add transitions for those:
 
 <div class="mermaid">
   stateDiagram
@@ -3056,7 +3058,7 @@ Note that we do not have a perfect or "ideal" `complementation`, we have "comple
 
 ### none
 
-As we saw, rgexen have an affordance for recognizing any of a bunch of symbols, `[]`. For example, `/^[xyz]$/` matches an `x`, `y`, or `z`. Regexen's `[]` also have another affordance: If we write `/^[^xyz]$/`, this matches any single character *except* an `x`, `y`, or `z`:
+As we saw, regexen have an affordance for recognizing any of a bunch of symbols, `[]`. For example, `/^[xyz]$/` matches an `x`, `y`, or `z`. Regexen's `[]` also have another affordance: If we write `/^[^xyz]$/`, this matches any single character *except* an `x`, `y`, or `z`:
 
 ```javascript
 verify(/^[^xyz]$/, {
@@ -3073,7 +3075,7 @@ verify(/^[^xyz]$/, {
   //=> All nine test passing
 ```
 
-Two observations of note: First, in regexen, `^` sometimes means "anchor this expression at the beginning of the string," and it sometimes means "match anyc character except these."[^intertia] Second, `[^xyz]` matches just a single character that is not an `x`, `y`, or `z`, so `/^[^xyz]$/` does not match the string `'abc'`.
+Two observations of note: First, in regexen, `^` sometimes means "anchor this expression at the beginning of the string," and it sometimes means "match any character except these."[^inertia] Second, `[^xyz]` matches just a single character that is not an `x`, `y`, or `z`, so `/^[^xyz]$/` does not match the string `'abc'`.
 
 [^inertia]: Using one operator to mean two completely unrelated things is now understood to be a poor design practice, but in programming languages, old ideas have an enormous amount of inertia. Most of our programming languages seem to be rooted in the paradigm of encoding programs on 80 column punch cards.
 
@@ -3099,7 +3101,7 @@ verify(notXyOrZ, {
     {"example":"xyz", "expected":false, "actual":true}
 ```
 
-It's not the same! `[^xyz]` matches a single character that is not an `x`, `y`, or `z`, whereas `complementation(ALPHANUMERIC, any('xyz'))` matches any string of any length (includng the empty string) that is not a single `x`, `y`, or `z`.
+It's not the same! `[^xyz]` matches a single character that is not an `x`, `y`, or `z`, whereas `complementation(ALPHANUMERIC, any('xyz'))` matches any string of any length (including the empty string) that is not a single `x`, `y`, or `z`.
 
 To emulate `[^...]`, we need to take one of two approaches. If we just want to use the tools we already have, we need a way to say that we want a recognizer that matches just the one-symbol strings that are not an `x`, `y`, or `z`.
 
@@ -3147,7 +3149,7 @@ verify(none(ALPHANUMERIC, 'xyz'), {
   //=> All 9 tests passing
 ```
 
-`none` will be especially handy for building a recognizer that recognizes descriptions of recognizers. For example, one of the earliest programmoing languages to incoporate string pattern matching was [SNOBOL]. Like JavaScript, string literals could be delimited with single or double quotes, but there was no syntax for "escaping" quotes.
+`none` will be especially handy for building a recognizer that recognizes descriptions of recognizers. For example, one of the earliest programming languages to incorporate string pattern matching was [SNOBOL]. Like JavaScript, string literals could be delimited with single or double quotes, but there was no syntax for "escaping" quotes.
 
 [SNOBOL]: http://www.snobol4.org
 
