@@ -137,6 +137,7 @@ These questions are deep enough that exploring their answers will prod us to lea
 ### [Regular Languages and Regular Expressions](#regular-languages-and-regular-expressions-1)
 
   - [formal regular expressions](#formal-rvide inegular-expressions)
+  - [finite-state recognizers can recognize all regular languages](#finite-state-recognizers-can-recognize-all-regular-languages)
 
 ---
 
@@ -3245,6 +3246,25 @@ A regular language is any language that can be defined by a regular expression. 
 - JavaScript's parentheses are an implementation of parentheses in regular expressions.
 
 Our "essential" tools are thus those that implement formal regular expressions, and thus they are the tools that permit is to implement finite-state automata that recognize regular languages.
+
+---
+
+### finite-state recognizers can recognize all regular languages
+
+The set of all languages that `EMPTY_SET`, `EMPTY_STRING`, `just1`, `kleene*`, `catenation`, `union`, and parentheses can create is the set of regular languages.
+
+We know intuitively that if we combine `EMPTY_SET`, `EMPTY_STRING`, `just1`, `kleene*`, `catenation`, `union`, and parentheses into an expression, we will end up with a language that a finite-state recognizer can recognize, because we built `EMPTY_SET`, `EMPTY_STRING`, `just1`, `kleene*`, `catenation`, `union` to generate descriptions for finite-state recognizers.
+
+So we have established that finite-state recognizers can recognize all regular languages.
+
+There are other ways to prove the any regular language can be recognized by a finite-state recognizer, but this method of generating the finite-state recognizers is a kind of "experimental computer science," and has the pleasant by-product of giving us tools that can prove useful in working programs as well.
+
+We haven't established to converse: We know that all regular languages can be recognized by finite-state automata, but we don't know from our work so far whether for all the languages that a finite-state recognizer accepts, there is an equivalent regular expression.
+
+If that is the case, then we know that if we can write a finite-state recognizer for a language, we can write a regular expression instead.
+
+
+
 
 ---
 
