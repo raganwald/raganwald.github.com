@@ -1,6 +1,6 @@
 ---
 title: "Regular Expressions (No, not *those* Regular Expressions!)"
-tags: [recursion,allonge,mermaid,noindex]
+tags: [recursion,allonge,mermaid,wip]
 ---
 
 # Prelude
