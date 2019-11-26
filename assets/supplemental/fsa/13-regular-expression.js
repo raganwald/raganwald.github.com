@@ -1,5 +1,15 @@
 // 13 - regular-expression.js
 
+const specialSymbols = new Set('\\()*|'.split(''));
+
+function quote (symbol) {
+  if (specialSymbols.has(symbol)) {
+    return `\\${symbol}`;
+  } else {
+    return symbol;
+  }
+}
+
 function unionOf (...expressions) {
   let undegenerateExprs = [...new Set(
     expressions.filter(
@@ -24,6 +34,8 @@ function catenationOf (...expressions) {
 
   if (undegenerateExprs.some(expr => expr === '∅')) {
     return '∅';
+  } else if (undegenerateExprs.length === 0) {
+    return 'ε';
   } else if (undegenerateExprs.length === 1) {
     return undegenerateExprs[0];
   } else {
@@ -45,26 +57,27 @@ function regularExpression (description) {
     start,
     transitions,
     accepting,
+    acceptingSet,
     stateSet
   } = validatedAndProcessed(description);
 
   // nota bene: labels all states 1..n
   const stateList = [undefined].concat([...allStates(description)]);
-  const pStart = stateList.indexOf(start);
-  const qAccepting = accepting.map( a => stateList.indexOf(a) );
+  const p = stateList.indexOf(start);
+  const qq = accepting.map(a => stateList.indexOf(a));
+  const k = stateList.length - 1;
 
-  if (qAccepting.length === 0) {
-    // degenerate case
+  if (qq.length === 0) {
     return '∅';
-  } else if (qAccepting.length === 1) {
-    // simple case
-    return L(pStart, qAccepting[0], stateList.length);
   } else {
-    return unionOf(
-      ...qAccepting.map(
-        q => L(pStart, q, stateList.length)
-      )
-    );
+    const nonEmptyExpression =
+      unionOf(...qq.map( q => L(p, q, k) ));
+
+    if (acceptingSet.has(start)) {
+      return unionOf('ε', nonEmptyExpression);
+    } else {
+      return nonEmptyExpression;
+    }
   }
 
   // the regular expression for all the paths from state number p to state number q going through
@@ -77,28 +90,27 @@ function regularExpression (description) {
         ({ from, to }) => from === stateList[p] && to === stateList[q]
       );
 
-      const pqTransitionsSymbols =
+      const pqDirectExpressions =
         pqTransitions.map(
-          ({ consume }) => consume
+          ({ consume }) => quote(consume)
         );
 
-      const emptyStringSymbols = (p === q) ? [ 'ε' ] : [];
-
-      return unionOf(
-        ...pqTransitionsSymbols.concat(emptyStringSymbols)
-      );
+      if (p === q) {
+        return unionOf('ε',  ...pqDirectExpressions);
+      } else {
+        return unionOf(...pqDirectExpressions);
+      }
     } else {
       const pq = L(p, q, k-1);
-      const pk = L(p, k, k-1);
-      const kk = kleeneStarOf(
-		L(k, k, k-1)
-      );
-      const kq = L(k, q, k-1);
 
-      return unionOf(
-        pq,
-        catenationOf(pk, kk, kq)
-      );
+      const pk = L(p, k, k-1);
+      const kk = kleeneStarOf(L(k, k, k-1));
+      const kq = L(k, q, k-1);
+      const pkkq = catenationOf(pk, kk, kq);
+
+      const pqMaybeThroughK = unionOf(pq, pkkq);
+
+      return pqMaybeThroughK;
     }
   }
 }
