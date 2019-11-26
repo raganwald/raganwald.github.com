@@ -1,5 +1,5 @@
 ---
-title: "Computing Machines that Recognize Themselves, Part I: Finite-state automata"
+title: "Regular Expressions (No, not *those* Regular Expressions!)"
 tags: [recursion,allonge,mermaid,noindex]
 ---
 
@@ -7,13 +7,9 @@ tags: [recursion,allonge,mermaid,noindex]
 
 _If you wish to skip the prelude, you can jump directly to the [Table of Contents](#table-of-contents)._
 
----
+### what is a regular expression?
 
-### recognizers that recognize themselves
-
-In casual programming conversation, a [Regular Expression], or *regex* (plural "regexen"),[^regex] is a sequence of characters that define a search pattern. They can also be used to validate that a string has a particular form. For example, `/ab*c/` is a regex that matches an `a`, zero or more `b`s, and then a `c`, anywhere in a string.
-
-[Regular Expression]: https://en.wikipedia.org/wiki/Regular_expression
+In programming jargon, a regular expression, or *regex* (plural "regexen"),[^regex] is a sequence of characters that define a search pattern. They can also be used to validate that a string has a particular form. For example, `/ab*c/` is a regex that matches an `a`, zero or more `b`s, and then a `c`, anywhere in a string.
 
 [^regex]: In common programming jargon, a "regular expression" refers any of a family of pattern-matching and extraction languages, that can match a variety of languages. In computer science, a "regular expression" is a specific pattern matching language that recognizes regular languages only. To avoid confusion, in this essay we will use the word "regex" (plural "regexen") to refer to the programming construct.
 
@@ -35,61 +31,138 @@ Another example is this regex, that purports to recognize a subset of valid emai
      \])\z
 ```
 
-Regexen are more than just descriptions of machines that recognize sentences in languages: *Regexen are themselves sentences in a language*. Thus, inevitably, a single thought crosses the mind of nearly every programmer working with regexen:
+The "regular expression" (or "regex") programming tool evolved as a practical application for [Regular Expressions][regular expression], a concept discovered by Stephen Cole Kleene, who was exploring [Regular Languages]. Regular Expressions in the computer science sense are a tool for descriibing Regular Languages: Any well-formed regular expressions describes a regular Language, and every regular language can be described by a regular expression.
 
-> Is it possible to write a regex that recognizes a valid regex?
+[Regular Languages]: https://en.wikipedia.org/wiki/Regular_language
+[regular expression]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
 
-It is easy to write a function that recognizes valid regex given any regex engine: Give the engine the regex, and see if it returns an error. That is practical, but unsatisfying. All it tells us is that a Turing Machine can be devised to recognize regexen. But not all flavours of regexen are as powerful as Turing Machines.
+Regular expressions are made with three constants:
 
-It is far more interesting to ask if a machine defined by a particular flavour of regex can recognize valid examples of that particular flavour for regexen. Regexen were originally called "regular expressions," because they could recognize regular languges. Regular languages could be recognized by finite-state automata,[^terminology] thus the original regexen described finite-state automata.
+- The constants `∅` respresenting the empty set, and `ε` representing the set containing only the empty string.
+- Constant literals such as `x`, `y`, or `z` representing symbols contained within some alphabet `Σ`.
 
-But just because a flavour of regex only describes finite-state automata, does not mean that descriptions of those regexen can be recognized by finite-state automata. Consider, for example, a flavour of regex that permits characters (such as `a`, `b`, `c`, ..., `x`, `y`, `z`), the wildcard operator `.`, the zero-or more operator `*`, and non-capturing groups `(?: ... )`. Here's an example of such a regex:
+Every constant is itself a regular expression. For example, the constant `r` is itself a regular expression denoting the language that contains just one sentence, `'r'`: `{ 'r' }`.
 
-```
-/(?:<(?:ab*c)>)+/
-```
+What makes regular expressions powerful, is that we have operators for composing and decorating these three constants:
 
-As we will see in this essay, the above regex can most certainly be implemented by a finite-state automaton, meaning that we can write a finite-state automaton that recognizes all the same sentences of symbols that this regex recognizes. In fact, any regex written with this flavour (characters, wildcards, zero-or more operator, and non-capturing groups) can be implemented with a finite-state automaton.
+1. Given a regular expression _z_, the expression _z_`*` resolves to the `kleene*` of the language described by _z_.
+2. Given two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
+3. Given two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
 
-But what if we want to recognize regexen like this? Meaning, we want to write a finite-state automation that can recognize regexen of this flavour, not what the regexen recognize?
+Before we add the last rule for regular expressions, let's clarify these three rules with some examples.
 
----
+Given the constants `a`, `b`, and `c`, resolving to the languages `{ 'a' }`, `{ 'b' }`, and `{ 'b' }`, the expression `a*` resolves to the language `{ '', 'a', 'aa', 'aaa', ... }` by rule 1. The expression `ab` resolves to the language `{ 'ab' }` by rule 2. And the expression `b|c` resolves to the language `{ 'b', 'c' }` by rule 3.
 
-### the problem with regexen recognizing themselves
+Our operations have a precedence, and it is the order of the rules as presented. So the expression `ab*` resolves to the language `{ 'a', 'ab', 'abb', 'abbb', ... }`, the expression `a|bc` resolves to the language `{ 'a', 'bc' }`, and the expression `b|c*` resolves to the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`.
 
-There is a problem: This flavour of regexen can contain parentheses, and these parentheses have to be balanced. Recalling [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata][brutal], we discovered that finite-state automata cannot recognize sentences that contain parentheses that must be balanced. That requires a pushdown automaton, a state machine that has a stack.
+As with the algebraic notation we are familiar with, we can use parentheses:
 
-[brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
+- Given a regular expression _x_, the expression `(`_x_`)` resolves to the language described by _x_.
 
-So, every language a regexen of this flavour can recognize, can be recognized with a finite-state automaton, and the language of writing this flavour regexen cannot be recognized with a finite-state automaton. From this we can deduce that no regexen of this flavour can recognize regexen of this flavour.
+This allows us to alter the way the operators are combined. As we have seen, the expression `b|c*` resolves to the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`. But the expression `(b|c)*` resolves to the language `{ '', 'b', 'c', 'bb', 'cc', 'bbb', 'ccc', ... }`.
 
-Why? Consider the proposition that there _is_ a regex of this flavour (characters, wildcards, zero-or-more, and non-capturing groups) that recognizes regexen of this flavour. Since any regex of this flavour can be implemented with a finite-state automaton, it follows that there is a finite-state automaton that recognizes regexen of this flavour.
+It is quite obvious that regexen borrowed a lot of their syntax and semantics from regular expressions. Leaving aside the mechanism of capturing and extracting portions of a match, almost every regular expressions is also a regex. For example, `/reggiee*/` is a regular expression that matches words like `reggie`, `reggiee`, and `reggieee` anywhere ina string.
 
-However, we showed in [A Brutal Look at Balanced Parentheses...][brutal] that no finite-state automaton can recognize languages containing balanced parentheses, so the proposition leads directly to a contradiction. Hence, the proposition that there is a regex of this flavour that recognizes regexen of this flavour, is false.
-
-This leads us to a few questions:
-
-1. What features must a flavour of regexen have, such that it can recognize itself?
-2. How much power must such a flavour of regexen have? We know that if the flavour includes balanced parentheses, it must at least be equivalent to the power of a deterministic pushdown automaton. But might it require a non-deterministic pushdown automaton? Or a Turing machine?
-
-These questions are deep enough that exploring their answers will prod us to learn a lot more about finite-state automata, composition, and building tools for ourselves.
-
-[^terminology]: In this essay will will play a little loose with terminology. We are concerned with [finite-state machines][fsa], also called *finite-state automata*. Finite-state automata can do a lot of things. They can recognize sentences in a language, which is our interest here. Finite-state automata that recognize statements in a language are also called _finite-state recognizers_.<br/><br/>Finite-state automata can also do thing that are not of interest to our essay today. A finite-state recognizer recognizes whether a sentence is a sentence in a language. A finite-state automaton can also be devised that not only recognizes whether a sentence is in a language, but also recognizes whether it belongs to one or more distinct subsets of statements in a language. Such automata are called _classifiers_, and a recognizer is the degenerate case of a classifier that only recognizes one subset.<br/><br/>Now that we have established that finite-state automata can do much more than "just" recognize statements in languages, we will continue on for the rest of the essay using the terms "finite-state automaton," "finite-state machine," and "finite-state recognizer" interchangeably.
-
-[fsa]: https://en.wikipedia.org/wiki/Finite-state_machine
+Regexen add a lot more affordances like character classes, the dot operator, decorators like `?` and `+`, and so forth, but at their heart, regexen are based on regular expressions.
 
 ---
 
-### [Prelude](#prelude)
+### what will we explore in this essay?
 
-  - [recognizers that recognize themselves](#recognizers-that-recognize-themselves)
-  - [the problem with regexen recognizing themselves](#the-problem-with-regexen-recognizing-themselves)
+In this essay we will explore a number of important results concerning regular expressions, and regular languages, and finite-state automata:
+
+  - Every regular language can be recognized by a finite-state automaton.
+  - If a finite-state automaton recognizes a language, that language is regular.
+  - The set of finite-state recognizers is closed under various operations, including `union`, `intersection`, `catenation`, `kleene*`, and others.
+
+All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. What makes this essay novel is that instead of focusing on formal proofs, we will focus on informal _demonstrations_.
+
+A demonstration aims to appeal to intuition, rather than formal reasoning. For example, the canonical proof that "If a finite-state automaton recognizes a language, that language is regular" runs along the following lines:
+
+> Given a finite automaton, first relabel its states with the integers 1 through n, where n is the number of states of the finite automaton. Next denote by L(p, q, k) the set of strings representing paths from state p to state q that go through only states numbered no higher than k. Note that paths may go through arcs and vertices any number of times.
+Then the following lemmas hold.
+
+> **Lemma 1**: L(p, q, k+1) = L(p, q, k)  L(p, k+1, k)L(k+1, k+1, k)*L(k+1, q, k) .
+
+> What this lemma says is that the set of strings representing paths from p to q passing through states labeled with k+1 or lower numbers consists of the following two sets:
+> 1. L(p, q, k) : The set of strings representing paths from p to q passing through states labeled wiht k or lower numbers.
+> 2. L(p, k+1, k)L(k+1, k+1, k)*L(k+1, q, k) : The set of strings going first from p to k+1, then from k+1 to k+1 any number of times, then from k+1 to q, all without passing through states labeled higher than k.
+
+![Illustrating Kleene's Theorem](/assets/images/fsa/kleene2.jpg)
+
+> **Lemma 2**: L(p, q, 0) is regular.
+
+> **Proof**: L(p, q, 0) is the set of strings representing paths from p to q without passing any states in between. Hence if p and q are different, then it consists of single symbols representing arcs from p to q. If p = q, then  is in it as well as the strings representing any loops at p (they are all single symbols). Since the number of symbols is finite and since any finite language is regular, L(p, q, 0) is regular.
+
+> From Lemmas 1 and 2 by induction the following lemma holds.
+
+> **Lemma 3**: L(p, q, k) is regular for any states p and q and any natural number k.
+
+> Since the language accepted by a finite automaton is the union of L(q0, q, n) over all accepting states q, where n is the number of states of the finite automaton, we have the following converse of the part 1 of Kleene Theorem.
+
+> **Theorem 2** (Part 2 of Kleene's Theorem): **Any language accepted by a finite automaton is regular**.
+
+The above proof takes the approach of describing--in words and diagrams--an algorithm.[^algo] Given any finite-state automaton that recognizes a language, this algorithm produces an equivalent regular expression. Froma  programmer's perspective, if you want to prove taht for any `A`, there is an equivalent `B`, writing a working `A --> B` compiler is a very powerful demonstration..
+
+[^algo]: Lots of proofs attest to the existence of some thing, but not all are algorithms for actually finding/making the thing they attest exists. For example, there is a proof that a standard Rubik's Cube can be solved with at most 20 moves, although nobody has yet developed an algorithm to find the 20 (or fewer) move solution for any cube.
+
+Of course, algorithms described in words and disgrams have the advantage of being universal, like pseudo-code. But the disadvantage of algorithms described in words and disagrams is that we can't play with them, optimize them, and learn by doing. For example, here is the core of the above proof, expressed as an algorithm (the complete code is [here](/assetssupplemental/fsa/13-regular-expression.js))
+
+```javascript
+function L (p, q, k) {
+  if (k === 0) {
+    // degenerate case, doesn't go through any other states
+    // just look for direct transitions
+    const pqTransitions = transitions.filter(
+      ({ from, to }) => from === stateList[p] && to === stateList[q]
+    );
+
+    const pqDirectExpressions =
+      pqTransitions.map(
+        ({ consume }) => quote(consume)
+      );
+
+    if (p === q) {
+      return unionOf('ε',  ...pqDirectExpressions);
+    } else {
+      return unionOf(...pqDirectExpressions);
+    }
+  } else {
+    const pq = L(p, q, k-1);
+
+    const pk = L(p, k, k-1);
+    const kk = kleeneStarOf(L(k, k, k-1));
+    const kq = L(k, q, k-1);
+    const pkkq = catenationOf(pk, kk, kq);
+
+    const pqMaybeThroughK = unionOf(pq, pkkq);
+
+    return pqMaybeThroughK;
+  }
+}
+```
+
+Writing the algorithm in JavaScript helps our brains engage with the algorithm more deeply, and we can move on to expand on it as we see fit.
+
+In this essay, we won't just discuss why certain things are known to be true, we will emphasize writing algorithms in JavaScript that demonstrate that these things are true. Most specifically...
+
+1. We will write algorithms to compute the `union`, `intersection`, `catenation`, and `kleene*` of finite-state automata, demonstrating that the set of finite-state automata is closed under thes eoperations.
+2. We will write algorithms for translating a regular expression into an equivalent finite-state automaton, demonstrating that for every regular expression there is an equivalent finite-state automation.
+3. As noted above, we will also write an algorithm for translating a finite-state automaton into an equivalent regular expression, demonstrating that for every finite-state automaton there is an equivalent regular expression.
+
+Along the way, we'll look at other tools that make regular expressions more convenient to work with.
+
+---
 
 # [Table of Contents](#table-of-contents)
 
-### [The Problem Statement](#the-problem-statement-1)
+### [Prelude](#prelude)
 
-  - [a language for describing finite-state recognizers](#a-language-for-describing-finite-state-recognizers)
+  - [what is a regular expression?](#what-is-a-regular-expression)
+  - [what will we explore in this essay?](#what-will-we-explore-in-this-essay)
+
+### [Finite-State Recognizers](#finite-state-recognizers-1)
+
   - [implementing our example recognizer](#implementing-our-example-recognizer)
   - [a more specific problem statement](#a-more-specific-problem-statement)
 
@@ -141,15 +214,9 @@ These questions are deep enough that exploring their answers will prod us to lea
 
 ---
 
-# The Problem Statement
+# Finite-State Recognizers
 
-The problem of "flavours of regexen that can recognize themselves" is interesting, but getting there from zero is difficulty without presupposing a lot of knowledge. We like to learn (or re-learn) things for ourselves, in a hands-on way, so in this essay we will tackle a much smaller version of this problem:
-
-> Can a finite-state automaton recognize valid finite-state automata?
-
-We'll need to be a bit more specific. Finite-state automata can do a lot of things. Some finite-state automata recognize statements in languages, where the statements consist of ordered and finite collections of symbols. We will call these **finite-state recognizers**, and we are only concerned with finite-state recognizers in this essay.
-
-Thus, we will not—of course—ask whether a finite-state automaton can be hooked up to cameras and recognize whether a physical scene contains a physical state machine. We also will not ask whether a finite-state automaton can recognize a `.png` encoding of a diagram, and recognize whether it is a diagram of a valid finite-state state machine:
+We are going to begin by working with finite-state automata that recognize, or "accept" sentences in languages. There are many ways to notate finite-state automata. For example, state disagrams are particularly easy to read for smallish examples:
 
 <div class="mermaid">
   stateDiagram
@@ -161,19 +228,9 @@ Thus, we will not—of course—ask whether a finite-state automaton can be hook
     one --> [*]
 </div>
 
-Instead, we will formulate a language for describing finite-state recognizers, and ask whether a finite-state recognizer can be devised to recognize valid statements in the language that describes finite-state recognizers. If we can make such a recognizer, we will have shown that in at least one sense, a finite-state recognizer can recognize finite-state recognizers.
+Of course, diagrams are not particularly easy to work with in JavaScript. If we want to write JavaScript algorithms that operate on finite-state recognizers, we need a language for describing finite-state recognizers that JavaScript is comfortable manipulating.
 
-That is not, of course, the exact same thing as asking whether a regex can recognize a valid regex. Regexen are a language of their own, and it is possible that a regular expression might be more powerful than a finite-state recognizer, and it is equally possible (certain, in fact) that the language used to describe a regex cannot be parsed with finite-state recognizers.[^cannot-parse]
-
-[^cannot-parse]: How certain? Well, all regular expression languages in wide usage have the ability to create *groups* using parentheses, e.g. `/Reg(?:inald)?/` is a regular expression containing an optional non-capturing group. Groups in regex can be nested, and must be properly nested and balanced for a regex to be valid. We know from [A Brutal Look at Balanced Parentheses...][brutal] that we cannot recognize balanced (or even nested) parentheses with just a finite-state recognizer, so therefore we cannot recognize valid regexen with a finite-state recognizer.
-
-But we'll start with devising a finite-state recognizer that recognizes syntactically valid descriptions of finite-state recognizers, and see where that takes us.
-
-### a language for describing finite-state recognizers
-
-Before we can write finite-state recognizers that recognize syntactically valid descriptions of finite-state recognizers, we need a language for describing finite-state recognizers.
-
-We don't need to invent a brand-new format, there is already an accepted [formal definition][fdfsa] for Pushdown Automata. Mind you, it involves mathematical symbols that are unfamiliar to some programmers, so without dumbing it down, we will create our own language that is equivalent to the full formal definition, but expressed in JSON.
+We don't need to invent a brand-new format, there is already an accepted [formal definition][fdfsa] for Pushdown Automata. Mind you, it involves mathematical symbols that are unfamiliar to some programmers, so without dumbing it down, we will create our own language that is equivalent to the full formal definition, but expressed in a subset of JSON.
 
 [fdfsa]: https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model
 
@@ -401,26 +458,6 @@ verify(binary, {
 ```
 
 We now have a function, `automate`, that takes a data description of a finite-state automaton/recognizer, and returns a Javascript recognizer function we can play with and verify.
-
----
-
-### a more specific problem statement
-
-Given our language for describing finite-state recognizers, a more specific problem statement becomes:
-
-> Using our description language, write a finite-state recognizer that recognizes valid descriptions of finite-state recognizers.
-
-Armed with things like regular expressions, this is not difficult. Armed with finite-state automata, this is still not difficult, but it is exceedingly laborious. Finite-state automata live in the Turing Tar-Pit, a place where "Everything is possible, but nothing of interest is easy."[^ttp]
-
-[^ttp]: Perlisisms—"Epigrams in Programming" by Alan Perlis http://www.cs.yale.edu/homes/perlis-alan/quotes.html
-
-_Given a problem that takes an hour to solve, a programmer is a person who spends three days writing tooling so that the problem can be solved in half an hour._ We're programmers, so instead of grinding away trying to make a huge, monolithic finite-state recognizer by hand, we'll build some tooling to write the finite-state recognizer's description for us.
-
-The simplest place to start is the foundation of all practical software development: **Composition**. If we have ways of breaking a problem down into smaller problems, solving the smaller problems, and then putting the parts back together, we can solve very, very big problems.
-
-Composition is built into our brains: When we speak human languages, we use combinations of sounds to make words, and then we use combinations of words to make sentences, and so it goes building layer after layer until we have things like complete books.
-
-We'll do that here. We will start by learning how to compose recognizers. If we can write small recognizers (such as "a quoted string"), and then compose them (using operations like union or catenation), it will be much easier to write a recognizer for valid descriptions of finite-state automata.
 
 ---
 
