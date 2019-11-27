@@ -166,7 +166,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [implementing our example recognizer](#implementing-our-example-recognizer)
   - [a more specific problem statement](#a-more-specific-problem-statement)
 
-### [Composeable Recognizers](#composeable-recognizers-1)
+### [Composing Recognizers](#composing-recognizers-1)
 
 [Taking the Product of Two Finite-State Automata](#taking-the-product-of-two-finite-state-automata)
 
@@ -196,15 +196,18 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [solving the fan-out problem](#solving-the-fan-out-problem)
   - [the final union, intersection, and catenation](#the-final-union-intersection-and-catenation)
 
+### [Decorating Recognizers](#decorating-recognizers-1)
+
+  - [kleene* (and kleene+)](#kleene-and-kleene)
+  - [complementation](#complementation)
+
 ### [Building Blocks and Decorators](#building-blocks-and-decorators-1)
 
   - [in the beginning...](#in-the-beginning)
   - [recognizing strings](#recognizing-strings)
   - [recognizing symbols](#recognizing-symbols)
   - [decorating finite-state recognizers](#decorating-finite-state-recognizers)
-  - [kleene* (and kleene+)](#kleene-and-kleene)
   - [optional](#optional)
-  - [complementation](#complementation)
   - [none](#none)
 
 ### [Regular Languages and Regular Expressions](#regular-languages-and-regular-expressions-1)
@@ -461,17 +464,15 @@ We now have a function, `automate`, that takes a data description of a finite-st
 
 ---
 
-# Composeable Recognizers
+# Composing Recognizers
 
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
 
-Regular expressions and regexen are both built with composition. If you have two regular expresisons, `A` and `B`, you can create a new regular expression that is teh union of `A` and
+Regular expressions and regexen are both built with composition. If you have two regular expresisons, `A` and `B`, you can create a new regular expression that is the union of `A` and `B` with the expression `A|B`.
 
-If we want to build a recognizer for recognizers, it would be ideal to build smaller recognizers for things like strings, and then use composition to build more complicated recognizers for elements like lists of strings, or "objects."
+Finite-state recognizers, on the other hand, do not compose by themselves. If we want to have the same affordance for finite-state recognizers, we need to write a function that takes two recognizers as arguments, and returns a recognizer that recognizes the language that is the union of `A` and `B`.
 
-This is the motivation for the first part of our exploration: We want to make simple recognizers, and then use composition to make more complex recognizers from the simple recognizers.
-
-We are going to implement three operations that compose two recognizers: _Union_, _Intersection_, and _Catenation_.
+So that's what we'll create: We are going to implement three operations that compose two recognizers: _Union_, _Intersection_, and _Catenation_.
 
 Given two recognizes `a` and `b`, we can say that `A` is a set of sentences recognized by `a`, and `B` is a set of sentences recognized by `b`. Given `a`, `A`, `b`, and `B`, we can say that the `union(a, b)` is a recognizer that recognizes sentences in the set `A ⋃ B`, and `intersection(a, b)` is a recognizer that recognizes sentences in the set `A ⋂ B`.
 
@@ -1417,8 +1418,7 @@ When we join them and remove transitions, we end up with an unreachable state, `
     one --> [*]
 </div>
 
-We could implementa  very specific fix, but the code to do a general elimination of unreachable states is straightforward:
-
+We could implement a very specific fix, but the code to do a general elimination of unreachable states is straightforward:
 
 ```javascript
 function reachableFromStart ({ start, accepting, transitions: allTransitions }) {
@@ -2162,6 +2162,572 @@ function catenation (a, ...args) {
 
 ---
 
+# Decorating Recognizers
+
+In programming jargon, a *decorator* is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining something of its original character.
+
+For example, `negation` is a function that decorates a boolean function by negating its result:
+
+```javascript
+const negation =
+  fn =>
+    (...args) => !fn(...args);
+
+const weekdays = new Set(['M', 'Tu', 'W', 'Th', 'F']);
+
+const isWeekday = day => weekdays.has(day);
+const isntWeekday = negation(isWeekday);
+
+[isWeekday('Su'), isWeekday('M'), isntWeekday('Su'), isntWeekday('M')]
+  //=>
+    [false, true, true, false]
+```
+
+A decorator for functions takes a function as an argument and returns returns a new function with some relationship to the original function's semantics. A decorator for finite-state recognizers takes the description of a finite-state recognizer and returns as its argument a new finite-state recognizer with some relationship to the original finite-state recognizer's semantics.
+
+We'll start with an essential decorator, the "Kleene Star."
+
+---
+
+### kleene* (and kleene+)
+
+Our `union`, `catenation`, and `intersection` functions can compose any twwo recognizers, and they are extremely useful. All three can take two existing recognizers and essentially run them in parallel (or series). But they don't modify the underlying behaviour of
+
+But finite-state automata can recognize some languages containing an infinite number of sentences. We've seen some already, for example recognizing binary numbers:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    notZero --> notZero : 0, 1
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+There are an infinite number of strings representing binary numbers, and this recognizer will recognize them all. The salient difference between this recognizer and the recognizers we can build with `EMPTY_STRING`, `just1`, `union`, and `catenation`, is that this recognizer has "loops" in it, whereas recognizers we build with `EMPTY_STRING`, `just1`, `union`, and `catenation` will not have any loops.
+
+If a recognizer does not have any loops, the maximum number of sentences it can recognize will be equal to the number of states it has, and the maximum length of any sentence it recognizes will be the number of states it has, minus one.
+
+So what we need is a way to make recognizers with loops. And that's exactly what the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or `kleeneStar` does: **`kleene*` is a decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of zero or more sentences its argument recognizes**.
+
+We'll build it step-by-step, starting with handling the "zero or one" case. Consider this recognizer:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : " "
+    recognized-->[*]
+</div>
+
+It recognizes exactly one space. Let's start by making it recognize zero or one spaces. It's easy, we just make its start state an accepting state:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : " "
+    empty-->[*]
+    recognized-->[*]
+</div>
+
+In practice we might have a recognizer that has loops back to its start state, and the above transformation will not work correctly. So what we'll do is add a new start state, and provide an epsilon transition to the original start state.
+
+With some renaming, it will look like this:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->empty2
+    empty-->[*]
+    empty2-->recognized : " "
+    recognized-->[*]
+</div>
+
+After removing epsilon transitions and unreachable states and so on, we end up back where we started:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : " "
+    empty-->[*]
+    recognized-->[*]
+</div>
+
+But although we won't show it here, we can handle those cases where there is already a loop back to the start state.
+
+Now what about handling one or more sentences that the argument recognizes? Our strategy will be to take a recognizer, and then add epsilon transitions between its accepting states and its start state. In effect, we will create "loops" back to the start state from all accepting states.
+
+For example, if we have:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : A, a
+    recognized-->[*]
+</div>
+
+We will turn it into this to handle the zero case:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->empty2
+    empty-->[*]
+    empty2-->recognized : A, a
+    recognized-->[*]
+</div>
+
+And then we will turn it into this to handle the one or more cases:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->empty2
+    empty-->[*]
+    empty2-->recognized : A, a
+    recognized-->empty
+    recognized-->[*]
+</div>
+
+This will produce some non-determinism, so we'll remove the epsilon transitions, take the powerset of the result, remove equivalent states, and remove unreachable states:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->recognized
+    recognized-->recognized : A, a
+    recognized-->[*]
+</div>
+
+Presto, a loop!
+
+Here's the full code:
+
+```javascript
+function kleeneStar (description) {
+  const newStart = "empty";
+
+  const {
+    start: oldStart,
+    transitions: oldTransitions,
+    accepting: oldAccepting
+  } = avoidReservedNames([newStart], description);
+
+  const optionalBefore = {
+    start: newStart,
+    transitions:
+      [ { "from": newStart, "to": oldStart } ].concat(oldTransitions),
+    accepting: oldAccepting.concat([newStart])
+  };
+
+  const optional = reachableFromStart(
+    mergeEquivalentStates(
+      powerset(
+        removeEpsilonTransitions(
+          optionalBefore
+        )
+      )
+    )
+  );
+
+  const {
+    start: optionalStart,
+    transitions: optionalTransitions,
+    accepting: optionalAccepting
+  } = optional;
+
+  const loopedBefore = {
+    start: optionalStart,
+    transitions:
+      optionalTransitions.concat(
+        optionalAccepting.map(
+          state => ({ from: state, to: optionalStart })
+        )
+      ),
+    accepting: optionalAccepting
+  };
+
+  const looped = reachableFromStart(
+    mergeEquivalentStates(
+      powerset(
+        removeEpsilonTransitions(
+          loopedBefore
+        )
+      )
+    )
+  );
+
+  return looped;
+}
+
+kleeneStar(any('Aa'))
+  //=>
+    {
+      "start": "recognized",
+      "transitions": [
+        { "from": "recognized", "consume": "a", "to": "recognized" },
+        { "from": "recognized", "consume": "A", "to": "recognized" }
+      ],
+      "accepting": [ "recognized" ]
+    }
+
+verify(kleeneStar(any('Aa')), {
+  '': true,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
+```
+
+`kleene*` is an **essential** decorator. We need it in order to make recognizers that recognize infinitely large languages. Naturally, regexen have an affordance for `kleene*`, it's the `*` postfix operator:
+
+```javascript
+verify(/^x*$/, {
+  '': true,
+  'x': true,
+  'xx': true,
+  'xxx': true,
+  'xyz': false
+});
+  //=> All 5 tests passing
+
+verify(/^[Aa]*$/, {
+  '': true,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
+```
+
+There are also inessential decorators, of course. For example regexen have a postfix `*` character to represent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes:
+
+```javascript
+verify(/^[Aa]+$/, {
+  '': false,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
+```
+
+We can make `kleene+` using the essentials we already have, so it is clearly inessential:
+
+```javascript
+function kleenePlus (description) {
+  return catenation(description, kleeneStar(description));
+}
+
+kleenePlus(any('Aa'))
+  //=>
+    {
+      "start": "empty",
+      "transitions": [
+        { "from": "empty", "consume": "a", "to": "recognized" },
+        { "from": "empty", "consume": "A", "to": "recognized" },
+        { "from": "recognized", "consume": "a", "to": "recognized" },
+        { "from": "recognized", "consume": "A", "to": "recognized" }
+      ],
+      "accepting": [ "recognized" ]
+    }
+
+verify(kleenePlus(any('Aa')), {
+  '': false,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
+```
+
+---
+
+### complementation
+
+We are going to write a very simple decorator that provides the _complementation_ or a recognizer.
+
+What is the complementation of a recognizer? Recall `negation`:
+
+```javascript
+const negation =
+  fn =>
+    (...args) => !fn(...args);
+```
+
+`negation` takes a function as an argument, and returns a function that returns the negation of the argument's result. `complementation` does the same thing for recognizers.
+
+What do recognizers do? They recognize sentences that belong to a language. Consider some recognizer `x` that recognizes whether a sentence belongs to some language `X`. The complementation of `x` would be a recognizer that recognizes sentences that do _not_ belong to `X`.
+
+We'll start our work by considering this: Our recognizers fail to recognize a sentence if, when the input ends, they are not in an accepting state. There are two ways this could be true:
+
+1. If the recognizer is in a state that is not an accepting state, or;
+2. If the recognizer has halted.
+
+Let's eliminate the second possibility.
+
+Given a recognizer that halts for some input, can we make it never halt? The answer in theory is **no**, because there are an infinite number of symbols that might be passed to a recognizer, and there is no way for our recognizers to encode an infinite number of transitions, one for each possible symbol.
+
+But in practice, we can say that given a recognizer `x`, and some alphabet `A`, we can return a version of `x` that never halts, _provided that every symbol in the input belongs to `A`_.
+
+Our method is simply to create a state for `halted`, and make sure that every state the recognizer has--including the new `halted` state--has transitions to `halted` for any symbols belonging to `A`, but not already consumed.
+
+For example, given the recognizer for binary numbers:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    notZero --> notZero : 0, 1
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+Let's consider its behaviour when its input consists solely of symbols in the alphabet of numerals, `1234567890`. When the input it empty, it does not halt, it is in the `start` state. If the first symbol it reads is a `0` or `1`, it transitions to `zero` and `notZero` respectively. But if the input is one of `23456789`, it halts.
+
+So the first thing to do is create a `halted` state and add transitions to that state from `start`:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    start-->halted : 2,3,4,5,6,7,8,9
+    notZero --> notZero : 0, 1
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+Next, we turn our attention to state `zero`. When the recognizer is in this state, any numeral will cause it to halt, so we add transitions for that:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    start-->halted : 2,3,4,5,6,7,8,9
+    zero-->halted : 1,2,3,4,5,6,7,8,9,0
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+If the recognizer is in state `notZero`, only the numerals `23456789` it to halt, so we add transitions for those:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    start-->halted : 2,3,4,5,6,7,8,9
+    zero-->halted : 1,2,3,4,5,6,7,8,9,0
+    notZero-->halted : 2,3,4,5,6,7,8,9
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+And finally, when the recognizer is in the new state `halted`, any numeral causes it to remain in the state halted, so we add transitions for those:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    start-->halted : 2,3,4,5,6,7,8,9
+    zero-->halted : 1,2,3,4,5,6,7,8,9,0
+    notZero --> notZero : 0, 1
+    notZero-->halted : 2,3,4,5,6,7,8,9
+    halted-->halted : 1,2,3,4,5,6,7,8,9,0
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+The final result is "Unorthodox, but effective," as Williams would say.
+
+Using this methods, here's a decorator that turns a description of a recognizer, into a description of a recognizer that never halts given a sentence in its alphabet:
+
+```javascript
+function nonhalting (alphabet, description) {
+  const descriptionWithoutHaltedState = avoidReservedNames(["halted"], description);
+
+  const {
+    states,
+    stateMap,
+    start,
+    transitions,
+    accepting
+  } = validatedAndProcessed(descriptionWithoutHaltedState);
+
+  const alphabetList = [...alphabet];
+  const statesWithHalted = states.concat(["halted"])
+
+  const toHalted =
+    statesWithHalted.flatMap(
+      state => {
+        const consumes =
+          (stateMap.get(state) || [])
+      		  .map(({ consume }) => consume);
+        const consumesSet = new Set(consumes);
+        const haltsWhenConsumes =
+          alphabetList.filter(a => !consumesSet.has(a));
+
+        return haltsWhenConsumes.map(
+          consume => ({ "from": state, consume, "to": "halted" })
+        );
+      }
+    );
+
+  return reachableFromStart({
+    start,
+    transitions: transitions.concat(toHalted),
+    accepting
+  });
+}
+```
+
+The result is correct, if considerably larger:
+
+```javascript
+const binary = {
+  "start": "start",
+  "transitions": [
+    { "from": "start", "consume": "0", "to": "zero" },
+    { "from": "start", "consume": "1", "to": "notZero" },
+    { "from": "notZero", "consume": "0", "to": "notZero" },
+    { "from": "notZero", "consume": "1", "to": "notZero" }
+  ],
+  "accepting": ["zero", "notZero"]
+}
+
+nonhalting('1234567890', binary);
+  //=>
+    {
+      "start": "start",
+      "transitions": [
+        { "from": "start", "to": "zero", "consume": "0" },
+        { "from": "start", "to": "notZero", "consume": "1" },
+        { "from": "notZero", "to": "notZero", "consume": "0" },
+        { "from": "notZero", "to": "notZero", "consume": "1" },
+        { "from": "start", "consume": "2", "to": "halted" },
+        { "from": "start", "consume": "3", "to": "halted" },
+        { "from": "start", "consume": "4", "to": "halted" },
+        { "from": "start", "consume": "5", "to": "halted" },
+        { "from": "start", "consume": "6", "to": "halted" },
+        { "from": "start", "consume": "7", "to": "halted" },
+        { "from": "start", "consume": "8", "to": "halted" },
+        { "from": "start", "consume": "9", "to": "halted" },
+        { "from": "zero", "consume": "1", "to": "halted" },
+        { "from": "zero", "consume": "2", "to": "halted" },
+        { "from": "zero", "consume": "3", "to": "halted" },
+        { "from": "zero", "consume": "4", "to": "halted" },
+        { "from": "zero", "consume": "5", "to": "halted" },
+        { "from": "zero", "consume": "6", "to": "halted" },
+        { "from": "zero", "consume": "7", "to": "halted" },
+        { "from": "zero", "consume": "8", "to": "halted" },
+        { "from": "zero", "consume": "9", "to": "halted" },
+        { "from": "zero", "consume": "0", "to": "halted" },
+        { "from": "notZero", "consume": "2", "to": "halted" },
+        { "from": "notZero", "consume": "3", "to": "halted" },
+        { "from": "notZero", "consume": "4", "to": "halted" },
+        { "from": "notZero", "consume": "5", "to": "halted" },
+        { "from": "notZero", "consume": "6", "to": "halted" },
+        { "from": "notZero", "consume": "7", "to": "halted" },
+        { "from": "notZero", "consume": "8", "to": "halted" },
+        { "from": "notZero", "consume": "9", "to": "halted" },
+        { "from": "halted", "consume": "1", "to": "halted" },
+        { "from": "halted", "consume": "2", "to": "halted" },
+        { "from": "halted", "consume": "3", "to": "halted" },
+        { "from": "halted", "consume": "4", "to": "halted" },
+        { "from": "halted", "consume": "5", "to": "halted" },
+        { "from": "halted", "consume": "6", "to": "halted" },
+        { "from": "halted", "consume": "7", "to": "halted" },
+        { "from": "halted", "consume": "8", "to": "halted" },
+        { "from": "halted", "consume": "9", "to": "halted" },
+        { "from": "halted", "consume": "0", "to": "halted" }
+      ],
+      "accepting": [ "zero", "notZero" ]
+    }
+```
+
+Let's verify that it still recognizes the same "language:"
+
+```javascript
+verify(nonhalting('1234567890', binary), {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': true,
+  '11': true,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true,
+  '10100011011000001010011100101110111': true
+});
+  //=> All 16 tests passing
+```
+
+Now given a recognizer that never halts, what is the `complementation` of that recognizer? Well, given that it is always going to be in one of its states when the input stops, if it is a state that is not one of the original recognizer's accepting states, then it must have failed to recognize the sentence.
+
+This points very clearly to how to implement `complementation`:
+
+```javascript
+function complementation (alphabet, description) {
+  const nonhaltingDescription = nonhalting(alphabet, description);
+
+  const {
+    states,
+    start,
+    transitions,
+    acceptingSet
+  } = validatedAndProcessed(nonhaltingDescription);
+
+  const accepting = states.filter(state => !acceptingSet.has(state));
+
+  return { start, transitions, accepting }
+}
+
+verify(complementation('1234567890', binary), {
+  '': true,
+  '0': false,
+  '1': false,
+  '01': true,
+  '10': false,
+  '2': true,
+  'two': false
+});
+```
+
+Note that we do not have a perfect or "ideal" `complementation`, we have "complementation over the alphabet `1234567890`." You can see, for example, that it fails to recognize `'two'`, because letters are not part of its alphabet.
+
+---
+
 # Building Blocks and Decorators
 
 To summarize what we have accomplished so far:
@@ -2448,313 +3014,6 @@ And now we turn our attention to _decorating_ finite-state recognizers.
 
 ---
 
-### decorating finite-state recognizers
-
-In programming jargon, a decorator is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining something of its original character.
-
-For example, `negation` is a function that decorates a boolean function by negating its result:
-
-```javascript
-const negation =
-  fn =>
-    (...args) => !fn(...args);
-
-const weekdays = new Set(['M', 'Tu', 'W', 'Th', 'F']);
-
-const isWeekday = day => weekdays.has(day);
-const isntWeekday = negation(isWeekday);
-
-[isWeekday('Su'), isWeekday('M'), isntWeekday('Su'), isntWeekday('M')]
-  //=>
-    [false, true, true, false]
-```
-
-A decorator for functions takes a function as an argument and returns returns a new function with some relationship to the original function's semantics. A decorator for finite-state recognizers takes the description of a finite-state recognizer and returns as its argument a new finite-state recognizer with some relationship to the original finite-state recognizer's semantics.
-
-We'll start with an essential decorator, the "Kleene Star."
-
----
-
-### kleene* (and kleene+)
-
-Given `EMPTY_SET`, `EMPTY_STRING`, `just1`, `union`, and `catenation`, we can make recognizers that recognize any language that contains a _finite_ set of sentences.[^wvrst-case]
-
-[^wvrst-case]: If a language has a finite set of sentences, we can make a list of every sentence in the language, and then write a recognizer that uses `catenation` and `just1` (or equivalently, `just`) for each sentence in the language. Then we can take the union of all those recognizers, to get the recognizer for every sentence in the language.
-
-But if we want to recognize languages that have an **infinite** number of sentences, we need to go beyond `EMPTY_STRING`, `just1`, `union`, and `catenation`.  We can't recognize all languages that have an infinite number of sentences: We know that languages like "balanced parentheses" cannot be recognized with a finite-state automata.
-
-But finite-state automata can recognize some languages containing an infinite number of sentences. We've seen some already, for example recognizing binary numbers:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    notZero --> notZero : 0, 1
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-There are an infinite number of strings representing binary numbers, and this recognizer will recognize them all. The salient difference between this recognizer and the recognizers we can build with `EMPTY_STRING`, `just1`, `union`, and `catenation`, is that this recognizer has "loops" in it, whereas recognizers we build with `EMPTY_STRING`, `just1`, `union`, and `catenation` will not have any loops.
-
-If a recognizer does not have any loops, the maximum number of sentences it can recognize will be equal to the number of states it has, and the maximum length of any sentence it recognizes will be the number of states it has, minus one.
-
-So what we need is a way to make recognizers with loops. And that's exactly what the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or `kleeneStar` does: **`kleene*` is a decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of zero or more sentences its argument recognizes**.
-
-We'll build it step-by-step, starting with handling the "zero or one" case. Consider this recognizer:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : " "
-    recognized-->[*]
-</div>
-
-It recognizes exactly one space. Let's start by making it recognize zero or one spaces. It's easy, we just make its start state an accepting state:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : " "
-    empty-->[*]
-    recognized-->[*]
-</div>
-
-In practice we might have a recognizer that has loops back to its start state, and the above transformation will not work correctly. So what we'll do is add a new start state, and provide an epsilon transition to the original start state.
-
-With some renaming, it will look like this:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->empty2
-    empty-->[*]
-    empty2-->recognized : " "
-    recognized-->[*]
-</div>
-
-After removing epsilon transitions and unreachable states and so on, we end up back where we started:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : " "
-    empty-->[*]
-    recognized-->[*]
-</div>
-
-But although we won't show it here, we can handle those cases where there is already a loop back to the start state.
-
-Now what about handling one or more sentences that the argument recognizes? Our strategy will be to take a recognizer, and then add epsilon transitions between its accepting states and its start state. In effect, we will create "loops" back to the start state from all accepting states.
-
-For example, if we have:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : A, a
-    recognized-->[*]
-</div>
-
-We will turn it into this to handle the zero case:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->empty2
-    empty-->[*]
-    empty2-->recognized : A, a
-    recognized-->[*]
-</div>
-
-And then we will turn it into this to handle the one or more cases:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->empty2
-    empty-->[*]
-    empty2-->recognized : A, a
-    recognized-->empty
-    recognized-->[*]
-</div>
-
-This will produce some non-determinism, so we'll remove the epsilon transitions, take the powerset of the result, remove equivalent states, and remove unreachable states:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->recognized
-    recognized-->recognized : A, a
-    recognized-->[*]
-</div>
-
-Presto, a loop!
-
-Here's the full code:
-
-```javascript
-function kleeneStar (description) {
-  const newStart = "empty";
-
-  const {
-    start: oldStart,
-    transitions: oldTransitions,
-    accepting: oldAccepting
-  } = avoidReservedNames([newStart], description);
-
-  const optionalBefore = {
-    start: newStart,
-    transitions:
-      [ { "from": newStart, "to": oldStart } ].concat(oldTransitions),
-    accepting: oldAccepting.concat([newStart])
-  };
-
-  const optional = reachableFromStart(
-    mergeEquivalentStates(
-      powerset(
-        removeEpsilonTransitions(
-          optionalBefore
-        )
-      )
-    )
-  );
-
-  const {
-    start: optionalStart,
-    transitions: optionalTransitions,
-    accepting: optionalAccepting
-  } = optional;
-
-  const loopedBefore = {
-    start: optionalStart,
-    transitions:
-      optionalTransitions.concat(
-        optionalAccepting.map(
-          state => ({ from: state, to: optionalStart })
-        )
-      ),
-    accepting: optionalAccepting
-  };
-
-  const looped = reachableFromStart(
-    mergeEquivalentStates(
-      powerset(
-        removeEpsilonTransitions(
-          loopedBefore
-        )
-      )
-    )
-  );
-
-  return looped;
-}
-
-kleeneStar(any('Aa'))
-  //=>
-    {
-      "start": "recognized",
-      "transitions": [
-        { "from": "recognized", "consume": "a", "to": "recognized" },
-        { "from": "recognized", "consume": "A", "to": "recognized" }
-      ],
-      "accepting": [ "recognized" ]
-    }
-
-verify(kleeneStar(any('Aa')), {
-  '': true,
-  'a': true,
-  'aa': true,
-  'Aa': true,
-  'AA': true,
-  'aaaAaAaAaaaAaa': true,
-  ' a': false,
-  'a ': false,
-  'eh?': false
-});
-  //=> All 9 tests passing
-```
-
-`kleene*` is an **essential** decorator. We need it in order to make recognizers that recognize infinitely large languages. Naturally, regexen have an affordance for `kleene*`, it's the `*` postfix operator:
-
-```javascript
-verify(/^x*$/, {
-  '': true,
-  'x': true,
-  'xx': true,
-  'xxx': true,
-  'xyz': false
-});
-  //=> All 5 tests passing
-
-verify(/^[Aa]*$/, {
-  '': true,
-  'a': true,
-  'aa': true,
-  'Aa': true,
-  'AA': true,
-  'aaaAaAaAaaaAaa': true,
-  ' a': false,
-  'a ': false,
-  'eh?': false
-});
-  //=> All 9 tests passing
-```
-
-There are also inessential decorators, of course. For example regexen have a postfix `*` character to represent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes:
-
-```javascript
-verify(/^[Aa]+$/, {
-  '': false,
-  'a': true,
-  'aa': true,
-  'Aa': true,
-  'AA': true,
-  'aaaAaAaAaaaAaa': true,
-  ' a': false,
-  'a ': false,
-  'eh?': false
-});
-  //=> All 9 tests passing
-```
-
-We can make `kleene+` using the essentials we already have, so it is clearly inessential:
-
-```javascript
-function kleenePlus (description) {
-  return catenation(description, kleeneStar(description));
-}
-
-kleenePlus(any('Aa'))
-  //=>
-    {
-      "start": "empty",
-      "transitions": [
-        { "from": "empty", "consume": "a", "to": "recognized" },
-        { "from": "empty", "consume": "A", "to": "recognized" },
-        { "from": "recognized", "consume": "a", "to": "recognized" },
-        { "from": "recognized", "consume": "A", "to": "recognized" }
-      ],
-      "accepting": [ "recognized" ]
-    }
-
-verify(kleenePlus(any('Aa')), {
-  '': false,
-  'a': true,
-  'aa': true,
-  'Aa': true,
-  'AA': true,
-  'aaaAaAaAaaaAaa': true,
-  ' a': false,
-  'a ': false,
-  'eh?': false
-});
-  //=> All 9 tests passing
-```
-
-There is one more inessential decorator we can look at we can turn our attention back to complementation.
-
----
-
 ### optional
 
 We've covered the decorators for regexen's `*` postfix operator (`kleene*`), and `+` operator (`kleene+`). Regexen also have a third postfix operator, `?`, that represents a decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _zero or one_ sentences its argument recognizes:
@@ -2797,271 +3056,6 @@ verify(regMaybeReginald, {
 `optional` decorates a recognizer by making it--well--"optional."
 
 Now we'll look at `complementation`, a decorator that is inessential in a theoretical sense, but when we need it, extremely handy.
-
----
-
-### complementation
-
-We are going to write a very simple decorator that provides the _complementation_ or a recognizer.
-
-What is the complementation of a recognizer? Recall `negation`:
-
-```javascript
-const negation =
-  fn =>
-    (...args) => !fn(...args);
-```
-
-`negation` takes a function as an argument, and returns a function that returns the negation of the argument's result. `complementation` does the same thing for recognizers.
-
-What do recognizers do? They recognize sentences that belong to a language. Consider some recognizer `x` that recognizes whether a sentence belongs to some language `X`. The complementation of `x` would be a recognizer that recognizes sentences that do _not_ belong to `X`.
-
-We'll start our work by considering this: Our recognizers fail to recognize a sentence if, when the input ends, they are not in an accepting state. There are two ways this could be true:
-
-1. If the recognizer is in a state that is not an accepting state, or;
-2. If the recognizer has halted.
-
-Let's eliminate the second possibility.
-
-Given a recognizer that halts for some input, can we make it never halt? The answer in theory is **no**, because there are an infinite number of symbols that might be passed to a recognizer, and there is no way for our recognizers to encode an infinite number of transitions, one for each possible symbol.
-
-But in practice, we can say that given a recognizer `x`, and some alphabet `A`, we can return a version of `x` that never halts, _provided that every symbol in the input belongs to `A`_.
-
-Our method is simply to create a state for `halted`, and make sure that every state the recognizer has--including the new `halted` state--has transitions to `halted` for any symbols belonging to `A`, but not already consumed.
-
-For example, given the recognizer for binary numbers:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    notZero --> notZero : 0, 1
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-Let's consider its behaviour when its input consists solely of symbols in the alphabet of numerals, `1234567890`. When the input it empty, it does not halt, it is in the `start` state. If the first symbol it reads is a `0` or `1`, it transitions to `zero` and `notZero` respectively. But if the input is one of `23456789`, it halts.
-
-So the first thing to do is create a `halted` state and add transitions to that state from `start`:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    start-->halted : 2,3,4,5,6,7,8,9
-    notZero --> notZero : 0, 1
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-Next, we turn our attention to state `zero`. When the recognizer is in this state, any numeral will cause it to halt, so we add transitions for that:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    start-->halted : 2,3,4,5,6,7,8,9
-    zero-->halted : 1,2,3,4,5,6,7,8,9,0
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-If the recognizer is in state `notZero`, only the numerals `23456789` it to halt, so we add transitions for those:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    start-->halted : 2,3,4,5,6,7,8,9
-    zero-->halted : 1,2,3,4,5,6,7,8,9,0
-    notZero-->halted : 2,3,4,5,6,7,8,9
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-And finally, when the recognizer is in the new state `halted`, any numeral causes it to remain in the state halted, so we add transitions for those:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    start-->halted : 2,3,4,5,6,7,8,9
-    zero-->halted : 1,2,3,4,5,6,7,8,9,0
-    notZero --> notZero : 0, 1
-    notZero-->halted : 2,3,4,5,6,7,8,9
-    halted-->halted : 1,2,3,4,5,6,7,8,9,0
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-The final result is "Unorthodox, but effective," as Williams would say.
-
-Using this methods, here's a decorator that turns a description of a recognizer, into a description of a recognizer that never halts given a sentence in its alphabet:
-
-```javascript
-function nonhalting (alphabet, description) {
-  const descriptionWithoutHaltedState = avoidReservedNames(["halted"], description);
-
-  const {
-    states,
-    stateMap,
-    start,
-    transitions,
-    accepting
-  } = validatedAndProcessed(descriptionWithoutHaltedState);
-
-  const alphabetList = [...alphabet];
-  const statesWithHalted = states.concat(["halted"])
-
-  const toHalted =
-    statesWithHalted.flatMap(
-      state => {
-        const consumes =
-          (stateMap.get(state) || [])
-      		  .map(({ consume }) => consume);
-        const consumesSet = new Set(consumes);
-        const haltsWhenConsumes =
-          alphabetList.filter(a => !consumesSet.has(a));
-
-        return haltsWhenConsumes.map(
-          consume => ({ "from": state, consume, "to": "halted" })
-        );
-      }
-    );
-
-  return reachableFromStart({
-    start,
-    transitions: transitions.concat(toHalted),
-    accepting
-  });
-}
-```
-
-The result is correct, if considerably larger:
-
-```javascript
-const binary = {
-  "start": "start",
-  "transitions": [
-    { "from": "start", "consume": "0", "to": "zero" },
-    { "from": "start", "consume": "1", "to": "notZero" },
-    { "from": "notZero", "consume": "0", "to": "notZero" },
-    { "from": "notZero", "consume": "1", "to": "notZero" }
-  ],
-  "accepting": ["zero", "notZero"]
-}
-
-nonhalting('1234567890', binary);
-  //=>
-    {
-      "start": "start",
-      "transitions": [
-        { "from": "start", "to": "zero", "consume": "0" },
-        { "from": "start", "to": "notZero", "consume": "1" },
-        { "from": "notZero", "to": "notZero", "consume": "0" },
-        { "from": "notZero", "to": "notZero", "consume": "1" },
-        { "from": "start", "consume": "2", "to": "halted" },
-        { "from": "start", "consume": "3", "to": "halted" },
-        { "from": "start", "consume": "4", "to": "halted" },
-        { "from": "start", "consume": "5", "to": "halted" },
-        { "from": "start", "consume": "6", "to": "halted" },
-        { "from": "start", "consume": "7", "to": "halted" },
-        { "from": "start", "consume": "8", "to": "halted" },
-        { "from": "start", "consume": "9", "to": "halted" },
-        { "from": "zero", "consume": "1", "to": "halted" },
-        { "from": "zero", "consume": "2", "to": "halted" },
-        { "from": "zero", "consume": "3", "to": "halted" },
-        { "from": "zero", "consume": "4", "to": "halted" },
-        { "from": "zero", "consume": "5", "to": "halted" },
-        { "from": "zero", "consume": "6", "to": "halted" },
-        { "from": "zero", "consume": "7", "to": "halted" },
-        { "from": "zero", "consume": "8", "to": "halted" },
-        { "from": "zero", "consume": "9", "to": "halted" },
-        { "from": "zero", "consume": "0", "to": "halted" },
-        { "from": "notZero", "consume": "2", "to": "halted" },
-        { "from": "notZero", "consume": "3", "to": "halted" },
-        { "from": "notZero", "consume": "4", "to": "halted" },
-        { "from": "notZero", "consume": "5", "to": "halted" },
-        { "from": "notZero", "consume": "6", "to": "halted" },
-        { "from": "notZero", "consume": "7", "to": "halted" },
-        { "from": "notZero", "consume": "8", "to": "halted" },
-        { "from": "notZero", "consume": "9", "to": "halted" },
-        { "from": "halted", "consume": "1", "to": "halted" },
-        { "from": "halted", "consume": "2", "to": "halted" },
-        { "from": "halted", "consume": "3", "to": "halted" },
-        { "from": "halted", "consume": "4", "to": "halted" },
-        { "from": "halted", "consume": "5", "to": "halted" },
-        { "from": "halted", "consume": "6", "to": "halted" },
-        { "from": "halted", "consume": "7", "to": "halted" },
-        { "from": "halted", "consume": "8", "to": "halted" },
-        { "from": "halted", "consume": "9", "to": "halted" },
-        { "from": "halted", "consume": "0", "to": "halted" }
-      ],
-      "accepting": [ "zero", "notZero" ]
-    }
-```
-
-Let's verify that it still recognizes the same "language:"
-
-```javascript
-verify(nonhalting('1234567890', binary), {
-  '': false,
-  '0': true,
-  '1': true,
-  '00': false,
-  '01': false,
-  '10': true,
-  '11': true,
-  '000': false,
-  '001': false,
-  '010': false,
-  '011': false,
-  '100': true,
-  '101': true,
-  '110': true,
-  '111': true,
-  '10100011011000001010011100101110111': true
-});
-  //=> All 16 tests passing
-```
-
-Now given a recognizer that never halts, what is the `complementation` of that recognizer? Well, given that it is always going to be in one of its states when the input stops, if it is a state that is not one of the original recognizer's accepting states, then it must have failed to recognize the sentence.
-
-This points very clearly to how to implement `complementation`:
-
-```javascript
-function complementation (alphabet, description) {
-  const nonhaltingDescription = nonhalting(alphabet, description);
-
-  const {
-    states,
-    start,
-    transitions,
-    acceptingSet
-  } = validatedAndProcessed(nonhaltingDescription);
-
-  const accepting = states.filter(state => !acceptingSet.has(state));
-
-  return { start, transitions, accepting }
-}
-
-verify(complementation('1234567890', binary), {
-  '': true,
-  '0': false,
-  '1': false,
-  '01': true,
-  '10': false,
-  '2': true,
-  'two': false
-});
-```
-
-Note that we do not have a perfect or "ideal" `complementation`, we have "complementation over the alphabet `1234567890`." You can see, for example, that it fails to recognize `'two'`, because letters are not part of its alphabet.
 
 ---
 
