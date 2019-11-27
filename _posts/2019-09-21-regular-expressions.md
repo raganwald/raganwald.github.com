@@ -88,7 +88,7 @@ Then the following lemmas hold.
 > 1. L(p, q, k) : The set of strings representing paths from p to q passing through states labeled wiht k or lower numbers.
 > 2. L(p, k+1, k)L(k+1, k+1, k)*L(k+1, q, k) : The set of strings going first from p to k+1, then from k+1 to k+1 any number of times, then from k+1 to q, all without passing through states labeled higher than k.
 
-![Illustrating Kleene's Theorem](/assets/images/fsa/kleene2.jpg)
+> ![Illustrating Kleene's Theorem](/assets/images/fsa/kleene2.jpg)
 
 > **Lemma 2**: L(p, q, 0) is regular.
 
@@ -464,6 +464,8 @@ We now have a function, `automate`, that takes a data description of a finite-st
 # Composeable Recognizers
 
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
+
+Regular expressions and regexen are both built with composition. If you have two regular expresisons, `A` and `B`, you can create a new regular expression that is teh union of `A` and
 
 If we want to build a recognizer for recognizers, it would be ideal to build smaller recognizers for things like strings, and then use composition to build more complicated recognizers for elements like lists of strings, or "objects."
 
