@@ -2933,7 +2933,7 @@ The parentheses in JavaScript work just like the parentheses in formal regular e
 For example, the formal regular expression `0|(1(0|1)*)` becomes:
 
 ```javascript
-const binary2 = union(just1('0'), catenation(just1('1'), kleeneStar(union(just('0'), just('1)))));
+const binary2 = union(just1('0'), catenation(just1('1'), kleeneStar(union(just('0'), just('1')))));
 
 binary2
   //=>
@@ -2965,7 +2965,7 @@ verify(binary2, {
   '110': true,
   '111': true,
   '10100011011000001010011100101110111': true
-})
+});
   //=> All 16 tests passing
 ```
 
