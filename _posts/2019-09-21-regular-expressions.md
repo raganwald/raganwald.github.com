@@ -71,9 +71,9 @@ Regexen add a lot more affordances like character classes, the dot operator, dec
 
 In this essay we will explore a number of important results concerning regular expressions, and regular languages, and finite-state automata:
 
+  - The set of finite-state recognizers is closed under various operations, including `union`, `intersection`, `catenation`, `kleene*`, and others.
   - Every regular language can be recognized by a finite-state automaton.
   - If a finite-state automaton recognizes a language, that language is regular.
-  - The set of finite-state recognizers is closed under various operations, including `union`, `intersection`, `catenation`, `kleene*`, and others.
 
 All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. What makes this essay novel is that instead of focusing on formal proofs, we will focus on informal _demonstrations_.
 
@@ -163,10 +163,10 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
 ### [Finite-State Recognizers](#finite-state-recognizers-1)
 
-  - [implementing our example recognizer](#implementing-our-example-recognizer)
-  - [a more specific problem statement](#a-more-specific-problem-statement)
+  - [describing finite-state recognizers in JSON](#describing-finite-state-recognizers-in-json)
+  - [verifying finite-state recognizers](#verifying-finite-state-recognizers)
 
-### [Composing Recognizers](#composing-recognizers-1)
+### [Composing and Decorating Recognizers](#composing-and-decoratting-recognizers-1)
 
 [Taking the Product of Two Finite-State Automata](#taking-the-product-of-two-finite-state-automata)
 
@@ -196,18 +196,17 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [solving the fan-out problem](#solving-the-fan-out-problem)
   - [the final union, intersection, and catenation](#the-final-union-intersection-and-catenation)
 
-### [Decorating Recognizers](#decorating-recognizers-1)
+[Decorating Recognizers](#decorating-recognizers)
 
-  - [kleene* (and kleene+)](#kleene-and-kleene)
-  - [complementation](#complementation)
+  - [kleene*](#kleene)
+  - [kleene+](#kleene-1)
 
-### [Building Blocks and Decorators](#building-blocks-and-decorators-1)
+[The set of finite-state recognizers is closed under various operations](#the-set-of-finite-state-recognizers-is-closed-under-various-operations)
 
-  - [in the beginning...](#in-the-beginning)
+### [Building Blocks](#building-blocks-1)
+
   - [recognizing strings](#recognizing-strings)
   - [recognizing symbols](#recognizing-symbols)
-  - [decorating finite-state recognizers](#decorating-finite-state-recognizers)
-  - [optional](#optional)
   - [none](#none)
 
 ### [Regular Languages and Regular Expressions](#regular-languages-and-regular-expressions-1)
@@ -232,6 +231,8 @@ We are going to begin by working with finite-state automata that recognize, or "
 </div>
 
 Of course, diagrams are not particularly easy to work with in JavaScript. If we want to write JavaScript algorithms that operate on finite-state recognizers, we need a language for describing finite-state recognizers that JavaScript is comfortable manipulating.
+
+### describing finite-state recognizers in JSON
 
 We don't need to invent a brand-new format, there is already an accepted [formal definition][fdfsa] for Pushdown Automata. Mind you, it involves mathematical symbols that are unfamiliar to some programmers, so without dumbing it down, we will create our own language that is equivalent to the full formal definition, but expressed in a subset of JSON.
 
@@ -339,7 +340,11 @@ This finite-state recognizer recognizes binary numbers.
 
 ---
 
-### implementing our example recognizer
+### verifying finite-state recognizers
+
+It's all very well to _say_ that a description recognizes binary numbers (or have any other expectation for it, really). But how do we have confidence that the finite-state recognzer we describe recognzes the language what we think it recognizes?
+
+There are formal ways to prove things about recognizers, and there is the informal technique of writing tests we can run. Since we're emphasizing working code, we'll write tests.
 
 Here is a function that takes as its input the definition of a recognizer, and returns a Javascript recognizer *function*:[^vap][^regexp]
 
@@ -464,7 +469,7 @@ We now have a function, `automate`, that takes a data description of a finite-st
 
 ---
 
-# Composing Recognizers
+# Composing and Decorating Recognizers
 
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
 
@@ -2162,7 +2167,7 @@ function catenation (a, ...args) {
 
 ---
 
-# Decorating Recognizers
+## Decorating Recognizers
 
 In programming jargon, a *decorator* is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining something of its original character.
 
@@ -2185,33 +2190,19 @@ const isntWeekday = negation(isWeekday);
 
 A decorator for functions takes a function as an argument and returns returns a new function with some relationship to the original function's semantics. A decorator for finite-state recognizers takes the description of a finite-state recognizer and returns as its argument a new finite-state recognizer with some relationship to the original finite-state recognizer's semantics.
 
-We'll start with an essential decorator, the "Kleene Star."
+We'll start with the "Kleene Star."
 
 ---
 
-### kleene* (and kleene+)
+### kleene*
 
-Our `union`, `catenation`, and `intersection` functions can compose any twwo recognizers, and they are extremely useful. All three can take two existing recognizers and essentially run them in parallel (or series). But they don't modify the underlying behaviour of
+Our `union`, `catenation`, and `intersection` functions can compose any two recognizers, and they are extremely useful. `union` and `catenation` are particularly interesting to us, because they implement—in JavaScript—two of the three operations that regular expressons provide: `union(a, b)` is equivalent to `a|b` in a regular expression, and `catenation(a, b)` is equivalent to `ab` in a regular expression.
 
-But finite-state automata can recognize some languages containing an infinite number of sentences. We've seen some already, for example recognizing binary numbers:
+There's another operation on recognizers that regular expressions provide, the [kleene*]. In a regular expression, `a*` is an expression that matches whatever `a` matches, zero or more times in succession.
 
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    notZero --> notZero : 0, 1
-    zero --> [*]
-    notZero --> [*]
-</div>
+[kleene*]: https://en.wikipedia.org/wiki/Kleene_star.
 
-There are an infinite number of strings representing binary numbers, and this recognizer will recognize them all. The salient difference between this recognizer and the recognizers we can build with `EMPTY_STRING`, `just1`, `union`, and `catenation`, is that this recognizer has "loops" in it, whereas recognizers we build with `EMPTY_STRING`, `just1`, `union`, and `catenation` will not have any loops.
-
-If a recognizer does not have any loops, the maximum number of sentences it can recognize will be equal to the number of states it has, and the maximum length of any sentence it recognizes will be the number of states it has, minus one.
-
-So what we need is a way to make recognizers with loops. And that's exactly what the [kleene*](https://en.wikipedia.org/wiki/Kleene_star), or `kleeneStar` does: **`kleene*` is a decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of zero or more sentences its argument recognizes**.
-
-We'll build it step-by-step, starting with handling the "zero or one" case. Consider this recognizer:
+We'll build a JavaScript decorator for the `kleene*` step-by-step, starting with handling the "zero or one" case. Consider this recognizer:
 
 <div class="mermaid">
   stateDiagram
@@ -2230,7 +2221,7 @@ It recognizes exactly one space. Let's start by making it recognize zero or one 
     recognized-->[*]
 </div>
 
-In practice we might have a recognizer that has loops back to its start state, and the above transformation will not work correctly. So what we'll do is add a new start state, and provide an epsilon transition to the original start state.
+In practice we might have a recognizer that loops back to its start state, and the above transformation will not work correctly. So what we'll do is add a new start state, and provide an epsilon transition to the original start state.
 
 With some renaming, it will look like this:
 
@@ -2298,9 +2289,7 @@ This will produce some non-determinism, so we'll remove the epsilon transitions,
     recognized-->[*]
 </div>
 
-Presto, a loop!
-
-Here's the full code:
+Presto, a loop! Here's the full code:
 
 ```javascript
 function kleeneStar (description) {
@@ -2359,18 +2348,27 @@ function kleeneStar (description) {
   return looped;
 }
 
-kleeneStar(any('Aa'))
+const Aa = {
+  "start": "empty",
+  "transitions": [
+    { "from": "empty", "consume": "A", "to": "Aa" },
+    { "from": "empty", "consume": "a", "to": "Aa" }
+  ],
+  "accepting": ["Aa"]
+};
+
+kleeneStar(Aa)
   //=>
     {
-      "start": "recognized",
+      "start": "empty",
       "transitions": [
-        { "from": "recognized", "consume": "a", "to": "recognized" },
-        { "from": "recognized", "consume": "A", "to": "recognized" }
+        { "from": "empty", "consume": "A", "to": "empty" },
+        { "from": "empty", "consume": "a", "to": "empty" }
       ],
-      "accepting": [ "recognized" ]
+      "accepting": ["empty"]
     }
 
-verify(kleeneStar(any('Aa')), {
+verify(kleeneStar(Aa), {
   '': true,
   'a': true,
   'aa': true,
@@ -2384,7 +2382,11 @@ verify(kleeneStar(any('Aa')), {
   //=> All 9 tests passing
 ```
 
-`kleene*` is an **essential** decorator. We need it in order to make recognizers that recognize infinitely large languages. Naturally, regexen have an affordance for `kleene*`, it's the `*` postfix operator:
+---
+
+### kleene+
+
+As noted, formal regular expressions include the `kleene*`. Regexen have an affordance for `kleene*` as well, and—just like formal refgular expressions—it's the `*` postfix operator:
 
 ```javascript
 verify(/^x*$/, {
@@ -2410,7 +2412,7 @@ verify(/^[Aa]*$/, {
   //=> All 9 tests passing
 ```
 
-There are also inessential decorators, of course. For example regexen have a postfix `*` character to represent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes:
+Regexen have a postfix `*` character to represent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes:
 
 ```javascript
 verify(/^[Aa]+$/, {
@@ -2427,14 +2429,14 @@ verify(/^[Aa]+$/, {
   //=> All 9 tests passing
 ```
 
-We can make `kleene+` using the essentials we already have, so it is clearly inessential:
+We can make `kleene+` using the tools we already have:
 
 ```javascript
 function kleenePlus (description) {
   return catenation(description, kleeneStar(description));
 }
 
-kleenePlus(any('Aa'))
+kleenePlus(Aa)
   //=>
     {
       "start": "empty",
@@ -2461,297 +2463,35 @@ verify(kleenePlus(any('Aa')), {
   //=> All 9 tests passing
 ```
 
----
-
-### complementation
-
-We are going to write a very simple decorator that provides the _complementation_ or a recognizer.
-
-What is the complementation of a recognizer? Recall `negation`:
-
-```javascript
-const negation =
-  fn =>
-    (...args) => !fn(...args);
-```
-
-`negation` takes a function as an argument, and returns a function that returns the negation of the argument's result. `complementation` does the same thing for recognizers.
-
-What do recognizers do? They recognize sentences that belong to a language. Consider some recognizer `x` that recognizes whether a sentence belongs to some language `X`. The complementation of `x` would be a recognizer that recognizes sentences that do _not_ belong to `X`.
-
-We'll start our work by considering this: Our recognizers fail to recognize a sentence if, when the input ends, they are not in an accepting state. There are two ways this could be true:
-
-1. If the recognizer is in a state that is not an accepting state, or;
-2. If the recognizer has halted.
-
-Let's eliminate the second possibility.
-
-Given a recognizer that halts for some input, can we make it never halt? The answer in theory is **no**, because there are an infinite number of symbols that might be passed to a recognizer, and there is no way for our recognizers to encode an infinite number of transitions, one for each possible symbol.
-
-But in practice, we can say that given a recognizer `x`, and some alphabet `A`, we can return a version of `x` that never halts, _provided that every symbol in the input belongs to `A`_.
-
-Our method is simply to create a state for `halted`, and make sure that every state the recognizer has--including the new `halted` state--has transitions to `halted` for any symbols belonging to `A`, but not already consumed.
-
-For example, given the recognizer for binary numbers:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    notZero --> notZero : 0, 1
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-Let's consider its behaviour when its input consists solely of symbols in the alphabet of numerals, `1234567890`. When the input it empty, it does not halt, it is in the `start` state. If the first symbol it reads is a `0` or `1`, it transitions to `zero` and `notZero` respectively. But if the input is one of `23456789`, it halts.
-
-So the first thing to do is create a `halted` state and add transitions to that state from `start`:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    start-->halted : 2,3,4,5,6,7,8,9
-    notZero --> notZero : 0, 1
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-Next, we turn our attention to state `zero`. When the recognizer is in this state, any numeral will cause it to halt, so we add transitions for that:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    start-->halted : 2,3,4,5,6,7,8,9
-    zero-->halted : 1,2,3,4,5,6,7,8,9,0
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-If the recognizer is in state `notZero`, only the numerals `23456789` it to halt, so we add transitions for those:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    start-->halted : 2,3,4,5,6,7,8,9
-    zero-->halted : 1,2,3,4,5,6,7,8,9,0
-    notZero-->halted : 2,3,4,5,6,7,8,9
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-And finally, when the recognizer is in the new state `halted`, any numeral causes it to remain in the state halted, so we add transitions for those:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    start-->halted : 2,3,4,5,6,7,8,9
-    zero-->halted : 1,2,3,4,5,6,7,8,9,0
-    notZero --> notZero : 0, 1
-    notZero-->halted : 2,3,4,5,6,7,8,9
-    halted-->halted : 1,2,3,4,5,6,7,8,9,0
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-The final result is "Unorthodox, but effective," as Williams would say.
-
-Using this methods, here's a decorator that turns a description of a recognizer, into a description of a recognizer that never halts given a sentence in its alphabet:
-
-```javascript
-function nonhalting (alphabet, description) {
-  const descriptionWithoutHaltedState = avoidReservedNames(["halted"], description);
-
-  const {
-    states,
-    stateMap,
-    start,
-    transitions,
-    accepting
-  } = validatedAndProcessed(descriptionWithoutHaltedState);
-
-  const alphabetList = [...alphabet];
-  const statesWithHalted = states.concat(["halted"])
-
-  const toHalted =
-    statesWithHalted.flatMap(
-      state => {
-        const consumes =
-          (stateMap.get(state) || [])
-      		  .map(({ consume }) => consume);
-        const consumesSet = new Set(consumes);
-        const haltsWhenConsumes =
-          alphabetList.filter(a => !consumesSet.has(a));
-
-        return haltsWhenConsumes.map(
-          consume => ({ "from": state, consume, "to": "halted" })
-        );
-      }
-    );
-
-  return reachableFromStart({
-    start,
-    transitions: transitions.concat(toHalted),
-    accepting
-  });
-}
-```
-
-The result is correct, if considerably larger:
-
-```javascript
-const binary = {
-  "start": "start",
-  "transitions": [
-    { "from": "start", "consume": "0", "to": "zero" },
-    { "from": "start", "consume": "1", "to": "notZero" },
-    { "from": "notZero", "consume": "0", "to": "notZero" },
-    { "from": "notZero", "consume": "1", "to": "notZero" }
-  ],
-  "accepting": ["zero", "notZero"]
-}
-
-nonhalting('1234567890', binary);
-  //=>
-    {
-      "start": "start",
-      "transitions": [
-        { "from": "start", "to": "zero", "consume": "0" },
-        { "from": "start", "to": "notZero", "consume": "1" },
-        { "from": "notZero", "to": "notZero", "consume": "0" },
-        { "from": "notZero", "to": "notZero", "consume": "1" },
-        { "from": "start", "consume": "2", "to": "halted" },
-        { "from": "start", "consume": "3", "to": "halted" },
-        { "from": "start", "consume": "4", "to": "halted" },
-        { "from": "start", "consume": "5", "to": "halted" },
-        { "from": "start", "consume": "6", "to": "halted" },
-        { "from": "start", "consume": "7", "to": "halted" },
-        { "from": "start", "consume": "8", "to": "halted" },
-        { "from": "start", "consume": "9", "to": "halted" },
-        { "from": "zero", "consume": "1", "to": "halted" },
-        { "from": "zero", "consume": "2", "to": "halted" },
-        { "from": "zero", "consume": "3", "to": "halted" },
-        { "from": "zero", "consume": "4", "to": "halted" },
-        { "from": "zero", "consume": "5", "to": "halted" },
-        { "from": "zero", "consume": "6", "to": "halted" },
-        { "from": "zero", "consume": "7", "to": "halted" },
-        { "from": "zero", "consume": "8", "to": "halted" },
-        { "from": "zero", "consume": "9", "to": "halted" },
-        { "from": "zero", "consume": "0", "to": "halted" },
-        { "from": "notZero", "consume": "2", "to": "halted" },
-        { "from": "notZero", "consume": "3", "to": "halted" },
-        { "from": "notZero", "consume": "4", "to": "halted" },
-        { "from": "notZero", "consume": "5", "to": "halted" },
-        { "from": "notZero", "consume": "6", "to": "halted" },
-        { "from": "notZero", "consume": "7", "to": "halted" },
-        { "from": "notZero", "consume": "8", "to": "halted" },
-        { "from": "notZero", "consume": "9", "to": "halted" },
-        { "from": "halted", "consume": "1", "to": "halted" },
-        { "from": "halted", "consume": "2", "to": "halted" },
-        { "from": "halted", "consume": "3", "to": "halted" },
-        { "from": "halted", "consume": "4", "to": "halted" },
-        { "from": "halted", "consume": "5", "to": "halted" },
-        { "from": "halted", "consume": "6", "to": "halted" },
-        { "from": "halted", "consume": "7", "to": "halted" },
-        { "from": "halted", "consume": "8", "to": "halted" },
-        { "from": "halted", "consume": "9", "to": "halted" },
-        { "from": "halted", "consume": "0", "to": "halted" }
-      ],
-      "accepting": [ "zero", "notZero" ]
-    }
-```
-
-Let's verify that it still recognizes the same "language:"
-
-```javascript
-verify(nonhalting('1234567890', binary), {
-  '': false,
-  '0': true,
-  '1': true,
-  '00': false,
-  '01': false,
-  '10': true,
-  '11': true,
-  '000': false,
-  '001': false,
-  '010': false,
-  '011': false,
-  '100': true,
-  '101': true,
-  '110': true,
-  '111': true,
-  '10100011011000001010011100101110111': true
-});
-  //=> All 16 tests passing
-```
-
-Now given a recognizer that never halts, what is the `complementation` of that recognizer? Well, given that it is always going to be in one of its states when the input stops, if it is a state that is not one of the original recognizer's accepting states, then it must have failed to recognize the sentence.
-
-This points very clearly to how to implement `complementation`:
-
-```javascript
-function complementation (alphabet, description) {
-  const nonhaltingDescription = nonhalting(alphabet, description);
-
-  const {
-    states,
-    start,
-    transitions,
-    acceptingSet
-  } = validatedAndProcessed(nonhaltingDescription);
-
-  const accepting = states.filter(state => !acceptingSet.has(state));
-
-  return { start, transitions, accepting }
-}
-
-verify(complementation('1234567890', binary), {
-  '': true,
-  '0': false,
-  '1': false,
-  '01': true,
-  '10': false,
-  '2': true,
-  'two': false
-});
-```
-
-Note that we do not have a perfect or "ideal" `complementation`, we have "complementation over the alphabet `1234567890`." You can see, for example, that it fails to recognize `'two'`, because letters are not part of its alphabet.
+Formal regular expressions don't normally include the `kleene+`, because given catenation and `kleene*`, `kleene+` is not necessary. When proving things about formal languages, working with the minimum set of entities makes everything easier. But fo course, proactical programming is all about defining convenient things our of necessarry things, and that is why regexen provide the `kleene+`.
 
 ---
 
-# Building Blocks and Decorators
+## The set of finite-state recognizers is closed under various operations
 
 To summarize what we have accomplished so far:
 
-- We set ourselves the task of writing a finite-state recognizer that recognizes valid descriptions of finite-state recognizers.
-- To break it down into manageable parts, we wrote functions that compose finite-state recognizers from other finite-state recognizers: We wrote `union`, `intersection`, and `catenation`.
+We wrote what we might call _finite-state recognizer combinators_, functions that take one or more finite-state recognizers as arguments, and return a finite-state recognizer. The combinators we've written so far implement the operations `union`, `catenation`, `intersection`, `kleene*`, and `kleene+`.
 
-This is very much like wanting to build a big lego set, and first figuring out how to click the blocks together. if we stopped here, we would have to custom-make every lego block we wish to use.
+There is a set of all finite-state recognizers, and a corresponding set of all descriptions of finite-state recognizers. Each one of our combinators takes one or more members of the set of all descriptions of finite-state recognizers and returns a member of the set of all descriptions of finite-state recognizers.
 
-It's the same with recognizers. If we got to work on using `union`, `intersection`, and `catenation` to compose a finite-state recognizer that recognizes valid descriptions of finte state recognizers, we would have to hand-write lots of small recognizers that we could then lick together with `union`, `intersection`, and `catenation`.
+When wwe have a set, and an operation on members of that set always returns a member of that set, we say that "The set is closed under that operation." We can thus say that the set of all descriptions of finite-state recognizers is closed under the operation of applying the `union`, `catenation`, `intersection`, `kleeneStar`, and `kleenePlus` functions we've written.
 
-That's a lot less work than writing a finite-state recognizer that recognizes valid descriptions of finte state recognizers from scratch, by hand, but we can make it even less work by building some tooling for creating small recognizers, and some more tooling for "decorating" recognizers.
+And by induction, we can then say that the set of languages that finite-state recognizers can recognize is closed under the operations `union`, `catenation`, `intersection`, `kleene*`, and `kleene+`.
 
-Here we go.
+This property of "languages that finite-state recognizers can recognize being closed under the operations `union`, `catenation`, `intersection`, `kleene*`, and `kleene+`" will come in very handy beloww when we show that for every formal regular expressionm, there is an equivalent finite-state recognizer.
+
+But all we've talked about are combinators, operations that build finite-state recognizers out of finite-state recognizers. What about building finite-state recognizers from nothing at all?
 
 ---
 
-### in the beginning
+# Building Blocks
 
-What is the absolutely minimal recognizer? One might think, "a recognizer for empty strings," and as we will see, such a recognizer is useful. But there is an even more minimal recogner than that. The recognizer that recognizes empty strings recognizes a language with only one sentence in it.
+What is the absolutely minimal recognizer? One might think, "A recognizer for empty strings," and as we will see, such a recognizer is useful. But there is an even more minimal recogner than that. The recognizer that recognizes empty strings recognizes a language with only one sentence in it.
 
-But what is the language with no sentences whatsoever? This language is often called the _empty set_, and in mathematical notation it is denoted with ∅. If we want to make tools for building finite-state recognizers, we'll need a way to build a recognizer for the empty set.
+But what is the language with no sentences whatsoever? This language is often called the _empty set_, and in mathematical notation it is denoted with `∅`. If we want to make tools for building finite-state recognizers, we'll need a way to build a recognizer for the empty set.
 
-There are ways to derive it from our other tools, but we'll just boldly declare it as a constant:
+We'll just boldly declare it as a constant:
 
 ```javascript
 const EMPTY_SET = {
@@ -2772,7 +2512,7 @@ With `EMPTY_SET` out of the way, we'll turn our attention to more practical reco
 
 What's the simplest possible language that contains sentences? A language containing only one sentence. Such languages include `{ 'balderdash' }`, `{ 'billingsgate' }`, and even `{ 'bafflegab' }`.
 
-Of all the one-sentence languages, the simplest would be the language containing the shortest possible string, `''`. We will also boldly declare this as a constant:
+Of all the one-sentence languages, the simplest would be the language containing the shortest possible string, `''`. We will also declare this as a constant:
 
 ```javascript
 const EMPTY_STRING = {
@@ -2795,7 +2535,7 @@ verify(EMPTY_STRING, {
 
 ### recognizing strings
 
-What makes recognizers really useful is recognizing non-empty strings of one kind or another. This use case s so common, regexen are designed to make recognizing strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
+What makes recognizers really useful is recognizing non-empty strings of one kind or another. This use case is so common, regexen are designed to make recognizing strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
 
 ```javascript
 verify(/^abc$/, {
@@ -3010,53 +2750,6 @@ verify(rSomethingG, {
 
 `any` is very useful, but since we can always write things like `union(just1('a'), just1('b')... )`, we know that `any` is another inessential-but-useful tool.
 
-And now we turn our attention to _decorating_ finite-state recognizers.
-
----
-
-### optional
-
-We've covered the decorators for regexen's `*` postfix operator (`kleene*`), and `+` operator (`kleene+`). Regexen also have a third postfix operator, `?`, that represents a decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _zero or one_ sentences its argument recognizes:
-
-```javascript
-verify(/^x?$/, {
-  '': true,
-  'x': true,
-  'y': false,
-  'xy': false,
-  'wx': false,
-  'xxx': false
-});
-  //=>  All 6 tests passing
-```
-
-We call this `optional`, and as we can build it out of essentials we have already defined, we know that it is inessential. But useful!
-
-```javascript
-const optional =
-  recognizer => union(EMPTY_STRING, recognizer);
-
-const regMaybeReginald = catenation(
-  just('reg'),
-  optional(just('inald'))
-);
-
-verify(regMaybeReginald, {
-  '': false,
-  'r': false,
-  're': false,
-  'reg': true,
-  'reggie': false,
-  'reginald': true
-});
-  //=> All 6 tests passing
-
-```
-
-`optional` decorates a recognizer by making it--well--"optional."
-
-Now we'll look at `complementation`, a decorator that is inessential in a theoretical sense, but when we need it, extremely handy.
-
 ---
 
 ### none
@@ -3082,52 +2775,7 @@ Two observations of note: First, in regexen, `^` sometimes means "anchor this ex
 
 [^inertia]: Using one operator to mean two completely unrelated things is now understood to be a poor design practice, but in programming languages, old ideas have an enormous amount of inertia. Most of our programming languages seem to be rooted in the paradigm of encoding programs on 80 column punch cards.
 
-Now we might think that `complementation` is the perfect tool for building our own equivalent to `[^xyz]`. Let's try it:
-
-```javascript
-const notXyOrZ = complementation(ALPHANUMERIC, any('xyz'));
-
-verify(notXyOrZ, {
-  '': false,
-  'a': true,
-  'b': true,
-  'c': true,
-  'x': false,
-  'y': false,
-  'z': false,
-  'abc': false,
-  'xyz': false
-});
-  //=> 3 tests failing:
-    {"example":"", "expected":false, "actual":true};
-    {"example":"abc", "expected":false, "actual":true};
-    {"example":"xyz", "expected":false, "actual":true}
-```
-
-It's not the same! `[^xyz]` matches a single character that is not an `x`, `y`, or `z`, whereas `complementation(ALPHANUMERIC, any('xyz'))` matches any string of any length (including the empty string) that is not a single `x`, `y`, or `z`.
-
-To emulate `[^...]`, we need to take one of two approaches. If we just want to use the tools we already have, we need a way to say that we want a recognizer that matches just the one-symbol strings that are not an `x`, `y`, or `z`.
-
-One way to do that is to use `intersection` and `dot`:
-
-```javascript
-const caretXYZ = intersection(dot, notXyOrZ);
-
-verify(caretXYZ, {
-  '': false,
-  'a': true,
-  'b': true,
-  'c': true,
-  'x': false,
-  'y': false,
-  'z': false,
-  'abc': false,
-  'xyz': false
-});
-  //=> All 9 tests passing
-```
-
-Another way to do that is to write a new, inessential tool:
+Here's a modification of our `any` inessential, but useful tool:
 
 ```javascript
 function none (alphabet, string) {
@@ -3206,7 +2854,7 @@ verify(stringLiteral, {
 });
 ```
 
-It may be "inessential," but `none` is certainly handy.
+`none` may be "inessential," but `none` is certainly handy.
 
 ---
 
