@@ -209,6 +209,8 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [recognizing symbols](#recognizing-symbols)
   - [none](#none)
 
+[For every formal regular expression, there is an equivalent finite-state recognizer](#for-every-formal-regular-expression-there-is-an-equivalent-finite-state-recognizer)
+
 ### [Regular Languages and Regular Expressions](#regular-languages-and-regular-expressions-1)
 
   - [formal regular expressions](#formal-rvide inegular-expressions)
@@ -746,7 +748,7 @@ Of course, only two of these (`'zero'` and `''`, `''` and `'one'`) are reachable
 Here's a union function that makes use of `product` and some of the helpers we've already written:
 
 ```javascript
-function productUnion (a, b) {
+function union2 (a, b) {
   const {
     states: aDeclaredStates,
     accepting: aAccepting
@@ -786,7 +788,7 @@ function productUnion (a, b) {
 And when we try it:
 
 ```javascript
-productUnion(a, b)
+union2(a, b)
   //=>
     {
       "start": "(emptyA)(emptyB)",
@@ -807,7 +809,7 @@ productUnion(a, b)
 The accepting set for the _Intersection_ of two recognizers is equally straightforward. While the accepting set for the union is all those reachable states of the product where either (or both) of the two states is an accepting state, the accepting set for the intersection is all those reachable states of the product where both of the two states is an accepting state:
 
 ```javascript
-function productIntersection (a, b) {
+function intersection2 (a, b) {
   const {
     accepting: aAccepting
   } = validatedAndProcessed(a);
@@ -911,7 +913,7 @@ verify(uppercase, {
 Now we can try their union and intersection:
 
 ```javascript
-verify(productUnion(reg, uppercase), {
+verify(union2(reg, uppercase), {
   '': true,
   'r': false,
   'R': true,
@@ -922,7 +924,7 @@ verify(productUnion(reg, uppercase), {
 })
   //=> All 7 tests passing
 
-verify(productIntersection(reg, uppercase), {
+verify(intersection2(reg, uppercase), {
   '': false,
   'r': false,
   'R': false,
@@ -1426,7 +1428,7 @@ When we join them and remove transitions, we end up with an unreachable state, `
 We could implement a very specific fix, but the code to do a general elimination of unreachable states is straightforward:
 
 ```javascript
-function reachableFromStart ({ start, accepting, transitions: allTransitions }) {
+function reachableFromStart ({ start, accepting: allAccepting, transitions: allTransitions }) {
   const stateMap = toStateMap(allTransitions, true);
   const reachableMap = new Map();
   const R = new Set([start]);
@@ -1436,7 +1438,7 @@ function reachableFromStart ({ start, accepting, transitions: allTransitions }) 
     R.delete(state);
     const transitions = stateMap.get(state) || [];
 
-    // this state is reacdhable
+    // this state is reachable
     reachableMap.set(state, transitions);
 
     const reachableFromThisState =
@@ -1451,10 +1453,21 @@ function reachableFromStart ({ start, accepting, transitions: allTransitions }) 
     }
   }
 
+  const transitions = [...reachableMap.values()].flatMap(tt => tt);
+
+  // prune unreachable states from the accepting set
+  const reachableStates = new Set(
+    [start].concat(
+      transitions.map(({ to }) => to)
+    )
+  );
+
+  const accepting = allAccepting.filter( state => reachableStates.has(state) );
+
   return {
     start,
-    accepting,
-    transitions: [...reachableMap.values()].flatMap(tt => tt)
+    transitions,
+    accepting
   };
 }
 ```
@@ -1702,7 +1715,7 @@ We begin by placing the start state in the queue, and then:
   4. Add the transition to the powerset recognizer.
   5. Add the name for the set of destination states to the queue.
 
-We can encode this as a function, `powerset`. The source code is [here](/assets/supplementa/fsa/07-powerset.js). We can try it:
+We can encode this as a function, `powerset`. The source code is [here](/assets/supplementa/fsa/07-powerset-and-catenation.js). We can try it:
 
 ```javascript
 const zeroes = {
@@ -1760,8 +1773,28 @@ deterministic
         { "from": "(notZero)", "consume": "1", "to": "(notZero)" }
       ]
     }
+```
 
-verify(deterministic, {
+The `powerset` function converts any nondeterministic finite-state recognizer into a deterministic finite-state recognizer.
+
+---
+
+### catenation without the catch, and an observation
+
+Computing the catenation of any two deterministic finite-state recognizers is thus:
+
+```javascript
+function catenation2 (a, b) {
+  return powerset(
+    reachableFromStart(
+      removeEpsilonTransitions(
+        epsilonCatenate(a, b)
+      )
+    )
+  );
+}
+
+verify(catenation2(zeroes, binary), {
   '': false,
   '0': false,
   '1': false,
@@ -1777,28 +1810,8 @@ verify(deterministic, {
   '101': false,
   '110': false,
   '111': false
-})
+});
   //=> All 15 tests passing
-```
-
-The `powerset` function converts any nondeterministic finite-state recognizer into a deterministic finite-state recognizer.
-
----
-
-### catenation without the catch, and an observation
-
-Computing the catenation of any two deterministic finite-state recognizers is thus:
-
-```javascript
-function catenation (first, second) {
-  return powerset(
-    reachableFromStart(
-      removeEpsilonTransitions(
-        epsilonCatenate(first, second)
-      )
-    )
-  );
-}
 ```
 
 And this allows us to draw an important conclusion: *The set of deterministic finite-state recognizers is closed under catenation*, meaning that given two finite-state recognizers, we can always construct a finite-state recognizer representing the catenation of the two recognizers.
@@ -1811,7 +1824,7 @@ From this we can also deduce that although we only wrote functions to take the u
 
 ### from powerset to union
 
-Now that we have `powerset`, another formulation of `union` becomes easy. Once again, our two recognizers:
+Now that we have `powerset`, another formulation of `union2` becomes easy. Once again, our two recognizers:
 
 <div class="mermaid">
   stateDiagram
@@ -1831,7 +1844,7 @@ Now that we have `powerset`, another formulation of `union` becomes easy. Once a
     notZero-->[*]
 </div>
 
-When formulating `union` the first time, we imagined them running side-by-side. Then we took their `product` because a deterministic finite-state recognizer cannot do two things at once. But a _nondeterministic_ finite-state recognizer _can_ do two things at once. So consider this approach:
+When formulating `union2` the first time, we imagined them running side-by-side. Then we took their `product` because a deterministic finite-state recognizer cannot do two things at once. But a _nondeterministic_ finite-state recognizer _can_ do two things at once. So consider this approach:
 
 By forking the start, we can run both recognizers at once. We'd need to simulate the fork by creating a new start state, something like this:
 
@@ -1901,10 +1914,10 @@ function epsilonUnion (first, second) {
 }
 ```
 
-And we use it to build `union` from `powerset` much as we built `catenation` with `powerset`:
+We could use it to build `union2p` from `powerset` much as we built `catenation2` with `powerset`:
 
 ```javascript
-function union (first, second) {
+function union2p (first, second) {
   return powerset(
     reachableFromStart(
       removeEpsilonTransitions(
@@ -1913,6 +1926,17 @@ function union (first, second) {
     )
   );
 }
+
+verify(union2p(reg, uppercase), {
+  '': true,
+  'r': false,
+  'R': true,
+  'Reg': true,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': true
+});
+  //=> All 7 tests passing
 ```
 
 ---
@@ -1940,7 +1964,7 @@ const a = {
   "accepting": ["recognized"]
 };
 
-union(A, a)
+union2p(A, a)
   //=>
     {
       "start": "empty",
@@ -1952,10 +1976,10 @@ union(A, a)
     }
 ```
 
-`union(A, a)` has two equivalent accepting states, `recognized` and `recognized-2`. This would be a minor distraction, but consider:
+`union2p(A, a)` has two equivalent accepting states, `recognized` and `recognized-2`. This would be a minor distraction, but consider:
 
 ```javascript
-catenation(union(A, a), union(A, a), union(A, a));
+catenation2(union2p(A, a), union2p(A, a), union2p(A, a));
   //=>
     {
       "start": "empty",
@@ -2055,10 +2079,10 @@ function mergeEquivalentStates (description) {
 }
 ```
 
-Armed with this, we can enhance our `union` function:
+Armed with this, we can enhance our `union2p` function:
 
 ```javascript
-function union (first, second) {
+function union2pm (first, second) {
   return mergeEquivalentStates(
     powerset(
       reachableFromStart(
@@ -2069,12 +2093,23 @@ function union (first, second) {
     )
   );
 }
+
+verify(union2pm(reg, uppercase), {
+  '': true,
+  'r': false,
+  'R': true,
+  'Reg': true,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': true
+});
+  //=> All 7 tests passing
 ```
 
 And now:
 
 ```javascript
-union(A, a)
+union2pm(A, a)
   //=>
     {
       "start": "empty"
@@ -2085,7 +2120,7 @@ union(A, a)
       "accepting": [ "recognized" ],
     }
 
-catenation(union(A, a), union(A, a), union(A, a));
+catenation2(union2pm(A, a), union2pm(A, a), union2pm(A, a));
   //=>
     {
       "start": "empty"
@@ -2101,7 +2136,7 @@ catenation(union(A, a), union(A, a), union(A, a));
     }
 ```
 
-Our enhanced `union` creates the minimum number of transitions and states, and thanks to merging the equivalent accepting states, the number of states and transitions in catenated recognizers grows linearly.
+Our enhanced `union2pm` creates the minimum number of transitions and states, and thanks to merging the equivalent accepting states, the number of states and transitions in catenated recognizers grows only linearly.
 
 ---
 
@@ -2117,16 +2152,7 @@ function union (a, ...args) {
 
   const [b, ...rest] = args;
 
-  const ab =
-    mergeEquivalentStates(
-      reachableFromStart(
-        powerset(
-          removeEpsilonTransitions(
-            epsilonUnion(a, b)
-          )
-        )
-      )
-    );
+  const ab = mergeEquivalentStates(union2pm(a, b));
 
   return union(ab, ...rest);
 }
@@ -2138,7 +2164,7 @@ function intersection (a, ...args) {
 
   const [b, ...rest] = args;
 
-  const ab = mergeEquivalentStates(productIntersection(a, b));
+  const ab = mergeEquivalentStates(intersection2(a, b));
 
   return intersection(ab, ...rest);
 }
@@ -2150,19 +2176,51 @@ function catenation (a, ...args) {
 
   const [b, ...rest] = args;
 
-  const ab =
-    mergeEquivalentStates(
-      powerset(
-        reachableFromStart(
-          removeEpsilonTransitions(
-            epsilonCatenate(a, b)
-          )
-        )
-      )
-    );
+  const ab = mergeEquivalentStates(catenation2(a, b));
 
   return catenation(ab, ...rest);
 }
+
+verify(union(reg, uppercase), {
+  '': true,
+  'r': false,
+  'R': true,
+  'Reg': true,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': true
+});
+  //=> All 7 tests passing
+
+verify(intersection(reg, uppercase), {
+  '': false,
+  'r': false,
+  'R': false,
+  'Reg': false,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': false
+})
+  //=> All 7 tests passing
+
+verify(catenation(zeroes, binary), {
+  '': false,
+  '0': false,
+  '1': false,
+  '00': true,
+  '01': true,
+  '10': false,
+  '11': false,
+  '000': true,
+  '001': true,
+  '010': true,
+  '011': true,
+  '100': false,
+  '101': false,
+  '110': false,
+  '111': false
+});
+  //=> All 15 tests passing
 ```
 
 ---
@@ -2855,6 +2913,110 @@ verify(stringLiteral, {
 ```
 
 `none` may be "inessential," but `none` is certainly handy.
+
+---
+
+## For every formal regular expression, there is an equivalent finite-state recognizer
+
+Let us consider `union`, `catenation`, `kleene*`, `EMPTY_SET`, `EMPTY_STRING`, and `just1` for a moment. These have a one-to-one correspondance with the operations in formal regular expressions. And in fact, it's pretty easy to translate any formal regular expression into an equivalent JavaScript expression using our functions and constants.
+
+For example:
+
+- `∅` becomes `EMPTY_SET`
+- `0` (or any single character) becomes `just1('0')`
+- `a|b` (or any two expresions) becomes `union(a, b)`
+- `xyz` (or any string of characters) becomes `catenation(just('x'), just('y'), just('z'))`
+- `a*` (or any expresion followed by an `*`) becomes `kleeneStar(just1('a'))`
+
+The parentheses in JavaScript work just like the parentheses in formal regular expressions, so by carefully following the above rules, we can turn any arbitrary formal regular expression into a JavaScript expression.
+
+For example, the formal regular expression `0|(1(0|1)*)` becomes:
+
+```javascript
+const binary2 = union(just1('0'), catenation(just1('1'), kleeneStar(union(just('0'), just('1)))));
+
+binary2
+  //=>
+    {
+      "start": "empty",
+      "transitions": [
+        { "from": "empty", "consume": "0", "to": "recognized" },
+        { "from": "empty", "consume": "1", "to": "recognized-2" },
+        { "from": "recognized-2", "to": "recognized-2", "consume": "0" },
+        { "from": "recognized-2", "to": "recognized-2", "consume": "1" }
+      ],
+      "accepting": [ "recognized", "recognized-2" ]
+    }
+
+verify(binary2, {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': true,
+  '11': true,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true,
+  '10100011011000001010011100101110111': true
+})
+  //=> All 16 tests passing
+```
+
+And the formal expression `reg(ε|inald)` becomes:
+
+```javascript
+const regMaybeInald = catenation(
+  just('r'),
+  just('e'),
+  just('g'),
+  union(
+    EMPTY_STRING,
+    catenation(
+      just('i'),
+      just('n'),
+      just('a'),
+      just('l'),
+      just('d')
+    )
+  )
+);
+
+regMaybeInald
+  //=>
+    {
+      "start": "empty",
+      "transitions": [
+        { "from": "empty", "consume": "r", "to": "recognized" },
+        { "from": "recognized", "consume": "e", "to": "recognized-2" },
+        { "from": "recognized-2", "consume": "g", "to": "recognized-3" },
+        { "from": "recognized-3", "consume": "i", "to": "recognized-4" },
+        { "from": "recognized-4", "to": "recognized-5", "consume": "n" },
+        { "from": "recognized-5", "to": "recognized-6", "consume": "a" },
+        { "from": "recognized-6", "to": "recognized-7", "consume": "l" },
+        { "from": "recognized-7", "to": "recognized-8", "consume": "d" }
+      ],
+      "accepting": [ "recognized-8", "recognized-3" ]
+    }
+
+verify(regMaybeInald, {
+  '': false,
+  'r': false,
+  're': false,
+  'reg': true,
+  'reggie': false,
+  'reginald': true
+});
+  //=> All 6 tests passing
+```
+
+Given that we can express any formal regular expression as a JavaScript expression that generates an equivalent finite-state recognizer, we have a demonstration that for every formal regular expression, there is an equivalent finite-state recognizer.
 
 ---
 

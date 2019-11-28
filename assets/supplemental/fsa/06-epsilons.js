@@ -104,7 +104,7 @@ function removeEpsilonTransitions ({ start, accepting, transitions }) {
   }
 }
 
-function reachableFromStart ({ start, accepting, transitions: allTransitions }) {
+function reachableFromStart ({ start, accepting: allAccepting, transitions: allTransitions }) {
   const stateMap = toStateMap(allTransitions, true);
   const reachableMap = new Map();
   const R = new Set([start]);
@@ -114,7 +114,7 @@ function reachableFromStart ({ start, accepting, transitions: allTransitions }) 
     R.delete(state);
     const transitions = stateMap.get(state) || [];
 
-    // this state is reacdhable
+    // this state is reachable
     reachableMap.set(state, transitions);
 
     const reachableFromThisState =
@@ -129,9 +129,20 @@ function reachableFromStart ({ start, accepting, transitions: allTransitions }) 
     }
   }
 
+  const transitions = [...reachableMap.values()].flatMap(tt => tt);
+
+  // prune unreachable states from the accepting set
+  const reachableStates = new Set(
+    [start].concat(
+      transitions.map(({ to }) => to)
+    )
+  );
+
+  const accepting = allAccepting.filter( state => reachableStates.has(state) );
+
   return {
     start,
-    accepting,
-    transitions: [...reachableMap.values()].flatMap(tt => tt)
+    transitions,
+    accepting
   };
 }

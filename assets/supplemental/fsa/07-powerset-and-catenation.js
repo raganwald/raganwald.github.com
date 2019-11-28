@@ -1,3 +1,5 @@
+// 07-powerset-and-catenation.js
+
 function isDeterministic (description) {
   const { stateMap } = validatedAndProcessed(description, true);
 
@@ -118,3 +120,43 @@ function powerset (description) {
         .flatMap(tt => tt)
   };
 }
+
+function catenation2 (a, b) {
+  return powerset(
+    reachableFromStart(
+      removeEpsilonTransitions(
+        epsilonCatenate(a, b)
+      )
+    )
+  );
+}
+
+// ----------
+
+
+const zeroes = {
+  "start": 'empty',
+  "accepting": ['zeroes'],
+  "transitions": [
+    { "from": 'empty', "consume": '0', "to": 'zeroes' },
+    { "from": 'zeroes', "consume": '0', "to": 'zeroes' }
+  ]
+};
+
+verify(catenation2(zeroes, binary), {
+  '': false,
+  '0': false,
+  '1': false,
+  '00': true,
+  '01': true,
+  '10': false,
+  '11': false,
+  '000': true,
+  '001': true,
+  '010': true,
+  '011': true,
+  '100': false,
+  '101': false,
+  '110': false,
+  '111': false
+});

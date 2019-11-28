@@ -1,3 +1,5 @@
+// 03-product.js
+
 // This function computes a state name for the product given
 // the names of teh states for a and b
 function abToAB (aState, bState) {

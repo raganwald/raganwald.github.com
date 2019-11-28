@@ -1,3 +1,5 @@
+// 08-epsilon-union.js
+
 function avoidReservedNames (reservedStates, second) {
   const reservedStateSet = new Set(reservedStates);
   const { stateSet: secondStatesSet } = validatedAndProcessed(second);
@@ -42,3 +44,25 @@ function epsilonUnion (first, second) {
         .concat(cleanSecond.transitions)
   };
 }
+
+function union2p (first, second) {
+  return powerset(
+    reachableFromStart(
+      removeEpsilonTransitions(
+        epsilonUnion(first, second)
+      )
+    )
+  );
+}
+
+// ----------
+
+verify(union2p(reg, uppercase), {
+  '': true,
+  'r': false,
+  'R': true,
+  'Reg': true,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': true
+});

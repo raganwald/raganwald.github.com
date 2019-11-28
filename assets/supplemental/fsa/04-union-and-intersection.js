@@ -1,4 +1,6 @@
-function productUnion (a, b) {
+// 04-union-and-intersection.js
+
+function union2 (a, b) {
   const {
     states: aDeclaredStates,
     accepting: aAccepting
@@ -34,7 +36,7 @@ function productUnion (a, b) {
   return { start, accepting, transitions };
 }
 
-function productIntersection (a, b) {
+function intersection2 (a, b) {
   const {
     accepting: aAccepting
   } = validatedAndProcessed(a);
@@ -55,3 +57,25 @@ function productIntersection (a, b) {
 
   return { start, accepting, transitions };
 }
+
+// ----------
+
+verify(union2(reg, uppercase), {
+  '': true,
+  'r': false,
+  'R': true,
+  'Reg': true,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': true
+});
+
+verify(intersection2(reg, uppercase), {
+  '': false,
+  'r': false,
+  'R': false,
+  'Reg': false,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': false
+});

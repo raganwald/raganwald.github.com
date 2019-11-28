@@ -1,3 +1,5 @@
+// 05-resolve-conflicts.js
+
 // given a mapping of individual names, renames all the states in
 // an fas, including the start and accepting. any names not in the map
 // rename unchanged

@@ -1,3 +1,5 @@
+// 01-validated-and-processed.js
+
 function error (description) {
   console.log({ error: description });
   throw description;

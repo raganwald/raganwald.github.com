@@ -1,3 +1,5 @@
+// 09-merge-equivalent-states.js
+
 const keyS =
   (transitions, accepting) => {
     const stringifiedTransitions =
@@ -69,3 +71,27 @@ function mergeEquivalentStates (description) {
 
   return description;
 }
+
+function union2pm (first, second) {
+  return mergeEquivalentStates(
+    powerset(
+      reachableFromStart(
+        removeEpsilonTransitions(
+          epsilonUnion(first, second)
+        )
+      )
+    )
+  );
+}
+
+// ----------
+
+verify(union2pm(reg, uppercase), {
+  '': true,
+  'r': false,
+  'R': true,
+  'Reg': true,
+  'REG': true,
+  'Reginald': false,
+  'REGINALD': true
+});
