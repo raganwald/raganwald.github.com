@@ -118,9 +118,9 @@ const ALPHANUMERIC =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
   '1234567890';
 
-const dot = any(ALPHANUMERIC);
+const anyAlphaNumeric = any(ALPHANUMERIC);
 
-const rSomethingG = catenation(any('Rr'), dot, any('Gg'));
+const rSomethingG = catenation(any('Rr'), anyAlphaNumeric, any('Gg'));
 
 verify(rSomethingG, {
   '': false,

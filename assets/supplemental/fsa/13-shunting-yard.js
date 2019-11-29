@@ -181,19 +181,34 @@ function shuntingYardVersion3 (formalRegularExpressionString) {
   return outputQueue;
 }
 
-const operators = new Map(
+const formalOperators = new Map(
   Object.entries({
+    '∅': { symbol: Symbol('∅'), precedence: 99, arity: 0, fn: () => EMPTY_SET },
+    'ε': { symbol: Symbol('ε'), precedence: 99, arity: 0, fn: () => EMPTY_STRING },
     '|': { symbol: Symbol('|'), precedence: 1, arity: 2, fn: union },
     '+': { symbol: Symbol('+'), precedence: 2, arity: 2, fn: catenation },
     '*': { symbol: Symbol('*'), precedence: 3, arity: 1, fn: kleeneStar }
   })
 );
 
-function isBinaryOperator (symbol) {
-  return operators.has(symbol) && operators.get(symbol).arity === 2;
-}
+function basicShuntingYard (formalRegularExpressionString, operators = formalOperators) {
+  const valueOf =
+    something => {
+      if (operators.has(something)) {
+        const { symbol, arity } = operators.get(something);
 
-function shuntingYard (formalRegularExpressionString) {
+        return symbol;
+      } else if (typeof something === 'string') {
+        return something;
+      } else {
+        error(`${something} is not a value`);
+      }
+    };
+  const isCombinator =
+    symbol => operators.has(symbol) && operators.get(symbol).arity > 0;
+  const isBinaryCombinator =
+    symbol => operators.has(symbol) && operators.get(symbol).arity === 2;
+
   const input = formalRegularExpressionString.split('');
   const operatorStack = [];
   const outputQueue = [];
@@ -211,7 +226,8 @@ function shuntingYard (formalRegularExpressionString) {
         // treat this new symbol as a value,
         // no matter what
         if (awaitingValue) {
-          // push the string value of the valueSYmbol
+          // push the string value of the valueSymbol
+          // do not use valueOf
 
           outputQueue.push(valueSymbol);
           awaitingValue = false;
@@ -243,7 +259,7 @@ function shuntingYard (formalRegularExpressionString) {
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const topOfOperatorStack = operatorStack.pop();
 
-        outputQueue.push(operators.get(topOfOperatorStack).symbol);
+        outputQueue.push(valueOf(topOfOperatorStack));
       }
 
       if (peek(operatorStack) === '(') {
@@ -252,28 +268,28 @@ function shuntingYard (formalRegularExpressionString) {
       } else {
         error('Unbalanced parentheses');
       }
-    } else if (operators.has(symbol)) {
-      const precedence = operators.get(symbol).precedence;
+    } else if (isCombinator(symbol)) {
+      const { arity, precedence } = operators.get(symbol);
 
       // pop higher-precedence operators off the operator stack
-      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+      while (arity > 0 && operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const topOfOperatorStackPrecedence = operators.get(peek(operatorStack)).precedence;
 
         if (precedence < topOfOperatorStackPrecedence) {
           const topOfOperatorStack = operatorStack.pop();
 
-          outputQueue.push(operators.get(topOfOperatorStack).symbol);
+          outputQueue.push(valueOf(topOfOperatorStack));
         } else {
           break;
         }
       }
 
       operatorStack.push(symbol);
-      awaitingValue = isBinaryOperator(symbol);
+      awaitingValue = isBinaryCombinator(symbol);
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
-      outputQueue.push(symbol);
+      outputQueue.push(valueOf(symbol));
       awaitingValue = false;
     } else {
       // implicit catenation
@@ -294,24 +310,20 @@ function shuntingYard (formalRegularExpressionString) {
   return outputQueue;
 }
 
-const symbols = new Map(
-  [...operators.entries()].map(
-    ([key, { symbol, arity, fn }]) => [symbol, { arity, fn }]
-  )
-);
+function rpnToDescription (rpn, operators = formalOperators) {
+  const symbols = new Map(
+    [...operators.entries()].map(
+      ([key, { symbol, arity, fn }]) => [symbol, { arity, fn }]
+    )
+  );
 
-function rpnToDescription (rpn) {
   if (rpn.length === 0) {
     return EMPTY_SET;
   } else {
     const stack = [];
 
     for (const element of rpn) {
-      if (element === '∅') {
-        stack.push(EMPTY_SET);
-      } else if (element === 'ε') {
-        stack.push(EMPTY_STRING);
-      } else if (typeof element === 'string') {
+      if (typeof element === 'string') {
         stack.push(just1(element));
       } else if (symbols.has(element)) {
         const { arity, fn } = symbols.get(element);
@@ -339,8 +351,11 @@ function rpnToDescription (rpn) {
   }
 }
 
-function toFiniteStateRecognizer (formalRegularExpression) {
-  return rpnToDescription(shuntingYard(formalRegularExpression));
+function toFiniteStateRecognizer (formalRegularExpression, operators = formalOperators) {
+  return rpnToDescription(
+    basicShuntingYard(formalRegularExpression, operators),
+    operators
+  );
 }
 
 // ----------
@@ -461,4 +476,25 @@ verify(toFiniteStateRecognizer('0|(1(0|1)*)'), {
   '101': true,
   '110': true,
   '111': true
+});
+
+const SYMBOLIC = `~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/`;
+const WHITESPACE = ` \r\n\t`;
+const EVERYTHING = any(ALPHANUMERIC + SYMBOLIC + WHITESPACE);
+
+const operatorsWithDot = new Map(
+  [...formalOperators.entries()].concat([
+    ['.', { symbol: Symbol('.'), precedence: 99, arity: 0, fn: () => EVERYTHING }]
+  ])
+);
+
+const oddLength = toFiniteStateRecognizer('.(..)*', operatorsWithDot);
+
+verify(oddLength, {
+  '': false,
+  '1': true,
+  '{}': false,
+  '[0]': true,
+  '()()': false,
+  'x o x': true
 });

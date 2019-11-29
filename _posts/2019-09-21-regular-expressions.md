@@ -230,6 +230,11 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
 [Every regular language can be recognized by a finite-state recognizer](#every-regular-language-can-be-recognized-by-a-finite-state-recognizer)
 
+### [Enhancing our regular expressions](#enhancing-our-regular-expressions-1)
+
+  - [dot](#dot)
+  - [ampersand](#ampersand)
+
 ---
 
 # Finite-State Recognizers
@@ -2826,9 +2831,9 @@ const ALPHANUMERIC =
   'ABCDEFGHIJKLMNOPQRSTUVWXYZ' +
   '1234567890';
 
-const dot = any(ALPHANUMERIC);
+const anyAlphaNumeric = any(ALPHANUMERIC);
 
-const rSomethingG = catenation(any('Rr'), dot, any('Gg'));
+const rSomethingG = catenation(any('Rr'), anyAlphaNumeric, any('Gg'));
 
 verify(rSomethingG, {
   '': false,
@@ -2843,8 +2848,7 @@ verify(rSomethingG, {
 
 ```
 
-`any` is very useful, but since we can always write things like `union(just1('a'), just1('b')... )`, we know that `any` is another inessential-but-useful tool.
-
+Our `anyAlphaNumeric` uses `any` to emulate the `.` for a small subset of possible characters.
 ---
 
 ### none
@@ -3270,22 +3274,39 @@ shuntingYardVersion3('((a|b)(c|d))')
   //=> [["a", "b", "|", "c", "d", "|", "+"]
 ```
 
-Our `shuntingYard3` algorithm returns a version of the formal regular expression, but in reverse-polish notation. Now we have actually left something incredibly important things out of this algorithm. They aren't strictly necessary to demonstrate that for every formal regular expression, there is an equivalent finite-state recognizer, but still. We'll fix that omission and clean up a few of the data structures we used so that everything is unified and ready to write an interpreter:
+Our `shuntingYard3` algorithm returns a version of the formal regular expression, but in reverse-polish notation. Now we have actually left something incredibly important things out of this algorithm. They aren't strictly necessary to demonstrate that for every formal regular expression, there is an equivalent finite-state recognizer, but still.
+
+We'll fix that omission and clean up a few of the data structures we used so that everything is unified and ready to write an interpreter. Note that all special operators are now represented as instances of `Symbol`, and they each have a function tha the interpreter will use to resolve them:
 
 ```javascript
-const operators = new Map(
+const formalOperators = new Map(
   Object.entries({
+    '∅': { symbol: Symbol('∅'), precedence: 99, arity: 0, fn: () => EMPTY_SET },
+    'ε': { symbol: Symbol('ε'), precedence: 99, arity: 0, fn: () => EMPTY_STRING },
     '|': { symbol: Symbol('|'), precedence: 1, arity: 2, fn: union },
     '+': { symbol: Symbol('+'), precedence: 2, arity: 2, fn: catenation },
     '*': { symbol: Symbol('*'), precedence: 3, arity: 1, fn: kleeneStar }
   })
 );
 
-function isBinaryOperator (symbol) {
-  return operators.has(symbol) && operators.get(symbol).arity === 2;
-}
+function basicShuntingYard (formalRegularExpressionString, operators = formalOperators) {
+  const valueOf =
+    something => {
+      if (operators.has(something)) {
+        const { symbol, arity } = operators.get(something);
 
-function shuntingYard (formalRegularExpressionString) {
+        return symbol;
+      } else if (typeof something === 'string') {
+        return something;
+      } else {
+        error(`${something} is not a value`);
+      }
+    };
+  const isCombinator =
+    symbol => operators.has(symbol) && operators.get(symbol).arity > 0;
+  const isBinaryCombinator =
+    symbol => operators.has(symbol) && operators.get(symbol).arity === 2;
+
   const input = formalRegularExpressionString.split('');
   const operatorStack = [];
   const outputQueue = [];
@@ -3303,7 +3324,8 @@ function shuntingYard (formalRegularExpressionString) {
         // treat this new symbol as a value,
         // no matter what
         if (awaitingValue) {
-          // push the string value of the valueSYmbol
+          // push the string value of the valueSymbol
+          // do not use valueOf
 
           outputQueue.push(valueSymbol);
           awaitingValue = false;
@@ -3335,7 +3357,7 @@ function shuntingYard (formalRegularExpressionString) {
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const topOfOperatorStack = operatorStack.pop();
 
-        outputQueue.push(operators.get(topOfOperatorStack).symbol);
+        outputQueue.push(valueOf(topOfOperatorStack));
       }
 
       if (peek(operatorStack) === '(') {
@@ -3344,28 +3366,28 @@ function shuntingYard (formalRegularExpressionString) {
       } else {
         error('Unbalanced parentheses');
       }
-    } else if (operators.has(symbol)) {
-      const precedence = operators.get(symbol).precedence;
+    } else if (isCombinator(symbol)) {
+      const { arity, precedence } = operators.get(symbol);
 
       // pop higher-precedence operators off the operator stack
-      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+      while (arity > 0 && operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const topOfOperatorStackPrecedence = operators.get(peek(operatorStack)).precedence;
 
         if (precedence < topOfOperatorStackPrecedence) {
           const topOfOperatorStack = operatorStack.pop();
 
-          outputQueue.push(operators.get(topOfOperatorStack).symbol);
+          outputQueue.push(valueOf(topOfOperatorStack));
         } else {
           break;
         }
       }
 
       operatorStack.push(symbol);
-      awaitingValue = isBinaryOperator(symbol);
+      awaitingValue = isBinaryCombinator(symbol);
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
-      outputQueue.push(symbol);
+      outputQueue.push(valueOf(symbol));
       awaitingValue = false;
     } else {
       // implicit catenation
@@ -3390,10 +3412,10 @@ function shuntingYard (formalRegularExpressionString) {
 Now we push JavaScript Symbols for operators, and we can "escape" characters like `()\+|*` in our expressions:
 
 ```javascript
-shuntingYard('((a|b)(c|d))')
+basicShuntingYard('((a|b)(c|d))')
   //=> ["a", "b", Symbol(|), "c", "d", Symbol(|), Symbol(+)]
 
-shuntingYard('\\(\\*|\\)')
+basicShuntingYard('\\(\\*|\\)')
   //=> ["(", "*", Symbol(+), ")", Symbol(|)]
 ```
 
@@ -3402,24 +3424,20 @@ shuntingYard('\\(\\*|\\)')
 We're ready to compile the reverse-polish notation into a description, using our implementations of `just1`, `union`, `catenation`, and `kleene*`. We'll do it with a stack-based interpreter:
 
 ```javascript
-const symbols = new Map(
-  [...operators.entries()].map(
-    ([key, { symbol, arity, fn }]) => [symbol, { arity, fn }]
-  )
-);
+function rpnToDescription (rpn, operators = formalOperators) {
+  const symbols = new Map(
+    [...operators.entries()].map(
+      ([key, { symbol, arity, fn }]) => [symbol, { arity, fn }]
+    )
+  );
 
-function rpnToDescription (rpn) {
   if (rpn.length === 0) {
     return EMPTY_SET;
   } else {
     const stack = [];
 
     for (const element of rpn) {
-      if (element === '∅') {
-        stack.push(EMPTY_SET);
-      } else if (element === 'ε') {
-        stack.push(EMPTY_STRING);
-      } else if (typeof element === 'string') {
+      if (typeof element === 'string') {
         stack.push(just1(element));
       } else if (symbols.has(element)) {
         const { arity, fn } = symbols.get(element);
@@ -3447,8 +3465,11 @@ function rpnToDescription (rpn) {
   }
 }
 
-function toFiniteStateRecognizer (formalRegularExpression) {
-  return rpnToDescription(shuntingYard(formalRegularExpression));
+function toFiniteStateRecognizer (formalRegularExpression, operators = formalOperators) {
+  return rpnToDescription(
+    basicShuntingYard(formalRegularExpression, operators),
+    operators
+  );
 }
 
 toFiniteStateRecognizer('0|(1(0|1)*)')
@@ -3560,6 +3581,93 @@ Being able to "compile" formal regular expressions into finite-sate recognizers 
 ## Every regular language can be recognized by a finite-state recognizer
 
 Recall that the set of languages described by a formal regular expression is called the set of _regular languages_. Since we know that for every formal regular expression, there exists a deterministic finite-state recognizer that recognizes sentences in that regular expression's language, we know that every regular language can be recognized by a finite-state recognizer.
+
+---
+
+# Enhancing our regular expressions
+
+*Formal* regular expressions consist of characters, parentheses, the union operator (either `|` or `∪` depending upon dialect), and the kleene star (`*`). Meanwhile regexen have evolved a veritable riot of affordances for describing languages they recognize, including the kleene plus (`+`), optional (`?`), character classes (such as `\d` and `\s`), and character specifications (such as `[xyz]` and its inverse, `[^abc]`).
+
+While they have no effect on the power of regular expressions, additional affordances make regular expressions more convenient to write, and easier to read. Before we get started, let's review the rules our dialect of formal regular expressions follow:
+
+- `∅` is a regular expression denoting the language comprised of the empty set.
+- `ε` is a regular expression denoting the language comprised of a single sentence, the empty string.
+- `\x` is a regular expression denoting the language comprised of a single sentence, which contains a single character, `x`. Any other character, including `\`, can be substituted for `x`.
+- `a|b` is a regular expression denoting the language comprised of the union of the set of languages denoted by `a`, and the set of languages denoted by `b`.
+- `p+q` is a regular expression denoting the language comprised of the catenation of the set of languages denoted by `p`, and the set of languages denoted by `q`.
+- `xy` is also a regular expression denoting the language comprised of the catenation of the set of languages denoted by `x`, and the set of languages denoted by `y`.
+- `z*` is a regular expression denoting the language comprised of the catenation of zero or more sentences belonging to the language denoted by `z`.
+
+### dot
+
+The dot, or `.` is an extremely useful affordance for matching any character. It adds this rule to our list:
+
+- `.` is a regular expression denoting the language comprised of a single sentence, which contains any single character from a fixed alphabet of characters.
+
+As noted when discussing [any](#any), we can build it provided we have an explicit alphabet for all the sentences we wish to match:
+
+```javascript
+const SYMBOLIC = `~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/`;
+const WHITESPACE = ` \r\n\t`;
+const EVERYTHING = any(ALPHANUMERIC + SYMBOLIC + WHITESPACE);
+
+const operatorsWithDot = new Map(
+  [...formalOperators.entries()].concat([
+    ['.', { symbol: Symbol('.'), precedence: 99, arity: 0, fn: () => EVERYTHING }]
+  ])
+);
+
+const oddLength = toFiniteStateRecognizer('.(..)*', operatorsWithDot);
+
+verify(oddLength, {
+  '': false,
+  'a': true,
+  'ab': false,
+  '_a_': true,
+  '()()': false,
+  '     ': true
+});
+  //=> All 6 tests passing
+```
+
+We also defined the `intersection` function. Let's add it as well.
+
+### ampersand
+
+Many regexen dialects support intersection in character classes. We're not going to get into that, as character classes form a little mini-language embedded within regexen, and we want to focus on regular expressions. So our `intersection` syntax will denote the intersection between any two regular expressions. Here's the new rule:
+
+- `a&b` is a regular expression denoting the language comprised of the intersection of the set of languages denoted by `a`, and the set of languages denoted by `b`.
+
+As we have already written `intersection`, implementing this new feature is as easy as adding a new operator, `&`. It will have the same precedence as `|`:
+
+```javascript
+const withDotAndIntersection = new Map(
+  [...formalOperators.entries()].concat([
+    ['.', { symbol: Symbol('.'), precedence: 99, arity: 0, fn: () => EVERYTHING }],
+    ['&', { symbol: Symbol('&'), precedence: 99, arity: 2, fn: intersection }]
+  ])
+);
+
+const oddBinary = toFiniteStateRecognizer('(0|(1(0|1)*))&(.(..)*)', withDotAndIntersection);
+
+verify(oddBinary, {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': false,
+  '11': false,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true
+});
+```
 
 ---
 
