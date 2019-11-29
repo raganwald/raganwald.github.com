@@ -15,7 +15,7 @@ In programming jargon, a regular expression, or *regex* (plural "regexen"),[^reg
 
 Regexen are fundamentally descriptions of machines that recognize sentences in languages, where the sentences are strings of text symbols.
 
-Another example is this regex, that purports to recognize a subset of valid email addresses. We can say that it recognizes sentences in a language, where every sentence in that language is a valid email address:[^email]
+Another example is this regex, which purports to recognize a subset of valid email addresses. We can say that it recognizes sentences in a language, where every sentence in that language is a valid email address:[^email]
 
 [^email]: There is an objective standard for email addresses, RFC 5322, but it allows many email addresses that are considered obsolete, *and* there are many non-conforming email servers that permit email addresses not covered by the standard. The real world is extremely messy, and it is very difficult to capture all of its messiness in a formal language.
 
@@ -31,7 +31,7 @@ Another example is this regex, that purports to recognize a subset of valid emai
      \])\z
 ```
 
-The "regular expression" (or "regex") programming tool evolved as a practical application for [Regular Expressions][regular expression], a concept discovered by Stephen Cole Kleene, who was exploring [Regular Languages]. Regular Expressions in the computer science sense are a tool for descriibing Regular Languages: Any well-formed regular expressions describes a regular Language, and every regular language can be described by a regular expression.
+The "regular expression" (or "regex") programming tool evolved as a practical application for [Regular Expressions][regular expression], a concept discovered by Stephen Cole Kleene, who was exploring [Regular Languages]. Regular Expressions in the computer science sense are a tool for describing Regular Languages: Any well-formed regular expression describes a regular language, and every regular language can be described by a regular expression.
 
 [Regular Languages]: https://en.wikipedia.org/wiki/Regular_language
 [regular expression]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
@@ -3547,6 +3547,10 @@ There are practical implications as well. We've already shown that for every fin
 Deterministic finite-state recognizers are fast: They trade space for time, executing in O_n_ time. And although they take up more space for their descriptions, by not engaging in backtracking or parallel execution, they generate fewer temporary entities. We haven't attempted to optimize for pure speed, but finite-state recognizers can be written to be blazingly fast. They can even be compiled down to languages like JavaScript, C++, or even assembler.
 
 Being able to "compile" formal regular expressions into finite-sate recognizers points the way towards approaches for writing very fast pattern-matching engines.
+
+---
+
+## Affordances for our regular expressions
 
 ---
 
