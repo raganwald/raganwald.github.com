@@ -211,10 +211,9 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
 [For every formal regular expression, there is an equivalent finite-state recognizer](#for-every-formal-regular-expression-there-is-an-equivalent-finite-state-recognizer)
 
-### [Regular Languages and Regular Expressions](#regular-languages-and-regular-expressions-1)
-
-  - [formal regular expressions](#formal-rvide inegular-expressions)
-  - [finite-state recognizers can recognize all regular languages](#finite-state-recognizers-can-recognize-all-regular-languages)
+  - [the shunting yard algorithm](#the-shunting-yard-algorithm)
+  - [generating finite-state recognizers](#generating-finite-state-recognizers)
+  - [the significance of the algorithm for generating finite-state recognizers from regular expressions](#the-significance-of-the-algorithm-for-generating-finite-state-recognizers-from-regular-expressions)
 
 ---
 
@@ -410,7 +409,7 @@ function verify (description, tests) {
     const testList = Object.entries(tests);
     const numberOfTests = testList.length;
 
-    const outcomes = examples.entries().map(
+    const outcomes = testList.map(
       ([example, expected]) => {
         const actual = recognizer(example);
         if (actual === expected) {
@@ -428,7 +427,7 @@ function verify (description, tests) {
     if (numberOfFailures === 0) {
       console.log(`All ${numberOfPasses} tests passing`);
     } else {
-      console.log(`${numberOfFailures} tests failing: ${failures.split('; ')}`);
+      console.log(`${numberOfFailures} tests failing: ${failures.join('; ')}`);
     }
   } catch(error) {
     console.log(`Failed to validate the description: ${error}`)
@@ -3018,95 +3017,497 @@ verify(regMaybeInald, {
 
 Given that we can express any formal regular expression as a JavaScript expression that generates an equivalent finite-state recognizer, we have a demonstration that for every formal regular expression, there is an equivalent finite-state recognizer.
 
----
-
-# Regular Languages and Regular Expressions
-
-We've classified the tools we've built so far as being ether _essential_, or _inessential_:
-
-|Essential|Inessential|
-|:--------|:----------|
-|`union`|`intersection`|
-|`catenation`|`just`|
-|`EMPTY_SET`|`any`|
-|`EMPTY_STRING`|`kleene+`|
-|`just1`|`optional`|
-|`kleene*`|`complementation`|
-| |`none`|
-
-There's something special about the essential tools `union`, `catenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*`, and what makes them special is this:
-
-> If a language can be recognized by a finite-state recognizer, then it is possible to use the tools `union`, `catenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*` to make a finite-state recognizer that recognizes that same language.
-
-In other words, once we have `union`, `catenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*`, we don't need to write any finite-state recognizer by hand, and we don't need any of the other tools. `union`, `catenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*` are sufficient to write a recognizer for any language recognized by any finite-state recognizer.[^equivalent]
-
-[^equivalent]: `union`, `catenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*` are not the only possible set of essential tools. We could, for example, replace `kleene*` with `kleene+`, as anywhere we would otherwise use `kleene*`, we can use `kleene+`, `union`, and `EMPTY_STRING`.
-
-Languages that a finite-state recognizer can recognize are called [Regular Languages]. And our set of tools, `union`, `catenation`, `EMPTY_SET`, `EMPTY_STRING`, `just1`, and `kleene*`, are very important to the subject of regular languages, because they are the foundation of [Formal Regular Expressions][regular expression].
-
-[Regular Languages]: https://en.wikipedia.org/wiki/Regular_language
-[regular expression]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
+But our emphasis is on algorithms a computer can execute, so let's write an algorithm that does exactly that.
 
 ---
 
-### formal regular expressions
+### the shunting yard algorithm
 
-As we discussed at the outset, there are "formal regular expressions" that figure in computer science, and "regular expressions" as referring to the related concept of a domain-specific language (or "DSL") for building pattern recognizers. We have consistently used the industry jargon "regexen" to refer to the pattern-matching DSL, and now that we are discussing formal regular expressions, we refer to them as "regular expressions" and discipline ourselves to remember that we are talking about the formal concept, not the programming tool.
+The [Shunting Yard Algorithm] is a method for parsing mathematical expressions specified in infix notation with parentheses. As we implement it here, it will produce a postfix (a/k/a "Reverse Polish) notation without parentheses. The shunting yard algorithm was invented by Edsger Dijkstra and named the "shunting yard" algorithm because its operation resembles that of a railroad shunting yard.
 
-A [regular expression] is a language that describes a regular language. Regular expressions are made with three constants:
+[Shunting Yard Algorithm]: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 
-- The constants `∅` respresenting the empty set, and `ε` representing the set containing only the empty string.
-- Constant literals such as `x`, `y`, or `z` representing symbols contained within some alphabet `Σ`.
+The shunting yard algorithm is stack-based. Infix expressions are the form of mathematical notation most people are used to, for instance `3 + 4` or `3 + 4 × (2 − 1)`. For the conversion there are two lists, the input and the output. There is also a stack that holds operators not yet added to the output queue. To convert, the program reads each symbol in order and does something based on that symbol. The result for the above examples would be (in Reverse Polish notation) `3 4 +` and `3 4 2 1 − × +`, respectively.
 
-Every constant is itself a regular expression. For example, the constant `r` is itself a regular expression denoting the language that contains just one sentence, `'r'`: `{ 'r' }`.
+![The Shunting Yard Algorithm © Salix alba](/assets/images/fsa/Shunting_yard.svg.png)
 
-What makes regular expressions powerful, is that we have operators for composing and decorating these three constants:
+Our first iteration of a shunting yard algorithm makes two important simplifying assumptions. The first is that it does not handle parentheses. The second is that it does not catanate adjacent expressions, it uses a `+` symbol to represent catenation:
 
-1. Given a regular expression _z_, the expression _z_`*` resolves to the `kleene*` of the language described by _z_.
-2. Given two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
-3. Given two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
+```javascript
+const operatorToPrecedence = new Map(
+  Object.entries({
+    '|': 1,
+    '+': 2,
+    '*': 3
+  })
+);
 
-Before we add the last rule for regular expressions, let's clarify these three rules with some examples.
+function peek (stack) {
+  return stack[stack.length - 1];
+}
 
-Given the constants `a`, `b`, and `c`, resolving to the languages `{ 'a' }`, `{ 'b' }`, and `{ 'b' }`, the expression `a*` resolves to the language `{ '', 'a', 'aa', 'aaa', ... }` by rule 1. The expression `ab` resolves to the language `{ 'ab' }` by rule 2. And the expression `b|c` resolves to the language `{ 'b', 'c' }` by rule 3.
+function shuntingYardVersion1 (formalRegularExpressionString) {
+  const input = formalRegularExpressionString.split('');
+  const operatorStack = [];
+  const outputQueue = [];
 
-Our operations have a precedence, and it is the order of the rules as presented. So the expression `ab*` resolves to the language `{ 'a', 'ab', 'abb', 'abbb', ... }`, the expression `a|bc` resolves to the language `{ 'a', 'bc' }`, and the expression `b|c*` resolves to the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`.
+  for (const symbol of input) {
+    if (operatorToPrecedence.has(symbol)) {
+      const precedence = operatorToPrecedence.get(symbol);
 
-As with the algebraic notation we are familiar with, we can use parentheses:
+      // pop higher-precedence operators off the operator stack
+      while (operatorStack.length > 0) {
+        const topOfOperatorStackPrecedence = operatorToPrecedence.get(peek(operatorStack));
 
-- Given a regular expression _x_, the expression `(`_x_`)` resolves to the language described by _x_.
+        if (precedence < topOfOperatorStackPrecedence) {
+          const topOfOperatorStack = operatorStack.pop();
 
-This allows us to alter the way the operators are combined. As we have seen, the expression `b|c*` resolves to the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`. But the expression `(b|c)*` resolves to the language `{ '', 'b', 'c', 'bb', 'cc', 'bbb', 'ccc', ... }`.
+          outputQueue.push(topOfOperatorStack);
+        } else {
+          break;
+        }
+      }
 
-A regular language is any language that can be defined by a regular expression. And now we understand something about our essential tools:
+      operatorStack.push(symbol);
+    } else {
+      outputQueue.push(symbol);
+    }
+  }
 
-- `EMPTY_SET` is an implementation of `∅` in regular expressions.
-- `EMPTY_STRING` is an implementation of `ε` in regular expressions.
-- `just1('x')` is an implementation of `x` in regular expressions.
-- `kleene*(z)` is an implementation of _z_`*` in regular expressions.
-- `catenation(x, y)` is an implementation of _xy_ in regular expressions.
-- `union(x, y)` is an implementation of _x_`|`_y_ in regular expressions.
-- JavaScript's parentheses are an implementation of parentheses in regular expressions.
+  // pop remaining symbols off the stack and push them
+  while (operatorStack.length > 0) {
+    const topOfOperatorStack = operatorStack.pop();
 
-Our "essential" tools are thus those that implement formal regular expressions, and thus they are the tools that permit is to implement finite-state automata that recognize regular languages.
+    outputQueue.push(topOfOperatorStack);
+  }
+
+  return outputQueue;
+}
+
+shuntingYardVersion1('a+b*|a*+b')
+  //=> ["a", "b", "*", "+", "a", "*", "b", "+", "|"]
+```
+
+Now we'll add an adjustment so that we don't need to explicitly include `+` for catenation. What we'll do is keep track of whether we are awaiting a value. If we are, then values get pushed directly to the output queue as usual. But if we aren't awaiting a value, then we implicitly add the `+` operator:
+
+```javascript
+function shuntingYardVersion2 (formalRegularExpressionString) {
+  const input = formalRegularExpressionString.split('');
+  const operatorStack = [];
+  const outputQueue = [];
+  let justPushedValue = false;
+
+  while (input.length > 0) {
+    const symbol = input.shift();
+
+    if (operatorToPrecedence.has(symbol)) {
+      const precedence = operatorToPrecedence.get(symbol);
+
+      // pop higher-precedence operators off the operator stack
+      while (operatorStack.length > 0) {
+        const topOfOperatorStackPrecedence = operatorToPrecedence.get(peek(operatorStack));
+
+        if (precedence < topOfOperatorStackPrecedence) {
+          const topOfOperatorStack = operatorStack.pop();
+
+          outputQueue.push(topOfOperatorStack);
+        } else {
+          break;
+        }
+      }
+
+      operatorStack.push(symbol);
+      justPushedValue = false;
+    } else if (justPushedValue){
+      // implicit catenation
+
+      input.unshift(symbol);
+      input.unshift('+');
+      justPushedValue = false;
+    } else {
+      outputQueue.push(symbol);
+      justPushedValue = true;
+    }
+  }
+
+  // pop remaining symbols off the stack and push them
+  while (operatorStack.length > 0) {
+    const topOfOperatorStack = operatorStack.pop();
+
+    outputQueue.push(topOfOperatorStack);
+  }
+
+  return outputQueue;
+}
+
+shuntingYardVersion2('ab*|a*b')
+  //=> ["a", "b", "*", "+", "a", "*", "b", "+", "|"]
+```
+
+Finally, we add support for parentheses. If we encounter a left parentheses, we push it on the operator stack. When we encounter a right parentheses, we clear the operator stack onto the output queue up to the topmost left parentheses. With respect to implicit catenation, parenetheses act like values:
+
+```javascript
+function shuntingYardVersion3 (formalRegularExpressionString) {
+  const input = formalRegularExpressionString.split('');
+  const operatorStack = [];
+  const outputQueue = [];
+  let awaitingValue = true;
+
+  while (input.length > 0) {
+    const symbol = input.shift();
+
+    if (symbol === '(' && awaitingValue) {
+      // opening parenthesis case, going to build
+      // a value
+      operatorStack.push(symbol);
+      awaitingValue = true;
+    } else if (symbol === '(') {
+      // implicit catenation
+
+      input.unshift(symbol);
+      input.unshift('+');
+      awaitingValue = false;
+    } else if (symbol === ')') {
+      // closing parenthesis case, clear the
+      // operator stack
+
+      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const topOfOperatorStack = operatorStack.pop();
+
+        outputQueue.push(topOfOperatorStack);
+      }
+
+      if (peek(operatorStack) === '(') {
+        operatorStack.pop();
+        awaitingValue = false;
+      } else {
+        error('Unbalanced parentheses');
+      }
+    } else if (operatorToPrecedence.has(symbol)) {
+      const precedence = operatorToPrecedence.get(symbol);
+
+      // pop higher-precedence operators off the operator stack
+      while (operatorStack.length > 0) {
+        const topOfOperatorStackPrecedence = operatorToPrecedence.get(peek(operatorStack));
+
+        if (precedence < topOfOperatorStackPrecedence) {
+          const topOfOperatorStack = operatorStack.pop();
+
+          outputQueue.push(topOfOperatorStack);
+        } else {
+          break;
+        }
+      }
+
+      operatorStack.push(symbol);
+      awaitingValue = binaryOperators.has(symbol);
+    } else if (awaitingValue) {
+      // as expected, go striaght to the output
+
+      outputQueue.push(symbol);
+      awaitingValue = false;
+    } else {
+      // implicit catenation
+
+      input.unshift(symbol);
+      input.unshift('+');
+      awaitingValue = false;
+    }
+  }
+
+  // pop remaining symbols off the stack and push them
+  while (operatorStack.length > 0) {
+    const topOfOperatorStack = operatorStack.pop();
+
+    outputQueue.push(topOfOperatorStack);
+  }
+
+  return outputQueue;
+}
+
+shuntingYardVersion3('a+(b*|a*)+b')
+  //=> ["a", "b", "*", "a", "*", "|", "b", "+", "+"]
+
+shuntingYardVersion3('((a|b)(c|d))')
+  //=> [["a", "b", "|", "c", "d", "|", "+"]
+```
+
+Our `shuntingYard3` algorithm returns a version of the formal regular expression, but in reverse-polish notation. Now we have actually left something incredibly important things out of this algorithm. They aren't strictly necessary to demonstrate that for every formal regular expression, there is an equivalent finite-state recognizer, but still. We'll fix that omission and clean up a few of the data structures we used so that everything is unified and ready to write an interpreter:
+
+```javascript
+const operators = new Map(
+  Object.entries({
+    '|': { symbol: Symbol('|'), precedence: 1, arity: 2, fn: union },
+    '+': { symbol: Symbol('+'), precedence: 2, arity: 2, fn: catenation },
+    '*': { symbol: Symbol('*'), precedence: 3, arity: 1, fn: kleeneStar }
+  })
+);
+
+function isBinaryOperator (symbol) {
+  return operators.has(symbol) && operators.get(symbol).arity === 2;
+}
+
+function shuntingYard (formalRegularExpressionString) {
+  const input = formalRegularExpressionString.split('');
+  const operatorStack = [];
+  const outputQueue = [];
+  let awaitingValue = true;
+
+  while (input.length > 0) {
+    const symbol = input.shift();
+
+    if (symbol === '\\') {
+      if (input.length === 0) {
+        error('Escape character has nothing to follow');
+      } else {
+        const valueSymbol = input.shift();
+
+        // treat this new symbol as a value,
+        // no matter what
+        if (awaitingValue) {
+          // push the string value of the valueSYmbol
+
+          outputQueue.push(valueSymbol);
+          awaitingValue = false;
+        } else {
+          // implicit catenation
+
+          input.unshift(valueSymbol);
+          input.unshift('\\');
+          input.unshift('+');
+          awaitingValue = false;
+        }
+
+      }
+    } else if (symbol === '(' && awaitingValue) {
+      // opening parenthesis case, going to build
+      // a value
+      operatorStack.push(symbol);
+      awaitingValue = true;
+    } else if (symbol === '(') {
+      // implicit catenation
+
+      input.unshift(symbol);
+      input.unshift('+');
+      awaitingValue = false;
+    } else if (symbol === ')') {
+      // closing parenthesis case, clear the
+      // operator stack
+
+      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const topOfOperatorStack = operatorStack.pop();
+
+        outputQueue.push(operators.get(topOfOperatorStack).symbol);
+      }
+
+      if (peek(operatorStack) === '(') {
+        operatorStack.pop();
+        awaitingValue = false;
+      } else {
+        error('Unbalanced parentheses');
+      }
+    } else if (operators.has(symbol)) {
+      const precedence = operators.get(symbol).precedence;
+
+      // pop higher-precedence operators off the operator stack
+      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const topOfOperatorStackPrecedence = operators.get(peek(operatorStack)).precedence;
+
+        if (precedence < topOfOperatorStackPrecedence) {
+          const topOfOperatorStack = operatorStack.pop();
+
+          outputQueue.push(operators.get(topOfOperatorStack).symbol);
+        } else {
+          break;
+        }
+      }
+
+      operatorStack.push(symbol);
+      awaitingValue = isBinaryOperator(symbol);
+    } else if (awaitingValue) {
+      // as expected, go straight to the output
+
+      outputQueue.push(symbol);
+      awaitingValue = false;
+    } else {
+      // implicit catenation
+
+      input.unshift(symbol);
+      input.unshift('+');
+      awaitingValue = false;
+    }
+  }
+
+  // pop remaining symbols off the stack and push them
+  while (operatorStack.length > 0) {
+    const topOfOperatorStack = operatorStack.pop();
+
+    outputQueue.push(operators.get(topOfOperatorStack).symbol);
+  }
+
+  return outputQueue;
+}
+```
+
+Now we push JavaScript Symbols for operators, and we can "escape" characters like `()\+|*` in our expressions:
+
+```javascript
+shuntingYard('((a|b)(c|d))')
+  //=> ["a", "b", Symbol(|), "c", "d", Symbol(|), Symbol(+)]
+
+shuntingYard('\\(\\*|\\)')
+  //=> ["(", "*", Symbol(+), ")", Symbol(|)]
+```
+
+### generating finite-state recognizers
+
+We're ready to compile the reverse-polish notation into a description, using our implementations of `just1`, `union`, `catenation`, and `kleene*`. We'll do it with a stack-based interpreter:
+
+```javascript
+const symbols = new Map(
+  [...operators.entries()].map(
+    ([key, { symbol, arity, fn }]) => [symbol, { arity, fn }]
+  )
+);
+
+function rpnToDescription (rpn) {
+  if (rpn.length === 0) {
+    return EMPTY_SET;
+  } else {
+    const stack = [];
+
+    for (const element of rpn) {
+      if (element === '∅') {
+        stack.push(EMPTY_SET);
+      } else if (element === 'ε') {
+        stack.push(EMPTY_STRING);
+      } else if (typeof element === 'string') {
+        stack.push(just1(element));
+      } else if (symbols.has(element)) {
+        const { arity, fn } = symbols.get(element);
+
+        if (stack.length < arity) {
+          error(`Not emough values on the stack to use ${element}`)
+        } else {
+          const args = [];
+
+          for (let counter = 0; counter < arity; ++counter) {
+            args.unshift(stack.pop());
+          }
+
+          stack.push(fn.apply(null, args))
+        }
+      } else {
+        error(`Don't know what to do with ${element}'`)
+      }
+    }
+    if (stack.length != 1) {
+      error(`should only be one value to return, but there were ${stack.length}`);
+    } else {
+      return stack[0];
+    }
+  }
+}
+
+function toFiniteStateRecognizer (formalRegularExpression) {
+  return rpnToDescription(shuntingYard(formalRegularExpression));
+}
+
+toFiniteStateRecognizer('0|(1(0|1)*)')
+  //=>
+    {
+      "start": "empty",
+      "transitions": [
+        { "from": "empty", "consume": "0", "to": "recognized" },
+        { "from": "empty", "consume": "1", "to": "recognized-2" },
+        { "from": "recognized-2", "to": "recognized-2", "consume": "0" },
+        { "from": "recognized-2", "to": "recognized-2", "consume": "1" }
+      ],
+      "accepting": [ "recognized", "recognized-2" ]
+    }
+```
+
+And we can validate that our recognizers work as expected:
+
+```javascript
+verify(toFiniteStateRecognizer(''), {
+  '': false,
+  '0': false,
+  '1': false,
+  '00': false,
+  '01': false,
+  '10': false,
+  '11': false,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': false,
+  '101': false,
+  '110': false,
+  '111': false
+});
+
+verify(toFiniteStateRecognizer('ε'), {
+  '': true,
+  '0': false,
+  '1': false,
+  '00': false,
+  '01': false,
+  '10': false,
+  '11': false,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': false,
+  '101': false,
+  '110': false,
+  '111': false
+});
+
+verify(toFiniteStateRecognizer('0*'), {
+  '': true,
+  '0': true,
+  '1': false,
+  '00': true,
+  '01': false,
+  '10': false,
+  '11': false,
+  '000': true,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': false,
+  '101': false,
+  '110': false,
+  '111': false
+});
+
+verify(toFiniteStateRecognizer('0|(1(0|1)*)'), {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': true,
+  '11': true,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true
+});
+```
+
+This demonstrates that for every formal regular expression, there exists an equivalent finite-state recognizer.
 
 ---
 
-### finite-state recognizers can recognize all regular languages
-
-The set of all languages that `EMPTY_SET`, `EMPTY_STRING`, `just1`, `kleene*`, `catenation`, `union`, and parentheses can create is the set of regular languages.
-
-We know intuitively that if we combine `EMPTY_SET`, `EMPTY_STRING`, `just1`, `kleene*`, `catenation`, `union`, and parentheses into an expression, we will end up with a language that a finite-state recognizer can recognize, because we built `EMPTY_SET`, `EMPTY_STRING`, `just1`, `kleene*`, `catenation`, `union` to generate descriptions for finite-state recognizers.
-
-So we have established that finite-state recognizers can recognize all regular languages.
-
-There are other ways to prove the any regular language can be recognized by a finite-state recognizer, but this method of generating the finite-state recognizers is a kind of "experimental computer science," and has the pleasant by-product of giving us tools that can prove useful in working programs as well.
-
-We haven't established to converse: We know that all regular languages can be recognized by finite-state automata, but we don't know from our work so far whether for all the languages that a finite-state recognizer accepts, there is an equivalent regular expression.
-
-If that is the case, then we know that if we can write a finite-state recognizer for a language, we can write a regular expression instead.
-
-
+### the significance of the algorithm for generating finite-state recognizers from regular expressions
 
 
 ---

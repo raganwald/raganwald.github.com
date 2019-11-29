@@ -69,7 +69,7 @@ function verify (description, tests) {
     if (numberOfFailures === 0) {
       console.log(`All ${numberOfPasses} tests passing`);
     } else {
-      console.log(`${numberOfFailures} tests failing: ${failures.split('; ')}`);
+      console.log(`${numberOfFailures} tests failing: ${failures.join('; ')}`);
     }
   } catch(error) {
     console.log(`Failed to validate the description: ${error}`)
