@@ -71,7 +71,7 @@ Regexen add a lot more affordances like character classes, the dot operator, dec
 
 In this essay we will explore a number of important results concerning regular expressions, and regular languages, and finite-state automata:
 
-  - The set of finite-state recognizers is closed under various operations, including `union`, `intersection`, `catenation`, `kleene*`, and others.
+  - The set of finite-state recognizers is closed under union, catenation, and kleene*, including `union`, `intersection`, `catenation`, `kleene*`, and others.
   - For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer
   - Every regular language can be recognized by a finite-state automaton.
   - If a finite-state automaton recognizes a language, that language is regular.
@@ -206,7 +206,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [kleene*](#kleene)
   - [kleene+](#kleene-1)
 
-[The set of finite-state recognizers is closed under various operations](#the-set-of-finite-state-recognizers-is-closed-under-various-operations)
+[The set of finite-state recognizers is closed under union, catenation, and kleene*](#the-set-of-finite-state-recognizers-is-closed-under-union-catenation-and-kleene)
 
 ### [Building Blocks](#building-blocks-1)
 
@@ -2542,7 +2542,7 @@ Formal regular expressions don't normally include the `kleene+`, because given c
 
 ---
 
-## The set of finite-state recognizers is closed under various operations
+## The set of finite-state recognizers is closed under union, catenation, and kleene*
 
 To summarize what we have accomplished so far:
 
@@ -2550,11 +2550,11 @@ We wrote what we might call _finite-state recognizer combinators_, functions tha
 
 There is a set of all finite-state recognizers, and a corresponding set of all descriptions of finite-state recognizers. Each one of our combinators takes one or more members of the set of all descriptions of finite-state recognizers and returns a member of the set of all descriptions of finite-state recognizers.
 
-When wwe have a set, and an operation on members of that set always returns a member of that set, we say that "The set is closed under that operation." We can thus say that the set of all descriptions of finite-state recognizers is closed under the operation of applying the `union`, `catenation`, `intersection`, `kleeneStar`, and `kleenePlus` functions we've written.
+When we have a set, and an operation on members of that set always returns a member of that set, we say that "The set is closed under that operation." We can thus say that the set of all descriptions of finite-state recognizers is closed under the operation of applying the `union`, `catenation`, `intersection`, `kleeneStar`, and `kleenePlus` functions we've written.
 
-And by induction, we can then say that the set of languages that finite-state recognizers can recognize is closed under the operations `union`, `catenation`, `intersection`, `kleene*`, and `kleene+`.
+And by induction, we can then say that the set of languages that finite-state recognizers can recognize is closed under the operations `union`, `catenation`, and `kleene*`. We can _also_ say that they are closed under `intersection` and `kleene+`. And there are other operations that we haven't explored, like `optional`, `complementation`, `difference`, or `xor`, and the set of all languages is closed under those operations as well.
 
-This property of "languages that finite-state recognizers can recognize being closed under the operations `union`, `catenation`, `intersection`, `kleene*`, and `kleene+`" will come in very handy beloww when we show that for every formal regular expressionm, there is an equivalent finite-state recognizer.
+This property of "languages that finite-state recognizers can recognize being closed under the operations `union`, `catenation`, and `kleene*`" will come in very handy beloww when we show that for every formal regular expressionm, there is an equivalent finite-state recognizer.
 
 But all we've talked about are combinators, operations that build finite-state recognizers out of finite-state recognizers. What about building finite-state recognizers from nothing at all?
 
