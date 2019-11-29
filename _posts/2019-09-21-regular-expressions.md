@@ -72,6 +72,7 @@ Regexen add a lot more affordances like character classes, the dot operator, dec
 In this essay we will explore a number of important results concerning regular expressions, and regular languages, and finite-state automata:
 
   - The set of finite-state recognizers is closed under various operations, including `union`, `intersection`, `catenation`, `kleene*`, and others.
+  - For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer
   - Every regular language can be recognized by a finite-state automaton.
   - If a finite-state automaton recognizes a language, that language is regular.
 
@@ -197,6 +198,8 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [from powerset to union](#from-powerset-to-union)
   - [solving the fan-out problem](#solving-the-fan-out-problem)
   - [the final union, intersection, and catenation](#the-final-union-intersection-and-catenation)
+
+[For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
 
 [Decorating Recognizers](#decorating-recognizers)
 
@@ -2223,6 +2226,19 @@ verify(catenation(zeroes, binary), {
 });
   //=> All 15 tests passing
 ```
+
+---
+
+## For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer
+
+Let's reflect on what [powerset](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer) tells us about finite-state recognizers. Because we can take _any_ finite-state recognizer, pass it to `powerset`, and get back a deterministic finite-state recognizer, we know that for *every* finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
+
+This tells us that the set of all languages recognized by deterministic finite state recognizers is equal to the set of all langauges recognized by finite-state recognizers.
+
+This is not true for other types of automata: In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], we saw that non-dterministic pushdown automata could recognize palindromes, whereas deterministic pushdown automata could not. So the set of languages recogized by deterministic pushodwn automata is **not** equal to the set of langauges recognized by pushdown automata.
+
+[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
+
 
 ---
 
