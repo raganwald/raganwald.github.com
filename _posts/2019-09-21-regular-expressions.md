@@ -31,8 +31,9 @@ Another example is this regex, which purports to recognize a subset of valid ema
      \])\z
 ```
 
-The "regular expression" (or "regex") programming tool evolved as a practical application for [Regular Expressions][regular expression], a concept discovered by Stephen Cole Kleene, who was exploring [Regular Languages]. Regular Expressions in the computer science sense are a tool for describing Regular Languages: Any well-formed regular expression describes a regular language, and every regular language can be described by a regular expression.
+The "regular expression" (or "regex") programming tool evolved as a practical application for [Regular Expressions][regular expression], a concept discovered by [Stephen Cole Kleene], who was exploring [Regular Languages]. Regular Expressions in the computer science sense are a tool for describing Regular Languages: Any well-formed regular expression describes a regular language, and every regular language can be described by a regular expression.
 
+[Stephen Cole Kleene]: https://en.wikipedia.org/wiki/Stephen_Cole_Kleene
 [Regular Languages]: https://en.wikipedia.org/wiki/Regular_language
 [regular expression]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
 
@@ -45,9 +46,11 @@ Every constant is itself a regular expression. For example, the constant `r` is 
 
 What makes regular expressions powerful, is that we have operators for composing and decorating these three constants:
 
-1. Given a regular expression _z_, the expression _z_`*` resolves to the `kleene*` of the language described by _z_.
+1. Given a regular expression _z_, the expression _z_`*` resolves to the [Kleene Star] or `kleene*` of the language described by _z_. The Kleene Star is also known as "zero or more."
 2. Given two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
 3. Given two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
+
+[Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
 
 Before we add the last rule for regular expressions, let's clarify these three rules with some examples.
 
