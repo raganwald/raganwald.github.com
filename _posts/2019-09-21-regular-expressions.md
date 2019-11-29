@@ -77,7 +77,9 @@ In this essay we will explore a number of important results concerning regular e
 
 All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. What makes this essay novel is that instead of focusing on formal proofs, we will focus on informal _demonstrations_.
 
-A demonstration aims to appeal to intuition, rather than formal reasoning. For example, the canonical proof that "If a finite-state automaton recognizes a language, that language is regular" runs along the following lines:
+A demonstration aims to appeal to intuition, rather than formal reasoning. For example, the canonical proof that "If a finite-state automaton recognizes a language, that language is regular" runs along the following lines:[^cs390]
+
+[cs390]: This explanation of the proof is taken from Shunichi Toida's notes for [CS390 Introduction to Theoretical Computer Science Structures ](https://www.cs.odu.edu/~toida/courses/TE.CS390.13sp/index.html). The proof of this aspect of Kleene's Theorem can be found [here](https://www.cs.odu.edu/~toida/nerzic/390teched/regular/fa/kleene-2.html).
 
 > Given a finite automaton, first relabel its states with the integers 1 through n, where n is the number of states of the finite automaton. Next denote by L(p, q, k) the set of strings representing paths from state p to state q that go through only states numbered no higher than k. Note that paths may go through arcs and vertices any number of times.
 Then the following lemmas hold.
@@ -88,7 +90,7 @@ Then the following lemmas hold.
 > 1. L(p, q, k) : The set of strings representing paths from p to q passing through states labeled wiht k or lower numbers.
 > 2. L(p, k+1, k)L(k+1, k+1, k)*L(k+1, q, k) : The set of strings going first from p to k+1, then from k+1 to k+1 any number of times, then from k+1 to q, all without passing through states labeled higher than k.
 
-> ![Illustrating Kleene's Theorem](/assets/images/fsa/kleene2.jpg)
+> ![Illustrating Kleene's Theorem © Shunichi Toida](/assets/images/fsa/kleene2.jpg)
 
 > **Lemma 2**: L(p, q, 0) is regular.
 
