@@ -210,15 +210,16 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
 ### [Building Blocks](#building-blocks-1)
 
-  - [recognizing strings](#recognizing-strings)
-  - [recognizing symbols](#recognizing-symbols)
+  - [just1 and just](#just1-and-just)
+  - [any](#any)
   - [none](#none)
 
-[For every formal regular expression, there is an equivalent finite-state recognizer](#for-every-formal-regular-expression-there-is-an-equivalent-finite-state-recognizer)
+### [Generating finite-state recognizers from formal regular expressions](#generating-finite-state-recognizers-from-formal-regular-expressions)
 
   - [the shunting yard algorithm](#the-shunting-yard-algorithm)
   - [generating finite-state recognizers](#generating-finite-state-recognizers)
-  - [the significance of generating finite-state recognizers from regular expressions](#the-significance-of-generating-finite-state-recognizers-from-regular-expressions)
+
+[For every formal regular expression, there exists an equivalent finite-state recognizer](#for-every-formal-regular-expression-there-exists-an-equivalent-finite-state-recognizer)
 
 ---
 
@@ -2608,7 +2609,7 @@ verify(EMPTY_STRING, {
 
 ---
 
-### recognizing strings
+### just1 and just
 
 What makes recognizers really useful is recognizing non-empty strings of one kind or another. This use case is so common, regexen are designed to make recognizing strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
 
@@ -2737,7 +2738,7 @@ verify(/^reginald$/, {
 
 ---
 
-### recognizing symbols
+### any
 
 As we know from the implementation, `just` takes a string, and generating the `catenation` of recognizers for the symbols in the string. What else could we do with the recognizers for the symbols in a string?
 
@@ -2933,7 +2934,7 @@ verify(stringLiteral, {
 
 ---
 
-## For every formal regular expression, there is an equivalent finite-state recognizer
+# Generating finite-state recognizers from formal regular expressions
 
 Let us consider `union`, `catenation`, `kleene*`, `EMPTY_SET`, `EMPTY_STRING`, and `just1` for a moment. These have a one-to-one correspondance with the operations in formal regular expressions. And in fact, it's pretty easy to translate any formal regular expression into an equivalent JavaScript expression using our functions and constants.
 
@@ -3033,7 +3034,7 @@ verify(regMaybeInald, {
   //=> All 6 tests passing
 ```
 
-Given that we can express any formal regular expression as a JavaScript expression that generates an equivalent finite-state recognizer, we have a demonstration that for every formal regular expression, there is an equivalent finite-state recognizer.
+Given that we can express any formal regular expression as a JavaScript expression that generates an equivalent finite-state recognizer, we have a weak demonstration that for every formal regular expression, there is an equivalent finite-state recognizer.
 
 But our emphasis is on algorithms a computer can execute, so let's write an algorithm that does exactly that.
 
@@ -3521,15 +3522,15 @@ verify(toFiniteStateRecognizer('0|(1(0|1)*)'), {
 });
 ```
 
-This demonstrates that for every formal regular expression, there exists an equivalent finite-state recognizer.
+This demonstrates that **for every formal regular expression, there exists an equivalent finite-state recognizer**.
 
 ---
 
-### the significance of generating finite-state recognizers from regular expressions
+## For every formal regular expression, there exists an equivalent finite-state recognizer
 
 Given that we know that for every formal regular expression, there is at least one finite-state recognizer that recognizes the same langauge as the regular expression, we know that finite-state recognizers are at least as powerful as formal regular expressions.
 
-But there are some proactical implications as well. We've already shown that for every finite-state recignizer, there exists an equivalent deterministic finite-state recignizer, and have an algorithm --`powerset`--that returns a deterministic finite-state recignizer given any finite-state recognizer.
+There are practical implications as well. We've already shown that for every finite-state recignizer, there exists an equivalent deterministic finite-state recignizer, and have an algorithm --`powerset`--that returns a deterministic finite-state recignizer given any finite-state recognizer.
 
 Deterministic finite-state recognizers are fast: They trade space for time, executing in O_n_ time. And although they take up more space for their descriptions, by not engaging in backtracking or parallel execution, they generate fewer temporary entities. We haven't attempted to optimize for pure speed, but finite-state recognizers can be written to be blazingly fast. They can even be compiled down to languages like JavaScript, C++, or even assembler.
 
