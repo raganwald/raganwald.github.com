@@ -190,6 +190,8 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [implementing catenation](#implementing-catenation)
   - [the catch with catenation](#the-catch-with-catenation)
 
+[For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
+
 [Converting Nondeterministic to Deterministic Finite-State Recognizers](#converting-nondeterministic-to-deterministic-finite-state-recognizers)
 
   - [taking the product of a recognizer... with itself](#taking-the-product-of-a-recognizer-with-itself)
@@ -1595,6 +1597,16 @@ And here's a diagram of the result:
 The problem is that there are two transitions from `zeroes` when consuming a `0`. That makes this transition _nondeterministic_. Deterministic state machines always have exactly one possible transition from any state for each symbol consumed in that state.
 
 We want to catenate two deterministic finite-state recognizers, and wind up with a finite-state recognizer. To do that, we'll need a way to convert nondeterministic finite-state recognizers into deterministic finite-state recognizers.
+
+But first, let's note a result we demonstrated alongteh way.
+
+---
+
+## For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions
+
+When building `catenation`, we added ε-transitions to join two finite-state recognizers, and then used `removeEpsilonTransitions` to derive an equivalent finiute-state recognizer without ε-transitions.
+
+`removeEpsilonTransitions` demonstrates that for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions. Or to put it another way, the set of languages recognized by finite-state recognizers without ε-transitions is equal to the set of finite-state recognizers recognized by finite-state recognizers that do do do not include ε-transitions.
 
 ---
 
