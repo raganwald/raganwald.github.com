@@ -1,6 +1,6 @@
 ---
 title: "Regular Expressions (No, not *those* Regular Expressions!)"
-tags: [recursion,allonge,mermaid,noindex,wip]
+tags: [recursion,allonge,mermaid,wip]
 ---
 
 # Prelude
@@ -213,7 +213,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
   - [the shunting yard algorithm](#the-shunting-yard-algorithm)
   - [generating finite-state recognizers](#generating-finite-state-recognizers)
-  - [the significance of the algorithm for generating finite-state recognizers from regular expressions](#the-significance-of-the-algorithm-for-generating-finite-state-recognizers-from-regular-expressions)
+  - [the significance of generating finite-state recognizers from regular expressions](#the-significance-of-generating-finite-state-recognizers-from-regular-expressions)
 
 ---
 
@@ -3507,8 +3507,15 @@ This demonstrates that for every formal regular expression, there exists an equi
 
 ---
 
-### the significance of the algorithm for generating finite-state recognizers from regular expressions
+### the significance of generating finite-state recognizers from regular expressions
 
+Given that we know that for every formal regular expression, there is at least one finite-state recognizer that recognizes the same langauge as the regular expression, we know that finite-state recognizers are at least as powerful as formal regular expressions.
+
+But there are some proactical implications as well. We've already shown that for every finite-state recignizer, there exists an equivalent deterministic finite-state recignizer, and have an algorithm --`powerset`--that returns a deterministic finite-state recignizer given any finite-state recognizer.
+
+Deterministic finite-state recognizers are fast: They trade space for time, executing in O_n_ time. And although they take up more space for their descriptions, by not engaging in backtracking or parallel execution, they generate fewer temporary entities. We haven't attempted to optimize for pure speed, but finite-state recognizers can be written to be blazingly fast. They can even be compiled down to languages like JavaScript, C++, or even assembler.
+
+Being able to "compile" formal regular expressions into finite-sate recognizers points the way towards approaches for writing very fast pattern-matching engines.
 
 ---
 
