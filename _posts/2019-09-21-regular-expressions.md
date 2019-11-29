@@ -90,7 +90,7 @@ Then the following lemmas hold.
 > **Lemma 1**: L(p, q, k+1) = L(p, q, k)  L(p, k+1, k)L(k+1, k+1, k)*L(k+1, q, k) .
 
 > What this lemma says is that the set of strings representing paths from p to q passing through states labeled with k+1 or lower numbers consists of the following two sets:
-> 1. L(p, q, k) : The set of strings representing paths from p to q passing through states labeled wiht k or lower numbers.
+> 1. L(p, q, k) : The set of strings representing paths from p to q passing through states labeled with k or lower numbers.
 > 2. L(p, k+1, k)L(k+1, k+1, k)*L(k+1, q, k) : The set of strings going first from p to k+1, then from k+1 to k+1 any number of times, then from k+1 to q, all without passing through states labeled higher than k.
 
 > ![Illustrating Kleene's Theorem © Shunichi Toida](/assets/images/fsa/kleene2.jpg)
@@ -111,7 +111,7 @@ The above proof takes the approach of describing--in words and diagrams--an algo
 
 [^algo]: Lots of proofs attest to the existence of some thing, but not all are algorithms for actually finding/making the thing they attest exists. For example, there is a proof that a standard Rubik's Cube can be solved with at most 20 moves, although nobody has yet developed an algorithm to find the 20 (or fewer) move solution for any cube.
 
-Of course, algorithms described in words and disgrams have the advantage of being universal, like pseudo-code. But the disadvantage of algorithms described in words and disagrams is that we can't play with them, optimize them, and learn by doing. For example, here is the core of the above proof, expressed as an algorithm (the complete code is [here](/assetssupplemental/fsa/13-regular-expression.js))
+Of course, algorithms described in words and diagrams have the advantage of being universal, like pseudo-code. But the disadvantage of algorithms described in words and diagrams is that we can't play with them, optimize them, and learn by doing. For example, here is the core of the above proof, expressed as an algorithm (the complete code is [here](/assetssupplemental/fsa/13-regular-expression.js))
 
 ```javascript
 function L (p, q, k) {
@@ -151,7 +151,7 @@ Writing the algorithm in JavaScript helps our brains engage with the algorithm m
 
 In this essay, we won't just discuss why certain things are known to be true, we will emphasize writing algorithms in JavaScript that demonstrate that these things are true. Most specifically...
 
-1. We will write algorithms to compute the `union`, `intersection`, `catenation`, and `kleene*` of finite-state automata, demonstrating that the set of finite-state automata is closed under thes eoperations.
+1. We will write algorithms to compute the `union`, `intersection`, `catenation`, and `kleene*` of finite-state automata, demonstrating that the set of finite-state automata is closed under these operations.
 2. We will write algorithms for translating a regular expression into an equivalent finite-state automaton, demonstrating that for every regular expression there is an equivalent finite-state automation.
 3. As noted above, we will also write an algorithm for translating a finite-state automaton into an equivalent regular expression, demonstrating that for every finite-state automaton there is an equivalent regular expression.
 
@@ -231,7 +231,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
 # Finite-State Recognizers
 
-We are going to begin by working with finite-state automata that recognize, or "accept" sentences in languages. There are many ways to notate finite-state automata. For example, state disagrams are particularly easy to read for smallish examples:
+We are going to begin by working with finite-state automata that recognize, or "accept" sentences in languages. There are many ways to notate finite-state automata. For example, state diagrams are particularly easy to read for smallish examples:
 
 <div class="mermaid">
   stateDiagram
@@ -355,7 +355,7 @@ This finite-state recognizer recognizes binary numbers.
 
 ### verifying finite-state recognizers
 
-It's all very well to _say_ that a description recognizes binary numbers (or have any other expectation for it, really). But how do we have confidence that the finite-state recognzer we describe recognzes the language what we think it recognizes?
+It's all very well to _say_ that a description recognizes binary numbers (or have any other expectation for it, really). But how do we have confidence that the finite-state recognizer we describe recognizes the language what we think it recognizes?
 
 There are formal ways to prove things about recognizers, and there is the informal technique of writing tests we can run. Since we're emphasizing working code, we'll write tests.
 
@@ -486,7 +486,7 @@ We now have a function, `automate`, that takes a data description of a finite-st
 
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
 
-Regular expressions and regexen are both built with composition. If you have two regular expresisons, `A` and `B`, you can create a new regular expression that is the union of `A` and `B` with the expression `A|B`.
+Regular expressions and regexen are both built with composition. If you have two regular expressions, `A` and `B`, you can create a new regular expression that is the union of `A` and `B` with the expression `A|B`.
 
 Finite-state recognizers, on the other hand, do not compose by themselves. If we want to have the same affordance for finite-state recognizers, we need to write a function that takes two recognizers as arguments, and returns a recognizer that recognizes the language that is the union of `A` and `B`.
 
@@ -1602,13 +1602,13 @@ The problem is that there are two transitions from `zeroes` when consuming a `0`
 
 We want to catenate two deterministic finite-state recognizers, and wind up with a finite-state recognizer. To do that, we'll need a way to convert nondeterministic finite-state recognizers into deterministic finite-state recognizers.
 
-But first, let's note a result we demonstrated alongteh way.
+But first, let's note a result we demonstrated along the way.
 
 ---
 
 ## For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions
 
-When building `catenation`, we added ε-transitions to join two finite-state recognizers, and then used `removeEpsilonTransitions` to derive an equivalent finiute-state recognizer without ε-transitions.
+When building `catenation`, we added ε-transitions to join two finite-state recognizers, and then used `removeEpsilonTransitions` to derive an equivalent finite-state recognizer without ε-transitions.
 
 `removeEpsilonTransitions` demonstrates that for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions. Or to put it another way, the set of languages recognized by finite-state recognizers without ε-transitions is equal to the set of finite-state recognizers recognized by finite-state recognizers that do do do not include ε-transitions.
 
@@ -2250,9 +2250,9 @@ verify(catenation(zeroes, binary), {
 
 Let's reflect on what [powerset](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer) tells us about finite-state recognizers. Because we can take _any_ finite-state recognizer, pass it to `powerset`, and get back a deterministic finite-state recognizer, we know that for *every* finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
 
-This tells us that the set of all languages recognized by deterministic finite state recognizers is equal to the set of all langauges recognized by finite-state recognizers.
+This tells us that the set of all languages recognized by deterministic finite state recognizers is equal to the set of all languages recognized by finite-state recognizers.
 
-This is not true for other types of automata: In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], we saw that non-dterministic pushdown automata could recognize palindromes, whereas deterministic pushdown automata could not. So the set of languages recogized by deterministic pushodwn automata is **not** equal to the set of langauges recognized by pushdown automata.
+This is not true for other types of automata: In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], we saw that non-deterministic pushdown automata could recognize palindromes, whereas deterministic pushdown automata could not. So the set of languages recognized by deterministic pushdown automata is **not** equal to the set of languages recognized by pushdown automata.
 
 [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
 
@@ -2478,7 +2478,7 @@ verify(kleeneStar(Aa), {
 
 ### kleene+
 
-As noted, formal regular expressions include the `kleene*`. Regexen have an affordance for `kleene*` as well, and—just like formal refgular expressions—it's the `*` postfix operator:
+As noted, formal regular expressions include the `kleene*`. Regexen have an affordance for `kleene*` as well, and—just like formal regular expressions—it's the `*` postfix operator:
 
 ```javascript
 verify(/^x*$/, {
@@ -2555,7 +2555,7 @@ verify(kleenePlus(any('Aa')), {
   //=> All 9 tests passing
 ```
 
-Formal regular expressions don't normally include the `kleene+`, because given catenation and `kleene*`, `kleene+` is not necessary. When proving things about formal languages, working with the minimum set of entities makes everything easier. But fo course, proactical programming is all about defining convenient things our of necessarry things, and that is why regexen provide the `kleene+`.
+Formal regular expressions don't normally include the `kleene+`, because given catenation and `kleene*`, `kleene+` is not necessary. When proving things about formal languages, working with the minimum set of entities makes everything easier. But fo course, practical programming is all about defining convenient things our of necessary things, and that is why regexen provide the `kleene+`.
 
 ---
 
@@ -2571,7 +2571,7 @@ When we have a set, and an operation on members of that set always returns a mem
 
 And by induction, we can then say that the set of languages that finite-state recognizers can recognize is closed under the operations `union`, `catenation`, and `kleene*`. We can _also_ say that they are closed under `intersection` and `kleene+`. And there are other operations that we haven't explored, like `optional`, `complementation`, `difference`, or `xor`, and the set of all languages is closed under those operations as well.
 
-This property of "languages that finite-state recognizers can recognize being closed under the operations `union`, `catenation`, and `kleene*`" will come in very handy beloww when we show that for every formal regular expressionm, there is an equivalent finite-state recognizer.
+This property of "languages that finite-state recognizers can recognize being closed under the operations `union`, `catenation`, and `kleene*`" will come in very handy below when we show that for every formal regular expression, there is an equivalent finite-state recognizer.
 
 But all we've talked about are combinators, operations that build finite-state recognizers out of finite-state recognizers. What about building finite-state recognizers from nothing at all?
 
@@ -2958,7 +2958,7 @@ For example:
 
 - `∅` becomes `EMPTY_SET`
 - `0` (or any single character) becomes `just1('0')`
-- `a|b` (or any two expresions) becomes `union(a, b)`
+- `a|b` (or any two expressions) becomes `union(a, b)`
 - `xyz` (or any string of characters) becomes `catenation(just('x'), just('y'), just('z'))`
 - `a*` (or any expresion followed by an `*`) becomes `kleeneStar(just1('a'))`
 
@@ -3066,7 +3066,7 @@ The shunting yard algorithm is stack-based. Infix expressions are the form of ma
 
 ![The Shunting Yard Algorithm © Salix alba](/assets/images/fsa/Shunting_yard.svg.png)
 
-Our first iteration of a shunting yard algorithm makes two important simplifying assumptions. The first is that it does not handle parentheses. The second is that it does not catanate adjacent expressions, it uses a `+` symbol to represent catenation:
+Our first iteration of a shunting yard algorithm makes two important simplifying assumptions. The first is that it does not handle parentheses. The second is that it does not catenate adjacent expressions, it uses a `+` symbol to represent catenation:
 
 ```javascript
 const operatorToPrecedence = new Map(
@@ -3179,7 +3179,7 @@ shuntingYardVersion2('ab*|a*b')
   //=> ["a", "b", "*", "+", "a", "*", "b", "+", "|"]
 ```
 
-Finally, we add support for parentheses. If we encounter a left parentheses, we push it on the operator stack. When we encounter a right parentheses, we clear the operator stack onto the output queue up to the topmost left parentheses. With respect to implicit catenation, parenetheses act like values:
+Finally, we add support for parentheses. If we encounter a left parentheses, we push it on the operator stack. When we encounter a right parentheses, we clear the operator stack onto the output queue up to the topmost left parentheses. With respect to implicit catenation, parentheses act like values:
 
 ```javascript
 function shuntingYardVersion3 (formalRegularExpressionString) {
@@ -3544,9 +3544,9 @@ This demonstrates that **for every formal regular expression, there exists an eq
 
 ## For every formal regular expression, there exists an equivalent finite-state recognizer
 
-Given that we know that for every formal regular expression, there is at least one finite-state recognizer that recognizes the same langauge as the regular expression, we know that finite-state recognizers are at least as powerful as formal regular expressions.
+Given that we know that for every formal regular expression, there is at least one finite-state recognizer that recognizes the same language as the regular expression, we know that finite-state recognizers are at least as powerful as formal regular expressions.
 
-There are practical implications as well. We've already shown that for every finite-state recignizer, there exists an equivalent deterministic finite-state recignizer, and have an algorithm --`powerset`--that returns a deterministic finite-state recignizer given any finite-state recognizer.
+There are practical implications as well. We've already shown that for every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer, and have an algorithm --`powerset`--that returns a deterministic finite-state recognizer given any finite-state recognizer.
 
 Deterministic finite-state recognizers are fast: They trade space for time, executing in O_n_ time. And although they take up more space for their descriptions, by not engaging in backtracking or parallel execution, they generate fewer temporary entities. We haven't attempted to optimize for pure speed, but finite-state recognizers can be written to be blazingly fast. They can even be compiled down to languages like JavaScript, C++, or even assembler.
 
