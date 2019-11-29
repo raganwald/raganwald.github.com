@@ -71,9 +71,11 @@ Regexen add a lot more affordances like character classes, the dot operator, dec
 
 In this essay we will explore a number of important results concerning regular expressions, and regular languages, and finite-state automata:
 
-  - The set of finite-state recognizers is closed under union, catenation, and kleene*, including `union`, `intersection`, `catenation`, `kleene*`, and others.
-  - For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer
-  - Every regular language can be recognized by a finite-state automaton.
+  - For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions.
+  - For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
+  - The set of finite-state recognizers is closed under union, catenation, and kleene*.
+  - For every formal regular expression, there exists an equivalent finite-state recognizer.
+  - Every regular language can be recognized by a finite-state recognizer.
   - If a finite-state automaton recognizes a language, that language is regular.
 
 All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. What makes this essay novel is that instead of focusing on formal proofs, we will focus on informal _demonstrations_.
@@ -216,12 +218,14 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [any](#any)
   - [none](#none)
 
-### [Generating finite-state recognizers from formal regular expressions](#generating-finite-state-recognizers-from-formal-regular-expressions)
+### [Generating finite-state recognizers from formal regular expressions](#generating-finite-state-recognizers-from-formal-regular-expressions-1)
 
   - [the shunting yard algorithm](#the-shunting-yard-algorithm)
   - [generating finite-state recognizers](#generating-finite-state-recognizers)
 
 [For every formal regular expression, there exists an equivalent finite-state recognizer](#for-every-formal-regular-expression-there-exists-an-equivalent-finite-state-recognizer)
+
+[Every regular language can be recognized by a finite-state recognizer](#every-regular-language-can-be-recognized-by-a-finite-state-recognizer)
 
 ---
 
@@ -3550,7 +3554,13 @@ Being able to "compile" formal regular expressions into finite-sate recognizers 
 
 ---
 
-## Affordances for our regular expressions
+## Every regular language can be recognized by a finite-state recognizer
+
+Recall that the set of languages described by a formal regular expression is called the set of _regular languages_. Since we know that for every formal regular expression, there exists a deterministic finite-state recognizer that recognizes sentences in that regular expression's language, we know that every regular language can be recognized by a finite-state recognizer.
+
+---
+
+*More to come...*
 
 ---
 
