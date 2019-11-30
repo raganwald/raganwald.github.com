@@ -211,7 +211,6 @@ Along the way, we'll look at other tools that make regular expressions more conv
 [Decorating Recognizers](#decorating-recognizers)
 
   - [kleene*](#kleene)
-  - [kleene+](#kleene-1)
 
 [The set of finite-state recognizers is closed under union, catenation, and kleene*](#the-set-of-finite-state-recognizers-is-closed-under-union-catenation-and-kleene)
 
@@ -232,6 +231,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
 ### [Enhancing our regular expressions](#enhancing-our-regular-expressions-1)
 
+  - [kleene+](#kleene-1)
   - [dot](#dot)
   - [ampersand](#ampersand)
 
@@ -2482,88 +2482,7 @@ verify(kleeneStar(Aa), {
   //=> All 9 tests passing
 ```
 
----
-
-### kleene+
-
-As noted, formal regular expressions include the `kleene*`. Regexen have an affordance for `kleene*` as well, and—just like formal regular expressions—it's the `*` postfix operator:
-
-```javascript
-verify(/^x*$/, {
-  '': true,
-  'x': true,
-  'xx': true,
-  'xxx': true,
-  'xyz': false
-});
-  //=> All 5 tests passing
-
-verify(/^[Aa]*$/, {
-  '': true,
-  'a': true,
-  'aa': true,
-  'Aa': true,
-  'AA': true,
-  'aaaAaAaAaaaAaa': true,
-  ' a': false,
-  'a ': false,
-  'eh?': false
-});
-  //=> All 9 tests passing
-```
-
-Regexen have a postfix `*` character to represent `kleene*`. But they also support a postfix `+` to represent the `kleene+` decorator that takes a recognizer as an argument, and returns a recognizer that matches sentences consisting of _one_ or more sentences its argument recognizes:
-
-```javascript
-verify(/^[Aa]+$/, {
-  '': false,
-  'a': true,
-  'aa': true,
-  'Aa': true,
-  'AA': true,
-  'aaaAaAaAaaaAaa': true,
-  ' a': false,
-  'a ': false,
-  'eh?': false
-});
-  //=> All 9 tests passing
-```
-
-We can make `kleene+` using the tools we already have:
-
-```javascript
-function kleenePlus (description) {
-  return catenation(description, kleeneStar(description));
-}
-
-kleenePlus(Aa)
-  //=>
-    {
-      "start": "empty",
-      "transitions": [
-        { "from": "empty", "consume": "a", "to": "recognized" },
-        { "from": "empty", "consume": "A", "to": "recognized" },
-        { "from": "recognized", "consume": "a", "to": "recognized" },
-        { "from": "recognized", "consume": "A", "to": "recognized" }
-      ],
-      "accepting": [ "recognized" ]
-    }
-
-verify(kleenePlus(any('Aa')), {
-  '': false,
-  'a': true,
-  'aa': true,
-  'Aa': true,
-  'AA': true,
-  'aaaAaAaAaaaAaa': true,
-  ' a': false,
-  'a ': false,
-  'eh?': false
-});
-  //=> All 9 tests passing
-```
-
-Formal regular expressions don't normally include the `kleene+`, because given catenation and `kleene*`, `kleene+` is not necessary. When proving things about formal languages, working with the minimum set of entities makes everything easier. But fo course, practical programming is all about defining convenient things our of necessary things, and that is why regexen provide the `kleene+`.
+Ah! A working `kleene*`.
 
 ---
 
@@ -2571,13 +2490,15 @@ Formal regular expressions don't normally include the `kleene+`, because given c
 
 To summarize what we have accomplished so far:
 
-We wrote what we might call _finite-state recognizer combinators_, functions that take one or more finite-state recognizers as arguments, and return a finite-state recognizer. The combinators we've written so far implement the operations `union`, `catenation`, `intersection`, `kleene*`, and `kleene+`.
+We wrote what we might call _finite-state recognizer combinators_, functions that take one or more finite-state recognizers as arguments, and return a finite-state recognizer. The combinators we've written so far implement the operations `union`, `catenation`, `intersection`, and `kleene*`.
 
 There is a set of all finite-state recognizers, and a corresponding set of all descriptions of finite-state recognizers. Each one of our combinators takes one or more members of the set of all descriptions of finite-state recognizers and returns a member of the set of all descriptions of finite-state recognizers.
 
-When we have a set, and an operation on members of that set always returns a member of that set, we say that "The set is closed under that operation." We can thus say that the set of all descriptions of finite-state recognizers is closed under the operation of applying the `union`, `catenation`, `intersection`, `kleeneStar`, and `kleenePlus` functions we've written.
+When we have a set, and an operation on members of that set always returns a member of that set, we say that "The set is closed under that operation." We can thus say that the set of all descriptions of finite-state recognizers is closed under the operation of applying the `union`, `catenation`, `intersection`, and `kleeneStar` functions we've written.
 
-And by induction, we can then say that the set of languages that finite-state recognizers can recognize is closed under the operations `union`, `catenation`, and `kleene*`. We can _also_ say that they are closed under `intersection` and `kleene+`. And there are other operations that we haven't explored, like `optional`, `complementation`, `difference`, or `xor`, and the set of all languages is closed under those operations as well.
+And by induction, we can then say that the set of languages that finite-state recognizers can recognize is closed under the operations `union`, `catenation`, and `kleene*`. (We can _also_ say that they are closed under `intersection`, an operation we defined but that isn't used in formal regular expressions.)
+
+And there are other operations that we haven't explored yet--like  `kleene+`, `optional`, `complementation`, `difference`, and `xor`--and the set of all languages is closed under those operations as well.
 
 This property of "languages that finite-state recognizers can recognize being closed under the operations `union`, `catenation`, and `kleene*`" will come in very handy below when we show that for every formal regular expression, there is an equivalent finite-state recognizer.
 
@@ -3073,13 +2994,13 @@ The shunting yard algorithm is stack-based. Infix expressions are the form of ma
 
 ![The Shunting Yard Algorithm © Salix alba](/assets/images/fsa/Shunting_yard.svg.png)
 
-Our first iteration of a shunting yard algorithm makes two important simplifying assumptions. The first is that it does not handle parentheses. The second is that it does not catenate adjacent expressions, it uses a `+` symbol to represent catenation:
+Our first iteration of a shunting yard algorithm makes two important simplifying assumptions. The first is that it does not handle parentheses. The second is that it does not catenate adjacent expressions, it uses a `→` symbol to represent catenation:
 
 ```javascript
 const operatorToPrecedence = new Map(
   Object.entries({
     '|': 1,
-    '+': 2,
+    '→': 2,
     '*': 3
   })
 );
@@ -3099,12 +3020,12 @@ function shuntingYardVersion1 (formalRegularExpressionString) {
 
       // pop higher-precedence operators off the operator stack
       while (operatorStack.length > 0) {
-        const topOfOperatorStackPrecedence = operatorToPrecedence.get(peek(operatorStack));
+        const opPrecedence = operatorToPrecedence.get(peek(operatorStack));
 
-        if (precedence < topOfOperatorStackPrecedence) {
-          const topOfOperatorStack = operatorStack.pop();
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
 
-          outputQueue.push(topOfOperatorStack);
+          outputQueue.push(op);
         } else {
           break;
         }
@@ -3118,26 +3039,28 @@ function shuntingYardVersion1 (formalRegularExpressionString) {
 
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
-    const topOfOperatorStack = operatorStack.pop();
+    const op = operatorStack.pop();
 
-    outputQueue.push(topOfOperatorStack);
+    outputQueue.push(op);
   }
 
   return outputQueue;
 }
 
-shuntingYardVersion1('a+b*|a*+b')
-  //=> ["a", "b", "*", "+", "a", "*", "b", "+", "|"]
+shuntingYardVersion1('a→b*|a*→b')
+  //=> ["a", "b", "*", "→", "a", "*", "b", "→", "|"]
 ```
 
-Now we'll add an adjustment so that we don't need to explicitly include `+` for catenation. What we'll do is keep track of whether we are awaiting a value. If we are, then values get pushed directly to the output queue as usual. But if we aren't awaiting a value, then we implicitly add the `+` operator:
+Now we'll add an adjustment so that we don't need to explicitly include `→` for catenation. What we'll do is keep track of whether we are awaiting a value. If we are, then values get pushed directly to the output queue as usual. But if we aren't awaiting a value, then we implicitly add the `→` operator:
 
 ```javascript
+const binaryOperators = new Set(['→', '|']);
+
 function shuntingYardVersion2 (formalRegularExpressionString) {
   const input = formalRegularExpressionString.split('');
   const operatorStack = [];
   const outputQueue = [];
-  let justPushedValue = false;
+  let awaitingValue = true;
 
   while (input.length > 0) {
     const symbol = input.shift();
@@ -3147,43 +3070,45 @@ function shuntingYardVersion2 (formalRegularExpressionString) {
 
       // pop higher-precedence operators off the operator stack
       while (operatorStack.length > 0) {
-        const topOfOperatorStackPrecedence = operatorToPrecedence.get(peek(operatorStack));
+        const opPrecedence = operatorToPrecedence.get(peek(operatorStack));
 
-        if (precedence < topOfOperatorStackPrecedence) {
-          const topOfOperatorStack = operatorStack.pop();
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
 
-          outputQueue.push(topOfOperatorStack);
+          outputQueue.push(op);
         } else {
           break;
         }
       }
 
       operatorStack.push(symbol);
-      justPushedValue = false;
-    } else if (justPushedValue){
+      awaitingValue = binaryOperators.has(symbol);
+    } else if (awaitingValue) {
+      // as expected, go striaght to the output
+
+      outputQueue.push(symbol);
+      awaitingValue = false;
+    } else {
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
-      justPushedValue = false;
-    } else {
-      outputQueue.push(symbol);
-      justPushedValue = true;
+      input.unshift('→');
+      awaitingValue = false;
     }
   }
 
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
-    const topOfOperatorStack = operatorStack.pop();
+    const op = operatorStack.pop();
 
-    outputQueue.push(topOfOperatorStack);
+    outputQueue.push(op);
   }
 
   return outputQueue;
 }
 
 shuntingYardVersion2('ab*|a*b')
-  //=> ["a", "b", "*", "+", "a", "*", "b", "+", "|"]
+  //=> ["a", "b", "*", "→", "a", "*", "b", "→", "|"]
 ```
 
 Finally, we add support for parentheses. If we encounter a left parentheses, we push it on the operator stack. When we encounter a right parentheses, we clear the operator stack onto the output queue up to the topmost left parentheses. With respect to implicit catenation, parentheses act like values:
@@ -3207,16 +3132,16 @@ function shuntingYardVersion3 (formalRegularExpressionString) {
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('∩');
       awaitingValue = false;
     } else if (symbol === ')') {
       // closing parenthesis case, clear the
       // operator stack
 
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
-        const topOfOperatorStack = operatorStack.pop();
+        const op = operatorStack.pop();
 
-        outputQueue.push(topOfOperatorStack);
+        outputQueue.push(op);
       }
 
       if (peek(operatorStack) === '(') {
@@ -3229,13 +3154,13 @@ function shuntingYardVersion3 (formalRegularExpressionString) {
       const precedence = operatorToPrecedence.get(symbol);
 
       // pop higher-precedence operators off the operator stack
-      while (operatorStack.length > 0) {
-        const topOfOperatorStackPrecedence = operatorToPrecedence.get(peek(operatorStack));
+      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const opPrecedence = operatorToPrecedence.get(peek(operatorStack));
 
-        if (precedence < topOfOperatorStackPrecedence) {
-          const topOfOperatorStack = operatorStack.pop();
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
 
-          outputQueue.push(topOfOperatorStack);
+          outputQueue.push(op);
         } else {
           break;
         }
@@ -3252,26 +3177,26 @@ function shuntingYardVersion3 (formalRegularExpressionString) {
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     }
   }
 
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
-    const topOfOperatorStack = operatorStack.pop();
+    const op = operatorStack.pop();
 
-    outputQueue.push(topOfOperatorStack);
+    outputQueue.push(op);
   }
 
   return outputQueue;
 }
 
-shuntingYardVersion3('a+(b*|a*)+b')
-  //=> ["a", "b", "*", "a", "*", "|", "b", "+", "+"]
+shuntingYardVersion3('a→(b*|a*)→b')
+  //=> ["a", "b", "*", "a", "*", "|", "b", "→", "+"]
 
 shuntingYardVersion3('((a|b)(c|d))')
-  //=> [["a", "b", "|", "c", "d", "|", "+"]
+  //=> [["a", "b", "|", "c", "d", "|", "→"]
 ```
 
 Our `shuntingYard3` algorithm returns a version of the formal regular expression, but in reverse-polish notation. Now we have actually left something incredibly important things out of this algorithm. They aren't strictly necessary to demonstrate that for every formal regular expression, there is an equivalent finite-state recognizer, but still.
@@ -3284,7 +3209,7 @@ const formalOperators = new Map(
     '∅': { symbol: Symbol('∅'), precedence: 99, arity: 0, fn: () => EMPTY_SET },
     'ε': { symbol: Symbol('ε'), precedence: 99, arity: 0, fn: () => EMPTY_STRING },
     '|': { symbol: Symbol('|'), precedence: 1, arity: 2, fn: union },
-    '+': { symbol: Symbol('+'), precedence: 2, arity: 2, fn: catenation },
+    '→': { symbol: Symbol('→'), precedence: 2, arity: 2, fn: catenation },
     '*': { symbol: Symbol('*'), precedence: 3, arity: 1, fn: kleeneStar }
   })
 );
@@ -3334,7 +3259,7 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
 
           input.unshift(valueSymbol);
           input.unshift('\\');
-          input.unshift('+');
+          input.unshift('->');
           awaitingValue = false;
         }
 
@@ -3348,16 +3273,16 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     } else if (symbol === ')') {
       // closing parenthesis case, clear the
       // operator stack
 
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
-        const topOfOperatorStack = operatorStack.pop();
+        const op = operatorStack.pop();
 
-        outputQueue.push(valueOf(topOfOperatorStack));
+        outputQueue.push(valueOf(op));
       }
 
       if (peek(operatorStack) === '(') {
@@ -3371,12 +3296,12 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
 
       // pop higher-precedence operators off the operator stack
       while (arity > 0 && operatorStack.length > 0 && peek(operatorStack) !== '(') {
-        const topOfOperatorStackPrecedence = operators.get(peek(operatorStack)).precedence;
+        const opPrecedence = operators.get(peek(operatorStack)).precedence;
 
-        if (precedence < topOfOperatorStackPrecedence) {
-          const topOfOperatorStack = operatorStack.pop();
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
 
-          outputQueue.push(valueOf(topOfOperatorStack));
+          outputQueue.push(valueOf(op));
         } else {
           break;
         }
@@ -3393,30 +3318,35 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     }
   }
 
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
-    const topOfOperatorStack = operatorStack.pop();
-
-    outputQueue.push(operators.get(topOfOperatorStack).symbol);
+    const op = operatorStack.pop();
+    
+    if (operators.has(op)) {
+      const { symbol: opSymbol } = operators.get(op);
+      outputQueue.push(opSymbol);
+    } else {
+      error(`Don't know how to push operator ${op}`);
+    }
   }
 
   return outputQueue;
 }
 ```
 
-Now we push JavaScript Symbols for operators, and we can "escape" characters like `()\+|*` in our expressions:
+Now we push JavaScript Symbols for operators instead of strings. This allows us to "escape" characters like `()\|*` in our expressions:
 
 ```javascript
 basicShuntingYard('((a|b)(c|d))')
-  //=> ["a", "b", Symbol(|), "c", "d", Symbol(|), Symbol(+)]
+  //=> ["a", "b", Symbol(|), "c", "d", Symbol(|), Symbol(→)]
 
 basicShuntingYard('\\(\\*|\\)')
-  //=> ["(", "*", Symbol(+), ")", Symbol(|)]
+  //=> ["(", "*", Symbol(→), ")", Symbol(|)]
 ```
 
 ### generating finite-state recognizers
@@ -3598,9 +3528,103 @@ While they have no effect on the power of regular expressions, additional afford
 - `xy` is also a regular expression denoting the language comprised of the catenation of the set of languages denoted by `x`, and the set of languages denoted by `y`.
 - `z*` is a regular expression denoting the language comprised of the catenation of zero or more sentences belonging to the language denoted by `z`.
 
+Onwards!
+
+---
+
+### kleene+
+
+Like formal regular expressions, regexen have a postfix `*` character to represent `kleene*`. But unlike formal regular expressions, regexen also support a postfix `+` to represent the `kleene+` operator that matches _one_ or more instances of its argument:
+
+```javascript
+verify(/^[Aa]+$/, {
+  '': false,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
+```
+
+We can make  a `kleene+` decorator using the tools we already have:
+
+```javascript
+function kleenePlus (description) {
+  return catenation(description, kleeneStar(description));
+}
+
+kleenePlus(Aa)
+  //=>
+    {
+      "start": "empty",
+      "transitions": [
+        { "from": "empty", "consume": "a", "to": "recognized" },
+        { "from": "empty", "consume": "A", "to": "recognized" },
+        { "from": "recognized", "consume": "a", "to": "recognized" },
+        { "from": "recognized", "consume": "A", "to": "recognized" }
+      ],
+      "accepting": [ "recognized" ]
+    }
+
+verify(kleenePlus(any('Aa')), {
+  '': false,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 9 tests passing
+```
+
+Formal regular expressions don't normally include the `kleene+`, because given catenation and `kleene*`, `kleene+` is not necessary. When proving things about formal languages, working with the minimum set of entities makes everything easier.
+
+But programming is all about defining convenient things out of necessary things, that is why regexen provide the `+`, and that is why we'll add it to our own regular expressions:
+
+```javascript
+const operators2 = new Map(
+  [...formalOperators.entries()].concat([
+    ['+', { symbol: Symbol('+'), precedence: 3, arity: 1, fn: kleenePlus }]
+  ])
+);
+
+const oneOrMoreAs = toFiniteStateRecognizer('(a|A)+', operators2);
+
+verify(oneOrMoreAs, {
+  '': false,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+```
+
+Now we can add a new "rule:"
+
+- `w+` is a regular expression denoting the language comprised of the catenation of zone or more sentences belonging to the language denoted by `w`.
+
+And because our `kleene*` uses `catenation` and `kleene*`, and because we've already established that the set of regular expressions is closed under `catenation` and `kleene*`, we know that the set of regular expressions is closed under `kleene+`, too.
+
+In other words, our new "rule" isn't really changing the behaviour of regular expressions, it's simply documenting behaviour we already established with the rules for formal regular expressions.
+
+---
+
 ### dot
 
-The dot, or `.` is an extremely useful affordance for matching any character. It adds this rule to our list:
+The dot, or `.` is an extremely useful affordance for matching "any character." It adds this rule to our list:
 
 - `.` is a regular expression denoting the language comprised of a single sentence, which contains any single character from a fixed alphabet of characters.
 
@@ -3630,7 +3654,7 @@ verify(oddLength, {
   //=> All 6 tests passing
 ```
 
-We also defined the `intersection` function. Let's add it as well.
+We also defined the `intersection` function. Let's add it as well, we'll associate it with the `&` operator:
 
 ### ampersand
 

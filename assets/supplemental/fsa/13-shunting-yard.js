@@ -1,9 +1,9 @@
-// 13-compiling-formal-regular-expressions.js
+console.log('13-compiling-formal-regular-expressions.js');
 
 const operatorToPrecedence = new Map(
   Object.entries({
     '|': 1,
-    '+': 2,
+    '→': 2,
     '*': 3
   })
 );
@@ -23,12 +23,12 @@ function shuntingYardVersion1 (formalRegularExpressionString) {
 
       // pop higher-precedence operators off the operator stack
       while (operatorStack.length > 0) {
-        const topOfOperatorStackPrecedence = operatorToPrecedence.get(peek(operatorStack));
+        const opPrecedence = operatorToPrecedence.get(peek(operatorStack));
 
-        if (precedence < topOfOperatorStackPrecedence) {
-          const topOfOperatorStack = operatorStack.pop();
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
 
-          outputQueue.push(topOfOperatorStack);
+          outputQueue.push(op);
         } else {
           break;
         }
@@ -42,15 +42,15 @@ function shuntingYardVersion1 (formalRegularExpressionString) {
 
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
-    const topOfOperatorStack = operatorStack.pop();
+    const op = operatorStack.pop();
 
-    outputQueue.push(topOfOperatorStack);
+    outputQueue.push(op);
   }
 
   return outputQueue;
 }
 
-const binaryOperators = new Set(['+', '|']);
+const binaryOperators = new Set(['→', '|']);
 
 function shuntingYardVersion2 (formalRegularExpressionString) {
   const input = formalRegularExpressionString.split('');
@@ -66,12 +66,12 @@ function shuntingYardVersion2 (formalRegularExpressionString) {
 
       // pop higher-precedence operators off the operator stack
       while (operatorStack.length > 0) {
-        const topOfOperatorStackPrecedence = operatorToPrecedence.get(peek(operatorStack));
+        const opPrecedence = operatorToPrecedence.get(peek(operatorStack));
 
-        if (precedence < topOfOperatorStackPrecedence) {
-          const topOfOperatorStack = operatorStack.pop();
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
 
-          outputQueue.push(topOfOperatorStack);
+          outputQueue.push(op);
         } else {
           break;
         }
@@ -88,16 +88,16 @@ function shuntingYardVersion2 (formalRegularExpressionString) {
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     }
   }
 
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
-    const topOfOperatorStack = operatorStack.pop();
+    const op = operatorStack.pop();
 
-    outputQueue.push(topOfOperatorStack);
+    outputQueue.push(op);
   }
 
   return outputQueue;
@@ -121,16 +121,16 @@ function shuntingYardVersion3 (formalRegularExpressionString) {
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('∩');
       awaitingValue = false;
     } else if (symbol === ')') {
       // closing parenthesis case, clear the
       // operator stack
 
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
-        const topOfOperatorStack = operatorStack.pop();
+        const op = operatorStack.pop();
 
-        outputQueue.push(topOfOperatorStack);
+        outputQueue.push(op);
       }
 
       if (peek(operatorStack) === '(') {
@@ -144,12 +144,12 @@ function shuntingYardVersion3 (formalRegularExpressionString) {
 
       // pop higher-precedence operators off the operator stack
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
-        const topOfOperatorStackPrecedence = operatorToPrecedence.get(peek(operatorStack));
+        const opPrecedence = operatorToPrecedence.get(peek(operatorStack));
 
-        if (precedence < topOfOperatorStackPrecedence) {
-          const topOfOperatorStack = operatorStack.pop();
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
 
-          outputQueue.push(topOfOperatorStack);
+          outputQueue.push(op);
         } else {
           break;
         }
@@ -166,16 +166,16 @@ function shuntingYardVersion3 (formalRegularExpressionString) {
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     }
   }
 
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
-    const topOfOperatorStack = operatorStack.pop();
+    const op = operatorStack.pop();
 
-    outputQueue.push(topOfOperatorStack);
+    outputQueue.push(op);
   }
 
   return outputQueue;
@@ -186,7 +186,7 @@ const formalOperators = new Map(
     '∅': { symbol: Symbol('∅'), precedence: 99, arity: 0, fn: () => EMPTY_SET },
     'ε': { symbol: Symbol('ε'), precedence: 99, arity: 0, fn: () => EMPTY_STRING },
     '|': { symbol: Symbol('|'), precedence: 1, arity: 2, fn: union },
-    '+': { symbol: Symbol('+'), precedence: 2, arity: 2, fn: catenation },
+    '→': { symbol: Symbol('→'), precedence: 2, arity: 2, fn: catenation },
     '*': { symbol: Symbol('*'), precedence: 3, arity: 1, fn: kleeneStar }
   })
 );
@@ -236,7 +236,7 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
 
           input.unshift(valueSymbol);
           input.unshift('\\');
-          input.unshift('+');
+          input.unshift('->');
           awaitingValue = false;
         }
 
@@ -250,16 +250,16 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     } else if (symbol === ')') {
       // closing parenthesis case, clear the
       // operator stack
 
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
-        const topOfOperatorStack = operatorStack.pop();
+        const op = operatorStack.pop();
 
-        outputQueue.push(valueOf(topOfOperatorStack));
+        outputQueue.push(valueOf(op));
       }
 
       if (peek(operatorStack) === '(') {
@@ -273,12 +273,12 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
 
       // pop higher-precedence operators off the operator stack
       while (arity > 0 && operatorStack.length > 0 && peek(operatorStack) !== '(') {
-        const topOfOperatorStackPrecedence = operators.get(peek(operatorStack)).precedence;
+        const opPrecedence = operators.get(peek(operatorStack)).precedence;
 
-        if (precedence < topOfOperatorStackPrecedence) {
-          const topOfOperatorStack = operatorStack.pop();
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
 
-          outputQueue.push(valueOf(topOfOperatorStack));
+          outputQueue.push(valueOf(op));
         } else {
           break;
         }
@@ -295,16 +295,21 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     }
   }
 
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
-    const topOfOperatorStack = operatorStack.pop();
-
-    outputQueue.push(operators.get(topOfOperatorStack).symbol);
+    const op = operatorStack.pop();
+    
+    if (operators.has(op)) {
+      const { symbol: opSymbol } = operators.get(op);
+      outputQueue.push(opSymbol);
+    } else {
+      error(`Don't know how to push operator ${op}`);
+    }
   }
 
   return outputQueue;
@@ -476,25 +481,4 @@ verify(toFiniteStateRecognizer('0|(1(0|1)*)'), {
   '101': true,
   '110': true,
   '111': true
-});
-
-const SYMBOLIC = `~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/`;
-const WHITESPACE = ` \r\n\t`;
-const EVERYTHING = any(ALPHANUMERIC + SYMBOLIC + WHITESPACE);
-
-const operatorsWithDot = new Map(
-  [...formalOperators.entries()].concat([
-    ['.', { symbol: Symbol('.'), precedence: 99, arity: 0, fn: () => EVERYTHING }]
-  ])
-);
-
-const oddLength = toFiniteStateRecognizer('.(..)*', operatorsWithDot);
-
-verify(oddLength, {
-  '': false,
-  '1': true,
-  '{}': false,
-  '[0]': true,
-  '()()': false,
-  'x o x': true
 });

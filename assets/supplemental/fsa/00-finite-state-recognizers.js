@@ -1216,10 +1216,6 @@ function kleeneStar (description) {
   return looped;
 }
 
-function kleenePlus (description) {
-  return catenation(description, kleeneStar(description));
-}
-
 // ----------
 
 const Aa = {
@@ -1233,18 +1229,6 @@ const Aa = {
 
 verify(kleeneStar(Aa), {
   '': true,
-  'a': true,
-  'aa': true,
-  'Aa': true,
-  'AA': true,
-  'aaaAaAaAaaaAaa': true,
-  ' a': false,
-  'a ': false,
-  'eh?': false
-});
-
-verify(kleenePlus(Aa), {
-  '': false,
   'a': true,
   'aa': true,
   'Aa': true,
@@ -1389,12 +1373,12 @@ verify(rSomethingG, {
   'Rej': false
 });
 
-// 13-compiling-formal-regular-expressions.js
+console.log('13-compiling-formal-regular-expressions.js');
 
 const operatorToPrecedence = new Map(
   Object.entries({
     '|': 1,
-    '+': 2,
+    '→': 2,
     '*': 3
   })
 );
@@ -1441,7 +1425,7 @@ function shuntingYardVersion1 (formalRegularExpressionString) {
   return outputQueue;
 }
 
-const binaryOperators = new Set(['+', '|']);
+const binaryOperators = new Set(['→', '|']);
 
 function shuntingYardVersion2 (formalRegularExpressionString) {
   const input = formalRegularExpressionString.split('');
@@ -1479,7 +1463,7 @@ function shuntingYardVersion2 (formalRegularExpressionString) {
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     }
   }
@@ -1512,7 +1496,7 @@ function shuntingYardVersion3 (formalRegularExpressionString) {
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('∩');
       awaitingValue = false;
     } else if (symbol === ')') {
       // closing parenthesis case, clear the
@@ -1557,7 +1541,7 @@ function shuntingYardVersion3 (formalRegularExpressionString) {
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     }
   }
@@ -1577,7 +1561,7 @@ const formalOperators = new Map(
     '∅': { symbol: Symbol('∅'), precedence: 99, arity: 0, fn: () => EMPTY_SET },
     'ε': { symbol: Symbol('ε'), precedence: 99, arity: 0, fn: () => EMPTY_STRING },
     '|': { symbol: Symbol('|'), precedence: 1, arity: 2, fn: union },
-    '+': { symbol: Symbol('+'), precedence: 2, arity: 2, fn: catenation },
+    '→': { symbol: Symbol('→'), precedence: 2, arity: 2, fn: catenation },
     '*': { symbol: Symbol('*'), precedence: 3, arity: 1, fn: kleeneStar }
   })
 );
@@ -1627,7 +1611,7 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
 
           input.unshift(valueSymbol);
           input.unshift('\\');
-          input.unshift('+');
+          input.unshift('->');
           awaitingValue = false;
         }
 
@@ -1641,7 +1625,7 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     } else if (symbol === ')') {
       // closing parenthesis case, clear the
@@ -1686,16 +1670,21 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
       // implicit catenation
 
       input.unshift(symbol);
-      input.unshift('+');
+      input.unshift('→');
       awaitingValue = false;
     }
   }
 
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
-    const topOfOperatorStack = operatorStack.pop();
-
-    outputQueue.push(operators.get(topOfOperatorStack).symbol);
+    const op = operatorStack.pop();
+    
+    if (operators.has(op)) {
+      const { symbol: opSymbol } = operators.get(op);
+      outputQueue.push(opSymbol);
+    } else {
+      error(`Don't know how to push operator ${op}`);
+    }
   }
 
   return outputQueue;
@@ -1869,17 +1858,70 @@ verify(toFiniteStateRecognizer('0|(1(0|1)*)'), {
   '111': true
 });
 
+console.log('14-enhancements.js');
+
+function kleenePlus (description) {
+  return catenation(description, kleeneStar(description));
+}
+
+const operators2 = new Map(
+  [...formalOperators.entries()].concat([
+    ['+', { symbol: Symbol('+'), precedence: 3, arity: 1, fn: kleenePlus }]
+  ])
+);
+
 const SYMBOLIC = `~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/`;
 const WHITESPACE = ` \r\n\t`;
 const EVERYTHING = any(ALPHANUMERIC + SYMBOLIC + WHITESPACE);
 
-const operatorsWithDot = new Map(
+const operators3 = new Map(
   [...formalOperators.entries()].concat([
     ['.', { symbol: Symbol('.'), precedence: 99, arity: 0, fn: () => EVERYTHING }]
   ])
 );
 
-const oddLength = toFiniteStateRecognizer('.(..)*', operatorsWithDot);
+// ----------
+
+verify(kleenePlus(Aa), {
+  '': false,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+const zeroOrMoreAs = toFiniteStateRecognizer('(a|A)*', operators2);
+const oneOrMoreAs = toFiniteStateRecognizer('(a|A)+', operators2);
+
+verify(zeroOrMoreAs, {
+  '': true,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+verify(oneOrMoreAs, {
+  '': false,
+  'a': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+const oddLength = toFiniteStateRecognizer('.(..)*', operators3);
 
 verify(oddLength, {
   '': false,

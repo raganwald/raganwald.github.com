@@ -56,10 +56,6 @@ function kleeneStar (description) {
   return looped;
 }
 
-function kleenePlus (description) {
-  return catenation(description, kleeneStar(description));
-}
-
 // ----------
 
 const Aa = {
@@ -73,18 +69,6 @@ const Aa = {
 
 verify(kleeneStar(Aa), {
   '': true,
-  'a': true,
-  'aa': true,
-  'Aa': true,
-  'AA': true,
-  'aaaAaAaAaaaAaa': true,
-  ' a': false,
-  'a ': false,
-  'eh?': false
-});
-
-verify(kleenePlus(Aa), {
-  '': false,
   'a': true,
   'aa': true,
   'Aa': true,
