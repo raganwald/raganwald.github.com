@@ -1,9 +1,4 @@
-// 01-validated-and-processed.js
-
-function error (description) {
-  console.log({ error: description });
-  throw description;
-}
+console.log('01-validated-and-processed.js');
 
 function toStateMap (transitions, allowNFA = false) {
   return transitions

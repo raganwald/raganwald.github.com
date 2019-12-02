@@ -1,5 +1,5 @@
 ---
-title: "Regular Expressions (No, not *those* Regular Expressions!)"
+title: "Regular Expressions (And not just *those* Regular Expressions!)"
 tags: [recursion,allonge,mermaid,wip]
 ---
 
@@ -13,42 +13,42 @@ In programming jargon, a regular expression, or *regex* (plural "regexen"),[^reg
 
 [^regex]: In common programming jargon, a "regular expression" refers any of a family of pattern-matching and extraction languages, that can match a variety of languages. In computer science, a "regular expression" is a specific pattern matching language that recognizes regular languages only. To avoid confusion, in this essay we will use the word "regex" (plural "regexen") to refer to the programming construct.
 
-Regexen are fundamentally descriptions of machines that recognize sentences in languages, where the sentences are strings of text symbols.
+Regexen are--fundamentally--descriptions of sets of strings. A simple examble is the regex `/^0|1(0|1)*$/`, which describes the set of all strings that represent whole numbers in base 2, also known as the "binary numbers."
 
-Another example is this regex, which purports to recognize a subset of valid email addresses. We can say that it recognizes sentences in a language, where every sentence in that language is a valid email address:[^email]
+In computer science, the strings that a regular expression matches are known as "sentences," and the set of all strings that a regular expression matches is known as the "language" that a regular expression matches.
 
-[^email]: There is an objective standard for email addresses, RFC 5322, but it allows many email addresses that are considered obsolete, *and* there are many non-conforming email servers that permit email addresses not covered by the standard. The real world is extremely messy, and it is very difficult to capture all of its messiness in a formal language.
+So for the regex `/^0|1(0|1)*$/`, its language is "The set of all binary numbers," and strings like `0`, `11`, and `1010101` are sentences in its language, while strings like `01`, `two`, and `Kltpzyxm` are sentances that are not in its language.[^Kltpzyxm]
 
-```
-\A(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*
- |  "(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]
-      |  \\[\x01-\x09\x0b\x0c\x0e-\x7f])*")
-@ (?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?
-  |  \[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}
-       (?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:
-          (?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]
-          |  \\[\x01-\x09\x0b\x0c\x0e-\x7f])+)
-     \])\z
-```
+[^Kltpzyxm]: Be sure to read this paragraph our loud.
 
-The "regular expression" (or "regex") programming tool evolved as a practical application for [Regular Expressions][regular expression], a concept discovered by [Stephen Cole Kleene], who was exploring [Regular Languages]. Regular Expressions in the computer science sense are a tool for describing Regular Languages: Any well-formed regular expression describes a regular language, and every regular language can be described by a regular expression.
+Regexen are not descriptions of machines that recognize strings. Regexen describe "what," but not "how." To actually use regexen, we need an implementation, a machine that takes a regular expression and a string to be scanned, and returns--at the very minimum--whether or not the string matches the expression.
+
+Regexen implemplementations exist on most programming environments and most command-line environments. `grep` is a regex implementation. Languages like Ruby and JavaScript have regex libraries built in and provide syntactic support for writing regex literals directly in code.
+
+The syntactic style of wrapping a regex in `/` characters is a syntactic convention in many languages that support regex literals, and we repeat them here to help distinguish them from formal regular expressions.
+
+---
+
+### formal regular expressions
+
+Regex programming tools evolved as a practical application for [Formal Regular Expressions][regular expression], a concept discovered by [Stephen Cole Kleene], who was exploring [Regular Languages]. Regular Expressions in the computer science sense are a tool for describing Regular Languages: Any well-formed regular expression describes a regular language, and every regular language can be described by a regular expression.
 
 [Stephen Cole Kleene]: https://en.wikipedia.org/wiki/Stephen_Cole_Kleene
 [Regular Languages]: https://en.wikipedia.org/wiki/Regular_language
 [regular expression]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
 
-Regular expressions are made with three constants:
+Formal regular expressions are made with three constants:
 
-- The constants `∅` respresenting the empty set, and `ε` representing the set containing only the empty string.
+- The constants `∅` representing the empty set, and `ε` representing the set containing only the empty string.
 - Constant literals such as `x`, `y`, or `z` representing symbols contained within some alphabet `Σ`.
 
 Every constant is itself a regular expression. For example, the constant `r` is itself a regular expression denoting the language that contains just one sentence, `'r'`: `{ 'r' }`.
 
-What makes regular expressions powerful, is that we have operators for composing and decorating these three constants:
+What makes formal regular expressions powerful, is that we have operators for composing and decorating these three constants:
 
-1. Given a regular expression _z_, the expression _z_`*` resolves to the [Kleene Star] or `kleene*` of the language described by _z_. The Kleene Star is also known as "zero or more."
-2. Given two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
-3. Given two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
+1. Given any regular expression _z_, the expression _z_`*` resolves to the [Kleene Star] or `kleene*` of the language described by _z_. The Kleene Star is also known as "zero or more."
+2. Given any two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
+3. Given any two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
 
 [Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
 
@@ -64,7 +64,7 @@ As with the algebraic notation we are familiar with, we can use parentheses:
 
 This allows us to alter the way the operators are combined. As we have seen, the expression `b|c*` resolves to the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`. But the expression `(b|c)*` resolves to the language `{ '', 'b', 'c', 'bb', 'cc', 'bbb', 'ccc', ... }`.
 
-It is quite obvious that regexen borrowed a lot of their syntax and semantics from regular expressions. Leaving aside the mechanism of capturing and extracting portions of a match, almost every regular expressions is also a regex. For example, `/reggiee*/` is a regular expression that matches words like `reggie`, `reggiee`, and `reggieee` anywhere ina string.
+It is quite obvious that regexen borrowed a lot of their syntax and semantics from regular expressions. Leaving aside the mechanism of capturing and extracting portions of a match, almost every regular expressions is also a regex. For example, `/reggiee*/` is a regular expression that matches words like `reggie`, `reggiee`, and `reggieee` anywhere in a string.
 
 Regexen add a lot more affordances like character classes, the dot operator, decorators like `?` and `+`, and so forth, but at their heart, regexen are based on regular expressions.
 
@@ -72,7 +72,7 @@ Regexen add a lot more affordances like character classes, the dot operator, dec
 
 ### what will we explore in this essay?
 
-In this essay we will explore a number of important results concerning regular expressions, and regular languages, and finite-state automata:
+In this essay we will explore a number of important results concerning regular expressions, regular languages, and finite-state automata:
 
   - For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions.
   - For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
@@ -81,7 +81,7 @@ In this essay we will explore a number of important results concerning regular e
   - Every regular language can be recognized by a finite-state recognizer.
   - If a finite-state automaton recognizes a language, that language is regular.
 
-All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. What makes this essay novel is that instead of focusing on formal proofs, we will focus on informal _demonstrations_.
+All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. What makes this essay slightly novel is that instead of focusing on formal proofs, we will focus on informal _demonstrations_.
 
 A demonstration aims to appeal to intuition, rather than formal reasoning. For example, the canonical proof that "If a finite-state automaton recognizes a language, that language is regular" runs along the following lines:[^cs390]
 
@@ -167,7 +167,17 @@ Along the way, we'll look at other tools that make regular expressions more conv
 ### [Prelude](#prelude)
 
   - [what is a regular expression?](#what-is-a-regular-expression)
+  - [formal regular expressions)(#formal-regular-expressions]
   - [what will we explore in this essay?](#what-will-we-explore-in-this-essay)
+  
+### [Our First Goal: "For every regular expression, there exists an equivalent finite-state recognizer"](#our-first-goal-for-every-regular-expression-there-exists-an-equivalent-finite-state-recognizer)
+
+  - [our approach](#our-approach)
+
+[Evaluating arithmetic expressions](#evaluating-arithmetic-expressions)
+
+  - [converting infix to postfix](#converting-infix-to-postfix)
+  - [handling a default operator](#handling-a-default-operator)
 
 ### [Finite-State Recognizers](#finite-state-recognizers-1)
 
@@ -210,13 +220,13 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
 [Decorating Recognizers](#decorating-recognizers)
 
-  - [kleene*](#kleene)
+  - [`kleene*`](#kleene)
 
-[The set of finite-state recognizers is closed under union, catenation, and kleene*](#the-set-of-finite-state-recognizers-is-closed-under-union-catenation-and-kleene)
+[The set of finite-state recognizers is closed under union, catenation, and `kleene*`](#the-set-of-finite-state-recognizers-is-closed-under-union-catenation-and-kleene)
 
 ### [Building Blocks](#building-blocks-1)
 
-  - [just1 and just](#just1-and-just)
+  - [literal and just](#literal-and-just)
   - [any](#any)
   - [none](#none)
 
@@ -232,14 +242,558 @@ Along the way, we'll look at other tools that make regular expressions more conv
 ### [Enhancing our regular expressions](#enhancing-our-regular-expressions-1)
 
   - [kleene+](#kleene-1)
+  - [optional](#optional)
   - [dot](#dot)
-  - [ampersand](#ampersand)
+  - [intersection](#intersection-1)
+
+---
+
+# Our First Goal: "For every regular expression, there exists an equivalent finite-state recognizer"
+
+As mentioned in the Prelude, [Stephen Cole Kleene] developed the concept of [formal regular expressions][regular expression] and [regular languages], and published a seminal theorem about their behaviour in 1951.
+
+Regular expressions are not machines. In and of themselves, they don't generate sentences in a language, nor do they recognize whether sentences belong to a langauge. They define the language, and it's up to us to build machines that do things like generate or recognize sentences.
+
+Kleene studied machines that can recognize sentences in languages. Studying such machines informs us about the fundamental nature of the computation involed. In the case of formal regular expressions and regular languages, Kleene established that for every regular language, there is a finite-state automaton that recognizes sentences in that language.
+
+(Finite-state automatons that are arranged to recognize sentences in languages are also called "finite-state recognizers," and that is the term we will use from here on.)
+
+Kleene also established that for every finite-state recognizer, there is a formal regular expression that describes the language that the finite-state recognizer accepts. In provingh these two things, he proved that the set of all regular expressions and the set of all finite-state recognizers is equivalent.
+
+We are going to demonstrate these two important components of Kleene's theorem by writing JavaScript code, starting with a demonstration that "For every regular expression, there exists an equivalent finite-state recognizer."
+
+---
+
+### our approach
+
+Our approach to demonstrating that for every regular expression, there exists an equivalent finite-state recognizer will be to write a program that takes as its input a regular expression, and produces as its output a description of a finute-state recognizer that accepts sentences in the language described by the regular expression.
+
+Our in computer jargon, we're going to write a regular expression to finite-state recognizer _compiler_. Compilers and interpreters are obviously an extremely interesting tool for practical programming: They establish an equivalency between expressing an algorithm in a language that humans understand, and expressing an equivalent algorithm in a language a machine understands.
+
+Our compiler will work like this: Instead of thinking of a formal regular expression as a description of a language, we will think of it as an expression, that when evaluated, returns a finite-state recognizer.
+
+Our "compiler" will thus be an algorithm that evaluates regular expressions.
+
+---
+
+## Evaluating arithmetic expressions
+
+We needn't invent our evaluation algorithm from first principles. There is a great deal of literature about evaluating expressions, especially expressions that consist of values, operators, and parentheses.
+
+One simple and easy-to work-with approach works like this:
+
+1. Take an expression in infix notation (when we say "infix notation," we include expressions that contain prefix operators, postfix operators, and parentheses).
+2. Convert the expression to reverse-polish notation, also called [postfix notation], or "RPN."
+3. Push the RPN onto a stack.
+4. Evaluate the RPM using a [stack machine].
+
+[postfix notation]: https://en.wikipedia.org/wiki/Reverse_Polish_notation
+[stack machine]: https://en.wikipedia.org/wiki/Stack_machine
+
+Before we write code to do this, we'll do it by hand for a small expression, `3*2+4!`:
+
+Presuming that the postfix `!` operator has the highest precedence, followed by the infix `*` and then the infix `+` has the lowest precedence, `3*2+4!` in infix notation becomes `[3, 2, *, 4, !, +]` in RPN.
+
+nEvaluating `[3, 2, *, 4, !, +]` with a stack machine works by taking each of the values and operators in order. If a value is next, push it onto the stack. If an operator is next, pop the necessary number of arguments off apply the operator to the arguments, and push the result back onto the stack. If the RPN is well-formed, after processing the last item from the input, there will be exactly one value on the stack, and that is the result of evaluating the RPN.
+
+Let's try it:
+
+1. The first item is a `3`. We push it onto the stack, which becomes `[3]`.
+2. The next item is a `2`. We push it onto the stack, which becomes `[3, 2]`.
+3. The next item is a `*`, which is an operator with an arity of two.
+  1. We pop `2` and `3` off the stack, which becomes `[]`.
+  2. We evaluate `*(3, 2)` (in a pseudo-functional form). The result is `6`.
+  3. We push `6` onto the stack, which becomes `[6]`.
+4. The next item is `4`. We push it onto the stack, which becomes `[6, 4]`.
+5. The next item is a `!`, which is an operator with an arity of one.
+  1. We pop `4` off the stack, which becomes `[6]`.
+  2. We evaluate `!(4)` (in a pseudo-functional form). The result is `24`.
+  3. We push `24` onto the stack, which becomes `[6, 24]`.
+6. The next item is a `+`, which is an operator with an arity of two.
+  1. We pop `24` and `6` off the stack, which becomes `[]`.
+  2. We evaluate `+(6, 24)` (in a pseudo-functional form). The result is `30`.
+  3. We push `30` onto the stack, which becomes `[30]`.
+7. There are no more items to process, and the stack contains one value. We return this as the result of evaluating `[3, 2, *, 4, !, +]`.
+
+Let's write this in code. We'll start by writing an infix-to-postfix converter. We are not writing a comprehensive arithmetic evaluator, so we will make a number of simplifying assumptions, including:
+
+- We will only handle singe-digit values and single-character operators.
+- We will not allow ambiguos operators. For example, in ordinary arithmetic, the `-` operator is both a prefix operator that negates integer values, as well as an infix operator for subtraction. In our evaluator, `-` can be one, or the other, but not both.
+- We'll only process strings when converting to RPN. It'll be up to the eventual evaluator to know that the string `'3'` is actually the number 3.
+- We aren't going to allow whitespace. `1 + 1` will fail, `1+1` will not.
+
+We'll also paramaterize the definitions for operators. This will allow us to reuse our evaluator for regular expressions simply by changing the oeprator definitions.
+
+---
+
+### converting infix to postfix
+
+Here's our definition for arithmetic operators:
+
+```javascript
+const arithmetic = {
+  operators: {
+    '+': {
+      symbol: Symbol('+'),
+      type: 'infix',
+      precedence: 1,
+      eval: (a, b) => a + b
+    },
+    '-': {
+      symbol: Symbol('-'),
+      type: 'infix',
+      precedence: 1,
+      eval: (a, b) => a - b
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'infix',
+      precedence: 3,
+      eval: (a, b) => a * b
+    },
+    '/': {
+      symbol: Symbol('/'),
+      type: 'infix',
+      precedence: 2,
+      eval: (a, b) => a / b
+    },
+    '!': {
+      symbol: Symbol('!'),
+      type: 'postfix',
+      precedence: 4,
+      eval: function factorial (a, memo = 1) {      
+        if (a < 2) {
+          return a * memo;
+        } else {
+          return factorial(a - 1, a * memo);
+        }
+      }
+    }
+  }
+};
+
+```
+
+Note that for each operator, we define a symbol. We'll use that when we push things into the output queue so that our evaluator can disambiguate symbols from values (Meaning, of course, that these symbols can't be values.) We also define a precedence, and an `eval` function that the evaluator will use later.
+
+Armed with this, how do we convert infix expression to postfix? WIth a "shunting yard."
+
+The [Shunting Yard Algorithm] is a method for parsing mathematical expressions specified in infix notation with parentheses. As we implement it here, it will produce a postfix (a/k/a "Reverse Polish) notation without parentheses. The shunting yard algorithm was invented by Edsger Dijkstra and named the "shunting yard" algorithm because its operation resembles that of a railroad shunting yard.
+
+[Shunting Yard Algorithm]: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
+
+The shunting yard algorithm is stack-based. Infix expressions are the form of mathematical notation most people are used to, for instance `3 + 4` or `3 + 4 × (2 − 1)`. For the conversion there are two lists, the input and the output. There is also a stack that holds operators not yet added to the output queue. To convert, the program reads each symbol in order and does something based on that symbol. The result for the above examples would be (in Reverse Polish notation) `3 4 +` and `3 4 2 1 − × +`, respectively.
+
+![The Shunting Yard Algorithm © Salix alba](/assets/images/fsa/Shunting_yard.svg.png)
+
+Here's our shunting yard implementation. There are a few extra bits and bobs we'll fill in in a moment:
+
+```javascript
+function shuntingYardA (inputString, { operators }) {
+  const operatorsMap = new Map(
+    Object.entries(operators)
+  );
+  
+  const representationOf =
+    something => {
+      if (operatorsMap.has(something)) {
+        const { symbol } = operatorsMap.get(something);
+
+        return symbol;
+      } else if (typeof something === 'string') {
+        return something;
+      } else {
+        error(`${something} is not a value`);
+      }
+    };
+  const typeOf =
+    symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
+  const isInfix =
+    symbol => typeOf(symbol) === 'infix';
+  const isPostfix =
+    symbol => typeOf(symbol) === 'postfix';
+  const isCombinator =
+    symbol => isInfix(symbol) || isPostfix(symbol);
+                                          
+  const input = inputString.split('');
+  const operatorStack = [];
+  const outputQueue = [];
+  let awaitingValue = true;
+
+  while (input.length > 0) {
+    const symbol = input.shift();
+
+    if (symbol === '(' && awaitingValue) {
+      // opening parenthesis case, going to build
+      // a value
+      operatorStack.push(symbol);
+      awaitingValue = true;
+    } else if (symbol === '(') {
+      // value catenation
+      error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
+    } else if (symbol === ')') {
+      // closing parenthesis case, clear the
+      // operator stack
+
+      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const op = operatorStack.pop();
+
+        outputQueue.push(representationOf(op));
+      }
+
+      if (peek(operatorStack) === '(') {
+        operatorStack.pop();
+        awaitingValue = false;
+      } else {
+        error('Unbalanced parentheses');
+      }
+    } else if (isCombinator(symbol)) {
+      const { precedence } = operatorsMap.get(symbol);
+
+      // pop higher-precedence operators off the operator stack
+      while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
+
+          outputQueue.push(representationOf(op));
+        } else {
+          break;
+        }
+      }
+
+      operatorStack.push(symbol);
+      awaitingValue = isInfix(symbol);
+    } else if (awaitingValue) {
+      // as expected, go straight to the output
+
+      outputQueue.push(representationOf(symbol));
+      awaitingValue = false;
+    } else {
+      // value catenation
+      error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
+    }
+  }
+
+  // pop remaining symbols off the stack and push them
+  while (operatorStack.length > 0) {
+    const op = operatorStack.pop();
+    
+    if (operatorsMap.has(op)) {
+      const { symbol: opSymbol } = operatorsMap.get(op);
+      outputQueue.push(opSymbol);
+    } else {
+      error(`Don't know how to push operator ${op}`);
+    }
+  }
+
+  return outputQueue;
+}
+```
+
+Naturally, we need to test our work before moving on:
+
+```javascript
+function deepEqual(obj1, obj2) {
+  function isPrimitive(obj) {
+      return (obj !== Object(obj));
+  }
+
+  if(obj1 === obj2) // it's just the same object. No need to compare.
+      return true;
+
+  if(isPrimitive(obj1) && isPrimitive(obj2)) // compare primitives
+      return obj1 === obj2;
+
+  if(Object.keys(obj1).length !== Object.keys(obj2).length)
+      return false;
+
+  // compare objects with same number of keys
+  for(let key in obj1) {
+      if(!(key in obj2)) return false; //other object doesn't have this prop
+      if(!deepEqual(obj1[key], obj2[key])) return false;
+  }
+
+  return true;
+}
+
+const pp = list => list.map(x=>x.toString());
+
+function verifyShunter (shunter, tests, ...additionalArgs) {
+  try {
+    const testList = Object.entries(tests);
+    const numberOfTests = testList.length;
+
+    const outcomes = testList.map(
+      ([example, expected]) => {
+        const actual = shunter(example, ...additionalArgs);
+      
+        if (deepEqual(actual, expected)) {
+          return 'pass';
+        } else {
+          return `fail: ${JSON.stringify({ example, expected: pp(expected), actual: pp(actual) })}`;
+        }
+      }
+    )
+
+    const failures = outcomes.filter(result => result !== 'pass');
+    const numberOfFailures = failures.length;
+    const numberOfPasses = numberOfTests - numberOfFailures;
+
+    if (numberOfFailures === 0) {
+      console.log(`All ${numberOfPasses} tests passing`);
+    } else {
+      console.log(`${numberOfFailures} tests failing: ${failures.join('; ')}`);
+    }
+  } catch(error) {
+    console.log(`Failed to validate the description: ${error}`)
+  }
+}
+
+verifyShunter(shuntingYardA, {
+  '3': [ '3' ],
+  '2+3': ['2', '3', arithmetic.operators['+'].symbol],
+  '4!': ['4', arithmetic.operators['!'].symbol],
+  '3*2+4!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['!'].symbol, arithmetic.operators['+'].symbol],
+  '(3*2+4)!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['+'].symbol, arithmetic.operators['!'].symbol]
+}, arithmetic);
+  //=> All 5 tests passing
+```
+
+---
+
+### handling a default operator
+
+In mathematical notation, it is not always necessary to write a multiplication operator. For example, `2(3+4)` is understood to be equivalent to `2 * (3 + 4)`.
+
+Whenever two values are adacent to each other in the input, we want our shunting yard to insert the missing `*` just as if it had been explicitly included. We will call `*` a "default operator," as our next shunting yard will default to `*` if there is a mssing infix oprator.
+
+`shuntingYardA` above has two places where it reports this as an error. Let's modify it as follows: Whenever it encounters two values in succession, it will re-enqueue the default operator, re-enqueue the second value, and thenb then proceed.
+
+We'll start with a way to denote which is the default operator, and then update our shunting yard code:
+
+```javascript
+const arithmeticB = {
+  operators: arithmetic.operators,
+  defaultOperator: '*'
+}
+
+function shuntingYardB (inputString, { operators, defaultOperator }) {
+  const operatorsMap = new Map(
+    Object.entries(operators)
+  );
+  
+  const representationOf =
+    something => {
+      if (operatorsMap.has(something)) {
+        const { symbol } = operatorsMap.get(something);
+
+        return symbol;
+      } else if (typeof something === 'string') {
+        return something;
+      } else {
+        error(`${something} is not a value`);
+      }
+    };
+  const typeOf =
+    symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
+  const isInfix =
+    symbol => typeOf(symbol) === 'infix';
+  const isPostfix =
+    symbol => typeOf(symbol) === 'postfix';
+  const isCombinator =
+    symbol => isInfix(symbol) || isPostfix(symbol);
+                                          
+  const input = inputString.split('');
+  const operatorStack = [];
+  const outputQueue = [];
+  let awaitingValue = true;
+
+  while (input.length > 0) {
+    const symbol = input.shift();
+
+    if (symbol === '(' && awaitingValue) {
+      // opening parenthesis case, going to build
+      // a value
+      operatorStack.push(symbol);
+      awaitingValue = true;
+    } else if (symbol === '(') {
+      // value catenation
+      
+      input.unshift(symbol);
+      input.unshift(defaultOperator);
+      awaitingValue = false;
+    } else if (symbol === ')') {
+      // closing parenthesis case, clear the
+      // operator stack
+
+      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const op = operatorStack.pop();
+
+        outputQueue.push(representationOf(op));
+      }
+
+      if (peek(operatorStack) === '(') {
+        operatorStack.pop();
+        awaitingValue = false;
+      } else {
+        error('Unbalanced parentheses');
+      }
+    } else if (isCombinator(symbol)) {
+      const { precedence } = operatorsMap.get(symbol);
+
+      // pop higher-precedence operators off the operator stack
+      while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
+
+          outputQueue.push(representationOf(op));
+        } else {
+          break;
+        }
+      }
+
+      operatorStack.push(symbol);
+      awaitingValue = isInfix(symbol);
+    } else if (awaitingValue) {
+      // as expected, go straight to the output
+
+      outputQueue.push(representationOf(symbol));
+      awaitingValue = false;
+    } else {
+      // value catenation
+      
+      input.unshift(symbol);
+      input.unshift(defaultOperator);
+      awaitingValue = false;
+    }
+  }
+
+  // pop remaining symbols off the stack and push them
+  while (operatorStack.length > 0) {
+    const op = operatorStack.pop();
+    
+    if (operatorsMap.has(op)) {
+      const { symbol: opSymbol } = operatorsMap.get(op);
+      outputQueue.push(opSymbol);
+    } else {
+      error(`Don't know how to push operator ${op}`);
+    }
+  }
+
+  return outputQueue;
+}
+
+verifyShunter(shuntingYardB, {
+  '3': [ '3' ],
+  '2+3': ['2', '3', arithmetic.operators['+'].symbol],
+  '4!': ['4', arithmetic.operators['!'].symbol],
+  '3*2+4!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['!'].symbol, arithmetic.operators['+'].symbol],
+  '(3*2+4)!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['+'].symbol, arithmetic.operators['!'].symbol],
+  '2(3+4)5': ['2', '3', '4', arithmeticB.operators['+'].symbol, '5', arithmeticB.operators['*'].symbol, arithmeticB.operators['*'].symbol],
+  '3!2': ['3', arithmeticB.operators['!'].symbol, '2', arithmeticB.operators['*'].symbol]
+}, arithmeticB);
+  //=> All 7 tests passing
+```
+
+We now have enough to get started with evaluating the postfix notation produced by our shunting yard.
+
+---
+
+### evaluating the postfix
+
+Our first cut at the code for evaluating the postfix code produceed by our shunting yard will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
+
+```javascript
+function evaluatePostfixA (postfix, { operators, toValue }) {
+  const symbols = new Map(
+    Object.entries(operators).map(
+      ([key, { symbol, type, fn }]) =>
+        [symbol, { arity: arities[type], fn }]
+    )
+  );
+  
+  const stack = [];
+
+  for (const element of postfix) {
+    if (typeof element === 'string') {
+      stack.push(toValue(element));
+    } else if (symbols.has(element)) {
+      const { arity, fn } = symbols.get(element);
+
+      if (stack.length < arity) {
+        error(`Not emough values on the stack to use ${element}`)
+      } else {
+        const args = [];
+
+        for (let counter = 0; counter < arity; ++counter) {
+          args.unshift(stack.pop());
+        }
+
+        stack.push(fn.apply(null, args))
+      }
+    } else {
+      error(`Don't know what to do with ${element}'`)
+    }
+  }
+  if (stack.length === 0) {
+    return undefined;
+  } else if (stack.length > 1) {
+    error(`should only be one value to return, but there were ${stack.length}values on the stack`);
+  } else {
+    return stack[0];
+  }
+}
+```
+
+We can then wire the shunting yard up to the postfix evaluator, to make a function that evaluates infix notation:
+
+```javascript
+function evaluateA (expression, configuration) {
+  return evaluatePostfixA(
+    shuntingYardB(
+      expression, configuration
+    ),
+    configuration
+  );
+}
+
+const arithmeticC = {
+  operators: arithmetic.operators,
+  defaultOperator: '*',
+  toValue: string => Number.parseInt(string, 10)
+};
+
+verify(evaluateA, {
+  '': undefined,
+  '3': 3,
+  '2+3': 5,
+  '4!': 24,
+  '3*2+4!': 30,
+  '(3*2+4)!': 3628800,
+  '2(3+4)5': 70,
+  '3!2': 12
+}, arithmeticC);
+  //=> All 8 tests passing
+```
+
+This extremely basic function for evaluates:
+
+- infix expressions;
+- with parentheses, and infix operators (naturally);
+- with postfix operators;
+- with a default operator that handles the case when values are catenated.
+
+That is enough to begin work on compiling regular expressions to finite-state recognizers.
 
 ---
 
 # Finite-State Recognizers
 
-We are going to begin by working with finite-state automata that recognize, or "accept" sentences in languages. There are many ways to notate finite-state automata. For example, state diagrams are particularly easy to read for smallish examples:
+If we're going to compile regular expressions to finite-state recognizers, we need a representation for finite-state recognizers. There are many ways to notate finite-state automata. For example, state diagrams are particularly easy to read for smallish examples:
 
 <div class="mermaid">
   stateDiagram
@@ -255,13 +809,11 @@ Of course, diagrams are not particularly easy to work with in JavaScript. If we 
 
 ### describing finite-state recognizers in JSON
 
-We don't need to invent a brand-new format, there is already an accepted [formal definition][fdfsa] for Pushdown Automata. Mind you, it involves mathematical symbols that are unfamiliar to some programmers, so without dumbing it down, we will create our own language that is equivalent to the full formal definition, but expressed in a subset of JSON.
+We don't need to invent a brand-new format, there is already an accepted [formal definition][fdfsa]. Mind you, it involves mathematical symbols that are unfamiliar to some programmers, so without dumbing it down, we will create our own language that is equivalent to the full formal definition, but expressed in a subset of JSON.
 
 [fdfsa]: https://en.wikipedia.org/wiki/Finite-state_machine#Mathematical_model
 
-JSON has the advantage that it is a language in the exact sense we want: An ordered set of symbols. So we will describe finite-state recognizers using JSON, and we will attempt to write a finite-state recognizer that recognizes strings that are valid JSON descriptions of finite-state recognizers.[^natch]
-
-[^natch]: Naturally, if we have a valid description of a finite-state recognizer that recognizes vald descriptions of finite-state recognizers... We expect it to recognize itself.
+JSON has the advantage that it is a language in the exact sense we want: An ordered set of symbols.
 
 Now what do we need to encode? Finite-state recognizers are defined as a quintuple of `(Σ, S, s, ẟ, F)`, where:
 
@@ -423,35 +975,8 @@ function automate (description) {
 Here we are using `automate` with our definition for recognizing binary numbers. We'll use the `verify` function throughout our exploration to build simple tests-by-example:
 
 ```javascript
-function verify (description, tests) {
-  try {
-    const recognizer = automate(description);
-    const testList = Object.entries(tests);
-    const numberOfTests = testList.length;
-
-    const outcomes = testList.map(
-      ([example, expected]) => {
-        const actual = recognizer(example);
-        if (actual === expected) {
-          return 'pass';
-        } else {
-          return `fail: ${JSON.stringify({ example, expected, actual })}`;
-        }
-      }
-    )
-
-    const failures = outcomes.filter(result => result !== 'pass');
-    const numberOfFailures = failures.length;
-    const numberOfPasses = numberOfTests - numberOfFailures;
-
-    if (numberOfFailures === 0) {
-      console.log(`All ${numberOfPasses} tests passing`);
-    } else {
-      console.log(`${numberOfFailures} tests failing: ${failures.join('; ')}`);
-    }
-  } catch(error) {
-    console.log(`Failed to validate the description: ${error}`)
-  }
+function verifyRecognizer (recognizer, examples) {
+  return verify(automate(recognizer), examples);
 }
 
 const binary = {
@@ -465,7 +990,7 @@ const binary = {
   "accepting": ["zero", "notZero"]
 };
 
-verify(binary, {
+verifyRecognizer(binary, {
   '': false,
   '0': true,
   '1': true,
@@ -482,31 +1007,451 @@ verify(binary, {
   '110': true,
   '111': true,
   '10100011011000001010011100101110111': true
-})
+});
   //=> All 16 tests passing
 ```
 
 We now have a function, `automate`, that takes a data description of a finite-state automaton/recognizer, and returns a Javascript recognizer function we can play with and verify.
 
+Verifying recognizers will be extremely important when we want to verify that when we compile a regular expression to a finite-state recognizer, that the finite-state recognizer is equivalent to the regular expression.
+
 ---
 
-# Composing and Decorating Recognizers
+# Building Blocks
+
+What is the absolutely minimal recognizer? One might think, "A recognizer for empty strings," and as we will see, such a recognizer is useful. But there is an even more minimal recogner than that. The recognizer that recognizes empty strings recognizes a language with only one sentence in it.
+
+But what is the language with no sentences whatsoever? This language is often called the _empty set_, and in mathematical notation it is denoted with `∅`. If we want to make tools for building finite-state recognizers, we'll need a way to build a recognizer for the empty set.
+
+We'll just boldly declare it as a constant:
+
+```javascript
+const EMPTY_SET = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": []
+};
+
+verifyRecognizer(EMPTY_SET, {
+  '': false,
+  '0': false,
+  '1': false
+});x
+  //=> All 3 tests passing
+```
+
+With `EMPTY_SET` out of the way, we'll turn our attention to more practical recognizers, those that recognize actual sentences of symbols.
+
+What's the simplest possible language that contains sentences? A language containing only one sentence. Such languages include `{ 'balderdash' }`, `{ 'billingsgate' }`, and even `{ 'bafflegab' }`.
+
+Of all the one-sentence languages, the simplest would be the language containing the shortest possible string, `''`. We will also declare this as a constant:
+
+```javascript
+const EMPTY_STRING = {
+  "start": "empty",
+  "transitions": [],
+  "accepting": ["empty"]
+};
+
+verifyRecognizer(EMPTY_STRING, {
+  '': true,
+  '0': false,
+  '1': false
+});
+  //=> All 3 tests passing
+```
+
+`EMPTY_SET` and `EMPTY_STRING` are both **essential**, even if we use them somewhat infrequently. We can now move on to build more complex recognizers with functions.
+
+---
+
+### literal
+
+What makes recognizers really useful is recognizing non-empty strings of one kind or another. This use case is so common, regexen are designed to make recognizing strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
+
+```javascript
+verify(/^abc$/, {
+  '': false,
+  'a': false,
+  'ab': false,
+  'abc': true,
+  '_abc': false,
+  '_abc_': false,
+  'abc_': false
+})
+  //=> All 7 tests passing
+```
+
+Here's an example of a recognizer that recognizes a single zero:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->recognized : 0
+    recognized-->[*]
+</div>
+
+We could assign this to a constant, and then make a constant for every other symbol we might want to use in a recognizer, but this would be tedious. Instead, here's a function that makes recognizers that recognize a literal symbol:
+
+```javascript
+function literal (symbol) {
+  return {
+    "start": "empty",
+    "transitions": [
+      { "from": "empty", "consume": symbol, "to": "recognized" }
+    ],
+    "accepting": ["recognized"]
+  };
+}
+
+verifyRecognizer(literal('0'), {
+  '': false,
+  '0': true,
+  '1': false,
+  '01': false,
+  '10': false,
+  '11': false
+});
+  //=> All 6 tests passing
+```
+
+Now what can we do with these recognizers?
+
+---
+
+### compiling the empty set, the empty string, and characters
+
+Regular expressions have a notation for the empty set, the empty string, and single characters:
+
+- The constant `∅` represents the empty language.
+- The constant `ε` represents the language containing only the empty string.
+- Constant literals such as `x`, `y`, or `z` represent sentences consisting of a single symbol.
+
+Recall that our function for evaluating postfix expressions has a special function, `toValue`, for translating strings into values. In a calculator, the values were integers. In our compiler, the values are finite-state recognizers.
+
+Our approach to handling constant literals will be to use `toValue` to perform the translation for us:
+
+```javascript
+const regexA = {
+  operators: {
+    // coming soon...
+  },
+  defaultOperator: undefined,
+  toValue (string) {
+    return literal(string);
+  }
+};
+```
+
+But what about `∅` and `ε`? We could stick some if statements in `toValue`, so that `toValue('∅') === EMPTY_SET` and `toValue('ε') === EMPTY_STRING`, but as well see in the next section, this would paint us into a corner if we ever want to match strings that include the characters `∅` or `ε`.
+
+So instead, we'll use a feature that we wrote in, but haven't used yet: Atomic Operators, i.e. operators with arity zero:
+
+```javascript
+const regexA = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => EMPTY_SET
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => EMPTY_STRING
+    }
+  },
+  defaultOperator: undefined,
+  toValue (string) {
+    return literal(string);
+  }
+};
+```
+
+Then we can use `evaluate` to generate recognizers from the most basic of regular expressions:
+
+```javascript
+const emptySetRecognizer = evaluate(`∅`, regexA);
+const emptyStringRecognizer = evaluate(`ε`, regexA);
+const rRecognizer = evaluate('r', regexA);
+
+verifyRecognizer(emptySetRecognizer, {
+  '': false,
+  '0': false,
+  '1': false
+});
+  //=> All 3 tests passing
+
+verifyRecognizer(emptyStringRecognizer, {
+  '': true,
+  '0': false,
+  '1': false
+});
+  //=> All 3 tests passing
+
+verifyRecognizer(rRecognizer, {
+  '': false,
+  'r': true,
+  'R': false,
+  'reg': false,
+  'Reg': false
+});
+  //=> All 5 tests passing
+```
+
+We'll do this enough that it's worth building a helper for verifying our work:
+
+```javascript
+function verifyEvaluateA (expression, configuration, examples) {
+  return verify(
+    automate(evaluateA(expression, configuration)),
+    examples
+  );
+}
+
+verifyEvaluateA('∅', regexA, {
+  '': false,
+  '0': false,
+  '1': false
+});
+  //=> All 3 tests passing
+
+verifyEvaluateA(`ε`, regexA, {
+  '': true,
+  '0': false,
+  '1': false
+});
+  //=> All 3 tests passing
+
+verifyEvaluateA('r', regexA, {
+  '': false,
+  'r': true,
+  'R': false,
+  'reg': false,
+  'Reg': false
+});
+  //=> All 5 tests passing
+```
+
+Great! We have something to work with, namely constants. Before we get to building expressions using operators and so forth, let's solve the little problem we hinted at when making `∅` and `ε` into operators.
+
+---
+
+### recognizing special characters
+
+There is a bug in our code so far. Or rather, a glaring omission: _How do we write a recognizer that recognizes the characters `∅` or `ε`?_
+
+This is not really necessary for demonstrating the general idea that we can compile any regular expression into a finite-state recognizer, but once we start adding operators like `*` and `?`, not to mention extensions like `+` or `?`, the utility of our demonstration code will fall dramatically.
+
+Now we've already made `∅` and `ε` into atomic operators, so now the question becomes, how do we write a regular expression with literal `∅` or `ε` chracters in it? And not to mention, literal parentheses?
+
+Let's go with the most popular approach, and incorporate an escape symbol. In most languages, including regexen, that symbol is a `\`. We could do the same, but JavaScript already interprets `\` as an escape, so our work would be littered with double backslashes to get JavaScript to recognize a single `\`.
+
+We'll set it up so that we can choose whatever we like, but by default we'll use a back-tick:
+
+```javascript
+function shuntingYardC (
+  inputString, 
+  {
+    operators,
+    defaultOperator,
+    escapeSymbol = '`',
+    escapedValue = string => string
+  }
+) {
+  const operatorsMap = new Map(
+    Object.entries(operators)
+  );
+  
+  const representationOf =
+    something => {
+      if (operatorsMap.has(something)) {
+        const { symbol } = operatorsMap.get(something);
+
+        return symbol;
+      } else if (typeof something === 'string') {
+        return something;
+      } else {
+        error(`${something} is not a value`);
+      }
+    };
+  const typeOf =
+    symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
+  const isInfix =
+    symbol => typeOf(symbol) === 'infix';
+  const isPostfix =
+    symbol => typeOf(symbol) === 'postfix';
+  const isCombinator =
+    symbol => isInfix(symbol) || isPostfix(symbol);
+                                          
+  const input = inputString.split('');
+  const operatorStack = [];
+  const outputQueue = [];
+  let awaitingValue = true;
+
+  while (input.length > 0) {
+    const symbol = input.shift();
+
+    if (symbol === escapeSymbol) {
+      if (input.length === 0) {
+        error('Escape symbol ${escapeSymbol} has no following symbol');
+      } else {
+        const valueSymbol = input.shift();
+
+        if (awaitingValue) {
+          // push the escaped value of the symbol
+
+          outputQueue.push(escapedValue(valueSymbol));
+        } else {
+          // value catenation
+
+          input.unshift(valueSymbol);
+          input.unshift(escapeSymbol);
+          input.unshift(defaultOperator);
+        }
+        awaitingValue = false;
+      }
+    } else if (symbol === '(' && awaitingValue) {
+      // opening parenthesis case, going to build
+      // a value
+      operatorStack.push(symbol);
+      awaitingValue = true;
+    } else if (symbol === '(') {
+      // value catenation
+      
+      input.unshift(symbol);
+      input.unshift(defaultOperator);
+      awaitingValue = false;
+    } else if (symbol === ')') {
+      // closing parenthesis case, clear the
+      // operator stack
+
+      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const op = operatorStack.pop();
+
+        outputQueue.push(representationOf(op));
+      }
+
+      if (peek(operatorStack) === '(') {
+        operatorStack.pop();
+        awaitingValue = false;
+      } else {
+        error('Unbalanced parentheses');
+      }
+    } else if (isCombinator(symbol)) {
+      const { precedence } = operatorsMap.get(symbol);
+
+      // pop higher-precedence operators off the operator stack
+      while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
+
+          outputQueue.push(representationOf(op));
+        } else {
+          break;
+        }
+      }
+
+      operatorStack.push(symbol);
+      awaitingValue = isInfix(symbol);
+    } else if (awaitingValue) {
+      // as expected, go straight to the output
+
+      outputQueue.push(representationOf(symbol));
+      awaitingValue = false;
+    } else {
+      // value catenation
+      
+      input.unshift(symbol);
+      input.unshift(defaultOperator);
+      awaitingValue = false;
+    }
+  }
+
+  // pop remaining symbols off the stack and push them
+  while (operatorStack.length > 0) {
+    const op = operatorStack.pop();
+    
+    if (operatorsMap.has(op)) {
+      const { symbol: opSymbol } = operatorsMap.get(op);
+      outputQueue.push(opSymbol);
+    } else {
+      error(`Don't know how to push operator ${op}`);
+    }
+  }
+
+  return outputQueue;
+}
+
+function evaluateB (expression, configuration) {
+  return evaluatePostfixA(
+    shuntingYardC(
+      expression, configuration
+    ),
+    configuration
+  );
+}
+```
+
+And now to test it:
+
+```javascript
+function verifyEvaluateB (expression, configuration, examples) {
+  return verify(
+    automate(evaluateB(expression, configuration)),
+    examples
+  );
+}
+
+verifyEvaluateB('∅', regexA, {
+  '': false,
+  '∅': false,
+  'ε': false
+});
+  //=> All 3 tests passing
+
+verifyEvaluateB('`∅', regexA, {
+  '': false,
+  '∅': true,
+  'ε': false
+});
+  //=> All 3 tests passing
+
+verifyEvaluateB('ε', regexA, {
+  '': true,
+  '∅': false,
+  'ε': false
+});
+  //=> All 3 tests passing
+
+verifyEvaluateB('`ε', regexA, {
+  '': false,
+  '∅': false,
+  'ε': true
+});
+  //=> All 3 tests passing
+```
+
+And now it's time for what we might call the main event: Expressions that use operators. 
+
+---
+
+# Composing and Decorating Recognizers With Operators
 
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
 
-Regular expressions and regexen are both built with composition. If you have two regular expressions, `A` and `B`, you can create a new regular expression that is the union of `A` and `B` with the expression `A|B`.
+Regular expressions and regexen are both built with composition. If you have two regular expressions, `A` and `B`, you can create a new regular expression that is the union of `A` and `B` with the expression `A|B`, and you can create a new regular expression that is the catenation of `A` and `B` with `AB`.
 
-Finite-state recognizers, on the other hand, do not compose by themselves. If we want to have the same affordance for finite-state recognizers, we need to write a function that takes two recognizers as arguments, and returns a recognizer that recognizes the language that is the union of `A` and `B`.
+Our `evaluate` functions don't know how to do that, and we aren't going to update them to try. Instead, we'll write combinator functions that take two recognizers and return the finite-state recognizer representing the union, or catenation of their arguments.
 
-So that's what we'll create: We are going to implement three operations that compose two recognizers: _Union_, _Intersection_, and _Catenation_.
+Now so far, we only have recognizers for the empty set, the empty string, and any one character. Nevertheless, we will build our combinators to handle *any* two recognizers, because that's exactly how the rules of regular expressions define them:
 
-Given two recognizes `a` and `b`, we can say that `A` is a set of sentences recognized by `a`, and `B` is a set of sentences recognized by `b`. Given `a`, `A`, `b`, and `B`, we can say that the `union(a, b)` is a recognizer that recognizes sentences in the set `A ⋃ B`, and `intersection(a, b)` is a recognizer that recognizes sentences in the set `A ⋂ B`.
+- Given any two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
+- Given any two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
 
-Or in colloquial terms, a sentence is recognized by `union(a, b)` if and only if it is recognized by `a` or it is recognized by `b`. And a sentence is recognized by `intersection(a, b)` if and only if it is recognized by both `a` and by `b`.
-
-What about `catenation(a, b)`? If we have some sentence `xy`, where `x` and `y` are strings of zero or more symbols, then `xy` is recognized by `catenation(a, b)` is and only if `x` is recognized by `a` and `y` is recognized by `b`.
-
-We'll get started with union and intersection, because they both are built on a common operation, *taking the product of two finite-state automata*.
+We'll get started with `union`, which is built on a very useful operation, *taking the product of two finite-state automata*.
 
 ---
 
@@ -697,7 +1642,7 @@ Thus, if we begin with the start state and then recursively follow transitions, 
 
 ### a function to compute the product of two recognizers
 
-Here is a function that [takes the product of two recognizers](/assets/supplemental/fsa/03-product.js). It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`, although that's easy enough to change.
+Here is a function that [takes the product of two recognizers](/assets/supplemental/fsa/03-product.js). It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`.
 
 We can test it with out `a` and `b`:
 
@@ -2506,183 +3451,6 @@ But all we've talked about are combinators, operations that build finite-state r
 
 ---
 
-# Building Blocks
-
-What is the absolutely minimal recognizer? One might think, "A recognizer for empty strings," and as we will see, such a recognizer is useful. But there is an even more minimal recogner than that. The recognizer that recognizes empty strings recognizes a language with only one sentence in it.
-
-But what is the language with no sentences whatsoever? This language is often called the _empty set_, and in mathematical notation it is denoted with `∅`. If we want to make tools for building finite-state recognizers, we'll need a way to build a recognizer for the empty set.
-
-We'll just boldly declare it as a constant:
-
-```javascript
-const EMPTY_SET = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": []
-};
-
-verify(EMPTY_SET, {
-  '': false,
-  '0': false,
-  '1': false
-});x
-  //=> All 3 tests passing
-```
-
-With `EMPTY_SET` out of the way, we'll turn our attention to more practical recognizers, those that recognize actual sentences of symbols.
-
-What's the simplest possible language that contains sentences? A language containing only one sentence. Such languages include `{ 'balderdash' }`, `{ 'billingsgate' }`, and even `{ 'bafflegab' }`.
-
-Of all the one-sentence languages, the simplest would be the language containing the shortest possible string, `''`. We will also declare this as a constant:
-
-```javascript
-const EMPTY_STRING = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": ["empty"]
-};
-
-verify(EMPTY_STRING, {
-  '': true,
-  '0': false,
-  '1': false
-});
-  //=> All 3 tests passing
-```
-
-`EMPTY_SET` and `EMPTY_STRING` are both **essential**, even if we use them somewhat infrequently. We can now move on to build more complex recognizers with functions.
-
----
-
-### just1 and just
-
-What makes recognizers really useful is recognizing non-empty strings of one kind or another. This use case is so common, regexen are designed to make recognizing strings the easiest thing to write. For example, to recognize the string `abc`, we write `/^abc$/`:
-
-```javascript
-verify(/^abc$/, {
-  '': false,
-  'a': false,
-  'ab': false,
-  'abc': true,
-  '_abc': false,
-  '_abc_': false,
-  'abc_': false
-})
-  //=> All 7 tests passing
-```
-
-Here's an example of a recognizer that recognizes a single zero:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : 0
-    recognized-->[*]
-</div>
-
-We could assign this to a constant, and then make a constant for every other symbol we might want to use in a recognizer, but this would be tedious. Instead, here's a function that makes recognizers that recognize "just one" symbol:
-
-```javascript
-function just1 (symbol) {
-  return {
-    "start": "empty",
-    "transitions": [
-      { "from": "empty", "consume": symbol, "to": "recognized" }
-    ],
-    "accepting": ["recognized"]
-  };
-}
-
-verify(just1('0'), {
-  '': false,
-  '0': true,
-  '1': false,
-  '01': false,
-  '10': false,
-  '11': false
-});
-  //=> All 6 tests passing
-```
-
-Armed with `EMPTY_STRING` and `just1`, we can use catenation to make recognizers for any string we might want. So let's add `just1` to our collection of essential building blocks for recognizing symbols.
-
-```javascript
-const reginald = catenation(
-  just1('r'),
-  just1('e'),
-  just1('g'),
-  just1('i'),
-  just1('n'),
-  just1('a'),
-  just1('l'),
-  just1('d')
-);
-
-verify(reginald, {
-  '': false,
-  'r': false,
-  'reg': false,
-  'reggie': false,
-  'reginald': true,
-  'reginaldus': false
-});
-  //=> All 6 tests passing
-```
-
-Even though we don't need anything else to build recognizers for strings and symbols, our tools exist for our convenience, so it's ok to make "inessential" tools that simplify our lives and make our code easier to read.
-
-Let's make `just`, a version of `just1` that is convenient to use:
-
-```javascript
-const EMPTY = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": ["empty"]
-};
-
-function just (str = "") {
-  const recognizers = str.split('').map(just1);
-
-  return catenation(...recognizers);
-}
-
-verify(just('r'), {
-  '': false,
-  'r': true,
-  'reg': false,
-  'reggie': false,
-  'reginald': false,
-  'reginaldus': false
-});
-  //=> All 6 tests passing
-
-verify(just('reginald'), {
-  '': false,
-  'r': false,
-  'reg': false,
-  'reggie': false,
-  'reginald': true,
-  'reginaldus': false
-});
-  //=> All 6 tests passing
-```
-
-The improved `just` generates a recognizer that recognizes whatever string you give it, including the empty string. And it's almost exactly like using regexen to recognize strings:
-
-```javascript
-verify(/^reginald$/, {
-  '': false,
-  'r': false,
-  'reg': false,
-  'reggie': false,
-  'reginald': true,
-  'reginaldus': false
-});
-  //=> All 6 tests passing
-```
-
----
-
 ### any
 
 As we know from the implementation, `just` takes a string, and generating the `catenation` of recognizers for the symbols in the string. What else could we do with the recognizers for the symbols in a string?
@@ -2691,7 +3459,7 @@ We could take their `intersection`, but unless there was only one symbol, that w
 
 ```javascript
 function any (str = "") {
-  const recognizers = str.split('').map(just1);
+  const recognizers = str.split('').map(literal);
 
   return union(...recognizers);
 }
@@ -2880,22 +3648,22 @@ verify(stringLiteral, {
 
 # Generating finite-state recognizers from formal regular expressions
 
-Let us consider `union`, `catenation`, `kleene*`, `EMPTY_SET`, `EMPTY_STRING`, and `just1` for a moment. These have a one-to-one correspondance with the operations in formal regular expressions. And in fact, it's pretty easy to translate any formal regular expression into an equivalent JavaScript expression using our functions and constants.
+Let us consider `union`, `catenation`, `kleene*`, `EMPTY_SET`, `EMPTY_STRING`, and `literal` for a moment. These have a one-to-one correspondance with the operations in formal regular expressions. And in fact, it's pretty easy to translate any formal regular expression into an equivalent JavaScript expression using our functions and constants.
 
 For example:
 
 - `∅` becomes `EMPTY_SET`
-- `0` (or any single character) becomes `just1('0')`
+- `0` (or any single character) becomes `literal('0')`
 - `a|b` (or any two expressions) becomes `union(a, b)`
 - `xyz` (or any string of characters) becomes `catenation(just('x'), just('y'), just('z'))`
-- `a*` (or any expresion followed by an `*`) becomes `kleeneStar(just1('a'))`
+- `a*` (or any expresion followed by an `*`) becomes `kleeneStar(literal('a'))`
 
 The parentheses in JavaScript work just like the parentheses in formal regular expressions, so by carefully following the above rules, we can turn any arbitrary formal regular expression into a JavaScript expression.
 
 For example, the formal regular expression `0|(1(0|1)*)` becomes:
 
 ```javascript
-const binary2 = union(just1('0'), catenation(just1('1'), kleeneStar(union(just('0'), just('1')))));
+const binary2 = union(literal('0'), catenation(literal('1'), kleeneStar(union(just('0'), just('1')))));
 
 binary2
   //=>
@@ -3351,7 +4119,7 @@ basicShuntingYard('\\(\\*|\\)')
 
 ### generating finite-state recognizers
 
-We're ready to compile the reverse-polish notation into a description, using our implementations of `just1`, `union`, `catenation`, and `kleene*`. We'll do it with a stack-based interpreter:
+We're ready to compile the reverse-polish notation into a description, using our implementations of `literal`, `union`, `catenation`, and `kleene*`. We'll do it with a stack-based interpreter:
 
 ```javascript
 function rpnToDescription (rpn, operators = formalOperators) {
@@ -3368,7 +4136,7 @@ function rpnToDescription (rpn, operators = formalOperators) {
 
     for (const element of rpn) {
       if (typeof element === 'string') {
-        stack.push(just1(element));
+        stack.push(literal(element));
       } else if (symbols.has(element)) {
         const { arity, fn } = symbols.get(element);
 
@@ -3532,7 +4300,7 @@ Onwards!
 
 ---
 
-### kleene+
+### `kleene+`
 
 Like formal regular expressions, regexen have a postfix `*` character to represent `kleene*`. But unlike formal regular expressions, regexen also support a postfix `+` to represent the `kleene+` operator that matches _one_ or more instances of its argument:
 
@@ -3579,7 +4347,7 @@ verify(kleenePlus(any('Aa')), {
   'AA': true,
   'aaaAaAaAaaaAaa': true,
   ' a': false,
-  'a ': false,
+  'a kleene*': false,
   'eh?': false
 });
   //=> All 9 tests passing
@@ -3609,16 +4377,52 @@ verify(oneOrMoreAs, {
   'a ': false,
   'eh?': false
 });
-
+  //=> All 9 tests passing
 ```
 
 Now we can add a new "rule:"
 
-- `w+` is a regular expression denoting the language comprised of the catenation of zone or more sentences belonging to the language denoted by `w`.
+- `w+` is a regular expression denoting the language comprised of the catenation of one or more sentences belonging to the language denoted by `w`.
 
 And because our `kleene*` uses `catenation` and `kleene*`, and because we've already established that the set of regular expressions is closed under `catenation` and `kleene*`, we know that the set of regular expressions is closed under `kleene+`, too.
 
 In other words, our new "rule" isn't really changing the behaviour of regular expressions, it's simply documenting behaviour we already established with the rules for formal regular expressions.
+
+---
+
+### optional
+
+Following the exact same reasoning, we can add another affordance from regexen, the `?` postfix operator, which represents zero-or-one just as `*` represents zero-or-more and `+` represents one-or-more.
+
+Our new "rule" will be:
+
+- `v?` is a regular expression denoting the language comprised of the union of the languages `ε` and `v`.
+
+Of course, it's not adding anything new, since our implementation makes use of the `union` and `EMPTY_SET` entities we've already defined:
+
+```javascript
+function optional (description) {
+  return union(EMPTY_STRING, description);
+}
+
+const operators3 = new Map(
+  [...formalOperators.entries()].concat([
+    ['?', { symbol: Symbol('?'), precedence: 3, arity: 1, fn: optional }]
+  ])
+);
+
+const regMaybeReginald = toFiniteStateRecognizer('reg(inald)?', operators3);
+
+verify(regMaybeReginald, {
+  '': false,
+  'r': false,
+  're': false,
+  'reg': true,
+  'reggie': false,
+  'reginald': true
+});
+  //=> All 6 tests passing
+```
 
 ---
 
@@ -3656,23 +4460,25 @@ verify(oddLength, {
 
 We also defined the `intersection` function. Let's add it as well, we'll associate it with the `&` operator:
 
-### ampersand
+### intersection
 
 Many regexen dialects support intersection in character classes. We're not going to get into that, as character classes form a little mini-language embedded within regexen, and we want to focus on regular expressions. So our `intersection` syntax will denote the intersection between any two regular expressions. Here's the new rule:
 
 - `a&b` is a regular expression denoting the language comprised of the intersection of the set of languages denoted by `a`, and the set of languages denoted by `b`.
 
-As we have already written `intersection`, implementing this new feature is as easy as adding a new operator, `&`. It will have the same precedence as `|`:
+As we have already written `intersection`, implementing this new feature is as easy as adding a new operator, `∩`. It will have the same precedence as `|`.
+
+This allows us to do things like create extended regular expressions that match a binary number with an odd number of digits:
 
 ```javascript
 const withDotAndIntersection = new Map(
   [...formalOperators.entries()].concat([
     ['.', { symbol: Symbol('.'), precedence: 99, arity: 0, fn: () => EVERYTHING }],
-    ['&', { symbol: Symbol('&'), precedence: 99, arity: 2, fn: intersection }]
+    ['∩', { symbol: Symbol('∩'), precedence: 99, arity: 2, fn: intersection }]
   ])
 );
 
-const oddBinary = toFiniteStateRecognizer('(0|(1(0|1)*))&(.(..)*)', withDotAndIntersection);
+const oddBinary = toFiniteStateRecognizer('(0|(1(0|1)*))∩(.(..)*)', withDotAndIntersection);
 
 verify(oddBinary, {
   '': false,
@@ -3691,6 +4497,7 @@ verify(oddBinary, {
   '110': true,
   '111': true
 });
+  //=> All 15 tests passing
 ```
 
 ---

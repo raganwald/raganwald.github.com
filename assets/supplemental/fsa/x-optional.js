@@ -7,8 +7,7 @@ const optional =
 
 const regMaybeReginald = catenation(
   just('reg'),
-  optional(just('inald'))
-);
+  optio
 
 verify(regMaybeReginald, {
   '': false,

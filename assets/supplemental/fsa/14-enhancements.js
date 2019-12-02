@@ -10,15 +10,33 @@ const operators2 = new Map(
   ])
 );
 
+function optional (description) {
+  return union(EMPTY_STRING, description);
+}
+
+const operators3 = new Map(
+  [...formalOperators.entries()].concat([
+    ['?', { symbol: Symbol('?'), precedence: 3, arity: 1, fn: optional }]
+  ])
+);
+
 const SYMBOLIC = `~\`!@#$%^&*()_-+={[}]|\\:;"'<,>.?/`;
 const WHITESPACE = ` \r\n\t`;
 const EVERYTHING = any(ALPHANUMERIC + SYMBOLIC + WHITESPACE);
 
-const operators3 = new Map(
+const operators4 = new Map(
   [...formalOperators.entries()].concat([
     ['.', { symbol: Symbol('.'), precedence: 99, arity: 0, fn: () => EVERYTHING }]
   ])
 );
+
+const withDotAndIntersection = new Map(
+  [...formalOperators.entries()].concat([
+    ['.', { symbol: Symbol('.'), precedence: 99, arity: 0, fn: () => EVERYTHING }],
+    ['∩', { symbol: Symbol('∩'), precedence: 99, arity: 2, fn: intersection }]
+  ])
+);
+
 
 // ----------
 
@@ -61,7 +79,18 @@ verify(oneOrMoreAs, {
   'eh?': false
 });
 
-const oddLength = toFiniteStateRecognizer('.(..)*', operators3);
+const regMaybeReginald = toFiniteStateRecognizer('reg(inald)?', operators3);
+
+verify(regMaybeReginald, {
+  '': false,
+  'r': false,
+  're': false,
+  'reg': true,
+  'reggie': false,
+  'reginald': true
+});
+
+const oddLength = toFiniteStateRecognizer('.(..)*', operators4);
 
 verify(oddLength, {
   '': false,
@@ -70,4 +99,24 @@ verify(oddLength, {
   '[0]': true,
   '()()': false,
   'x o x': true
+});
+
+const oddBinary = toFiniteStateRecognizer('(0|(1(0|1)*))∩(.(..)*)', withDotAndIntersection);
+
+verify(oddBinary, {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': false,
+  '11': false,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true
 });

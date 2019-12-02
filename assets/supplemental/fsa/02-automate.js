@@ -1,4 +1,4 @@
-// 02-automate.js
+console.log('02-automate.js');
 
 function automate (description) {
   if (description instanceof RegExp) {
@@ -45,35 +45,8 @@ function automate (description) {
   }
 }
 
-function verify (description, tests) {
-  try {
-    const recognizer = automate(description);
-    const testList = Object.entries(tests);
-    const numberOfTests = testList.length;
-
-    const outcomes = testList.map(
-      ([example, expected]) => {
-        const actual = recognizer(example);
-        if (actual === expected) {
-          return 'pass';
-        } else {
-          return `fail: ${JSON.stringify({ example, expected, actual })}`;
-        }
-      }
-    )
-
-    const failures = outcomes.filter(result => result !== 'pass');
-    const numberOfFailures = failures.length;
-    const numberOfPasses = numberOfTests - numberOfFailures;
-
-    if (numberOfFailures === 0) {
-      console.log(`All ${numberOfPasses} tests passing`);
-    } else {
-      console.log(`${numberOfFailures} tests failing: ${failures.join('; ')}`);
-    }
-  } catch(error) {
-    console.log(`Failed to validate the description: ${error}`)
-  }
+function verifyRecognizer (recognizer, examples) {
+  return verify(automate(recognizer), examples);
 }
 
 // ----------
@@ -89,7 +62,7 @@ const binary = {
   "accepting": ["zero", "notZero"]
 };
 
-verify(binary, {
+verifyRecognizer(binary, {
   '': false,
   '0': true,
   '1': true,
@@ -121,7 +94,7 @@ const reg = {
   ]
 };
 
-verify(reg, {
+verifyRecognizer(reg, {
   '': false,
   'r': false,
   'R': false,
@@ -164,7 +137,7 @@ const uppercase = {
   ]
 };
 
-verify(uppercase, {
+verifyRecognizer(uppercase, {
   '': true,
   'r': false,
   'R': true,
