@@ -1,4 +1,4 @@
-// 03-product.js
+console.log('04-product.js')
 
 // This function computes a state name for the product given
 // the names of teh states for a and b

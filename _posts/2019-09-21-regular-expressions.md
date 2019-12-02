@@ -1642,7 +1642,7 @@ Thus, if we begin with the start state and then recursively follow transitions, 
 
 ### a function to compute the product of two recognizers
 
-Here is a function that [takes the product of two recognizers](/assets/supplemental/fsa/03-product.js). It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`.
+Here is a function that [takes the product of two recognizers](/assets/supplemental/fsa/04-product.js). It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`.
 
 We can test it with out `a` and `b`:
 
@@ -1683,11 +1683,11 @@ It doesn't actually accept anything, so it's not much of a recognizer. Yet.
 
 ---
 
-## From Product to Union and Intersection
+## From Product to Union
 
-We know how to compute the product of two recognizers, and we see how the product actually simulates having two recognizers simultaneously consuming the same symbols. But what we want is to compute the union or intersection of the recognizers.
+We know how to compute the product of two recognizers, and we see how the product actually simulates having two recognizers simultaneously consuming the same symbols. But what we want is to compute the union of the recognizers.
 
-So let's consider our requirements. We'll start with the _Union_ of two recognizers. When we talk about the union of `a` and `b`, we mean a recognizer that recognizes any sentence that `a` recognizes or any sentence that `b` recognizes.
+So let's consider our requirements. When we talk about the union of `a` and `b`, we mean a recognizer that recognizes any sentence that `a` recognizes, or any sentence that `b` recognizes.
 
 If the two recognizers were running concurrently, we would want to accept a sentence if `a` ended up in one of its recognizing states or if `b` ended up in one of its accepting states. How does this translate to the product's states?
 
