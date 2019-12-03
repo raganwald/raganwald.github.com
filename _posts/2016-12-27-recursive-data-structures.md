@@ -123,7 +123,7 @@ By rotating each smaller square, it becomes:
 ⚪️⚪️ ⚫️⚫️
 ```
 
-And we rotate all for squares to finish with:
+And we rotate all four squares to finish with:
 
 ```
 ⚪️⚪️ ⚪️⚪️
