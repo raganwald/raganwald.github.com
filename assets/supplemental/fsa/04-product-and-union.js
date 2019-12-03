@@ -1,12 +1,12 @@
 console.log('04-product-and-union.js')
 
 // This function computes a state name for the product given
-// the names of teh states for a and b
+// the names of the states for a and b
 function abToAB (aState, bState) {
   return`(${aState || ''})(${bState || ''})`;
 }
 
-function product (a, b, mode = 'union') {
+function product (a, b) {
   const {
     stateMap: aStateMap,
     start: aStart
@@ -111,8 +111,6 @@ function product (a, b, mode = 'union') {
 
 }
 
-// 04-union-and-intersection.js
-
 function union2 (a, b) {
   const {
     states: aDeclaredStates,
@@ -149,31 +147,34 @@ function union2 (a, b) {
   return { start, accepting, transitions };
 }
 
-function intersection2 (a, b) {
-  const {
-    accepting: aAccepting
-  } = validatedAndProcessed(a);
-  const {
-    accepting: bAccepting
-  } = validatedAndProcessed(b);
-
-  const allAcceptingStates =
-    aAccepting.flatMap(
-      aAcceptingState => bAccepting.map(bAcceptingState => abToAB(aAcceptingState, bAcceptingState))
-    );
-
-  const productAB = product(a, b);
-  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
-
-  const { start, transitions } = productAB;
-  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
-
-  return { start, accepting, transitions };
-}
+const regexB = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => EMPTY_SET
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => EMPTY_STRING
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 30,
+      fn: union2
+    }
+  },
+  defaultOperator: undefined,
+  toValue (string) {
+    return literal(string);
+  }
+};
 
 // ----------
 
-verify(union2(reg, uppercase), {
+verifyRecognizer(union2(reg, uppercase), {
   '': true,
   'r': false,
   'R': true,
@@ -183,12 +184,26 @@ verify(union2(reg, uppercase), {
   'REGINALD': true
 });
 
-verify(intersection2(reg, uppercase), {
+verifyEvaluateB('a', regexB, {
   '': false,
-  'r': false,
-  'R': false,
-  'Reg': false,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': false
+  'a': true,
+  'A': false,
+  'aa': false,
+  'AA': false
+});
+
+verifyEvaluateB('A', regexB, {
+  '': false,
+  'a': false,
+  'A': true,
+  'aa': false,
+  'AA': false
+});
+
+verifyEvaluateB('a|A', regexB, {
+  '': false,
+  'a': true,
+  'A': true,
+  'aa': false,
+  'AA': false
 });

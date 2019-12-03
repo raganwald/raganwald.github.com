@@ -1642,7 +1642,120 @@ Thus, if we begin with the start state and then recursively follow transitions, 
 
 ### a function to compute the product of two recognizers
 
-Here is a function that [takes the product of two recognizers](/assets/supplemental/fsa/04-product.js). It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`.
+Here is a function that takes the product of two recognizers: It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`:
+
+```javascript
+// This function computes a state name for the product given
+// the names of the states for a and b
+function abToAB (aState, bState) {
+  return`(${aState || ''})(${bState || ''})`;
+}
+
+function product (a, b) {
+  const {
+    stateMap: aStateMap,
+    start: aStart
+  } = validatedAndProcessed(a);
+  const {
+    stateMap: bStateMap,
+    start: bStart
+  } = validatedAndProcessed(b);
+
+  // R is a collection of states "remaining" to be analyzed
+  // it is a map from the product's state name to the individual states
+  // for a and b
+  const R = new Map();
+
+  // T is a collection of states already analyzed
+  // it is a map from a product's state name to the transitions
+  // for that state
+  const T = new Map();
+
+  // seed R
+  const start = abToAB(aStart, bStart);
+  R.set(start, [aStart, bStart]);
+
+  while (R.size > 0) {
+    const [[abState, [aState, bState]]] = R.entries();
+    const aTransitions = aState != null ? (aStateMap.get(aState) || []) : [];
+    const bTransitions = bState != null ? (bStateMap.get(bState) || []) : [];
+
+    let abTransitions = [];
+
+    if (T.has(abState)) {
+      error(`Error taking product: T and R both have ${abState} at the same time.`);
+    }
+
+    if (aTransitions.length === 0 && bTransitions.length == 0) {
+      // dead end for both
+      // will add no transitions
+      // we put it in T just to avoid recomputing this if it's referenced again
+      T.set(abState, []);
+    } else if (aTransitions.length === 0) {
+      const aTo = null;
+      abTransitions = bTransitions.map(
+        ({ consume, to: bTo }) => ({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo })
+      );
+    } else if (bTransitions.length === 0) {
+      const bTo = null;
+      abTransitions = aTransitions.map(
+        ({ consume, to: aTo }) => ({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo })
+      );
+    } else {
+      // both a and b have transitions
+      const aConsumeToMap =
+        aTransitions.reduce(
+          (acc, { consume, to }) => (acc.set(consume, to), acc),
+          new Map()
+        );
+      const bConsumeToMap =
+        bTransitions.reduce(
+          (acc, { consume, to }) => (acc.set(consume, to), acc),
+          new Map()
+        );
+
+      for (const { from, consume, to: aTo } of aTransitions) {
+        const bTo = bConsumeToMap.has(consume) ? bConsumeToMap.get(consume) : null;
+
+        if (bTo != null) {
+          bConsumeToMap.delete(consume);
+        }
+
+        abTransitions.push({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo });
+      }
+
+      for (const [consume, bTo] of bConsumeToMap.entries()) {
+        const aTo = null;
+
+        abTransitions.push({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo });
+      }
+    }
+
+    T.set(abState, abTransitions);
+
+    for (const { to, aTo, bTo } of abTransitions) {
+      // more work remaining?
+      if (!T.has(to) && !R.has(to)) {
+        R.set(to, [aTo, bTo]);
+      }
+    }
+
+    R.delete(abState);
+  }
+
+  const accepting = [];
+
+  const transitions =
+    [...T.values()].flatMap(
+      tt => tt.map(
+        ({ from, consume, to }) => ({ from, consume, to })
+      )
+    );
+
+  return { start, accepting, transitions };
+
+}
+```
 
 We can test it with out `a` and `b`:
 
@@ -1705,10 +1818,6 @@ In theory, then, for `a` and `b`, the following product states represent the uni
 
 Of course, only two of these (`'zero'` and `''`, `''` and `'one'`) are reachable, so those are the ones we want our product to accept when we want the union of two recognizers.
 
----
-
-### union
-
 Here's a union function that makes use of `product` and some of the helpers we've already written:
 
 ```javascript
@@ -1766,141 +1875,81 @@ union2(a, b)
     }
 ```
 
+Now we can incorporate `union` as an operator:
+
+```javascript
+const regexB = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => EMPTY_SET
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => EMPTY_STRING
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 30,
+      fn: union2
+    }
+  },
+  defaultOperator: undefined,
+  toValue (string) {
+    return literal(string);
+  }
+};
+
+verifyEvaluateB('a', regexB, {
+  '': false,
+  'a': true,
+  'A': false,
+  'aa': false,
+  'AA': false
+});
+  //=> All 5 tests passing
+
+verifyEvaluateB('A', regexB, {
+  '': false,
+  'a': false,
+  'A': true,
+  'aa': false,
+  'AA': false
+});
+  //=> All 5 tests passing
+
+verifyEvaluateB('a|A', regexB, {
+  '': false,
+  'a': true,
+  'A': true,
+  'aa': false,
+  'AA': false
+});
+  //=> All 5 tests passing
+```
+
+We're ready to work on `catenation` now, but before we do, a digression about `product`.
+
 ---
 
-### intersection
+### the marvellous product
 
-The accepting set for the _Intersection_ of two recognizers is equally straightforward. While the accepting set for the union is all those reachable states of the product where either (or both) of the two states is an accepting state, the accepting set for the intersection is all those reachable states of the product where both of the two states is an accepting state:
+Taking the `product` of two recognizers is a general-purpose way of simulating the effect of running two recognizers in parallel on the same input. In the case of `union(a, b)`, we obtained `product(a, b)`, and then selected as accepting states, all those states where _either_ `a` or `b` reached an accepting state.
 
-```javascript
-function intersection2 (a, b) {
-  const {
-    accepting: aAccepting
-  } = validatedAndProcessed(a);
-  const {
-    accepting: bAccepting
-  } = validatedAndProcessed(b);
+But what other ways could we determine the accepting state of the result?
 
-  const allAcceptingStates =
-    aAccepting.flatMap(
-      aAcceptingState => bAccepting.map(bAcceptingState => abToAB(aAcceptingState, bAcceptingState))
-    );
+If we accept all those states where _both_ `a` and `b` reached an accepting state, we have computed the `intersection` of `a` and `b`. `intersection` is not a part of formal regular expressions or of most regexen, but it can be useful and we will see later how to add it as an operator.
 
-  const productAB = product(a, b);
-  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
+If we accept all those states where `a` reaches an accepting state _but `b` does not_, we have computed the `difference` between `a` and `b`. This can also be used for implementing regex lookahead features, but this time for negative lookaheads.
 
-  const { start, transitions } = productAB;
-  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
+We could even compute all those states where either `a` or `b` reach an accepting state, _but not both_. This would compute the `disjunction` of the two recognizers.
 
-  return { start, accepting, transitions };
-}
-```
+We'll return to some of these other uses for `product` after we staisfy ourselves that we can generate a finite-state recognizer for any formal regular expression we like.
 
-The intersection of our `a` and `b` is going to be empty, and that makes sense: There is only one possible accepting state, `'zero'` and `'one'`, and there is no path to reach that state. Which makes sense, as there are no sentences which consists of nothing but one or more zeroes *and* nothing but one or more ones.
-
-We can give it a different test. First, here is a recognizer that recognizes the name "reg." It is case-insensitive:
-
-```javascript
-const reg = {
-  "start": "empty",
-  "accepting": ["reg"],
-  "transitions": [
-    { "from": "empty", "consume": "r", "to": "r" },
-    { "from": "empty", "consume": "R", "to": "r" },
-    { "from": "r", "consume": "e", "to": "re" },
-    { "from": "r", "consume": "E", "to": "re" },
-    { "from": "re", "consume": "g", "to": "reg" },
-    { "from": "re", "consume": "G", "to": "reg" }
-  ]
-};
-
-verify(reg, {
-  '': false,
-  'r': false,
-  'R': false,
-  'Reg': true,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': false
-})
-  //=> All 7 tests passing
-```
-
-Second, here is a recognizer that recognizes uppercase words:
-
-```javascript
-const uppercase = {
-  "start": "uppercase",
-  "accepting": ["uppercase"],
-  "transitions": [
-    { "from": "uppercase", "consume": "A", "to": "uppercase" },
-    { "from": "uppercase", "consume": "B", "to": "uppercase" },
-    { "from": "uppercase", "consume": "C", "to": "uppercase" },
-    { "from": "uppercase", "consume": "D", "to": "uppercase" },
-    { "from": "uppercase", "consume": "E", "to": "uppercase" },
-    { "from": "uppercase", "consume": "F", "to": "uppercase" },
-    { "from": "uppercase", "consume": "G", "to": "uppercase" },
-    { "from": "uppercase", "consume": "H", "to": "uppercase" },
-    { "from": "uppercase", "consume": "I", "to": "uppercase" },
-    { "from": "uppercase", "consume": "J", "to": "uppercase" },
-    { "from": "uppercase", "consume": "K", "to": "uppercase" },
-    { "from": "uppercase", "consume": "L", "to": "uppercase" },
-    { "from": "uppercase", "consume": "M", "to": "uppercase" },
-    { "from": "uppercase", "consume": "N", "to": "uppercase" },
-    { "from": "uppercase", "consume": "O", "to": "uppercase" },
-    { "from": "uppercase", "consume": "P", "to": "uppercase" },
-    { "from": "uppercase", "consume": "Q", "to": "uppercase" },
-    { "from": "uppercase", "consume": "R", "to": "uppercase" },
-    { "from": "uppercase", "consume": "S", "to": "uppercase" },
-    { "from": "uppercase", "consume": "T", "to": "uppercase" },
-    { "from": "uppercase", "consume": "U", "to": "uppercase" },
-    { "from": "uppercase", "consume": "V", "to": "uppercase" },
-    { "from": "uppercase", "consume": "W", "to": "uppercase" },
-    { "from": "uppercase", "consume": "X", "to": "uppercase" },
-    { "from": "uppercase", "consume": "Y", "to": "uppercase" },
-    { "from": "uppercase", "consume": "Z", "to": "uppercase" }
-  ]
-};
-
-verify(uppercase, {
-  '': true,
-  'r': false,
-  'R': true,
-  'Reg': false,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': true
-})
-  //=> All 7 tests passing
-```
-
-Now we can try their union and intersection:
-
-```javascript
-verify(union2(reg, uppercase), {
-  '': true,
-  'r': false,
-  'R': true,
-  'Reg': true,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': true
-})
-  //=> All 7 tests passing
-
-verify(intersection2(reg, uppercase), {
-  '': false,
-  'r': false,
-  'R': false,
-  'Reg': false,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': false
-})
-  //=> All 7 tests passing
-```
-
-We now have `union` and `intersection` functions, each of which takes two descriptions and returns a description.
+Before we return to our implementation, here is an observation about how naïve our code is (so far):
 
 ---
 
@@ -3114,7 +3163,7 @@ Our enhanced `union2pm` creates the minimum number of transitions and states, an
 
 ---
 
-### the final union, intersection, and catenation
+### the final union and catenation
 
 Here are our `union`, `intersection`, and `catenation` functions, updated to take one or more arguments and using everything we have so far:
 
@@ -3129,18 +3178,6 @@ function union (a, ...args) {
   const ab = mergeEquivalentStates(union2pm(a, b));
 
   return union(ab, ...rest);
-}
-
-function intersection (a, ...args) {
-  if (args.length === 0) {
-    return a;
-  }
-
-  const [b, ...rest] = args;
-
-  const ab = mergeEquivalentStates(intersection2(a, b));
-
-  return intersection(ab, ...rest);
 }
 
 function catenation (a, ...args) {

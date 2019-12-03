@@ -180,6 +180,25 @@ function verifyEvaluateB (expression, configuration, examples) {
   );
 }
 
+const regexA = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => EMPTY_SET
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => EMPTY_STRING
+    }
+  },
+  defaultOperator: undefined,
+  toValue (string) {
+    return literal(string);
+  }
+};
+
 // ----------
 
 verifyRecognizer(EMPTY_SET, {
@@ -202,25 +221,6 @@ verifyRecognizer(literal('0'), {
   '10': false,
   '11': false
 });
-
-const regexA = {
-  operators: {
-    '∅': {
-      symbol: Symbol('∅'),
-      type: 'atomic',
-      fn: () => EMPTY_SET
-    },
-    'ε': {
-      symbol: Symbol('ε'),
-      type: 'atomic',
-      fn: () => EMPTY_STRING
-    }
-  },
-  defaultOperator: undefined,
-  toValue (string) {
-    return literal(string);
-  }
-};
 
 const emptySetRecognizer = evaluateA('∅', regexA);
 const emptyStringRecognizer = evaluateA('ε', regexA);
