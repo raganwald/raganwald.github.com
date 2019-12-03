@@ -587,13 +587,13 @@ const ObjectComposer =
           const composedObject = Symbol('composedObject');
           const instance = Symbol('instance');
 
-          for (const methodName of exportedMethodNames) {
+          for (const exportedMethodName of exportedMethodNames) {
             Object.defineProperty(target.prototype, methodName, {
               value: function (...args) {
                 if (this[composedObject] == null) {
                   this[composedObject] = Object.assign({}, behaviour);
                   this[composedObject][instance] = this;
-                  for (const methodName of importedMethodNames) {
+                  for (const importedMethodName of importedMethodNames) {
                     this[composedObject][methodName] = function (...args) {
                       return this[instance][methodName](...args);
                     }
