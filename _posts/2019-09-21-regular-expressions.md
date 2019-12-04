@@ -169,7 +169,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [what is a regular expression?](#what-is-a-regular-expression)
   - [formal regular expressions)(#formal-regular-expressions]
   - [what will we explore in this essay?](#what-will-we-explore-in-this-essay)
-  
+
 ### [Our First Goal: "For every regular expression, there exists an equivalent finite-state recognizer"](#our-first-goal-for-every-regular-expression-there-exists-an-equivalent-finite-state-recognizer)
 
   - [our approach](#our-approach)
@@ -361,7 +361,7 @@ const arithmetic = {
       symbol: Symbol('!'),
       type: 'postfix',
       precedence: 4,
-      eval: function factorial (a, memo = 1) {      
+      eval: function factorial (a, memo = 1) {
         if (a < 2) {
           return a * memo;
         } else {
@@ -393,7 +393,7 @@ function shuntingYardA (inputString, { operators }) {
   const operatorsMap = new Map(
     Object.entries(operators)
   );
-  
+
   const representationOf =
     something => {
       if (operatorsMap.has(something)) {
@@ -414,7 +414,7 @@ function shuntingYardA (inputString, { operators }) {
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
     symbol => isInfix(symbol) || isPostfix(symbol);
-                                          
+
   const input = inputString.split('');
   const operatorStack = [];
   const outputQueue = [];
@@ -479,7 +479,7 @@ function shuntingYardA (inputString, { operators }) {
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
     const op = operatorStack.pop();
-    
+
     if (operatorsMap.has(op)) {
       const { symbol: opSymbol } = operatorsMap.get(op);
       outputQueue.push(opSymbol);
@@ -528,7 +528,7 @@ function verifyShunter (shunter, tests, ...additionalArgs) {
     const outcomes = testList.map(
       ([example, expected]) => {
         const actual = shunter(example, ...additionalArgs);
-      
+
         if (deepEqual(actual, expected)) {
           return 'pass';
         } else {
@@ -583,7 +583,7 @@ function shuntingYardB (inputString, { operators, defaultOperator }) {
   const operatorsMap = new Map(
     Object.entries(operators)
   );
-  
+
   const representationOf =
     something => {
       if (operatorsMap.has(something)) {
@@ -604,7 +604,7 @@ function shuntingYardB (inputString, { operators, defaultOperator }) {
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
     symbol => isInfix(symbol) || isPostfix(symbol);
-                                          
+
   const input = inputString.split('');
   const operatorStack = [];
   const outputQueue = [];
@@ -620,7 +620,7 @@ function shuntingYardB (inputString, { operators, defaultOperator }) {
       awaitingValue = true;
     } else if (symbol === '(') {
       // value catenation
-      
+
       input.unshift(symbol);
       input.unshift(defaultOperator);
       awaitingValue = false;
@@ -665,7 +665,7 @@ function shuntingYardB (inputString, { operators, defaultOperator }) {
       awaitingValue = false;
     } else {
       // value catenation
-      
+
       input.unshift(symbol);
       input.unshift(defaultOperator);
       awaitingValue = false;
@@ -675,7 +675,7 @@ function shuntingYardB (inputString, { operators, defaultOperator }) {
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
     const op = operatorStack.pop();
-    
+
     if (operatorsMap.has(op)) {
       const { symbol: opSymbol } = operatorsMap.get(op);
       outputQueue.push(opSymbol);
@@ -715,7 +715,7 @@ function evaluatePostfixA (postfix, { operators, toValue }) {
         [symbol, { arity: arities[type], fn }]
     )
   );
-  
+
   const stack = [];
 
   for (const element of postfix) {
@@ -1023,37 +1023,53 @@ What is the absolutely minimal recognizer? One might think, "A recognizer for em
 
 But what is the language with no sentences whatsoever? This language is often called the _empty set_, and in mathematical notation it is denoted with `∅`. If we want to make tools for building finite-state recognizers, we'll need a way to build a recognizer for the empty set.
 
-We'll just boldly declare it as a constant:
+Here's a function that returns a recognizer that doesn't recognize any sentences:
 
 ```javascript
-const EMPTY_SET = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": []
-};
+const names = (() => {
+  let i = 0;
 
-verifyRecognizer(EMPTY_SET, {
+  return function * names () {
+    while (true) yield `G${++i}`;
+  };
+})();
+
+function emptySet () {
+  const [start] = names();
+
+  return {
+    start,
+    "transitions": [],
+    "accepting": []
+  };
+}
+
+verifyRecognizer(emptySet(), {
   '': false,
   '0': false,
   '1': false
-});x
+});
   //=> All 3 tests passing
 ```
 
-With `EMPTY_SET` out of the way, we'll turn our attention to more practical recognizers, those that recognize actual sentences of symbols.
+With `emptySet` out of the way, we'll turn our attention to more practical recognizers, those that recognize actual sentences of symbols.
 
 What's the simplest possible language that contains sentences? A language containing only one sentence. Such languages include `{ 'balderdash' }`, `{ 'billingsgate' }`, and even `{ 'bafflegab' }`.
 
 Of all the one-sentence languages, the simplest would be the language containing the shortest possible string, `''`. We will also declare this as a constant:
 
 ```javascript
-const EMPTY_STRING = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": ["empty"]
-};
+function emptyString () {
+  const [start] = names();
 
-verifyRecognizer(EMPTY_STRING, {
+  return {
+    start,
+    "transitions": [],
+    "accepting": [start]
+  };
+}
+
+verifyRecognizer(emptyString(), {
   '': true,
   '0': false,
   '1': false
@@ -1153,12 +1169,12 @@ const regexA = {
     '∅': {
       symbol: Symbol('∅'),
       type: 'atomic',
-      fn: () => EMPTY_SET
+      fn: emptySet
     },
     'ε': {
       symbol: Symbol('ε'),
       type: 'atomic',
-      fn: () => EMPTY_STRING
+      fn: emptyString
     }
   },
   defaultOperator: undefined,
@@ -1251,7 +1267,7 @@ We'll set it up so that we can choose whatever we like, but by default we'll use
 
 ```javascript
 function shuntingYardC (
-  inputString, 
+  inputString,
   {
     operators,
     defaultOperator,
@@ -1262,7 +1278,7 @@ function shuntingYardC (
   const operatorsMap = new Map(
     Object.entries(operators)
   );
-  
+
   const representationOf =
     something => {
       if (operatorsMap.has(something)) {
@@ -1283,7 +1299,7 @@ function shuntingYardC (
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
     symbol => isInfix(symbol) || isPostfix(symbol);
-                                          
+
   const input = inputString.split('');
   const operatorStack = [];
   const outputQueue = [];
@@ -1318,7 +1334,7 @@ function shuntingYardC (
       awaitingValue = true;
     } else if (symbol === '(') {
       // value catenation
-      
+
       input.unshift(symbol);
       input.unshift(defaultOperator);
       awaitingValue = false;
@@ -1363,7 +1379,7 @@ function shuntingYardC (
       awaitingValue = false;
     } else {
       // value catenation
-      
+
       input.unshift(symbol);
       input.unshift(defaultOperator);
       awaitingValue = false;
@@ -1373,7 +1389,7 @@ function shuntingYardC (
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
     const op = operatorStack.pop();
-    
+
     if (operatorsMap.has(op)) {
       const { symbol: opSymbol } = operatorsMap.get(op);
       outputQueue.push(opSymbol);
@@ -1434,7 +1450,7 @@ verifyEvaluateB('`ε', regexA, {
   //=> All 3 tests passing
 ```
 
-And now it's time for what we might call the main event: Expressions that use operators. 
+And now it's time for what we might call the main event: Expressions that use operators.
 
 ---
 
@@ -1642,16 +1658,36 @@ Thus, if we begin with the start state and then recursively follow transitions, 
 
 ### a function to compute the product of two recognizers
 
-Here is a function that takes the product of two recognizers: It doesn't name its states `'state1'`, `'state2'`, and so forth. Instead, it uses a convention of `'(stateA)(stateB)'`:
+Here is a function that takes the product of two recognizers:
 
 ```javascript
-// This function computes a state name for the product given
-// the names of the states for a and b
-function abToAB (aState, bState) {
-  return`(${aState || ''})(${bState || ''})`;
+// A state aggregator maps a set of states
+// (such as the two states forming part of the product
+// of two finite-state recognizers) to a new state.
+class StateAggregator {
+  constructor () {
+    this.map = new Map();
+  }
+
+  for (...states) {
+    const key =
+      states
+        .filter(s => s != null)
+        .sort()
+        .join(' ');
+
+    if (this.map.has(key)) {
+      return this.map.get(key);
+    } else {
+      const [newState] = names();
+
+      this.map.set(key, newState);
+      return newState;
+    }
+  }
 }
 
-function product (a, b) {
+function product (a, b, P = new StateAggregator()) {
   const {
     stateMap: aStateMap,
     start: aStart
@@ -1672,7 +1708,7 @@ function product (a, b) {
   const T = new Map();
 
   // seed R
-  const start = abToAB(aStart, bStart);
+  const start = P.for(aStart, bStart);
   R.set(start, [aStart, bStart]);
 
   while (R.size > 0) {
@@ -1694,12 +1730,12 @@ function product (a, b) {
     } else if (aTransitions.length === 0) {
       const aTo = null;
       abTransitions = bTransitions.map(
-        ({ consume, to: bTo }) => ({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo })
+        ({ consume, to: bTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
       );
     } else if (bTransitions.length === 0) {
       const bTo = null;
       abTransitions = aTransitions.map(
-        ({ consume, to: aTo }) => ({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo })
+        ({ consume, to: aTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
       );
     } else {
       // both a and b have transitions
@@ -1721,13 +1757,13 @@ function product (a, b) {
           bConsumeToMap.delete(consume);
         }
 
-        abTransitions.push({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
       }
 
       for (const [consume, bTo] of bConsumeToMap.entries()) {
         const aTo = null;
 
-        abTransitions.push({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
       }
     }
 
@@ -1781,14 +1817,14 @@ const b = {
 product(a, b)
   //=>
     {
-      "start": "(emptyA)(emptyB)",
-      "accepting": [],
+      "start": "G41",
       "transitions": [
-        { "from": "(emptyA)(emptyB)", "consume": "0", "to": "(zero)()" },
-        { "from": "(emptyA)(emptyB)", "consume": "1", "to": "()(one)" },
-        { "from": "(zero)()", "consume": "0", "to": "(zero)()" },
-        { "from": "()(one)", "consume": "1", "to": "()(one)" }
-      ]
+        { "from": "G41", "consume": "0", "to": "G42" },
+        { "from": "G41", "consume": "1", "to": "G43" },
+        { "from": "G42", "consume": "0", "to": "G42" },
+        { "from": "G43", "consume": "1", "to": "G43" }
+      ],
+      "accepting": []
     }
 ```
 
@@ -1826,35 +1862,37 @@ function union2 (a, b) {
     states: aDeclaredStates,
     accepting: aAccepting
   } = validatedAndProcessed(a);
-  const aStates = [''].concat(aDeclaredStates);
+  const aStates = [null].concat(aDeclaredStates);
+
   const {
     states: bDeclaredStates,
     accepting: bAccepting
   } = validatedAndProcessed(b);
-  const bStates = [''].concat(bDeclaredStates);
+  const bStates = [null].concat(bDeclaredStates);
+
+  // P is a mapping from a pair of states (or any set, but in union2 it's always a pair)
+  // to a new state representing the tuple of those states
+  const P = new StateAggregator();
+
+  const productAB = product(a, b, P);
+  const { start, transitions } = productAB;
 
   const statesAAccepts =
     aAccepting.flatMap(
-      aAcceptingState => bStates.map(bState => abToAB(aAcceptingState, bState))
+      aAcceptingState => bStates.map(bState => P.for(aAcceptingState, bState))
     );
   const statesBAccepts =
     bAccepting.flatMap(
-      bAcceptingState => aStates.map(aState => abToAB(aState, bAcceptingState))
+      bAcceptingState => aStates.map(aState => P.for(aState, bAcceptingState))
     );
+
   const allAcceptingStates =
-    statesAAccepts.concat(
-      statesBAccepts.filter(
-        state => statesAAccepts.indexOf(state) === -1
-      )
-    );
+    [...new Set([...statesAAccepts, ...statesBAccepts])];
 
-    const productAB = product(a, b);
-    const { stateSet: reachableStates } = validatedAndProcessed(productAB);
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
+  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
 
-    const { start, transitions } = productAB;
-    const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
-
-    return { start, accepting, transitions };
+  return { start, accepting, transitions };
 }
 ```
 
@@ -1864,18 +1902,18 @@ And when we try it:
 union2(a, b)
   //=>
     {
-      "start": "(emptyA)(emptyB)",
-      "accepting": [ "(zero)()", "()(one)" ],
+      "start": "G41",
       "transitions": [
-        { "from": "(emptyA)(emptyB)", "consume": "0", "to": "(zero)()" },
-        { "from": "(emptyA)(emptyB)", "consume": "1", "to": "()(one)" },
-        { "from": "(zero)()", "consume": "0", "to": "(zero)()" },
-        { "from": "()(one)", "consume": "1", "to": "()(one)" }
-      ]
+        { "from": "G41", "consume": "0", "to": "G42" },
+        { "from": "G41", "consume": "1", "to": "G43" },
+        { "from": "G42", "consume": "0", "to": "G42" },
+        { "from": "G43", "consume": "1", "to": "G43" }
+      ],
+      "accepting": [ "G42", "G43" ]
     }
 ```
 
-Now we can incorporate `union` as an operator:
+Now we can incorporate `union2` as an operator:
 
 ```javascript
 const regexB = {
@@ -1973,7 +2011,7 @@ and:
     one-->[*]
 </div>
 
-Which is:
+Which is something like:
 
 <div class="mermaid">
   stateDiagram
@@ -4131,7 +4169,7 @@ function basicShuntingYard (formalRegularExpressionString, operators = formalOpe
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
     const op = operatorStack.pop();
-    
+
     if (operators.has(op)) {
       const { symbol: opSymbol } = operators.get(op);
       outputQueue.push(opSymbol);

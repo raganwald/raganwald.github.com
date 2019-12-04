@@ -1,12 +1,32 @@
 console.log('04-product-and-union.js')
 
-// This function computes a state name for the product given
-// the names of the states for a and b
-function abToAB (aState, bState) {
-  return`(${aState || ''})(${bState || ''})`;
+// A state aggregator maps a set of states
+// (such as the two states forming part of the product
+// of two finite-state recognizers) to a new state.
+class StateAggregator {
+  constructor () {
+    this.map = new Map();
+  }
+
+  for (...states) {
+    const key =
+      states
+        .filter(s => s != null)
+        .sort()
+        .join(' ');
+
+    if (this.map.has(key)) {
+      return this.map.get(key);
+    } else {
+      const [newState] = names();
+
+      this.map.set(key, newState);
+      return newState;
+    }
+  }
 }
 
-function product (a, b) {
+function product (a, b, P = new StateAggregator()) {
   const {
     stateMap: aStateMap,
     start: aStart
@@ -27,7 +47,7 @@ function product (a, b) {
   const T = new Map();
 
   // seed R
-  const start = abToAB(aStart, bStart);
+  const start = P.for(aStart, bStart);
   R.set(start, [aStart, bStart]);
 
   while (R.size > 0) {
@@ -49,12 +69,12 @@ function product (a, b) {
     } else if (aTransitions.length === 0) {
       const aTo = null;
       abTransitions = bTransitions.map(
-        ({ consume, to: bTo }) => ({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo })
+        ({ consume, to: bTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
       );
     } else if (bTransitions.length === 0) {
       const bTo = null;
       abTransitions = aTransitions.map(
-        ({ consume, to: aTo }) => ({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo })
+        ({ consume, to: aTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
       );
     } else {
       // both a and b have transitions
@@ -76,13 +96,13 @@ function product (a, b) {
           bConsumeToMap.delete(consume);
         }
 
-        abTransitions.push({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
       }
 
       for (const [consume, bTo] of bConsumeToMap.entries()) {
         const aTo = null;
 
-        abTransitions.push({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
       }
     }
 
@@ -116,32 +136,34 @@ function union2 (a, b) {
     states: aDeclaredStates,
     accepting: aAccepting
   } = validatedAndProcessed(a);
-  const aStates = [''].concat(aDeclaredStates);
+  const aStates = [null].concat(aDeclaredStates);
+
   const {
     states: bDeclaredStates,
     accepting: bAccepting
   } = validatedAndProcessed(b);
-  const bStates = [''].concat(bDeclaredStates);
+  const bStates = [null].concat(bDeclaredStates);
+
+  // P is a mapping from a pair of states (or any set, but in union2 it's always a pair)
+  // to a new state representing the tuple of those states
+  const P = new StateAggregator();
+
+  const productAB = product(a, b, P);
+  const { start, transitions } = productAB;
 
   const statesAAccepts =
     aAccepting.flatMap(
-      aAcceptingState => bStates.map(bState => abToAB(aAcceptingState, bState))
+      aAcceptingState => bStates.map(bState => P.for(aAcceptingState, bState))
     );
   const statesBAccepts =
     bAccepting.flatMap(
-      bAcceptingState => aStates.map(aState => abToAB(aState, bAcceptingState))
+      bAcceptingState => aStates.map(aState => P.for(aState, bAcceptingState))
     );
+
   const allAcceptingStates =
-    statesAAccepts.concat(
-      statesBAccepts.filter(
-        state => statesAAccepts.indexOf(state) === -1
-      )
-    );
+    [...new Set([...statesAAccepts, ...statesBAccepts])];
 
-  const productAB = product(a, b);
   const { stateSet: reachableStates } = validatedAndProcessed(productAB);
-
-  const { start, transitions } = productAB;
   const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
 
   return { start, accepting, transitions };
@@ -173,6 +195,7 @@ const regexB = {
 };
 
 // ----------
+
 
 verifyRecognizer(union2(reg, uppercase), {
   '': true,

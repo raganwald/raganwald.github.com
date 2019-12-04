@@ -1,8 +1,8 @@
 console.log('00-compiler.js')
 
 function error(m) {
-console.log(m);
-throw m;
+  console.log(m);
+  throw m;
 }
 
 const arithmetic = {
@@ -35,7 +35,7 @@ operators: {
     symbol: Symbol('!'),
     type: 'postfix',
     precedence: 4,
-    fn: function factorial (a, memo = 1) {      
+    fn: function factorial (a, memo = 1) {
       if (a < 2) {
         return a * memo;
       } else {
@@ -75,7 +75,7 @@ const isPostfix =
   symbol => typeOf(symbol) === 'postfix';
 const isCombinator =
   symbol => isInfix(symbol) || isPostfix(symbol);
-                                        
+
 const input = inputString.split('');
 const operatorStack = [];
 const outputQueue = [];
@@ -140,7 +140,7 @@ while (input.length > 0) {
 // pop remaining symbols off the stack and push them
 while (operatorStack.length > 0) {
   const op = operatorStack.pop();
-  
+
   if (operatorsMap.has(op)) {
     const { symbol: opSymbol } = operatorsMap.get(op);
     outputQueue.push(opSymbol);
@@ -177,7 +177,7 @@ const isPostfix =
   symbol => typeOf(symbol) === 'postfix';
 const isCombinator =
   symbol => isInfix(symbol) || isPostfix(symbol);
-                                        
+
 const input = inputString.split('');
 const operatorStack = [];
 const outputQueue = [];
@@ -193,7 +193,7 @@ while (input.length > 0) {
     awaitingValue = true;
   } else if (symbol === '(') {
     // value catenation
-    
+
     input.unshift(symbol);
     input.unshift(defaultOperator);
     awaitingValue = false;
@@ -238,7 +238,7 @@ while (input.length > 0) {
     awaitingValue = false;
   } else {
     // value catenation
-    
+
     input.unshift(symbol);
     input.unshift(defaultOperator);
     awaitingValue = false;
@@ -248,7 +248,7 @@ while (input.length > 0) {
 // pop remaining symbols off the stack and push them
 while (operatorStack.length > 0) {
   const op = operatorStack.pop();
-  
+
   if (operatorsMap.has(op)) {
     const { symbol: opSymbol } = operatorsMap.get(op);
     outputQueue.push(opSymbol);
@@ -293,7 +293,7 @@ try {
   const outcomes = testList.map(
     ([example, expected]) => {
       const actual = fn(example, ...additionalArgs);
-    
+
       if (deepEqual(actual, expected)) {
         return 'pass';
       } else {

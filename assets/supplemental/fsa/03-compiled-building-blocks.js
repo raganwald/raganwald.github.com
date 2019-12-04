@@ -1,29 +1,47 @@
 console.log('03-compiled-building-blocks.js');
 
-const EMPTY_SET = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": []
-};
+const names = (() => {
+  let i = 0;
 
-const EMPTY_STRING = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": ["empty"]
-};
+  return function * names () {
+    while (true) yield `G${++i}`;
+  };
+})();
+
+function emptySet () {
+  const [start] = names();
+
+  return {
+    start,
+    "transitions": [],
+    "accepting": []
+  };
+}
+
+function emptyString () {
+  const [start] = names();
+
+  return {
+    start,
+    "transitions": [],
+    "accepting": [start]
+  };
+}
 
 function literal (symbol) {
+  const [start, recognized] = names();
+
   return {
-    "start": "empty",
+    start,
     "transitions": [
-      { "from": "empty", "consume": symbol, "to": "recognized" }
+      { "from": start, "consume": symbol, "to": recognized }
     ],
-    "accepting": ["recognized"]
+    "accepting": [recognized]
   };
 }
 
 function shuntingYardC (
-  inputString, 
+  inputString,
   {
     operators,
     defaultOperator,
@@ -34,7 +52,7 @@ function shuntingYardC (
   const operatorsMap = new Map(
     Object.entries(operators)
   );
-  
+
   const representationOf =
     something => {
       if (operatorsMap.has(something)) {
@@ -55,7 +73,7 @@ function shuntingYardC (
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
     symbol => isInfix(symbol) || isPostfix(symbol);
-                                          
+
   const input = inputString.split('');
   const operatorStack = [];
   const outputQueue = [];
@@ -90,7 +108,7 @@ function shuntingYardC (
       awaitingValue = true;
     } else if (symbol === '(') {
       // value catenation
-      
+
       input.unshift(symbol);
       input.unshift(defaultOperator);
       awaitingValue = false;
@@ -135,7 +153,7 @@ function shuntingYardC (
       awaitingValue = false;
     } else {
       // value catenation
-      
+
       input.unshift(symbol);
       input.unshift(defaultOperator);
       awaitingValue = false;
@@ -145,7 +163,7 @@ function shuntingYardC (
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
     const op = operatorStack.pop();
-    
+
     if (operatorsMap.has(op)) {
       const { symbol: opSymbol } = operatorsMap.get(op);
       outputQueue.push(opSymbol);
@@ -185,12 +203,12 @@ const regexA = {
     '∅': {
       symbol: Symbol('∅'),
       type: 'atomic',
-      fn: () => EMPTY_SET
+      fn: emptySet
     },
     'ε': {
       symbol: Symbol('ε'),
       type: 'atomic',
-      fn: () => EMPTY_STRING
+      fn: emptyString
     }
   },
   defaultOperator: undefined,
@@ -201,13 +219,13 @@ const regexA = {
 
 // ----------
 
-verifyRecognizer(EMPTY_SET, {
+verifyRecognizer(emptySet(), {
   '': false,
   '0': false,
   '1': false
 });
 
-verifyRecognizer(EMPTY_STRING, {
+verifyRecognizer(emptyString(), {
   '': true,
   '0': false,
   '1': false

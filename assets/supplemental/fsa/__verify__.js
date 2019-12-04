@@ -6,411 +6,411 @@ function error(m) {
 }
 
 const arithmetic = {
-  operators: {
-    '+': {
-      symbol: Symbol('+'),
-      type: 'infix',
-      precedence: 1,
-      fn: (a, b) => a + b
-    },
-    '-': {
-      symbol: Symbol('-'),
-      type: 'infix',
-      precedence: 1,
-      fn: (a, b) => a - b
-    },
-    '*': {
-      symbol: Symbol('*'),
-      type: 'infix',
-      precedence: 3,
-      fn: (a, b) => a * b
-    },
-    '/': {
-      symbol: Symbol('/'),
-      type: 'infix',
-      precedence: 2,
-      fn: (a, b) => a / b
-    },
-    '!': {
-      symbol: Symbol('!'),
-      type: 'postfix',
-      precedence: 4,
-      fn: function factorial (a, memo = 1) {      
-        if (a < 2) {
-          return a * memo;
-        } else {
-          return factorial(a - 1, a * memo);
-        }
+operators: {
+  '+': {
+    symbol: Symbol('+'),
+    type: 'infix',
+    precedence: 1,
+    fn: (a, b) => a + b
+  },
+  '-': {
+    symbol: Symbol('-'),
+    type: 'infix',
+    precedence: 1,
+    fn: (a, b) => a - b
+  },
+  '*': {
+    symbol: Symbol('*'),
+    type: 'infix',
+    precedence: 3,
+    fn: (a, b) => a * b
+  },
+  '/': {
+    symbol: Symbol('/'),
+    type: 'infix',
+    precedence: 2,
+    fn: (a, b) => a / b
+  },
+  '!': {
+    symbol: Symbol('!'),
+    type: 'postfix',
+    precedence: 4,
+    fn: function factorial (a, memo = 1) {
+      if (a < 2) {
+        return a * memo;
+      } else {
+        return factorial(a - 1, a * memo);
       }
     }
   }
+}
 };
 
 function peek (stack) {
-  return stack[stack.length - 1];
+return stack[stack.length - 1];
 }
 
 function shuntingYardA (inputString, { operators }) {
-  const operatorsMap = new Map(
-    Object.entries(operators)
-  );
-  
-  const representationOf =
-    something => {
-      if (operatorsMap.has(something)) {
-        const { symbol } = operatorsMap.get(something);
+const operatorsMap = new Map(
+  Object.entries(operators)
+);
 
-        return symbol;
-      } else if (typeof something === 'string') {
-        return something;
-      } else {
-        error(`${something} is not a value`);
-      }
-    };
-  const typeOf =
-    symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
-  const isInfix =
-    symbol => typeOf(symbol) === 'infix';
-  const isPostfix =
-    symbol => typeOf(symbol) === 'postfix';
-  const isCombinator =
-    symbol => isInfix(symbol) || isPostfix(symbol);
-                                          
-  const input = inputString.split('');
-  const operatorStack = [];
-  const outputQueue = [];
-  let awaitingValue = true;
+const representationOf =
+  something => {
+    if (operatorsMap.has(something)) {
+      const { symbol } = operatorsMap.get(something);
 
-  while (input.length > 0) {
-    const symbol = input.shift();
+      return symbol;
+    } else if (typeof something === 'string') {
+      return something;
+    } else {
+      error(`${something} is not a value`);
+    }
+  };
+const typeOf =
+  symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
+const isInfix =
+  symbol => typeOf(symbol) === 'infix';
+const isPostfix =
+  symbol => typeOf(symbol) === 'postfix';
+const isCombinator =
+  symbol => isInfix(symbol) || isPostfix(symbol);
 
-    if (symbol === '(' && awaitingValue) {
-      // opening parenthesis case, going to build
-      // a value
-      operatorStack.push(symbol);
-      awaitingValue = true;
-    } else if (symbol === '(') {
-      // value catenation
-      error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
-    } else if (symbol === ')') {
-      // closing parenthesis case, clear the
-      // operator stack
+const input = inputString.split('');
+const operatorStack = [];
+const outputQueue = [];
+let awaitingValue = true;
 
-      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+while (input.length > 0) {
+  const symbol = input.shift();
+
+  if (symbol === '(' && awaitingValue) {
+    // opening parenthesis case, going to build
+    // a value
+    operatorStack.push(symbol);
+    awaitingValue = true;
+  } else if (symbol === '(') {
+    // value catenation
+    error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
+  } else if (symbol === ')') {
+    // closing parenthesis case, clear the
+    // operator stack
+
+    while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+      const op = operatorStack.pop();
+
+      outputQueue.push(representationOf(op));
+    }
+
+    if (peek(operatorStack) === '(') {
+      operatorStack.pop();
+      awaitingValue = false;
+    } else {
+      error('Unbalanced parentheses');
+    }
+  } else if (isCombinator(symbol)) {
+    const { precedence } = operatorsMap.get(symbol);
+
+    // pop higher-precedence operators off the operator stack
+    while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+      const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+      if (precedence < opPrecedence) {
         const op = operatorStack.pop();
 
         outputQueue.push(representationOf(op));
-      }
-
-      if (peek(operatorStack) === '(') {
-        operatorStack.pop();
-        awaitingValue = false;
       } else {
-        error('Unbalanced parentheses');
+        break;
       }
-    } else if (isCombinator(symbol)) {
-      const { precedence } = operatorsMap.get(symbol);
-
-      // pop higher-precedence operators off the operator stack
-      while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
-        const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
-
-        if (precedence < opPrecedence) {
-          const op = operatorStack.pop();
-
-          outputQueue.push(representationOf(op));
-        } else {
-          break;
-        }
-      }
-
-      operatorStack.push(symbol);
-      awaitingValue = isInfix(symbol);
-    } else if (awaitingValue) {
-      // as expected, go straight to the output
-
-      outputQueue.push(representationOf(symbol));
-      awaitingValue = false;
-    } else {
-      // value catenation
-      error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
     }
-  }
 
-  // pop remaining symbols off the stack and push them
-  while (operatorStack.length > 0) {
-    const op = operatorStack.pop();
-    
-    if (operatorsMap.has(op)) {
-      const { symbol: opSymbol } = operatorsMap.get(op);
-      outputQueue.push(opSymbol);
-    } else {
-      error(`Don't know how to push operator ${op}`);
-    }
-  }
+    operatorStack.push(symbol);
+    awaitingValue = isInfix(symbol);
+  } else if (awaitingValue) {
+    // as expected, go straight to the output
 
-  return outputQueue;
+    outputQueue.push(representationOf(symbol));
+    awaitingValue = false;
+  } else {
+    // value catenation
+    error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
+  }
+}
+
+// pop remaining symbols off the stack and push them
+while (operatorStack.length > 0) {
+  const op = operatorStack.pop();
+
+  if (operatorsMap.has(op)) {
+    const { symbol: opSymbol } = operatorsMap.get(op);
+    outputQueue.push(opSymbol);
+  } else {
+    error(`Don't know how to push operator ${op}`);
+  }
+}
+
+return outputQueue;
 }
 
 function shuntingYardB (inputString, { operators, defaultOperator }) {
-  const operatorsMap = new Map(
-    Object.entries(operators)
-  );
-  
-  const representationOf =
-    something => {
-      if (operatorsMap.has(something)) {
-        const { symbol } = operatorsMap.get(something);
+const operatorsMap = new Map(
+  Object.entries(operators)
+);
 
-        return symbol;
-      } else if (typeof something === 'string') {
-        return something;
-      } else {
-        error(`${something} is not a value`);
-      }
-    };
-  const typeOf =
-    symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
-  const isInfix =
-    symbol => typeOf(symbol) === 'infix';
-  const isPostfix =
-    symbol => typeOf(symbol) === 'postfix';
-  const isCombinator =
-    symbol => isInfix(symbol) || isPostfix(symbol);
-                                          
-  const input = inputString.split('');
-  const operatorStack = [];
-  const outputQueue = [];
-  let awaitingValue = true;
+const representationOf =
+  something => {
+    if (operatorsMap.has(something)) {
+      const { symbol } = operatorsMap.get(something);
 
-  while (input.length > 0) {
-    const symbol = input.shift();
+      return symbol;
+    } else if (typeof something === 'string') {
+      return something;
+    } else {
+      error(`${something} is not a value`);
+    }
+  };
+const typeOf =
+  symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
+const isInfix =
+  symbol => typeOf(symbol) === 'infix';
+const isPostfix =
+  symbol => typeOf(symbol) === 'postfix';
+const isCombinator =
+  symbol => isInfix(symbol) || isPostfix(symbol);
 
-    if (symbol === '(' && awaitingValue) {
-      // opening parenthesis case, going to build
-      // a value
-      operatorStack.push(symbol);
-      awaitingValue = true;
-    } else if (symbol === '(') {
-      // value catenation
-      
-      input.unshift(symbol);
-      input.unshift(defaultOperator);
+const input = inputString.split('');
+const operatorStack = [];
+const outputQueue = [];
+let awaitingValue = true;
+
+while (input.length > 0) {
+  const symbol = input.shift();
+
+  if (symbol === '(' && awaitingValue) {
+    // opening parenthesis case, going to build
+    // a value
+    operatorStack.push(symbol);
+    awaitingValue = true;
+  } else if (symbol === '(') {
+    // value catenation
+
+    input.unshift(symbol);
+    input.unshift(defaultOperator);
+    awaitingValue = false;
+  } else if (symbol === ')') {
+    // closing parenthesis case, clear the
+    // operator stack
+
+    while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+      const op = operatorStack.pop();
+
+      outputQueue.push(representationOf(op));
+    }
+
+    if (peek(operatorStack) === '(') {
+      operatorStack.pop();
       awaitingValue = false;
-    } else if (symbol === ')') {
-      // closing parenthesis case, clear the
-      // operator stack
+    } else {
+      error('Unbalanced parentheses');
+    }
+  } else if (isCombinator(symbol)) {
+    const { precedence } = operatorsMap.get(symbol);
 
-      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+    // pop higher-precedence operators off the operator stack
+    while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+      const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+      if (precedence < opPrecedence) {
         const op = operatorStack.pop();
 
         outputQueue.push(representationOf(op));
-      }
-
-      if (peek(operatorStack) === '(') {
-        operatorStack.pop();
-        awaitingValue = false;
       } else {
-        error('Unbalanced parentheses');
+        break;
       }
-    } else if (isCombinator(symbol)) {
-      const { precedence } = operatorsMap.get(symbol);
-
-      // pop higher-precedence operators off the operator stack
-      while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
-        const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
-
-        if (precedence < opPrecedence) {
-          const op = operatorStack.pop();
-
-          outputQueue.push(representationOf(op));
-        } else {
-          break;
-        }
-      }
-
-      operatorStack.push(symbol);
-      awaitingValue = isInfix(symbol);
-    } else if (awaitingValue) {
-      // as expected, go straight to the output
-
-      outputQueue.push(representationOf(symbol));
-      awaitingValue = false;
-    } else {
-      // value catenation
-      
-      input.unshift(symbol);
-      input.unshift(defaultOperator);
-      awaitingValue = false;
     }
-  }
 
-  // pop remaining symbols off the stack and push them
-  while (operatorStack.length > 0) {
-    const op = operatorStack.pop();
-    
-    if (operatorsMap.has(op)) {
-      const { symbol: opSymbol } = operatorsMap.get(op);
-      outputQueue.push(opSymbol);
-    } else {
-      error(`Don't know how to push operator ${op}`);
-    }
-  }
+    operatorStack.push(symbol);
+    awaitingValue = isInfix(symbol);
+  } else if (awaitingValue) {
+    // as expected, go straight to the output
 
-  return outputQueue;
+    outputQueue.push(representationOf(symbol));
+    awaitingValue = false;
+  } else {
+    // value catenation
+
+    input.unshift(symbol);
+    input.unshift(defaultOperator);
+    awaitingValue = false;
+  }
+}
+
+// pop remaining symbols off the stack and push them
+while (operatorStack.length > 0) {
+  const op = operatorStack.pop();
+
+  if (operatorsMap.has(op)) {
+    const { symbol: opSymbol } = operatorsMap.get(op);
+    outputQueue.push(opSymbol);
+  } else {
+    error(`Don't know how to push operator ${op}`);
+  }
+}
+
+return outputQueue;
 }
 
 function deepEqual(obj1, obj2) {
-  function isPrimitive(obj) {
-      return (obj !== Object(obj));
-  }
+function isPrimitive(obj) {
+    return (obj !== Object(obj));
+}
 
-  if(obj1 === obj2) // it's just the same object. No need to compare.
-      return true;
+if(obj1 === obj2) // it's just the same object. No need to compare.
+    return true;
 
-  if(isPrimitive(obj1) && isPrimitive(obj2)) // compare primitives
-      return obj1 === obj2;
+if(isPrimitive(obj1) && isPrimitive(obj2)) // compare primitives
+    return obj1 === obj2;
 
-  if(Object.keys(obj1).length !== Object.keys(obj2).length)
-      return false;
+if(Object.keys(obj1).length !== Object.keys(obj2).length)
+    return false;
 
-  // compare objects with same number of keys
-  for(let key in obj1) {
-      if(!(key in obj2)) return false; //other object doesn't have this prop
-      if(!deepEqual(obj1[key], obj2[key])) return false;
-  }
+// compare objects with same number of keys
+for(let key in obj1) {
+    if(!(key in obj2)) return false; //other object doesn't have this prop
+    if(!deepEqual(obj1[key], obj2[key])) return false;
+}
 
-  return true;
+return true;
 }
 
 const pp = value => value instanceof Array ? value.map(x=>x.toString()) : value;
 
 function verify (fn, tests, ...additionalArgs) {
-  try {
-    const testList = Object.entries(tests);
-    const numberOfTests = testList.length;
+try {
+  const testList = Object.entries(tests);
+  const numberOfTests = testList.length;
 
-    const outcomes = testList.map(
-      ([example, expected]) => {
-        const actual = fn(example, ...additionalArgs);
-      
-        if (deepEqual(actual, expected)) {
-          return 'pass';
-        } else {
-          return `fail: ${JSON.stringify({ example, expected: pp(expected), actual: pp(actual) })}`;
-        }
+  const outcomes = testList.map(
+    ([example, expected]) => {
+      const actual = fn(example, ...additionalArgs);
+
+      if (deepEqual(actual, expected)) {
+        return 'pass';
+      } else {
+        return `fail: ${JSON.stringify({ example, expected: pp(expected), actual: pp(actual) })}`;
       }
-    )
-
-    const failures = outcomes.filter(result => result !== 'pass');
-    const numberOfFailures = failures.length;
-    const numberOfPasses = numberOfTests - numberOfFailures;
-
-    if (numberOfFailures === 0) {
-      console.log(`All ${numberOfPasses} tests passing`);
-    } else {
-      console.log(`${numberOfFailures} tests failing: ${failures.join('; ')}`);
     }
-  } catch(error) {
-    console.log(`Failed to validate: ${error}`)
+  )
+
+  const failures = outcomes.filter(result => result !== 'pass');
+  const numberOfFailures = failures.length;
+  const numberOfPasses = numberOfTests - numberOfFailures;
+
+  if (numberOfFailures === 0) {
+    console.log(`All ${numberOfPasses} tests passing`);
+  } else {
+    console.log(`${numberOfFailures} tests failing: ${failures.join('; ')}`);
   }
+} catch(error) {
+  console.log(`Failed to validate: ${error}`)
+}
 }
 
 const arities = {
-  infix: 2,
-  postfix: 1,
-  atomic: 0
+infix: 2,
+postfix: 1,
+atomic: 0
 };
 
 function evaluatePostfixA (postfix, { operators, toValue }) {
-  const symbols = new Map(
-    Object.entries(operators).map(
-      ([key, { symbol, type, fn }]) =>
-        [symbol, { arity: arities[type], fn }]
-    )
-  );
-  
-  const stack = [];
+const symbols = new Map(
+  Object.entries(operators).map(
+    ([key, { symbol, type, fn }]) =>
+      [symbol, { arity: arities[type], fn }]
+  )
+);
 
-  for (const element of postfix) {
-    if (typeof element === 'string') {
-      stack.push(toValue(element));
-    } else if (symbols.has(element)) {
-      const { arity, fn } = symbols.get(element);
+const stack = [];
 
-      if (stack.length < arity) {
-        error(`Not enough values on the stack to use ${element}`)
-      } else {
-        const args = [];
+for (const element of postfix) {
+  if (typeof element === 'string') {
+    stack.push(toValue(element));
+  } else if (symbols.has(element)) {
+    const { arity, fn } = symbols.get(element);
 
-        for (let counter = 0; counter < arity; ++counter) {
-          args.unshift(stack.pop());
-        }
-
-        stack.push(fn.apply(null, args))
-      }
+    if (stack.length < arity) {
+      error(`Not enough values on the stack to use ${element}`)
     } else {
-      error(`Don't know what to do with ${element}'`)
+      const args = [];
+
+      for (let counter = 0; counter < arity; ++counter) {
+        args.unshift(stack.pop());
+      }
+
+      stack.push(fn.apply(null, args))
     }
-  }
-  if (stack.length === 0) {
-    return undefined;
-  } else if (stack.length > 1) {
-    error(`should only be one value to return, but there were ${stack.length}values on the stack`);
   } else {
-    return stack[0];
+    error(`Don't know what to do with ${element}'`)
   }
+}
+if (stack.length === 0) {
+  return undefined;
+} else if (stack.length > 1) {
+  error(`should only be one value to return, but there were ${stack.length}values on the stack`);
+} else {
+  return stack[0];
+}
 }
 
 function evaluateA (expression, configuration) {
-  return evaluatePostfixA(
-    shuntingYardB(
-      expression, configuration
-    ),
-    configuration
-  );
+return evaluatePostfixA(
+  shuntingYardB(
+    expression, configuration
+  ),
+  configuration
+);
 }
 
 // ----------
 
 verify(shuntingYardA, {
-  '3': [ '3' ],
-  '2+3': ['2', '3', arithmetic.operators['+'].symbol],
-  '4!': ['4', arithmetic.operators['!'].symbol],
-  '3*2+4!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['!'].symbol, arithmetic.operators['+'].symbol],
-  '(3*2+4)!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['+'].symbol, arithmetic.operators['!'].symbol]
+'3': [ '3' ],
+'2+3': ['2', '3', arithmetic.operators['+'].symbol],
+'4!': ['4', arithmetic.operators['!'].symbol],
+'3*2+4!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['!'].symbol, arithmetic.operators['+'].symbol],
+'(3*2+4)!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['+'].symbol, arithmetic.operators['!'].symbol]
 }, arithmetic);
 
 const arithmeticB = {
-  operators: arithmetic.operators,
-  defaultOperator: '*'
+operators: arithmetic.operators,
+defaultOperator: '*'
 }
 
 verify(shuntingYardB, {
-  '3': [ '3' ],
-  '2+3': ['2', '3', arithmetic.operators['+'].symbol],
-  '4!': ['4', arithmetic.operators['!'].symbol],
-  '3*2+4!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['!'].symbol, arithmetic.operators['+'].symbol],
-  '(3*2+4)!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['+'].symbol, arithmetic.operators['!'].symbol],
-  '2(3+4)5': ['2', '3', '4', arithmeticB.operators['+'].symbol, '5', arithmeticB.operators['*'].symbol, arithmeticB.operators['*'].symbol],
-  '3!2': ['3', arithmeticB.operators['!'].symbol, '2', arithmeticB.operators['*'].symbol]
+'3': [ '3' ],
+'2+3': ['2', '3', arithmetic.operators['+'].symbol],
+'4!': ['4', arithmetic.operators['!'].symbol],
+'3*2+4!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['!'].symbol, arithmetic.operators['+'].symbol],
+'(3*2+4)!': ['3', '2', arithmetic.operators['*'].symbol, '4', arithmetic.operators['+'].symbol, arithmetic.operators['!'].symbol],
+'2(3+4)5': ['2', '3', '4', arithmeticB.operators['+'].symbol, '5', arithmeticB.operators['*'].symbol, arithmeticB.operators['*'].symbol],
+'3!2': ['3', arithmeticB.operators['!'].symbol, '2', arithmeticB.operators['*'].symbol]
 }, arithmeticB);
 
 const arithmeticC = {
-  operators: arithmetic.operators,
-  defaultOperator: '*',
-  toValue: string => Number.parseInt(string, 10)
+operators: arithmetic.operators,
+defaultOperator: '*',
+toValue: string => Number.parseInt(string, 10)
 };
 
 verify(evaluateA, {
-  '': undefined,
-  '3': 3,
-  '2+3': 5,
-  '4!': 24,
-  '3*2+4!': 30,
-  '(3*2+4)!': 3628800,
-  '2(3+4)5': 70,
-  '3!2': 12
+'': undefined,
+'3': 3,
+'2+3': 5,
+'4!': 24,
+'3*2+4!': 30,
+'(3*2+4)!': 3628800,
+'2(3+4)5': 70,
+'3!2': 12
 }, arithmeticC);
 
 console.log('01-validated-and-processed.js');
@@ -727,30 +727,48 @@ verifyRecognizer(uppercase, {
 
 console.log('03-compiled-building-blocks.js');
 
-const EMPTY_SET = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": []
-};
+const names = (() => {
+  let i = 0;
 
-const EMPTY_STRING = {
-  "start": "empty",
-  "transitions": [],
-  "accepting": ["empty"]
-};
+  return function * names () {
+    while (true) yield `G${++i}`;
+  };
+})();
+
+function emptySet () {
+  const [start] = names();
+
+  return {
+    start,
+    "transitions": [],
+    "accepting": []
+  };
+}
+
+function emptyString () {
+  const [start] = names();
+
+  return {
+    start,
+    "transitions": [],
+    "accepting": [start]
+  };
+}
 
 function literal (symbol) {
+  const [start, recognized] = names();
+
   return {
-    "start": "empty",
+    start,
     "transitions": [
-      { "from": "empty", "consume": symbol, "to": "recognized" }
+      { "from": start, "consume": symbol, "to": recognized }
     ],
-    "accepting": ["recognized"]
+    "accepting": [recognized]
   };
 }
 
 function shuntingYardC (
-  inputString, 
+  inputString,
   {
     operators,
     defaultOperator,
@@ -761,7 +779,7 @@ function shuntingYardC (
   const operatorsMap = new Map(
     Object.entries(operators)
   );
-  
+
   const representationOf =
     something => {
       if (operatorsMap.has(something)) {
@@ -782,7 +800,7 @@ function shuntingYardC (
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
     symbol => isInfix(symbol) || isPostfix(symbol);
-                                          
+
   const input = inputString.split('');
   const operatorStack = [];
   const outputQueue = [];
@@ -817,7 +835,7 @@ function shuntingYardC (
       awaitingValue = true;
     } else if (symbol === '(') {
       // value catenation
-      
+
       input.unshift(symbol);
       input.unshift(defaultOperator);
       awaitingValue = false;
@@ -862,7 +880,7 @@ function shuntingYardC (
       awaitingValue = false;
     } else {
       // value catenation
-      
+
       input.unshift(symbol);
       input.unshift(defaultOperator);
       awaitingValue = false;
@@ -872,7 +890,7 @@ function shuntingYardC (
   // pop remaining symbols off the stack and push them
   while (operatorStack.length > 0) {
     const op = operatorStack.pop();
-    
+
     if (operatorsMap.has(op)) {
       const { symbol: opSymbol } = operatorsMap.get(op);
       outputQueue.push(opSymbol);
@@ -907,15 +925,34 @@ function verifyEvaluateB (expression, configuration, examples) {
   );
 }
 
+const regexA = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    }
+  },
+  defaultOperator: undefined,
+  toValue (string) {
+    return literal(string);
+  }
+};
+
 // ----------
 
-verifyRecognizer(EMPTY_SET, {
+verifyRecognizer(emptySet(), {
   '': false,
   '0': false,
   '1': false
 });
 
-verifyRecognizer(EMPTY_STRING, {
+verifyRecognizer(emptyString(), {
   '': true,
   '0': false,
   '1': false
@@ -929,25 +966,6 @@ verifyRecognizer(literal('0'), {
   '10': false,
   '11': false
 });
-
-const regexA = {
-  operators: {
-    '∅': {
-      symbol: Symbol('∅'),
-      type: 'atomic',
-      fn: () => EMPTY_SET
-    },
-    'ε': {
-      symbol: Symbol('ε'),
-      type: 'atomic',
-      fn: () => EMPTY_STRING
-    }
-  },
-  defaultOperator: undefined,
-  toValue (string) {
-    return literal(string);
-  }
-};
 
 const emptySetRecognizer = evaluateA('∅', regexA);
 const emptyStringRecognizer = evaluateA('ε', regexA);
@@ -1019,13 +1037,30 @@ verifyEvaluateB('`ε', regexA, {
 
 console.log('04-product-and-union.js')
 
-// This function computes a state name for the product given
-// the names of teh states for a and b
-function abToAB (aState, bState) {
-  return`(${aState || ''})(${bState || ''})`;
+class StateAggregator {
+  constructor () {
+    this.map = new Map();
+  }
+
+  for (...states) {
+    const key =
+      states
+        .filter(s => s != null)
+        .sort()
+        .join(' ');
+
+    if (this.map.has(key)) {
+      return this.map.get(key);
+    } else {
+      const [newState] = names();
+
+      this.map.set(key, newState);
+      return newState;
+    }
+  }
 }
 
-function product (a, b) {
+function product (a, b, P = new StateAggregator()) {
   const {
     stateMap: aStateMap,
     start: aStart
@@ -1046,7 +1081,7 @@ function product (a, b) {
   const T = new Map();
 
   // seed R
-  const start = abToAB(aStart, bStart);
+  const start = P.for(aStart, bStart);
   R.set(start, [aStart, bStart]);
 
   while (R.size > 0) {
@@ -1068,12 +1103,12 @@ function product (a, b) {
     } else if (aTransitions.length === 0) {
       const aTo = null;
       abTransitions = bTransitions.map(
-        ({ consume, to: bTo }) => ({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo })
+        ({ consume, to: bTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
       );
     } else if (bTransitions.length === 0) {
       const bTo = null;
       abTransitions = aTransitions.map(
-        ({ consume, to: aTo }) => ({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo })
+        ({ consume, to: aTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
       );
     } else {
       // both a and b have transitions
@@ -1095,13 +1130,13 @@ function product (a, b) {
           bConsumeToMap.delete(consume);
         }
 
-        abTransitions.push({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
       }
 
       for (const [consume, bTo] of bConsumeToMap.entries()) {
         const aTo = null;
 
-        abTransitions.push({ from: abState, consume, to: abToAB(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
       }
     }
 
@@ -1130,37 +1165,39 @@ function product (a, b) {
 
 }
 
-function union (a, b) {
+function union2 (a, b) {
   const {
     states: aDeclaredStates,
     accepting: aAccepting
   } = validatedAndProcessed(a);
-  const aStates = [''].concat(aDeclaredStates);
+  const aStates = [null].concat(aDeclaredStates);
+
   const {
     states: bDeclaredStates,
     accepting: bAccepting
   } = validatedAndProcessed(b);
-  const bStates = [''].concat(bDeclaredStates);
+  const bStates = [null].concat(bDeclaredStates);
+
+  // P is a mapping from a pair of states (or any set, but in union2 it's always a pair)
+  // to a new state representing the tuple of those states
+  const P = new StateAggregator();
+
+  const productAB = product(a, b, P);
+  const { start, transitions } = productAB;
 
   const statesAAccepts =
     aAccepting.flatMap(
-      aAcceptingState => bStates.map(bState => abToAB(aAcceptingState, bState))
+      aAcceptingState => bStates.map(bState => P.for(aAcceptingState, bState))
     );
   const statesBAccepts =
     bAccepting.flatMap(
-      bAcceptingState => aStates.map(aState => abToAB(aState, bAcceptingState))
+      bAcceptingState => aStates.map(aState => P.for(aState, bAcceptingState))
     );
+
   const allAcceptingStates =
-    statesAAccepts.concat(
-      statesBAccepts.filter(
-        state => statesAAccepts.indexOf(state) === -1
-      )
-    );
+    [...new Set([...statesAAccepts, ...statesBAccepts])];
 
-  const productAB = product(a, b);
   const { stateSet: reachableStates } = validatedAndProcessed(productAB);
-
-  const { start, transitions } = productAB;
   const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
 
   return { start, accepting, transitions };
@@ -1182,7 +1219,7 @@ const regexB = {
       symbol: Symbol('|'),
       type: 'infix',
       precedence: 30,
-      fn: union
+      fn: union2
     }
   },
   defaultOperator: undefined,
@@ -1193,7 +1230,7 @@ const regexB = {
 
 // ----------
 
-verifyRecognizer(union(reg, uppercase), {
+verifyRecognizer(union2(reg, uppercase), {
   '': true,
   'r': false,
   'R': true,
