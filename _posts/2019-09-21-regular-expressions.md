@@ -1667,22 +1667,43 @@ Here is a function that takes the product of two recognizers:
 class StateAggregator {
   constructor () {
     this.map = new Map();
+    this.inverseMap = new Map();
   }
 
-  for (...states) {
-    const key =
-      states
-        .filter(s => s != null)
-        .sort()
-        .join(' ');
+  stateFromSet (...states) {
+    const materialStates = states.filter(s => s != null);
 
-    if (this.map.has(key)) {
-      return this.map.get(key);
+    if (materialStates.some(ms=>this.inverseMap.has(ms))) {
+      error(`Surprise! Aggregating an aggregate!!`);
+    }
+
+    if (materialStates.length === 0) {
+      error('tried to get an aggregate state name for no states');
+    } else if (materialStates.length === 1) {
+      // do not need a new state name
+      return materialStates[0];
     } else {
-      const [newState] = names();
+      const key = materialStates.sort().map(s=>`(${s})`).join('');
 
-      this.map.set(key, newState);
-      return newState;
+      if (this.map.has(key)) {
+        return this.map.get(key);
+      } else {
+        const [newState] = names();
+
+        this.map.set(key, newState);
+        this.inverseMap.set(newState, new Set(materialStates));
+
+        return newState;
+      }
+    }
+  }
+
+  // inverse of .get, returns set of states
+  setFromState (state) {
+    if (this.inverseMap.has(state)) {
+      return this.inverseMap.get(state);
+    } else {
+      return new Set([state]);
     }
   }
 }
@@ -1708,7 +1729,7 @@ function product (a, b, P = new StateAggregator()) {
   const T = new Map();
 
   // seed R
-  const start = P.for(aStart, bStart);
+  const start = P.stateFromSet(aStart, bStart);
   R.set(start, [aStart, bStart]);
 
   while (R.size > 0) {
@@ -1730,12 +1751,12 @@ function product (a, b, P = new StateAggregator()) {
     } else if (aTransitions.length === 0) {
       const aTo = null;
       abTransitions = bTransitions.map(
-        ({ consume, to: bTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
+        ({ consume, to: bTo }) => ({ from: abState, consume, to: P.stateFromSet(aTo, bTo), aTo, bTo })
       );
     } else if (bTransitions.length === 0) {
       const bTo = null;
       abTransitions = aTransitions.map(
-        ({ consume, to: aTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
+        ({ consume, to: aTo }) => ({ from: abState, consume, to: P.stateFromSet(aTo, bTo), aTo, bTo })
       );
     } else {
       // both a and b have transitions
@@ -1757,13 +1778,13 @@ function product (a, b, P = new StateAggregator()) {
           bConsumeToMap.delete(consume);
         }
 
-        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.stateFromSet(aTo, bTo), aTo, bTo });
       }
 
       for (const [consume, bTo] of bConsumeToMap.entries()) {
         const aTo = null;
 
-        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.stateFromSet(aTo, bTo), aTo, bTo });
       }
     }
 
@@ -1879,11 +1900,11 @@ function union2 (a, b) {
 
   const statesAAccepts =
     aAccepting.flatMap(
-      aAcceptingState => bStates.map(bState => P.for(aAcceptingState, bState))
+      aAcceptingState => bStates.map(bState => P.stateFromSet(aAcceptingState, bState))
     );
   const statesBAccepts =
     bAccepting.flatMap(
-      bAcceptingState => aStates.map(aState => P.for(aState, bAcceptingState))
+      bAcceptingState => aStates.map(aState => P.stateFromSet(aState, bAcceptingState))
     );
 
   const allAcceptingStates =
@@ -2188,110 +2209,7 @@ This transformation complete, we can then remove the ε-transitions. For each ε
 
 ### implementing catenation
 
-Here's some code to resolve conflicts between the state names of two recognizers:
-
-```javascript
-// given a mapping of individual names, renames all the states in
-// an fas, including the start and accepting. any names not in the map
-// rename unchanged
-function renameStates (nameMap, { start, accepting, transitions }) {
-  const translate =
-    before =>
-      nameMap.has(before) ? nameMap.get(before) : before;
-
-  return {
-    start: translate(start),
-    accepting: accepting.map(translate),
-    transitions:
-    	transitions.map(
-      	({ from, consume, to }) => {
-          const transition = { from: translate(from), to: translate(to || from) };
-          if (consume != null) transition.consume = consume;
-
-          return transition;
-        }
-      )
-  };
-}
-
-const allStates =
-  ({ start, transitions }) => {
-    const stateSet = toStateSet(transitions);
-    stateSet.add(start);
-    return stateSet;
-  };
-
-function resolveConflictsWithNames (conflictingStates, description) {
-  const conflictingStatesSet = new Set(conflictingStates);
-  const descriptionStatesSet = allStates(description);
-
-  const nameMap = new Map();
-
-  // build the map to resolve overlaps with reserved names
-  for (const descriptionState of descriptionStatesSet) {
-    const match = /^(.*)-(\d+)$/.exec(descriptionState);
-    let base = match == null ? descriptionState : match[1];
-    let counter = match == null ? 1 : Number.parseInt(match[2], 10);
-    let resolved = descriptionState;
-    while (conflictingStatesSet.has(resolved)) {
-      resolved = `${base}-${++counter}`;
-    }
-    if (resolved !== descriptionState) {
-  		nameMap.set(descriptionState, resolved);
-    }
-    conflictingStatesSet.add(resolved);
-  }
-
-  // apply the built map
-  return renameStates(nameMap, description);
-}
-
-// given an iterable of names that are reserved,
-// renames any states in a name so that they no longer
-// overlap with reserved names
-function resolveConflicts (first, second) {
-  return resolveConflictsWithNames(allStates(first), second);
-}
-```
-
-Let's make sure it works:
-
-```javascript
-const reg = {
-  "start": "empty",
-  "accepting": ["reg"],
-  "transitions": [
-    { "from": "empty", "consume": "r", "to": "r" },
-    { "from": "empty", "consume": "R", "to": "r" },
-    { "from": "r", "consume": "e", "to": "re" },
-    { "from": "r", "consume": "E", "to": "re" },
-    { "from": "re", "consume": "g", "to": "reg" },
-    { "from": "re", "consume": "G", "to": "reg" }
-  ]
-};
-
-const exclamations = {
-  "start": "empty",
-  "accepting": ["bang"],
-  "transitions": [
-    { "from": "empty", "consume": "!", "to": "bang" },
-    { "from": "bang", "consume": "!", "to": "bang" },
-  ]
-}
-
-resolveConflicts(reg, exclamations)
-  //=>
-    {
-      "start": "empty2",
-      "accepting": [ "bang" ],
-      "transitions": [
-        { "from": "empty2", "to": "bang", "consume": "!" },
-        { "from": "bang", "to": "bang", "consume": "!" }
-      ]
-    }
-```
-
-With this, we can write a function to join the two recognizers with ε-transitions:
+Here's a function to join the two recognizers with ε-transitions:
 
 ```javascript
 function epsilonCatenate (first, second) {
@@ -2331,7 +2249,61 @@ epsilonCatenate(reg, exclamations)
     }
 ```
 
-And then a function to remove ε-transitions. Its a little busier than we might expect from our simple examples, but it has to handle cases such resolving chains of epsilons and detecting loops:
+Of course, our engine for finite-state recognizers doesn't actually implement ε-transitions. We _could_ add that as a feature, but in a moment we'll see whay we chose not to implement ε-transitions. So if we aren't implementing ε-transitions, what can we do with `epsilonCatenate`?
+
+Well, what if there was an equivalent finite-state recognizer without ε-transitions for every finite-state recognizer with ε-transitions? And what if we knew how to derive an equivalent finite-state recognizer without ε-transitions given a finite-state recognizer with ε-transitions?
+
+If both of these were true, then we could use `epsilonCatenate` to compute a finite-state recognizer with ε-transitions representing two catenated finite-state recognizers, then derive the equivalent finite-state recognizer without ε-transitions to give us the final catenated finite-state recognizer.
+
+Good news! There _is_ an equivalent finite-state recognizer without ε-transitions for every finite-state recognizer with ε-transitions. The basic idea is that when state `a` has an ε-transition to state `b`, there is an equivalent finite-state recognizer where there is no ε-transition from `a` to `b`, but for every transition from `b` to some state (including back to `b`), there is an identical transition from `a`.
+
+For example, given:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->r : r
+    r-->re : e
+    re-->[*]
+</div>
+
+And:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty2
+    empty2-->g : g
+    g-->gbang : !
+    gbang-->[*]
+</div>
+
+If we catenate them with ε-transitions, we get:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->r : r
+    r-->re : e
+    re-->empty2
+    empty2-->g : g
+    g-->gbang : !
+    gbang-->[*]
+</div>
+
+We can remove the ε-transition between `re` and `empty2`, provided we copy `empty2`'s transition into `re`:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->empty
+    empty-->r : r
+    r-->re : e
+    re-->g : g
+    empty2-->g : g
+    g-->gbang : !
+    gbang-->[*]
+</div>
+
+Here's a function that does exactly that. There's more complexity to handle things like ε-transitions between a state and itself, and loops in epsilon transitions (bad!), but at its heart, it just implements the simple algorithm we just described
 
 ```javascript
 function removeEpsilonTransitions ({ start, accepting, transitions }) {
@@ -2439,7 +2411,7 @@ removeEpsilonTransitions(epsilonCatenate(reg, exclamations))
     }
 ```
 
-We have now implemented catenating two deterministic finite recognizers.
+We have now implemented catenating two deterministic finite-state recognizers.
 
 ---
 
@@ -2776,7 +2748,95 @@ We begin by placing the start state in the queue, and then:
   4. Add the transition to the powerset recognizer.
   5. Add the name for the set of destination states to the queue.
 
-We can encode this as a function, `powerset`. The source code is [here](/assets/supplementa/fsa/07-powerset-and-catenation.js). We can try it:
+We can encode this as a function, `powerset`:
+
+```javascript
+function powerset (description, P = new StateAggregator()) {
+  const {
+    start: nfaStart,
+    acceptingSet: nfaAcceptingSet,
+    stateMap: nfaStateMap
+  } = validatedAndProcessed(description, true);
+
+  // the final set of accepting states
+  const dfaAcceptingSet = new Set();
+
+  // R is the work "remaining" to be analyzed
+  // organized as a set of states to process
+  const R = new Set([ nfaStart ]);
+
+  // T is a collection of states already analyzed
+  // it is a map from the state name to the transitions
+  // from that state
+  const T = new Map();
+
+  while (R.size > 0) {
+    const [stateName] = [...R];
+    R.delete(stateName);
+
+    // all powerset states represent sets of state,
+    // with the degenerate case being a state that only represents
+    // itself. stateSet is the full set represented
+    // by stateName
+    const stateSet = P.setFromState(stateName);
+
+    // get the aggregate transitions across all states
+    // in the set
+    const aggregateTransitions =
+      [...stateSet].flatMap(s => nfaStateMap.get(s) || []);
+
+    // a map from a symbol consumed to the set of
+    // destination states
+    const symbolToStates =
+      aggregateTransitions
+        .reduce(
+          (acc, { consume, to }) => {
+            const toStates = acc.has(consume) ? acc.get(consume) : new Set();
+
+            toStates.add(to);
+            acc.set(consume, toStates);
+            return acc;
+          },
+          new Map()
+        );
+
+    const dfaTransitions = [];
+
+  	for (const [consume, toStates] of symbolToStates.entries()) {
+      const toStatesName = P.stateFromSet(...toStates);
+
+      dfaTransitions.push({ from: stateName, consume, to: toStatesName });
+
+      const hasBeenDone = T.has(toStatesName);
+      const isInRemainingQueue = R.has(toStatesName)
+
+      if (!hasBeenDone && !isInRemainingQueue) {
+        R.add(toStatesName);
+      }
+    }
+
+    T.set(stateName, dfaTransitions);
+
+    const anyStateIsAccepting =
+      [...stateSet].some(s => nfaAcceptingSet.has(s));
+
+    if (anyStateIsAccepting) {
+      dfaAcceptingSet.add(stateName);
+    }
+
+  }
+
+  return {
+    start: nfaStart,
+    accepting: [...dfaAcceptingSet],
+    transitions:
+      [...T.values()]
+        .flatMap(tt => tt)
+  };
+}
+```
+
+Let's try it:
 
 ```javascript
 const zeroes = {
@@ -2822,17 +2882,17 @@ const deterministic = powerset(nondeterministic);
 deterministic
   //=>
     {
-      "start": "(empty)",
-      "accepting": [ "(zero)(zeroes)", "(notZero)" ],
+      "start": "empty",
       "transitions": [
-        { "from": "(empty)", "consume": "0", "to": "(zeroes)" },
-        { "from": "(zeroes)", "consume": "0", "to": "(zero)(zeroes)" },
-        { "from": "(zeroes)", "consume": "1", "to": "(notZero)" },
-        { "from": "(zero)(zeroes)", "consume": "0", "to": "(zero)(zeroes)" },
-        { "from": "(zero)(zeroes)", "consume": "1", "to": "(notZero)" },
-        { "from": "(notZero)", "consume": "0", "to": "(notZero)" },
-        { "from": "(notZero)", "consume": "1", "to": "(notZero)" }
-      ]
+        { "from": "empty", "consume": "0", "to": "zeroes" },
+        { "from": "zeroes", "consume": "0", "to": "G36" },
+        { "from": "zeroes", "consume": "1", "to": "notZero" },
+        { "from": "G36", "consume": "0", "to": "G36" },
+        { "from": "G36", "consume": "1", "to": "notZero" },
+        { "from": "notZero", "consume": "0", "to": "notZero" },
+        { "from": "notZero", "consume": "1", "to": "notZero" }
+      ],
+      "accepting": [ "G36", "notZero" ]
     }
 ```
 
@@ -2840,7 +2900,7 @@ The `powerset` function converts any nondeterministic finite-state recognizer in
 
 ---
 
-### catenation without the catch, and an observation
+### catenation without the catch
 
 Computing the catenation of any two deterministic finite-state recognizers is thus:
 
@@ -2855,7 +2915,7 @@ function catenation2 (a, b) {
   );
 }
 
-verify(catenation2(zeroes, binary), {
+verifyRecognizer(catenation2(zeroes, binary), {
   '': false,
   '0': false,
   '1': false,
@@ -2874,6 +2934,10 @@ verify(catenation2(zeroes, binary), {
 });
   //=> All 15 tests passing
 ```
+
+Given `catenation2`, we are now ready to enhance our evaluator:
+
+```javascript
 
 And this allows us to draw an important conclusion: *The set of deterministic finite-state recognizers is closed under catenation*, meaning that given two finite-state recognizers, we can always construct a finite-state recognizer representing the catenation of the two recognizers.
 

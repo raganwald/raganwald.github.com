@@ -1,61 +1,18 @@
-// 07-powerset-and-catenation.js
+console.log('06-powerset-and-catenation.js');
 
-function isDeterministic (description) {
-  const { stateMap } = validatedAndProcessed(description, true);
-
-  const transitionsGroupedByFromState = [...stateMap.values()];
-
-  const consumptions =
-    transitionsGroupedByFromState
-      .map(
-        transitions => transitions.map( ({ consume }) => consume )
-      );
-
-  return consumptions.every(
-    consumes => consumes.length === new Set(consumes).size
-  );
-}
-
-function parenthesizedStates (description) {
-  const { states } = validatedAndProcessed(description, true);
-
-  // produces a map from each state's name to the name in parentheses,
-  // e.g. 'empty' => '(empty)'
-  const parenthesizeMap =
-    states
-      .reduce(
-        (acc, s) => (acc.set(s, `(${s})`), acc),
-        new Map()
-      );
-
-  // rename all the states
-  return renameStates(parenthesizeMap, description);
-}
-
-function powerset (description) {
-  // optional, but it avoids a lot of excess (())
-  if (isDeterministic(description)) {
-    return description;
-  }
-
-  const renamedDescription = parenthesizedStates(description);
-
+function powerset (description, P = new StateAggregator()) {
   const {
     start: nfaStart,
     acceptingSet: nfaAcceptingSet,
     stateMap: nfaStateMap
-  } = validatedAndProcessed(renamedDescription, true);
+  } = validatedAndProcessed(description, true);
 
   // the final set of accepting states
   const dfaAcceptingSet = new Set();
 
   // R is the work "remaining" to be analyzed
-  // organized as a map from a name to a set of states.
-  // initialized with a map from the start state's
-  // name to a degenerate set containing only the start state
-  const R = new Map([
-    [nfaStart, new Set([nfaStart])]
-  ]);
+  // organized as a set of states to process
+  const R = new Set([ nfaStart ]);
 
   // T is a collection of states already analyzed
   // it is a map from the state name to the transitions
@@ -63,8 +20,14 @@ function powerset (description) {
   const T = new Map();
 
   while (R.size > 0) {
-    const [[stateName, stateSet]] = R.entries();
+    const [stateName] = [...R];
     R.delete(stateName);
+
+    // all powerset states represent sets of state,
+    // with the degenerate case being a state that only represents
+    // itself. stateSet is the full set represented
+    // by stateName
+    const stateSet = P.setFromState(stateName);
 
     // get the aggregate transitions across all states
     // in the set
@@ -89,7 +52,7 @@ function powerset (description) {
     const dfaTransitions = [];
 
   	for (const [consume, toStates] of symbolToStates.entries()) {
-      const toStatesName = [...toStates].sort().join('');
+      const toStatesName = P.stateFromSet(...toStates);
 
       dfaTransitions.push({ from: stateName, consume, to: toStatesName });
 
@@ -97,7 +60,7 @@ function powerset (description) {
       const isInRemainingQueue = R.has(toStatesName)
 
       if (!hasBeenDone && !isInRemainingQueue) {
-        R.set(toStatesName, toStates);
+        R.add(toStatesName);
       }
     }
 
@@ -133,7 +96,6 @@ function catenation2 (a, b) {
 
 // ----------
 
-
 const zeroes = {
   "start": 'empty',
   "accepting": ['zeroes'],
@@ -143,7 +105,7 @@ const zeroes = {
   ]
 };
 
-verify(catenation2(zeroes, binary), {
+verifyRecognizer(catenation2(zeroes, binary), {
   '': false,
   '0': false,
   '1': false,

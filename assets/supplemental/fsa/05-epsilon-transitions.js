@@ -1,20 +1,18 @@
-// 06-epsilons.js
+console.log('05-epsilon-transitions.js');
 
-function epsilonCatenate (first, second) {
-  const unconflictedSecond =  resolveConflicts(first, second);
-
+function epsilonCatenate (a, b) {
   const joinTransitions =
-    first.accepting.map(
-      from => ({ from, to: unconflictedSecond.start })
+    a.accepting.map(
+      from => ({ from, to: b.start })
     );
 
   return {
-    start: first.start,
-    accepting: unconflictedSecond.accepting,
+    start: a.start,
+    accepting: b.accepting,
     transitions:
-      first.transitions
+      a.transitions
         .concat(joinTransitions)
-        .concat(unconflictedSecond.transitions)
+        .concat(b.transitions)
   };
 }
 

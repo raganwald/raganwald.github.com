@@ -6,22 +6,43 @@ console.log('04-product-and-union.js')
 class StateAggregator {
   constructor () {
     this.map = new Map();
+    this.inverseMap = new Map();
   }
 
-  for (...states) {
-    const key =
-      states
-        .filter(s => s != null)
-        .sort()
-        .join(' ');
+  stateFromSet (...states) {
+    const materialStates = states.filter(s => s != null);
 
-    if (this.map.has(key)) {
-      return this.map.get(key);
+    if (materialStates.some(ms=>this.inverseMap.has(ms))) {
+      error(`Surprise! Aggregating an aggregate!!`);
+    }
+
+    if (materialStates.length === 0) {
+      error('tried to get an aggregate state name for no states');
+    } else if (materialStates.length === 1) {
+      // do not need a new state name
+      return materialStates[0];
     } else {
-      const [newState] = names();
+      const key = materialStates.sort().map(s=>`(${s})`).join('');
 
-      this.map.set(key, newState);
-      return newState;
+      if (this.map.has(key)) {
+        return this.map.get(key);
+      } else {
+        const [newState] = names();
+
+        this.map.set(key, newState);
+        this.inverseMap.set(newState, new Set(materialStates));
+
+        return newState;
+      }
+    }
+  }
+
+  // inverse of .get, returns set of states
+  setFromState (state) {
+    if (this.inverseMap.has(state)) {
+      return this.inverseMap.get(state);
+    } else {
+      return new Set([state]);
     }
   }
 }
@@ -47,7 +68,7 @@ function product (a, b, P = new StateAggregator()) {
   const T = new Map();
 
   // seed R
-  const start = P.for(aStart, bStart);
+  const start = P.stateFromSet(aStart, bStart);
   R.set(start, [aStart, bStart]);
 
   while (R.size > 0) {
@@ -69,12 +90,12 @@ function product (a, b, P = new StateAggregator()) {
     } else if (aTransitions.length === 0) {
       const aTo = null;
       abTransitions = bTransitions.map(
-        ({ consume, to: bTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
+        ({ consume, to: bTo }) => ({ from: abState, consume, to: P.stateFromSet(aTo, bTo), aTo, bTo })
       );
     } else if (bTransitions.length === 0) {
       const bTo = null;
       abTransitions = aTransitions.map(
-        ({ consume, to: aTo }) => ({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo })
+        ({ consume, to: aTo }) => ({ from: abState, consume, to: P.stateFromSet(aTo, bTo), aTo, bTo })
       );
     } else {
       // both a and b have transitions
@@ -96,13 +117,13 @@ function product (a, b, P = new StateAggregator()) {
           bConsumeToMap.delete(consume);
         }
 
-        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.stateFromSet(aTo, bTo), aTo, bTo });
       }
 
       for (const [consume, bTo] of bConsumeToMap.entries()) {
         const aTo = null;
 
-        abTransitions.push({ from: abState, consume, to: P.for(aTo, bTo), aTo, bTo });
+        abTransitions.push({ from: abState, consume, to: P.stateFromSet(aTo, bTo), aTo, bTo });
       }
     }
 
@@ -153,11 +174,11 @@ function union2 (a, b) {
 
   const statesAAccepts =
     aAccepting.flatMap(
-      aAcceptingState => bStates.map(bState => P.for(aAcceptingState, bState))
+      aAcceptingState => bStates.map(bState => P.stateFromSet(aAcceptingState, bState))
     );
   const statesBAccepts =
     bAccepting.flatMap(
-      bAcceptingState => aStates.map(aState => P.for(aState, bAcceptingState))
+      bAcceptingState => aStates.map(aState => P.stateFromSet(aState, bAcceptingState))
     );
 
   const allAcceptingStates =
