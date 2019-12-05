@@ -2480,7 +2480,7 @@ The problem is that there are two transitions from `zeroes` when consuming a `0`
 
 We want to catenate two deterministic finite-state recognizers, and wind up with a deterministic finite-state recognizer. Why? From a theoretical perspective, nondeterministic finite-state recognizers are easier to reason about. They're always doing exactly one thing.
 
-From a practical perspective, deterministic finite-state recognizers are always guaranteed to execute in O_n_ time: They follow exactly one transition for every symbol consumed. Of course, they trade space for time: We say that with `product`, and we're going to see that again with our next important function, `powerset`.
+From a practical perspective, deterministic finite-state recognizers are always guaranteed to execute in O<i>n</i> time: They follow exactly one transition for every symbol consumed. Of course, they trade space for time: We say that with `product`, and we're going to see that again with our next important function, `powerset`.
 
 ---
 
