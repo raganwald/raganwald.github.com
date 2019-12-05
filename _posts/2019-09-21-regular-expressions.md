@@ -569,7 +569,7 @@ In mathematical notation, it is not always necessary to write a multiplication o
 
 Whenever two values are adacent to each other in the input, we want our shunting yard to insert the missing `*` just as if it had been explicitly included. We will call `*` a "default operator," as our next shunting yard will default to `*` if there is a mssing infix oprator.
 
-`shuntingYardA` above has two places where it reports this as an error. Let's modify it as follows: Whenever it encounters two values in succession, it will re-enqueue the default operator, re-enqueue the second value, and thenb then proceed.
+`shuntingYardA` above has two places where it reports this as an error. Let's modify it as follows: Whenever it encounters two values in succession, it will re-enqueue the default operator, re-enqueue the second value, and then proceed.
 
 We'll start with a way to denote which is the default operator, and then update our shunting yard code:
 
@@ -2008,65 +2008,6 @@ We could even compute all those states where either `a` or `b` reach an acceptin
 
 We'll return to some of these other uses for `product` after we staisfy ourselves that we can generate a finite-state recognizer for any formal regular expression we like.
 
-Before we return to our implementation, here is an observation about how naïve our code is (so far):
-
----
-
-### product's fan-out problem
-
-Consider taking the union of:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->zero : 0
-    zero-->[*]
-</div>
-
-and:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->one : 1
-    one-->[*]
-</div>
-
-Which is something like:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->emptyAndEmpty
-    emptyAndEmpty-->zeroAndHalted : 0
-    emptyAndEmpty-->haltedAndOne : 1
-    zeroAndHalted-->[*]
-    haltedAndOne-->[*]
-</div>
-
-It works perfectly well, however it has an extra, unnecessary state: Both `zeroAndhalted` and `haltedAndOne` are equivalent states.
-
-What do we mean by "equivalent?" Although they have different names, and different incoming transitions, two states are equivalent if and only if:
-
-1. They have the exact same set of outgoing transitions (including transitions back to themselves), and;
-2. Either they are both accepting states, or neither is an accepting state.
-
-Both `zeroAndHalted` and `haltedAndOne` have no outgoing transitions, and they are both accepting states, therefore they are equivalent states.
-
-Because of the way `product` replicates all of the possible outcomes, it tends to generate equivalent states. This has no effect on the function of the finite-state recognizer, but for practical purposes a smaller number of accepting states is better, as is a smaller number of states in general.
-
-Ideally, we could automatically detect equivalent states and "merge" them. If two states are equivalent, we can always get rid of one of them and redirect all transitions to the remaining state.
-
-With such an optimization, we could take the union of those two recognizers and end up with:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->emptyAndEmpty
-    emptyAndEmpty--> zeroAndHaltedAndHaltedAndOne : 0,1
-    zeroAndHaltedAndHaltedAndOne-->[*]
-</div>
-
-We'll move on without making any changes at the moment: Later, we will revisit this and look at how we could optimize finite-state machines by eliminating duplicate states.
-
 ---
 
 ## Catenating Descriptions
@@ -2610,19 +2551,12 @@ And here's a diagram of the result:
     notZero-->[*]
 </div>
 
-The problem is that there are two transitions from `zeroes` when consuming a `0`. That makes this transition _nondeterministic_. Deterministic state machines always have exactly one possible transition from any state for each symbol consumed in that state.
+The problem is that there are two transitions from `zeroes` when consuming a `0`. That makes this transition _nondeterministic_. Deterministic state machines always have exactly one possible transition from any state for each symbol consumed in that state. Nondeterministic finite-state machines can have multiple transitions for the same symbol form any state.
 
-We want to catenate two deterministic finite-state recognizers, and wind up with a finite-state recognizer. To do that, we'll need a way to convert nondeterministic finite-state recognizers into deterministic finite-state recognizers.
 
-But first, let's note a result we demonstrated along the way.
+We want to catenate two deterministic finite-state recognizers, and wind up with a deterministic finite-state recognizer. Why? From a theoretical perspective, nondeterministic finite-state recognizers are easier to reason about. They're always doing exactly one thing.
 
----
-
-## For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions
-
-When building `catenation`, we added ε-transitions to join two finite-state recognizers, and then used `removeEpsilonTransitions` to derive an equivalent finite-state recognizer without ε-transitions.
-
-`removeEpsilonTransitions` demonstrates that for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions. Or to put it another way, the set of languages recognized by finite-state recognizers without ε-transitions is equal to the set of finite-state recognizers recognized by finite-state recognizers that do do do not include ε-transitions.
+From a practical perspective, deterministic finite-state recognizers are always guaranteed to execute in O_n_ time: They follow exactly one transition for every symbol consumed. Of course, they trade space for time: We say that with `product`, and we're going to see that again with our next important function, `powerset`.
 
 ---
 
@@ -3008,15 +2942,13 @@ verifyEvaluateB('reg|reggie', regexC, {
 
 Great!
 
-We have one more operator to add, `*`, but before we do, let's revisit the "fan-out problem."
+We have one more operator to add, `*`, but before we do, let's consider what happens when we combine `catenation` with `union`.
 
 ---
 
-### solving the fan-out problem
+### the "fan-out problem"
 
-[Recall](#products-fan-out-problem) that when we take the union of two recognizers, we often end up with equivalent states, especially equivalent accepting states.
-
-For example:
+Consider taking the union of `a` and `A`:
 
 ```javascript
 evaluateB('a|A', regexC)
@@ -3031,7 +2963,7 @@ evaluateB('a|A', regexC)
     }
 ```
 
-The way we've written `union2` we end up with two equivalent accepting states for `a|A`, `G80` and `G82` in this example. This would be a minor distraction, but consider:
+The way we've written `union2`, we end up with two equivalent accepting states for `a|A`, `G80` and `G82` in this example. This would be a minor distraction, but consider:
 
 ```javascript
 evaluateB('(a|A)(b|B)(c|C)', regexC)
@@ -3054,9 +2986,39 @@ evaluateB('(a|A)(b|B)(c|C)', regexC)
     }
 ```
 
-The extra accepting states cause additional duplication with every recognizer catenated together. This can get very expensive, very quickly.
+When we draw thus finite-state recognizer as a diagram, it looks like this:
 
-As discussed [above](#products-fan-out-problem), what we want to do is merge equivalent states. Here's one function that repeatedly merges states until there are no more mergeable states:
+<div class="mermaid">
+stateDiagram
+  [*]-->G91
+  G91-->G88 : a
+  G91-->G90 : A
+  G88-->G96 : b
+  G88-->G98 : B
+  G90-->G96 : b
+  G90-->G98 : B
+  G96-->G104 : c
+  G96-->G106 : C
+  G98-->G104 : c
+  G98-->G106 : C
+  G104-->[*]
+  G10g-->[*]
+</div>
+
+Look at all the duplication! Nearly half of the diagram is a nearly exact copy of the other half. States G88 and G90 are **equivalent*: They have the exact same set of outgoing transitions. The same is true of G96 and G98, and of G104 and G106.
+
+Ideally, we would **merge** the equivalent states, and then discard the unecessary states. This would reduce the number of states from seven to four:
+
+<div class="mermaid">
+stateDiagram
+  [*]-->G91
+  G91-->G88 : a, A
+  G88-->G90 : b, B
+  G90-->G92 : c, C
+  G92-->[*]
+</div>
+
+Here's a function that repeatedly merges equivalent states until there are no more mergeable states:
 
 ```javascript
 const keyS =
@@ -3173,35 +3135,165 @@ const regexD = {
     return literal(string);
   }
 };
-
-evaluateB('(a|A)(b|B)(c|C)', regexD)
-  //=>
-    {
-      "start": "G83",
-      "transitions": [
-        { "from": "G83", "consume": "a", "to": "G80" },
-        { "from": "G83", "consume": "A", "to": "G80" },
-        { "from": "G80", "consume": "b", "to": "G88" },
-        { "from": "G80", "consume": "B", "to": "G88" },
-        { "from": "G88", "consume": "c", "to": "G96" },
-        { "from": "G88", "consume": "C", "to": "G96" }
-      ],
-      "accepting": [ "G96" ]
-    }
-
-verifyEvaluateB('(a|A)(b|B)(c|C)', regexD, {
-  '': false,
-  'a': false,
-  'B': false,
-  'bc': false,
-  'abc': true,
-  'abC': true,
-  'aBc': true
-});
-  //=> All 7 tests passing
 ```
 
-Our enhanced `union2merged` creates the minimum number of transitions and states, and thanks to merging the equivalent accepting states, the number of states and transitions in catenated recognizers grows only linearly.
+Now let's compare the old:
+
+```javascript
+function verifyStateCount (configuration, examples) {
+  function countStates (regex) {
+    const fsr = evaluateB(regex, configuration);
+
+    const states = toStateSet(fsr.transitions);
+    states.add(fsr.start);
+
+    return states.size;
+  }
+
+  return verify(countStates, examples);
+}
+
+const caseInsensitiveABC = "(a|A)(b|B)(c|C)"
+const abcde = "(a|b|c|d|e)";
+const lowercase =
+  "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)";
+
+const fiveABCDEs =
+  `${abcde}${abcde}${abcde}${abcde}${abcde}`;
+const twoLowercaseLetters =
+  `${lowercase}${lowercase}`;
+
+verifyEvaluateB(caseInsensitiveABC, regexC, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': false,
+  'kl': false,
+  'abc': true,
+  'AbC': true,
+  'edc': false,
+  'abcde': false,
+  'abCde': false,
+  'dcabe': false,
+  'abcdef': false
+});
+
+verifyEvaluateB(fiveABCDEs, regexC, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': false,
+  'kl': false,
+  'abc': false,
+  'AbC': false,
+  'edc': false,
+  'abcde': true,
+  'dcabe': true,
+  'abcdef': false,
+  'abCde': false
+});
+  //=> All 12 tests passing
+
+verifyEvaluateB(twoLowercaseLetters, regexC, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': true,
+  'kl': true,
+  'abc': false,
+  'AbC': false,
+  'edc': false,
+  'abcde': false,
+  'dcabe': false,
+  'abcdef': false,
+  'abCde': false
+});
+  //=> All 12 tests passing
+
+verifyStateCount(regexC, {
+  [caseInsensitiveABC]: 7,
+  [fiveABCDEs]: 26,
+  [twoLowercaseLetters]: 53
+});
+  //=> All 3 tests passing
+```
+
+To the new:
+
+```javascript
+verifyEvaluateB(caseInsensitiveABC, regexD, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': false,
+  'kl': false,
+  'abc': true,
+  'AbC': true,
+  'edc': false,
+  'abcde': false,
+  'abCde': false,
+  'dcabe': false,
+  'abcdef': false
+});
+  //=> All 12 tests passing
+
+verifyEvaluateB(fiveABCDEs, regexD, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': false,
+  'kl': false,
+  'abc': false,
+  'AbC': false,
+  'edc': false,
+  'abcde': true,
+  'dcabe': true,
+  'abcdef': false,
+  'abCde': false
+});
+  //=> All 12 tests passing
+
+verifyEvaluateB(twoLowercaseLetters, regexD, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': true,
+  'kl': true,
+  'abc': false,
+  'AbC': false,
+  'edc': false,
+  'abcde': false,
+  'dcabe': false,
+  'abcdef': false,
+  'abCde': false
+});
+  //=> All 12 tests passing
+
+verifyStateCount(regexD, {
+  [caseInsensitiveABC]: 4,
+  [fiveABCDEs]: 6,
+  [twoLowercaseLetters]: 3
+});
+  //=> All 3 tests passing
+```
+
+The old `union2` function created uneccesary states, and as a result, the number of states created when we catenate unions grows polynomially. Our new `union2merged` merges equivalent states, and as a result, the number of states created when we catenate unions grows linearly.
+
+---
+
+## For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions
+
+When building `catenation`, we added ε-transitions to join two finite-state recognizers, and then used `removeEpsilonTransitions` to derive an equivalent finite-state recognizer without ε-transitions.
+
+`removeEpsilonTransitions` demonstrates that for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions. Or to put it another way, the set of languages recognized by finite-state recognizers without ε-transitions is equal to the set of finite-state recognizers recognized by finite-state recognizers that do do do not include ε-transitions.
+
+---
+
+## For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions
+
+When building `catenation`, we added ε-transitions to join two finite-state recognizers, and then used `removeEpsilonTransitions` to derive an equivalent finite-state recognizer without ε-transitions.
+
+`removeEpsilonTransitions` demonstrates that for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions. Or to put it another way, the set of languages recognized by finite-state recognizers without ε-transitions is equal to the set of finite-state recognizers recognized by finite-state recognizers that do do do not include ε-transitions.
 
 ---
 

@@ -109,14 +109,130 @@ const regexD = {
   }
 };
 
+function verifyStateCount (configuration, examples) {
+  function countStates (regex) {
+    const fsr = evaluateB(regex, configuration);
+
+    const states = toStateSet(fsr.transitions);
+    states.add(fsr.start);
+
+    return states.size;
+  }
+
+  return verify(countStates, examples);
+}
+
 // ----------
 
-verifyEvaluateB('(a|A)(b|B)(c|C)', regexD, {
+const caseInsensitiveABC = "(a|A)(b|B)(c|C)"
+const abcde = "(a|b|c|d|e)";
+const lowercase =
+  "(a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z)";
+
+const fiveABCDEs =
+  `${abcde}${abcde}${abcde}${abcde}${abcde}`;
+const twoLowercaseLetters =
+  `${lowercase}${lowercase}`;
+
+verifyEvaluateB(caseInsensitiveABC, regexC, {
   '': false,
   'a': false,
-  'B': false,
-  'bc': false,
+  'z': false,
+  'ab': false,
+  'kl': false,
   'abc': true,
-  'abC': true,
-  'aBc': true
+  'AbC': true,
+  'edc': false,
+  'abcde': false,
+  'abCde': false,
+  'dcabe': false,
+  'abcdef': false
 });
+
+verifyEvaluateB(fiveABCDEs, regexC, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': false,
+  'kl': false,
+  'abc': false,
+  'AbC': false,
+  'edc': false,
+  'abcde': true,
+  'dcabe': true,
+  'abcdef': false,
+  'abCde': false
+});
+
+verifyEvaluateB(twoLowercaseLetters, regexC, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': true,
+  'kl': true,
+  'abc': false,
+  'AbC': false,
+  'edc': false,
+  'abcde': false,
+  'dcabe': false,
+  'abcdef': false,
+  'abCde': false
+});
+
+verifyStateCount(regexC, {
+  [caseInsensitiveABC]: 7,
+  [fiveABCDEs]: 26,
+  [twoLowercaseLetters]: 53
+});
+
+verifyEvaluateB(caseInsensitiveABC, regexD, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': false,
+  'kl': false,
+  'abc': true,
+  'AbC': true,
+  'edc': false,
+  'abcde': false,
+  'abCde': false,
+  'dcabe': false,
+  'abcdef': false
+});
+
+verifyEvaluateB(fiveABCDEs, regexD, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': false,
+  'kl': false,
+  'abc': false,
+  'AbC': false,
+  'edc': false,
+  'abcde': true,
+  'dcabe': true,
+  'abcdef': false,
+  'abCde': false
+});
+
+verifyEvaluateB(twoLowercaseLetters, regexD, {
+  '': false,
+  'a': false,
+  'z': false,
+  'ab': true,
+  'kl': true,
+  'abc': false,
+  'AbC': false,
+  'edc': false,
+  'abcde': false,
+  'dcabe': false,
+  'abcdef': false,
+  'abCde': false
+});
+
+verifyStateCount(regexD, {
+  [caseInsensitiveABC]: 4,
+  [fiveABCDEs]: 6,
+  [twoLowercaseLetters]: 3
+});
+
