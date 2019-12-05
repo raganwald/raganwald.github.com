@@ -37,7 +37,6 @@ class StateAggregator {
     }
   }
 
-  // inverse of .get, returns set of states
   setFromState (state) {
     if (this.inverseMap.has(state)) {
       return this.inverseMap.get(state);

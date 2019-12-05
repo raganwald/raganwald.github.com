@@ -1077,7 +1077,7 @@ verifyRecognizer(emptyString(), {
   //=> All 3 tests passing
 ```
 
-`EMPTY_SET` and `EMPTY_STRING` are both **essential**, even if we use them somewhat infrequently. We can now move on to build more complex recognizers with functions.
+`emptySet` and `emptyString` are both **essential**, even if we use them somewhat infrequently. We can now move on to build more complex recognizers with functions.
 
 ---
 
@@ -1698,7 +1698,6 @@ class StateAggregator {
     }
   }
 
-  // inverse of .get, returns set of states
   setFromState (state) {
     if (this.inverseMap.has(state)) {
       return this.inverseMap.get(state);
