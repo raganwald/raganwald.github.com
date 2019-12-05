@@ -167,7 +167,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
 ### [Prelude](#prelude)
 
   - [what is a regular expression?](#what-is-a-regular-expression)
-  - [formal regular expressions)(#formal-regular-expressions]
+  - [formal regular expressions](#formal-regular-expressions)
   - [what will we explore in this essay?](#what-will-we-explore-in-this-essay)
 
 ### [Our First Goal: "For every regular expression, there exists an equivalent finite-state recognizer"](#our-first-goal-for-every-regular-expression-there-exists-an-equivalent-finite-state-recognizer)
