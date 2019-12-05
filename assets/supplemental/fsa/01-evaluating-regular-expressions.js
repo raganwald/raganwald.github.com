@@ -1,4 +1,4 @@
-console.log('00-compiler.js')
+console.log('01-evaluating-regular-expressions.js')
 
 function error(m) {
   console.log(m);

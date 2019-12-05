@@ -1,4 +1,4 @@
-console.log('07-merge-equivalent-states.js');
+console.log('06-merge-equivalent-states.js');
 
 const keyS =
   (transitions, accepting) => {
