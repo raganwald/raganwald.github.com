@@ -1,4 +1,4 @@
-// 09-merge-equivalent-states.js
+console.log('07-merge-equivalent-states.js');
 
 const keyS =
   (transitions, accepting) => {
@@ -72,26 +72,51 @@ function mergeEquivalentStates (description) {
   return description;
 }
 
-function union2pm (first, second) {
+function union2merged (a, b) {
   return mergeEquivalentStates(
-    powerset(
-      reachableFromStart(
-        removeEpsilonTransitions(
-          epsilonUnion(first, second)
-        )
-      )
-    )
+    union2(a, b)
   );
 }
 
+const regexD = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2merged
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
+
 // ----------
 
-verify(union2pm(reg, uppercase), {
-  '': true,
-  'r': false,
-  'R': true,
-  'Reg': true,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': true
+verifyEvaluateB('(a|A)(b|B)(c|C)', regexD, {
+  '': false,
+  'a': false,
+  'B': false,
+  'bc': false,
+  'abc': true,
+  'abC': true,
+  'aBc': true
 });

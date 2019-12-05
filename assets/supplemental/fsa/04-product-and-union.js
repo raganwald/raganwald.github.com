@@ -195,17 +195,17 @@ const regexB = {
     '∅': {
       symbol: Symbol('∅'),
       type: 'atomic',
-      fn: () => EMPTY_SET
+      fn: emptySet
     },
     'ε': {
       symbol: Symbol('ε'),
       type: 'atomic',
-      fn: () => EMPTY_STRING
+      fn: emptyString
     },
     '|': {
       symbol: Symbol('|'),
       type: 'infix',
-      precedence: 30,
+      precedence: 10,
       fn: union2
     }
   },

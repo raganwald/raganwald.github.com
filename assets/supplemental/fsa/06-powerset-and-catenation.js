@@ -94,6 +94,37 @@ function catenation2 (a, b) {
   );
 }
 
+const regexC = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
+
 // ----------
 
 const zeroes = {
@@ -121,4 +152,28 @@ verifyRecognizer(catenation2(zeroes, binary), {
   '101': false,
   '110': false,
   '111': false
+});
+
+verifyEvaluateB('r→e→g', regexC, {
+  '': false,
+  'r': false,
+  're': false,
+  'reg': true,
+  'reggie': false
+});
+
+verifyEvaluateB('reg', regexC, {
+  '': false,
+  'r': false,
+  're': false,
+  'reg': true,
+  'reggie': false
+});
+
+verifyEvaluateB('reg|reggie', regexC, {
+  '': false,
+  'r': false,
+  're': false,
+  'reg': true,
+  'reggie': true
 });

@@ -1942,17 +1942,17 @@ const regexB = {
     '∅': {
       symbol: Symbol('∅'),
       type: 'atomic',
-      fn: () => EMPTY_SET
+      fn: emptySet
     },
     'ε': {
       symbol: Symbol('ε'),
       type: 'atomic',
-      fn: () => EMPTY_STRING
+      fn: emptyString
     },
     '|': {
       symbol: Symbol('|'),
       type: 'infix',
-      precedence: 30,
+      precedence: 10,
       fn: union2
     }
   },
@@ -2938,131 +2938,77 @@ verifyRecognizer(catenation2(zeroes, binary), {
 Given `catenation2`, we are now ready to enhance our evaluator:
 
 ```javascript
-
-And this allows us to draw an important conclusion: *The set of deterministic finite-state recognizers is closed under catenation*, meaning that given two finite-state recognizers, we can always construct a finite-state recognizer representing the catenation of the two recognizers.
-
-We earlier showed the same thing for union and intersection, so we now know that we can compose recognizers using union, intersection, and catenation at will.
-
-From this we can also deduce that although we only wrote functions to take the union, intersection, or catenation of two deterministic finite-state recognizers, we can take the union, intersection, or catenation of more than two recognizers and always end up with another deterministic finite-state recognizers.
-
----
-
-### from powerset to union
-
-Now that we have `powerset`, another formulation of `union2` becomes easy. Once again, our two recognizers:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->zeroes : 0
-    zeroes--> zeroes : 0
-    zeroes --> [*]
-</div>
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty2
-    empty2-->zero : 0
-    empty2-->notZero : 1
-    notZero-->notZero : 0,1
-    zero-->[*]
-    notZero-->[*]
-</div>
-
-When formulating `union2` the first time, we imagined them running side-by-side. Then we took their `product` because a deterministic finite-state recognizer cannot do two things at once. But a _nondeterministic_ finite-state recognizer _can_ do two things at once. So consider this approach:
-
-By forking the start, we can run both recognizers at once. We'd need to simulate the fork by creating a new start state, something like this:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->fork_start
-    fork_start-->empty
-    empty-->zeroes : 0
-    zeroes--> zeroes : 0
-    zeroes --> [*]
-    fork_start-->empty2
-    empty2-->zero : 0
-    empty2-->notZero : 1
-    notZero-->notZero : 0,1
-    zero-->[*]
-    notZero-->[*]
-</div>
-
-This is a nondeterministic finite-state recognizer that is the union of our two deterministic finite-state recognizers. If we had a function that could take any two recognizers and return a nondeterministic finite-state recognizer, we could then use `powerset` to turn it back into a deterministic finite-state recognizer.
-
-Here's `epsilonUnion`:
-
-```javascript
-function avoidReservedNames (reservedStates, second) {
-  const reservedStateSet = new Set(reservedStates);
-  const { stateSet: secondStatesSet } = validatedAndProcessed(second);
-
-  const nameMap = new Map();
-
-  // build the map to resolve overlaps with reserved names
-  for (const secondState of secondStatesSet) {
-    const match = /^(.*)-(\d+)$/.exec(secondState);
-    let base = match == null ? secondState : match[1];
-    let counter = match == null ? 1 : Number.parseInt(match[2], 10);
-    let resolved = secondState;
-    while (reservedStateSet.has(resolved)) {
-      resolved = `${base}-${++counter}`;
+const regexC = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
     }
-    if (resolved !== secondState) {
-  		nameMap.set(secondState, resolved);
-    }
-    reservedStateSet.add(resolved);
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
   }
-
-  // apply the built map
-  return renameStates(nameMap, second);
-}
-
-function epsilonUnion (first, second) {
-  const newStartState = 'empty';
-  const cleanFirst = avoidReservedNames([newStartState], first);
-  const cleanSecond = resolveConflicts(cleanFirst, avoidReservedNames([newStartState], second));
-
-  const concurrencyTransitions = [
-    { "from": newStartState, "to": cleanFirst.start },
-    { "from": newStartState, "to": cleanSecond.start },
-  ];
-
-  return {
-    start: newStartState,
-    accepting: cleanFirst.accepting.concat(cleanSecond.accepting),
-    transitions:
-      concurrencyTransitions
-    	.concat(cleanFirst.transitions)
-        .concat(cleanSecond.transitions)
-  };
-}
+};
 ```
 
-We could use it to build `union2p` from `powerset` much as we built `catenation2` with `powerset`:
+Note that:
+
+1. We are using an uncommon operator, `→` for catenation, to reduce the need for back ticks, and;
+2. We have set it up as a default operator so that we need not include it in formal regular expressions.
+
+Let's give it a try:
 
 ```javascript
-function union2p (first, second) {
-  return powerset(
-    reachableFromStart(
-      removeEpsilonTransitions(
-        epsilonUnion(first, second)
-      )
-    )
-  );
-}
-
-verify(union2p(reg, uppercase), {
-  '': true,
+verifyEvaluateB('r→e→g', regexC, {
+  '': false,
   'r': false,
-  'R': true,
-  'Reg': true,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': true
+  're': false,
+  'reg': true,
+  'reggie': false
 });
-  //=> All 7 tests passing
+  //=> All 5 tests passing
+
+verifyEvaluateB('reg', regexC, {
+  '': false,
+  'r': false,
+  're': false,
+  'reg': true,
+  'reggie': false
+});
+  //=> All 5 tests passing
+
+verifyEvaluateB('reg|reggie', regexC, {
+  '': false,
+  'r': false,
+  're': false,
+  'reg': true,
+  'reggie': true
+});
+  //=> All 5 tests passing
 ```
+
+Great!
+
+We have one more operator to add, `*`, but before we do, let's revisit the "fan-out problem."
 
 ---
 
@@ -3073,54 +3019,38 @@ verify(union2p(reg, uppercase), {
 For example:
 
 ```javascript
-const A = {
-  "start": "empty",
-  "transitions": [
-    { "from": "empty", "consume": "A", "to": "recognized" }
-  ],
-  "accepting": ["recognized"]
-};
-
-const a = {
-  "start": "empty",
-  "transitions": [
-    { "from": "empty", "consume": "a", "to": "recognized" }
-  ],
-  "accepting": ["recognized"]
-};
-
-union2p(A, a)
+evaluateB('a|A', regexC)
   //=>
     {
-      "start": "empty",
+      "start": "G83",
       "transitions": [
-        { "from": "empty", "consume": "A", "to": "recognized" },
-        { "from": "empty", "consume": "a", "to": "recognized-2" }
+        { "from": "G83", "consume": "a", "to": "G80" },
+        { "from": "G83", "consume": "A", "to": "G82" }
       ],
-      "accepting": ["recognized", "recognized-2"]
+      "accepting": [ "G80", "G82" ]
     }
 ```
 
-`union2p(A, a)` has two equivalent accepting states, `recognized` and `recognized-2`. This would be a minor distraction, but consider:
+The way we've written `union2` we end up with two equivalent accepting states for `a|A`, `G80` and `G82` in this example. This would be a minor distraction, but consider:
 
 ```javascript
-catenation2(union2p(A, a), union2p(A, a), union2p(A, a));
+evaluateB('(a|A)(b|B)(c|C)', regexC)
   //=>
     {
-      "start": "empty",
-      "accepting": [ "recognized-5", "recognized-6" ],
+      "start": "G91",
       "transitions": [
-        { "from": "empty", "consume": "A", "to": "recognized" },
-        { "from": "empty", "consume": "a", "to": "recognized-2" },
-        { "from": "recognized", "consume": "A", "to": "recognized-3" },
-        { "from": "recognized", "consume": "a", "to": "recognized-4" },
-        { "from": "recognized-2", "consume": "A", "to": "recognized-3" },
-        { "from": "recognized-2", "consume": "a", "to": "recognized-4" },
-        { "from": "recognized-3", "consume": "A", "to": "recognized-5" },
-        { "from": "recognized-3", "consume": "a", "to": "recognized-6" },
-        { "from": "recognized-4", "consume": "A", "to": "recognized-5" },
-        { "from": "recognized-4", "consume": "a", "to": "recognized-6" }
-      ]
+        { "from": "G91", "consume": "a", "to": "G88" },
+        { "from": "G91", "consume": "A", "to": "G90" },
+        { "from": "G88", "consume": "b", "to": "G96" },
+        { "from": "G88", "consume": "B", "to": "G98" },
+        { "from": "G90", "consume": "b", "to": "G96" },
+        { "from": "G90", "consume": "B", "to": "G98" },
+        { "from": "G96", "consume": "c", "to": "G104" },
+        { "from": "G96", "consume": "C", "to": "G106" },
+        { "from": "G98", "consume": "c", "to": "G104" },
+        { "from": "G98", "consume": "C", "to": "G106" }
+      ],
+      "accepting": [ "G104", "G106" ]
     }
 ```
 
@@ -3204,137 +3134,74 @@ function mergeEquivalentStates (description) {
 }
 ```
 
-Armed with this, we can enhance our `union2p` function:
+Armed with this, we can enhance our `union2` function:
 
 ```javascript
-function union2pm (first, second) {
+function union2merged (a, b) {
   return mergeEquivalentStates(
-    powerset(
-      reachableFromStart(
-        removeEpsilonTransitions(
-          epsilonUnion(first, second)
-        )
-      )
-    )
+    union2(a, b)
   );
 }
 
-verify(union2pm(reg, uppercase), {
-  '': true,
-  'r': false,
-  'R': true,
-  'Reg': true,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': true
-});
-  //=> All 7 tests passing
-```
+const regexD = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2merged
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
 
-And now:
-
-```javascript
-union2pm(A, a)
+evaluateB('(a|A)(b|B)(c|C)', regexD)
   //=>
     {
-      "start": "empty"
+      "start": "G83",
       "transitions": [
-        { "from": "empty", "consume": "A", "to": "recognized" },
-        { "from": "empty", "consume": "a", "to": "recognized" }
+        { "from": "G83", "consume": "a", "to": "G80" },
+        { "from": "G83", "consume": "A", "to": "G80" },
+        { "from": "G80", "consume": "b", "to": "G88" },
+        { "from": "G80", "consume": "B", "to": "G88" },
+        { "from": "G88", "consume": "c", "to": "G96" },
+        { "from": "G88", "consume": "C", "to": "G96" }
       ],
-      "accepting": [ "recognized" ],
+      "accepting": [ "G96" ]
     }
 
-catenation2(union2pm(A, a), union2pm(A, a), union2pm(A, a));
-  //=>
-    {
-      "start": "empty"
-      "transitions": [
-        { "from": "empty", "consume": "A", "to": "recognized" },
-        { "from": "empty", "consume": "a", "to": "recognized" },
-        { "from": "recognized", "consume": "A", "to": "recognized-2" },
-        { "from": "recognized", "consume": "a", "to": "recognized-2" },
-        { "from": "recognized-2", "consume": "A", "to": "recognized-3" },
-        { "from": "recognized-2", "consume": "a", "to": "recognized-3" }
-      ],
-      "accepting": [ "recognized-3" ],
-    }
-```
-
-Our enhanced `union2pm` creates the minimum number of transitions and states, and thanks to merging the equivalent accepting states, the number of states and transitions in catenated recognizers grows only linearly.
-
----
-
-### the final union and catenation
-
-Here are our `union`, `intersection`, and `catenation` functions, updated to take one or more arguments and using everything we have so far:
-
-```javascript
-function union (a, ...args) {
-  if (args.length === 0) {
-    return a;
-  }
-
-  const [b, ...rest] = args;
-
-  const ab = mergeEquivalentStates(union2pm(a, b));
-
-  return union(ab, ...rest);
-}
-
-function catenation (a, ...args) {
-  if (args.length === 0) {
-    return a;
-  }
-
-  const [b, ...rest] = args;
-
-  const ab = mergeEquivalentStates(catenation2(a, b));
-
-  return catenation(ab, ...rest);
-}
-
-verify(union(reg, uppercase), {
-  '': true,
-  'r': false,
-  'R': true,
-  'Reg': true,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': true
+verifyEvaluateB('(a|A)(b|B)(c|C)', regexD, {
+  '': false,
+  'a': false,
+  'B': false,
+  'bc': false,
+  'abc': true,
+  'abC': true,
+  'aBc': true
 });
   //=> All 7 tests passing
-
-verify(intersection(reg, uppercase), {
-  '': false,
-  'r': false,
-  'R': false,
-  'Reg': false,
-  'REG': true,
-  'Reginald': false,
-  'REGINALD': false
-})
-  //=> All 7 tests passing
-
-verify(catenation(zeroes, binary), {
-  '': false,
-  '0': false,
-  '1': false,
-  '00': true,
-  '01': true,
-  '10': false,
-  '11': false,
-  '000': true,
-  '001': true,
-  '010': true,
-  '011': true,
-  '100': false,
-  '101': false,
-  '110': false,
-  '111': false
-});
-  //=> All 15 tests passing
 ```
+
+Our enhanced `union2merged` creates the minimum number of transitions and states, and thanks to merging the equivalent accepting states, the number of states and transitions in catenated recognizers grows only linearly.
 
 ---
 
@@ -4113,8 +3980,8 @@ We'll fix that omission and clean up a few of the data structures we used so tha
 ```javascript
 const formalOperators = new Map(
   Object.entries({
-    '∅': { symbol: Symbol('∅'), precedence: 99, arity: 0, fn: () => EMPTY_SET },
-    'ε': { symbol: Symbol('ε'), precedence: 99, arity: 0, fn: () => EMPTY_STRING },
+    '∅': { symbol: Symbol('∅'), precedence: 99, arity: 0, fn: emptySet },
+    'ε': { symbol: Symbol('ε'), precedence: 99, arity: 0, fn: emptyString },
     '|': { symbol: Symbol('|'), precedence: 1, arity: 2, fn: union },
     '→': { symbol: Symbol('→'), precedence: 2, arity: 2, fn: catenation },
     '*': { symbol: Symbol('*'), precedence: 3, arity: 1, fn: kleeneStar }
