@@ -2033,8 +2033,8 @@ Recall our recognizer that recognizes variations on the name "reg." Here it is a
 
 <div class="mermaid">
   stateDiagram
-    [*]-->empty
-    empty-->r : r,R
+    [*]-->start
+    start-->r : r,R
     r-->re : e,E
     re-->reg : g,G
     reg-->[*]
@@ -2052,104 +2052,21 @@ And here is the diagram for a recognizer that recognizes one or more exclamation
 
 The simplest way to catenate recognizers is to put all their states together in one big diagram, and create an ε-transition between the accepting states for the first recognizer, and the start state of the second. The start state of the first recognizer becomes the start state of the result, and the accepting states of the second recognizer become the accepting state of the result.
 
-But if we try to put them together in one diagram we have a problem:
-
-<div class="mermaid">
-  graph TD
-    empty(empty)-->r
-    r-->re
-    re-->reg
-    reg-->empty2[empty]
-    empty2-->suffix(suffix)
-    suffix-->suffix
-</div>
-
-We can't have two separate states with the same name. So before we catenate the two recognizers, we have to find any states they have in common, and rename them to avoid collisions. In this case, we have to transform the second recognizer into:
+Like this:
 
 <div class="mermaid">
   stateDiagram
-    [*]-->empty2
-    empty2-->bang : !
-    bang-->bang : !
-    bang-->[*]
-</div>
-
-And now we can connect the two recognizers with ε-transitions between the first recognizer's accepting states, and the second recognizer's start stae:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->r : r,R
+    [*]-->start
+    start-->r : r,R
     r-->re : e,E
     re-->reg : g,G
-    reg-->empty2
-    empty2-->bang : !
+    reg-->empty
+    empty-->bang : !
     bang-->bang : !
     bang-->[*]
 </div>
 
-This works like a charm, and we could code this algorithm up for our actual descriptions. However, our `automate` function doesn't permit ε-transitions. We could add that as a feature, but before we do that, let's look at an algorithm for removing ε-transitions from finite-state machines.
-
----
-
-### removing epsilon-transitions
-
-To remove an ε-transition between any two states, we start by taking all the transitions in the destination state, and copy them into the origin state. Next, if the destination state is an accepting state, we make the origin state an accepting state as well.
-
-We then can remove the ε-transition without changing the recognizer's behaviour. In our catenated recognizer, we have an ε-transition between the `reg` and `empty2` states:
-
-<div class="mermaid">
-  stateDiagram
-    reg-->empty2
-    empty2-->bang : !
-    bang-->bang : !
-    bang-->[*]
-</div>
-
-The `empty2` state has one transition, from `empty2` to `bang` while consuming `!`. If we copy that into `reg`, we get:
-
-<div class="mermaid">
-  stateDiagram
-    reg-->bang : !
-    empty2-->bang : !
-    bang-->bang : !
-    bang-->[*]
-</div>
-
-Since `empty2` is not an accepting state, we do not need to make `reg` an accepting state, so we are done removing this ε-transition. We repeat this process for all ε-transitions, in any order we like, until there are no more ε-transitions. In this case, there only was one, so the result is:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->r : r,R
-    r-->re : e,E
-    re-->reg : g,G
-    reg-->bang : !
-    empty2-->bang : !
-    bang-->bang : !
-    bang-->[*]
-</div>
-
-This is clearly a recognizer that recognizes the name "reg" followed by one or more exclamation marks. Our catenation algorithm has two steps. In the first, we create a recognizer with ε-transitions:
-
-1. Rename any states in the second recognizer to avoid conflicts with names of states in the first recognizer.
-2. Connect the two recognizers with an ε-transition from each accepting state from the first recognizer to the start state from the second recognizer.
-3. The start state of the first recognizer becomes the start state of the catenated recognizers.
-4. The accepting states of the second recognizer become the accepting states of the catenated recognizers.
-
-This transformation complete, we can then remove the ε-transitions. For each ε-transition between an origin and destination state:
-
-1. Copy all of the transitions from the destination state into the origin state.
-2. If the destination state is an accepting state, make the origin state an accepting state as well.
-3. Remove the ε-transition.
-
-(Following this process, we sometimes wind up with unreachable states. In our example above, `empty2` becomes unreachable after removing the ε-transition. This has no effect on the behaviour of the recognizer, and in the next section, we'll see how to prune those unreachable states.)
-
----
-
-### implementing catenation
-
-Here's a function to join the two recognizers with ε-transitions:
+Here's a function to catenate any two recognizers, using ε-transitions:
 
 ```javascript
 function epsilonCatenate (first, second) {
@@ -2189,61 +2106,69 @@ epsilonCatenate(reg, exclamations)
     }
 ```
 
-Of course, our engine for finite-state recognizers doesn't actually implement ε-transitions. We _could_ add that as a feature, but in a moment we'll see whay we chose not to implement ε-transitions. So if we aren't implementing ε-transitions, what can we do with `epsilonCatenate`?
+Of course, our engine for finite-state recognizers doesn't actually implement ε-transitions. We could add that as a feature, but instead, let's look at an algorithm for removing ε-transitions from finite-state machines.
 
-Well, what if there was an equivalent finite-state recognizer without ε-transitions for every finite-state recognizer with ε-transitions? And what if we knew how to derive an equivalent finite-state recognizer without ε-transitions given a finite-state recognizer with ε-transitions?
+---
 
-If both of these were true, then we could use `epsilonCatenate` to compute a finite-state recognizer with ε-transitions representing two catenated finite-state recognizers, then derive the equivalent finite-state recognizer without ε-transitions to give us the final catenated finite-state recognizer.
+### removing epsilon-transitions
 
-Good news! There _is_ an equivalent finite-state recognizer without ε-transitions for every finite-state recognizer with ε-transitions. The basic idea is that when state `a` has an ε-transition to state `b`, there is an equivalent finite-state recognizer where there is no ε-transition from `a` to `b`, but for every transition from `b` to some state (including back to `b`), there is an identical transition from `a`.
+To remove an ε-transition between any two states, we start by taking all the transitions in the destination state, and copy them into the origin state. Next, if the destination state is an accepting state, we make the origin state an accepting state as well.
 
-For example, given:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->r : r
-    r-->re : e
-    re-->[*]
-</div>
-
-And:
+We then can remove the ε-transition without changing the recognizer's behaviour. In our catenated recognizer, we have an ε-transition between the `reg` and `empty` states:
 
 <div class="mermaid">
   stateDiagram
-    [*]-->empty2
-    empty2-->g : g
-    g-->gbang : !
-    gbang-->[*]
+    reg-->empty
+    empty-->bang : !
+    bang-->bang : !
+    bang-->[*]
 </div>
 
-If we catenate them with ε-transitions, we get:
+The `empty` state has one transition, from `empty` to `bang`, while consuming `!`. If we copy that into `reg`, we get:
 
 <div class="mermaid">
   stateDiagram
-    [*]-->empty
-    empty-->r : r
-    r-->re : e
-    re-->empty2
-    empty2-->g : g
-    g-->gbang : !
-    gbang-->[*]
+    reg-->bang : !
+    empty-->bang : !
+    bang-->bang : !
+    bang-->[*]
 </div>
 
-We can remove the ε-transition between `re` and `empty2`, provided we copy `empty2`'s transition into `re`:
+Since `empty` is not an accepting state, we do not need to make `reg` an accepting state, so we are done removing this ε-transition. We repeat this process for all ε-transitions, in any order we like, until there are no more ε-transitions. In this case, there only was one, so the result is:
 
 <div class="mermaid">
   stateDiagram
-    [*]-->empty
-    empty-->r : r
-    r-->re : e
-    re-->g : g
-    empty2-->g : g
-    g-->gbang : !
-    gbang-->[*]
+    [*]-->start
+    start-->r : r,R
+    r-->re : e,E
+    re-->reg : g,G
+    reg-->bang : !
+    empty-->bang : !
+    bang-->bang : !
+    bang-->[*]
 </div>
 
-Here's a function that does exactly that. There's more complexity to handle things like ε-transitions between a state and itself, and loops in epsilon transitions (bad!), but at its heart, it just implements the simple algorithm we just described
+This is clearly a recognizer that recognizes the name "reg" followed by one or more exclamation marks. Our catenation algorithm has two steps. In the first, we create a recognizer with ε-transitions:
+
+1. Connect the two recognizers with an ε-transition from each accepting state from the first recognizer to the start state from the second recognizer.
+2. The start state of the first recognizer becomes the start state of the catenated recognizers.
+3. The accepting states of the second recognizer become the accepting states of the catenated recognizers.
+
+This transformation complete, we can then remove the ε-transitions. For each ε-transition between an origin and destination state:
+
+1. Copy all of the transitions from the destination state into the origin state.
+2. If the destination state is an accepting state, make the origin state an accepting state as well.
+3. Remove the ε-transition.
+
+(Following this process, we sometimes wind up with unreachable states. In our example above, `empty` becomes unreachable after removing the ε-transition. This has no effect on the behaviour of the recognizer, and in the next section, we'll see how to prune those unreachable states.)
+
+---
+
+### implementing catenation
+
+Here's a function that implements the steps described above: It takes any finite-state recognizer, and removes all of the ε-transitions, returning an equivalent finite-state recognizer without ε-transitions.
+
+There's code to handle cases we haven't discussed--like ε-transitions between a state and itself, and loops in epsilon transitions (bad!)--but at its heart, it just implements the simple algorithm we just described.
 
 ```javascript
 function removeEpsilonTransitions ({ start, accepting, transitions }) {
@@ -2351,7 +2276,7 @@ removeEpsilonTransitions(epsilonCatenate(reg, exclamations))
     }
 ```
 
-We have now implemented catenating two deterministic finite-state recognizers.
+We have now implemented catenating two deterministic finite-state recognizers in such a way that we return a finite-state recognizer. The only things left to do are remove unreachable states, and to deal with a catch that we'll descrirbe below.
 
 ---
 
@@ -2363,8 +2288,8 @@ Consider:
 
 <div class="mermaid">
   stateDiagram
-    [*]-->empty
-    empty-->zero : 0
+    [*]-->start
+    start-->zero : 0
     zero --> [*]
 </div>
 
@@ -2377,14 +2302,14 @@ And:
     one --> [*]
 </div>
 
-When we join them and remove transitions, we end up with an unreachable state, `empty-2`:
+When we join them and remove transitions, we end up with an unreachable state, `empty`:
 
 <div class="mermaid">
   stateDiagram
-    [*]-->empty
-    empty-->zero : 0
+    [*]-->start
+    start-->zero : 0
     zero --> one : 1
-    empty2-->one : 1
+    empty-->one : 1
     one --> [*]
 </div>
 
@@ -2472,7 +2397,7 @@ No unreachable states!
 
 ### the catch with catenation
 
-Consider this recognizer that recognizes one or more `0`s:
+We hinted above that catenation came with a "catch." Consider this recognizer that recognizes one or more `0`s:
 
 <div class="mermaid">
   stateDiagram
