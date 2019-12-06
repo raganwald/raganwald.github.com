@@ -174,77 +174,52 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
   - [our approach](#our-approach)
 
-[Evaluating arithmetic expressions](#evaluating-arithmetic-expressions)
+[Evaluating Arithmetic Expressions](#evaluating-arithmetic-expressions)
 
   - [converting infix to postfix](#converting-infix-to-postfix)
   - [handling a default operator](#handling-a-default-operator)
+  - [evaluating postfix](#evaluating-postfix)
 
 ### [Finite-State Recognizers](#finite-state-recognizers-1)
 
   - [describing finite-state recognizers in JSON](#describing-finite-state-recognizers-in-json)
   - [verifying finite-state recognizers](#verifying-finite-state-recognizers)
 
-### [Composing and Decorating Recognizers](#composing-and-decoratting-recognizers-1)
+###[Building Blocks](#building-blocks-1)
+
+  - [∅ and ε](#∅-and-ε)
+  - [literal](#literal)
+  - [using ∅, ε, and literal](#using-∅-ε-and-literal)
+  - [recognizing special characters](#recognizing-special-characters)
+
+### [Composing and Decorating Recognizers With Operators](#composing-and-decoratting-recognizers-with-operators-1)
 
 [Taking the Product of Two Finite-State Automata](#taking-the-product-of-two-finite-state-automata)
 
   - [starting the product](#starting-the-product)
   - [transitions](#transitions)
   - [a function to compute the product of two recognizers](#a-function-to-compute-the-product-of-two-recognizers)
-
-[From Product to Union and Intersection](#from-product-to-union-and-intersection)
-
-  - [union](#union)
-  - [intersection](#intersection)
-  - [product's fan-out problem](#products-fan-out-problem)
+  - [from product to union](#from-product-to-union)
+  - [the marvellous product](#the-marvellous-product)
 
 [Catenating Descriptions](#catenating-descriptions)
 
   - [catenating descriptions with epsilon-transitions](#catenating-descriptions-with-epsilon-transitions)
   - [removing epsilon-transitions](#removing-epsilon-transitions)
   - [implementing catenation](#implementing-catenation)
+  - [unreachable states](#unreachable-states)
   - [the catch with catenation](#the-catch-with-catenation)
-
-[For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
 
 [Converting Nondeterministic to Deterministic Finite-State Recognizers](#converting-nondeterministic-to-deterministic-finite-state-recognizers)
 
   - [taking the product of a recognizer... with itself](#taking-the-product-of-a-recognizer-with-itself)
   - [computing the powerset of a nondeterministic finite-state recognizer](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer)
-  - [catenation without the catch, and an observation](#catenation-without-the-catch-and-an-observation)
-  - [from powerset to union](#from-powerset-to-union)
-  - [solving the fan-out problem](#solving-the-fan-out-problem)
-  - [the final union, intersection, and catenation](#the-final-union-intersection-and-catenation)
+  - [catenation without the catch](#catenation-without-the-catch)
+  - [the fan-out problem](#the-fan-out-problem)
+  - [summarizing catenation (and an improved union)](#summarizing-catenation-and-an-improved-union)
 
+[For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
 [For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
-
-[Decorating Recognizers](#decorating-recognizers)
-
-  - [`kleene*`](#kleene)
-
-[The set of finite-state recognizers is closed under union, catenation, and `kleene*`](#the-set-of-finite-state-recognizers-is-closed-under-union-catenation-and-kleene)
-
-### [Building Blocks](#building-blocks-1)
-
-  - [literal and just](#literal-and-just)
-  - [any](#any)
-  - [none](#none)
-
-### [Generating finite-state recognizers from formal regular expressions](#generating-finite-state-recognizers-from-formal-regular-expressions-1)
-
-  - [the shunting yard algorithm](#the-shunting-yard-algorithm)
-  - [generating finite-state recognizers](#generating-finite-state-recognizers)
-
-[For every formal regular expression, there exists an equivalent finite-state recognizer](#for-every-formal-regular-expression-there-exists-an-equivalent-finite-state-recognizer)
-
-[Every regular language can be recognized by a finite-state recognizer](#every-regular-language-can-be-recognized-by-a-finite-state-recognizer)
-
-### [Enhancing our regular expressions](#enhancing-our-regular-expressions-1)
-
-  - [kleene+](#kleene-1)
-  - [optional](#optional)
-  - [dot](#dot)
-  - [intersection](#intersection-1)
 
 ---
 
@@ -276,7 +251,7 @@ Our "compiler" will thus be an algorithm that evaluates regular expressions.
 
 ---
 
-## Evaluating arithmetic expressions
+## Evaluating Arithmetic Expressions
 
 We needn't invent our evaluation algorithm from first principles. There is a great deal of literature about evaluating expressions, especially expressions that consist of values, operators, and parentheses.
 
@@ -703,7 +678,7 @@ We now have enough to get started with evaluating the postfix notation produced 
 
 ---
 
-### evaluating the postfix
+### evaluating postfix
 
 Our first cut at the code for evaluating the postfix code produceed by our shunting yard will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
 
@@ -1019,9 +994,15 @@ Verifying recognizers will be extremely important when we want to verify that wh
 
 # Building Blocks
 
-What is the absolutely minimal recognizer? One might think, "A recognizer for empty strings," and as we will see, such a recognizer is useful. But there is an even more minimal recogner than that. The recognizer that recognizes empty strings recognizes a language with only one sentence in it.
+Regular expressions have a notation for the empty set, the empty string, and single characters:
 
-But what is the language with no sentences whatsoever? This language is often called the _empty set_, and in mathematical notation it is denoted with `∅`. If we want to make tools for building finite-state recognizers, we'll need a way to build a recognizer for the empty set.
+- The constant `∅` represents the empty language.
+- The constant `ε` represents the language containing only the empty string.
+- Constant literals such as `x`, `y`, or `z` represent sentences consisting of a single symbol.
+
+In order to compile such regular expressions into finite-state recognizers, we begin by defining functions that return the empty language, the language containing only the empty string, and languages with just one sentance containing one symbol.
+
+### ∅ and ε
 
 Here's a function that returns a recognizer that doesn't recognize any sentences:
 
@@ -1052,11 +1033,25 @@ verifyRecognizer(emptySet(), {
   //=> All 3 tests passing
 ```
 
-With `emptySet` out of the way, we'll turn our attention to more practical recognizers, those that recognize actual sentences of symbols.
+It's called `emptySet`, because the the set of all sentences this language recognizes is empty. Note that while hand-written recognizers can have any arbitrary names for their states, we're using the `names` generator to generate state nams for us. This automatically avoid two recognizers ever having state names in common, which makes some of teh code we write later a great deal simpler.
 
-What's the simplest possible language that contains sentences? A language containing only one sentence. Such languages include `{ 'balderdash' }`, `{ 'billingsgate' }`, and even `{ 'bafflegab' }`.
+Now, how do we get our evaluator to handle it? Our `evaluate` function takes a configuration object as a parameter, and that's where we define operators. We're going to define `∅` as an atomic operator.[^atomic]
 
-Of all the one-sentence languages, the simplest would be the language containing the shortest possible string, `''`. We will also declare this as a constant:
+[^atomic] Atomic operators take zero arguments, as contrasted with postfix operators that take one argument, or infix operators that take two operators.
+
+```javascript
+const regexA = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    }
+  },
+  // ...
+};
+
+Next, we need a recognizer that recognizes the language containing only the empty string, `''`. Once again, we'll write a function that returns a recognizer:
 
 ```javascript
 function emptyString () {
@@ -1077,7 +1072,25 @@ verifyRecognizer(emptyString(), {
   //=> All 3 tests passing
 ```
 
-`emptySet` and `emptyString` are both **essential**, even if we use them somewhat infrequently. We can now move on to build more complex recognizers with functions.
+And then we'll add it to the configuration:
+
+```javascript
+const regexA = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    }
+  },
+  // ...
+};
+```
 
 ---
 
@@ -1107,7 +1120,7 @@ Here's an example of a recognizer that recognizes a single zero:
     recognized-->[*]
 </div>
 
-We could assign this to a constant, and then make a constant for every other symbol we might want to use in a recognizer, but this would be tedious. Instead, here's a function that makes recognizers that recognize a literal symbol:
+We could write a function that returns a recognizer for `0`, and then write another a for every other symbol we might want to use in a recognizer, and then we could assign them all to atomic operators, but this would be tedious. Instead, here's a function that makes recognizers that recognize a literal symbol:
 
 ```javascript
 function literal (symbol) {
@@ -1131,37 +1144,9 @@ verifyRecognizer(literal('0'), {
   //=> All 6 tests passing
 ```
 
-Now what can we do with these recognizers?
-
----
-
-### compiling the empty set, the empty string, and characters
-
-Regular expressions have a notation for the empty set, the empty string, and single characters:
-
-- The constant `∅` represents the empty language.
-- The constant `ε` represents the language containing only the empty string.
-- Constant literals such as `x`, `y`, or `z` represent sentences consisting of a single symbol.
-
-Recall that our function for evaluating postfix expressions has a special function, `toValue`, for translating strings into values. In a calculator, the values were integers. In our compiler, the values are finite-state recognizers.
+Now clearly, this cannot be an atomic operator. But recall that our function for evaluating postfix expressions has a special function, `toValue`, for translating strings into values. In a calculator, the values were integers. In our compiler, the values are finite-state recognizers.
 
 Our approach to handling constant literals will be to use `toValue` to perform the translation for us:
-
-```javascript
-const regexA = {
-  operators: {
-    // coming soon...
-  },
-  defaultOperator: undefined,
-  toValue (string) {
-    return literal(string);
-  }
-};
-```
-
-But what about `∅` and `ε`? We could stick some if statements in `toValue`, so that `toValue('∅') === EMPTY_SET` and `toValue('ε') === EMPTY_STRING`, but as well see in the next section, this would paint us into a corner if we ever want to match strings that include the characters `∅` or `ε`.
-
-So instead, we'll use a feature that we wrote in, but haven't used yet: Atomic Operators, i.e. operators with arity zero:
 
 ```javascript
 const regexA = {
@@ -1184,7 +1169,11 @@ const regexA = {
 };
 ```
 
-Then we can use `evaluate` to generate recognizers from the most basic of regular expressions:
+---
+
+### using ∅, ε, and literal
+
+Now that we have defined operators for `∅` and `ε`, and now that we have writed `toValue` to use `literal`, we can use `evaluate` to generate recognizers from the most basic of regular expressions:
 
 ```javascript
 const emptySetRecognizer = evaluate(`∅`, regexA);
@@ -1852,7 +1841,7 @@ It doesn't actually accept anything, so it's not much of a recognizer. Yet.
 
 ---
 
-## From Product to Union
+### from product to union
 
 We know how to compute the product of two recognizers, and we see how the product actually simulates having two recognizers simultaneously consuming the same symbols. But what we want is to compute the union of the recognizers.
 
@@ -2872,7 +2861,7 @@ We have one more operator to add, `*`, but before we do, let's consider what hap
 
 ---
 
-### the "fan-out problem"
+### the fan-out problem
 
 Consider taking the union of `a` and `A`:
 
