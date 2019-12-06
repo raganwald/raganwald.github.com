@@ -221,6 +221,8 @@ Along the way, we'll look at other tools that make regular expressions more conv
 [For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
 [For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
 
+[implementing the kleene star](#implementing-the-kleene-star)
+
 ---
 
 # Our First Goal: "For every regular expression, there exists an equivalent finite-state recognizer"
@@ -3227,42 +3229,27 @@ This is not true for other types of automata: In [A Brutal Look at Balanced Pare
 
 ---
 
-## Decorating Recognizers
+## implementing the kleene star
 
-In programming jargon, a *decorator* is a function that takes an argument—such as a function, method, or object—and returns a new version of that object which has been transformed to provide new or changed functionality, while still retaining something of its original character.
+Formal regular expressions are made with three constants and three operators. We've implemented the three constants:
 
-For example, `negation` is a function that decorates a boolean function by negating its result:
+- The constant `∅` represents the empty set.
+- The constant `ε` represents the set containing only the empty string.
+- Constant literals such as `x`, `y`, or `z` represent a language with a single sentence consisting of a single symbol.
 
-```javascript
-const negation =
-  fn =>
-    (...args) => !fn(...args);
+And we've implemented two of the three operators:
 
-const weekdays = new Set(['M', 'Tu', 'W', 'Th', 'F']);
+- Given any two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
+- Given any two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
 
-const isWeekday = day => weekdays.has(day);
-const isntWeekday = negation(isWeekday);
+This leaves one remaining operator to implement, `*`:
 
-[isWeekday('Su'), isWeekday('M'), isntWeekday('Su'), isntWeekday('M')]
-  //=>
-    [false, true, true, false]
-```
+- Given any regular expression _z_, the expression _z_`*` resolves to the [Kleene Star] or `kleene*` of the language described by _z_. The Kleene Star is also known as "zero or more," because in a regular expression, `a*` is an expression that matches whatever `a` matches, zero or more times in succession.
 
-A decorator for functions takes a function as an argument and returns returns a new function with some relationship to the original function's semantics. A decorator for finite-state recognizers takes the description of a finite-state recognizer and returns as its argument a new finite-state recognizer with some relationship to the original finite-state recognizer's semantics.
-
-We'll start with the "Kleene Star."
-
----
-
-### kleene*
-
-Our `union`, `catenation`, and `intersection` functions can compose any two recognizers, and they are extremely useful. `union` and `catenation` are particularly interesting to us, because they implement—in JavaScript—two of the three operations that regular expressons provide: `union(a, b)` is equivalent to `a|b` in a regular expression, and `catenation(a, b)` is equivalent to `ab` in a regular expression.
-
-There's another operation on recognizers that regular expressions provide, the [kleene*]. In a regular expression, `a*` is an expression that matches whatever `a` matches, zero or more times in succession.
-
+[Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
 [kleene*]: https://en.wikipedia.org/wiki/Kleene_star.
 
-We'll build a JavaScript decorator for the `kleene*` step-by-step, starting with handling the "zero or one" case. Consider this recognizer:
+We'll build a JavaScript operator for the `kleene*` step-by-step, starting with handling the "zero or one" case. Consider this recognizer:
 
 <div class="mermaid">
   stateDiagram
@@ -3271,7 +3258,7 @@ We'll build a JavaScript decorator for the `kleene*` step-by-step, starting with
     recognized-->[*]
 </div>
 
-It recognizes exactly one space. Let's start by making it recognize zero or one spaces. It's easy, we just make its start state an accepting state:
+It recognizes exactly one space. Let's start by making it recognize zero or one spaces. It's easy, we just make its start state another accepting state:
 
 <div class="mermaid">
   stateDiagram
