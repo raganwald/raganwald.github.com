@@ -36,7 +36,7 @@ function zeroOrOne (description) {
 }
 
 function zeroOrMore (description) {
-  return zeroOrOneoneOrMore(description));
+  return zeroOrOne(oneOrMore(description));
 }
 
 const formalRegularExpressions = {

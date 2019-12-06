@@ -1881,10 +1881,6 @@ verifyStateCount(regexD, {
 
 console.log('07-kleene-star.js');
 
-function zeroOrOne (description) {
-  return union2merged(description, emptyString());
-}
-
 function oneOrMore (description) {
   const {
     start,
@@ -1916,11 +1912,12 @@ function oneOrMore (description) {
   return oneOrMore;
 }
 
+function zeroOrOne (description) {
+  return union2merged(description, emptyString());
+}
+
 function zeroOrMore (description) {
-  return union2merged(
-    emptyString(),
-    oneOrMore(description)
-  );
+  return zeroOrOne(oneOrMore(description));
 }
 
 const formalRegularExpressions = {
@@ -1973,6 +1970,19 @@ const Aa = {
 
 verifyRecognizer(Aa, {
   '': false,
+  'a': true,
+  'A': true,
+  'aa': false,
+  'Aa': false,
+  'AA': false,
+  'aaaAaAaAaaaAaa': false,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+verifyEvaluateB('((a|A)|ε)', formalRegularExpressions, {
+  '': true,
   'a': true,
   'A': true,
   'aa': false,
