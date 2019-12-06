@@ -2577,7 +2577,9 @@ We can also work out all the transitions just as we did with `product`. It ends 
     onetwothree-->[*]
 </div>
 
-But while we may call it the "worst case" as far as the number of states is concerned, it is now a deterministic state machine that has the exact same semantics as its nondeterministic predecessor. Furthermore, although it appears to be much more complicated at a glance, the truth is that it is merely making the complexity apparent. It's actually easier to follow along by hand, since we don't have to keep as many as three simultaneous states in our heads at any one time.
+But while we may call it the "worst case" as far as the number of states is concerned, it is now a deterministic state machine that has the exact same semantics as its nondeterministic predecessor.
+
+Although it appears to be much more complicated than the NFA at a glance, the truth is that it is merely making the inherent complexity of the behaviour apparent. It's actually easier to follow along by hand, since we don't have to keep as many as three simultaneous states in our heads at any one time.
 
 ---
 
@@ -2926,10 +2928,10 @@ stateDiagram
   G98-->G104 : c
   G98-->G106 : C
   G104-->[*]
-  G10g-->[*]
+  G106-->[*]
 </div>
 
-Look at all the duplication! Nearly half of the diagram is a nearly exact copy of the other half. States G88 and G90 are **equivalent*: They have the exact same set of outgoing transitions. The same is true of G96 and G98, and of G104 and G106.
+Look at all the duplication! Nearly half of the diagram is a nearly exact copy of the other half. States `G88` and `G90` are *equivalent*: They have the exact same set of outgoing transitions. The same is true of `G96` and `G98`, and of `G104` and `G106`.
 
 Ideally, we would **merge** the equivalent states, and then discard the unecessary states. This would reduce the number of states from seven to four:
 
@@ -3205,11 +3207,13 @@ The old `union2` function created uneccesary states, and as a result, the number
 
 ---
 
-## For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions
+### summarizing catenation (and an improved union)
 
-When building `catenation`, we added ε-transitions to join two finite-state recognizers, and then used `removeEpsilonTransitions` to derive an equivalent finite-state recognizer without ε-transitions.
+In sum, we have created `catenation2`, a function that can catenate *any* two finite-state recognizers, and return a new finite-state recognizer. If `ⓐ` is a finite-state recognizer that recognizes sentences in the language `A`, and `ⓑ` is a finite-state recognizer that recognizes sentences in the language `B`, then `catenation2(ⓐ, ⓑ)` is a finite-state recognizer that recognizes sentences in the language `AB`, where a sentance `ab` is in the language `AB`, if and only if `a` is a sentence in the language `A`, and `b` is a sentence in the language `B`.
 
-`removeEpsilonTransitions` demonstrates that for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions. Or to put it another way, the set of languages recognized by finite-state recognizers without ε-transitions is equal to the set of finite-state recognizers recognized by finite-state recognizers that do do do not include ε-transitions.
+We also created an optimized `union2merged` that merges equivalent states, preventing the fan-out problem when catenating unions.
+
+Before we move on to implement the `kleene*`, let's also recapitule two major results that we demonstrated, namely *for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions*, and, *for every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer*.
 
 ---
 
