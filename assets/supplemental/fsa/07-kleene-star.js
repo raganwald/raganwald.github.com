@@ -1,63 +1,42 @@
 console.log('07-kleene-star.js');
 
-function kleeneStar (description) {
-  const [newStart] = names();
-
+function oneOrMore (description) {
   const {
-    start: oldStart,
-    transitions: oldTransitions,
-    accepting: oldAccepting
+    start,
+    transitions,
+    accepting
   } = description;
 
-  // step one: handle the zero or one case
-
-  const zeroOrOneWithEpsilonTransition = {
-    start: newStart,
+  const withEpsilonTransitions = {
+    start,
     transitions:
-      [ { "from": newStart, "to": oldStart } ].concat(oldTransitions),
-    accepting: oldAccepting.concat([newStart])
-  };
-
-  const zeroOrOne = reachableFromStart(
-    mergeEquivalentStates(
-      powerset(
-        removeEpsilonTransitions(
-          zeroOrOneWithEpsilonTransition
-        )
-      )
-    )
-  );
-
-  // step two: handle the zero or more case
-
-  const {
-    start: zeroOrOneStart,
-    transitions: zeroOrOneTransitions,
-    accepting: zeroOrOneAccepting
-  } = zeroOrOne;
-
-  const zeroOrMoreWithEpsilonTransitions = {
-    start: zeroOrOneStart,
-    transitions:
-      zeroOrOneTransitions.concat(
-        zeroOrOneAccepting.map(
-          state => ({ from: state, to: zeroOrOneStart })
+      transitions.concat(
+        accepting.map(
+          acceptingState => ({ from: acceptingState, to: start })
         )
       ),
-    accepting: zeroOrOneAccepting
+      accepting
   };
 
-  const zeroOrMore = reachableFromStart(
+  const oneOrMore = reachableFromStart(
     mergeEquivalentStates(
       powerset(
         removeEpsilonTransitions(
-          zeroOrMoreWithEpsilonTransitions
+          withEpsilonTransitions
         )
       )
     )
   );
 
-  return zeroOrMore;
+  return oneOrMore;
+}
+
+function zeroOrOne (description) {
+  return union2merged(description, emptyString());
+}
+
+function zeroOrMore (description) {
+  return zeroOrOneoneOrMore(description));
 }
 
 const formalRegularExpressions = {
@@ -76,7 +55,7 @@ const formalRegularExpressions = {
       symbol: Symbol('|'),
       type: 'infix',
       precedence: 10,
-      fn: union2
+      fn: union2merged
     },
     '→': {
       symbol: Symbol('→'),
@@ -88,7 +67,7 @@ const formalRegularExpressions = {
       symbol: Symbol('*'),
       type: 'postfix',
       precedence: 30,
-      fn: kleeneStar
+      fn: zeroOrMore
     }
   },
   defaultOperator: '→',
@@ -108,9 +87,62 @@ const Aa = {
   "accepting": ["Aa"]
 };
 
-verifyRecognizer(kleeneStar(Aa), {
+verifyRecognizer(Aa, {
+  '': false,
+  'a': true,
+  'A': true,
+  'aa': false,
+  'Aa': false,
+  'AA': false,
+  'aaaAaAaAaaaAaa': false,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+verifyEvaluateB('((a|A)|ε)', formalRegularExpressions, {
   '': true,
   'a': true,
+  'A': true,
+  'aa': false,
+  'Aa': false,
+  'AA': false,
+  'aaaAaAaAaaaAaa': false,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+verifyRecognizer(zeroOrOne(Aa), {
+  '': true,
+  'a': true,
+  'A': true,
+  'aa': false,
+  'Aa': false,
+  'AA': false,
+  'aaaAaAaAaaaAaa': false,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+verifyRecognizer(oneOrMore(Aa), {
+  '': false,
+  'a': true,
+  'A': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+verifyRecognizer(zeroOrMore(Aa), {
+  '': true,
+  'a': true,
+  'A': true,
   'aa': true,
   'Aa': true,
   'AA': true,
@@ -123,6 +155,7 @@ verifyRecognizer(kleeneStar(Aa), {
 verifyEvaluateB('(a|A)*', formalRegularExpressions, {
   '': true,
   'a': true,
+  'A': true,
   'aa': true,
   'Aa': true,
   'AA': true,

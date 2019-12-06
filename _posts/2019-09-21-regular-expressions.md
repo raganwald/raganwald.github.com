@@ -3249,150 +3249,71 @@ This leaves one remaining operator to implement, `*`:
 [Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
 [kleene*]: https://en.wikipedia.org/wiki/Kleene_star.
 
-We'll build a JavaScript operator for the `kleene*` step-by-step, starting with handling the "zero or one" case. Consider this recognizer:
+We'll build a JavaScript operator for the `kleene*` step-by-step, starting with handling the "one or more" case.
 
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : " "
-    recognized-->[*]
-</div>
-
-It recognizes exactly one space. Let's start by making it recognize zero or one spaces. It's easy, we just make its start state another accepting state:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : " "
-    empty-->[*]
-    recognized-->[*]
-</div>
-
-In practice we might have a recognizer that loops back to its start state, and the above transformation will not work correctly. So what we'll do is add a new start state, and provide an epsilon transition to the original start state.
-
-With some renaming, it will look like this:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->empty2
-    empty-->[*]
-    empty2-->recognized : " "
-    recognized-->[*]
-</div>
-
-After removing epsilon transitions and unreachable states and so on, we end up back where we started:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->empty
-    empty-->recognized : " "
-    empty-->[*]
-    recognized-->[*]
-</div>
-
-But although we won't show it here, we can handle those cases where there is already a loop back to the start state.
-
-Now what about handling one or more sentences that the argument recognizes? Our strategy will be to take a recognizer, and then add epsilon transitions between its accepting states and its start state. In effect, we will create "loops" back to the start state from all accepting states.
+Our strategy will be to take a recognizer, and then add epsilon transitions between its accepting states and its start state. In effect, we will create "loops" back to the start state from all accepting states.
 
 For example, if we have:
 
 <div class="mermaid">
   stateDiagram
     [*]-->empty
-    empty-->recognized : A, a
-    recognized-->[*]
+    empty-->Aa : A, a
+    Aa-->[*]
 </div>
 
-We will turn it into this to handle the zero case:
+We will turn it into this to handle one or more `a`s and `A`s:
 
 <div class="mermaid">
   stateDiagram
     [*]-->empty
-    empty-->empty2
-    empty-->[*]
-    empty2-->recognized : A, a
-    recognized-->[*]
+    empty-->Aa : A, a
+    Aa-->[*]
+    Aa-->empty
 </div>
 
-And then we will turn it into this to handle the one or more cases:
+Once again we remove epsilon transitions, unreachable states, and possible nondeterminism:
 
 <div class="mermaid">
   stateDiagram
     [*]-->empty
-    empty-->empty2
-    empty-->[*]
-    empty2-->recognized : A, a
-    recognized-->empty
-    recognized-->[*]
+    empty-->Aa : A, a
+    Aa-->Aa : A, a
+    Aa-->[*]
 </div>
 
-This will produce some non-determinism, so we'll remove the epsilon transitions, take the powerset of the result, remove equivalent states, and remove unreachable states:
-
-<div class="mermaid">
-  stateDiagram
-    [*]-->recognized
-    recognized-->recognized : A, a
-    recognized-->[*]
-</div>
-
-Presto, a loop! Here's the full code:
+Presto, a recognizer that handles one or more instances of an upper- or lower-case `a`! Here's an implementation in JavaScript:
 
 ```javascript
-function kleeneStar (description) {
-  const newStart = "empty";
-
+function oneOrMore (description) {
   const {
-    start: oldStart,
-    transitions: oldTransitions,
-    accepting: oldAccepting
-  } = avoidReservedNames([newStart], description);
+    start,
+    transitions,
+    accepting
+  } = description;
 
-  const optionalBefore = {
-    start: newStart,
+  const withEpsilonTransitions = {
+    start,
     transitions:
-      [ { "from": newStart, "to": oldStart } ].concat(oldTransitions),
-    accepting: oldAccepting.concat([newStart])
-  };
-
-  const optional = reachableFromStart(
-    mergeEquivalentStates(
-      powerset(
-        removeEpsilonTransitions(
-          optionalBefore
-        )
-      )
-    )
-  );
-
-  const {
-    start: optionalStart,
-    transitions: optionalTransitions,
-    accepting: optionalAccepting
-  } = optional;
-
-  const loopedBefore = {
-    start: optionalStart,
-    transitions:
-      optionalTransitions.concat(
-        optionalAccepting.map(
-          state => ({ from: state, to: optionalStart })
+      transitions.concat(
+        accepting.map(
+          acceptingState => ({ from: acceptingState, to: start })
         )
       ),
-    accepting: optionalAccepting
+      accepting
   };
 
-  const looped = reachableFromStart(
+  const oneOrMore = reachableFromStart(
     mergeEquivalentStates(
       powerset(
         removeEpsilonTransitions(
-          loopedBefore
+          withEpsilonTransitions
         )
       )
     )
   );
 
-  return looped;
+  return oneOrMore;
 }
 
 const Aa = {
@@ -3404,20 +3325,38 @@ const Aa = {
   "accepting": ["Aa"]
 };
 
-kleeneStar(Aa)
+verifyRecognizer(Aa, {
+  '': false,
+  'a': true,
+  'A': true,
+  'aa': false,
+  'Aa': false,
+  'AA': false,
+  'aaaAaAaAaaaAaa': false,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 10 tests passing
+
+oneOrMore(Aa)
   //=>
     {
       "start": "empty",
       "transitions": [
-        { "from": "empty", "consume": "A", "to": "empty" },
-        { "from": "empty", "consume": "a", "to": "empty" }
+        { "from": "empty", "consume": "A", "to": "Aa" },
+        { "from": "empty", "consume": "a", "to": "Aa" }
+        { "from": "Aa", "consume": "A", "to": "Aa" },
+        { "from": "Aa", "consume": "a", "to": "Aa" }
       ],
-      "accepting": ["empty"]
+      ],
+      "accepting": ["Aa"]
     }
 
-verify(kleeneStar(Aa), {
-  '': true,
+verifyRecognizer(oneOrMore(Aa), {
+  '': false,
   'a': true,
+  'A': true,
   'aa': true,
   'Aa': true,
   'AA': true,
@@ -3426,10 +3365,128 @@ verify(kleeneStar(Aa), {
   'a ': false,
   'eh?': false
 });
-  //=> All 9 tests passing
+  //=> All 10 tests passing
 ```
 
-Ah! A working `kleene*`.
+Handling one-or-more is nice, and maps directly to a programming regex operator, `+`. But the kleene star handles **zero** or more. How do we implement that?
+
+Well, we can directly manipulate a recognizer's definition, but let's use what we already have. Given some recognizer `x`, what is the union of `x` and `ε` (the empty string)?
+
+```javascript
+verifyEvaluateB('((a|A)|ε)', formalRegularExpressions, {
+  '': true,
+  'a': true,
+  'A': true,
+  'aa': false,
+  'Aa': false,
+  'AA': false,
+  'aaaAaAaAaaaAaa': false,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 10 test passing
+
+function zeroOrOne (description) {
+  return union2merged(description, emptyString());
+}
+
+verifyRecognizer(zeroOrOne(Aa), {
+  '': true,
+  'a': true,
+  'A': true,
+  'aa': false,
+  'Aa': false,
+  'AA': false,
+  'aaaAaAaAaaaAaa': false,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+  //=> All 10 test passing
+```
+
+Matching the empty string or whatever a recognizer matches, is matching zero or one sentences the recognizer recognizes. Now that we have both `oneOrMore` and `zeroOrOne`, `zeroOrMore` is obvious:
+
+```javascript
+function zeroOrMore (description) {
+  return zeroOrOneoneOrMore(description));
+}
+
+const formalRegularExpressions = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2merged
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrMore
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
+
+verifyRecognizer(zeroOrMore(Aa), {
+  '': true,
+  'a': true,
+  'A': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+verifyEvaluateB('(a|A)*', formalRegularExpressions, {
+  '': true,
+  'a': true,
+  'A': true,
+  'aa': true,
+  'Aa': true,
+  'AA': true,
+  'aaaAaAaAaaaAaa': true,
+  ' a': false,
+  'a ': false,
+  'eh?': false
+});
+
+verifyEvaluateB('ab*c', formalRegularExpressions, {
+  '': false,
+  'a': false,
+  'ac': true,
+  'abc': true,
+  'abbbc': true,
+  'abbbbb': false
+});
+```
+
+We have now defined every constant and combinator in formal regular expressions.
 
 ---
 
