@@ -37,24 +37,26 @@ Regex programming tools evolved as a practical application for [Formal Regular E
 [Regular Languages]: https://en.wikipedia.org/wiki/Regular_language
 [regular expression]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
 
-Formal regular expressions are made with three constants:
+Formal regular expressions are made with three "atomic" or indivisible expressions:
 
-- The constants `∅` representing the empty set, and `ε` representing the set containing only the empty string.
-- Constant literals such as `x`, `y`, or `z` representing symbols contained within some alphabet `Σ`.
+- The symbol `∅` describes the language with no sentences, also called "the empty set."
+- The symbol `ε` describes the language containing only the empty string.
+- Literals such as `x`, `y`, or `z` describe languages containing single sentences, containing single symbols. e.g. The literal `r` describes the language `R`, which contains just one sentence: `'r'`.
 
-Every constant is itself a regular expression. For example, the constant `r` is itself a regular expression denoting the language that contains just one sentence, `'r'`: `{ 'r' }`.
+What makes formal regular expressions powerful, is that we have operators for alternating, catenating, and quantifying regular expressions. Given that _x_ is a regular expression describing some language `X`, and _y_ is a regular expression describing some language `Y`:
 
-What makes formal regular expressions powerful, is that we have operators for composing and decorating these three constants:
+1. The expression _x_`|`_y_ describes to the union of the languages `X` and `Y`, meaning, the sentence `w` belongs to `x|y` if and only if `w` belongs to the language `X` or `w` belongs to the language `Y`. We can also say that _x_`|`_y_ represents the _alternation_ of _x_ and _y_.
+2. The expression _xy_ describes the language `XY`, where a sentance `ab` belongs to the language `XY` if and only if `a` belohgs to the language `X` and `b` belongs to the language `Y`. We can also say that _xy_ represents the _catenation_ of the epxressions _x_ and _y_.
+3. The expression _x_`*` describes the language `Z`, where the sentence `ε` (the empty string) belongs to `Z`, and, the sentence `pq` belongs to `Z` if and only if `p` is a sentence belonging to `X`, and `q` is a sentence belonging to `Z`. We can also say that _x_`*` represents a _quantification_ of _x_, as it allows a regular expression to rerpresent a language containing sentences that match some number of senetences represented by _x_ catenated together.
 
-1. Given any regular expression _z_, the expression _z_`*` resolves to the [Kleene Star] or `kleene*` of the language described by _z_. The Kleene Star is also known as "zero or more."
-2. Given any two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
-3. Given any two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
 
 [Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
 
-Before we add the last rule for regular expressions, let's clarify these three rules with some examples.
+Before we add the last rule for regular expressions, let's clarify these three rules with some examples. Given the constants `a`, `b`, and `c`, resolving to the languages `{ 'a' }`, `{ 'b' }`, and `{ 'b' }`:
 
-Given the constants `a`, `b`, and `c`, resolving to the languages `{ 'a' }`, `{ 'b' }`, and `{ 'b' }`, the expression `a*` resolves to the language `{ '', 'a', 'aa', 'aaa', ... }` by rule 1. The expression `ab` resolves to the language `{ 'ab' }` by rule 2. And the expression `b|c` resolves to the language `{ 'b', 'c' }` by rule 3.
+- The expression `b|c` resolves to the language `{ 'b', 'c' }`, by rule 1.
+- The expression `ab` resolves to the language `{ 'ab' }` by rule 2.
+- The expression `a*` resolves to the language `{ '', 'a', 'aa', 'aaa', ... }` by rule 3.
 
 Our operations have a precedence, and it is the order of the rules as presented. So the expression `ab*` resolves to the language `{ 'a', 'ab', 'abb', 'abbb', ... }`, the expression `a|bc` resolves to the language `{ 'a', 'bc' }`, and the expression `b|c*` resolves to the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`.
 
@@ -192,17 +194,19 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [using ∅, ε, and literal](#using-∅-ε-and-literal)
   - [recognizing special characters](#recognizing-special-characters)
 
-### [Composing and Decorating Recognizers With Operators](#composing-and-decoratting-recognizers-with-operators-1)
+### [Alternating Regular Expressions](#alternating-regular-expressions-1)
 
 [Taking the Product of Two Finite-State Automata](#taking-the-product-of-two-finite-state-automata)
 
   - [starting the product](#starting-the-product)
   - [transitions](#transitions)
   - [a function to compute the product of two recognizers](#a-function-to-compute-the-product-of-two-recognizers)
-  - [from product to union](#from-product-to-union)
+
+[From Product to Union](#from-product-to-union)
+
   - [the marvellous product](#the-marvellous-product)
 
-[Catenating Descriptions](#catenating-descriptions)
+### [Catenating Regular Expressions](#catenating-regular-expressions-1)
 
   - [catenating descriptions with epsilon-transitions](#catenating-descriptions-with-epsilon-transitions)
   - [removing epsilon-transitions](#removing-epsilon-transitions)
@@ -218,7 +222,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [the fan-out problem](#the-fan-out-problem)
   - [summarizing catenation (and an improved union)](#summarizing-catenation-and-an-improved-union)
 
-[Wrapping it up With the Kleene Star](#wrapping-it-up-with-the-kleene-star)
+### [Quantifying Regular Expressions](#quantifying-regular-expressions-1)
 
   - [implementing the kleene star](#implementing-the-kleene-star)
   - [all together now](#all-together-now)
@@ -998,9 +1002,9 @@ Verifying recognizers will be extremely important when we want to verify that wh
 
 Regular expressions have a notation for the empty set, the empty string, and single characters:
 
-- The constant `∅` represents the empty language.
-- The constant `ε` represents the language containing only the empty string.
-- Constant literals such as `x`, `y`, or `z` represent sentences consisting of a single symbol.
+- The symbol `∅` describes the language with no sentences, also called "the empty set."
+- The symbol `ε` describes the language containing only the empty string.
+- Literals such as `x`, `y`, or `z` describe languages containing single sentences, containing single symbols. e.g. The literal `r` describes the language `R`, which contains just one sentence: `'r'`.
 
 In order to compile such regular expressions into finite-state recognizers, we begin by defining functions that return the empty language, the language containing only the empty string, and languages with just one sentance containing one symbol.
 
@@ -1443,22 +1447,23 @@ verifyEvaluateB('`ε', regexA, {
 
 And now it's time for what we might call the main event: Expressions that use operators.
 
----
-
-# Composing and Decorating Recognizers With Operators
-
 Composeable recognizers and patterns are particularly interesting. Just as human languages are built by layers of composition, all sorts of mechanical languages are structured using composition. JSON is a perfect example: A JSON element like a list is composed of zero or more arbitrary JSON elements, which themselves could be lists, and so forth.
 
-Regular expressions and regexen are both built with composition. If you have two regular expressions, `A` and `B`, you can create a new regular expression that is the union of `A` and `B` with the expression `A|B`, and you can create a new regular expression that is the catenation of `A` and `B` with `AB`.
+Regular expressions and regexen are both built with composition. If you have two regular expressions, `a` and `b`, you can create a new regular expression that is the union of `a` and `b` with the expression `a|b`, and you can create a new regular expression that is the catenation of `a` and `b` with `ab`.
 
-Our `evaluate` functions don't know how to do that, and we aren't going to update them to try. Instead, we'll write combinator functions that take two recognizers and return the finite-state recognizer representing the union, or catenation of their arguments.
+Our `evaluate` functions don't know how to do that, and we aren't going to update them to try. Instead, we'll write combinator functions that take two recognizers and return the finite-state recognizer representing the alternation, or catenation of their arguments.
 
-Now so far, we only have recognizers for the empty set, the empty string, and any one character. Nevertheless, we will build our combinators to handle *any* two recognizers, because that's exactly how the rules of regular expressions define them:
+We'll begin with alternation.
 
-- Given any two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
-- Given any two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
+---
 
-We'll get started with `union`, which is built on a very useful operation, *taking the product of two finite-state automata*.
+# Alternating Regular Expressions
+
+So far, we only have recognizers for the empty set, the empty string, and any one character. Nevertheless, we will build alternation to handle *any* two recognizers, because that's exactly how the rules of regular expressions defines it:
+
+1. The expression _x_`|`_y_ describes to the union of the languages `X` and `Y`, meaning, the sentence `w` belongs to `x|y` if and only if `w` belongs to the language `X` or `w` belongs to the language `Y`. We can also say that _x_`|`_y_ represents the _alternation_ of _x_ and _y_.
+
+We'll get started with a function that computes the `union` of the descriptions of two finite-state recognizers, which is built on a very useful operation, *taking the product of two finite-state automata*.
 
 ---
 
@@ -1843,7 +1848,7 @@ It doesn't actually accept anything, so it's not much of a recognizer. Yet.
 
 ---
 
-### from product to union
+## From Product to Union
 
 We know how to compute the product of two recognizers, and we see how the product actually simulates having two recognizers simultaneously consuming the same symbols. But what we want is to compute the union of the recognizers.
 
@@ -2000,7 +2005,7 @@ We'll return to some of these other uses for `product` after we staisfy ourselve
 
 ---
 
-## Catenating Descriptions
+# Catenating Regular Expressions
 
 And now we turn our attention to catenating descriptions. Let's begin by informally defining what we mean  by "catenating descriptions:"
 
@@ -3208,27 +3213,28 @@ Before we move on to implement the `kleene*`, let's also recapitule two major re
 
 ---
 
-## Wrapping it up With the Kleene Star
+# Quantifying Regular Expressions
 
 Formal regular expressions are made with three constants and three operators. We've implemented the three constants:
 
-- The constant `∅` represents the empty set.
-- The constant `ε` represents the set containing only the empty string.
-- Constant literals such as `x`, `y`, or `z` represent a language with a single sentence consisting of a single symbol.
+- The symbol `∅` describes the language with no sentences, also called "the empty set."
+- The symbol `ε` describes the language containing only the empty string.
+- Literals such as `x`, `y`, or `z` describe languages containing single sentences, containing single symbols. e.g. The literal `r` describes the language `R`, which contains just one sentence: `'r'`.
 
 And we've implemented two of the three operators:
 
-- Given any two regular expressions _x_ and _y_, the expression _x_`|`_y_ resolves to the union of the language described by _x_ and the language described by _y_.
-- Given any two regular expressions _x_ and _x_, the expression _xy_ resolves to the catenation of the language described by _x_ and the language described by _y_.
+- The expression _x_`|`_y_ describes to the union of the languages `X` and `Y`, meaning, the sentence `w` belongs to `x|y` if and only if `w` belongs to the language `X` or `w` belongs to the language `Y`. We can also say that _x_`|`_y_ represents the _alternation_ of _x_ and _y_.
+- The expression _xy_ describes the language `XY`, where a sentance `ab` belongs to the language `XY` if and only if `a` belohgs to the language `X` and `b` belongs to the language `Y`. We can also say that _xy_ represents the _catenation_ of the epxressions _x_ and _y_.
 
-This leaves one remaining operator to implement, `*`:
+This leaves one remaining operator to implement, `*`:[^kleene-star]:
 
-- Given any regular expression _z_, the expression _z_`*` resolves to the [Kleene Star] or `kleene*` of the language described by _z_. The Kleene Star is also known as "zero or more," because in a regular expression, `a*` is an expression that matches whatever `a` matches, zero or more times in succession.
+- The expression _x_`*` describes the language `Z`, where the sentence `ε` (the empty string) belongs to `Z`, and, the sentence `pq` belongs to `Z` if and only if `p` is a sentence belonging to `X`, and `q` is a sentence belonging to `Z`. We can also say that _x_`*` represents a _quantification_ of _x_, as it allows a regular expression to rerpresent a language containing sentences that match some number of senetences represented by _x_ catenated together.
+
+[^kleene-star]: The `*` operator is named the [kleene star], after Stephen Kleene.
 
 [Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
-[kleene*]: https://en.wikipedia.org/wiki/Kleene_star.
 
-When we've implemented `*` in our evaluator, we will have a function that takes any formal regular expression and "compiles" it to a finite-state recognizer.
+And when we've implemented `*` in our evaluator, we will have a function that takes any formal regular expression and "compiles" it to a finite-state recognizer.
 
 ### implementing the kleene star
 
@@ -3469,7 +3475,21 @@ verifyEvaluateB('ab*c', formalRegularExpressions, {
 });
 ```
 
-We have now defined every constant and combinator in formal regular expressions.
+We have now defined every constant and combinator in formal regular expressions. So if we want, we can create regular expressions for all sorts of languages, such as `(R|r)eg(ε|gie(ε|ee*!))`:
+
+```javascript
+verifyEvaluateB('(R|r)eg(ε|gie(ε|ee*!))', formalRegularExpressions, {
+  '': false,
+  'r': false,
+  'reg': true,
+  'Reg': true,
+  'Regg': false,
+  'Reggie': true,
+  'Reggieeeeeee!': true
+});
+```
+
+And best of all, we know that whatever formal regular expression we devise, we can produce a finite-state recognizer that accept sentences in the language the formal regular expression describes, simply by feeding it to our `evaluateB` function along with the `formalRegulaExpressions` configuration dictionary.
 
 ---
 
