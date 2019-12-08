@@ -225,7 +225,12 @@ Along the way, we'll look at other tools that make regular expressions more conv
 ### [Quantifying Regular Expressions](#quantifying-regular-expressions-1)
 
   - [implementing the kleene star](#implementing-the-kleene-star)
-  - [all together now](#all-together-now)
+
+### [For every regular expression, there exists an equivalent finite-state recognizer. And more!](#for-every-regular-expression-there-exists-an-equivalent-finite-state-recognizer-and-more-1)
+
+  - [for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions,-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
+  - [For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
+  - [Every regular language can be recognized in O_n_ time](#every-regular-language-can-be-recognized-in-On-time)
 
 ---
 
@@ -3493,39 +3498,64 @@ And best of all, we know that whatever formal regular expression we devise, we c
 
 ---
 
-### all together now
+# For every regular expression, there exists an equivalent finite-state recognizer. And more!
 
-*More to come...*
+As noted, this function:
+
+```javascript
+function formalRegularExpressionToFiniteStateRecognizer (description) {
+  return evaluateB(description, formalRegulaExpressions);
+}
+```
+
+Demonstrates that whatever formal regular expression we devise, we can produce a finite-state recognizer that accept sentences in the language the formal regular expression describes. It's not a formal proof: If we wanted a rigorous proof, we'd have to prove all sorts of things about JavaScript programs and the computers they run on. But it is enough to satisfy our intuition.
+
+So we have achieved our first goal.
+
+Along the way, we've established a couple of other things:
 
 ---
 
-# Annex
+### for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions
 
-[For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
+When building `catenation`, we added ε-transitions to join two finite-state recognizers, and then used `removeEpsilonTransitions` to derive an equivalent finite-state recognizer without ε-transitions. `removeEpsilonTransitions` demonstrates that for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions.
 
-[For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
+Or to put it another way, the set of languages recognized by finite-state recognizers without ε-transitions is equal to the set of finite-state recognizers recognized by finite-state recognizers that do do do not include ε-transitions.
 
-
----
-
-## For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions
-
-When building `catenation`, we added ε-transitions to join two finite-state recognizers, and then used `removeEpsilonTransitions` to derive an equivalent finite-state recognizer without ε-transitions.
-
-`removeEpsilonTransitions` demonstrates that for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions. Or to put it another way, the set of languages recognized by finite-state recognizers without ε-transitions is equal to the set of finite-state recognizers recognized by finite-state recognizers that do do do not include ε-transitions.
+We also established something about non-deterministic finite-state recognizers (and non-derteministic finite-sttate automata in general):
 
 ---
 
 ## For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer
 
-Let's reflect on what [powerset](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer) tells us about finite-state recognizers. Because we can take _any_ finite-state recognizer, pass it to `powerset`, and get back a deterministic finite-state recognizer, we know that for *every* finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
+Let's reflect on what writing [powerset](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer) told us about finite-state recognizers. Because we can take _any_ finite-state recognizer--whether detemerministic or non-deterministic--then pass it to `powerset`, and get back a deterministic finite-state recognizer, we know that for *every* finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
 
-This tells us that the set of all languages recognized by deterministic finite state recognizers is equal to the set of all languages recognized by finite-state recognizers.
+This tells us that the set of all languages recognized by deterministic finite state recognizers is equal to the set of all languages recognized by all finite-state recognizers, whether detemerministic or non-deterministic.
 
 This is not true for other types of automata: In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], we saw that non-deterministic pushdown automata could recognize palindromes, whereas deterministic pushdown automata could not. So the set of languages recognized by deterministic pushdown automata is **not** equal to the set of languages recognized by pushdown automata.
 
 [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
 
+But it's a very important result, and this is why:
+
+---
+
+### Every regular language can be recognized in O_n_ time
+
+Consider a finite-state recognizer that is deterministic, and without ε-transitions, exactly like the finite-state recognizers we compile from formal regular expressions.
+
+Such a recognizer begins in its start state, and only transitions from state to state when consuming a symbol. If it halts befoe consuming the entire sentence, it fails to recognize the sentence. If it does not halt when the sentence is complete, it will have performed _n_ transitions wwhere _n_ is the number of symbols in the sentence.
+
+It cannot have performed more than _n_ transitions, because:
+
+1. It must consume a symbol to perform a transition, thanks to there being no ε-transitions, and;
+2. It can only perform one transition per symbol, thank to it being deterministic.
+
+Now, thanks to `powerset`, it may well consume exponentional **space** relative to the length of the longest sentence it recognizes. But it will only consume linear time.
+
+Many contemporary regex engines, on the other hand, use nondeterministic algorithms that consume much less space, but can exhibit high orders of polynomial time. There are a nunmber of reasons for this, including the requirement to support features that recognize non-regular languages (like balanced parentheses and palindromes).
+
+But we know that if a formal regular expression or regex describes a regular language, it is possible to execute it in linear time. And our code is the demonstration.
 
 ---
 
