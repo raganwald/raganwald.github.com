@@ -2105,7 +2105,6 @@ verifyEvaluateB('ab*c', formalRegularExpressions, {
   'abbbbb': false
 });
 
-console.log('08-render.js');
 
 const extended = {
   operators: {
@@ -2171,62 +2170,105 @@ function p (expr) {
   }
 };
 
-function atomic ({ operator, fn = () => operator }) {
-  const symbol = Symbol(operator);
-  const type = 'atomic';
-
-  return { symbol, type, fn };
-}
-
-function infix ({  operator, precedence, fn = (a, b) => `${p(a)}${operator}${p(b)}` }) {
-  const symbol = Symbol(operator);
-  const type = 'infix';
-
-  return { symbol, type, precedence, fn };
-}
-
-function postfix ({ operator, precedence, fn = a => `${p(a)}${operator}` }) {
-  const symbol = Symbol(operator);
-  const type = 'postfix';
-
-  return { symbol, type, precedence, fn };
-}
-
-function reconstitute ({ operators: originalOperators, defaultOperator }, etcOperators = {}) {
-
-  const factories = { atomic, infix, postfix };
-
-  const operators = etcOperators;
-
-  for (const [operator, { symbol, type, precedence }] of Object.entries(originalOperators)) {
-    operators[operator] = factories[type]({ operator, precedence });
-  }
-
-  const needsToBeEscaped = new Set([Object.keys(originalOperators)]);
-
-  function toValue (string) {
-    if (needsToBeEscaped.has(string)) {
+const transpile0to0 = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => '∅'
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => 'ε'
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: (a, b) => `${p(a)}|${p(b)}`
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: (a, b) => `${p(a)}→${p(b)}`
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}*`
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    if ('∅ε|→*'.indexOf(string) >= 0) {
       return '`' + string;
     } else {
       return string;
     }
-  };
+  }
+};
 
-  return { operators, defaultOperator, toValue };
-}
-
-function render (expression, etcOperators = {}) {
-  return evaluateB(expression, reconstitute(formalRegularExpressions, etcOperators));
-}
-
-const quantifications = {
-  '?': postfix({ operator: '?', precedence: 30, fn: a => `ε|${p(a)}` }),
-  '+': postfix({ operator: '+', precedence: 30, fn: a => `${p(a)}${p(a)}*` })
+const transpile1to0 = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => '∅'
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => 'ε'
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: (a, b) => `${p(a)}|${p(b)}`
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: (a, b) => `${p(a)}→${p(b)}`
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}*`
+    },
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `ε|${p(a)}`
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}${p(a)}*`
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    if ('∅ε|→*'.indexOf(string) >= 0) {
+      return '`' + string;
+    } else {
+      return string;
+    }
+  }
 };
 
 // ----------
 
-verifyEvaluateB('(R|r)eg(ε|gie(ε|ee*!))', formalRegularExpressions, {
+const beforeLevel0 = '(R|r)eg(ε|gie(ε|ee*!))';
+
+verifyEvaluateB(beforeLevel0, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -2236,7 +2278,9 @@ verifyEvaluateB('(R|r)eg(ε|gie(ε|ee*!))', formalRegularExpressions, {
   'Reggieeeeeee!': true
 });
 
-verifyEvaluateB('(R|r)eg(gie(e+!)?)?', extended, {
+const afterLevel0 = evaluateB(beforeLevel0, transpile0to0);
+
+verifyEvaluateB(afterLevel0, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -2246,17 +2290,10 @@ verifyEvaluateB('(R|r)eg(gie(e+!)?)?', extended, {
   'Reggieeeeeee!': true
 });
 
-verifyEvaluateB(render('(R|r)eg(ε|gie(ε|ee*!))'), formalRegularExpressions, {
-  '': false,
-  'r': false,
-  'reg': true,
-  'Reg': true,
-  'Regg': false,
-  'Reggie': true,
-  'Reggieeeeeee!': true
-});
+const beforeLevel1 = '(R|r)eg(gie(e+!)?)?';
+const afterLevel1 = evaluateB(beforeLevel1, transpile1to0);
 
-verifyEvaluateB(render('(R|r)eg(gie(e+!)?)?', quantifications), formalRegularExpressions, {
+verifyEvaluateB(afterLevel1, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,

@@ -3717,6 +3717,140 @@ Instead of appealing to intuition, instead of asking people to believe that `uni
 
 ### implementing quantification operators with transpilation
 
+We demonstrated that there is a finite-state recognizer for eevry formal regular expression by writing a function to compile formal regular expressions into finite-state recognizers. We will take the same approach of demonstrating that there is a Level 0 (a/k/a "formal") regular expression for every Level 1 (a/k/a extended) regular expression:
+
+We'll write a function to compile Level 1 to Level 0 regular expressions. And we'll begin with our evaluator.
+
+Recall that our basic evaluator can compile an infix expression into a postfix list of symbols, which it then evaluates. But it knows nothing about what its operators do. If we supply operators that perform arithmatic, we have a calculator. If we supply operators that create and combine finite-state recognizers, we have a regular-expression to finite-state recognizer compiler.
+
+We can build a _transpiler_ exactly the same way: Use our evaluator, but supply a different set of operator definitions. We'll start by creating a transpiler that transpiles formal regular expressions to formal regular expressions. The way it will work is by assembling an expression in text instead of assembling a finite-state recognizer.
+
+Here's the first crack at it:
+
+```javascript
+function p (expr) {
+  if (expr.length === 1) {
+    return expr;
+  } else if (expr[0] === '`') {
+    return expr;
+  } else {
+    return `(${expr})`;
+  }
+};
+
+const transpile0to0 = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => '∅'
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => 'ε'
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: (a, b) => `${p(a)}|${p(b)}`
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: (a, b) => `${p(a)}→${p(b)}`
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}*`
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    if ('∅ε|→*()'.indexOf(string) >= 0) {
+      return '`' + string;
+    } else {
+      return string;
+    }
+  }
+};
+
+const before = '(R|r)eg(ε|gie(ε|ee*!))';
+
+verifyEvaluateB(before, formalRegularExpressions, {
+  '': false,
+  'r': false,
+  'reg': true,
+  'Reg': true,
+  'Regg': false,
+  'Reggie': true,
+  'Reggieeeeeee!': true
+});
+  //=> All 7 tests passing
+
+const after = evaluateB(before, transpile0to0);
+
+verifyEvaluateB(after, formalRegularExpressions, {
+  '': false,
+  'r': false,
+  'reg': true,
+  'Reg': true,
+  'Regg': false,
+  'Reggie': true,
+  'Reggieeeeeee!': true
+});
+  //=> All 7 tests passing
+```
+
+The result has an excess of parentheses, and does not take advantage of catenation being the default, but it works just fine.
+
+Extending it is now trivial:
+
+```javascript
+const transpile1to0 = {
+  operators: {
+
+    // ...as above...
+
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `ε|${p(a)}`
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}${p(a)}*`
+    }
+  },
+
+  // ...
+};
+
+const beforeLevel1 = '(R|r)eg(gie(e+!)?)?';
+const afterLevel1 = evaluateB(beforeLevel1, transpile1to0);
+  //=> '(R|r)→(e→(g→(ε|(g→(i→(e→(ε|((ee*)→!))))))))'
+
+verifyEvaluateB(afterLevel1, formalRegularExpressions, {
+  '': false,
+  'r': false,
+  'reg': true,
+  'Reg': true,
+  'Regg': false,
+  'Reggie': true,
+  'Reggieeeeeee!': true
+});
+  //=> All 7 tests passing
+```
+
+Note that the postfix operators `?` and `+` are associated with functions that create formal regular expressions, rather than functions that manipulate finite-state recognizers.
+
 ---
 
 # Notes
