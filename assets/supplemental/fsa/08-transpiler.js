@@ -96,6 +96,7 @@ const transpile0to0 = {
     }
   },
   defaultOperator: '→',
+  escapeSymbol: '`',
   toValue (string) {
     if ('∅ε|→*'.indexOf(string) >= 0) {
       return '`' + string;
@@ -105,7 +106,7 @@ const transpile0to0 = {
   }
 };
 
-const transpile1to0 = {
+const transpile1to0q = {
   operators: {
     '∅': {
       symbol: Symbol('∅'),
@@ -149,6 +150,7 @@ const transpile1to0 = {
     }
   },
   defaultOperator: '→',
+  escapeSymbol: '`',
   toValue (string) {
     if ('∅ε|→*'.indexOf(string) >= 0) {
       return '`' + string;
@@ -157,6 +159,120 @@ const transpile1to0 = {
     }
   }
 };
+
+const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const DIGITS = '1234567890';
+const UNDERSCORE ='_';
+const WORD = ALPHA + DIGITS + UNDERSCORE;
+const WHITESPACE = ' \t\r\n';
+
+const DIGITS_EXPR = DIGITS.split('').join('|');
+const WORD_EXPR = WORD.split('').join('|');
+const WHITESPACE_EXPR = WHITESPACE.split('').join('|');
+
+const digitsSymbol = Symbol('`d');
+const wordSymbol = Symbol('`w');
+const whitespaceSymbol = Symbol('`s');
+
+const transpile1to0qs = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => '∅'
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => 'ε'
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: (a, b) => `${p(a)}|${p(b)}`
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: (a, b) => `${p(a)}→${p(b)}`
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}*`
+    },
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `ε|${p(a)}`
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}${p(a)}*`
+    },
+    '__DIGITS__': {
+      symbol: digitsSymbol,
+      type: 'atomic',
+      fn: () => DIGITS_EXPR
+    },
+    '__WORD__': {
+      symbol: wordSymbol,
+      type: 'atomic',
+      fn: () => WORD_EXPR
+    },
+    '__WHITESPACE__': {
+      symbol: whitespaceSymbol,
+      type: 'atomic',
+      fn: () => WHITESPACE_EXPR
+    }
+  },
+  defaultOperator: '→',
+  escapedValue (symbol) {
+    if (symbol === 'd') {
+      return digitsSymbol;
+    } else if (symbol === 'w') {
+      return wordSymbol;
+    } else if (symbol === 's') {
+      return whitespaceSymbol;
+    } else {
+      return symbol;
+    }
+  },
+  toValue (string) {
+    if ('∅ε|→*'.indexOf(string) >= 0) {
+      return '`' + string;
+    } else {
+      return string;
+    }
+  }
+};
+
+function evaluate (
+  expression,
+  compilerConfiguration = formalRegularExpressions,
+  transpilerConfiguration = transpile1to0qs
+) {
+  const formalExpression = evaluateB(expression, transpilerConfiguration);
+  const finiteStateRecognizer = evaluateB(formalExpression, compilerConfiguration);
+
+  return finiteStateRecognizer;
+}
+
+function verifyEvaluate (expression, ...args) {
+  const examples = args[args.length - 1];
+  const configs = args.slice(0, args.length - 2);
+
+  return verify(
+    automate(evaluate(expression, ...configs)),
+    examples
+  );
+}
 
 // ----------
 
@@ -184,10 +300,10 @@ verifyEvaluateB(afterLevel0, formalRegularExpressions, {
   'Reggieeeeeee!': true
 });
 
-const beforeLevel1 = '(R|r)eg(gie(e+!)?)?';
-const afterLevel1 = evaluateB(beforeLevel1, transpile1to0);
+const beforeLevel1q = '(R|r)eg(gie(e+!)?)?';
+const afterLevel1q = evaluateB(beforeLevel1q, transpile1to0q);
 
-verifyEvaluateB(afterLevel1, formalRegularExpressions, {
+verifyEvaluateB(afterLevel1q, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -195,4 +311,27 @@ verifyEvaluateB(afterLevel1, formalRegularExpressions, {
   'Regg': false,
   'Reggie': true,
   'Reggieeeeeee!': true
+});
+
+const beforeLevel1qs = '((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d';
+const afterLevel1qs = evaluateB(beforeLevel1qs, transpile1to0qs);
+
+verifyEvaluateB(afterLevel1qs, formalRegularExpressions, {
+  '': false,
+  '1234': false,
+  '123 4567': true,
+  '987-6543': true,
+  '416-555-1234': true,
+  '1 416-555-0123': true,
+  '011-888-888-8888!': false
+});
+
+verifyEvaluate('((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d', {
+  '': false,
+  '1234': false,
+  '123 4567': true,
+  '987-6543': true,
+  '416-555-1234': true,
+  '1 416-555-0123': true,
+  '011-888-888-8888!': false
 });

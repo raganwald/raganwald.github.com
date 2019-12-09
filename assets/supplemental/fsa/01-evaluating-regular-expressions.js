@@ -339,7 +339,7 @@ const arities = {
   atomic: 0
 };
 
-function evaluatePostfixA(postfix, {
+function evaluatePostfix(postfix, {
   operators,
   toValue
 }) {
@@ -393,7 +393,7 @@ function evaluatePostfixA(postfix, {
 }
 
 function evaluateA(expression, configuration) {
-  return evaluatePostfixA(
+  return evaluatePostfix(
     shuntingYardB(
       expression, configuration
     ),

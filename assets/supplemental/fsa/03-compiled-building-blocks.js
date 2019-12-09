@@ -176,7 +176,7 @@ function shuntingYardC (
 }
 
 function evaluateB (expression, configuration) {
-  return evaluatePostfixA(
+  return evaluatePostfix(
     shuntingYardC(
       expression, configuration
     ),

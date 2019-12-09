@@ -236,8 +236,11 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
   - [a hierarchy of regex functionality](#a-hierarchy-of-regex-functionality)
   - [beyond our hierarchy](#beyond-our-hierarchy)
-  - [implementing quantification operators directly](#implementing-quantification-operators-directly)
+
+[Implementing Level One Features](#implementing-level-one-features)
+
   - [implementing quantification operators with transpilation](#implementing-quantification-operators-with-transpilation)
+  - [implementing shorthand character classes](#implementing-shorthand-character-classes)
 
 ---
 
@@ -701,7 +704,7 @@ We now have enough to get started with evaluating the postfix notation produced 
 Our first cut at the code for evaluating the postfix code produceed by our shunting yard will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
 
 ```javascript
-function evaluatePostfixA (postfix, { operators, toValue }) {
+function evaluatePostfix (postfix, { operators, toValue }) {
   const symbols = new Map(
     Object.entries(operators).map(
       ([key, { symbol, type, fn }]) =>
@@ -746,7 +749,7 @@ We can then wire the shunting yard up to the postfix evaluator, to make a functi
 
 ```javascript
 function evaluateA (expression, configuration) {
-  return evaluatePostfixA(
+  return evaluatePostfix(
     shuntingYardB(
       expression, configuration
     ),
@@ -1409,7 +1412,7 @@ function shuntingYardC (
 }
 
 function evaluateB (expression, configuration) {
-  return evaluatePostfixA(
+  return evaluatePostfix(
     shuntingYardC(
       expression, configuration
     ),
@@ -3634,7 +3637,7 @@ In addition to features that enable regexen to recognize languages beyond the ca
 
 ---
 
-### implementing quantification operators directly
+## Implementing Level One Features
 
 As mentioned, the `?` and `+` operators from regexen can be implemented as "Level 1" functionality. `a?` can be expressed as `ε|a`, and `a+` can be expressed as `aa*`.
 
@@ -3811,7 +3814,7 @@ The result has an excess of parentheses, and does not take advantage of catenati
 Extending it is now trivial:
 
 ```javascript
-const transpile1to0 = {
+const transpile1to0q = {
   operators: {
 
     // ...as above...
@@ -3834,7 +3837,7 @@ const transpile1to0 = {
 };
 
 const beforeLevel1 = '(R|r)eg(gie(e+!)?)?';
-const afterLevel1 = evaluateB(beforeLevel1, transpile1to0);
+const afterLevel1 = evaluateB(beforeLevel1, transpile1to0q);
   //=> '(R|r)→(e→(g→(ε|(g→(i→(e→(ε|((ee*)→!))))))))'
 
 verifyEvaluateB(afterLevel1, formalRegularExpressions, {
@@ -3850,6 +3853,195 @@ verifyEvaluateB(afterLevel1, formalRegularExpressions, {
 ```
 
 Note that the postfix operators `?` and `+` are associated with functions that create formal regular expressions, rather than functions that manipulate finite-state recognizers.
+
+---
+
+### implementing shorthand character classes
+
+In addition to convenient operators like `?` and `+`, regexen also provide character classes to make regexen easy to write and read. There are two kinds of character classes:
+
+- Custom character classes, such as `[abc]`, and;
+- Shorthand character classes, such as `\d`, `\w`, and `\s`.
+
+Custom character classes aren't difficult to implement on the transpilation side, but modifying our infix-to-postfix parser to support them would get gnarly enough that we'd probably have to go out and start using a "real" parser. Which would be appropriate for a production engine, but a distraction for our exploration.
+
+So we'll implement shorthand character classes. We start by giving them some special operators:
+
+```javascript
+const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const DIGITS = '1234567890';
+const UNDERSCORE ='_';
+const WORD = ALPHA + DIGITS + UNDERSCORE;
+const WHITESPACE = ' \t\r\n';
+
+const DIGITS_EXPR = DIGITS.split('').join('|');
+const WORD_EXPR = WORD.split('').join('|');
+const WHITESPACE_EXPR = WHITESPACE.split('').join('|');
+
+{
+  operators: {
+
+    // ...as above...
+
+    '±': {
+      symbol: Symbol('±'),
+      type: 'atomic',
+      fn: () => DIGITS_EXPR
+    },
+    '¶': {
+      symbol: Symbol('¶'),
+      type: 'atomic',
+      fn: () => WORD_EXPR
+    },
+    'º': {
+      symbol: Symbol('º'),
+      type: 'atomic',
+      fn: () => WHITESPACE_EXPR
+    }
+  },
+
+  // ...
+};
+```
+
+Those special symbols are unweildy! Fortunately, we left a back-door in our shunting yard function just for this purpose. Here's the full configuration:
+
+```javascript
+const digitsSymbol = Symbol('`d');
+const wordSymbol = Symbol('`w');
+const whitespaceSymbol = Symbol('`s');
+
+const transpile1to0qs = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => '∅'
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => 'ε'
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: (a, b) => `${p(a)}|${p(b)}`
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: (a, b) => `${p(a)}→${p(b)}`
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}*`
+    },
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `ε|${p(a)}`
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}${p(a)}*`
+    },
+    '__DIGITS__': {
+      symbol: digitsSymbol,
+      type: 'atomic',
+      fn: () => DIGITS_EXPR
+    },
+    '__WORD__': {
+      symbol: wordSymbol,
+      type: 'atomic',
+      fn: () => WORD_EXPR
+    },
+    '__WHITESPACE__': {
+      symbol: whitespaceSymbol,
+      type: 'atomic',
+      fn: () => WHITESPACE_EXPR
+    }
+  },
+  defaultOperator: '→',
+  escapedValue (symbol) {
+    if (symbol === 'd') {
+      return digitsSymbol;
+    } else if (symbol === 'w') {
+      return wordSymbol;
+    } else if (symbol === 's') {
+      return whitespaceSymbol;
+    } else {
+      return symbol;
+    }
+  },
+  toValue (string) {
+    if ('∅ε|→*'.indexOf(string) >= 0) {
+      return '`' + string;
+    } else {
+      return string;
+    }
+  }
+};
+```
+
+As you can see, we don't have any operators, but we do support using backticks with `d`, `w`, and `s` just like with regexen:
+
+```javascript
+const beforeLevel1qs = '((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d';
+const afterLevel1qs = evaluateB(beforeLevel1qs, transpile1to0qs);
+
+verifyEvaluateB(afterLevel1qs, formalRegularExpressions, {
+  '': false,
+  '1234': false,
+  '123 4567': true,
+  '987-6543': true,
+  '416-555-1234': true,
+  '1 416-555-0123': true,
+  '011-888-888-8888!': false
+});
+````
+
+There are lots of other regexen features we can implement using this transpilation technique, but it's time to look at implementing Level 2 features. Before we go, however, let's make things more convenient:
+
+```javascript
+function evaluate (
+  expression,
+  compilerConfiguration = formalRegularExpressions,
+  transpilerConfiguration = transpile1to0qs
+) {
+  const formalExpression = evaluateB(expression, transpilerConfiguration);
+  const finiteStateRecognizer = evaluateB(formalExpression, compilerConfiguration);
+
+  return finiteStateRecognizer;
+}
+
+function verifyEvaluate (expression, ...args) {
+  const examples = args[args.length - 1];
+  const configs = args.slice(0, args.length - 2);
+
+  return verify(
+    automate(evaluate(expression, ...configs)),
+    examples
+  );
+}
+
+verifyEvaluate('((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d', {
+  '': false,
+  '1234': false,
+  '123 4567': true,
+  '987-6543': true,
+  '416-555-1234': true,
+  '1 416-555-0123': true,
+  '011-888-888-8888!': false
+});
+```
 
 ---
 
