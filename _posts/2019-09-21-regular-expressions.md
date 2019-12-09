@@ -229,8 +229,13 @@ Along the way, we'll look at other tools that make regular expressions more conv
 ### [For every regular expression, there exists an equivalent finite-state recognizer. And more!](#for-every-regular-expression-there-exists-an-equivalent-finite-state-recognizer-and-more-1)
 
   - [for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions,-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
-  - [For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
-  - [Every regular language can be recognized in O_n_ time](#every-regular-language-can-be-recognized-in-On-time)
+  - [for every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
+  - [every regular language can be recognized in O_n_ time](#every-regular-language-can-be-recognized-in-On-time)
+
+### [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions)
+
+  - [a hierarchy of regex functionality](#a-hierarchy-of-regex-functionality)
+  - [beyond our hierarchy](#beyond-our-hierarchy)
 
 ---
 
@@ -3526,7 +3531,7 @@ We also established something about non-deterministic finite-state recognizers (
 
 ---
 
-## For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer
+### for every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer
 
 Let's reflect on what writing [powerset](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer) told us about finite-state recognizers. Because we can take _any_ finite-state recognizer--whether detemerministic or non-deterministic--then pass it to `powerset`, and get back a deterministic finite-state recognizer, we know that for *every* finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
 
@@ -3540,7 +3545,7 @@ But it's a very important result, and this is why:
 
 ---
 
-### Every regular language can be recognized in O_n_ time
+### every regular language can be recognized in O_n_ time
 
 Consider a finite-state recognizer that is deterministic, and without ε-transitions, exactly like the finite-state recognizers we compile from formal regular expressions.
 
@@ -3556,6 +3561,42 @@ Now, thanks to `powerset`, it may well consume exponentional **space** relative 
 Many contemporary regex engines, on the other hand, use nondeterministic algorithms that consume much less space, but can exhibit high orders of polynomial time. There are a nunmber of reasons for this, including the requirement to support features that recognize non-regular languages (like balanced parentheses and palindromes).
 
 But we know that if a formal regular expression or regex describes a regular language, it is possible to execute it in linear time. And our code is the demonstration.
+
+---
+
+# Beyond Formal Regular Expressions
+
+Formal regular expressions are--deliberatesly--as minimal as possible. There are only three kinds of literals (`∅`, `ε`, and literal symbols), and three operations (alternation, catenation, and quantification via the kleen star). Minimalism is extremely important from a computer science perspective, but unweildy when trying to "Get Stuff Done."
+
+Thus, all regexen provide functionality above and beyond formal regular expressions.
+
+### a hierarchy of regex functionality
+
+Functionality in regexen can be organized into a rough hierarchy. The base, or "Level 0" of the hierarchy is functionality provided by formal regular expressions. Everything we've written so far is at this base level.
+
+Level 1 of the hierarchy is functionality that can be directly implemented in terms of formal regular expressions. For example, regexen provde a `?` postfix operator that provides "zero or one" quantification, and a `+` postfix operator that provides "one or more" quantification.
+
+As we know from our implementation of the kleene star, "zero or one" can be implemented in a formal regular expression very easily. If `a` is a regular expression, `ε|a` is a regular expression that matches zero or one sentences that `a` accepts. So intuitively, a regex flavour that supprts the expression `a?` doesn't do anything we couldn't have done by hand with `ε|a`
+
+The same reasoning goes for `+`: If we have the kleene star (which ironically we implemented on top of one-or-more), we can always express "one or more" using catenation and the kleene star. If `a` is a regular expression, `aa*` is a regular expression that matches one or more sentences that `a` accepts. Again, a regex flavour supports the expression `a+` doesn't do anything we couldn't have done by hand with `aa*`.
+
+Level 2 of the hierarchy is functionality that cannot be directly implemented in terms of formal regular expressions, however it still compiles to finite-state recognizers. As we mentioned in the prelude, and will show later, for every finite-state recoognizer, there is an equivalent formal regular expression.
+
+So if a particular piece of functionality can be implemented as a finite-state recognizer, then it certainly can be implemented in terms of a formal regular expression, however compiling an expression to a finite-state machine and then deriving an equivalent formal regular expression is "going the long way 'round," and thus we classify such functionality as being directly implemented as a finite-state recognizer, and only indirectly implemented in terms of formal regular expressions.
+
+Examples of level 2 functionality include complementation (if `a` is a regular expression, `¬a` is an expression matching any sentence that `a` does not match) and intersection (if `a` and `b` are regular expressions, `a∩b` is an expression matching any sentence that both `a` and `b` match).
+
+### beyond our hierarchy
+
+There are higher levels of functionality, however they involve functionality that cannot be implemented with finite-state recognizers.
+
+The [Chomsky–Schützenberger hierarchy] categorizes grammars from Type-3 to Type-0. Type-3 grammars define regular lanuages. They can be expressed with formal regular expressions and recognized with finite-state recognizers. Our Level 0, level 1, and level 2 functionalities do not provide any additional power to recognize Type-2, Type-1, or Type-0 grammars.
+
+[Chomsky–Schützenberger hierarchy]: https://en.wikipedia.org/wiki/Chomsky_hierarchyhttps://en.wikipedia.org/wiki/Chomsky_hierarchy
+
+As we recall from [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], langauges like "balanced parentheses" are a Type-2 grammar, and cannot be recognized by a finite-state automata. Thus, features that some regexen provide like recursive regular expressions are beyond our levels.
+
+In addition to features that enable regexen to recognize languages beyond the capabilities of finite-state recognizers, regexen also provide plenty of features for extracting match or partial match data, like capture groups. This functionality is also outside of our levels, as we are strictly concerned with recognizing sentences.
 
 ---
 
