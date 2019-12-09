@@ -70,6 +70,7 @@ function toAlphabetSet (transitions) {
   )
 }
 
+// only handles states in the transition table
 function toStateSet (transitions) {
   return new Set(
     transitions.reduce(
@@ -83,17 +84,31 @@ function toStateSet (transitions) {
   )
 }
 
+function allStatesFor ({ start, transitions, accepting }) {
+  return new Set(
+    transitions.reduce(
+      (acc, { from, to }) => {
+        acc.add(from);
+        acc.add(to);
+        return acc;
+      },
+      new Set([start, ...accepting])
+    )
+  )
+}
+
 function validatedAndProcessed ({
   alphabet,
   states,
   start,
-  accepting,
-  transitions
+  transitions,
+  accepting
 }, allowNFA = false) {
   const alphabetSet = toAlphabetSet(transitions);
   const stateMap = toStateMap(transitions, allowNFA);
   const stateSet = toStateSet(transitions);
   const acceptingSet = new Set(accepting);
+  const allStates = allStatesFor({ start, transitions, accepting });
 
   // validate alphabet if present
   if (alphabet != null) {
@@ -149,6 +164,7 @@ function validatedAndProcessed ({
   }
 
   return {
+    allStates,
     alphabet,
     alphabetSet,
     states,

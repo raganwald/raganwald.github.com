@@ -515,6 +515,7 @@ function toAlphabetSet (transitions) {
   )
 }
 
+// only handles states in the transition table
 function toStateSet (transitions) {
   return new Set(
     transitions.reduce(
@@ -528,17 +529,31 @@ function toStateSet (transitions) {
   )
 }
 
+function allStatesFor ({ start, transitions, accepting }) {
+  return new Set(
+    transitions.reduce(
+      (acc, { from, to }) => {
+        acc.add(from);
+        acc.add(to);
+        return acc;
+      },
+      new Set([start, ...accepting])
+    )
+  )
+}
+
 function validatedAndProcessed ({
   alphabet,
   states,
   start,
-  accepting,
-  transitions
+  transitions,
+  accepting
 }, allowNFA = false) {
   const alphabetSet = toAlphabetSet(transitions);
   const stateMap = toStateMap(transitions, allowNFA);
   const stateSet = toStateSet(transitions);
   const acceptingSet = new Set(accepting);
+  const allStates = allStatesFor({ start, transitions, accepting });
 
   // validate alphabet if present
   if (alphabet != null) {
@@ -594,6 +609,7 @@ function validatedAndProcessed ({
   }
 
   return {
+    allStates,
     alphabet,
     alphabetSet,
     states,
@@ -1062,7 +1078,6 @@ verifyEvaluateB('`ε', regexA, {
   '∅': false,
   'ε': true
 });
-
 console.log('04-product-and-union.js')
 
 // A state aggregator maps a set of states
@@ -1077,7 +1092,7 @@ class StateAggregator {
   stateFromSet (...states) {
     const materialStates = states.filter(s => s != null);
 
-    if (materialStates.some(ms=>this.inverseMap.has(ms))) {
+    if (materialStates.some(ms => this.inverseMap.has(ms))) {
       error(`Surprise! Aggregating an aggregate!!`);
     }
 
@@ -1111,6 +1126,9 @@ class StateAggregator {
   }
 }
 
+// NOTA BENE: `product` is "unsafe" in that it
+// recycles some of the states from its input
+// descriptions
 function product (a, b, P = new StateAggregator()) {
   const {
     stateMap: aStateMap,
@@ -1216,13 +1234,42 @@ function product (a, b, P = new StateAggregator()) {
 
 }
 
-function union2 (a, b) {
+function dup (a) {
+  const {
+    start: oldStart,
+    transitions: oldTransitions,
+    accepting: oldAccepting,
+    allStates
+  } = validatedAndProcessed(a);
+
+  const map = new Map(
+    [...allStates].map(
+      old => [old, names().next().value]
+    )
+  );
+
+  const start = map.get(oldStart);
+  const transitions =
+    oldTransitions.map(
+      ({ from, consume,  to }) => ({ from: map.get(from), consume, to: map.get(to) })
+    );
+  const accepting =
+    oldAccepting.map(
+      state => map.get(state)
+    )
+
+  return { start, transitions, accepting };
+}
+
+function union2 (_a, _b) {
+  const a = dup(_a);
   const {
     states: aDeclaredStates,
     accepting: aAccepting
   } = validatedAndProcessed(a);
   const aStates = [null].concat(aDeclaredStates);
 
+  const b = dup(_b);
   const {
     states: bDeclaredStates,
     accepting: bAccepting
@@ -1315,10 +1362,12 @@ verifyEvaluateB('a|A', regexB, {
   'aa': false,
   'AA': false
 });
-
 console.log('05-epsilon-transitions-powerset-and-catenation.js');
 
-function epsilonCatenate (a, b) {
+function epsilonCatenate (_a, _b) {
+  const a = dup(_a);
+  const b = dup(_b);
+
   const joinTransitions =
     a.accepting.map(
       from => ({ from, to: b.start })
@@ -1463,6 +1512,8 @@ function reachableFromStart ({ start, accepting: allAccepting, transitions: allT
   };
 }
 
+// NOTA BENE: `powerset` is unsafe:
+// it recycle some of its input states
 function powerset (description, P = new StateAggregator()) {
   const {
     start: nfaStart,
@@ -1640,7 +1691,6 @@ verifyEvaluateB('reg|reggie', regexC, {
   'reg': true,
   'reggie': true
 });
-
 console.log('06-merge-equivalent-states.js');
 
 const keyS =
@@ -2053,4 +2103,100 @@ verifyEvaluateB('ab*c', formalRegularExpressions, {
   'abc': true,
   'abbbc': true,
   'abbbbb': false
+});
+console.log('08-render.js');
+
+function p (expr) {
+  if (expr.length === 1) {
+    return expr;
+  } else if (expr[0] === '`') {
+    return expr;
+  } else {
+    return `(${expr})`;
+  }
+};
+
+function atomic ({ operator, fn = () => operator }) {
+  const symbol = Symbol(operator);
+  const type = 'atomic';
+
+  return { symbol, type, fn };
+}
+
+function infix ({  operator, precedence, fn = (a, b) => `${p(a)}${operator}${p(b)}` }) {
+  const symbol = Symbol(operator);
+  const type = 'infix';
+
+  return { symbol, type, precedence, fn };
+}
+
+function postfix ({ operator, precedence, fn = a => `${p(a)}${operator}` }) {
+  const symbol = Symbol(operator);
+  const type = 'postfix';
+
+  return { symbol, type, precedence, fn };
+}
+
+function reconstitute ({ operators: originalOperators, defaultOperator }, etcOperators = {}) {
+
+  const factories = { atomic, infix, postfix };
+
+  const operators = etcOperators;
+
+  for (const [operator, { symbol, type, precedence }] of Object.entries(originalOperators)) {
+    operators[operator] = factories[type]({ operator, precedence });
+  }
+
+  const needsToBeEscaped = new Set([Object.keys(originalOperators)]);
+
+  function toValue (string) {
+    if (needsToBeEscaped.has(string)) {
+      return '`' + string;
+    } else {
+      return string;
+    }
+  };
+
+  return { operators, defaultOperator, toValue };
+}
+
+function render (expression, etcOperators = {}) {
+  return evaluateB(expression, reconstitute(formalRegularExpressions, etcOperators));
+}
+
+const quantifications = {
+  '?': postfix({ operator: '?', precedence: 30, fn: a => `ε|${p(a)}` }),
+  '+': postfix({ operator: '+', precedence: 30, fn: a => `${p(a)}${p(a)}*` })
+};
+
+// ----------
+
+verifyEvaluateB('(R|r)eg(ε|gie(ε|ee*!))', formalRegularExpressions, {
+  '': false,
+  'r': false,
+  'reg': true,
+  'Reg': true,
+  'Regg': false,
+  'Reggie': true,
+  'Reggieeeeeee!': true
+});
+
+verifyEvaluateB(render('(R|r)eg(ε|gie(ε|ee*!))'), formalRegularExpressions, {
+  '': false,
+  'r': false,
+  'reg': true,
+  'Reg': true,
+  'Regg': false,
+  'Reggie': true,
+  'Reggieeeeeee!': true
+});
+
+verifyEvaluateB(render('(R|r)eg(gie(e+!)?)?', quantifications), formalRegularExpressions, {
+  '': false,
+  'r': false,
+  'reg': true,
+  'Reg': true,
+  'Regg': false,
+  'Reggie': true,
+  'Reggieeeeeee!': true
 });

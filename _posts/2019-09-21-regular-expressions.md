@@ -1883,13 +1883,42 @@ Of course, only two of these (`'zero'` and `''`, `''` and `'one'`) are reachable
 Here's a union function that makes use of `product` and some of the helpers we've already written:
 
 ```javascript
-function union2 (a, b) {
+function dup (a) {
+  const {
+    start: oldStart,
+    transitions: oldTransitions,
+    accepting: oldAccepting,
+    allStates
+  } = validatedAndProcessed(a);
+
+  const map = new Map(
+    [...allStates].map(
+      old => [old, names().next().value]
+    )
+  );
+
+  const start = map.get(oldStart);
+  const transitions =
+    oldTransitions.map(
+      ({ from, consume,  to }) => ({ from: map.get(from), consume, to: map.get(to) })
+    );
+  const accepting =
+    oldAccepting.map(
+      state => map.get(state)
+    )
+
+  return { start, transitions, accepting };
+}
+
+function union2 (_a, _b) {
+  const a = dup(_a);
   const {
     states: aDeclaredStates,
     accepting: aAccepting
   } = validatedAndProcessed(a);
   const aStates = [null].concat(aDeclaredStates);
 
+  const b = dup(_b);
   const {
     states: bDeclaredStates,
     accepting: bAccepting
@@ -2075,21 +2104,22 @@ Like this:
 Here's a function to catenate any two recognizers, using ε-transitions:
 
 ```javascript
-function epsilonCatenate (first, second) {
-  const unconflictedSecond =  resolveConflicts(first, second);
+function epsilonCatenate (_a, _b) {
+  const a = dup(_a);
+  const b = dup(_b);
 
   const joinTransitions =
-    first.accepting.map(
-      from => ({ from, to: unconflictedSecond.start })
+    a.accepting.map(
+      from => ({ from, to: b.start })
     );
 
   return {
-    start: first.start,
-    accepting: unconflictedSecond.accepting,
+    start: a.start,
+    accepting: b.accepting,
     transitions:
-      first.transitions
+      a.transitions
         .concat(joinTransitions)
-        .concat(unconflictedSecond.transitions)
+        .concat(b.transitions)
   };
 }
 

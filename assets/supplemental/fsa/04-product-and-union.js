@@ -12,7 +12,7 @@ class StateAggregator {
   stateFromSet (...states) {
     const materialStates = states.filter(s => s != null);
 
-    if (materialStates.some(ms=>this.inverseMap.has(ms))) {
+    if (materialStates.some(ms => this.inverseMap.has(ms))) {
       error(`Surprise! Aggregating an aggregate!!`);
     }
 
@@ -46,6 +46,9 @@ class StateAggregator {
   }
 }
 
+// NOTA BENE: `product` is "unsafe" in that it
+// recycles some of the states from its input
+// descriptions
 function product (a, b, P = new StateAggregator()) {
   const {
     stateMap: aStateMap,
@@ -151,13 +154,42 @@ function product (a, b, P = new StateAggregator()) {
 
 }
 
-function union2 (a, b) {
+function dup (a) {
+  const {
+    start: oldStart,
+    transitions: oldTransitions,
+    accepting: oldAccepting,
+    allStates
+  } = validatedAndProcessed(a);
+
+  const map = new Map(
+    [...allStates].map(
+      old => [old, names().next().value]
+    )
+  );
+
+  const start = map.get(oldStart);
+  const transitions =
+    oldTransitions.map(
+      ({ from, consume,  to }) => ({ from: map.get(from), consume, to: map.get(to) })
+    );
+  const accepting =
+    oldAccepting.map(
+      state => map.get(state)
+    )
+
+  return { start, transitions, accepting };
+}
+
+function union2 (_a, _b) {
+  const a = dup(_a);
   const {
     states: aDeclaredStates,
     accepting: aAccepting
   } = validatedAndProcessed(a);
   const aStates = [null].concat(aDeclaredStates);
 
+  const b = dup(_b);
   const {
     states: bDeclaredStates,
     accepting: bAccepting

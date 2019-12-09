@@ -1,6 +1,9 @@
 console.log('05-epsilon-transitions-powerset-and-catenation.js');
 
-function epsilonCatenate (a, b) {
+function epsilonCatenate (_a, _b) {
+  const a = dup(_a);
+  const b = dup(_b);
+
   const joinTransitions =
     a.accepting.map(
       from => ({ from, to: b.start })
@@ -145,6 +148,8 @@ function reachableFromStart ({ start, accepting: allAccepting, transitions: allT
   };
 }
 
+// NOTA BENE: `powerset` is unsafe:
+// it recycle some of its input states
 function powerset (description, P = new StateAggregator()) {
   const {
     start: nfaStart,
