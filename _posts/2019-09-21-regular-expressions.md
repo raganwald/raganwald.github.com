@@ -236,6 +236,8 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
   - [a hierarchy of regex functionality](#a-hierarchy-of-regex-functionality)
   - [beyond our hierarchy](#beyond-our-hierarchy)
+  - [implementing quantification operators directly](#implementing-quantification-operators-directly)
+  - [implementing quantification operators with transpilation](#implementing-quantification-operators-with-transpilation)
 
 ---
 
@@ -3600,6 +3602,8 @@ Formal regular expressions are--deliberatesly--as minimal as possible. There are
 
 Thus, all regexen provide functionality above and beyond formal regular expressions.
 
+---
+
 ### a hierarchy of regex functionality
 
 Functionality in regexen can be organized into a rough hierarchy. The base, or "Level 0" of the hierarchy is functionality provided by formal regular expressions. Everything we've written so far is at this base level.
@@ -3627,6 +3631,91 @@ The [Chomsky–Schützenberger hierarchy] categorizes grammars from Type-3 to Ty
 As we recall from [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], langauges like "balanced parentheses" are a Type-2 grammar, and cannot be recognized by a finite-state automata. Thus, features that some regexen provide like recursive regular expressions are beyond our levels.
 
 In addition to features that enable regexen to recognize languages beyond the capabilities of finite-state recognizers, regexen also provide plenty of features for extracting match or partial match data, like capture groups. This functionality is also outside of our levels, as we are strictly concerned with recognizing sentences.
+
+---
+
+### implementing quantification operators directly
+
+As mentioned, the `?` and `+` operators from regexen can be implemented as "Level 1" functionality. `a?` can be expressed as `ε|a`, and `a+` can be expressed as `aa*`.
+
+The easiest way to implement these new operators is to write new operator functions. Let's begin by extending our existing operators:
+
+```javascript
+const extended = {
+  operators: {
+    // formal regular expressions
+
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2merged
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrMore
+    },
+
+    // extended operators
+
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => union2merged(emptyString(), a)
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => catenation2(a, zeroOrMore(a))
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
+
+verifyEvaluateB('(R|r)eg(gie(e+!)?)?', extended, {
+  '': false,
+  'r': false,
+  'reg': true,
+  'Reg': true,
+  'Regg': false,
+  'Reggie': true,
+  'Reggieeeeeee!': true
+});
+  //=> All 7 tests passing
+```
+
+This is fine. It's only drawback is that our faith that we are not doing anything a regular expression couldn't do is based on carefully inspecting the functions we wrote (`a => union2merged(emptyString(), a)` and `catenation2(a, zeroOrMore(a))`) to ensure that we are replicating functionality that is baked into formal regular expressions.
+
+But that isn't in the spirit of our work so far. What we are claiming is that for every regex containing the formal regular expression grammar plus the quantification operators `?` and `+`, there is an equivalent formal regular expression containing only the formal regular expression grammar.
+
+Instead of appealing to intuition, instead of asking people to believe that `union2merged(emptyString(), a)` is equivalent to `ε|a`, what we ought to do is directly translate expressions containing `?` and/or `+` into formal regular expressions.
+
+---
+
+### implementing quantification operators with transpilation
 
 ---
 

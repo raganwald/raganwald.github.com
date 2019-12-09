@@ -2104,7 +2104,62 @@ verifyEvaluateB('ab*c', formalRegularExpressions, {
   'abbbc': true,
   'abbbbb': false
 });
+
 console.log('08-render.js');
+
+const extended = {
+  operators: {
+    // formal regular expressions
+
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2merged
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrMore
+    },
+
+    // extended operators
+
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => union2merged(emptyString(), a)
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => catenation2(a, zeroOrMore(a))
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
 
 function p (expr) {
   if (expr.length === 1) {
@@ -2172,6 +2227,16 @@ const quantifications = {
 // ----------
 
 verifyEvaluateB('(R|r)eg(ε|gie(ε|ee*!))', formalRegularExpressions, {
+  '': false,
+  'r': false,
+  'reg': true,
+  'Reg': true,
+  'Regg': false,
+  'Reggie': true,
+  'Reggieeeeeee!': true
+});
+
+verifyEvaluateB('(R|r)eg(gie(e+!)?)?', extended, {
   '': false,
   'r': false,
   'reg': true,
