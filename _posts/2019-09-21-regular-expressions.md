@@ -4005,7 +4005,11 @@ verifyEvaluateB(afterLevel1qs, formalRegularExpressions, {
 });
 ````
 
-There are lots of other regexen features we can implement using this transpilation technique, but it's time to look at implementing Level 2 features. Before we go, however, let's make things more convenient:
+There are lots of other regexen features we can implement using this transpilation technique, but it's time to look at implementing Level 2 features.[^times]
+
+[^times]: If you feel like having a go at it, try implementing another quantification operator, explicit repitition. IN many regexen flavours, we can write `(expr){5}` to indicate we wish to match `(expr)(expr)(expr)(expr)(expr)`. The syntax allows other possibilities, such as `(expr){2,3}` and `(expr){3,}`, but ignoring those, the effect of `(expr){n}` for any `n` from 1 to 9 could be emulated with an infix operator, such as `⊗`, so that `(expr)⊗5` would be transpiled to `(expr)(expr)(expr)(expr)(expr)`.
+
+Before we go, however, let's make things more convenient:
 
 ```javascript
 function evaluate (
