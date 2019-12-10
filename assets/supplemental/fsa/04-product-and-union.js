@@ -219,7 +219,6 @@ const regexB = {
 
 // ----------
 
-
 verifyRecognizer(union2(reg, uppercase), {
   '': true,
   'r': false,

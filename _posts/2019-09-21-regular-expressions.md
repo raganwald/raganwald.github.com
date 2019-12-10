@@ -242,6 +242,8 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [implementing quantification operators with transpilation](#implementing-quantification-operators-with-transpilation)
   - [implementing shorthand character classes](#implementing-shorthand-character-classes)
 
+[Implementing Level Two Features](#implementing-level-two-features)
+
 ---
 
 # Our First Goal: "For every regular expression, there exists an equivalent finite-state recognizer"
@@ -4005,11 +4007,7 @@ verifyEvaluateB(afterLevel1qs, formalRegularExpressions, {
 });
 ````
 
-There are lots of other regexen features we can implement using this transpilation technique, but it's time to look at implementing Level 2 features.[^times]
-
-[^times]: If you feel like having a go at it, try implementing another quantification operator, explicit repitition. IN many regexen flavours, we can write `(expr){5}` to indicate we wish to match `(expr)(expr)(expr)(expr)(expr)`. The syntax allows other possibilities, such as `(expr){2,3}` and `(expr){3,}`, but ignoring those, the effect of `(expr){n}` for any `n` from 1 to 9 could be emulated with an infix operator, such as `⊗`, so that `(expr)⊗5` would be transpiled to `(expr)(expr)(expr)(expr)(expr)`.
-
-Before we go, however, let's make things more convenient:
+Let's make things more convenient:
 
 ```javascript
 function evaluate (
@@ -4043,6 +4041,268 @@ verifyEvaluate('((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d', {
   '011-888-888-8888!': false
 });
 ```
+
+There are lots of other regexen features we can implement using this transpilation technique, but it's time to look at implementing Level 2 features.[^times]
+
+[^times]: If you feel like having a go at it, try implementing another quantification operator, explicit repitition. IN many regexen flavours, we can write `(expr){5}` to indicate we wish to match `(expr)(expr)(expr)(expr)(expr)`. The syntax allows other possibilities, such as `(expr){2,3}` and `(expr){3,}`, but ignoring those, the effect of `(expr){n}` for any `n` from 1 to 9 could be emulated with an infix operator, such as `⊗`, so that `(expr)⊗5` would be transpiled to `(expr)(expr)(expr)(expr)(expr)`.
+
+---
+
+## Implementing Level Two Features
+
+Let's turn our attention to extending regular expressions with features that cannot be implemented with simple transpilation. We begin my revisiting our implementation of `union2`:
+
+```javascript
+function productOperation (a, b, setOperator) {
+  const {
+    states: aDeclaredStates,
+    accepting: aAccepting
+  } = validatedAndProcessed(a);
+  const aStates = [null].concat(aDeclaredStates);
+
+  const {
+    states: bDeclaredStates,
+    accepting: bAccepting
+  } = validatedAndProcessed(b);
+  const bStates = [null].concat(bDeclaredStates);
+
+  // P is a mapping from a pair of states (or any set, but in union2 it's always a pair)
+  // to a new state representing the tuple of those states
+  const P = new StateAggregator();
+
+  const productAB = product(a, b, P);
+  const { start, transitions } = productAB;
+
+  const statesAAccepts = new Set(
+    aAccepting.flatMap(
+      aAcceptingState => bStates.map(bState => P.stateFromSet(aAcceptingState, bState))
+    )
+  );
+  const statesBAccepts = new Set(
+    bAccepting.flatMap(
+      bAcceptingState => aStates.map(aState => P.stateFromSet(aState, bAcceptingState))
+    )
+  );
+
+  const allAcceptingStates =
+    [...setOperator(statesAAccepts, statesBAccepts)];
+
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
+  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
+
+  return { start, accepting, transitions };
+}
+
+function union2merged (a, b) {
+  return mergeEquivalentStates(
+    union2(a, b)
+  );
+}
+```
+
+We recall that the above code takes the product of two recognizers, and then computes the accepting states for the product from the union of the accepting states of the two recognizers. Let's refactor, and extract the set union:
+
+```javascript
+function productOperation (a, b, setOperator) {
+  const {
+    states: aDeclaredStates,
+    accepting: aAccepting
+  } = validatedAndProcessed(a);
+  const aStates = [null].concat(aDeclaredStates);
+
+  const {
+    states: bDeclaredStates,
+    accepting: bAccepting
+  } = validatedAndProcessed(b);
+  const bStates = [null].concat(bDeclaredStates);
+
+  // P is a mapping from a pair of states (or any set, but in union2 it's always a pair)
+  // to a new state representing the tuple of those states
+  const P = new StateAggregator();
+
+  const productAB = product(a, b, P);
+  const { start, transitions } = productAB;
+
+  const statesAAccepts =
+    aAccepting.flatMap(
+      aAcceptingState => bStates.map(bState => P.stateFromSet(aAcceptingState, bState))
+    );
+  const statesBAccepts =
+    bAccepting.flatMap(
+      bAcceptingState => aStates.map(aState => P.stateFromSet(aState, bAcceptingState))
+    );
+
+  const allAcceptingStates =
+    [...setOperator(statesAAccepts, statesBAccepts)];
+
+  const { stateSet: reachableStates } = validatedAndProcessed(productAB);
+  const accepting = allAcceptingStates.filter(state => reachableStates.has(state));
+
+  return { start, accepting, transitions };
+}
+
+function setUnion (set1, set2) {
+  return new Set([...set1, ...set2]);
+}
+
+function unionMerged (a, b) {
+  return mergeEquivalentStates(
+    productOperation(a, b, setUnion)
+  );
+}
+```
+
+We'll create a new set union operator for this:
+
+```javascript
+const levelTwoExpressions = {
+  operators: {
+
+    // ... other operators from formal regular expressions ...
+
+    '∪': {
+      symbol: Symbol('∪'),
+      type: 'infix',
+      precedence: 10,
+      fn: union
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
+
+verifyEvaluateB('(a|b|c)|(b|c|d)', levelTwoExpressions, {
+  '': false,
+  'a': true,
+  'b': true,
+  'c': true,
+  'd': true
+});
+  //=> All 5 tests passing
+
+verifyEvaluateB('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
+  '': false,
+  'a': true,
+  'b': true,
+  'c': true,
+  'd': true
+});
+  //=> All 5 tests passing
+```
+
+It does exactly what our original union2merged function does, as we expect. But now that we've extracted the set *union* operation, what if we substitute a different set operation?
+
+```javascript
+function setIntersection (set1, set2) {
+  return new Set(
+    [...set1].filter(
+      element => set2.has(element)
+    )
+  );
+}
+
+function intersection (a, b) {
+  return mergeEquivalentStates(
+    productOperation(a, b, setIntersection)
+  );
+}
+
+const levelTwoExpressions = {
+  operators: {
+
+    // ... other operators from formal regular expressions ...
+
+    '∪': {
+      symbol: Symbol('∪'),
+      type: 'infix',
+      precedence: 10,
+      fn: union
+    },
+    '∩': {
+      symbol: Symbol('∩'),
+      type: 'infix',
+      precedence: 10,
+      fn: intersection
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
+
+verifyEvaluateB('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
+  '': false,
+  'a': false,
+  'b': true,
+  'c': true,
+  'd': false
+});
+```
+
+This is something new:
+
+- If `a` is a regular expression describing the language `A`, and `b` is a regular expression describing the language `B`, the expression `a∩b` describes the language `Z` where a sentence `z` belongs to `Z` if and only if `z` belongs to `A`, and `z` belongs to `B`.
+
+Here's another:
+
+```javascript
+function setDifference (set1, set2) {
+  return new Set(
+    [...set1].filter(
+      element => !set2.has(element)
+    )
+  );
+}
+
+function difference (a, b) {
+  return mergeEquivalentStates(
+    productOperation(a, b, setDifference)
+  );
+}
+
+const levelTwoExpressions = {
+  operators: {
+
+    // ... other operators from formal regular expressions ...
+
+    '∪': {
+      symbol: Symbol('∪'),
+      type: 'infix',
+      precedence: 10,
+      fn: union
+    },
+    '∩': {
+      symbol: Symbol('∩'),
+      type: 'infix',
+      precedence: 10,
+      fn: intersection
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
+
+verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
+  '': false,
+  'a': true,
+  'b': false,
+  'c': false,
+  'd': false
+});
+```
+
+This is the set difference, or [relative complement] operator:
+
+[relative complement]: https://en.wikipedia.org/wiki/Complement_(set_theory)#Relative_complement
+
+- If `a` is a regular expression describing the language `A`, and `b` is a regular expression describing the language `B`, the expression `a\b` describes the language `Z` where a sentence `z` belongs to `Z` if and only if `z` belongs to `A`, and `z` does not belong to `B`.
+
+Our source code uses a lot of double back-slashes, but this is an artefact of JavaScript the programming language using a backslash as its escape operator.
 
 ---
 

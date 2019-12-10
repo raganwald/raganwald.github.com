@@ -378,7 +378,7 @@ const transpile1to0qsm = {
 function evaluate (
   expression,
   compilerConfiguration = formalRegularExpressions,
-  transpilerConfiguration = transpile1to0qs
+  transpilerConfiguration = transpile1to0qsm
 ) {
   const formalExpression = evaluateB(expression, transpilerConfiguration);
   const finiteStateRecognizer = evaluateB(formalExpression, compilerConfiguration);
