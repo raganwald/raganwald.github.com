@@ -323,3 +323,4 @@ verifyRecognizer(uppercase, {
   'Reginald': false,
   'REGINALD': true
 });
+

@@ -1888,42 +1888,13 @@ Of course, only two of these (`'zero'` and `''`, `''` and `'one'`) are reachable
 Here's a union function that makes use of `product` and some of the helpers we've already written:
 
 ```javascript
-function dup (a) {
-  const {
-    start: oldStart,
-    transitions: oldTransitions,
-    accepting: oldAccepting,
-    allStates
-  } = validatedAndProcessed(a);
-
-  const map = new Map(
-    [...allStates].map(
-      old => [old, names().next().value]
-    )
-  );
-
-  const start = map.get(oldStart);
-  const transitions =
-    oldTransitions.map(
-      ({ from, consume,  to }) => ({ from: map.get(from), consume, to: map.get(to) })
-    );
-  const accepting =
-    oldAccepting.map(
-      state => map.get(state)
-    )
-
-  return { start, transitions, accepting };
-}
-
-function union2 (_a, _b) {
-  const a = dup(_a);
+function union2 (a, b) {
   const {
     states: aDeclaredStates,
     accepting: aAccepting
   } = validatedAndProcessed(a);
   const aStates = [null].concat(aDeclaredStates);
 
-  const b = dup(_b);
   const {
     states: bDeclaredStates,
     accepting: bAccepting
@@ -2109,10 +2080,7 @@ Like this:
 Here's a function to catenate any two recognizers, using ε-transitions:
 
 ```javascript
-function epsilonCatenate (_a, _b) {
-  const a = dup(_a);
-  const b = dup(_b);
-
+function epsilonCatenate (a, b) {
   const joinTransitions =
     a.accepting.map(
       from => ({ from, to: b.start })
@@ -3644,6 +3612,33 @@ As mentioned, the `?` and `+` operators from regexen can be implemented as "Leve
 The easiest way to implement these new operators is to write new operator functions. Let's begin by extending our existing operators:
 
 ```javascript
+function dup (a) {
+  const {
+    start: oldStart,
+    transitions: oldTransitions,
+    accepting: oldAccepting,
+    allStates
+  } = validatedAndProcessed(a);
+
+  const map = new Map(
+    [...allStates].map(
+      old => [old, names().next().value]
+    )
+  );
+
+  const start = map.get(oldStart);
+  const transitions =
+    oldTransitions.map(
+      ({ from, consume,  to }) => ({ from: map.get(from), consume, to: map.get(to) })
+    );
+  const accepting =
+    oldAccepting.map(
+      state => map.get(state)
+    )
+
+  return { start, transitions, accepting };
+}
+
 const extended = {
   operators: {
     // formal regular expressions
@@ -3689,7 +3684,7 @@ const extended = {
       symbol: Symbol('+'),
       type: 'postfix',
       precedence: 30,
-      fn: a => catenation2(a, zeroOrMore(a))
+      fn: a => catenation2(a, zeroOrMore(dup(a)))
     }
   },
   defaultOperator: '→',
@@ -3710,7 +3705,9 @@ verifyEvaluateB('(R|r)eg(gie(e+!)?)?', extended, {
   //=> All 7 tests passing
 ```
 
-This is fine. It's only drawback is that our faith that we are not doing anything a regular expression couldn't do is based on carefully inspecting the functions we wrote (`a => union2merged(emptyString(), a)` and `catenation2(a, zeroOrMore(a))`) to ensure that we are replicating functionality that is baked into formal regular expressions.
+This is fine. It's only drawback is that our faith that we are not doing anything a regular expression couldn't do is based on carefully inspecting the functions we wrote (`a => union2merged(emptyString(), a)` and `catenation2(a, zeroOrMore(dup(a)))`) to ensure that we are replicating functionality that is baked into formal regular expressions.[^dup]
+
+[^dup]: A more subtle issue is that all of our code for manipulating finite-state recognizers depends upon them having unique state names. Invoking `union2(a, a)` or `catenation2(a, a)` will not work properly because the names will clash. To make such expressions work, we have to make a duplicate of one of the arguments, e.g. `union2(a, dup(a))` or `catenation2(a, dup(a))`. In this case, we invoked `catenation2(a, zeroOrMore(dup(a)))`.<br/><br/>None of this is a consideration with our existing code, because it always generates brand new recognizers with unique states. But when we manually write our own expressions in JavaScript, we have to guard against name clashes by hand. Which is another argument against writing expressions in JavaScript. `aa` and `a|a` in a formal regular expression "just work." `union2(a, a)` and `catenation2(a, a)` don't.
 
 But that isn't in the spirit of our work so far. What we are claiming is that for every regex containing the formal regular expression grammar plus the quantification operators `?` and `+`, there is an equivalent formal regular expression containing only the formal regular expression grammar.
 

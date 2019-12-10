@@ -307,3 +307,4 @@ verifyEvaluateB('`ε', regexA, {
   '∅': false,
   'ε': true
 });
+

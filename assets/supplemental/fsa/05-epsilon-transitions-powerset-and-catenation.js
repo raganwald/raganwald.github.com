@@ -1,9 +1,6 @@
 console.log('05-epsilon-transitions-powerset-and-catenation.js');
 
-function epsilonCatenate (_a, _b) {
-  const a = dup(_a);
-  const b = dup(_b);
-
+function epsilonCatenate (a, b) {
   const joinTransitions =
     a.accepting.map(
       from => ({ from, to: b.start })
@@ -327,3 +324,4 @@ verifyEvaluateB('reg|reggie', regexC, {
   'reg': true,
   'reggie': true
 });
+

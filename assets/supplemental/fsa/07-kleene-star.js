@@ -173,3 +173,4 @@ verifyEvaluateB('ab*c', formalRegularExpressions, {
   'abbbc': true,
   'abbbbb': false
 });
+

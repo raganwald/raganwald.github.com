@@ -442,3 +442,4 @@ verify(evaluateA, {
   '2(3+4)5': 70,
   '3!2': 12
 }, arithmeticC);
+
