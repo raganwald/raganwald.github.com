@@ -91,6 +91,14 @@ function p (expr) {
   }
 };
 
+const toValueExpr = string => {
+  if ('∅ε|→*()'.indexOf(string) >= 0) {
+    return '`' + string;
+  } else {
+    return string;
+  }
+};
+
 const transpile0to0 = {
   operators: {
     '∅': {
@@ -124,13 +132,7 @@ const transpile0to0 = {
   },
   defaultOperator: '→',
   escapeSymbol: '`',
-  toValue (string) {
-    if ('∅ε|→*'.indexOf(string) >= 0) {
-      return '`' + string;
-    } else {
-      return string;
-    }
-  }
+  toValue: toValueExpr
 };
 
 const transpile1to0q = {
@@ -178,24 +180,79 @@ const transpile1to0q = {
   },
   defaultOperator: '→',
   escapeSymbol: '`',
-  toValue (string) {
-    if ('∅ε|→*'.indexOf(string) >= 0) {
-      return '`' + string;
-    } else {
-      return string;
-    }
-  }
+  toValue: toValueExpr
 };
 
 const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const DIGITS = '0123456789';
+const DIGITS = '1234567890';
 const UNDERSCORE ='_';
-const WORD = ALPHA + DIGITS + UNDERSCORE;
+const PUNCTUATION = `~!@#$%^&*()_+=-\`-={}|[]\\:";'<>?,./`;
 const WHITESPACE = ' \t\r\n';
 
-const DIGITS_EXPR = DIGITS.split('').join('|');
-const WORD_EXPR = WORD.split('').join('|');
-const WHITESPACE_EXPR = WHITESPACE.split('').join('|');
+const TOTAL_ALPHABET = ALPHA + DIGITS + PUNCTUATION + WHITESPACE;
+
+const dotExpr =
+  TOTAL_ALPHABET
+    .split('')
+    .map(toValueExpr)
+    .join('|');
+
+const transpile1to0qd = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: () => '∅'
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: () => 'ε'
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: (a, b) => `${p(a)}|${p(b)}`
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: (a, b) => `${p(a)}→${p(b)}`
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}*`
+    },
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `ε|${p(a)}`
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: a => `${p(a)}${p(a)}*`
+    },
+    '.': {
+      symbol: Symbol('.'),
+      type: 'atomic',
+      fn: () => dotExpr
+    }
+  },
+  defaultOperator: '→',
+  escapeSymbol: '`',
+  toValue: toValueExpr
+};
+
+const digitsExpression = DIGITS.split('').join('|');
+const wordExpression = (ALPHA + DIGITS + UNDERSCORE).split('').join('|');
+const whitespaceExpression = WHITESPACE.split('').join('|');
 
 const digitsSymbol = Symbol('`d');
 const wordSymbol = Symbol('`w');
@@ -246,17 +303,17 @@ const transpile1to0qs = {
     '__DIGITS__': {
       symbol: digitsSymbol,
       type: 'atomic',
-      fn: () => DIGITS_EXPR
+      fn: () => digitsExpression
     },
     '__WORD__': {
       symbol: wordSymbol,
       type: 'atomic',
-      fn: () => WORD_EXPR
+      fn: () => wordExpression
     },
     '__WHITESPACE__': {
       symbol: whitespaceSymbol,
       type: 'atomic',
-      fn: () => WHITESPACE_EXPR
+      fn: () => whitespaceExpression
     }
   },
   defaultOperator: '→',
@@ -271,13 +328,7 @@ const transpile1to0qs = {
       return symbol;
     }
   },
-  toValue (string) {
-    if ('∅ε|→*'.indexOf(string) >= 0) {
-      return '`' + string;
-    } else {
-      return string;
-    }
-  }
+  toValue: toValueExpr
 };
 
 function times (a, b) {
@@ -341,17 +392,17 @@ const transpile1to0qsm = {
     '__DIGITS__': {
       symbol: digitsSymbol,
       type: 'atomic',
-      fn: () => DIGITS_EXPR
+      fn: () => digitsExpression
     },
     '__WORD__': {
       symbol: wordSymbol,
       type: 'atomic',
-      fn: () => WORD_EXPR
+      fn: () => wordExpression
     },
     '__WHITESPACE__': {
       symbol: whitespaceSymbol,
       type: 'atomic',
-      fn: () => WHITESPACE_EXPR
+      fn: () => whitespaceExpression
     }
   },
   defaultOperator: '→',
@@ -366,13 +417,7 @@ const transpile1to0qsm = {
       return symbol;
     }
   },
-  toValue (string) {
-    if ('∅ε|→*'.indexOf(string) >= 0) {
-      return '`' + string;
-    } else {
-      return string;
-    }
-  }
+  toValue: toValueExpr
 };
 
 function evaluate (
@@ -444,6 +489,20 @@ verifyEvaluateB(reggieCompiledToLevel0q, formalRegularExpressions, {
   'Regg': false,
   'Reggie': true,
   'Reggieeeeeee!': true
+});
+
+const anyLevel1 = 'a.y';
+
+const anyCompiledToLevel0qd = evaluateB(anyLevel1, transpile1to0qd);
+
+verifyEvaluateB(anyCompiledToLevel0qd, formalRegularExpressions, {
+  '': false,
+  'ay': false,
+  'aay': true,
+  'aby': true,
+  'a y': true,
+  'a"y': true,
+  'a**y': false
 });
 
 const phoneNumberLevel1qs = '((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d';

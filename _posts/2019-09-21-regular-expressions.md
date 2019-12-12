@@ -3860,22 +3860,57 @@ Note that the postfix operators `?` and `+` are associated with functions that c
 In addition to convenient operators like `?` and `+`, regexen also provide character classes to make regexen easy to write and read. There are two kinds of character classes:
 
 - Custom character classes, such as `[abc]`, and;
+- The dot operator--`.`--representing any character, and;[^dotcc]
 - Shorthand character classes, such as `\d`, `\w`, and `\s`.
+
+[^dotcc]: Technically, the dot operator isn't called a "character class," but in our implementtaion it works exactly like a character class, so we're implementing it here.
 
 Custom character classes aren't difficult to implement on the transpilation side, but modifying our infix-to-postfix parser to support them would get gnarly enough that we'd probably have to go out and start using a "real" parser. Which would be appropriate for a production engine, but a distraction for our exploration.
 
-So we'll implement shorthand character classes. We start by giving them some special operators:
+So we'll skip custom character classes and implement the dot operator first. All regular languages are associated with some kimd of total alphabet representing all of the possible symbols in the language. Regexen have the idea of a total alphabet as well, but it's usually implied to be whatever the underlying platform supports as characters.
+
+For our code, we need to make it explicit, for example:
 
 ```javascript
 const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const DIGITS = '1234567890';
 const UNDERSCORE ='_';
-const WORD = ALPHA + DIGITS + UNDERSCORE;
+const PUNCTUATION = `~!@#$%^&*()_+=-\`-={}|[]\\:";'<>?,./`;
 const WHITESPACE = ' \t\r\n';
 
-const DIGITS_EXPR = DIGITS.split('').join('|');
-const WORD_EXPR = WORD.split('').join('|');
-const WHITESPACE_EXPR = WHITESPACE.split('').join('|');
+const TOTAL_ALPHABET = ALPHA + DIGITS + PUNCTUATION + WHITESPACE;
+```
+
+What does the `.` represent? Any one of the characters in `TOTAL_ALPHABET`. We can implement that with alternation, like this:
+
+```javascript
+const dotExpr =
+  TOTAL_ALPHABET.split('').join('|');
+
+{
+  operators: {
+
+    // ...as above...
+
+    '.': {
+      symbol: Symbol('.'),
+      type: 'atomic',
+      fn: () => dotExpr
+    }
+  },
+
+  // ...
+};
+```
+
+There are, of course, more compact (and faster) ways to implement this if we were writing a regular expression engine from the ground up, but since the computer is doing all the work for us, let's carry on.
+
+So we'll implement shorthand character classes. We start by giving them some special operators:
+
+```javascript
+const digitsExpression = DIGITS.split('').join('|');
+const wordExpression = (ALPHA + DIGITS + UNDERSCORE).split('').join('|');
+const whitespaceExpression = WHITESPACE.split('').join('|');
 
 {
   operators: {
@@ -3885,17 +3920,17 @@ const WHITESPACE_EXPR = WHITESPACE.split('').join('|');
     '±': {
       symbol: Symbol('±'),
       type: 'atomic',
-      fn: () => DIGITS_EXPR
+      fn: () => digitsExpression
     },
     '¶': {
       symbol: Symbol('¶'),
       type: 'atomic',
-      fn: () => WORD_EXPR
+      fn: () => wordExpression
     },
     'º': {
       symbol: Symbol('º'),
       type: 'atomic',
-      fn: () => WHITESPACE_EXPR
+      fn: () => whitespaceExpression
     }
   },
 
@@ -3955,17 +3990,17 @@ const transpile1to0qs = {
     '__DIGITS__': {
       symbol: digitsSymbol,
       type: 'atomic',
-      fn: () => DIGITS_EXPR
+      fn: () => digitsExpression
     },
     '__WORD__': {
       symbol: wordSymbol,
       type: 'atomic',
-      fn: () => WORD_EXPR
+      fn: () => wordExpression
     },
     '__WHITESPACE__': {
       symbol: whitespaceSymbol,
       type: 'atomic',
-      fn: () => WHITESPACE_EXPR
+      fn: () => whitespaceExpression
     }
   },
   defaultOperator: '→',
