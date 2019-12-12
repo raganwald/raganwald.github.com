@@ -184,7 +184,7 @@ const transpile1to0q = {
 };
 
 const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-const DIGITS = '1234567890';
+const DIGITS = '0123456789';
 const UNDERSCORE ='_';
 const PUNCTUATION = `~!@#$%^&*()_+=-\`-={}|[]\\:";'<>?,./`;
 const WHITESPACE = ' \t\r\n';
@@ -300,6 +300,11 @@ const transpile1to0qs = {
       precedence: 30,
       fn: a => `${p(a)}${p(a)}*`
     },
+    '.': {
+      symbol: Symbol('.'),
+      type: 'atomic',
+      fn: () => dotExpr
+    },
     '__DIGITS__': {
       symbol: digitsSymbol,
       type: 'atomic',
@@ -332,12 +337,12 @@ const transpile1to0qs = {
 };
 
 function times (a, b) {
-  const n = DIGITS.indexOf(b);
+  const n = Number.parseInt(b, 10);
 
-  if (n < 0) {
-    error(`Can't parse ${a}⊗${b}, because ${b} does not appear to be a numeral.`);
-  } else {
+  if (typeof n === "number") {
     return `(${new Array(n).fill(p(a)).join('')})`;
+  } else {
+    error(`Can't parse ${a}⊗${b}, because ${b} does not appear to be a number.`);
   }
 }
 
@@ -383,11 +388,10 @@ const transpile1to0qsm = {
       precedence: 30,
       fn: a => `${p(a)}${p(a)}*`
     },
-    '⊗': {
-      symbol: Symbol('⊗'),
-      type: 'infix',
-      precedence: 25,
-      fn: times
+    '.': {
+      symbol: Symbol('.'),
+      type: 'atomic',
+      fn: () => dotExpr
     },
     '__DIGITS__': {
       symbol: digitsSymbol,
@@ -403,6 +407,12 @@ const transpile1to0qsm = {
       symbol: whitespaceSymbol,
       type: 'atomic',
       fn: () => whitespaceExpression
+    },
+    '⊗': {
+      symbol: Symbol('⊗'),
+      type: 'infix',
+      precedence: 25,
+      fn: times
     }
   },
   defaultOperator: '→',
@@ -491,18 +501,19 @@ verifyEvaluateB(reggieCompiledToLevel0q, formalRegularExpressions, {
   'Reggieeeeeee!': true
 });
 
-const anyLevel1 = 'a.y';
+const anyLevel1 = 'a.*y';
 
 const anyCompiledToLevel0qd = evaluateB(anyLevel1, transpile1to0qd);
 
 verifyEvaluateB(anyCompiledToLevel0qd, formalRegularExpressions, {
   '': false,
-  'ay': false,
-  'aay': true,
-  'aby': true,
+  'ay': true,
+  'away': true,
+  'a!?y': true,
   'a y': true,
-  'a"y': true,
-  'a**y': false
+  'archaeoastronomy': true,
+  'a14y': true,
+  'Anthropomorphically': false
 });
 
 const phoneNumberLevel1qs = '((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d';

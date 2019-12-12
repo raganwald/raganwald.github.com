@@ -3740,6 +3740,14 @@ function p (expr) {
   }
 };
 
+const toValueExpr = string => {
+  if ('∅ε|→*()'.indexOf(string) >= 0) {
+    return '`' + string;
+  } else {
+    return string;
+  }
+};
+
 const transpile0to0 = {
   operators: {
     '∅': {
@@ -3772,13 +3780,7 @@ const transpile0to0 = {
     }
   },
   defaultOperator: '→',
-  toValue (string) {
-    if ('∅ε|→*()'.indexOf(string) >= 0) {
-      return '`' + string;
-    } else {
-      return string;
-    }
-  }
+  toValue: toValueExpr
 };
 
 const before = '(R|r)eg(ε|gie(ε|ee*!))';
@@ -3863,7 +3865,7 @@ In addition to convenient operators like `?` and `+`, regexen also provide chara
 - The dot operator--`.`--representing any character, and;[^dotcc]
 - Shorthand character classes, such as `\d`, `\w`, and `\s`.
 
-[^dotcc]: Technically, the dot operator isn't called a "character class," but in our implementtaion it works exactly like a character class, so we're implementing it here.
+[^dotcc]: Technically, the dot operator isn't called a "character class," but in our implementation it works exactly like a character class, so we're implementing it here.
 
 Custom character classes aren't difficult to implement on the transpilation side, but modifying our infix-to-postfix parser to support them would get gnarly enough that we'd probably have to go out and start using a "real" parser. Which would be appropriate for a production engine, but a distraction for our exploration.
 
@@ -3874,7 +3876,6 @@ For our code, we need to make it explicit, for example:
 ```javascript
 const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const DIGITS = '1234567890';
-const UNDERSCORE ='_';
 const PUNCTUATION = `~!@#$%^&*()_+=-\`-={}|[]\\:";'<>?,./`;
 const WHITESPACE = ' \t\r\n';
 
@@ -3905,42 +3906,17 @@ const dotExpr =
 
 There are, of course, more compact (and faster) ways to implement this if we were writing a regular expression engine from the ground up, but since the computer is doing all the work for us, let's carry on.
 
-So we'll implement shorthand character classes. We start by giving them some special operators:
+Next, we'll implement shorthand character classes. In regexen, instead of associating shorthand character classes with their own symbols, the regexen syntax overloads the escape character `\` so that it usually means "Match this character as a character, ignoring any special meaning," but sometimes--as with `\d`, `\w`, and with `\s`--it means "match this shorthand character class."
+
+Fortunately, we left a back-door in our shunting yard function just for the purpose oif overloading the escape character's behaviour. Here's the full configuration:
 
 ```javascript
+const UNDERSCORE ='_';
+
 const digitsExpression = DIGITS.split('').join('|');
 const wordExpression = (ALPHA + DIGITS + UNDERSCORE).split('').join('|');
 const whitespaceExpression = WHITESPACE.split('').join('|');
 
-{
-  operators: {
-
-    // ...as above...
-
-    '±': {
-      symbol: Symbol('±'),
-      type: 'atomic',
-      fn: () => digitsExpression
-    },
-    '¶': {
-      symbol: Symbol('¶'),
-      type: 'atomic',
-      fn: () => wordExpression
-    },
-    'º': {
-      symbol: Symbol('º'),
-      type: 'atomic',
-      fn: () => whitespaceExpression
-    }
-  },
-
-  // ...
-};
-```
-
-Those special symbols are unweildy! Fortunately, we left a back-door in our shunting yard function just for this purpose. Here's the full configuration:
-
-```javascript
 const digitsSymbol = Symbol('`d');
 const wordSymbol = Symbol('`w');
 const whitespaceSymbol = Symbol('`s');
