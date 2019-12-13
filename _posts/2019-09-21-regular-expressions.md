@@ -246,6 +246,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
   - [intersection](#intersection)
   - [difference](#difference)
+  - [complement](#complement)
 
 ---
 
