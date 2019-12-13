@@ -244,6 +244,9 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
 [Implementing Level Two Features](#implementing-level-two-features)
 
+  - [intersection](#intersection)
+  - [difference](#difference)
+
 ---
 
 # Our First Goal: "For every regular expression, there exists an equivalent finite-state recognizer"
@@ -387,7 +390,7 @@ The shunting yard algorithm is stack-based. Infix expressions are the form of ma
 Here's our shunting yard implementation. There are a few extra bits and bobs we'll fill in in a moment:
 
 ```javascript
-function shuntingYardA (inputString, { operators }) {
+function shuntingYardFirstCut (inputString, { operators }) {
   const operatorsMap = new Map(
     Object.entries(operators)
   );
@@ -549,7 +552,7 @@ function verifyShunter (shunter, tests, ...additionalArgs) {
   }
 }
 
-verifyShunter(shuntingYardA, {
+verifyShunter(shuntingYardFirstCut, {
   '3': [ '3' ],
   '2+3': ['2', '3', arithmetic.operators['+'].symbol],
   '4!': ['4', arithmetic.operators['!'].symbol],
@@ -567,9 +570,11 @@ In mathematical notation, it is not always necessary to write a multiplication o
 
 Whenever two values are adacent to each other in the input, we want our shunting yard to insert the missing `*` just as if it had been explicitly included. We will call `*` a "default operator," as our next shunting yard will default to `*` if there is a mssing infix oprator.
 
-`shuntingYardA` above has two places where it reports this as an error. Let's modify it as follows: Whenever it encounters two values in succession, it will re-enqueue the default operator, re-enqueue the second value, and then proceed.
+`shuntingYardFirstCut` above has two places where it reports this as an error. Let's modify it as follows: Whenever it encounters two values in succession, it will re-enqueue the default operator, re-enqueue the second value, and then proceed.
 
-We'll start with a way to denote which is the default operator, and then update our shunting yard code:
+We'll start with a way to denote which is the default operator, and then update our shunting yard code:[^prefix]
+
+[^prefix]: Keen-eyed readers will also note that we've added support for prefix operators on top of the existing support for infix and postfix operators. That will come in handy much later.
 
 ```javascript
 const arithmeticB = {
@@ -598,10 +603,14 @@ function shuntingYardB (inputString, { operators, defaultOperator }) {
     symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
   const isInfix =
     symbol => typeOf(symbol) === 'infix';
+  const isPrefix =
+    symbol => typeOf(symbol) === 'prefix';
   const isPostfix =
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
-    symbol => isInfix(symbol) || isPostfix(symbol);
+    symbol => isInfix(symbol) || isPrefix(symbol) || isPostfix(symbol);
+  const awaitsValue =
+    symbol => isInfix(symbol) || isPrefix(symbol);
 
   const input = inputString.split('');
   const operatorStack = [];
@@ -655,7 +664,7 @@ function shuntingYardB (inputString, { operators, defaultOperator }) {
       }
 
       operatorStack.push(symbol);
-      awaitingValue = isInfix(symbol);
+      awaitingValue = awaitsValue(symbol);
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
@@ -706,24 +715,27 @@ We now have enough to get started with evaluating the postfix notation produced 
 Our first cut at the code for evaluating the postfix code produceed by our shunting yard will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
 
 ```javascript
-function evaluatePostfix (postfix, { operators, toValue }) {
-  const symbols = new Map(
+function evaluatePostfixExpression (expression, {
+  operators,
+  toValue
+}) {
+  const functions = new Map(
     Object.entries(operators).map(
-      ([key, { symbol, type, fn }]) =>
-        [symbol, { arity: arities[type], fn }]
+      ([key, { symbol, fn }]) => [symbol, fn]
     )
   );
 
   const stack = [];
 
-  for (const element of postfix) {
+  for (const element of expression) {
     if (typeof element === 'string') {
       stack.push(toValue(element));
-    } else if (symbols.has(element)) {
-      const { arity, fn } = symbols.get(element);
+    } else if (functions.has(element)) {
+      const fn = functions.get(element);
+      const arity = fn.length;
 
       if (stack.length < arity) {
-        error(`Not emough values on the stack to use ${element}`)
+        error(`Not enough values on the stack to use ${element}`)
       } else {
         const args = [];
 
@@ -751,7 +763,7 @@ We can then wire the shunting yard up to the postfix evaluator, to make a functi
 
 ```javascript
 function evaluateA (expression, configuration) {
-  return evaluatePostfix(
+  return evaluatePostfixExpression(
     shuntingYardB(
       expression, configuration
     ),
@@ -1307,10 +1319,14 @@ function shuntingYardC (
     symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
   const isInfix =
     symbol => typeOf(symbol) === 'infix';
+  const isPrefix =
+    symbol => typeOf(symbol) === 'prefix';
   const isPostfix =
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
-    symbol => isInfix(symbol) || isPostfix(symbol);
+    symbol => isInfix(symbol) || isPrefix(symbol) || isPostfix(symbol);
+  const awaitsValue =
+    symbol => isInfix(symbol) || isPrefix(symbol);
 
   const input = inputString.split('');
   const operatorStack = [];
@@ -1383,7 +1399,7 @@ function shuntingYardC (
       }
 
       operatorStack.push(symbol);
-      awaitingValue = isInfix(symbol);
+      awaitingValue = awaitsValue(symbol);
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
@@ -1414,7 +1430,7 @@ function shuntingYardC (
 }
 
 function evaluateB (expression, configuration) {
-  return evaluatePostfix(
+  return evaluatePostfixExpression(
     shuntingYardC(
       expression, configuration
     ),
@@ -4018,44 +4034,113 @@ verifyEvaluateB(afterLevel1qs, formalRegularExpressions, {
 });
 ````
 
-Let's make things more convenient:
+There are lots of other regexen features we can implement using this transpilation technique,[^times] but here is our general approach: *Once we've demonstrated that a particular feature* ***can*** be implemented using transpilation to a formal regular expression, we'll go ahead and implement it directly as a function*.
+
+[^times]: If you feel like having a go at one more, try implementing another quantification operator, explicit repetition. In many regexen flavours, we can write `(expr){5}` to indicate we wish to match `(expr)(expr)(expr)(expr)(expr)`. The syntax allows other possibilities, such as `(expr){2,3}` and `(expr){3,}`, but ignoring those, the effect of `(expr){n}` for any `n` from 1 to 9 could be emulated with an infix operator, such as `⊗`, so that `(expr)⊗5` would be transpiled to `(expr)(expr)(expr)(expr)(expr)`.
+
+So we'll wrap up with:
 
 ```javascript
-function evaluate (
-  expression,
-  compilerConfiguration = formalRegularExpressions,
-  transpilerConfiguration = transpile1to0qs
-) {
-  const formalExpression = evaluateB(expression, transpilerConfiguration);
-  const finiteStateRecognizer = evaluateB(formalExpression, compilerConfiguration);
+const zeroOrOne =
+  a => union2merged(emptyString(), a);
+const oneOrMore =
+  a => catenation2(a, zeroOrMore(dup(a)));
+const anySymbol =
+  () => TOTAL_ALPHABET.split('').map(literal).reduce(union2merged);
+const anyDigit =
+  () => DIGITS.split('').map(literal).reduce(union2merged);
+const anyWord =
+  () => (ALPHA + DIGITS + UNDERSCORE).map(literal).reduce(union2merged);
+const anyWhitespace =
+  () => WHITESPACE.map(literal).reduce(union2merged);
 
-  return finiteStateRecognizer;
-}
+const levelOneExpressions = {
+  operators: {
+    // formal regular expressions
 
-function verifyEvaluate (expression, ...args) {
-  const examples = args[args.length - 1];
-  const configs = args.slice(0, args.length - 2);
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2merged
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrMore
+    },
 
-  return verify(
-    automate(evaluate(expression, ...configs)),
-    examples
-  );
-}
+    // extended operators
 
-verifyEvaluate('((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d', {
-  '': false,
-  '1234': false,
-  '123 4567': true,
-  '987-6543': true,
-  '416-555-1234': true,
-  '1 416-555-0123': true,
-  '011-888-888-8888!': false
-});
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrOne
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: oneOrMore
+    },
+    '.': {
+      symbol: Symbol('.'),
+      type: 'atomic',
+      fn: anySymbol
+    },
+    '__DIGITS__': {
+      symbol: digitsSymbol,
+      type: 'atomic',
+      fn: anyDigit
+    },
+    '__WORD__': {
+      symbol: wordSymbol,
+      type: 'atomic',
+      fn: anyWord
+    },
+    '__WHITESPACE__': {
+      symbol: whitespaceSymbol,
+      type: 'atomic',
+      fn: anyWhitespace
+    }
+  },
+  defaultOperator: '→',
+  escapedValue (symbol) {
+    if (symbol === 'd') {
+      return digitsSymbol;
+    } else if (symbol === 'w') {
+      return wordSymbol;
+    } else if (symbol === 's') {
+      return whitespaceSymbol;
+    } else {
+      return symbol;
+    }
+  },
+  toValue (string) {
+    return literal(string);
+  }
+};
 ```
 
-There are lots of other regexen features we can implement using this transpilation technique, but it's time to look at implementing Level 2 features.[^times]
-
-[^times]: If you feel like having a go at it, try implementing another quantification operator, explicit repitition. IN many regexen flavours, we can write `(expr){5}` to indicate we wish to match `(expr)(expr)(expr)(expr)(expr)`. The syntax allows other possibilities, such as `(expr){2,3}` and `(expr){3,}`, but ignoring those, the effect of `(expr){n}` for any `n` from 1 to 9 could be emulated with an infix operator, such as `⊗`, so that `(expr)⊗5` would be transpiled to `(expr)(expr)(expr)(expr)(expr)`.
+And now it's time to look at implementing Level 2 features.
 
 ---
 
@@ -4205,6 +4290,10 @@ verifyEvaluateB('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
 
 It does exactly what our original union2merged function does, as we expect. But now that we've extracted the set *union* operation, what if we substitute a different set operation?
 
+---
+
+### intersection
+
 ```javascript
 function setIntersection (set1, set2) {
   return new Set(
@@ -4257,6 +4346,12 @@ This is something new:
 
 - If `a` is a regular expression describing the language `A`, and `b` is a regular expression describing the language `B`, the expression `a∩b` describes the language `Z` where a sentence `z` belongs to `Z` if and only if `z` belongs to `A`, and `z` belongs to `B`.
 
+Intersection can be useful for writing expressions that separate concerns. For example, if we already have `0|1(0|1)*` as the expression for the language containing all binary numbers, and `.(..)*` as the epxression for the language containing an odd number of symbols, then `(0|1(0|1)*)∩(.(..)*)` gives the the language containing all binary numbers with an odd number of digits.
+
+---
+
+### difference
+
 Here's another:
 
 ```javascript
@@ -4290,6 +4385,12 @@ const levelTwoExpressions = {
       type: 'infix',
       precedence: 10,
       fn: intersection
+    },
+    '\\': {
+      symbol: Symbol('-'),
+      type: 'infix',
+      precedence: 10,
+      fn: difference
     }
   },
   defaultOperator: '→',
@@ -4307,13 +4408,49 @@ verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
 });
 ```
 
-This is the set difference, or [relative complement] operator:
+`\` is the set difference, or [relative complement] operator:[^backslashbackslash]
 
 [relative complement]: https://en.wikipedia.org/wiki/Complement_(set_theory)#Relative_complement
 
+[^backslashbackslash]: Our source code uses a lot of double back-slashes, but this is an artefact of JavaScript the programming language using a backslash as its escape operator. The actual strings use a single backslash internally.
+
 - If `a` is a regular expression describing the language `A`, and `b` is a regular expression describing the language `B`, the expression `a\b` describes the language `Z` where a sentence `z` belongs to `Z` if and only if `z` belongs to `A`, and `z` does not belong to `B`.
 
-Our source code uses a lot of double back-slashes, but this is an artefact of JavaScript the programming language using a backslash as its escape operator.
+Where `intersection` was useful for separating concerns, `difference` is very useful for sentences that do not belong to a particular language. For example, We may want to match all sentances that contain the word "Braithwaite", but not "Reggie Braithwaite:"
+
+```javascript
+verifyEvaluateB('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaiteb': true,
+  'The Notorious Reggie Braithwaite': false,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
+});
+
+verifyEvaluateB('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaiteb': true,
+  'The Notorious Reggie Braithwaite': false,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
+});
+```
+
+The second test above includes an interesting pattern.
+
+---
+
+### complement
+
+If `s` is an expression, then `.*\s` is the [complement] of the expression `s`. In set theory, the complement of a set `S` is everything that does not belong to `S`. If we presume the existancce of a universal set `U`, where `u` belongs to `U` for _any_ `u`, then the comnpletement of a set `S` is the difference between `U` and `S`.
+
+[complement]: https://en.wikipedia.org/wiki/Complement_(set_theory)
+
+In sentences of symbols, if we have a total alphabet that we use to derive the dot operator `.`, then `.*` is an expression for every possible sentence, and `.*\s` is the difference between every possible sentence and the sentences in the language `S`, which is the comnplement of S.
+
+We can implement complement as a prefix operator
 
 ---
 

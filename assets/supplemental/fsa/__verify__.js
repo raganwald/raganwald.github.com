@@ -50,7 +50,7 @@ function peek(stack) {
   return stack[stack.length - 1];
 }
 
-function shuntingYardA(inputString, {
+function shuntingYardFirstCut(inputString, {
   operators
 }) {
   const operatorsMap = new Map(
@@ -186,10 +186,14 @@ function shuntingYardB(inputString, {
     symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
   const isInfix =
     symbol => typeOf(symbol) === 'infix';
+  const isPrefix =
+    symbol => typeOf(symbol) === 'prefix';
   const isPostfix =
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
-    symbol => isInfix(symbol) || isPostfix(symbol);
+    symbol => isInfix(symbol) || isPrefix(symbol) || isPostfix(symbol);
+  const awaitsValue =
+    symbol => isInfix(symbol) || isPrefix(symbol);
 
   const input = inputString.split('');
   const operatorStack = [];
@@ -245,7 +249,7 @@ function shuntingYardB(inputString, {
       }
 
       operatorStack.push(symbol);
-      awaitingValue = isInfix(symbol);
+      awaitingValue = awaitsValue(symbol);
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
@@ -333,40 +337,24 @@ function verify(fn, tests, ...additionalArgs) {
   }
 }
 
-const arities = {
-  infix: 2,
-  postfix: 1,
-  atomic: 0
-};
-
-function evaluatePostfix(postfix, {
+function evaluatePostfixExpression (expression, {
   operators,
   toValue
 }) {
-  const symbols = new Map(
+  const functions = new Map(
     Object.entries(operators).map(
-      ([key, {
-        symbol,
-        type,
-        fn
-      }]) =>
-      [symbol, {
-        arity: arities[type],
-        fn
-      }]
+      ([key, { symbol, fn }]) => [symbol, fn]
     )
   );
 
   const stack = [];
 
-  for (const element of postfix) {
+  for (const element of expression) {
     if (typeof element === 'string') {
       stack.push(toValue(element));
-    } else if (symbols.has(element)) {
-      const {
-        arity,
-        fn
-      } = symbols.get(element);
+    } else if (functions.has(element)) {
+      const fn = functions.get(element);
+      const arity = fn.length;
 
       if (stack.length < arity) {
         error(`Not enough values on the stack to use ${element}`)
@@ -393,7 +381,7 @@ function evaluatePostfix(postfix, {
 }
 
 function evaluateA(expression, configuration) {
-  return evaluatePostfix(
+  return evaluatePostfixExpression(
     shuntingYardB(
       expression, configuration
     ),
@@ -403,7 +391,7 @@ function evaluateA(expression, configuration) {
 
 // ----------
 
-verify(shuntingYardA, {
+verify(shuntingYardFirstCut, {
   '3': ['3'],
   '2+3': ['2', '3', arithmetic.operators['+'].symbol],
   '4!': ['4', arithmetic.operators['!'].symbol],
@@ -840,10 +828,14 @@ function shuntingYardC (
     symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
   const isInfix =
     symbol => typeOf(symbol) === 'infix';
+  const isPrefix =
+    symbol => typeOf(symbol) === 'prefix';
   const isPostfix =
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
-    symbol => isInfix(symbol) || isPostfix(symbol);
+    symbol => isInfix(symbol) || isPrefix(symbol) || isPostfix(symbol);
+  const awaitsValue =
+    symbol => isInfix(symbol) || isPrefix(symbol);
 
   const input = inputString.split('');
   const operatorStack = [];
@@ -916,7 +908,7 @@ function shuntingYardC (
       }
 
       operatorStack.push(symbol);
-      awaitingValue = isInfix(symbol);
+      awaitingValue = awaitsValue(symbol);
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
@@ -947,7 +939,7 @@ function shuntingYardC (
 }
 
 function evaluateB (expression, configuration) {
-  return evaluatePostfix(
+  return evaluatePostfixExpression(
     shuntingYardC(
       expression, configuration
     ),
@@ -1299,7 +1291,6 @@ const regexB = {
 };
 
 // ----------
-
 
 verifyRecognizer(union2(reg, uppercase), {
   '': true,
@@ -2414,7 +2405,7 @@ const transpile1to0qs = {
   toValue: toValueExpr
 };
 
-function times (a, b) {
+function timesExpr (a, b) {
   const n = Number.parseInt(b, 10);
 
   if (typeof n === "number") {
@@ -2490,7 +2481,7 @@ const transpile1to0qsm = {
       symbol: Symbol('⊗'),
       type: 'infix',
       precedence: 25,
-      fn: times
+      fn: timesExpr
     }
   },
   defaultOperator: '→',
@@ -2506,6 +2497,100 @@ const transpile1to0qsm = {
     }
   },
   toValue: toValueExpr
+};
+
+const anySymbol =
+  () => TOTAL_ALPHABET.split('').map(literal).reduce(union2merged);
+const anyDigit =
+  () => DIGITS.split('').map(literal).reduce(union2merged);
+const anyWord =
+  () => (ALPHA + DIGITS + UNDERSCORE).map(literal).reduce(union2merged);
+const anyWhitespace =
+  () => WHITESPACE.map(literal).reduce(union2merged);
+
+const levelOneExpressions = {
+  operators: {
+    // formal regular expressions
+
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2merged
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrMore
+    },
+
+    // extended operators
+
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrOne
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: oneOrMore
+    },
+    '.': {
+      symbol: Symbol('.'),
+      type: 'atomic',
+      fn: anySymbol
+    },
+    '__DIGITS__': {
+      symbol: digitsSymbol,
+      type: 'atomic',
+      fn: anyDigit
+    },
+    '__WORD__': {
+      symbol: wordSymbol,
+      type: 'atomic',
+      fn: anyWord
+    },
+    '__WHITESPACE__': {
+      symbol: whitespaceSymbol,
+      type: 'atomic',
+      fn: anyWhitespace
+    }
+  },
+  defaultOperator: '→',
+  escapedValue (symbol) {
+    if (symbol === 'd') {
+      return digitsSymbol;
+    } else if (symbol === 'w') {
+      return wordSymbol;
+    } else if (symbol === 's') {
+      return whitespaceSymbol;
+    } else {
+      return symbol;
+    }
+  },
+  toValue (string) {
+    return literal(string);
+  }
 };
 
 function evaluate (
@@ -2630,6 +2715,16 @@ verifyEvaluateB(phoneNumberCompiledToLevel0qsm, formalRegularExpressions, {
   '011-888-888-8888!': false
 });
 
+verifyEvaluateB(phoneNumberLevel1qs, levelOneExpressions, {
+  '': false,
+  '1234': false,
+  '123 4567': true,
+  '987-6543': true,
+  '416-555-1234': true,
+  '1 416-555-0123': true,
+  '011-888-888-8888!': false
+});
+
 console.log('09-revisiting-product.js');
 
 function productOperation (a, b, setOperator) {
@@ -2710,8 +2805,13 @@ function difference (a, b) {
   );
 }
 
+const complement =
+  s => difference(zeroOrMore(anySymbol()), s);
+
 const levelTwoExpressions = {
   operators: {
+    // formal regular expressions
+
     '∅': {
       symbol: Symbol('∅'),
       type: 'atomic',
@@ -2728,6 +2828,56 @@ const levelTwoExpressions = {
       precedence: 10,
       fn: union2merged
     },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrMore
+    },
+
+    // level one operators
+
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrOne
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: oneOrMore
+    },
+    '.': {
+      symbol: Symbol('.'),
+      type: 'atomic',
+      fn: anySymbol
+    },
+    '__DIGITS__': {
+      symbol: digitsSymbol,
+      type: 'atomic',
+      fn: anyDigit
+    },
+    '__WORD__': {
+      symbol: wordSymbol,
+      type: 'atomic',
+      fn: anyWord
+    },
+    '__WHITESPACE__': {
+      symbol: whitespaceSymbol,
+      type: 'atomic',
+      fn: anyWhitespace
+    },
+
+    // level two operators
+
     '∪': {
       symbol: Symbol('∪'),
       type: 'infix',
@@ -2746,20 +2896,25 @@ const levelTwoExpressions = {
       precedence: 10,
       fn: difference
     },
-    '→': {
-      symbol: Symbol('→'),
-      type: 'infix',
-      precedence: 20,
-      fn: catenation2
-    },
-    '*': {
-      symbol: Symbol('*'),
-      type: 'postfix',
-      precedence: 30,
-      fn: zeroOrMore
+    '¬': {
+      symbol: Symbol('¬'),
+      type: 'prefix',
+      precedence: 40,
+      fn: complement
     }
   },
   defaultOperator: '→',
+  escapedValue (symbol) {
+    if (symbol === 'd') {
+      return digitsSymbol;
+    } else if (symbol === 'w') {
+      return wordSymbol;
+    } else if (symbol === 's') {
+      return whitespaceSymbol;
+    } else {
+      return symbol;
+    }
+  },
   toValue (string) {
     return literal(string);
   }
@@ -2791,11 +2946,62 @@ verifyEvaluateB('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
   'd': false
 });
 
+verifyEvaluateB('0|1(0|1)*', levelTwoExpressions, {
+  '': false,
+  'an odd number of characters': false,
+  'an even number of characters': false,
+  '0': true,
+  '10': true,
+  '101': true,
+  '1010': true,
+  '10101': true
+});
+
+verifyEvaluateB('.(..)*', levelTwoExpressions, {
+  '': false,
+  'an odd number of characters': true,
+  'an even number of characters': false,
+  '0': true,
+  '10': false,
+  '101': true,
+  '1010': false,
+  '10101': true
+});
+
+verifyEvaluateB('(0|1(0|1)*)∩(.(..)*)', levelTwoExpressions, {
+  '': false,
+  'an odd number of characters': false,
+  'an even number of characters': false,
+  '0': true,
+  '10': false,
+  '101': true,
+  '1010': false,
+  '10101': true
+});
+
 verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': false,
   'c': false,
   'd': false
+});
+
+verifyEvaluateB('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaiteb': true,
+  'The Notorious Reggie Braithwaite': false,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
+});
+
+verifyEvaluateB('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaiteb': true,
+  'The Notorious Reggie Braithwaite': false,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
 });
 

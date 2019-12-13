@@ -50,7 +50,7 @@ function peek(stack) {
   return stack[stack.length - 1];
 }
 
-function shuntingYardA(inputString, {
+function shuntingYardFirstCut(inputString, {
   operators
 }) {
   const operatorsMap = new Map(
@@ -186,10 +186,14 @@ function shuntingYardB(inputString, {
     symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
   const isInfix =
     symbol => typeOf(symbol) === 'infix';
+  const isPrefix =
+    symbol => typeOf(symbol) === 'prefix';
   const isPostfix =
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
-    symbol => isInfix(symbol) || isPostfix(symbol);
+    symbol => isInfix(symbol) || isPrefix(symbol) || isPostfix(symbol);
+  const awaitsValue =
+    symbol => isInfix(symbol) || isPrefix(symbol);
 
   const input = inputString.split('');
   const operatorStack = [];
@@ -245,7 +249,7 @@ function shuntingYardB(inputString, {
       }
 
       operatorStack.push(symbol);
-      awaitingValue = isInfix(symbol);
+      awaitingValue = awaitsValue(symbol);
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
@@ -333,40 +337,24 @@ function verify(fn, tests, ...additionalArgs) {
   }
 }
 
-const arities = {
-  infix: 2,
-  postfix: 1,
-  atomic: 0
-};
-
-function evaluatePostfix(postfix, {
+function evaluatePostfixExpression (expression, {
   operators,
   toValue
 }) {
-  const symbols = new Map(
+  const functions = new Map(
     Object.entries(operators).map(
-      ([key, {
-        symbol,
-        type,
-        fn
-      }]) =>
-      [symbol, {
-        arity: arities[type],
-        fn
-      }]
+      ([key, { symbol, fn }]) => [symbol, fn]
     )
   );
 
   const stack = [];
 
-  for (const element of postfix) {
+  for (const element of expression) {
     if (typeof element === 'string') {
       stack.push(toValue(element));
-    } else if (symbols.has(element)) {
-      const {
-        arity,
-        fn
-      } = symbols.get(element);
+    } else if (functions.has(element)) {
+      const fn = functions.get(element);
+      const arity = fn.length;
 
       if (stack.length < arity) {
         error(`Not enough values on the stack to use ${element}`)
@@ -393,7 +381,7 @@ function evaluatePostfix(postfix, {
 }
 
 function evaluateA(expression, configuration) {
-  return evaluatePostfix(
+  return evaluatePostfixExpression(
     shuntingYardB(
       expression, configuration
     ),
@@ -403,7 +391,7 @@ function evaluateA(expression, configuration) {
 
 // ----------
 
-verify(shuntingYardA, {
+verify(shuntingYardFirstCut, {
   '3': ['3'],
   '2+3': ['2', '3', arithmetic.operators['+'].symbol],
   '4!': ['4', arithmetic.operators['!'].symbol],

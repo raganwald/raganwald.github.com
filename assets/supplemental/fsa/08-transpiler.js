@@ -336,7 +336,7 @@ const transpile1to0qs = {
   toValue: toValueExpr
 };
 
-function times (a, b) {
+function timesExpr (a, b) {
   const n = Number.parseInt(b, 10);
 
   if (typeof n === "number") {
@@ -412,7 +412,7 @@ const transpile1to0qsm = {
       symbol: Symbol('⊗'),
       type: 'infix',
       precedence: 25,
-      fn: times
+      fn: timesExpr
     }
   },
   defaultOperator: '→',
@@ -428,6 +428,100 @@ const transpile1to0qsm = {
     }
   },
   toValue: toValueExpr
+};
+
+const anySymbol =
+  () => TOTAL_ALPHABET.split('').map(literal).reduce(union2merged);
+const anyDigit =
+  () => DIGITS.split('').map(literal).reduce(union2merged);
+const anyWord =
+  () => (ALPHA + DIGITS + UNDERSCORE).map(literal).reduce(union2merged);
+const anyWhitespace =
+  () => WHITESPACE.map(literal).reduce(union2merged);
+
+const levelOneExpressions = {
+  operators: {
+    // formal regular expressions
+
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2merged
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrMore
+    },
+
+    // extended operators
+
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrOne
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: oneOrMore
+    },
+    '.': {
+      symbol: Symbol('.'),
+      type: 'atomic',
+      fn: anySymbol
+    },
+    '__DIGITS__': {
+      symbol: digitsSymbol,
+      type: 'atomic',
+      fn: anyDigit
+    },
+    '__WORD__': {
+      symbol: wordSymbol,
+      type: 'atomic',
+      fn: anyWord
+    },
+    '__WHITESPACE__': {
+      symbol: whitespaceSymbol,
+      type: 'atomic',
+      fn: anyWhitespace
+    }
+  },
+  defaultOperator: '→',
+  escapedValue (symbol) {
+    if (symbol === 'd') {
+      return digitsSymbol;
+    } else if (symbol === 'w') {
+      return wordSymbol;
+    } else if (symbol === 's') {
+      return whitespaceSymbol;
+    } else {
+      return symbol;
+    }
+  },
+  toValue (string) {
+    return literal(string);
+  }
 };
 
 function evaluate (
@@ -543,6 +637,16 @@ const phoneNumberLevel1qsm = '((1( |-))?`d⊗3( |-))?`d⊗3( |-)`d⊗4';
 const phoneNumberCompiledToLevel0qsm = evaluateB(phoneNumberLevel1qsm, transpile1to0qsm);
 
 verifyEvaluateB(phoneNumberCompiledToLevel0qsm, formalRegularExpressions, {
+  '': false,
+  '1234': false,
+  '123 4567': true,
+  '987-6543': true,
+  '416-555-1234': true,
+  '1 416-555-0123': true,
+  '011-888-888-8888!': false
+});
+
+verifyEvaluateB(phoneNumberLevel1qs, levelOneExpressions, {
   '': false,
   '1234': false,
   '123 4567': true,

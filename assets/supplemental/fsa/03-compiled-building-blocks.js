@@ -69,10 +69,14 @@ function shuntingYardC (
     symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
   const isInfix =
     symbol => typeOf(symbol) === 'infix';
+  const isPrefix =
+    symbol => typeOf(symbol) === 'prefix';
   const isPostfix =
     symbol => typeOf(symbol) === 'postfix';
   const isCombinator =
-    symbol => isInfix(symbol) || isPostfix(symbol);
+    symbol => isInfix(symbol) || isPrefix(symbol) || isPostfix(symbol);
+  const awaitsValue =
+    symbol => isInfix(symbol) || isPrefix(symbol);
 
   const input = inputString.split('');
   const operatorStack = [];
@@ -145,7 +149,7 @@ function shuntingYardC (
       }
 
       operatorStack.push(symbol);
-      awaitingValue = isInfix(symbol);
+      awaitingValue = awaitsValue(symbol);
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
@@ -176,7 +180,7 @@ function shuntingYardC (
 }
 
 function evaluateB (expression, configuration) {
-  return evaluatePostfix(
+  return evaluatePostfixExpression(
     shuntingYardC(
       expression, configuration
     ),

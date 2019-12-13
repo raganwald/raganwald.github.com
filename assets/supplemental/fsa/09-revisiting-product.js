@@ -78,8 +78,13 @@ function difference (a, b) {
   );
 }
 
+const complement =
+  s => difference(zeroOrMore(anySymbol()), s);
+
 const levelTwoExpressions = {
   operators: {
+    // formal regular expressions
+
     '∅': {
       symbol: Symbol('∅'),
       type: 'atomic',
@@ -96,6 +101,56 @@ const levelTwoExpressions = {
       precedence: 10,
       fn: union2merged
     },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrMore
+    },
+
+    // level one operators
+
+    '?': {
+      symbol: Symbol('?'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrOne
+    },
+    '+': {
+      symbol: Symbol('+'),
+      type: 'postfix',
+      precedence: 30,
+      fn: oneOrMore
+    },
+    '.': {
+      symbol: Symbol('.'),
+      type: 'atomic',
+      fn: anySymbol
+    },
+    '__DIGITS__': {
+      symbol: digitsSymbol,
+      type: 'atomic',
+      fn: anyDigit
+    },
+    '__WORD__': {
+      symbol: wordSymbol,
+      type: 'atomic',
+      fn: anyWord
+    },
+    '__WHITESPACE__': {
+      symbol: whitespaceSymbol,
+      type: 'atomic',
+      fn: anyWhitespace
+    },
+
+    // level two operators
+
     '∪': {
       symbol: Symbol('∪'),
       type: 'infix',
@@ -114,20 +169,25 @@ const levelTwoExpressions = {
       precedence: 10,
       fn: difference
     },
-    '→': {
-      symbol: Symbol('→'),
-      type: 'infix',
-      precedence: 20,
-      fn: catenation2
-    },
-    '*': {
-      symbol: Symbol('*'),
-      type: 'postfix',
-      precedence: 30,
-      fn: zeroOrMore
+    '¬': {
+      symbol: Symbol('¬'),
+      type: 'prefix',
+      precedence: 40,
+      fn: complement
     }
   },
   defaultOperator: '→',
+  escapedValue (symbol) {
+    if (symbol === 'd') {
+      return digitsSymbol;
+    } else if (symbol === 'w') {
+      return wordSymbol;
+    } else if (symbol === 's') {
+      return whitespaceSymbol;
+    } else {
+      return symbol;
+    }
+  },
   toValue (string) {
     return literal(string);
   }
@@ -159,11 +219,62 @@ verifyEvaluateB('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
   'd': false
 });
 
+verifyEvaluateB('0|1(0|1)*', levelTwoExpressions, {
+  '': false,
+  'an odd number of characters': false,
+  'an even number of characters': false,
+  '0': true,
+  '10': true,
+  '101': true,
+  '1010': true,
+  '10101': true
+});
+
+verifyEvaluateB('.(..)*', levelTwoExpressions, {
+  '': false,
+  'an odd number of characters': true,
+  'an even number of characters': false,
+  '0': true,
+  '10': false,
+  '101': true,
+  '1010': false,
+  '10101': true
+});
+
+verifyEvaluateB('(0|1(0|1)*)∩(.(..)*)', levelTwoExpressions, {
+  '': false,
+  'an odd number of characters': false,
+  'an even number of characters': false,
+  '0': true,
+  '10': false,
+  '101': true,
+  '1010': false,
+  '10101': true
+});
+
 verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': false,
   'c': false,
   'd': false
+});
+
+verifyEvaluateB('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaiteb': true,
+  'The Notorious Reggie Braithwaite': false,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
+});
+
+verifyEvaluateB('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaiteb': true,
+  'The Notorious Reggie Braithwaite': false,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
 });
 
