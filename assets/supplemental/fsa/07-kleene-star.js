@@ -100,7 +100,7 @@ verifyRecognizer(Aa, {
   'eh?': false
 });
 
-verifyEvaluateB('((a|A)|ε)', formalRegularExpressions, {
+verifyEvaluate('((a|A)|ε)', formalRegularExpressions, {
   '': true,
   'a': true,
   'A': true,
@@ -152,7 +152,7 @@ verifyRecognizer(zeroOrMore(Aa), {
   'eh?': false
 });
 
-verifyEvaluateB('(a|A)*', formalRegularExpressions, {
+verifyEvaluate('(a|A)*', formalRegularExpressions, {
   '': true,
   'a': true,
   'A': true,
@@ -165,7 +165,7 @@ verifyEvaluateB('(a|A)*', formalRegularExpressions, {
   'eh?': false
 });
 
-verifyEvaluateB('ab*c', formalRegularExpressions, {
+verifyEvaluate('ab*c', formalRegularExpressions, {
   '': false,
   'a': false,
   'ac': true,

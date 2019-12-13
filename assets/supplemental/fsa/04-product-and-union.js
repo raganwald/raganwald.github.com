@@ -229,7 +229,7 @@ verifyRecognizer(union2(reg, uppercase), {
   'REGINALD': true
 });
 
-verifyEvaluateB('a', regexB, {
+verifyEvaluate('a', regexB, {
   '': false,
   'a': true,
   'A': false,
@@ -237,7 +237,7 @@ verifyEvaluateB('a', regexB, {
   'AA': false
 });
 
-verifyEvaluateB('A', regexB, {
+verifyEvaluate('A', regexB, {
   '': false,
   'a': false,
   'A': true,
@@ -245,7 +245,7 @@ verifyEvaluateB('A', regexB, {
   'AA': false
 });
 
-verifyEvaluateB('a|A', regexB, {
+verifyEvaluate('a|A', regexB, {
   '': false,
   'a': true,
   'A': true,

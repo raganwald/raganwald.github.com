@@ -43,7 +43,7 @@ function reconstitute ({ operators: originalOperators, defaultOperator }, etcOpe
 }
 
 function render (expression, etcOperators = {}) {
-  return evaluateB(expression, reconstitute(formalRegularExpressions, etcOperators));
+  return evaluate(expression, reconstitute(formalRegularExpressions, etcOperators));
 }
 
 const quantifications = {

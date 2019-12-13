@@ -301,7 +301,7 @@ verifyRecognizer(catenation2(zeroes, binary), {
   '111': false
 });
 
-verifyEvaluateB('r→e→g', regexC, {
+verifyEvaluate('r→e→g', regexC, {
   '': false,
   'r': false,
   're': false,
@@ -309,7 +309,7 @@ verifyEvaluateB('r→e→g', regexC, {
   'reggie': false
 });
 
-verifyEvaluateB('reg', regexC, {
+verifyEvaluate('reg', regexC, {
   '': false,
   'r': false,
   're': false,
@@ -317,7 +317,7 @@ verifyEvaluateB('reg', regexC, {
   'reggie': false
 });
 
-verifyEvaluateB('reg|reggie', regexC, {
+verifyEvaluate('reg|reggie', regexC, {
   '': false,
   'r': false,
   're': false,

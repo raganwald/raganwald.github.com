@@ -40,7 +40,7 @@ function literal (symbol) {
   };
 }
 
-function shuntingYardC (
+function shuntingYard (
   inputString,
   {
     operators,
@@ -179,25 +179,25 @@ function shuntingYardC (
   return outputQueue;
 }
 
-function evaluateB (expression, configuration) {
+function evaluate (expression, configuration) {
   return evaluatePostfixExpression(
-    shuntingYardC(
+    shuntingYard(
       expression, configuration
     ),
     configuration
   );
 }
 
-function verifyEvaluateA (expression, configuration, examples) {
+function verifyEvaluateFirstCut (expression, configuration, examples) {
   return verify(
-    automate(evaluateA(expression, configuration)),
+    automate(evaluateFirstCut(expression, configuration)),
     examples
   );
 }
 
-function verifyEvaluateB (expression, configuration, examples) {
+function verifyEvaluate (expression, configuration, examples) {
   return verify(
-    automate(evaluateB(expression, configuration)),
+    automate(evaluate(expression, configuration)),
     examples
   );
 }
@@ -244,9 +244,9 @@ verifyRecognizer(literal('0'), {
   '11': false
 });
 
-const emptySetRecognizer = evaluateA('∅', regexA);
-const emptyStringRecognizer = evaluateA('ε', regexA);
-const rRecognizer = evaluateA('r', regexA);
+const emptySetRecognizer = evaluateFirstCut('∅', regexA);
+const emptyStringRecognizer = evaluateFirstCut('ε', regexA);
+const rRecognizer = evaluateFirstCut('r', regexA);
 
 verifyRecognizer(emptySetRecognizer, {
   '': false,
@@ -268,19 +268,19 @@ verifyRecognizer(rRecognizer, {
   'Reg': false
 });
 
-verifyEvaluateA('∅', regexA, {
+verifyEvaluateFirstCut('∅', regexA, {
   '': false,
   '0': false,
   '1': false
 });
 
-verifyEvaluateA('ε', regexA, {
+verifyEvaluateFirstCut('ε', regexA, {
   '': true,
   '0': false,
   '1': false
 });
 
-verifyEvaluateA('r', regexA, {
+verifyEvaluateFirstCut('r', regexA, {
   '': false,
   'r': true,
   'R': false,
@@ -288,25 +288,25 @@ verifyEvaluateA('r', regexA, {
   'Reg': false
 });
 
-verifyEvaluateB('∅', regexA, {
+verifyEvaluate('∅', regexA, {
   '': false,
   '∅': false,
   'ε': false
 });
 
-verifyEvaluateB('`∅', regexA, {
+verifyEvaluate('`∅', regexA, {
   '': false,
   '∅': true,
   'ε': false
 });
 
-verifyEvaluateB('ε', regexA, {
+verifyEvaluate('ε', regexA, {
   '': true,
   '∅': false,
   'ε': false
 });
 
-verifyEvaluateB('`ε', regexA, {
+verifyEvaluate('`ε', regexA, {
   '': false,
   '∅': false,
   'ε': true

@@ -582,7 +582,7 @@ const arithmeticB = {
   defaultOperator: '*'
 }
 
-function shuntingYardB (inputString, { operators, defaultOperator }) {
+function shuntingYardSecondCut (inputString, { operators, defaultOperator }) {
   const operatorsMap = new Map(
     Object.entries(operators)
   );
@@ -694,7 +694,7 @@ function shuntingYardB (inputString, { operators, defaultOperator }) {
   return outputQueue;
 }
 
-verifyShunter(shuntingYardB, {
+verifyShunter(shuntingYardSecondCut, {
   '3': [ '3' ],
   '2+3': ['2', '3', arithmetic.operators['+'].symbol],
   '4!': ['4', arithmetic.operators['!'].symbol],
@@ -762,9 +762,9 @@ function evaluatePostfixExpression (expression, {
 We can then wire the shunting yard up to the postfix evaluator, to make a function that evaluates infix notation:
 
 ```javascript
-function evaluateA (expression, configuration) {
+function evaluateFirstCut (expression, configuration) {
   return evaluatePostfixExpression(
-    shuntingYardB(
+    shuntingYardSecondCut(
       expression, configuration
     ),
     configuration
@@ -777,7 +777,7 @@ const arithmeticC = {
   toValue: string => Number.parseInt(string, 10)
 };
 
-verify(evaluateA, {
+verify(evaluateFirstCut, {
   '': undefined,
   '3': 3,
   '2+3': 5,
@@ -1242,28 +1242,28 @@ verifyRecognizer(rRecognizer, {
 We'll do this enough that it's worth building a helper for verifying our work:
 
 ```javascript
-function verifyEvaluateA (expression, configuration, examples) {
+function verifyEvaluateFirstCut (expression, configuration, examples) {
   return verify(
-    automate(evaluateA(expression, configuration)),
+    automate(evaluateFirstCut(expression, configuration)),
     examples
   );
 }
 
-verifyEvaluateA('∅', regexA, {
+verifyEvaluateFirstCut('∅', regexA, {
   '': false,
   '0': false,
   '1': false
 });
   //=> All 3 tests passing
 
-verifyEvaluateA(`ε`, regexA, {
+verifyEvaluateFirstCut(`ε`, regexA, {
   '': true,
   '0': false,
   '1': false
 });
   //=> All 3 tests passing
 
-verifyEvaluateA('r', regexA, {
+verifyEvaluateFirstCut('r', regexA, {
   '': false,
   'r': true,
   'R': false,
@@ -1290,7 +1290,7 @@ Let's go with the most popular approach, and incorporate an escape symbol. In mo
 We'll set it up so that we can choose whatever we like, but by default we'll use a back-tick:
 
 ```javascript
-function shuntingYardC (
+function shuntingYard (
   inputString,
   {
     operators,
@@ -1429,9 +1429,9 @@ function shuntingYardC (
   return outputQueue;
 }
 
-function evaluateB (expression, configuration) {
+function evaluate (expression, configuration) {
   return evaluatePostfixExpression(
-    shuntingYardC(
+    shuntingYard(
       expression, configuration
     ),
     configuration
@@ -1442,35 +1442,35 @@ function evaluateB (expression, configuration) {
 And now to test it:
 
 ```javascript
-function verifyEvaluateB (expression, configuration, examples) {
+function verifyEvaluate (expression, configuration, examples) {
   return verify(
-    automate(evaluateB(expression, configuration)),
+    automate(evaluate(expression, configuration)),
     examples
   );
 }
 
-verifyEvaluateB('∅', regexA, {
+verifyEvaluate('∅', regexA, {
   '': false,
   '∅': false,
   'ε': false
 });
   //=> All 3 tests passing
 
-verifyEvaluateB('`∅', regexA, {
+verifyEvaluate('`∅', regexA, {
   '': false,
   '∅': true,
   'ε': false
 });
   //=> All 3 tests passing
 
-verifyEvaluateB('ε', regexA, {
+verifyEvaluate('ε', regexA, {
   '': true,
   '∅': false,
   'ε': false
 });
   //=> All 3 tests passing
 
-verifyEvaluateB('`ε', regexA, {
+verifyEvaluate('`ε', regexA, {
   '': false,
   '∅': false,
   'ε': true
@@ -1990,7 +1990,7 @@ const regexB = {
   }
 };
 
-verifyEvaluateB('a', regexB, {
+verifyEvaluate('a', regexB, {
   '': false,
   'a': true,
   'A': false,
@@ -1999,7 +1999,7 @@ verifyEvaluateB('a', regexB, {
 });
   //=> All 5 tests passing
 
-verifyEvaluateB('A', regexB, {
+verifyEvaluate('A', regexB, {
   '': false,
   'a': false,
   'A': true,
@@ -2008,7 +2008,7 @@ verifyEvaluateB('A', regexB, {
 });
   //=> All 5 tests passing
 
-verifyEvaluateB('a|A', regexB, {
+verifyEvaluate('a|A', regexB, {
   '': false,
   'a': true,
   'A': true,
@@ -2865,7 +2865,7 @@ Note that:
 Let's give it a try:
 
 ```javascript
-verifyEvaluateB('r→e→g', regexC, {
+verifyEvaluate('r→e→g', regexC, {
   '': false,
   'r': false,
   're': false,
@@ -2874,7 +2874,7 @@ verifyEvaluateB('r→e→g', regexC, {
 });
   //=> All 5 tests passing
 
-verifyEvaluateB('reg', regexC, {
+verifyEvaluate('reg', regexC, {
   '': false,
   'r': false,
   're': false,
@@ -2883,7 +2883,7 @@ verifyEvaluateB('reg', regexC, {
 });
   //=> All 5 tests passing
 
-verifyEvaluateB('reg|reggie', regexC, {
+verifyEvaluate('reg|reggie', regexC, {
   '': false,
   'r': false,
   're': false,
@@ -2904,7 +2904,7 @@ We have one more operator to add, `*`, but before we do, let's consider what hap
 Consider taking the union of `a` and `A`:
 
 ```javascript
-evaluateB('a|A', regexC)
+evaluate('a|A', regexC)
   //=>
     {
       "start": "G83",
@@ -2919,7 +2919,7 @@ evaluateB('a|A', regexC)
 The way we've written `union2`, we end up with two equivalent accepting states for `a|A`, `G80` and `G82` in this example. This would be a minor distraction, but consider:
 
 ```javascript
-evaluateB('(a|A)(b|B)(c|C)', regexC)
+evaluate('(a|A)(b|B)(c|C)', regexC)
   //=>
     {
       "start": "G91",
@@ -3095,7 +3095,7 @@ Now let's compare the old:
 ```javascript
 function verifyStateCount (configuration, examples) {
   function countStates (regex) {
-    const fsr = evaluateB(regex, configuration);
+    const fsr = evaluate(regex, configuration);
 
     const states = toStateSet(fsr.transitions);
     states.add(fsr.start);
@@ -3116,7 +3116,7 @@ const fiveABCDEs =
 const twoLowercaseLetters =
   `${lowercase}${lowercase}`;
 
-verifyEvaluateB(caseInsensitiveABC, regexC, {
+verifyEvaluate(caseInsensitiveABC, regexC, {
   '': false,
   'a': false,
   'z': false,
@@ -3131,7 +3131,7 @@ verifyEvaluateB(caseInsensitiveABC, regexC, {
   'abcdef': false
 });
 
-verifyEvaluateB(fiveABCDEs, regexC, {
+verifyEvaluate(fiveABCDEs, regexC, {
   '': false,
   'a': false,
   'z': false,
@@ -3147,7 +3147,7 @@ verifyEvaluateB(fiveABCDEs, regexC, {
 });
   //=> All 12 tests passing
 
-verifyEvaluateB(twoLowercaseLetters, regexC, {
+verifyEvaluate(twoLowercaseLetters, regexC, {
   '': false,
   'a': false,
   'z': false,
@@ -3174,7 +3174,7 @@ verifyStateCount(regexC, {
 To the new:
 
 ```javascript
-verifyEvaluateB(caseInsensitiveABC, regexD, {
+verifyEvaluate(caseInsensitiveABC, regexD, {
   '': false,
   'a': false,
   'z': false,
@@ -3190,7 +3190,7 @@ verifyEvaluateB(caseInsensitiveABC, regexD, {
 });
   //=> All 12 tests passing
 
-verifyEvaluateB(fiveABCDEs, regexD, {
+verifyEvaluate(fiveABCDEs, regexD, {
   '': false,
   'a': false,
   'z': false,
@@ -3206,7 +3206,7 @@ verifyEvaluateB(fiveABCDEs, regexD, {
 });
   //=> All 12 tests passing
 
-verifyEvaluateB(twoLowercaseLetters, regexD, {
+verifyEvaluate(twoLowercaseLetters, regexD, {
   '': false,
   'a': false,
   'z': false,
@@ -3393,7 +3393,7 @@ Handling one-or-more is nice, and maps directly to a programming regex operator,
 Well, we can directly manipulate a recognizer's definition, but let's use what we already have. Given some recognizer `x`, what is the union of `x` and `ε` (the empty string)?
 
 ```javascript
-verifyEvaluateB('((a|A)|ε)', formalRegularExpressions, {
+verifyEvaluate('((a|A)|ε)', formalRegularExpressions, {
   '': true,
   'a': true,
   'A': true,
@@ -3483,7 +3483,7 @@ verifyRecognizer(zeroOrMore(Aa), {
   'eh?': false
 });
 
-verifyEvaluateB('(a|A)*', formalRegularExpressions, {
+verifyEvaluate('(a|A)*', formalRegularExpressions, {
   '': true,
   'a': true,
   'A': true,
@@ -3496,7 +3496,7 @@ verifyEvaluateB('(a|A)*', formalRegularExpressions, {
   'eh?': false
 });
 
-verifyEvaluateB('ab*c', formalRegularExpressions, {
+verifyEvaluate('ab*c', formalRegularExpressions, {
   '': false,
   'a': false,
   'ac': true,
@@ -3509,7 +3509,7 @@ verifyEvaluateB('ab*c', formalRegularExpressions, {
 We have now defined every constant and combinator in formal regular expressions. So if we want, we can create regular expressions for all sorts of languages, such as `(R|r)eg(ε|gie(ε|ee*!))`:
 
 ```javascript
-verifyEvaluateB('(R|r)eg(ε|gie(ε|ee*!))', formalRegularExpressions, {
+verifyEvaluate('(R|r)eg(ε|gie(ε|ee*!))', formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -3520,7 +3520,7 @@ verifyEvaluateB('(R|r)eg(ε|gie(ε|ee*!))', formalRegularExpressions, {
 });
 ```
 
-And best of all, we know that whatever formal regular expression we devise, we can produce a finite-state recognizer that accept sentences in the language the formal regular expression describes, simply by feeding it to our `evaluateB` function along with the `formalRegulaExpressions` configuration dictionary.
+And best of all, we know that whatever formal regular expression we devise, we can produce a finite-state recognizer that accept sentences in the language the formal regular expression describes, simply by feeding it to our `evaluate` function along with the `formalRegulaExpressions` configuration dictionary.
 
 ---
 
@@ -3530,7 +3530,7 @@ As noted, this function:
 
 ```javascript
 function formalRegularExpressionToFiniteStateRecognizer (description) {
-  return evaluateB(description, formalRegulaExpressions);
+  return evaluate(description, formalRegulaExpressions);
 }
 ```
 
@@ -3711,7 +3711,7 @@ const extended = {
   }
 };
 
-verifyEvaluateB('(R|r)eg(gie(e+!)?)?', extended, {
+verifyEvaluate('(R|r)eg(gie(e+!)?)?', extended, {
   '': false,
   'r': false,
   'reg': true,
@@ -3801,7 +3801,7 @@ const transpile0to0 = {
 
 const before = '(R|r)eg(ε|gie(ε|ee*!))';
 
-verifyEvaluateB(before, formalRegularExpressions, {
+verifyEvaluate(before, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -3812,9 +3812,9 @@ verifyEvaluateB(before, formalRegularExpressions, {
 });
   //=> All 7 tests passing
 
-const after = evaluateB(before, transpile0to0);
+const after = evaluate(before, transpile0to0);
 
-verifyEvaluateB(after, formalRegularExpressions, {
+verifyEvaluate(after, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -3854,10 +3854,10 @@ const transpile1to0q = {
 };
 
 const beforeLevel1 = '(R|r)eg(gie(e+!)?)?';
-const afterLevel1 = evaluateB(beforeLevel1, transpile1to0q);
+const afterLevel1 = evaluate(beforeLevel1, transpile1to0q);
   //=> '(R|r)→(e→(g→(ε|(g→(i→(e→(ε|((ee*)→!))))))))'
 
-verifyEvaluateB(afterLevel1, formalRegularExpressions, {
+verifyEvaluate(afterLevel1, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -4021,9 +4021,9 @@ As you can see, we don't have any operators, but we do support using backticks w
 
 ```javascript
 const beforeLevel1qs = '((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d';
-const afterLevel1qs = evaluateB(beforeLevel1qs, transpile1to0qs);
+const afterLevel1qs = evaluate(beforeLevel1qs, transpile1to0qs);
 
-verifyEvaluateB(afterLevel1qs, formalRegularExpressions, {
+verifyEvaluate(afterLevel1qs, formalRegularExpressions, {
   '': false,
   '1234': false,
   '123 4567': true,
@@ -4269,7 +4269,7 @@ const levelTwoExpressions = {
   }
 };
 
-verifyEvaluateB('(a|b|c)|(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)|(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': true,
@@ -4278,7 +4278,7 @@ verifyEvaluateB('(a|b|c)|(b|c|d)', levelTwoExpressions, {
 });
   //=> All 5 tests passing
 
-verifyEvaluateB('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': true,
@@ -4333,7 +4333,7 @@ const levelTwoExpressions = {
   }
 };
 
-verifyEvaluateB('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': false,
   'b': true,
@@ -4399,7 +4399,7 @@ const levelTwoExpressions = {
   }
 };
 
-verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': false,
@@ -4419,7 +4419,7 @@ verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
 Where `intersection` was useful for separating concerns, `difference` is very useful for sentences that do not belong to a particular language. For example, We may want to match all sentances that contain the word "Braithwaite", but not "Reggie Braithwaite:"
 
 ```javascript
-verifyEvaluateB('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
+verifyEvaluate('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
   'The Reg Braithwaiteb': true,
@@ -4428,7 +4428,7 @@ verifyEvaluateB('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, 
   'Is Reggie a Braithwaite?': true
 });
 
-verifyEvaluateB('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+verifyEvaluate('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
   'The Reg Braithwaiteb': true,

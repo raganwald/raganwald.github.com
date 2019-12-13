@@ -160,7 +160,7 @@ function shuntingYardFirstCut(inputString, {
   return outputQueue;
 }
 
-function shuntingYardB(inputString, {
+function shuntingYardSecondCut(inputString, {
   operators,
   defaultOperator
 }) {
@@ -380,9 +380,9 @@ function evaluatePostfixExpression (expression, {
   }
 }
 
-function evaluateA(expression, configuration) {
+function evaluateFirstCut(expression, configuration) {
   return evaluatePostfixExpression(
-    shuntingYardB(
+    shuntingYardSecondCut(
       expression, configuration
     ),
     configuration
@@ -404,7 +404,7 @@ const arithmeticB = {
   defaultOperator: '*'
 };
 
-verify(shuntingYardB, {
+verify(shuntingYardSecondCut, {
   '3': ['3'],
   '2+3': ['2', '3', arithmetic.operators['+'].symbol],
   '4!': ['4', arithmetic.operators['!'].symbol],
@@ -420,7 +420,7 @@ const arithmeticC = {
   toValue: string => Number.parseInt(string, 10)
 };
 
-verify(evaluateA, {
+verify(evaluateFirstCut, {
   '': undefined,
   '3': 3,
   '2+3': 5,

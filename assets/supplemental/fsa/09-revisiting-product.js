@@ -164,7 +164,7 @@ const levelTwoExpressions = {
       fn: intersection
     },
     '\\': {
-      symbol: Symbol('-'),
+      symbol: Symbol('\\'),
       type: 'infix',
       precedence: 10,
       fn: difference
@@ -195,7 +195,7 @@ const levelTwoExpressions = {
 
 // ----------
 
-verifyEvaluateB('(a|b|c)|(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)|(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': true,
@@ -203,7 +203,7 @@ verifyEvaluateB('(a|b|c)|(b|c|d)', levelTwoExpressions, {
   'd': true
 });
 
-verifyEvaluateB('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': true,
@@ -211,7 +211,7 @@ verifyEvaluateB('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
   'd': true
 });
 
-verifyEvaluateB('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': false,
   'b': true,
@@ -219,7 +219,7 @@ verifyEvaluateB('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
   'd': false
 });
 
-verifyEvaluateB('0|1(0|1)*', levelTwoExpressions, {
+verifyEvaluate('0|1(0|1)*', levelTwoExpressions, {
   '': false,
   'an odd number of characters': false,
   'an even number of characters': false,
@@ -230,7 +230,7 @@ verifyEvaluateB('0|1(0|1)*', levelTwoExpressions, {
   '10101': true
 });
 
-verifyEvaluateB('.(..)*', levelTwoExpressions, {
+verifyEvaluate('.(..)*', levelTwoExpressions, {
   '': false,
   'an odd number of characters': true,
   'an even number of characters': false,
@@ -241,7 +241,7 @@ verifyEvaluateB('.(..)*', levelTwoExpressions, {
   '10101': true
 });
 
-verifyEvaluateB('(0|1(0|1)*)∩(.(..)*)', levelTwoExpressions, {
+verifyEvaluate('(0|1(0|1)*)∩(.(..)*)', levelTwoExpressions, {
   '': false,
   'an odd number of characters': false,
   'an even number of characters': false,
@@ -252,7 +252,7 @@ verifyEvaluateB('(0|1(0|1)*)∩(.(..)*)', levelTwoExpressions, {
   '10101': true
 });
 
-verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': false,
@@ -260,7 +260,7 @@ verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
   'd': false
 });
 
-verifyEvaluateB('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
+verifyEvaluate('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
   'The Reg Braithwaiteb': true,
@@ -269,7 +269,7 @@ verifyEvaluateB('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, 
   'Is Reggie a Braithwaite?': true
 });
 
-verifyEvaluateB('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+verifyEvaluate('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
   'The Reg Braithwaiteb': true,

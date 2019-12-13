@@ -524,32 +524,11 @@ const levelOneExpressions = {
   }
 };
 
-function evaluate (
-  expression,
-  compilerConfiguration = formalRegularExpressions,
-  transpilerConfiguration = transpile1to0qsm
-) {
-  const formalExpression = evaluateB(expression, transpilerConfiguration);
-  const finiteStateRecognizer = evaluateB(formalExpression, compilerConfiguration);
-
-  return finiteStateRecognizer;
-}
-
-function verifyEvaluate (expression, ...args) {
-  const examples = args[args.length - 1];
-  const configs = args.slice(0, args.length - 2);
-
-  return verify(
-    automate(evaluate(expression, ...configs)),
-    examples
-  );
-}
-
 // ----------
 
 const reggieLevel0 = '(R|r)eg(ε|gie(ε|ee*!))';
 
-verifyEvaluateB(reggieLevel0, formalRegularExpressions, {
+verifyEvaluate(reggieLevel0, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -561,7 +540,7 @@ verifyEvaluateB(reggieLevel0, formalRegularExpressions, {
 
 const reggieLevel1 = '(R|r)eg(gie(e+!)?)?';
 
-verifyEvaluateB(reggieLevel1, extended, {
+verifyEvaluate(reggieLevel1, extended, {
   '': false,
   'r': false,
   'reg': true,
@@ -571,9 +550,9 @@ verifyEvaluateB(reggieLevel1, extended, {
   'Reggieeeeeee!': true
 });
 
-const reggieCompiledToLevel0 = evaluateB(reggieLevel0, transpile0to0);
+const reggieCompiledToLevel0 = evaluate(reggieLevel0, transpile0to0);
 
-verifyEvaluateB(reggieCompiledToLevel0, formalRegularExpressions, {
+verifyEvaluate(reggieCompiledToLevel0, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -583,9 +562,9 @@ verifyEvaluateB(reggieCompiledToLevel0, formalRegularExpressions, {
   'Reggieeeeeee!': true
 });
 
-const reggieCompiledToLevel0q = evaluateB(reggieLevel1, transpile1to0q);
+const reggieCompiledToLevel0q = evaluate(reggieLevel1, transpile1to0q);
 
-verifyEvaluateB(reggieCompiledToLevel0q, formalRegularExpressions, {
+verifyEvaluate(reggieCompiledToLevel0q, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -597,9 +576,9 @@ verifyEvaluateB(reggieCompiledToLevel0q, formalRegularExpressions, {
 
 const anyLevel1 = 'a.*y';
 
-const anyCompiledToLevel0qd = evaluateB(anyLevel1, transpile1to0qd);
+const anyCompiledToLevel0qd = evaluate(anyLevel1, transpile1to0qd);
 
-verifyEvaluateB(anyCompiledToLevel0qd, formalRegularExpressions, {
+verifyEvaluate(anyCompiledToLevel0qd, formalRegularExpressions, {
   '': false,
   'ay': true,
   'away': true,
@@ -611,19 +590,9 @@ verifyEvaluateB(anyCompiledToLevel0qd, formalRegularExpressions, {
 });
 
 const phoneNumberLevel1qs = '((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d';
-const phoneNumberCompiledToLevel0qs = evaluateB(phoneNumberLevel1qs, transpile1to0qs);
+const phoneNumberCompiledToLevel0qs = evaluate(phoneNumberLevel1qs, transpile1to0qs);
 
-verifyEvaluateB(phoneNumberCompiledToLevel0qs, formalRegularExpressions, {
-  '': false,
-  '1234': false,
-  '123 4567': true,
-  '987-6543': true,
-  '416-555-1234': true,
-  '1 416-555-0123': true,
-  '011-888-888-8888!': false
-});
-
-verifyEvaluate(phoneNumberLevel1qs, {
+verifyEvaluate(phoneNumberCompiledToLevel0qs, formalRegularExpressions, {
   '': false,
   '1234': false,
   '123 4567': true,
@@ -634,9 +603,9 @@ verifyEvaluate(phoneNumberLevel1qs, {
 });
 
 const phoneNumberLevel1qsm = '((1( |-))?`d⊗3( |-))?`d⊗3( |-)`d⊗4';
-const phoneNumberCompiledToLevel0qsm = evaluateB(phoneNumberLevel1qsm, transpile1to0qsm);
+const phoneNumberCompiledToLevel0qsm = evaluate(phoneNumberLevel1qsm, transpile1to0qsm);
 
-verifyEvaluateB(phoneNumberCompiledToLevel0qsm, formalRegularExpressions, {
+verifyEvaluate(phoneNumberCompiledToLevel0qsm, formalRegularExpressions, {
   '': false,
   '1234': false,
   '123 4567': true,
@@ -646,7 +615,7 @@ verifyEvaluateB(phoneNumberCompiledToLevel0qsm, formalRegularExpressions, {
   '011-888-888-8888!': false
 });
 
-verifyEvaluateB(phoneNumberLevel1qs, levelOneExpressions, {
+verifyEvaluate(phoneNumberLevel1qs, levelOneExpressions, {
   '': false,
   '1234': false,
   '123 4567': true,

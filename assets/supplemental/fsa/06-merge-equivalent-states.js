@@ -111,7 +111,7 @@ const regexD = {
 
 function verifyStateCount (configuration, examples) {
   function countStates (regex) {
-    const fsr = evaluateB(regex, configuration);
+    const fsr = evaluate(regex, configuration);
 
     const states = toStateSet(fsr.transitions);
     states.add(fsr.start);
@@ -134,7 +134,7 @@ const fiveABCDEs =
 const twoLowercaseLetters =
   `${lowercase}${lowercase}`;
 
-verifyEvaluateB(caseInsensitiveABC, regexC, {
+verifyEvaluate(caseInsensitiveABC, regexC, {
   '': false,
   'a': false,
   'z': false,
@@ -149,7 +149,7 @@ verifyEvaluateB(caseInsensitiveABC, regexC, {
   'abcdef': false
 });
 
-verifyEvaluateB(fiveABCDEs, regexC, {
+verifyEvaluate(fiveABCDEs, regexC, {
   '': false,
   'a': false,
   'z': false,
@@ -164,7 +164,7 @@ verifyEvaluateB(fiveABCDEs, regexC, {
   'abCde': false
 });
 
-verifyEvaluateB(twoLowercaseLetters, regexC, {
+verifyEvaluate(twoLowercaseLetters, regexC, {
   '': false,
   'a': false,
   'z': false,
@@ -185,7 +185,7 @@ verifyStateCount(regexC, {
   [twoLowercaseLetters]: 53
 });
 
-verifyEvaluateB(caseInsensitiveABC, regexD, {
+verifyEvaluate(caseInsensitiveABC, regexD, {
   '': false,
   'a': false,
   'z': false,
@@ -200,7 +200,7 @@ verifyEvaluateB(caseInsensitiveABC, regexD, {
   'abcdef': false
 });
 
-verifyEvaluateB(fiveABCDEs, regexD, {
+verifyEvaluate(fiveABCDEs, regexD, {
   '': false,
   'a': false,
   'z': false,
@@ -215,7 +215,7 @@ verifyEvaluateB(fiveABCDEs, regexD, {
   'abCde': false
 });
 
-verifyEvaluateB(twoLowercaseLetters, regexD, {
+verifyEvaluate(twoLowercaseLetters, regexD, {
   '': false,
   'a': false,
   'z': false,

@@ -160,7 +160,7 @@ function shuntingYardFirstCut(inputString, {
   return outputQueue;
 }
 
-function shuntingYardB(inputString, {
+function shuntingYardSecondCut(inputString, {
   operators,
   defaultOperator
 }) {
@@ -380,9 +380,9 @@ function evaluatePostfixExpression (expression, {
   }
 }
 
-function evaluateA(expression, configuration) {
+function evaluateFirstCut(expression, configuration) {
   return evaluatePostfixExpression(
-    shuntingYardB(
+    shuntingYardSecondCut(
       expression, configuration
     ),
     configuration
@@ -404,7 +404,7 @@ const arithmeticB = {
   defaultOperator: '*'
 };
 
-verify(shuntingYardB, {
+verify(shuntingYardSecondCut, {
   '3': ['3'],
   '2+3': ['2', '3', arithmetic.operators['+'].symbol],
   '4!': ['4', arithmetic.operators['!'].symbol],
@@ -420,7 +420,7 @@ const arithmeticC = {
   toValue: string => Number.parseInt(string, 10)
 };
 
-verify(evaluateA, {
+verify(evaluateFirstCut, {
   '': undefined,
   '3': 3,
   '2+3': 5,
@@ -799,7 +799,7 @@ function literal (symbol) {
   };
 }
 
-function shuntingYardC (
+function shuntingYard (
   inputString,
   {
     operators,
@@ -938,25 +938,25 @@ function shuntingYardC (
   return outputQueue;
 }
 
-function evaluateB (expression, configuration) {
+function evaluate (expression, configuration) {
   return evaluatePostfixExpression(
-    shuntingYardC(
+    shuntingYard(
       expression, configuration
     ),
     configuration
   );
 }
 
-function verifyEvaluateA (expression, configuration, examples) {
+function verifyEvaluateFirstCut (expression, configuration, examples) {
   return verify(
-    automate(evaluateA(expression, configuration)),
+    automate(evaluateFirstCut(expression, configuration)),
     examples
   );
 }
 
-function verifyEvaluateB (expression, configuration, examples) {
+function verifyEvaluate (expression, configuration, examples) {
   return verify(
-    automate(evaluateB(expression, configuration)),
+    automate(evaluate(expression, configuration)),
     examples
   );
 }
@@ -1003,9 +1003,9 @@ verifyRecognizer(literal('0'), {
   '11': false
 });
 
-const emptySetRecognizer = evaluateA('∅', regexA);
-const emptyStringRecognizer = evaluateA('ε', regexA);
-const rRecognizer = evaluateA('r', regexA);
+const emptySetRecognizer = evaluateFirstCut('∅', regexA);
+const emptyStringRecognizer = evaluateFirstCut('ε', regexA);
+const rRecognizer = evaluateFirstCut('r', regexA);
 
 verifyRecognizer(emptySetRecognizer, {
   '': false,
@@ -1027,19 +1027,19 @@ verifyRecognizer(rRecognizer, {
   'Reg': false
 });
 
-verifyEvaluateA('∅', regexA, {
+verifyEvaluateFirstCut('∅', regexA, {
   '': false,
   '0': false,
   '1': false
 });
 
-verifyEvaluateA('ε', regexA, {
+verifyEvaluateFirstCut('ε', regexA, {
   '': true,
   '0': false,
   '1': false
 });
 
-verifyEvaluateA('r', regexA, {
+verifyEvaluateFirstCut('r', regexA, {
   '': false,
   'r': true,
   'R': false,
@@ -1047,25 +1047,25 @@ verifyEvaluateA('r', regexA, {
   'Reg': false
 });
 
-verifyEvaluateB('∅', regexA, {
+verifyEvaluate('∅', regexA, {
   '': false,
   '∅': false,
   'ε': false
 });
 
-verifyEvaluateB('`∅', regexA, {
+verifyEvaluate('`∅', regexA, {
   '': false,
   '∅': true,
   'ε': false
 });
 
-verifyEvaluateB('ε', regexA, {
+verifyEvaluate('ε', regexA, {
   '': true,
   '∅': false,
   'ε': false
 });
 
-verifyEvaluateB('`ε', regexA, {
+verifyEvaluate('`ε', regexA, {
   '': false,
   '∅': false,
   'ε': true
@@ -1302,7 +1302,7 @@ verifyRecognizer(union2(reg, uppercase), {
   'REGINALD': true
 });
 
-verifyEvaluateB('a', regexB, {
+verifyEvaluate('a', regexB, {
   '': false,
   'a': true,
   'A': false,
@@ -1310,7 +1310,7 @@ verifyEvaluateB('a', regexB, {
   'AA': false
 });
 
-verifyEvaluateB('A', regexB, {
+verifyEvaluate('A', regexB, {
   '': false,
   'a': false,
   'A': true,
@@ -1318,7 +1318,7 @@ verifyEvaluateB('A', regexB, {
   'AA': false
 });
 
-verifyEvaluateB('a|A', regexB, {
+verifyEvaluate('a|A', regexB, {
   '': false,
   'a': true,
   'A': true,
@@ -1629,7 +1629,7 @@ verifyRecognizer(catenation2(zeroes, binary), {
   '111': false
 });
 
-verifyEvaluateB('r→e→g', regexC, {
+verifyEvaluate('r→e→g', regexC, {
   '': false,
   'r': false,
   're': false,
@@ -1637,7 +1637,7 @@ verifyEvaluateB('r→e→g', regexC, {
   'reggie': false
 });
 
-verifyEvaluateB('reg', regexC, {
+verifyEvaluate('reg', regexC, {
   '': false,
   'r': false,
   're': false,
@@ -1645,7 +1645,7 @@ verifyEvaluateB('reg', regexC, {
   'reggie': false
 });
 
-verifyEvaluateB('reg|reggie', regexC, {
+verifyEvaluate('reg|reggie', regexC, {
   '': false,
   'r': false,
   're': false,
@@ -1766,7 +1766,7 @@ const regexD = {
 
 function verifyStateCount (configuration, examples) {
   function countStates (regex) {
-    const fsr = evaluateB(regex, configuration);
+    const fsr = evaluate(regex, configuration);
 
     const states = toStateSet(fsr.transitions);
     states.add(fsr.start);
@@ -1789,7 +1789,7 @@ const fiveABCDEs =
 const twoLowercaseLetters =
   `${lowercase}${lowercase}`;
 
-verifyEvaluateB(caseInsensitiveABC, regexC, {
+verifyEvaluate(caseInsensitiveABC, regexC, {
   '': false,
   'a': false,
   'z': false,
@@ -1804,7 +1804,7 @@ verifyEvaluateB(caseInsensitiveABC, regexC, {
   'abcdef': false
 });
 
-verifyEvaluateB(fiveABCDEs, regexC, {
+verifyEvaluate(fiveABCDEs, regexC, {
   '': false,
   'a': false,
   'z': false,
@@ -1819,7 +1819,7 @@ verifyEvaluateB(fiveABCDEs, regexC, {
   'abCde': false
 });
 
-verifyEvaluateB(twoLowercaseLetters, regexC, {
+verifyEvaluate(twoLowercaseLetters, regexC, {
   '': false,
   'a': false,
   'z': false,
@@ -1840,7 +1840,7 @@ verifyStateCount(regexC, {
   [twoLowercaseLetters]: 53
 });
 
-verifyEvaluateB(caseInsensitiveABC, regexD, {
+verifyEvaluate(caseInsensitiveABC, regexD, {
   '': false,
   'a': false,
   'z': false,
@@ -1855,7 +1855,7 @@ verifyEvaluateB(caseInsensitiveABC, regexD, {
   'abcdef': false
 });
 
-verifyEvaluateB(fiveABCDEs, regexD, {
+verifyEvaluate(fiveABCDEs, regexD, {
   '': false,
   'a': false,
   'z': false,
@@ -1870,7 +1870,7 @@ verifyEvaluateB(fiveABCDEs, regexD, {
   'abCde': false
 });
 
-verifyEvaluateB(twoLowercaseLetters, regexD, {
+verifyEvaluate(twoLowercaseLetters, regexD, {
   '': false,
   'a': false,
   'z': false,
@@ -1993,7 +1993,7 @@ verifyRecognizer(Aa, {
   'eh?': false
 });
 
-verifyEvaluateB('((a|A)|ε)', formalRegularExpressions, {
+verifyEvaluate('((a|A)|ε)', formalRegularExpressions, {
   '': true,
   'a': true,
   'A': true,
@@ -2045,7 +2045,7 @@ verifyRecognizer(zeroOrMore(Aa), {
   'eh?': false
 });
 
-verifyEvaluateB('(a|A)*', formalRegularExpressions, {
+verifyEvaluate('(a|A)*', formalRegularExpressions, {
   '': true,
   'a': true,
   'A': true,
@@ -2058,7 +2058,7 @@ verifyEvaluateB('(a|A)*', formalRegularExpressions, {
   'eh?': false
 });
 
-verifyEvaluateB('ab*c', formalRegularExpressions, {
+verifyEvaluate('ab*c', formalRegularExpressions, {
   '': false,
   'a': false,
   'ac': true,
@@ -2593,32 +2593,11 @@ const levelOneExpressions = {
   }
 };
 
-function evaluate (
-  expression,
-  compilerConfiguration = formalRegularExpressions,
-  transpilerConfiguration = transpile1to0qsm
-) {
-  const formalExpression = evaluateB(expression, transpilerConfiguration);
-  const finiteStateRecognizer = evaluateB(formalExpression, compilerConfiguration);
-
-  return finiteStateRecognizer;
-}
-
-function verifyEvaluate (expression, ...args) {
-  const examples = args[args.length - 1];
-  const configs = args.slice(0, args.length - 2);
-
-  return verify(
-    automate(evaluate(expression, ...configs)),
-    examples
-  );
-}
-
 // ----------
 
 const reggieLevel0 = '(R|r)eg(ε|gie(ε|ee*!))';
 
-verifyEvaluateB(reggieLevel0, formalRegularExpressions, {
+verifyEvaluate(reggieLevel0, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -2630,7 +2609,7 @@ verifyEvaluateB(reggieLevel0, formalRegularExpressions, {
 
 const reggieLevel1 = '(R|r)eg(gie(e+!)?)?';
 
-verifyEvaluateB(reggieLevel1, extended, {
+verifyEvaluate(reggieLevel1, extended, {
   '': false,
   'r': false,
   'reg': true,
@@ -2640,9 +2619,9 @@ verifyEvaluateB(reggieLevel1, extended, {
   'Reggieeeeeee!': true
 });
 
-const reggieCompiledToLevel0 = evaluateB(reggieLevel0, transpile0to0);
+const reggieCompiledToLevel0 = evaluate(reggieLevel0, transpile0to0);
 
-verifyEvaluateB(reggieCompiledToLevel0, formalRegularExpressions, {
+verifyEvaluate(reggieCompiledToLevel0, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -2652,9 +2631,9 @@ verifyEvaluateB(reggieCompiledToLevel0, formalRegularExpressions, {
   'Reggieeeeeee!': true
 });
 
-const reggieCompiledToLevel0q = evaluateB(reggieLevel1, transpile1to0q);
+const reggieCompiledToLevel0q = evaluate(reggieLevel1, transpile1to0q);
 
-verifyEvaluateB(reggieCompiledToLevel0q, formalRegularExpressions, {
+verifyEvaluate(reggieCompiledToLevel0q, formalRegularExpressions, {
   '': false,
   'r': false,
   'reg': true,
@@ -2666,9 +2645,9 @@ verifyEvaluateB(reggieCompiledToLevel0q, formalRegularExpressions, {
 
 const anyLevel1 = 'a.*y';
 
-const anyCompiledToLevel0qd = evaluateB(anyLevel1, transpile1to0qd);
+const anyCompiledToLevel0qd = evaluate(anyLevel1, transpile1to0qd);
 
-verifyEvaluateB(anyCompiledToLevel0qd, formalRegularExpressions, {
+verifyEvaluate(anyCompiledToLevel0qd, formalRegularExpressions, {
   '': false,
   'ay': true,
   'away': true,
@@ -2680,19 +2659,9 @@ verifyEvaluateB(anyCompiledToLevel0qd, formalRegularExpressions, {
 });
 
 const phoneNumberLevel1qs = '((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d';
-const phoneNumberCompiledToLevel0qs = evaluateB(phoneNumberLevel1qs, transpile1to0qs);
+const phoneNumberCompiledToLevel0qs = evaluate(phoneNumberLevel1qs, transpile1to0qs);
 
-verifyEvaluateB(phoneNumberCompiledToLevel0qs, formalRegularExpressions, {
-  '': false,
-  '1234': false,
-  '123 4567': true,
-  '987-6543': true,
-  '416-555-1234': true,
-  '1 416-555-0123': true,
-  '011-888-888-8888!': false
-});
-
-verifyEvaluate(phoneNumberLevel1qs, {
+verifyEvaluate(phoneNumberCompiledToLevel0qs, formalRegularExpressions, {
   '': false,
   '1234': false,
   '123 4567': true,
@@ -2703,9 +2672,9 @@ verifyEvaluate(phoneNumberLevel1qs, {
 });
 
 const phoneNumberLevel1qsm = '((1( |-))?`d⊗3( |-))?`d⊗3( |-)`d⊗4';
-const phoneNumberCompiledToLevel0qsm = evaluateB(phoneNumberLevel1qsm, transpile1to0qsm);
+const phoneNumberCompiledToLevel0qsm = evaluate(phoneNumberLevel1qsm, transpile1to0qsm);
 
-verifyEvaluateB(phoneNumberCompiledToLevel0qsm, formalRegularExpressions, {
+verifyEvaluate(phoneNumberCompiledToLevel0qsm, formalRegularExpressions, {
   '': false,
   '1234': false,
   '123 4567': true,
@@ -2715,7 +2684,7 @@ verifyEvaluateB(phoneNumberCompiledToLevel0qsm, formalRegularExpressions, {
   '011-888-888-8888!': false
 });
 
-verifyEvaluateB(phoneNumberLevel1qs, levelOneExpressions, {
+verifyEvaluate(phoneNumberLevel1qs, levelOneExpressions, {
   '': false,
   '1234': false,
   '123 4567': true,
@@ -2891,7 +2860,7 @@ const levelTwoExpressions = {
       fn: intersection
     },
     '\\': {
-      symbol: Symbol('-'),
+      symbol: Symbol('\\'),
       type: 'infix',
       precedence: 10,
       fn: difference
@@ -2922,7 +2891,7 @@ const levelTwoExpressions = {
 
 // ----------
 
-verifyEvaluateB('(a|b|c)|(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)|(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': true,
@@ -2930,7 +2899,7 @@ verifyEvaluateB('(a|b|c)|(b|c|d)', levelTwoExpressions, {
   'd': true
 });
 
-verifyEvaluateB('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': true,
@@ -2938,7 +2907,7 @@ verifyEvaluateB('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
   'd': true
 });
 
-verifyEvaluateB('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': false,
   'b': true,
@@ -2946,7 +2915,7 @@ verifyEvaluateB('(a|b|c)∩(b|c|d)', levelTwoExpressions, {
   'd': false
 });
 
-verifyEvaluateB('0|1(0|1)*', levelTwoExpressions, {
+verifyEvaluate('0|1(0|1)*', levelTwoExpressions, {
   '': false,
   'an odd number of characters': false,
   'an even number of characters': false,
@@ -2957,7 +2926,7 @@ verifyEvaluateB('0|1(0|1)*', levelTwoExpressions, {
   '10101': true
 });
 
-verifyEvaluateB('.(..)*', levelTwoExpressions, {
+verifyEvaluate('.(..)*', levelTwoExpressions, {
   '': false,
   'an odd number of characters': true,
   'an even number of characters': false,
@@ -2968,7 +2937,7 @@ verifyEvaluateB('.(..)*', levelTwoExpressions, {
   '10101': true
 });
 
-verifyEvaluateB('(0|1(0|1)*)∩(.(..)*)', levelTwoExpressions, {
+verifyEvaluate('(0|1(0|1)*)∩(.(..)*)', levelTwoExpressions, {
   '': false,
   'an odd number of characters': false,
   'an even number of characters': false,
@@ -2979,7 +2948,7 @@ verifyEvaluateB('(0|1(0|1)*)∩(.(..)*)', levelTwoExpressions, {
   '10101': true
 });
 
-verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
+verifyEvaluate('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
   '': false,
   'a': true,
   'b': false,
@@ -2987,7 +2956,7 @@ verifyEvaluateB('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
   'd': false
 });
 
-verifyEvaluateB('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
+verifyEvaluate('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
   'The Reg Braithwaiteb': true,
@@ -2996,7 +2965,7 @@ verifyEvaluateB('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, 
   'Is Reggie a Braithwaite?': true
 });
 
-verifyEvaluateB('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+verifyEvaluate('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
   'The Reg Braithwaiteb': true,
