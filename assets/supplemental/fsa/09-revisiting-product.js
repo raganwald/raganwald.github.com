@@ -278,3 +278,12 @@ verifyEvaluate('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
   'Is Reggie a Braithwaite?': true
 });
 
+verifyEvaluate('¬(.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaiteb': true,
+  'The Notorious Reggie Braithwaite': false,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
+});
+
