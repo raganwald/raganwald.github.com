@@ -132,6 +132,32 @@ function shuntingYard (
       } else {
         error('Unbalanced parentheses');
       }
+    } else if (isPrefix(symbol)) {
+      if (awaitingValue) {
+        const { precedence } = operatorsMap.get(symbol);
+
+        // pop higher-precedence operators off the operator stack
+        while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+          const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+          if (precedence < opPrecedence) {
+            const op = operatorStack.pop();
+
+            outputQueue.push(representationOf(op));
+          } else {
+            break;
+          }
+        }
+
+        operatorStack.push(symbol);
+        awaitingValue = awaitsValue(symbol);
+      } else {
+        // value catenation
+
+        input.unshift(symbol);
+        input.unshift(defaultOperator);
+        awaitingValue = false;
+      }
     } else if (isCombinator(symbol)) {
       const { precedence } = operatorsMap.get(symbol);
 

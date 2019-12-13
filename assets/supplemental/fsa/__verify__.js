@@ -230,6 +230,32 @@ function shuntingYardSecondCut(inputString, {
       } else {
         error('Unbalanced parentheses');
       }
+    } else if (isPrefix(symbol)) {
+      if (awaitingValue) {
+        const { precedence } = operatorsMap.get(symbol);
+
+        // pop higher-precedence operators off the operator stack
+        while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+          const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+          if (precedence < opPrecedence) {
+            const op = operatorStack.pop();
+
+            outputQueue.push(representationOf(op));
+          } else {
+            break;
+          }
+        }
+
+        operatorStack.push(symbol);
+        awaitingValue = awaitsValue(symbol);
+      } else {
+        // value catenation
+
+        input.unshift(symbol);
+        input.unshift(defaultOperator);
+        awaitingValue = false;
+      }
     } else if (isCombinator(symbol)) {
       const {
         precedence
@@ -374,7 +400,7 @@ function evaluatePostfixExpression (expression, {
   if (stack.length === 0) {
     return undefined;
   } else if (stack.length > 1) {
-    error(`should only be one value to return, but there were ${stack.length}values on the stack`);
+    error(`should only be one value to return, but there were ${stack.length} values on the stack`);
   } else {
     return stack[0];
   }
@@ -891,6 +917,32 @@ function shuntingYard (
       } else {
         error('Unbalanced parentheses');
       }
+    } else if (isPrefix(symbol)) {
+      if (awaitingValue) {
+        const { precedence } = operatorsMap.get(symbol);
+
+        // pop higher-precedence operators off the operator stack
+        while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+          const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+          if (precedence < opPrecedence) {
+            const op = operatorStack.pop();
+
+            outputQueue.push(representationOf(op));
+          } else {
+            break;
+          }
+        }
+
+        operatorStack.push(symbol);
+        awaitingValue = awaitsValue(symbol);
+      } else {
+        // value catenation
+
+        input.unshift(symbol);
+        input.unshift(defaultOperator);
+        awaitingValue = false;
+      }
     } else if (isCombinator(symbol)) {
       const { precedence } = operatorsMap.get(symbol);
 
@@ -934,6 +986,8 @@ function shuntingYard (
       error(`Don't know how to push operator ${op}`);
     }
   }
+
+  console.log({ outputQueue });
 
   return outputQueue;
 }

@@ -647,6 +647,32 @@ function shuntingYardSecondCut (inputString, { operators, defaultOperator }) {
       } else {
         error('Unbalanced parentheses');
       }
+    } else if (isPrefix(symbol)) {
+      if (awaitingValue) {
+        const { precedence } = operatorsMap.get(symbol);
+
+        // pop higher-precedence operators off the operator stack
+        while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+          const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+          if (precedence < opPrecedence) {
+            const op = operatorStack.pop();
+
+            outputQueue.push(representationOf(op));
+          } else {
+            break;
+          }
+        }
+
+        operatorStack.push(symbol);
+        awaitingValue = awaitsValue(symbol);
+      } else {
+        // value catenation
+
+        input.unshift(symbol);
+        input.unshift(defaultOperator);
+        awaitingValue = false;
+      }
     } else if (isCombinator(symbol)) {
       const { precedence } = operatorsMap.get(symbol);
 
@@ -752,7 +778,7 @@ function evaluatePostfixExpression (expression, {
   if (stack.length === 0) {
     return undefined;
   } else if (stack.length > 1) {
-    error(`should only be one value to return, but there were ${stack.length}values on the stack`);
+    error(`should only be one value to return, but there were ${stack.length} values on the stack`);
   } else {
     return stack[0];
   }
@@ -1381,6 +1407,32 @@ function shuntingYard (
         awaitingValue = false;
       } else {
         error('Unbalanced parentheses');
+      }
+    } else if (isPrefix(symbol)) {
+      if (awaitingValue) {
+        const { precedence } = operatorsMap.get(symbol);
+
+        // pop higher-precedence operators off the operator stack
+        while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+          const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+          if (precedence < opPrecedence) {
+            const op = operatorStack.pop();
+
+            outputQueue.push(representationOf(op));
+          } else {
+            break;
+          }
+        }
+
+        operatorStack.push(symbol);
+        awaitingValue = awaitsValue(symbol);
+      } else {
+        // value catenation
+
+        input.unshift(symbol);
+        input.unshift(defaultOperator);
+        awaitingValue = false;
       }
     } else if (isCombinator(symbol)) {
       const { precedence } = operatorsMap.get(symbol);
@@ -4448,9 +4500,46 @@ If `s` is an expression, then `.*\s` is the [complement] of the expression `s`. 
 
 [complement]: https://en.wikipedia.org/wiki/Complement_(set_theory)
 
-In sentences of symbols, if we have a total alphabet that we use to derive the dot operator `.`, then `.*` is an expression for every possible sentence, and `.*\s` is the difference between every possible sentence and the sentences in the language `S`, which is the comnplement of S.
+In sentences of symbols, if we have a total alphabet that we use to derive the dot operator `.`, then `.*` is an expression for every possible sentence, and `.*\s` is the difference between every possible sentence and the sentences in the language `S`. And  that is the complement of S.
 
-We can implement complement as a prefix operator
+We can implement `complement` as a prefix operator:
+
+```javascript
+const complement =
+  s => difference(zeroOrMore(anySymbol()), s);
+
+const levelTwoExpressions = {
+  operators: {
+
+    // ... other operators  ...
+
+    '¬': {
+      symbol: Symbol('¬'),
+      type: 'prefix',
+      precedence: 40,
+      fn: complement
+    }
+
+  }
+
+  // ... other configuration ...
+
+};
+
+verifyEvaluate('¬(.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaiteb': true,
+  'The Notorious Reggie Braithwaite': false,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
+});
+  //=> All 6 tests passing
+```
+
+`complement` can surprsie the unwary. The expression `¬(.*Reggie )(Braithwaite.*)` matches strings containing `Braithwaite` but not `Reggie Braithwaite`. But if we expect `.*¬(Reggie) (Braithwaite.*)`, to do the same thing, we'll be unpleasantly surprised:
+
+
 
 ---
 
