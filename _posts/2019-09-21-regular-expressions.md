@@ -13,17 +13,17 @@ In programming jargon, a regular expression, or *regex* (plural "regexen"),[^reg
 
 [^regex]: In common programming jargon, a "regular expression" refers any of a family of pattern-matching and extraction languages, that can match a variety of languages. In computer science, a "regular expression" is a specific pattern matching language that recognizes regular languages only. To avoid confusion, in this essay we will use the word "regex" (plural "regexen") to refer to the programming construct.
 
-Regexen are--fundamentally--descriptions of sets of strings. A simple examble is the regex `/^0|1(0|1)*$/`, which describes the set of all strings that represent whole numbers in base 2, also known as the "binary numbers."
+Regexen are--fundamentally--descriptions of sets of strings. A simple example is the regex `/^0|1(0|1)*$/`, which describes the set of all strings that represent whole numbers in base 2, also known as the "binary numbers."
 
 In computer science, the strings that a regular expression matches are known as "sentences," and the set of all strings that a regular expression matches is known as the "language" that a regular expression matches.
 
-So for the regex `/^0|1(0|1)*$/`, its language is "The set of all binary numbers," and strings like `0`, `11`, and `1010101` are sentences in its language, while strings like `01`, `two`, and `Kltpzyxm` are sentances that are not in its language.[^Kltpzyxm]
+So for the regex `/^0|1(0|1)*$/`, its language is "The set of all binary numbers," and strings like `0`, `11`, and `1010101` are sentences in its language, while strings like `01`, `two`, and `Kltpzyxm` are sentences that are not in its language.[^Kltpzyxm]
 
 [^Kltpzyxm]: Be sure to read this paragraph our loud.
 
 Regexen are not descriptions of machines that recognize strings. Regexen describe "what," but not "how." To actually use regexen, we need an implementation, a machine that takes a regular expression and a string to be scanned, and returns--at the very minimum--whether or not the string matches the expression.
 
-Regexen implemplementations exist on most programming environments and most command-line environments. `grep` is a regex implementation. Languages like Ruby and JavaScript have regex libraries built in and provide syntactic support for writing regex literals directly in code.
+Regexen implementations exist on most programming environments and most command-line environments. `grep` is a regex implementation. Languages like Ruby and JavaScript have regex libraries built in and provide syntactic support for writing regex literals directly in code.
 
 The syntactic style of wrapping a regex in `/` characters is a syntactic convention in many languages that support regex literals, and we repeat them here to help distinguish them from formal regular expressions.
 
@@ -46,8 +46,8 @@ Formal regular expressions are made with three "atomic" or indivisible expressio
 What makes formal regular expressions powerful, is that we have operators for alternating, catenating, and quantifying regular expressions. Given that _x_ is a regular expression describing some language `X`, and _y_ is a regular expression describing some language `Y`:
 
 1. The expression _x_`|`_y_ describes to the union of the languages `X` and `Y`, meaning, the sentence `w` belongs to `x|y` if and only if `w` belongs to the language `X` or `w` belongs to the language `Y`. We can also say that _x_`|`_y_ represents the _alternation_ of _x_ and _y_.
-2. The expression _xy_ describes the language `XY`, where a sentance `ab` belongs to the language `XY` if and only if `a` belohgs to the language `X` and `b` belongs to the language `Y`. We can also say that _xy_ represents the _catenation_ of the epxressions _x_ and _y_.
-3. The expression _x_`*` describes the language `Z`, where the sentence `ε` (the empty string) belongs to `Z`, and, the sentence `pq` belongs to `Z` if and only if `p` is a sentence belonging to `X`, and `q` is a sentence belonging to `Z`. We can also say that _x_`*` represents a _quantification_ of _x_, as it allows a regular expression to rerpresent a language containing sentences that match some number of senetences represented by _x_ catenated together.
+2. The expression _xy_ describes the language `XY`, where a sentence `ab` belongs to the language `XY` if and only if `a` belongs to the language `X` and `b` belongs to the language `Y`. We can also say that _xy_ represents the _catenation_ of the expressions _x_ and _y_.
+3. The expression _x_`*` describes the language `Z`, where the sentence `ε` (the empty string) belongs to `Z`, and, the sentence `pq` belongs to `Z` if and only if `p` is a sentence belonging to `X`, and `q` is a sentence belonging to `Z`. We can also say that _x_`*` represents a _quantification_ of _x_, as it allows a regular expression to represent a language containing sentences that match some number of sentences represented by _x_ catenated together.
 
 
 [Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
@@ -230,7 +230,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
   - [for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions,-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
   - [for every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
-  - [every regular language can be recognized in O_n_ time](#every-regular-language-can-be-recognized-in-On-time)
+  - [every regular language can be recognized in linear time](#every-regular-language-can-be-recognized-in-linear-time)
 
 ### [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions)
 
@@ -254,13 +254,13 @@ Along the way, we'll look at other tools that make regular expressions more conv
 
 As mentioned in the Prelude, [Stephen Cole Kleene] developed the concept of [formal regular expressions][regular expression] and [regular languages], and published a seminal theorem about their behaviour in 1951.
 
-Regular expressions are not machines. In and of themselves, they don't generate sentences in a language, nor do they recognize whether sentences belong to a langauge. They define the language, and it's up to us to build machines that do things like generate or recognize sentences.
+Regular expressions are not machines. In and of themselves, they don't generate sentences in a language, nor do they recognize whether sentences belong to a language. They define the language, and it's up to us to build machines that do things like generate or recognize sentences.
 
-Kleene studied machines that can recognize sentences in languages. Studying such machines informs us about the fundamental nature of the computation involed. In the case of formal regular expressions and regular languages, Kleene established that for every regular language, there is a finite-state automaton that recognizes sentences in that language.
+Kleene studied machines that can recognize sentences in languages. Studying such machines informs us about the fundamental nature of the computation involved. In the case of formal regular expressions and regular languages, Kleene established that for every regular language, there is a finite-state automaton that recognizes sentences in that language.
 
 (Finite-state automatons that are arranged to recognize sentences in languages are also called "finite-state recognizers," and that is the term we will use from here on.)
 
-Kleene also established that for every finite-state recognizer, there is a formal regular expression that describes the language that the finite-state recognizer accepts. In provingh these two things, he proved that the set of all regular expressions and the set of all finite-state recognizers is equivalent.
+Kleene also established that for every finite-state recognizer, there is a formal regular expression that describes the language that the finite-state recognizer accepts. In proving these two things, he proved that the set of all regular expressions and the set of all finite-state recognizers is equivalent.
 
 We are going to demonstrate these two important components of Kleene's theorem by writing JavaScript code, starting with a demonstration that "For every regular expression, there exists an equivalent finite-state recognizer."
 
@@ -268,7 +268,7 @@ We are going to demonstrate these two important components of Kleene's theorem b
 
 ### our approach
 
-Our approach to demonstrating that for every regular expression, there exists an equivalent finite-state recognizer will be to write a program that takes as its input a regular expression, and produces as its output a description of a finute-state recognizer that accepts sentences in the language described by the regular expression.
+Our approach to demonstrating that for every regular expression, there exists an equivalent finite-state recognizer will be to write a program that takes as its input a regular expression, and produces as its output a description of a finite-state recognizer that accepts sentences in the language described by the regular expression.
 
 Our in computer jargon, we're going to write a regular expression to finite-state recognizer _compiler_. Compilers and interpreters are obviously an extremely interesting tool for practical programming: They establish an equivalency between expressing an algorithm in a language that humans understand, and expressing an equivalent algorithm in a language a machine understands.
 
@@ -324,7 +324,7 @@ Let's write this in code. We'll start by writing an infix-to-postfix converter. 
 - We'll only process strings when converting to RPN. It'll be up to the eventual evaluator to know that the string `'3'` is actually the number 3.
 - We aren't going to allow whitespace. `1 + 1` will fail, `1+1` will not.
 
-We'll also paramaterize the definitions for operators. This will allow us to reuse our evaluator for regular expressions simply by changing the oeprator definitions.
+We'll also parameterize the definitions for operators. This will allow us to reuse our evaluator for regular expressions simply by changing the operator definitions.
 
 ---
 
@@ -569,7 +569,7 @@ verifyShunter(shuntingYardFirstCut, {
 
 In mathematical notation, it is not always necessary to write a multiplication operator. For example, `2(3+4)` is understood to be equivalent to `2 * (3 + 4)`.
 
-Whenever two values are adacent to each other in the input, we want our shunting yard to insert the missing `*` just as if it had been explicitly included. We will call `*` a "default operator," as our next shunting yard will default to `*` if there is a mssing infix oprator.
+Whenever two values are adjacent to each other in the input, we want our shunting yard to insert the missing `*` just as if it had been explicitly included. We will call `*` a "default operator," as our next shunting yard will default to `*` if there is a missing infix operator.
 
 `shuntingYardFirstCut` above has two places where it reports this as an error. Let's modify it as follows: Whenever it encounters two values in succession, it will re-enqueue the default operator, re-enqueue the second value, and then proceed.
 
@@ -739,7 +739,7 @@ We now have enough to get started with evaluating the postfix notation produced 
 
 ### evaluating postfix
 
-Our first cut at the code for evaluating the postfix code produceed by our shunting yard will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
+Our first cut at the code for evaluating the postfix code produced by our shunting yard will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
 
 ```javascript
 function evaluatePostfixExpression (expression, {
@@ -1062,7 +1062,7 @@ Regular expressions have a notation for the empty set, the empty string, and sin
 - The symbol `ε` describes the language containing only the empty string.
 - Literals such as `x`, `y`, or `z` describe languages containing single sentences, containing single symbols. e.g. The literal `r` describes the language `R`, which contains just one sentence: `'r'`.
 
-In order to compile such regular expressions into finite-state recognizers, we begin by defining functions that return the empty language, the language containing only the empty string, and languages with just one sentance containing one symbol.
+In order to compile such regular expressions into finite-state recognizers, we begin by defining functions that return the empty language, the language containing only the empty string, and languages with just one sentence containing one symbol.
 
 ### ∅ and ε
 
@@ -1095,7 +1095,7 @@ verifyRecognizer(emptySet(), {
   //=> All 3 tests passing
 ```
 
-It's called `emptySet`, because the the set of all sentences this language recognizes is empty. Note that while hand-written recognizers can have any arbitrary names for their states, we're using the `names` generator to generate state nams for us. This automatically avoid two recognizers ever having state names in common, which makes some of teh code we write later a great deal simpler.
+It's called `emptySet`, because the the set of all sentences this language recognizes is empty. Note that while hand-written recognizers can have any arbitrary names for their states, we're using the `names` generator to generate state names for us. This automatically avoid two recognizers ever having state names in common, which makes some of the code we write later a great deal simpler.
 
 Now, how do we get our evaluator to handle it? Our `evaluate` function takes a configuration object as a parameter, and that's where we define operators. We're going to define `∅` as an atomic operator.[^atomic]
 
@@ -1235,7 +1235,7 @@ const regexA = {
 
 ### using ∅, ε, and literal
 
-Now that we have defined operators for `∅` and `ε`, and now that we have writed `toValue` to use `literal`, we can use `evaluate` to generate recognizers from the most basic of regular expressions:
+Now that we have defined operators for `∅` and `ε`, and now that we have written `toValue` to use `literal`, we can use `evaluate` to generate recognizers from the most basic of regular expressions:
 
 ```javascript
 const emptySetRecognizer = evaluate(`∅`, regexA);
@@ -1310,7 +1310,7 @@ There is a bug in our code so far. Or rather, a glaring omission: _How do we wri
 
 This is not really necessary for demonstrating the general idea that we can compile any regular expression into a finite-state recognizer, but once we start adding operators like `*` and `?`, not to mention extensions like `+` or `?`, the utility of our demonstration code will fall dramatically.
 
-Now we've already made `∅` and `ε` into atomic operators, so now the question becomes, how do we write a regular expression with literal `∅` or `ε` chracters in it? And not to mention, literal parentheses?
+Now we've already made `∅` and `ε` into atomic operators, so now the question becomes, how do we write a regular expression with literal `∅` or `ε` characters in it? And not to mention, literal parentheses?
 
 Let's go with the most popular approach, and incorporate an escape symbol. In most languages, including regexen, that symbol is a `\`. We could do the same, but JavaScript already interprets `\` as an escape, so our work would be littered with double backslashes to get JavaScript to recognize a single `\`.
 
@@ -2087,7 +2087,7 @@ If we accept all those states where `a` reaches an accepting state _but `b` does
 
 We could even compute all those states where either `a` or `b` reach an accepting state, _but not both_. This would compute the `disjunction` of the two recognizers.
 
-We'll return to some of these other uses for `product` after we staisfy ourselves that we can generate a finite-state recognizer for any formal regular expression we like.
+We'll return to some of these other uses for `product` after we satisfy ourselves that we can generate a finite-state recognizer for any formal regular expression we like.
 
 ---
 
@@ -2356,7 +2356,7 @@ removeEpsilonTransitions(epsilonCatenate(reg, exclamations))
     }
 ```
 
-We have now implemented catenating two deterministic finite-state recognizers in such a way that we return a finite-state recognizer. The only things left to do are remove unreachable states, and to deal with a catch that we'll descrirbe below.
+We have now implemented catenating two deterministic finite-state recognizers in such a way that we return a finite-state recognizer. The only things left to do are remove unreachable states, and to deal with a catch that we'll describe below.
 
 ---
 
@@ -3013,7 +3013,7 @@ stateDiagram
 
 Look at all the duplication! Nearly half of the diagram is a nearly exact copy of the other half. States `G88` and `G90` are *equivalent*: They have the exact same set of outgoing transitions. The same is true of `G96` and `G98`, and of `G104` and `G106`.
 
-Ideally, we would **merge** the equivalent states, and then discard the unecessary states. This would reduce the number of states from seven to four:
+Ideally, we would **merge** the equivalent states, and then discard the unnecessary states. This would reduce the number of states from seven to four:
 
 <div class="mermaid">
 stateDiagram
@@ -3283,13 +3283,13 @@ verifyStateCount(regexD, {
   //=> All 3 tests passing
 ```
 
-The old `union2` function created uneccesary states, and as a result, the number of states created when we catenate unions grows polynomially. Our new `union2merged` merges equivalent states, and as a result, the number of states created when we catenate unions grows linearly.
+The old `union2` function created unnecessary states, and as a result, the number of states created when we catenate unions grows polynomially. Our new `union2merged` merges equivalent states, and as a result, the number of states created when we catenate unions grows linearly.
 
 ---
 
 ### summarizing catenation (and an improved union)
 
-In sum, we have created `catenation2`, a function that can catenate *any* two finite-state recognizers, and return a new finite-state recognizer. If `ⓐ` is a finite-state recognizer that recognizes sentences in the language `A`, and `ⓑ` is a finite-state recognizer that recognizes sentences in the language `B`, then `catenation2(ⓐ, ⓑ)` is a finite-state recognizer that recognizes sentences in the language `AB`, where a sentance `ab` is in the language `AB`, if and only if `a` is a sentence in the language `A`, and `b` is a sentence in the language `B`.
+In sum, we have created `catenation2`, a function that can catenate *any* two finite-state recognizers, and return a new finite-state recognizer. If `ⓐ` is a finite-state recognizer that recognizes sentences in the language `A`, and `ⓑ` is a finite-state recognizer that recognizes sentences in the language `B`, then `catenation2(ⓐ, ⓑ)` is a finite-state recognizer that recognizes sentences in the language `AB`, where a sentence `ab` is in the language `AB`, if and only if `a` is a sentence in the language `A`, and `b` is a sentence in the language `B`.
 
 We also created an optimized `union2merged` that merges equivalent states, preventing the fan-out problem when catenating unions.
 
@@ -3308,11 +3308,11 @@ Formal regular expressions are made with three constants and three operators. We
 And we've implemented two of the three operators:
 
 - The expression _x_`|`_y_ describes to the union of the languages `X` and `Y`, meaning, the sentence `w` belongs to `x|y` if and only if `w` belongs to the language `X` or `w` belongs to the language `Y`. We can also say that _x_`|`_y_ represents the _alternation_ of _x_ and _y_.
-- The expression _xy_ describes the language `XY`, where a sentance `ab` belongs to the language `XY` if and only if `a` belohgs to the language `X` and `b` belongs to the language `Y`. We can also say that _xy_ represents the _catenation_ of the epxressions _x_ and _y_.
+- The expression _xy_ describes the language `XY`, where a sentence `ab` belongs to the language `XY` if and only if `a` belongs to the language `X` and `b` belongs to the language `Y`. We can also say that _xy_ represents the _catenation_ of the expressions _x_ and _y_.
 
 This leaves one remaining operator to implement, `*`:[^kleene-star]:
 
-- The expression _x_`*` describes the language `Z`, where the sentence `ε` (the empty string) belongs to `Z`, and, the sentence `pq` belongs to `Z` if and only if `p` is a sentence belonging to `X`, and `q` is a sentence belonging to `Z`. We can also say that _x_`*` represents a _quantification_ of _x_, as it allows a regular expression to rerpresent a language containing sentences that match some number of senetences represented by _x_ catenated together.
+- The expression _x_`*` describes the language `Z`, where the sentence `ε` (the empty string) belongs to `Z`, and, the sentence `pq` belongs to `Z` if and only if `p` is a sentence belonging to `X`, and `q` is a sentence belonging to `Z`. We can also say that _x_`*` represents a _quantification_ of _x_, as it allows a regular expression to represent a language containing sentences that match some number of sentences represented by _x_ catenated together.
 
 [^kleene-star]: The `*` operator is named the [kleene star], after Stephen Kleene.
 
@@ -3601,15 +3601,15 @@ When building `catenation`, we added ε-transitions to join two finite-state rec
 
 Or to put it another way, the set of languages recognized by finite-state recognizers without ε-transitions is equal to the set of finite-state recognizers recognized by finite-state recognizers that do do do not include ε-transitions.
 
-We also established something about non-deterministic finite-state recognizers (and non-derteministic finite-sttate automata in general):
+We also established something about non-deterministic finite-state recognizers (and non-deterministic finite-state automata in general):
 
 ---
 
 ### for every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer
 
-Let's reflect on what writing [powerset](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer) told us about finite-state recognizers. Because we can take _any_ finite-state recognizer--whether detemerministic or non-deterministic--then pass it to `powerset`, and get back a deterministic finite-state recognizer, we know that for *every* finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
+Let's reflect on what writing [powerset](#computing-the-powerset-of-a-nondeterministic-finite-state-recognizer) told us about finite-state recognizers. Because we can take _any_ finite-state recognizer--whether deterministic or non-deterministic--then pass it to `powerset`, and get back a deterministic finite-state recognizer, we know that for *every* finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
 
-This tells us that the set of all languages recognized by deterministic finite state recognizers is equal to the set of all languages recognized by all finite-state recognizers, whether detemerministic or non-deterministic.
+This tells us that the set of all languages recognized by deterministic finite state recognizers is equal to the set of all languages recognized by all finite-state recognizers, whether deterministic or non-deterministic.
 
 This is not true for other types of automata: In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], we saw that non-deterministic pushdown automata could recognize palindromes, whereas deterministic pushdown automata could not. So the set of languages recognized by deterministic pushdown automata is **not** equal to the set of languages recognized by pushdown automata.
 
@@ -3619,20 +3619,20 @@ But it's a very important result, and this is why:
 
 ---
 
-### every regular language can be recognized in O_n_ time
+### every regular language can be recognized in linear time
 
 Consider a finite-state recognizer that is deterministic, and without ε-transitions, exactly like the finite-state recognizers we compile from formal regular expressions.
 
-Such a recognizer begins in its start state, and only transitions from state to state when consuming a symbol. If it halts befoe consuming the entire sentence, it fails to recognize the sentence. If it does not halt when the sentence is complete, it will have performed _n_ transitions wwhere _n_ is the number of symbols in the sentence.
+Such a recognizer begins in its start state, and only transitions from state to state when consuming a symbol. If it halts befoe consuming the entire sentence, it fails to recognize the sentence. If it does not halt when the sentence is complete, it will have performed _n_ transitions where _n_ is the number of symbols in the sentence.
 
 It cannot have performed more than _n_ transitions, because:
 
 1. It must consume a symbol to perform a transition, thanks to there being no ε-transitions, and;
 2. It can only perform one transition per symbol, thank to it being deterministic.
 
-Now, thanks to `powerset`, it may well consume exponentional **space** relative to the length of the longest sentence it recognizes. But it will only consume linear time.
+Now, thanks to `powerset`, it may well consume exponential **space** relative to the length of the longest sentence it recognizes. But it will only consume linear time.
 
-Many contemporary regex engines, on the other hand, use nondeterministic algorithms that consume much less space, but can exhibit high orders of polynomial time. There are a nunmber of reasons for this, including the requirement to support features that recognize non-regular languages (like balanced parentheses and palindromes).
+Many contemporary regex engines, on the other hand, use nondeterministic algorithms that consume much less space, but can exhibit high orders of polynomial time. There are a number of reasons for this, including the requirement to support features that recognize non-regular languages (like balanced parentheses and palindromes).
 
 But we know that if a formal regular expression or regex describes a regular language, it is possible to execute it in linear time. And our code is the demonstration.
 
@@ -3640,7 +3640,7 @@ But we know that if a formal regular expression or regex describes a regular lan
 
 # Beyond Formal Regular Expressions
 
-Formal regular expressions are--deliberatesly--as minimal as possible. There are only three kinds of literals (`∅`, `ε`, and literal symbols), and three operations (alternation, catenation, and quantification via the kleen star). Minimalism is extremely important from a computer science perspective, but unweildy when trying to "Get Stuff Done."
+Formal regular expressions are--deliberately--as minimal as possible. There are only three kinds of literals (`∅`, `ε`, and literal symbols), and three operations (alternation, catenation, and quantification via the kleene star). Minimalism is extremely important from a computer science perspective, but unwieldy when trying to "Get Stuff Done."
 
 Thus, all regexen provide functionality above and beyond formal regular expressions.
 
@@ -3650,13 +3650,13 @@ Thus, all regexen provide functionality above and beyond formal regular expressi
 
 Functionality in regexen can be organized into a rough hierarchy. The base, or "Level 0" of the hierarchy is functionality provided by formal regular expressions. Everything we've written so far is at this base level.
 
-Level 1 of the hierarchy is functionality that can be directly implemented in terms of formal regular expressions. For example, regexen provde a `?` postfix operator that provides "zero or one" quantification, and a `+` postfix operator that provides "one or more" quantification.
+Level 1 of the hierarchy is functionality that can be directly implemented in terms of formal regular expressions. For example, regexen provide a `?` postfix operator that provides "zero or one" quantification, and a `+` postfix operator that provides "one or more" quantification.
 
-As we know from our implementation of the kleene star, "zero or one" can be implemented in a formal regular expression very easily. If `a` is a regular expression, `ε|a` is a regular expression that matches zero or one sentences that `a` accepts. So intuitively, a regex flavour that supprts the expression `a?` doesn't do anything we couldn't have done by hand with `ε|a`
+As we know from our implementation of the kleene star, "zero or one" can be implemented in a formal regular expression very easily. If `a` is a regular expression, `ε|a` is a regular expression that matches zero or one sentences that `a` accepts. So intuitively, a regex flavour that supports the expression `a?` doesn't do anything we couldn't have done by hand with `ε|a`
 
 The same reasoning goes for `+`: If we have the kleene star (which ironically we implemented on top of one-or-more), we can always express "one or more" using catenation and the kleene star. If `a` is a regular expression, `aa*` is a regular expression that matches one or more sentences that `a` accepts. Again, a regex flavour supports the expression `a+` doesn't do anything we couldn't have done by hand with `aa*`.
 
-Level 2 of the hierarchy is functionality that cannot be directly implemented in terms of formal regular expressions, however it still compiles to finite-state recognizers. As we mentioned in the prelude, and will show later, for every finite-state recoognizer, there is an equivalent formal regular expression.
+Level 2 of the hierarchy is functionality that cannot be directly implemented in terms of formal regular expressions, however it still compiles to finite-state recognizers. As we mentioned in the prelude, and will show later, for every finite-state recognizer, there is an equivalent formal regular expression.
 
 So if a particular piece of functionality can be implemented as a finite-state recognizer, then it certainly can be implemented in terms of a formal regular expression, however compiling an expression to a finite-state machine and then deriving an equivalent formal regular expression is "going the long way 'round," and thus we classify such functionality as being directly implemented as a finite-state recognizer, and only indirectly implemented in terms of formal regular expressions.
 
@@ -3666,11 +3666,11 @@ Examples of level 2 functionality include complementation (if `a` is a regular e
 
 There are higher levels of functionality, however they involve functionality that cannot be implemented with finite-state recognizers.
 
-The [Chomsky–Schützenberger hierarchy] categorizes grammars from Type-3 to Type-0. Type-3 grammars define regular lanuages. They can be expressed with formal regular expressions and recognized with finite-state recognizers. Our Level 0, level 1, and level 2 functionalities do not provide any additional power to recognize Type-2, Type-1, or Type-0 grammars.
+The [Chomsky–Schützenberger hierarchy] categorizes grammars from Type-3 to Type-0. Type-3 grammars define regular languages. They can be expressed with formal regular expressions and recognized with finite-state recognizers. Our Level 0, level 1, and level 2 functionalities do not provide any additional power to recognize Type-2, Type-1, or Type-0 grammars.
 
 [Chomsky–Schützenberger hierarchy]: https://en.wikipedia.org/wiki/Chomsky_hierarchyhttps://en.wikipedia.org/wiki/Chomsky_hierarchy
 
-As we recall from [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], langauges like "balanced parentheses" are a Type-2 grammar, and cannot be recognized by a finite-state automata. Thus, features that some regexen provide like recursive regular expressions are beyond our levels.
+As we recall from [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], languages like "balanced parentheses" are a Type-2 grammar, and cannot be recognized by a finite-state automata. Thus, features that some regexen provide like recursive regular expressions are beyond our levels.
 
 In addition to features that enable regexen to recognize languages beyond the capabilities of finite-state recognizers, regexen also provide plenty of features for extracting match or partial match data, like capture groups. This functionality is also outside of our levels, as we are strictly concerned with recognizing sentences.
 
@@ -3788,11 +3788,11 @@ Instead of appealing to intuition, instead of asking people to believe that `uni
 
 ### implementing quantification operators with transpilation
 
-We demonstrated that there is a finite-state recognizer for eevry formal regular expression by writing a function to compile formal regular expressions into finite-state recognizers. We will take the same approach of demonstrating that there is a Level 0 (a/k/a "formal") regular expression for every Level 1 (a/k/a extended) regular expression:
+We demonstrated that there is a finite-state recognizer for every formal regular expression by writing a function to compile formal regular expressions into finite-state recognizers. We will take the same approach of demonstrating that there is a Level 0 (a/k/a "formal") regular expression for every Level 1 (a/k/a extended) regular expression:
 
 We'll write a function to compile Level 1 to Level 0 regular expressions. And we'll begin with our evaluator.
 
-Recall that our basic evaluator can compile an infix expression into a postfix list of symbols, which it then evaluates. But it knows nothing about what its operators do. If we supply operators that perform arithmatic, we have a calculator. If we supply operators that create and combine finite-state recognizers, we have a regular-expression to finite-state recognizer compiler.
+Recall that our basic evaluator can compile an infix expression into a postfix list of symbols, which it then evaluates. But it knows nothing about what its operators do. If we supply operators that perform arithmetic, we have a calculator. If we supply operators that create and combine finite-state recognizers, we have a regular-expression to finite-state recognizer compiler.
 
 We can build a _transpiler_ exactly the same way: Use our evaluator, but supply a different set of operator definitions. We'll start by creating a transpiler that transpiles formal regular expressions to formal regular expressions. The way it will work is by assembling an expression in text instead of assembling a finite-state recognizer.
 
@@ -3938,7 +3938,7 @@ In addition to convenient operators like `?` and `+`, regexen also provide chara
 
 Custom character classes aren't difficult to implement on the transpilation side, but modifying our infix-to-postfix parser to support them would get gnarly enough that we'd probably have to go out and start using a "real" parser. Which would be appropriate for a production engine, but a distraction for our exploration.
 
-So we'll skip custom character classes and implement the dot operator first. All regular languages are associated with some kimd of total alphabet representing all of the possible symbols in the language. Regexen have the idea of a total alphabet as well, but it's usually implied to be whatever the underlying platform supports as characters.
+So we'll skip custom character classes and implement the dot operator first. All regular languages are associated with some kind of total alphabet representing all of the possible symbols in the language. Regexen have the idea of a total alphabet as well, but it's usually implied to be whatever the underlying platform supports as characters.
 
 For our code, we need to make it explicit, for example:
 
@@ -3977,7 +3977,7 @@ There are, of course, more compact (and faster) ways to implement this if we wer
 
 Next, we'll implement shorthand character classes. In regexen, instead of associating shorthand character classes with their own symbols, the regexen syntax overloads the escape character `\` so that it usually means "Match this character as a character, ignoring any special meaning," but sometimes--as with `\d`, `\w`, and with `\s`--it means "match this shorthand character class."
 
-Fortunately, we left a back-door in our shunting yard function just for the purpose oif overloading the escape character's behaviour. Here's the full configuration:
+Fortunately, we left a back-door in our shunting yard function just for the purpose of overloading the escape character's behaviour. Here's the full configuration:
 
 ```javascript
 const UNDERSCORE ='_';
@@ -4070,7 +4070,7 @@ const transpile1to0qs = {
 };
 ```
 
-As you can see, we don't have any operators, but we do support using backticks with `d`, `w`, and `s` just like with regexen:
+As you can see, we don't have any operators, but we do support using back-ticks with `d`, `w`, and `s` just like with regexen:
 
 ```javascript
 const beforeLevel1qs = '((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d';
@@ -4399,7 +4399,7 @@ This is something new:
 
 - If `a` is a regular expression describing the language `A`, and `b` is a regular expression describing the language `B`, the expression `a∩b` describes the language `Z` where a sentence `z` belongs to `Z` if and only if `z` belongs to `A`, and `z` belongs to `B`.
 
-Intersection can be useful for writing expressions that separate concerns. For example, if we already have `0|1(0|1)*` as the expression for the language containing all binary numbers, and `.(..)*` as the epxression for the language containing an odd number of symbols, then `(0|1(0|1)*)∩(.(..)*)` gives the the language containing all binary numbers with an odd number of digits.
+Intersection can be useful for writing expressions that separate concerns. For example, if we already have `0|1(0|1)*` as the expression for the language containing all binary numbers, and `.(..)*` as the expression for the language containing an odd number of symbols, then `(0|1(0|1)*)∩(.(..)*)` gives the the language containing all binary numbers with an odd number of digits.
 
 ---
 
@@ -4469,7 +4469,7 @@ verifyEvaluate('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
 
 - If `a` is a regular expression describing the language `A`, and `b` is a regular expression describing the language `B`, the expression `a\b` describes the language `Z` where a sentence `z` belongs to `Z` if and only if `z` belongs to `A`, and `z` does not belong to `B`.
 
-Where `intersection` was useful for separating concerns, `difference` is very useful for sentences that do not belong to a particular language. For example, We may want to match all sentances that contain the word "Braithwaite", but not "Reggie Braithwaite:"
+Where `intersection` was useful for separating concerns, `difference` is very useful for sentences that do not belong to a particular language. For example, We may want to match all sentences that contain the word "Braithwaite", but not "Reggie Braithwaite:"
 
 ```javascript
 verifyEvaluate('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
@@ -4497,7 +4497,7 @@ The second test above includes an interesting pattern.
 
 ### complement
 
-If `s` is an expression, then `.*\s` is the [complement] of the expression `s`. In set theory, the complement of a set `S` is everything that does not belong to `S`. If we presume the existancce of a universal set `U`, where `u` belongs to `U` for _any_ `u`, then the comnpletement of a set `S` is the difference between `U` and `S`.
+If `s` is an expression, then `.*\s` is the [complement] of the expression `s`. In set theory, the complement of a set `S` is everything that does not belong to `S`. If we presume the existence of a universal set `U`, where `u` belongs to `U` for _any_ `u`, then the comnplement of a set `S` is the difference between `U` and `S`.
 
 [complement]: https://en.wikipedia.org/wiki/Complement_(set_theory)
 
@@ -4538,7 +4538,7 @@ verifyEvaluate('¬(.*Reggie )Braithwaite.*', levelTwoExpressions, {
   //=> All 6 tests passing
 ```
 
-`complement` can surprsie the unwary. The expression `¬(.*Reggie )Braithwaite.*` matches strings containing `Braithwaite` but not `Reggie Braithwaite`. But if we expect `.*¬(Reggie )Braithwaite.*`, to do the same thing, we'll be unpleasantly surprised:
+`complement` can surprise the unwary. The expression `¬(.*Reggie )Braithwaite.*` matches strings containing `Braithwaite` but not `Reggie Braithwaite`. But if we expect `.*¬(Reggie )Braithwaite.*`, to do the same thing, we'll be unpleasantly surprised:
 
 ```javascript
 verifyEvaluate('.*¬(Reggie )Braithwaite.*', levelTwoExpressions, {
@@ -4558,7 +4558,7 @@ The reason this failed is because the three "clauses" of our level two regular e
 2. `¬(Reggie )` matched '' (also known as `ε`);
 3. `Braithwaite.*` matched `Braithwaite`.
 
-That's why we need to write our clause as `¬(.* Reggie )` if we are tryingto exclude the symbols `Reggie ` appearing just before `Braithwaite`. For similar reasons, the expression `¬(a|b|c)` is **not** equivalent to the `[^abc]` character class from regex syntax. Not only will the empty string match that expression, but so will strings longer than one!
+That's why we need to write our clause as `¬(.* Reggie )` if we are trying to exclude the symbols `Reggie ` appearing just before `Braithwaite`. For similar reasons, the expression `¬(a|b|c)` is **not** equivalent to the `[^abc]` character class from regex syntax. Not only will the empty string match that expression, but so will strings longer than one!
 
 If we want to emulate `[^abc]`, we want the intersection of `.`, which matches exactly one symbol, and `¬(a|b|c)`, which matches any expression except `a` or `b` or `c`, like this: `.∩¬(a|b|c)`:
 
