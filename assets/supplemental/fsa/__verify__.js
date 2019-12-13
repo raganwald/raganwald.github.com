@@ -987,8 +987,6 @@ function shuntingYard (
     }
   }
 
-  console.log({ outputQueue });
-
   return outputQueue;
 }
 
@@ -2831,6 +2829,9 @@ function difference (a, b) {
 const complement =
   s => difference(zeroOrMore(anySymbol()), s);
 
+const characterComplement =
+  s => intersection(anySymbol(), complement(s));
+
 const levelTwoExpressions = {
   operators: {
     // formal regular expressions
@@ -2924,6 +2925,12 @@ const levelTwoExpressions = {
       type: 'prefix',
       precedence: 40,
       fn: complement
+    },
+    '^': {
+      symbol: Symbol('^'),
+      type: 'prefix',
+      precedence: 50,
+      fn: characterComplement
     }
   },
   defaultOperator: '→',
@@ -3013,27 +3020,60 @@ verifyEvaluate('(a|b|c)\\(b|c|d)', levelTwoExpressions, {
 verifyEvaluate('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
-  'The Reg Braithwaiteb': true,
+  'The Reg Braithwaite!': true,
   'The Notorious Reggie Braithwaite': false,
   'Reggie, but not Braithwaite?': true,
   'Is Reggie a Braithwaite?': true
 });
 
-verifyEvaluate('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+verifyEvaluate('(.*\\.*Reggie )Braithwaite.*', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
-  'The Reg Braithwaiteb': true,
+  'The Reg Braithwaite!': true,
   'The Notorious Reggie Braithwaite': false,
   'Reggie, but not Braithwaite?': true,
   'Is Reggie a Braithwaite?': true
 });
 
-verifyEvaluate('¬(.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+verifyEvaluate('¬(.*Reggie )Braithwaite.*', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
-  'The Reg Braithwaiteb': true,
+  'The Reg Braithwaite!': true,
   'The Notorious Reggie Braithwaite': false,
   'Reggie, but not Braithwaite?': true,
   'Is Reggie a Braithwaite?': true
+});
+
+verifyEvaluate('.*¬(Reggie )Braithwaite.*', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaiteb': true,
+  'The Notorious Reggie Braithwaite': true,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
+});
+
+verifyEvaluate('.∩¬(a|b|c)', levelTwoExpressions, {
+  '': false,
+  'a': false,
+  'b': false,
+  'c': false,
+  'd': true,
+  'e': true,
+  'f': true,
+  'ab': false,
+  'abc': false
+});
+
+verifyEvaluate('^(a|b|c)', levelTwoExpressions, {
+  '': false,
+  'a': false,
+  'b': false,
+  'c': false,
+  'd': true,
+  'e': true,
+  'f': true,
+  'ab': false,
+  'abc': false
 });
 

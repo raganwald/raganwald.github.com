@@ -4474,7 +4474,7 @@ Where `intersection` was useful for separating concerns, `difference` is very us
 verifyEvaluate('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
-  'The Reg Braithwaiteb': true,
+  'The Reg Braithwaite!': true,
   'The Notorious Reggie Braithwaite': false,
   'Reggie, but not Braithwaite?': true,
   'Is Reggie a Braithwaite?': true
@@ -4483,7 +4483,7 @@ verifyEvaluate('.*Braithwaite.*\\.*Reggie Braithwaite.*', levelTwoExpressions, {
 verifyEvaluate('(.*\\.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
-  'The Reg Braithwaiteb': true,
+  'The Reg Braithwaite!': true,
   'The Notorious Reggie Braithwaite': false,
   'Reggie, but not Braithwaite?': true,
   'Is Reggie a Braithwaite?': true
@@ -4526,10 +4526,10 @@ const levelTwoExpressions = {
 
 };
 
-verifyEvaluate('¬(.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
+verifyEvaluate('¬(.*Reggie )Braithwaite.*', levelTwoExpressions, {
   'Braithwaite': true,
   'Reg Braithwaite': true,
-  'The Reg Braithwaiteb': true,
+  'The Reg Braithwaite!': true,
   'The Notorious Reggie Braithwaite': false,
   'Reggie, but not Braithwaite?': true,
   'Is Reggie a Braithwaite?': true
@@ -4537,9 +4537,82 @@ verifyEvaluate('¬(.*Reggie )(Braithwaite.*)', levelTwoExpressions, {
   //=> All 6 tests passing
 ```
 
-`complement` can surprsie the unwary. The expression `¬(.*Reggie )(Braithwaite.*)` matches strings containing `Braithwaite` but not `Reggie Braithwaite`. But if we expect `.*¬(Reggie) (Braithwaite.*)`, to do the same thing, we'll be unpleasantly surprised:
+`complement` can surprsie the unwary. The expression `¬(.*Reggie )Braithwaite.*` matches strings containing `Braithwaite` but not `Reggie Braithwaite`. But if we expect `.*¬(Reggie )Braithwaite.*`, to do the same thing, we'll be unpleasantly surprised:
 
+```javascript
+verifyEvaluate('.*¬(Reggie )Braithwaite.*', levelTwoExpressions, {
+  'Braithwaite': true,
+  'Reg Braithwaite': true,
+  'The Reg Braithwaite!': true,
+  'The Notorious Reggie Braithwaite': false,
+  'Reggie, but not Braithwaite?': true,
+  'Is Reggie a Braithwaite?': true
+});
+  //=> 1 tests failing: fail: {"example":"The Notorious Reggie Braithwaite","expected":false,"actual":true}
+```
 
+The reason this failed is because the three "clauses" of our level two regular expression matched something like the following:
+
+1. `.*` matched `The Notorious Reggie `;
+2. `¬(Reggie )` matched '' (also known as `ε`);
+3. `Braithwaite.*` matched `Braithwaite`.
+
+That's why we need to write our clause as `¬(.* Reggie )` if we are tryingto exclude the symbols `Reggie ` appearing just before `Braithwaite`. For similar reasons, the expression `¬(a|b|c)` is **not** equivalent to the `[^abc]` character class from regex syntax. Not only will the empty string match that expression, but so will strings longer than one!
+
+If we want to emulate `[^abc]`, we want the intersection of `.`, which matches exactly one symbol, and `¬(a|b|c)`, which matches any expression except `a` or `b` or `c`, like this: `.∩¬(a|b|c)`:
+
+```javascript
+verifyEvaluate('.∩¬(a|b|c)', levelTwoExpressions, {
+  '': false,
+  'a': false,
+  'b': false,
+  'c': false,
+  'd': true,
+  'e': true,
+  'f': true,
+  'ab': false,
+  'abc': false
+});
+  //=> All 9 tests passing
+```
+
+That's handy, let's make it an operator as well:
+
+```javascript
+const characterComplement =
+  s => intersection(anySymbol(), complement(s));
+
+const levelTwoExpressions = {
+  operators: {
+
+    // ... other operators  ...
+
+    '^': {
+      symbol: Symbol('^'),
+      type: 'prefix',
+      precedence: 50,
+      fn: characterComplement
+    }
+
+  }
+
+  // ... other configuration ...
+
+};
+
+verifyEvaluate('^(a|b|c)', levelTwoExpressions, {
+  '': false,
+  'a': false,
+  'b': false,
+  'c': false,
+  'd': true,
+  'e': true,
+  'f': true,
+  'ab': false,
+  'abc': false
+});
+  //=> All 9 tests passing
+```
 
 ---
 
