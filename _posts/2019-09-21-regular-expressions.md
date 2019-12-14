@@ -240,7 +240,9 @@ Along the way, we'll look at other tools that make regular expressions more conv
 [Implementing Level One Features](#implementing-level-one-features)
 
   - [implementing quantification operators with transpilation](#implementing-quantification-operators-with-transpilation)
+  - [implementing the dot operator](#implementing-the-dot-operator)
   - [implementing shorthand character classes](#implementing-shorthand-character-classes)
+  - [eschewing transpilation](#eschewing-transpilation)
 
 [Implementing Level Two Features](#implementing-level-two-features)
 
@@ -3926,19 +3928,11 @@ Note that the postfix operators `?` and `+` are associated with functions that c
 
 ---
 
-### implementing shorthand character classes
+### implementing the dot operator
 
-In addition to convenient operators like `?` and `+`, regexen also provide character classes to make regexen easy to write and read. There are two kinds of character classes:
+Regexen provide a convenient shorthand--`.`--for an expression matching any one symbol. This is often used in conjunction with quantification, so `.?` is an expression matching zero or one symbols, `.+` is an expression matching one or more symbols, and `.*` is an expression matching zero or more symbols.
 
-- Custom character classes, such as `[abc]`, and;
-- The dot operator--`.`--representing any character, and;[^dotcc]
-- Shorthand character classes, such as `\d`, `\w`, and `\s`.
-
-[^dotcc]: Technically, the dot operator isn't called a "character class," but in our implementation it works exactly like a character class, so we're implementing it here.
-
-Custom character classes aren't difficult to implement on the transpilation side, but modifying our infix-to-postfix parser to support them would get gnarly enough that we'd probably have to go out and start using a "real" parser. Which would be appropriate for a production engine, but a distraction for our exploration.
-
-So we'll skip custom character classes and implement the dot operator first. All regular languages are associated with some kind of total alphabet representing all of the possible symbols in the language. Regexen have the idea of a total alphabet as well, but it's usually implied to be whatever the underlying platform supports as characters.
+Implementing `.` is straightforward. All regular languages are associated with some kind of total alphabet representing all of the possible symbols in the language. Regexen have the idea of a total alphabet as well, but it's usually implied to be whatever the underlying platform supports as characters.
 
 For our code, we need to make it explicit, for example:
 
@@ -3975,7 +3969,13 @@ const dotExpr =
 
 There are, of course, more compact (and faster) ways to implement this if we were writing a regular expression engine from the ground up, but since the computer is doing all the work for us, let's carry on.
 
-Next, we'll implement shorthand character classes. In regexen, instead of associating shorthand character classes with their own symbols, the regexen syntax overloads the escape character `\` so that it usually means "Match this character as a character, ignoring any special meaning," but sometimes--as with `\d`, `\w`, and with `\s`--it means "match this shorthand character class."
+---
+
+### implementing shorthand character classes
+
+In addition to convenient operators like `?` and `+`, regexen also shorthand character classes--such as `\d`, `\w`, and `\s--to make regexen easy to write and read.
+
+In regexen, instead of associating shorthand character classes with their own symbols, the regexen syntax overloads the escape character `\` so that it usually means "Match this character as a character, ignoring any special meaning," but sometimes--as with `\d`, `\w`, and with `\s`--it means "match this shorthand character class."
 
 Fortunately, we left a back-door in our shunting yard function just for the purpose of overloading the escape character's behaviour. Here's the full configuration:
 
@@ -4070,7 +4070,7 @@ const transpile1to0qs = {
 };
 ```
 
-As you can see, we don't have any operators, but we do support using back-ticks with `d`, `w`, and `s` just like with regexen:
+As you can see, we don't allow writing one-symbol operators, but we do support using back-ticks with `d`, `w`, and `s` just like with regexen:
 
 ```javascript
 const beforeLevel1qs = '((1( |-))?`d`d`d( |-))?`d`d`d( |-)`d`d`d`d';
@@ -4085,7 +4085,13 @@ verifyEvaluate(afterLevel1qs, formalRegularExpressions, {
   '1 416-555-0123': true,
   '011-888-888-8888!': false
 });
-````
+```
+
+Excellent!
+
+---
+
+### eschewing transpilation
 
 There are lots of other regexen features we can implement using this transpilation technique,[^times] but here is our general approach: *Once we've demonstrated that a particular feature* ***can*** be implemented using transpilation to a formal regular expression, we'll go ahead and implement it directly as a function*.
 
@@ -4558,7 +4564,7 @@ The reason this failed is because the three "clauses" of our level two regular e
 2. `¬(Reggie )` matched '' (also known as `ε`);
 3. `Braithwaite.*` matched `Braithwaite`.
 
-That's why we need to write our clause as `¬(.* Reggie )` if we are trying to exclude the symbols `Reggie ` appearing just before `Braithwaite`. For similar reasons, the expression `¬(a|b|c)` is **not** equivalent to the `[^abc]` character class from regex syntax. Not only will the empty string match that expression, but so will strings longer than one!
+That's why we need to write our clause as `¬(.* Reggie )` if we are trying  to exclude the symbols `Reggie ` appearing just before `Braithwaite`. For similar reasons, the expression `¬(a|b|c)` is **not** equivalent to the `[^abc]` character class from regex syntax. Not only will the empty string match that expression, but so will strings longer than one!
 
 If we want to emulate `[^abc]`, we want the intersection of `.`, which matches exactly one symbol, and `¬(a|b|c)`, which matches any expression except `a` or `b` or `c`, like this: `.∩¬(a|b|c)`:
 
