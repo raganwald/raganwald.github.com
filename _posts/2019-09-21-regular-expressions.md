@@ -242,6 +242,7 @@ Along the way, we'll look at other tools that make regular expressions more conv
   - [implementing quantification operators with transpilation](#implementing-quantification-operators-with-transpilation)
   - [implementing the dot operator](#implementing-the-dot-operator)
   - [implementing shorthand character classes](#implementing-shorthand-character-classes)
+  - [thoughts about custom character classes](#thoughts-about-custom-character-classes)
   - [eschewing transpilation](#eschewing-transpilation)
 
 [Implementing Level Two Features](#implementing-level-two-features)
@@ -4088,6 +4089,20 @@ verifyEvaluate(afterLevel1qs, formalRegularExpressions, {
 ```
 
 Excellent!
+
+---
+
+### thoughts about custom character classes
+
+regexen allow users to define their own character classes "on the fly." In a regex, `[abc]` is an expression matching an `a`, a `b`, or a `c`. In that form, it means exactly the same thing as `(a|b|c)`. Custom character classes enable us to write `gr[ae]y` to match `grey` and `gray`, which saves us one character as compared to writing `gr(a|e)y`.
+
+If that's all they did, they would add very little value: They're only slightly more compact, and they add the cognitive load of embedding an irregular kind of syntax inside of regular expressions.
+
+But custom character classes add some other affordances. We can write `[a-f]` as a shorthand for `(a|b|c|d|e|f)`, or `[0-9]` as a shorthand for `(0|1|2|3|4|5|6|7|8|9)`. We can combine those affordances, e.g. we can write `[0-9a-fA-F]` as a shorthand for `(0|1|2|3|4|5|6|7|8|9|a|b|c|d|e|f|A|B|C|D|E|F)`. That is considerably more compact, and arguably communicates the intent of matching a hexadecimal character more cleanly.
+
+And if we preface our custom character classes with a `^`, we can match a character that is not a member of the character class, e.g. `[^abc]` matches any character _except_ an `a`, `b`, or `c`. That can be enormously useful.
+
+Custom character classes are a language within a language. However, implementing the full syntax would be a grand excursion into parsing the syntax, while the implementation of the character classes would not be particularly interesting. We will, however, be visiting the subject of negating expressions when we discuss level two functionality. We will develop an elegant way to achieve expressions like `[^abc]` with the syntax `^(a|b|c)`, and we'll also develop the `¬` prefix operator that will work with any expression.
 
 ---
 
