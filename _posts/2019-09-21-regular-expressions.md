@@ -1,4 +1,4 @@
----
+  ---
 title: "Regular Expressions (And not just *those* Regular Expressions!)"
 tags: [recursion,allonge,mermaid,wip]
 ---
@@ -3580,25 +3580,25 @@ Thus, all regexen provide functionality above and beyond formal regular expressi
 
 ### a hierarchy of regex functionality
 
-Functionality in regexen can be organized into a rough hierarchy. The base, or "Level 0" of the hierarchy is functionality provided by formal regular expressions. Everything we've written so far is at this base level.
+Functionality in regexen can be organized into a rough hierarchy. Level Zero of the hierarchy is functionality provided by formal regular expressions. Everything we've written so far is at this base level.
 
-Level 1 of the hierarchy is functionality that can be directly implemented in terms of formal regular expressions. For example, regexen provide a `?` postfix operator that provides "zero or one" quantification, and a `+` postfix operator that provides "one or more" quantification.
+Level One of the hierarchy is functionality that can be directly implemented in terms of formal regular expressions. For example, regexen provide a `?` postfix operator that provides "zero or one" quantification, and a `+` postfix operator that provides "one or more" quantification.
 
 As we know from our implementation of the kleene star, "zero or one" can be implemented in a formal regular expression very easily. If `a` is a regular expression, `ε|a` is a regular expression that matches zero or one sentences that `a` accepts. So intuitively, a regex flavour that supports the expression `a?` doesn't do anything we couldn't have done by hand with `ε|a`
 
 The same reasoning goes for `+`: If we have the kleene star (which ironically we implemented on top of one-or-more), we can always express "one or more" using catenation and the kleene star. If `a` is a regular expression, `aa*` is a regular expression that matches one or more sentences that `a` accepts. Again, a regex flavour supports the expression `a+` doesn't do anything we couldn't have done by hand with `aa*`.
 
-Level 2 of the hierarchy is functionality that cannot be directly implemented in terms of formal regular expressions, however it still compiles to finite-state recognizers. As we mentioned in the prelude, and will show later, for every finite-state recognizer, there is an equivalent formal regular expression.
+Level Two of the hierarchy is functionality that cannot be directly implemented in terms of formal regular expressions, however it still compiles to finite-state recognizers. As we mentioned in the prelude, and will show later, for every finite-state recognizer, there is an equivalent formal regular expression.
 
 So if a particular piece of functionality can be implemented as a finite-state recognizer, then it certainly can be implemented in terms of a formal regular expression, however compiling an expression to a finite-state machine and then deriving an equivalent formal regular expression is "going the long way 'round," and thus we classify such functionality as being directly implemented as a finite-state recognizer, and only indirectly implemented in terms of formal regular expressions.
 
-Examples of level 2 functionality include complementation (if `a` is a regular expression, `¬a` is an expression matching any sentence that `a` does not match) and intersection (if `a` and `b` are regular expressions, `a∩b` is an expression matching any sentence that both `a` and `b` match).
+Examples of Level Two functionality include complementation (if `a` is a regular expression, `¬a` is an expression matching any sentence that `a` does not match), and intersection (if `a` and `b` are regular expressions, `a∩b` is an expression matching any sentence that both `a` and `b` match).
 
 ### beyond our hierarchy
 
 There are higher levels of functionality, however they involve functionality that cannot be implemented with finite-state recognizers.
 
-The [Chomsky–Schützenberger hierarchy] categorizes grammars from Type-3 to Type-0. Type-3 grammars define regular languages. They can be expressed with formal regular expressions and recognized with finite-state recognizers. Our Level 0, level 1, and level 2 functionalities do not provide any additional power to recognize Type-2, Type-1, or Type-0 grammars.
+The [Chomsky–Schützenberger hierarchy] categorizes grammars from Type-3 to Type-0. Type-3 grammars define regular languages. They can be expressed with formal regular expressions and recognized with finite-state recognizers. Our Level Zero, Level One, and Level Two functionalities do not provide any additional power to recognize Type-2, Type-1, or Type-0 grammars.
 
 [Chomsky–Schützenberger hierarchy]: https://en.wikipedia.org/wiki/Chomsky_hierarchyhttps://en.wikipedia.org/wiki/Chomsky_hierarchy
 
@@ -3610,7 +3610,7 @@ In addition to features that enable regexen to recognize languages beyond the ca
 
 ## Implementing Level One Features
 
-As mentioned, the `?` and `+` operators from regexen can be implemented as "Level 1" functionality. `a?` can be expressed as `ε|a`, and `a+` can be expressed as `aa*`.
+As mentioned, the `?` and `+` operators from regexen can be implemented as "Level One" functionality. `a?` can be expressed as `ε|a`, and `a+` can be expressed as `aa*`.
 
 The easiest way to implement these new operators is to write new operator functions. Let's begin by extending our existing operators:
 
@@ -3644,38 +3644,8 @@ function dup (a) {
 
 const extended = {
   operators: {
-    // formal regular expressions
 
-    '∅': {
-      symbol: Symbol('∅'),
-      type: 'atomic',
-      fn: emptySet
-    },
-    'ε': {
-      symbol: Symbol('ε'),
-      type: 'atomic',
-      fn: emptyString
-    },
-    '|': {
-      symbol: Symbol('|'),
-      type: 'infix',
-      precedence: 10,
-      fn: union2merged
-    },
-    '→': {
-      symbol: Symbol('→'),
-      type: 'infix',
-      precedence: 20,
-      fn: catenation2
-    },
-    '*': {
-      symbol: Symbol('*'),
-      type: 'postfix',
-      precedence: 30,
-      fn: zeroOrMore
-    },
-
-    // extended operators
+    // ...existing operators...
 
     '?': {
       symbol: Symbol('?'),
@@ -3720,9 +3690,9 @@ Instead of appealing to intuition, instead of asking people to believe that `uni
 
 ### implementing quantification operators with transpilation
 
-We demonstrated that there is a finite-state recognizer for every formal regular expression by writing a function to compile formal regular expressions into finite-state recognizers. We will take the same approach of demonstrating that there is a Level 0 (a/k/a "formal") regular expression for every Level 1 (a/k/a extended) regular expression:
+We demonstrated that there is a finite-state recognizer for every formal regular expression by writing a function to compile formal regular expressions into finite-state recognizers. We will take the same approach of demonstrating that there is a Level Zero (a/k/a "formal") regular expression for every Level One (a/k/a extended) regular expression:
 
-We'll write a function to compile Level 1 to Level 0 regular expressions. And we'll begin with our evaluator.
+We'll write a function to compile Level One to Level Zero regular expressions. And we'll begin with our evaluator.
 
 Recall that our basic evaluator can compile an infix expression into a postfix list of symbols, which it then evaluates. But it knows nothing about what its operators do. If we supply operators that perform arithmetic, we have a calculator. If we supply operators that create and combine finite-state recognizers, we have a regular-expression to finite-state recognizer compiler.
 
@@ -3867,9 +3837,12 @@ Implementing `.` is straightforward. All regular languages are associated with s
 For our code, we need to make it explicit, for example:
 
 ```javascript
-const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+const ALPHA =
+  'abcdefghijklmnopqrstuvwxyz' +
+  'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const DIGITS = '1234567890';
-const PUNCTUATION = `~!@#$%^&*()_+=-\`-={}|[]\\:";'<>?,./`;
+const PUNCTUATION =
+  `~!@#$%^&*()_+=-\`-={}|[]\\:";'<>?,./`;
 const WHITESPACE = ' \t\r\n';
 
 const TOTAL_ALPHABET = ALPHA + DIGITS + PUNCTUATION + WHITESPACE;
@@ -3912,9 +3885,12 @@ Fortunately, we left a back-door in our shunting yard function just for the purp
 ```javascript
 const UNDERSCORE ='_';
 
-const digitsExpression = DIGITS.split('').join('|');
-const wordExpression = (ALPHA + DIGITS + UNDERSCORE).split('').join('|');
-const whitespaceExpression = WHITESPACE.split('').join('|');
+const digitsExpression =
+  DIGITS.split('').join('|');
+const wordExpression =
+  (ALPHA + DIGITS + UNDERSCORE).split('').join('|');
+const whitespaceExpression =
+  WHITESPACE.split('').join('|');
 
 const digitsSymbol = Symbol('`d');
 const wordSymbol = Symbol('`w');
@@ -4037,11 +4013,11 @@ Custom character classes are a language within a language. However, implementing
 
 ### eschewing transpilation
 
-There are lots of other regexen features we can implement using this transpilation technique,[^times] but here is our general approach: *Once we've demonstrated that a particular feature* ***can*** be implemented using transpilation to a formal regular expression, we'll go ahead and implement it directly as a function*.
+There are lots of other regexen features we can implement using this transpilation technique,[^times] but having implemnted a feature using transpilation, we've demonstarted that it provides not functional advantage over formal regular expressions. Having done so, we can return to implementing the features directly in JavaScript, which saves addinga transpilation step to our evaluator.
 
 [^times]: If you feel like having a go at one more, try implementing another quantification operator, explicit repetition. In many regexen flavours, we can write `(expr){5}` to indicate we wish to match `(expr)(expr)(expr)(expr)(expr)`. The syntax allows other possibilities, such as `(expr){2,3}` and `(expr){3,}`, but ignoring those, the effect of `(expr){n}` for any `n` from 1 to 9 could be emulated with an infix operator, such as `⊗`, so that `(expr)⊗5` would be transpiled to `(expr)(expr)(expr)(expr)(expr)`.
 
-So we'll wrap up with:
+So we'll wrap Level One up with:
 
 ```javascript
 const zeroOrOne =
@@ -4143,13 +4119,13 @@ const levelOneExpressions = {
 };
 ```
 
-And now it's time to look at implementing Level 2 features.
+And now it's time to look at implementing Level Two features.
 
 ---
 
 ## Implementing Level Two Features
 
-Let's turn our attention to extending regular expressions with features that cannot be implemented with simple transpilation. We begin my revisiting our implementation of `union2`:
+Let's turn our attention to extending regular expressions with features that cannot be implemented with simple transpilation. We begin by revisiting `union2`:
 
 ```javascript
 function productOperation (a, b, setOperator) {
@@ -4199,7 +4175,9 @@ function union2merged (a, b) {
 }
 ```
 
-We recall that the above code takes the product of two recognizers, and then computes the accepting states for the product from the union of the accepting states of the two recognizers. Let's refactor, and extract the set union:
+We recall that the above code takes the product of two recognizers, and then computes the accepting states for the product from the union of the accepting states of the two recognizers.
+
+Let's refactor, and extract the set union:
 
 ```javascript
 function productOperation (a, b, setOperator) {
@@ -4291,7 +4269,7 @@ verifyEvaluate('(a|b|c)∪(b|c|d)', levelTwoExpressions, {
   //=> All 5 tests passing
 ```
 
-It does exactly what our original union2merged function does, as we expect. But now that we've extracted the set *union* operation, what if we substitute a different set operation?
+It does exactly what our original `union2merged` function does, as we expect. But now that we've extracted the set *union* operation, what if we substitute a different set operation?
 
 ---
 
@@ -4488,7 +4466,7 @@ verifyEvaluate('¬(.*Reggie )Braithwaite.*', levelTwoExpressions, {
   //=> All 6 tests passing
 ```
 
-`complement` can surprise the unwary. The expression `¬(.*Reggie )Braithwaite.*` matches strings containing `Braithwaite` but not `Reggie Braithwaite`. But if we expect `.*¬(Reggie )Braithwaite.*`, to do the same thing, we'll be unpleasantly surprised:
+`complement` can surprise the unwary. The expression `¬(.*Reggie )Braithwaite.*` matches strings containing `Braithwaite` but not `Reggie Braithwaite`. But if we expect `.*¬(Reggie )Braithwaite.*` to do the same thing, we'll be unpleasantly surprised:
 
 ```javascript
 verifyEvaluate('.*¬(Reggie )Braithwaite.*', levelTwoExpressions, {
@@ -4505,12 +4483,14 @@ verifyEvaluate('.*¬(Reggie )Braithwaite.*', levelTwoExpressions, {
 The reason this failed is because the three "clauses" of our level two regular expression matched something like the following:
 
 1. `.*` matched `The Notorious Reggie `;
-2. `¬(Reggie )` matched '' (also known as `ε`);
+2. `¬(Reggie )` matched `''` (also known as `ε`);
 3. `Braithwaite.*` matched `Braithwaite`.
 
-That's why we need to write our clause as `¬(.* Reggie )` if we are trying  to exclude the symbols `Reggie ` appearing just before `Braithwaite`. For similar reasons, the expression `¬(a|b|c)` is **not** equivalent to the `[^abc]` character class from regex syntax. Not only will the empty string match that expression, but so will strings longer than one!
+That's why we need to write our clause as `¬(.* Reggie )` if we are trying to exclude the symbols `Reggie ` appearing just before `Braithwaite`. For similar reasons, the expression `¬(a|b|c)` is **not** equivalent to the `[^abc]` character class from regex syntax. Not only will the empty string match that expression, but so will strings longer than with more than one symbol.
 
-If we want to emulate `[^abc]`, we want the intersection of `.`, which matches exactly one symbol, and `¬(a|b|c)`, which matches any expression except `a` or `b` or `c`, like this: `.∩¬(a|b|c)`:
+If we want to emulate `[^abc]`, we want the intersection of `.`, which matches exactly one symbol, and `¬(a|b|c)`, which matches any expression except `a` or `b` or `c`.
+
+We can represent `[^abc]` with `.∩¬(a|b|c)`:
 
 ```javascript
 verifyEvaluate('.∩¬(a|b|c)', levelTwoExpressions, {
@@ -4527,7 +4507,7 @@ verifyEvaluate('.∩¬(a|b|c)', levelTwoExpressions, {
   //=> All 9 tests passing
 ```
 
-That's handy, let's make it an operator as well:
+That's handy, so let's make it an operator:
 
 ```javascript
 const characterComplement =
@@ -4564,6 +4544,30 @@ verifyEvaluate('^(a|b|c)', levelTwoExpressions, {
 });
   //=> All 9 tests passing
 ```
+
+The syntax `^(a|b|c)` is close enough to `[^abc]` for our purposes.
+
+---
+
+### the results and limitations of level two features
+
+The Level Two features we've implemented are useful, and they demonstrate some important results:
+
+We already know that:
+
+- if `x` is a finite state recognizer that recognzies sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` belongs to either `X` or `Y`. We demonstrated this by writing functions like `union2` that take `x` and `y` as arguments and return `z`.
+- if `x` is a finite state recognizer that recognzies sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `ab` belongs to `Z` if and only if `a` belongs to `X` and `b` belongs to `Y`. We demonstrated this by writing the function `catenation2` that takes `x` and `y` as arguments and returns `z`.
+- if `x` is a finite state recognizer that recognzies sentences in the language `X`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `ab` belongs to `Z` if and only if `a` is either the empty string or a sentence belonging to `X, and `b` is a sentence belonging to `Z`. We demonstrated this by writing the function `zeroOrMore` that takes `x` as an argument and returns `z`.
+
+These three results tell us that the set of finite-state recognizers is closed under alternation, catenation, and quantification.
+
+Implementing our Level Two features has also demonstrated that:
+
+- if `x` is a finite state recognizer that recognzies sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` belongs to both `X` and `Y`. We demonstrated this by writing the function `intersection` that takes `x` and `y` as arguments and returns `z`.
+- if `x` is a finite state recognizer that recognzies sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` belongs to `X` and `a` does not belong to `Y`. We demonstrated this by writing the function `difference` that takes `x` and `y` as arguments and returns `z`.
+- if `x` is a finite state recognizer that recognzies sentences in the language `X`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` does not belong to `X. We demonstrated this by writing the function `complement` that takes `x` as an argument and returns `z`.
+
+These three results also tell us that the set of finite-state recognizers is closed under intersection, difference, and complementation.
 
 ---
 
