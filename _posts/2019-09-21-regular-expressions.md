@@ -74,7 +74,7 @@ Regexen add a lot more affordances like character classes, the dot operator, dec
 
 ### what will we explore in this essay?
 
-In this essay we will explore a number of important results concerning regular expressions, regular languages, and finite-state automata:
+In this essay we will explore a number of important results concerning regular expressions, regular languages, and finite-state automata, such as:
 
   - For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions.
   - For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
@@ -83,84 +83,13 @@ In this essay we will explore a number of important results concerning regular e
   - Every regular language can be recognized by a finite-state recognizer.
   - If a finite-state automaton recognizes a language, that language is regular.
 
-All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. What makes this essay slightly novel is that instead of focusing on formal proofs, we will focus on informal _demonstrations_.
+All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. In this essay, we will demonostrate these results in a [constructive proof] style. for example, to demonstrate that for every formal regular expression, there exists an equivalent finite-state recognizer, we will construct a function that takes a formal regular expression and returns an equivalent finite-state recognizer.
 
-A demonstration aims to appeal to intuition, rather than formal reasoning. For example, the canonical proof that "If a finite-state automaton recognizes a language, that language is regular" runs along the following lines:[^cs390]
+[constructive proof]: https://en.wikipedia.org/wiki/Constructive_proof
 
-[cs390]: This explanation of the proof is taken from Shunichi Toida's notes for [CS390 Introduction to Theoretical Computer Science Structures ](https://www.cs.odu.edu/~toida/courses/TE.CS390.13sp/index.html). The proof of this aspect of Kleene's Theorem can be found [here](https://www.cs.odu.edu/~toida/nerzic/390teched/regular/fa/kleene-2.html).
+We'll also look at various extensions to formal regular languages that make it easier to write regular expressions. Some--like `+` and `?`--will mirror existing regex features, while others--like `intersection`, `difference`, and `complement`--do not have sirect regex equivalents.
 
-> Given a finite automaton, first relabel its states with the integers 1 through n, where n is the number of states of the finite automaton. Next denote by L(p, q, k) the set of strings representing paths from state p to state q that go through only states numbered no higher than k. Note that paths may go through arcs and vertices any number of times.
-Then the following lemmas hold.
-
-> **Lemma 1**: L(p, q, k+1) = L(p, q, k)  L(p, k+1, k)L(k+1, k+1, k)*L(k+1, q, k) .
-
-> What this lemma says is that the set of strings representing paths from p to q passing through states labeled with k+1 or lower numbers consists of the following two sets:
-> 1. L(p, q, k) : The set of strings representing paths from p to q passing through states labeled with k or lower numbers.
-> 2. L(p, k+1, k)L(k+1, k+1, k)*L(k+1, q, k) : The set of strings going first from p to k+1, then from k+1 to k+1 any number of times, then from k+1 to q, all without passing through states labeled higher than k.
-
-> ![Illustrating Kleene's Theorem © Shunichi Toida](/assets/images/fsa/kleene2.jpg)
-
-> **Lemma 2**: L(p, q, 0) is regular.
-
-> **Proof**: L(p, q, 0) is the set of strings representing paths from p to q without passing any states in between. Hence if p and q are different, then it consists of single symbols representing arcs from p to q. If p = q, then  is in it as well as the strings representing any loops at p (they are all single symbols). Since the number of symbols is finite and since any finite language is regular, L(p, q, 0) is regular.
-
-> From Lemmas 1 and 2 by induction the following lemma holds.
-
-> **Lemma 3**: L(p, q, k) is regular for any states p and q and any natural number k.
-
-> Since the language accepted by a finite automaton is the union of L(q0, q, n) over all accepting states q, where n is the number of states of the finite automaton, we have the following converse of the part 1 of Kleene Theorem.
-
-> **Theorem 2** (Part 2 of Kleene's Theorem): **Any language accepted by a finite automaton is regular**.
-
-The above proof takes the approach of describing--in words and diagrams--an algorithm.[^algo] Given any finite-state automaton that recognizes a language, this algorithm produces an equivalent regular expression. Froma  programmer's perspective, if you want to prove taht for any `A`, there is an equivalent `B`, writing a working `A --> B` compiler is a very powerful demonstration..
-
-[^algo]: Lots of proofs attest to the existence of some thing, but not all are algorithms for actually finding/making the thing they attest exists. For example, there is a proof that a standard Rubik's Cube can be solved with at most 20 moves, although nobody has yet developed an algorithm to find the 20 (or fewer) move solution for any cube.
-
-Of course, algorithms described in words and diagrams have the advantage of being universal, like pseudo-code. But the disadvantage of algorithms described in words and diagrams is that we can't play with them, optimize them, and learn by doing. For example, here is the core of the above proof, expressed as an algorithm (the complete code is [here](/assetssupplemental/fsa/13-regular-expression.js))
-
-```javascript
-function L (p, q, k) {
-  if (k === 0) {
-    // degenerate case, doesn't go through any other states
-    // just look for direct transitions
-    const pqTransitions = transitions.filter(
-      ({ from, to }) => from === stateList[p] && to === stateList[q]
-    );
-
-    const pqDirectExpressions =
-      pqTransitions.map(
-        ({ consume }) => quote(consume)
-      );
-
-    if (p === q) {
-      return unionOf('ε',  ...pqDirectExpressions);
-    } else {
-      return unionOf(...pqDirectExpressions);
-    }
-  } else {
-    const pq = L(p, q, k-1);
-
-    const pk = L(p, k, k-1);
-    const kk = kleeneStarOf(L(k, k, k-1));
-    const kq = L(k, q, k-1);
-    const pkkq = catenationOf(pk, kk, kq);
-
-    const pqMaybeThroughK = unionOf(pq, pkkq);
-
-    return pqMaybeThroughK;
-  }
-}
-```
-
-Writing the algorithm in JavaScript helps our brains engage with the algorithm more deeply, and we can move on to expand on it as we see fit.
-
-In this essay, we won't just discuss why certain things are known to be true, we will emphasize writing algorithms in JavaScript that demonstrate that these things are true. Most specifically...
-
-1. We will write algorithms to compute the `union`, `intersection`, `catenation`, and `kleene*` of finite-state automata, demonstrating that the set of finite-state automata is closed under these operations.
-2. We will write algorithms for translating a regular expression into an equivalent finite-state automaton, demonstrating that for every regular expression there is an equivalent finite-state automation.
-3. As noted above, we will also write an algorithm for translating a finite-state automaton into an equivalent regular expression, demonstrating that for every finite-state automaton there is an equivalent regular expression.
-
-Along the way, we'll look at other tools that make regular expressions more convenient to work with.
+When we're finished, we'll know a lot more about regular expressions and pattern matching. So let's get started!
 
 ---
 
