@@ -334,7 +334,10 @@ const pp = value => value instanceof Array ? value.map(x => x.toString()) : valu
 
 function verify(fn, tests, ...additionalArgs) {
   try {
-    const testList = Object.entries(tests);
+    const testList =
+      typeof tests.entries === 'function'
+        ? [...tests.entries()]
+        : Object.entries(tests);
     const numberOfTests = testList.length;
 
     const outcomes = testList.map(

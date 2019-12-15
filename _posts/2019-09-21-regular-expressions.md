@@ -180,6 +180,10 @@ When we're finished, we'll know a lot more about regular expressions and pattern
   - [difference](#difference)
   - [complement](#complement)
 
+[What Level Two Features Tell Us, and What They Don't](#what-level-two-features-tell-us-and-what-they-dont)
+
+### [For Every Finite-State Recognizer, There Exists An Equivalent Formal Regular Expression](#for-every-finite-state-recognizer,-there-exists-an-equivalent-formal-regular-expression-1)
+
 ---
 
 # Our First Goal: "For every regular expression, there exists an equivalent finite-state recognizer"
@@ -4549,7 +4553,7 @@ The syntax `^(a|b|c)` is close enough to `[^abc]` for our purposes.
 
 ---
 
-### the results and limitations of level two features
+## What Level Two Features Tell Us, and What They Don't
 
 The Level Two features we've implemented are useful, and they demonstrate some important results:
 
@@ -4568,6 +4572,210 @@ Implementing our Level Two features has also demonstrated that:
 - if `x` is a finite state recognizer that recognzies sentences in the language `X`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` does not belong to `X. We demonstrated this by writing the function `complement` that takes `x` as an argument and returns `z`.
 
 These three results also tell us that the set of finite-state recognizers is closed under intersection, difference, and complementation.
+
+Writing Level Three features does come with a known limitation. Obviously, we can translate any Level Three regular expression into a finite-state recognizer. This tells us that the set of languages defined by Level Three regular expressions is a subset of the set of languages recognized by finte-state recognizers.
+
+But what we don't know is whether the set of languages defined by Level Three regular expressions is a _equivalent to_ the set of languages defined by formal regular expressions. We don't have an algorithm for translating Level Three regular expressions to Level Zero regular expressions. Given what we have explored so far, it is possible that the set of languages recognized by finite-state recognizers is larger than the set of languages defined by formal regular expressions ("Level Zero").
+
+If that were the case, it could be that some Level Three regular expression compiles to a finite-state recognizer, but there is no Level Zero expression that compiles to an equivalent finite-state recognizer.
+
+How would we know if this were true?
+
+With Level One expressions, we showed that for every Level One expression, there is an equivalent Level Zero expression by writing a Level One to Level Zero transpiler. With Level Two expressions, we'll take a different tack: We'll show that for **every** finite-state recognizer, there is an equivalent Level Zero expression.
+
+If we know that for every finite-state recognizer, there is an equivalent Level Zero expression, and we also know that for every Level Zero expression, there is an equivalent finite-state recognizer, then we know that the set of languages recognized by finite-state recognizers is equal to the set of languages recognized by Level Zero expressions, a/k/a [Regular Languages].
+
+And if we know that for everly Level Two expression, there is an equivalent finite-state recognizer, then it would follow that for every Level two expression, ther is an equivalent Level Zero expression, and it would follow that the set of all languages described by Level Two expressions is the set of regular languages.
+
+---
+
+# For Every Finite-State Recognizer, There Exists An Equivalent Formal Regular Expression
+
+It is time to demonstrate that for every finite-state recognizer, there exists an equivalent formal regular expression. We're going to follow Sttephen Kleene's marvellous proof, very much leaning on Shunichi Toida's excellent notes for [CS390 Introduction to Theoretical Computer Science Structures][CS390] The proof of this aspect of Kleene's Theorem can be found [here][CS390-2].
+
+[CS390]: https://www.cs.odu.edu/~toida/courses/TE.CS390.13sp/index.html
+[CS390-2]: https://www.cs.odu.edu/~toida/nerzic/390teched/regular/fa/kleene-2.html
+
+Our [constructive proof]-like approach will be to write a function that takes as its argument a description of a finite-state recognizer, and returns an equivalent formal regular expression in our syntax. The approach will be an old one in computer science:
+
+For any pair of states (_any_ par implies that both states could be the same state) in a finite-state recognizer, we will find all the paths from one to another, and for each path, we can write a regular expression representing that path usiing catenation. WHen we have more than one path between them, we can combine them together using alternation. We'll explain how quantification comes into that in a moment.
+
+But if we had such a function, we could apply it to the start state and any accepting states, getting a formal regular expression for the paths from teh start state to each accepting state. And if there are mnore than oneaccepting states, we could use alternation to combine the relular expressions into one big regular expression that is equivalent to the finite-state recognizer.
+
+Let's get started writing this in JavaScript. At some point, we're going to need to have an ordering of the states. It doesn't matter how we order them, but we will want them ordered. To simplify the code grealy, we'll begin by translating all the state names into integers from 1 to the number of states.
+
+So we'll take a recognizer like this:
+
+<div class="mermaid">
+  stateDiagram
+    [*] --> start
+    start --> zero : 0
+    start --> notZero : 1
+    notZero --> notZero : 0, 1
+    zero --> [*]
+    notZero --> [*]
+</div>
+
+And turn its description into this:
+
+```json
+{
+  "start": 1,
+  "transitions": [
+    { "from": 1, "consume": "0", "to": 2 },
+    { "from": 1, "consume": "1", "to": 3 },
+    { "from": 3, "consume": "0", "to": 3 },
+    { "from": 3, "consume": "1", "to": 3 }
+  ],
+  "accepting": [ 2, 3 ]
+}
+```
+
+Then it will be a matter of finding the regular expressions for the paths from `1` to `2`, and from `1` to `3`, and taking the union of those paths. We're going to do that with a function we'll call `expression`. Our function will take an argument for the state `from`, another for the state `to`, and a third argument called `via` that we'll explain in a moment.[^nomenclature]
+
+Note that `from`, `to`, and `via` can be _any_ of the states in the recognizer, including being the same state.
+
+[^nomenclature]: In most proofs, this function is called `L`, and its arguments are called `p`, 'q', and `k`. One-character names are terrific when writing proofs by hand using chalk and a blackboard, but we've moved on since 1951 and we'll use descriptive names.
+
+Here's an empty funcction for what we want to begin with:
+
+```javascript
+function numerify (description) {
+  // nota bene: labels all states 1..n
+  const stateList = [undefined].concat([...allStatesFor(description)]);
+  const n = state => stateList.indexOf(state);
+
+  return {
+    start: n(description.start),
+    transitions:
+      description.transitions.map(
+        ({ from, consume, to }) => ({ from: n(from), consume, to: n(to) })
+      ),
+    accepting:
+      description.accepting.map(
+        state => n(state)
+      )
+  }
+}
+
+function regularExpression (description) {
+  const prunedAndNumbered =
+    numerify(
+      reachableFromStart(
+        mergeEquivalentStates(
+          description
+        )
+      )
+    );
+  const {
+    start,
+    transitions,
+    accepting,
+    acceptingSet,
+    stateSet
+  } = validatedAndProcessed(prunedAndNumbered);
+
+  // ...TBD
+
+  function expression({ from, via, to }) {
+    // ... TBD
+  }
+};
+```
+
+Let's get the most degenerate case out of the way first. If a finite-state recognizer has no accepting states, then its formal regular expression is the empty set:
+
+```javascript
+function regularExpression (description) {
+  const prunedAndNumbered =
+    numerify(
+      reachableFromStart(
+        mergeEquivalentStates(
+          description
+        )
+      )
+    );
+  const {
+    start,
+    transitions,
+    accepting
+  } = validatedAndProcessed(prunedAndNumbered);
+
+  if (accepting.length === 0) {
+    return '∅';
+  } else {
+    // ...TBD
+
+    function expression({ from, via, to }) {
+      // ... TBD
+    }
+  }
+};
+
+// ----------
+
+verify(regularExpression, new Map([
+  [emptySet(), '∅']
+]));
+```
+
+Now what if there are accepting states? As described, the final regular expression must represent the union of all the expressions for getting from the start state to each accepting state. Let's fill that in for a moment, deliberately omitting `via`:
+
+```javascript
+function regularExpression (description) {
+  const prunedAndNumbered =
+    numerify(
+      reachableFromStart(
+        mergeEquivalentStates(
+          description
+        )
+      )
+    );
+  const {
+    start,
+    transitions,
+    accepting
+  } = validatedAndProcessed(prunedAndNumbered);
+
+  if (accepting.length === 0) {
+    return '∅';
+  } else {
+    const from = start;
+    const pathExpressions =
+      accepting.map(
+        to => expression({ from, to })
+      );
+    const unionOfPathExpressions =
+      nonEmptyExpressions.reduce(
+        (a, b) => `${p(a)}|${p(b)}`
+      );
+
+    const acceptsEmptyString = accepting.indexOf(start) >= 0;
+
+    if (acceptsEmptyString) {
+      return `ε|${p(unionOfPathExpressions)}`
+    } else {
+      return unionOfPathExpressions;
+    }
+
+    function expression({ from, via, to }) {
+      // ... TBD
+    }
+  }
+};
+```
+
+There's another special case thrown in: Although we haven't written our `expression` function yet, we know that if a finite-state recognizer beins in an accpting state, then it accepts the emprt string, and thus we can take all the other expressions for getting from a start state to an accepting state, and union them with `ε`.
+
+Now how about the `expression` function?
+
+---
+
+### the `expression` function
+
+
+
+
 
 ---
 
