@@ -3153,16 +3153,13 @@ function regularExpression (description) {
     }
 
     function expression({ from, to, viaStates = [...allStates] }) {
-
       if (viaStates.length === 0) {
         const directExpressions =
           transitions
           .filter( ({ from: tFrom, to: tTo }) => from === tFrom && to === tTo )
           .map( ({ consume }) => toValueExpr(consume) );
 
-        const direct = alternateExpr(...directExpressions);
-
-        return direct;
+        return alternateExpr(...directExpressions);
       } else {
         const [via, ...exceptVia] = viaStates;
 
@@ -3221,5 +3218,71 @@ verifyEvaluate(reconstitutedBinaryExpr, formalRegularExpressions, {
   '110': true,
   '111': true,
   '10100011011000001010011100101110111': true
+});
+
+const unionExpr = '(a|b|c)∪(b|c|d)';
+
+verifyEvaluate(unionExpr, levelTwoExpressions, {
+  '': false,
+  'a': true,
+  'b': true,
+  'c': true,
+  'd': true
+});
+
+const unionRecognizer = evaluate(unionExpr, levelTwoExpressions);
+
+const reconsitutedUnionExpr = regularExpression(unionRecognizer);
+
+verifyEvaluate(reconsitutedUnionExpr, formalRegularExpressions, {
+  '': false,
+  'a': true,
+  'b': true,
+  'c': true,
+  'd': true
+});
+
+const intersectionExpr = '(a|b|c)∩(b|c|d)';
+
+verifyEvaluate(intersectionExpr, levelTwoExpressions, {
+  '': false,
+  'a': false,
+  'b': true,
+  'c': true,
+  'd': false
+});
+
+const intersectionRecognizer = evaluate(intersectionExpr, levelTwoExpressions);
+
+const reconsitutedIntersectionExpr = regularExpression(intersectionRecognizer);
+
+verifyEvaluate(reconsitutedIntersectionExpr, formalRegularExpressions, {
+  '': false,
+  'a': false,
+  'b': true,
+  'c': true,
+  'd': false
+});
+
+const differenceExpr = '(a|b|c)\\(b|c|d)';
+
+verifyEvaluate(differenceExpr, levelTwoExpressions, {
+  '': false,
+  'a': true,
+  'b': false,
+  'c': false,
+  'd': false
+});
+
+const differenceRecognizer = evaluate(differenceExpr, levelTwoExpressions);
+
+const reconsitutedDifferenceExpr = regularExpression(differenceRecognizer);
+
+verifyEvaluate(reconsitutedDifferenceExpr, formalRegularExpressions, {
+  '': false,
+  'a': true,
+  'b': false,
+  'c': false,
+  'd': false
 });
 

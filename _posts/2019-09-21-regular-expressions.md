@@ -4639,7 +4639,6 @@ function regularExpression (description) {
     start,
     transitions,
     accepting,
-    acceptingSet,
     stateSet
   } = validatedAndProcessed(pruned);
 
@@ -4687,9 +4686,22 @@ verify(regularExpression, new Map([
 ]));
 ```
 
-Now what if there are accepting states? As described, the final regular expression must represent the union of all the expressions for getting from the start state to each accepting state. Let's fill that in for a moment, deliberately omitting `via`:
+Now what if there are accepting states? As described, the final regular expression must represent the union of all the expressions for getting from the start state to each accepting state. Let's fill that in for a moment, deliberately omitting `viaStates`:
 
 ```javascript
+function alternateExpr(...exprs) {
+  const uniques = [...new Set(exprs)];
+  const notEmptySets = uniques.filter( x => x !== '∅' );
+
+  if (notEmptySets.length === 0) {
+    return '∅';
+  } else if (notEmptySets.length === 1) {
+    return notEmptySets[0];
+  } else {
+    return notEmptySets.map(p).join('|');
+  }
+}
+
 function regularExpression (description) {
   const pruned =
     reachableFromStart(
@@ -4713,17 +4725,13 @@ function regularExpression (description) {
       accepting.map(
         to => expression({ from, to })
       );
-    const unionOfPathExpressions =
-      nonEmptyExpressions.reduce(
-        (a, b) => `${p(a)}|${p(b)}`
-      );
 
     const acceptsEmptyString = accepting.indexOf(start) >= 0;
 
     if (acceptsEmptyString) {
-      return `ε|${p(unionOfPathExpressions)}`
+      return alternateExpr('ε', ...pathExpressions);
     } else {
-      return unionOfPathExpressions;
+      return alternateExpr(...pathExpressions);
     }
 
     function expression({ from, to, viaStates }) {
@@ -4771,61 +4779,93 @@ We have left room for the degenerate case where `viaStates` is empty. We'll get 
 Our normal case is going to look something like this:
 
 ```javascript
+function zeroOrMoreExpr (a) {
+  if (a === '∅' || a === 'ε') {
+    return 'ε';
+  } else {
+    return `${p(a)}*`;
+  }
+}
+
+function catenateExpr (...exprs) {
+  if (exprs.some( x => x === '∅' )) {
+    return '∅';
+  } else {
+    const notEmptyStrings = exprs.filter( x => x !== 'ε' );
+
+    if (notEmptyStrings.length === 0) {
+      return 'ε';
+    } else if (notEmptyStrings.length === 1) {
+      return notEmptyStrings[0];
+    } else {
+      return notEmptyStrings.map(p).join('');
+    }
+  }
+}
+
 function expression({ from, to, viaStates = allStates }) {
   if (viaStates.size === 0) {
     // .. TBD
   } else {
     const [via] = viaStates;
 
-    const expr1 = expression({ from, to: via });
-    const expr2 = expression({ from: via, to: via });
-    const expr3 = expression({ from: via, to });
+    const fromToVia = expression({ from, to: via });
+    const viaToVia = zeroOrMoreExpr(
+      expression({ from: via, to: via })
+    );
+    const viaToTo = expression({ from: via, to, });
 
-    const throughVia = `${p(expr1)}${p(expr2)}*${p(expr3)}`;
+    const throughVia = catenateExpr(fromToVia, viaToVia, viaToTo);
   }
 }
 ```
 
-That being said, we have left out what to pass for `viaStates`. Well, we want our routine to do teh computation for paths not passing through the state `via`, so we really want all the states _except_ `via`:
+That being said, we have left out what to pass for `viaStates`. Well, we want our routine to do the computation for paths not passing through the state `via`, so we really want is all the remaining states _except_ `via`:
 
 ```javascript
 function expression({ from, to, viaStates = [...allStates] }) {
   if (viaStates.length === 0) {
     // .. TBD
   } else {
-    const [viaState, ...exceptVia] = viaStates;
+    const [via, ...exceptVia] = viaStates;
 
-    const expr1 = expression({ from, to: via, viaStates: exceptVia });
-    const expr2 = expression({ from: via, to: via, viaStates: exceptVia });
-    const expr3 = expression({ from: via, to, viaStates: exceptVia });
+    const fromToVia = expression({ from, to: via, viaStates: exceptVia });
+    const viaToVia = zeroOrMoreExpr(
+      expression({ from: via, to: via, viaStates: exceptVia })
+    );
+    const viaToTo = expression({ from: via, to, viaStates: exceptVia });
 
-    const throughVia = `${p(expr1)}${p(expr2)}*${p(expr3)}`;
+    const throughVia = catenateExpr(fromToVia, viaToVia, viaToTo);
   }
 }
 ```
 
-Now how about the second part of our case? It's teh expression for all the paths from `from` to `to` that do not go through `via`:
+Now how about the second part of our case? It's the expression for all the paths from `from` to `to` that do not go through `via`. Which we then alternate with the expression for all the paths going throught `via`:
 
 ```javascript
 function expression({ from, to, viaStates = [...allStates] }) {
   if (viaStates.length === 0) {
     // .. TBD
   } else {
-    const [viaState, ...exceptVia] = viaStates;
+    const [via, ...exceptVia] = viaStates;
 
-    const expr1 = expression({ from, to: via, viaStates: exceptVia });
-    const expr2 = expression({ from: via, to: via, viaStates: exceptVia });
-    const expr3 = expression({ from: via, to, viaStates: exceptVia });
+    const fromToVia = expression({ from, to: via, viaStates: exceptVia });
+    const viaToVia = zeroOrMoreExpr(
+      expression({ from: via, to: via, viaStates: exceptVia })
+    );
+    const viaToTo = expression({ from: via, to, viaStates: exceptVia });
 
-    const throughVia = `${p(expr1)}${p(expr2)}*${p(expr3)}`;
+    const throughVia = catenateExpr(fromToVia, viaToVia, viaToTo);
     const notThroughVia = expression({ from, to, viaStates: exceptVia });
 
-    return `${p(throughVia)}|${p(notThroughVia)}`;
+    return alternateExpr(throughVia, notThroughVia);
   }
 }
 ```
 
-At some point, this fuunction will end up calling itself and passing an empty list of states. That's our degenerate case. Given two states, what are all the paths between them that don't go through any other states? Why, just the transitions directly between them. And the expressions for those are the symbols consumed, plus some allowance for symbols we have to escape.
+Eventually,[^eventually] this fuunction will end up calling itself and passing an empty list of states. That's our degenerate case. Given two states, what are all the paths between them that don't go through any other states? Why, just the transitions directly between them. And the expressions for those are the symbols consumed, plus some allowance for symbols we have to escape.
+
+[^eventually]: How eventually? With enough states in a recognizer, it could take a _very_ long time. This particular algorithm has exponential running time! But that being said, we are writing it to prove that it can be done, we don't actually need to do it to actually recognize sentences.
 
 ```javascript
 function expression({ from, to, viaStates = [...allStates] }) {
@@ -4835,24 +4875,20 @@ function expression({ from, to, viaStates = [...allStates] }) {
       .filter( ({ from: tFrom, to: tTo }) => from === tFrom && to === tTo )
       .map( ({ consume }) => toValueExpr(consume) );
 
-
-    const direct = directExpressions.reduce(
-      (a, b) => `${p(a)}|${p(b)}`,
-      '∅'
-    );
-
-    return direct;
+    return alternateExpr(...directExpressions);
   } else {
     const [via, ...exceptVia] = viaStates;
 
-    const expr1 = expression({ from, to: via, viaStates: exceptVia });
-    const expr2 = expression({ from: via, to: via, viaStates: exceptVia });
-    const expr3 = expression({ from: via, to, viaStates: exceptVia });
+    const fromToVia = expression({ from, to: via, viaStates: exceptVia });
+    const viaToVia = zeroOrMoreExpr(
+      expression({ from: via, to: via, viaStates: exceptVia })
+    );
+    const viaToTo = expression({ from: via, to, viaStates: exceptVia });
 
-    const throughVia = `${p(expr1)}${p(expr2)}${p(expr3)}`;
+    const throughVia = catenateExpr(fromToVia, viaToVia, viaToTo);
     const notThroughVia = expression({ from, to, viaStates: exceptVia });
 
-    return `${p(throughVia)}|${p(notThroughVia)}`;
+    return alternateExpr(throughVia, notThroughVia);
   }
 }
 
@@ -4869,27 +4905,38 @@ This is a valid regular expression, but all the `∅`s make it unreadable. We're
 3. Repeating the empty zeroOrMore times returns the empty set.
 
 ```javascript
-function alternateExpr(a, b) {
-  if (a === '∅') {
-    return b;
-  } else if (b === '∅') {
-    return a;
+ffunction alternateExpr(...exprs) {
+  const uniques = [...new Set(exprs)];
+  const notEmptySets = uniques.filter( x => x !== '∅' );
+
+  if (notEmptySets.length === 0) {
+    return '∅';
+  } else if (notEmptySets.length === 1) {
+    return notEmptySets[0];
   } else {
-    return `${p(a)}|${p(b)}`;
+    return notEmptySets.map(p).join('|');
   }
 }
 
-function catenateExpr (a, b, c)  {
-  if (a === '∅' || b === '∅' || c === '∅') {
+function catenateExpr (...exprs) {
+  if (exprs.some( x => x === '∅' )) {
     return '∅';
   } else {
-    return `${p(a)}${p(b)}${p(c)}`;
+    const notEmptyStrings = exprs.filter( x => x !== 'ε' );
+
+    if (notEmptyStrings.length === 0) {
+      return 'ε';
+    } else if (notEmptyStrings.length === 1) {
+      return notEmptyStrings[0];
+    } else {
+      return notEmptyStrings.map(p).join('');
+    }
   }
 }
 
 function zeroOrMoreExpr (a) {
-  if (a === '∅') {
-    return '∅';
+  if (a === '∅' || a === 'ε') {
+    return 'ε';
   } else {
     return `${p(a)}*`;
   }
@@ -4917,15 +4964,13 @@ function regularExpression (description) {
       accepting.map(
         to => expression({ from, to })
       );
-    const unionOfPathExpressions =
-      pathExpressions.reduce(alternateExpr, '∅');
 
     const acceptsEmptyString = accepting.indexOf(start) >= 0;
 
     if (acceptsEmptyString) {
-      return alternateExpr('ε', unionOfPathExpressions);
+      return alternateExpr('ε', ...pathExpressions);
     } else {
-      return unionOfPathExpressions;
+      return alternateExpr(...pathExpressions);
     }
 
     function expression({ from, to, viaStates = [...allStates] }) {
@@ -4935,19 +4980,17 @@ function regularExpression (description) {
           .filter( ({ from: tFrom, to: tTo }) => from === tFrom && to === tTo )
           .map( ({ consume }) => toValueExpr(consume) );
 
-        if (from === to) {}
-
-        const direct = directExpressions.reduce(alternateExpr, '∅');
-
-        return direct;
+        return alternateExpr(...directExpressions);
       } else {
         const [via, ...exceptVia] = viaStates;
 
-        const expr1 = expression({ from, to: via, viaStates: exceptVia });
-        const expr2 = expression({ from: via, to: via, viaStates: exceptVia });
-        const expr3 = expression({ from: via, to, viaStates: exceptVia });
+        const fromToVia = expression({ from, to: via, viaStates: exceptVia });
+        const viaToVia = zeroOrMoreExpr(
+          expression({ from: via, to: via, viaStates: exceptVia })
+        );
+        const viaToTo = expression({ from: via, to, viaStates: exceptVia });
 
-        const throughVia = catenateExpr(expr1, zeroOrMoreExpr(expr2), expr3);
+        const throughVia = catenateExpr(fromToVia, viaToVia, viaToTo);
         const notThroughVia = expression({ from, to, viaStates: exceptVia });
 
         return alternateExpr(throughVia, notThroughVia);
