@@ -86,6 +86,8 @@ function p (expr) {
     return expr;
   } else if (expr[0] === '`') {
     return expr;
+  } else if (expr[0] === '(' && expr[expr.length - 1] === ')') {
+    return expr;
   } else {
     return `(${expr})`;
   }

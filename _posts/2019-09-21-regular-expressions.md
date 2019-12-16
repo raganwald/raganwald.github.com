@@ -3705,15 +3705,17 @@ We can build a _transpiler_ exactly the same way: Use our evaluator, but supply 
 Here's the first crack at it:
 
 ```javascript
-function p (expr) {
-  if (expr.length === 1) {
-    return expr;
-  } else if (expr[0] === '`') {
-    return expr;
-  } else {
-    return `(${expr})`;
-  }
-};
+  function p (expr) {
+    if (expr.length === 1) {
+      return expr;
+    } else if (expr[0] === '`') {
+      return expr;
+    } else if (expr[0] === '(' && expr[expr.length - 1] === ')') {
+      return expr;
+    } else {
+      return `(${expr})`;
+    }
+  };
 
 const toValueExpr = string => {
   if ('∅ε|→*()'.indexOf(string) >= 0) {
@@ -4602,69 +4604,35 @@ For any pair of states (_any_ par implies that both states could be the same sta
 
 But if we had such a function, we could apply it to the start state and any accepting states, getting a formal regular expression for the paths from teh start state to each accepting state. And if there are mnore than oneaccepting states, we could use alternation to combine the relular expressions into one big regular expression that is equivalent to the finite-state recognizer.
 
-Let's get started writing this in JavaScript. At some point, we're going to need to have an ordering of the states. It doesn't matter how we order them, but we will want them ordered. To simplify the code grealy, we'll begin by translating all the state names into integers from 1 to the number of states.
-
-So we'll take a recognizer like this:
-
-<div class="mermaid">
-  stateDiagram
-    [*] --> start
-    start --> zero : 0
-    start --> notZero : 1
-    notZero --> notZero : 0, 1
-    zero --> [*]
-    notZero --> [*]
-</div>
-
-And turn its description into this:
+Let's get started writing this in JavaScript. Given a description like:
 
 ```json
-{
-  "start": 1,
+const binary = {
+  "start": "start",
   "transitions": [
-    { "from": 1, "consume": "0", "to": 2 },
-    { "from": 1, "consume": "1", "to": 3 },
-    { "from": 3, "consume": "0", "to": 3 },
-    { "from": 3, "consume": "1", "to": 3 }
+    { "from": "start", "consume": "0", "to": "zero" },
+    { "from": "start", "consume": "1", "to": "notZero" },
+    { "from": "notZero", "consume": "0", "to": "notZero" },
+    { "from": "notZero", "consume": "1", "to": "notZero" }
   ],
-  "accepting": [ 2, 3 ]
+  "accepting": ["zero", "notZero"]
 }
 ```
 
-Then it will be a matter of finding the regular expressions for the paths from `1` to `2`, and from `1` to `3`, and taking the union of those paths. We're going to do that with a function we'll call `expression`. Our function will take an argument for the state `from`, another for the state `to`, and a third argument called `via` that we'll explain in a moment.[^nomenclature]
+It will be a matter of finding the regular expressions for the paths from `start` to `zero`, and from `start to `notZero`, and taking the union of those paths. We're going to do that with a function we'll call `expression`. Our function will take an argument for the state `from`, another for the state `to`, and a third argument called `viaStates` that we'll explain in a moment.[^nomenclature]
 
 Note that `from`, `to`, and `via` can be _any_ of the states in the recognizer, including being the same state.
 
-[^nomenclature]: In most proofs, this function is called `L`, and its arguments are called `p`, 'q', and `k`. One-character names are terrific when writing proofs by hand using chalk and a blackboard, but we've moved on since 1951 and we'll use descriptive names.
+[^nomenclature]: In most proofs, this function is called `L`, and its arguments are called `p`, 'q', and `k`. One-character names are terrific when writing proofs by hand using chalk and a blackboard, but we've moved on since 1951 and we'll use descriptive names. Likewise, Kleene numbered the states in order to create an ordering that is easy to work with by hand. We'll work with sets instead of numbers, because once again, we have computers do do all the bookkeeping for us.
 
-Here's an empty funcction for what we want to begin with:
+Here's an empty function for what we want to begin with:
 
 ```javascript
-function numerify (description) {
-  // nota bene: labels all states 1..n
-  const stateList = [undefined].concat([...allStatesFor(description)]);
-  const n = state => stateList.indexOf(state);
-
-  return {
-    start: n(description.start),
-    transitions:
-      description.transitions.map(
-        ({ from, consume, to }) => ({ from: n(from), consume, to: n(to) })
-      ),
-    accepting:
-      description.accepting.map(
-        state => n(state)
-      )
-  }
-}
-
 function regularExpression (description) {
-  const prunedAndNumbered =
-    numerify(
-      reachableFromStart(
-        mergeEquivalentStates(
-          description
-        )
+  const pruned =
+    reachableFromStart(
+      mergeEquivalentStates(
+        description
       )
     );
   const {
@@ -4673,11 +4641,11 @@ function regularExpression (description) {
     accepting,
     acceptingSet,
     stateSet
-  } = validatedAndProcessed(prunedAndNumbered);
+  } = validatedAndProcessed(pruned);
 
   // ...TBD
 
-  function expression({ from, via, to }) {
+  function expression({ from, to, viaStates }) {
     // ... TBD
   }
 };
@@ -4687,26 +4655,26 @@ Let's get the most degenerate case out of the way first. If a finite-state recog
 
 ```javascript
 function regularExpression (description) {
-  const prunedAndNumbered =
-    numerify(
-      reachableFromStart(
-        mergeEquivalentStates(
-          description
-        )
+  const pruned =
+    reachableFromStart(
+      mergeEquivalentStates(
+        description
       )
     );
   const {
     start,
     transitions,
-    accepting
-  } = validatedAndProcessed(prunedAndNumbered);
+    accepting,
+    acceptingSet,
+    stateSet
+  } = validatedAndProcessed(pruned);
 
   if (accepting.length === 0) {
     return '∅';
   } else {
     // ...TBD
 
-    function expression({ from, via, to }) {
+    function expression({ from, to, viaStates }) {
       // ... TBD
     }
   }
@@ -4723,19 +4691,19 @@ Now what if there are accepting states? As described, the final regular expressi
 
 ```javascript
 function regularExpression (description) {
-  const prunedAndNumbered =
-    numerify(
-      reachableFromStart(
-        mergeEquivalentStates(
-          description
-        )
+  const pruned =
+    reachableFromStart(
+      mergeEquivalentStates(
+        description
       )
     );
   const {
     start,
     transitions,
-    accepting
-  } = validatedAndProcessed(prunedAndNumbered);
+    accepting,
+    acceptingSet,
+    stateSet
+  } = validatedAndProcessed(pruned);
 
   if (accepting.length === 0) {
     return '∅';
@@ -4758,14 +4726,14 @@ function regularExpression (description) {
       return unionOfPathExpressions;
     }
 
-    function expression({ from, via, to }) {
+    function expression({ from, to, viaStates }) {
       // ... TBD
     }
   }
 };
 ```
 
-There's another special case thrown in: Although we haven't written our `expression` function yet, we know that if a finite-state recognizer beins in an accpting state, then it accepts the emprt string, and thus we can take all the other expressions for getting from a start state to an accepting state, and union them with `ε`.
+There's another special case thrown in: Although we haven't written our `expression` function yet, we know that if a finite-state recognizer beins in an accpting state, then it accepts the empty string, and thus we can take all the other expressions for getting from a start state to an accepting state, and union them with `ε`.
 
 Now how about the `expression` function?
 
@@ -4773,9 +4741,224 @@ Now how about the `expression` function?
 
 ### the `expression` function
 
+The `expression` function returns a formal regular expression representing all of the possible ways a finite-state recognizer can consume strings to get from the `from` state to the `to` state.
+
+The way it works is to divide-and-conquer. We begin by choosing any state as the `via` state. We can divide up all the paths as follows:
+
+1. All the paths from `from` to `to` that go through some state we shall call `via` least once, and;
+2. All the paths from `from` to `to` that do not go through `via` at all.
+
+If we could compute formal regular expressions for each of these two sets of paths, we could return the union of the two regular expressions and be done. So let's begin by picking a `viaState`. Kleene numbered the states and beguan with the largest state, we will simply take whatever state is first in the `viaStates` set's enumeration:
+
+```javascript
+function expression({ from, to, viaStates = [...allStates] }) {
+  if (viaStates.size === 0) {
+    // .. TBD
+  } else {
+    const [via] = viaStates;
+
+    // ... TBD
+  }
+}
+```
+
+We have left room for the degenerate case where `viaStates` is empty. We'll get to that in a moment. The first part of our case is to write an expression for all the paths from `from` to `to` that go through `via` at least once. Here's the formulation for that:
+
+  1. The expression representing all the paths from `from` to `via` that do not go through `via`, catenated with;
+  2. The expression representing all the paths from `via` looping back to `via` that do not go through `vi`, _repeated any number of times_, catenated with;
+  3. The expression representing all the paths from `via` to `to` that do not go through `via`.
+
+Our normal case is going to look something like this:
+
+```javascript
+function expression({ from, to, viaStates = allStates }) {
+  if (viaStates.size === 0) {
+    // .. TBD
+  } else {
+    const [via] = viaStates;
+
+    const expr1 = expression({ from, to: via });
+    const expr2 = expression({ from: via, to: via });
+    const expr3 = expression({ from: via, to });
+
+    const throughVia = `${p(expr1)}${p(expr2)}*${p(expr3)}`;
+  }
+}
+```
+
+That being said, we have left out what to pass for `viaStates`. Well, we want our routine to do teh computation for paths not passing through the state `via`, so we really want all the states _except_ `via`:
+
+```javascript
+function expression({ from, to, viaStates = [...allStates] }) {
+  if (viaStates.length === 0) {
+    // .. TBD
+  } else {
+    const [viaState, ...exceptVia] = viaStates;
+
+    const expr1 = expression({ from, to: via, viaStates: exceptVia });
+    const expr2 = expression({ from: via, to: via, viaStates: exceptVia });
+    const expr3 = expression({ from: via, to, viaStates: exceptVia });
+
+    const throughVia = `${p(expr1)}${p(expr2)}*${p(expr3)}`;
+  }
+}
+```
+
+Now how about the second part of our case? It's teh expression for all the paths from `from` to `to` that do not go through `via`:
+
+```javascript
+function expression({ from, to, viaStates = [...allStates] }) {
+  if (viaStates.length === 0) {
+    // .. TBD
+  } else {
+    const [viaState, ...exceptVia] = viaStates;
+
+    const expr1 = expression({ from, to: via, viaStates: exceptVia });
+    const expr2 = expression({ from: via, to: via, viaStates: exceptVia });
+    const expr3 = expression({ from: via, to, viaStates: exceptVia });
+
+    const throughVia = `${p(expr1)}${p(expr2)}*${p(expr3)}`;
+    const notThroughVia = expression({ from, to, viaStates: exceptVia });
+
+    return `${p(throughVia)}|${p(notThroughVia)}`;
+  }
+}
+```
+
+At some point, this fuunction will end up calling itself and passing an empty list of states. That's our degenerate case. Given two states, what are all the paths between them that don't go through any other states? Why, just the transitions directly between them. And the expressions for those are the symbols consumed, plus some allowance for symbols we have to escape.
+
+```javascript
+function expression({ from, to, viaStates = [...allStates] }) {
+  if (viaStates.length === 0) {
+    const directExpressions =
+      transitions
+      .filter( ({ from: tFrom, to: tTo }) => from === tFrom && to === tTo )
+      .map( ({ consume }) => toValueExpr(consume) );
 
 
+    const direct = directExpressions.reduce(
+      (a, b) => `${p(a)}|${p(b)}`,
+      '∅'
+    );
 
+    return direct;
+  } else {
+    const [via, ...exceptVia] = viaStates;
+
+    const expr1 = expression({ from, to: via, viaStates: exceptVia });
+    const expr2 = expression({ from: via, to: via, viaStates: exceptVia });
+    const expr3 = expression({ from: via, to, viaStates: exceptVia });
+
+    const throughVia = `${p(expr1)}${p(expr2)}${p(expr3)}`;
+    const notThroughVia = expression({ from, to, viaStates: exceptVia });
+
+    return `${p(throughVia)}|${p(notThroughVia)}`;
+  }
+}
+
+const a = evaluate('a', formalRegularExpressions);
+
+regularExpression(a)
+  //=> ((((∅|a)∅∅)|∅)(((∅|a)∅∅)|∅)(((∅|a)∅∅)|(∅|a)))|(((∅|a)∅∅)|(∅|a))
+```
+
+This is a valid regular expression, but all the `∅`s make it unreadable. We'rer not going to get into functions for finding the minimal expression for a finite-state recognizer, but we can make things less ridiculous with five easy optimizations:
+
+1. catenating any expression `a` with the empty set returns the empty set.
+2. alternating any expression `a` with the empty set returns the expression `a`.
+3. Repeating the empty zeroOrMore times returns the empty set.
+
+```javascript
+function alternateExpr(a, b) {
+  if (a === '∅') {
+    return b;
+  } else if (b === '∅') {
+    return a;
+  } else {
+    return `${p(a)}|${p(b)}`;
+  }
+}
+
+function catenateExpr (a, b, c)  {
+  if (a === '∅' || b === '∅' || c === '∅') {
+    return '∅';
+  } else {
+    return `${p(a)}${p(b)}${p(c)}`;
+  }
+}
+
+function zeroOrMoreExpr (a) {
+  if (a === '∅') {
+    return '∅';
+  } else {
+    return `${p(a)}*`;
+  }
+}
+
+function regularExpression (description) {
+  const pruned =
+    reachableFromStart(
+      mergeEquivalentStates(
+        description
+      )
+    );
+  const {
+    start,
+    transitions,
+    accepting,
+    allStates
+  } = validatedAndProcessed(pruned);
+
+  if (accepting.length === 0) {
+    return '∅';
+  } else {
+    const from = start;
+    const pathExpressions =
+      accepting.map(
+        to => expression({ from, to })
+      );
+    const unionOfPathExpressions =
+      pathExpressions.reduce(alternateExpr, '∅');
+
+    const acceptsEmptyString = accepting.indexOf(start) >= 0;
+
+    if (acceptsEmptyString) {
+      return alternateExpr('ε', unionOfPathExpressions);
+    } else {
+      return unionOfPathExpressions;
+    }
+
+    function expression({ from, to, viaStates = [...allStates] }) {
+      if (viaStates.length === 0) {
+        const directExpressions =
+          transitions
+          .filter( ({ from: tFrom, to: tTo }) => from === tFrom && to === tTo )
+          .map( ({ consume }) => toValueExpr(consume) );
+
+        if (from === to) {}
+
+        const direct = directExpressions.reduce(alternateExpr, '∅');
+
+        return direct;
+      } else {
+        const [via, ...exceptVia] = viaStates;
+
+        const expr1 = expression({ from, to: via, viaStates: exceptVia });
+        const expr2 = expression({ from: via, to: via, viaStates: exceptVia });
+        const expr3 = expression({ from: via, to, viaStates: exceptVia });
+
+        const throughVia = catenateExpr(expr1, zeroOrMoreExpr(expr2), expr3);
+        const notThroughVia = expression({ from, to, viaStates: exceptVia });
+
+        return alternateExpr(throughVia, notThroughVia);
+      }
+    }
+  }
+};
+
+regularExpression(binary)
+  //=> 0|((1((0|1)*)(0|1))|1)
+```
 
 ---
 
