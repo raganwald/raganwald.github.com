@@ -24,7 +24,7 @@ We'll also look at various extensions to formal regular languages that make it e
 
 When we're finished, we'll know a lot more about regular expressions, finite-state recognizers, and pattern matching.
 
-_If you are somewhat familiar with formal regular expressions and the regexen we find in programming languages and attached to tools like `grep`,  feel free to skip the rest of the prelude and jump directly to the [Table of Contents](#table-of-contents)._
+_If you are somewhat familiar with formal regular expressions (and the regexen we find in programming tools), feel free to skip the rest of the prelude and jump directly to the [Table of Contents](#table-of-contents)._
 
 ### what is a regular expression?
 
