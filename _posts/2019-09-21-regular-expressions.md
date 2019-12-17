@@ -182,7 +182,13 @@ When we're finished, we'll know a lot more about regular expressions and pattern
 
 [What Level Two Features Tell Us, and What They Don't](#what-level-two-features-tell-us-and-what-they-dont)
 
-### [For Every Finite-State Recognizer, There Exists An Equivalent Formal Regular Expression](#for-every-finite-state-recognizer,-there-exists-an-equivalent-formal-regular-expression-1)
+### [For Every Finite-State Recognizer, There Exists An Equivalent Formal Regular Expression](#for-every-finite-state-recognizer-there-exists-an-equivalent-formal-regular-expression-1)
+
+- [the regularExpression function](#the-regularexpression-function)
+- [the between function](#the-between-function)
+- [using the regularExpression function](#using-the-regularexpression-function)
+- [a test suite for  the regularExpression function](#a-test-suite-for--the-regularExpression-function)
+- [conclusions](#conclusions)
 
 ---
 
@@ -4604,6 +4610,10 @@ For any pair of states (_any_ par implies that both states could be the same sta
 
 But if we had such a function, we could apply it to the start state and any accepting states, getting a formal regular expression for the paths from teh start state to each accepting state. And if there are mnore than oneaccepting states, we could use alternation to combine the relular expressions into one big regular expression that is equivalent to the finite-state recognizer.
 
+---
+
+### the regularExpression function
+
 Let's get started writing this in JavaScript. Given a description like:
 
 ```json
@@ -4619,7 +4629,7 @@ const binary = {
 }
 ```
 
-It will be a matter of finding the regular expressions for the paths from `start` to `zero`, and from `start to `notZero`, and taking the union of those paths. We're going to do that with a function we'll call `expression`. Our function will take an argument for the state `from`, another for the state `to`, and a third argument called `viaStates` that we'll explain in a moment.[^nomenclature]
+It will be a matter of finding the regular expressions for the paths from `start` to `zero`, and from `start to `notZero`, and taking the union of those paths. We're going to do that with a function we'll call `between`. Our function will take an argument for the state `from`, another for the state `to`, and a third argument called `viaStates` that we'll explain in a moment.[^nomenclature]
 
 Note that `from`, `to`, and `via` can be _any_ of the states in the recognizer, including being the same state.
 
@@ -4644,7 +4654,7 @@ function regularExpression (description) {
 
   // ...TBD
 
-  function expression({ from, to, viaStates }) {
+  function between ({ from, to, viaStates }) {
     // ... TBD
   }
 };
@@ -4673,7 +4683,7 @@ function regularExpression (description) {
   } else {
     // ...TBD
 
-    function expression({ from, to, viaStates }) {
+    function between ({ from, to, viaStates }) {
       // ... TBD
     }
   }
@@ -4734,22 +4744,22 @@ function regularExpression (description) {
       return alternateExpr(...pathExpressions);
     }
 
-    function expression({ from, to, viaStates }) {
+    function between ({ from, to, viaStates }) {
       // ... TBD
     }
   }
 };
 ```
 
-There's another special case thrown in: Although we haven't written our `expression` function yet, we know that if a finite-state recognizer beins in an accpting state, then it accepts the empty string, and thus we can take all the other expressions for getting from a start state to an accepting state, and union them with `ε`.
+There's another special case thrown in: Although we haven't written our `between` function yet, we know that if a finite-state recognizer beins in an accpting state, then it accepts the empty string, and thus we can take all the other expressions for getting from a start state to an accepting state, and union them with `ε`.
 
-Now how about the `expression` function?
+Now how about the `between` function?
 
 ---
 
-### the `expression` function
+### the between function
 
-The `expression` function returns a formal regular expression representing all of the possible ways a finite-state recognizer can consume strings to get from the `from` state to the `to` state.
+The `between` function returns a formal regular expression representing all of the possible ways a finite-state recognizer can consume strings to get from the `from` state to the `to` state.
 
 The way it works is to divide-and-conquer. We begin by choosing any state as the `via` state. We can divide up all the paths as follows:
 
@@ -4759,7 +4769,7 @@ The way it works is to divide-and-conquer. We begin by choosing any state as the
 If we could compute formal regular expressions for each of these two sets of paths, we could return the union of the two regular expressions and be done. So let's begin by picking a `viaState`. Kleene numbered the states and beguan with the largest state, we will simply take whatever state is first in the `viaStates` set's enumeration:
 
 ```javascript
-function expression({ from, to, viaStates = [...allStates] }) {
+function between ({ from, to, viaStates = [...allStates] }) {
   if (viaStates.size === 0) {
     // .. TBD
   } else {
@@ -4803,7 +4813,7 @@ function catenateExpr (...exprs) {
   }
 }
 
-function expression({ from, to, viaStates = allStates }) {
+function between ({ from, to, viaStates = allStates }) {
   if (viaStates.size === 0) {
     // .. TBD
   } else {
@@ -4823,7 +4833,7 @@ function expression({ from, to, viaStates = allStates }) {
 That being said, we have left out what to pass for `viaStates`. Well, we want our routine to do the computation for paths not passing through the state `via`, so we really want is all the remaining states _except_ `via`:
 
 ```javascript
-function expression({ from, to, viaStates = [...allStates] }) {
+function between ({ from, to, viaStates = [...allStates] }) {
   if (viaStates.length === 0) {
     // .. TBD
   } else {
@@ -4843,7 +4853,7 @@ function expression({ from, to, viaStates = [...allStates] }) {
 Now how about the second part of our case? It's the expression for all the paths from `from` to `to` that do not go through `via`. Which we then alternate with the expression for all the paths going throught `via`:
 
 ```javascript
-function expression({ from, to, viaStates = [...allStates] }) {
+function between ({ from, to, viaStates = [...allStates] }) {
   if (viaStates.length === 0) {
     // .. TBD
   } else {
@@ -4868,7 +4878,7 @@ Eventually,[^eventually] this fuunction will end up calling itself and passing a
 [^eventually]: How eventually? With enough states in a recognizer, it could take a _very_ long time. This particular algorithm has exponential running time! But that being said, we are writing it to prove that it can be done, we don't actually need to do it to actually recognize sentences.
 
 ```javascript
-function expression({ from, to, viaStates = [...allStates] }) {
+function between ({ from, to, viaStates = [...allStates] }) {
   if (viaStates.length === 0) {
     const directExpressions =
       transitions
@@ -4973,7 +4983,7 @@ function regularExpression (description) {
       return alternateExpr(...pathExpressions);
     }
 
-    function expression({ from, to, viaStates = [...allStates] }) {
+    function between ({ from, to, viaStates = [...allStates] }) {
       if (viaStates.length === 0) {
         const directExpressions =
           transitions
@@ -4998,10 +5008,179 @@ function regularExpression (description) {
     }
   }
 };
+```
 
+Done! Now let's look at what it does:
+
+---
+
+### using the regularExpression function
+
+First, let's take an arbitrary finite-state recognizer, and convert it to a formal regular expression:
+
+```javascript
 regularExpression(binary)
   //=> 0|((1((0|1)*)(0|1))|1)
 ```
+
+The result, `0|((1((0|1)*)(0|1))|1)`, isn't the most compact or readable regular expression, but if we look at it carefully, we can see that it produces the same result: It matches a zero, or a one, or a one followed by a either a zero or one followed by either a zero or one zero or more times. Basically, it's equivalent to `0|1|1(0|1)(0|1)*`. And `1|1(0|1)(0|1)*` is equivalent to `1(0|1)*`, so `0|((1((0|1)*)(0|1))|1)` is equivalent to `0|1(0|1)*`.
+
+Let's check it:
+
+```javascript
+verifyRecognizer(binary, {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': true,
+  '11': true,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true,
+  '10100011011000001010011100101110111': true
+});
+  //=> All 16 tests passing
+
+const reconstitutedBinaryExpr = regularExpression(binary);
+  //=> 0|((1((0|1)*)(0|1))|1)
+
+verifyEvaluate(reconstitutedBinaryExpr, formalRegularExpressions, {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': true,
+  '11': true,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true,
+  '10100011011000001010011100101110111': true
+});
+  //=> All 16 tests passing
+```
+
+`0|((1((0|1)*)(0|1))|1)` may be a fugly way to describe binary numbers, but it is equivalent to `0|1(0|1)*`, and what counts is that for any finite-state recognizer, our function finds an equivalent formal regular expression. And if we know that for every finite-state recognizer, there is an equivalent formal-state recognizer, then we now have a universal demonstration that our Level One and Level Two features describe regular languages just like formal regular expressions. This is true even if--like our Level Two features--there is no obvious and direct translation to a formal regular expression.
+
+However, testing `binary` doesn't actually demnonstrate that the finite-state recognizer produced by compiling a Level Two expression to a finite-state recognizer can be compiled back to an equivalent finite-state recognizer. We already know that binary numbers is a regular language. So let's try our function with some level two examples.
+
+---
+
+### a test suite for  the regularExpression function
+
+We can check a few more results to give us confidence. But instead of reasoning through each one, we'll check the equivalence using test cases. What we'll do is take a regular expression and run it through test cases. Then we'll evaluate it to produce a finite-state recognizer, translate the finite-state recognizer to a formal regular expression with `regularExpression`, and run it through the same text cases again.
+
+If all the tests pass, we'll declare that our `regularExpression` function does indeed demonstrate that there is an equivalent formal regular expression for every finite-state recognizer. Here's our test function, and an example of trying it with `0|1(0|1)*`:
+
+```javascript
+function verifyRegularExpression (expression, tests) {
+  const recognizer = evaluate(expression, levelTwoExpressions);
+
+  verifyRecognizer(recognizer, tests);
+
+  const formalExpression = regularExpression(recognizer);
+
+  verifyEvaluate(formalExpression, formalRegularExpressions, tests);
+}
+
+verifyRegularExpression('0|1(0|1)*', {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': true,
+  '11': true,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true,
+  '10100011011000001010011100101110111': true
+});
+```
+
+And now to try it with some Level Two examples:
+
+```javascript
+
+verifyRegularExpression('(a|b|c)∪(b|c|d)', {
+  '': false,
+  'a': true,
+  'b': true,
+  'c': true,
+  'd': true
+});
+
+verifyRegularExpression('(ab|bc|cd)∪(bc|cd|de)', {
+  '': false,
+  'ab': true,
+  'bc': true,
+  'cd': true,
+  'de': true
+});
+
+verifyRegularExpression('(a|b|c)∩(b|c|d)', {
+  '': false,
+  'a': false,
+  'b': true,
+  'c': true,
+  'd': false
+});
+
+verifyRegularExpression('(ab|bc|cd)∩(bc|cd|de)', {
+  '': false,
+  'ab': false,
+  'bc': true,
+  'cd': true,
+  'de': false
+});
+
+verifyRegularExpression('(a|b|c)\\(b|c|d)', {
+  '': false,
+  'a': true,
+  'b': false,
+  'c': false,
+  'd': false
+});
+
+verifyRegularExpression('(ab|bc|cd)\\(bc|cd|de)', {
+  '': false,
+  'ab': true,
+  'bc': false,
+  'cd': false,
+  'de': false
+});
+```
+
+Success! There is an equivalent formal regular expression for the finite-state recognizers we generate with our Level Two features.
+
+---
+
+### conclusions
+
+We have now demonstrated, in constructive fashion, that for every finite-state recognizer, there is an equivalent formal regular expression.
+
+This implies several important things. First and foremost, since we have also established that for every formal regular expression, there is an equivalent finite-state recognizer, we now know that **The set of langauges described by formnal regular expressions--regular languages--is identical to the set of languages recognized by finite-state automata.** Finite-state automata recognzie regular languages, and regular languages can be re recognized by finite-state automata.
+
+Second, if we devise any arbitrary extension to formal regular languages--or even an entirely new kind of language, and we also devise a way to  compile such descriptions to finite-state recognizers, then we know that the languages we can describe with these extenmsions or languages are still regular languages.
+
+Although we are not emphasizing performance, we also know that sentences in any such extensions or languages we may care to create can still be recognized in at worst linear time, because finite-state recognizers recognize sentences in at worst linear time.
 
 ---
 

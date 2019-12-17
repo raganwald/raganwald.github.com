@@ -3178,6 +3178,16 @@ function regularExpression (description) {
   }
 };
 
+function verifyRegularExpression (expression, tests) {
+  const recognizer = evaluate(expression, levelTwoExpressions);
+
+  verifyRecognizer(recognizer, tests);
+
+  const formalExpression = regularExpression(recognizer);
+
+  verifyEvaluate(formalExpression, formalRegularExpressions, tests);
+}
+
 // ----------
 
 verifyRecognizer(binary, {
@@ -3220,9 +3230,26 @@ verifyEvaluate(reconstitutedBinaryExpr, formalRegularExpressions, {
   '10100011011000001010011100101110111': true
 });
 
-const unionExpr = '(a|b|c)∪(b|c|d)';
+verifyRegularExpression('0|1(0|1)*', {
+  '': false,
+  '0': true,
+  '1': true,
+  '00': false,
+  '01': false,
+  '10': true,
+  '11': true,
+  '000': false,
+  '001': false,
+  '010': false,
+  '011': false,
+  '100': true,
+  '101': true,
+  '110': true,
+  '111': true,
+  '10100011011000001010011100101110111': true
+});
 
-verifyEvaluate(unionExpr, levelTwoExpressions, {
+verifyRegularExpression('(a|b|c)∪(b|c|d)', {
   '': false,
   'a': true,
   'b': true,
@@ -3230,21 +3257,15 @@ verifyEvaluate(unionExpr, levelTwoExpressions, {
   'd': true
 });
 
-const unionRecognizer = evaluate(unionExpr, levelTwoExpressions);
-
-const reconsitutedUnionExpr = regularExpression(unionRecognizer);
-
-verifyEvaluate(reconsitutedUnionExpr, formalRegularExpressions, {
+verifyRegularExpression('(ab|bc|cd)∪(bc|cd|de)', {
   '': false,
-  'a': true,
-  'b': true,
-  'c': true,
-  'd': true
+  'ab': true,
+  'bc': true,
+  'cd': true,
+  'de': true
 });
 
-const intersectionExpr = '(a|b|c)∩(b|c|d)';
-
-verifyEvaluate(intersectionExpr, levelTwoExpressions, {
+verifyRegularExpression('(a|b|c)∩(b|c|d)', {
   '': false,
   'a': false,
   'b': true,
@@ -3252,21 +3273,15 @@ verifyEvaluate(intersectionExpr, levelTwoExpressions, {
   'd': false
 });
 
-const intersectionRecognizer = evaluate(intersectionExpr, levelTwoExpressions);
-
-const reconsitutedIntersectionExpr = regularExpression(intersectionRecognizer);
-
-verifyEvaluate(reconsitutedIntersectionExpr, formalRegularExpressions, {
+verifyRegularExpression('(ab|bc|cd)∩(bc|cd|de)', {
   '': false,
-  'a': false,
-  'b': true,
-  'c': true,
-  'd': false
+  'ab': false,
+  'bc': true,
+  'cd': true,
+  'de': false
 });
 
-const differenceExpr = '(a|b|c)\\(b|c|d)';
-
-verifyEvaluate(differenceExpr, levelTwoExpressions, {
+verifyRegularExpression('(a|b|c)\\(b|c|d)', {
   '': false,
   'a': true,
   'b': false,
@@ -3274,15 +3289,11 @@ verifyEvaluate(differenceExpr, levelTwoExpressions, {
   'd': false
 });
 
-const differenceRecognizer = evaluate(differenceExpr, levelTwoExpressions);
-
-const reconsitutedDifferenceExpr = regularExpression(differenceRecognizer);
-
-verifyEvaluate(reconsitutedDifferenceExpr, formalRegularExpressions, {
+verifyRegularExpression('(ab|bc|cd)\\(bc|cd|de)', {
   '': false,
-  'a': true,
-  'b': false,
-  'c': false,
-  'd': false
+  'ab': true,
+  'bc': false,
+  'cd': false,
+  'de': false
 });
 
