@@ -5,7 +5,6 @@ tags: [recursion,allonge,mermaid]
 
 # Prelude
 
-
 In this essay, we're going to explore regular expressions by implementing various features of regular expressions. Along the way, we will demonstrate a number of important results concerning regular expressions, regular languages, and finite-state automata, such as:
 
   - For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions.
@@ -15,13 +14,15 @@ In this essay, we're going to explore regular expressions by implementing variou
   - Every regular language can be recognized by a finite-state recognizer.
   - If a finite-state automaton recognizes a language, that language is regular.
 
-All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. In this essay, we will demonostrate these results in a [constructive proof] style. for example, to demonstrate that for every formal regular expression, there exists an equivalent finite-state recognizer, we will construct a function that takes a formal regular expression and returns an equivalent finite-state recognizer.
+All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. In this essay, we will demonstrate these results in a [constructive proof] style. For example, to demonstrate that for every formal regular expression, there exists an *equivalent* finite-state recognizer, we will construct a function that takes a formal regular expression as an argument, and returns an equivalent finite-state recognizer.[^equivalent]
 
 [constructive proof]: https://en.wikipedia.org/wiki/Constructive_proof
 
-We'll also look at various extensions to formal regular languages that make it easier to write regular expressions. Some--like `+` and `?`--will mirror existing regex features, while others--like `intersection`, `difference`, and `complement`--do not have sirect regex equivalents.
+[^equivalent]: We will use the word "equivalent" a lot in this essay. When we say "equivalent," we don't mean structurally identical, we mean functionally identical. For example, the regular expressions `0|1(0|1)*` and `0|1|(0|1)*(0|1)` are equivalent, because they both describe the same language, the language of binary numbers. We will also sometimes say that an expression is equivalent to a finite-state recognizer. When we do so, we mean that that the expression describes the exact same language that the finite-state recognizer recognizes.
 
-When we're finished, we'll know a lot more about regular expressions, finite-state recognizers, and pattern matching. So let's get started!
+We'll also look at various extensions to formal regular languages that make it easier to write regular expressions. Some--like `+` and `?`--will mirror existing regex features, while others--like `intersection`, `difference`, and `complement`--do not have direct regex equivalents.
+
+When we're finished, we'll know a lot more about regular expressions, finite-state recognizers, and pattern matching.
 
 _If you are somewhat familiar with formal regular expressions and the regexen we find in programming languages and attached to tools like `grep`,  feel free to skip the rest of the prelude and jump directly to the [Table of Contents](#table-of-contents)._
 
@@ -3563,7 +3564,7 @@ But it's a very important result, and this is why:
 
 Consider a finite-state recognizer that is deterministic, and without ε-transitions, exactly like the finite-state recognizers we compile from formal regular expressions.
 
-Such a recognizer begins in its start state, and only transitions from state to state when consuming a symbol. If it halts befoe consuming the entire sentence, it fails to recognize the sentence. If it does not halt when the sentence is complete, it will have performed _n_ transitions where _n_ is the number of symbols in the sentence.
+Such a recognizer begins in its start state, and only transitions from state to state when consuming a symbol. If it halts before consuming the entire sentence, it fails to recognize the sentence. If it does not halt when the sentence is complete, it will have performed _n_ transitions where _n_ is the number of symbols in the sentence.
 
 It cannot have performed more than _n_ transitions, because:
 
@@ -3574,7 +3575,7 @@ Now, thanks to `powerset`, it may well consume exponential **space** relative to
 
 Many contemporary regex engines, on the other hand, use nondeterministic algorithms that consume much less space, but can exhibit high orders of polynomial time. There are a number of reasons for this, including the requirement to support features that recognize non-regular languages (like balanced parentheses and palindromes).
 
-But we know that if a formal regular expression or regex describes a regular language, it is possible to execute it in linear time. And our code is the demonstration.
+But we know that if a formal regular expression or regex describes a regular language, it is possible to execute it in--at worst--linear time. And our code is the demonstration.
 
 ---
 
