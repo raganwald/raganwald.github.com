@@ -26,6 +26,8 @@ When we're finished, we'll know a lot more about regular expressions, finite-sta
 
 _If you are somewhat familiar with formal regular expressions (and the regexen we find in programming tools), feel free to skip the rest of the prelude and jump directly to the [Table of Contents](#table-of-contents)._
 
+---
+
 ### what is a regular expression?
 
 In programming jargon, a regular expression, or *regex* (plural "regexen"),[^regex] is a sequence of characters that define a search pattern. They can also be used to validate that a string has a particular form. For example, `/ab*c/` is a regex that matches an `a`, zero or more `b`s, and then a `c`, anywhere in a string.
