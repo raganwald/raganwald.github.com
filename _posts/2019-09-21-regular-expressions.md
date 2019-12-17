@@ -1,11 +1,29 @@
 ---
-title: "Regular Expressions (And not just *those* Regular Expressions!)"
-tags: [recursion,allonge,mermaid,wip]
+title: "Exploring Regular Expressions (And not just *those* Regular Expressions!)"
+tags: [recursion,allonge,mermaid]
 ---
 
 # Prelude
 
-_If you wish to skip the prelude, you can jump directly to the [Table of Contents](#table-of-contents)._
+
+In this essay, we're going to explore regular expressions by implementing various features of regular expressions. Along the way, we will demonstrate a number of important results concerning regular expressions, regular languages, and finite-state automata, such as:
+
+  - For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions.
+  - For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
+  - The set of finite-state recognizers is closed under union, catenation, and kleene*.
+  - For every formal regular expression, there exists an equivalent finite-state recognizer.
+  - Every regular language can be recognized by a finite-state recognizer.
+  - If a finite-state automaton recognizes a language, that language is regular.
+
+All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. In this essay, we will demonostrate these results in a [constructive proof] style. for example, to demonstrate that for every formal regular expression, there exists an equivalent finite-state recognizer, we will construct a function that takes a formal regular expression and returns an equivalent finite-state recognizer.
+
+[constructive proof]: https://en.wikipedia.org/wiki/Constructive_proof
+
+We'll also look at various extensions to formal regular languages that make it easier to write regular expressions. Some--like `+` and `?`--will mirror existing regex features, while others--like `intersection`, `difference`, and `complement`--do not have sirect regex equivalents.
+
+When we're finished, we'll know a lot more about regular expressions, finite-state recognizers, and pattern matching. So let's get started!
+
+_If you are somewhat familiar with formal regular expressions and the regexen we find in programming languages and attached to tools like `grep`,  feel free to skip the rest of the prelude and jump directly to the [Table of Contents](#table-of-contents)._
 
 ### what is a regular expression?
 
@@ -70,26 +88,7 @@ It is quite obvious that regexen borrowed a lot of their syntax and semantics fr
 
 Regexen add a lot more affordances like character classes, the dot operator, decorators like `?` and `+`, and so forth, but at their heart, regexen are based on regular expressions.
 
----
-
-### what will we explore in this essay?
-
-In this essay we will explore a number of important results concerning regular expressions, regular languages, and finite-state automata, such as:
-
-  - For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions.
-  - For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
-  - The set of finite-state recognizers is closed under union, catenation, and kleene*.
-  - For every formal regular expression, there exists an equivalent finite-state recognizer.
-  - Every regular language can be recognized by a finite-state recognizer.
-  - If a finite-state automaton recognizes a language, that language is regular.
-
-All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. In this essay, we will demonostrate these results in a [constructive proof] style. for example, to demonstrate that for every formal regular expression, there exists an equivalent finite-state recognizer, we will construct a function that takes a formal regular expression and returns an equivalent finite-state recognizer.
-
-[constructive proof]: https://en.wikipedia.org/wiki/Constructive_proof
-
-We'll also look at various extensions to formal regular languages that make it easier to write regular expressions. Some--like `+` and `?`--will mirror existing regex features, while others--like `intersection`, `difference`, and `complement`--do not have sirect regex equivalents.
-
-When we're finished, we'll know a lot more about regular expressions and pattern matching. So let's get started!
+And now to the essay.
 
 ---
 
@@ -99,7 +98,6 @@ When we're finished, we'll know a lot more about regular expressions and pattern
 
   - [what is a regular expression?](#what-is-a-regular-expression)
   - [formal regular expressions](#formal-regular-expressions)
-  - [what will we explore in this essay?](#what-will-we-explore-in-this-essay)
 
 ### [Our First Goal: "For every regular expression, there exists an equivalent finite-state recognizer"](#our-first-goal-for-every-regular-expression-there-exists-an-equivalent-finite-state-recognizer)
 
