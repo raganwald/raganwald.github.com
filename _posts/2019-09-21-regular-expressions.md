@@ -115,9 +115,9 @@ And now to the essay.
 
 [Evaluating Arithmetic Expressions](#evaluating-arithmetic-expressions)
 
-  - [converting infix to postfix](#converting-infix-to-postfix)
+  - [converting infix to reverse-polish representation](#converting-infix-to-reverse-polish-representation)
   - [handling a default operator](#handling-a-default-operator)
-  - [evaluating postfix](#evaluating-postfix)
+  - [evaluating the reverse-polish representation with a stack machine](#evaluating-the-reverse-polish-representation-with-a-stack-machine)
 
 ### [Finite-State Recognizers](#finite-state-recognizers-1)
 
@@ -210,18 +210,18 @@ We needn't invent our evaluation algorithm from first principles. There is a gre
 One simple and easy-to work-with approach works like this:
 
 1. Take an expression in infix notation (when we say "infix notation," we include expressions that contain prefix operators, postfix operators, and parentheses).
-2. Convert the expression to reverse-polish notation, also called [postfix notation], or "RPN."
+2. Convert the expression to reverse-polish representation, also called [reverse-polish notation], or "RPN."
 3. Push the RPN onto a stack.
 4. Evaluate the RPM using a [stack machine].
 
-[postfix notation]: https://en.wikipedia.org/wiki/Reverse_Polish_notation
+[reverse-polish notation]: https://en.wikipedia.org/wiki/Reverse_Polish_notation
 [stack machine]: https://en.wikipedia.org/wiki/Stack_machine
 
 Before we write code to do this, we'll do it by hand for a small expression, `3*2+4!`:
 
-Presuming that the postfix `!` operator has the highest precedence, followed by the infix `*` and then the infix `+` has the lowest precedence, `3*2+4!` in infix notation becomes `[3, 2, *, 4, !, +]` in RPN.
+Presuming that the postfix `!` operator has the highest precedence, followed by the infix `*` and then the infix `+` has the lowest precedence, `3*2+4!` in infix notation becomes `[3, 2, *, 4, !, +]` in reverse-polish representation.
 
-nEvaluating `[3, 2, *, 4, !, +]` with a stack machine works by taking each of the values and operators in order. If a value is next, push it onto the stack. If an operator is next, pop the necessary number of arguments off apply the operator to the arguments, and push the result back onto the stack. If the RPN is well-formed, after processing the last item from the input, there will be exactly one value on the stack, and that is the result of evaluating the RPN.
+Evaluating `[3, 2, *, 4, !, +]` with a stack machine works by taking each of the values and operators in order. If a value is next, push it onto the stack. If an operator is next, pop the necessary number of arguments off apply the operator to the arguments, and push the result back onto the stack. If the reverse-polish representation is well-formed, after processing the last item from the input, there will be exactly one value on the stack, and that is the result of evaluating the reverse-polish representation.
 
 Let's try it:
 
@@ -240,20 +240,20 @@ Let's try it:
   1. We pop `24` and `6` off the stack, which becomes `[]`.
   2. We evaluate `+(6, 24)` (in a pseudo-functional form). The result is `30`.
   3. We push `30` onto the stack, which becomes `[30]`.
-7. There are no more items to process, and the stack contains one value. We return this as the result of evaluating `[3, 2, *, 4, !, +]`.
+7. There are no more items to process, and the stack contains one value, `[30]`. We therefore return `[30]` as the result of evaluating `[3, 2, *, 4, !, +]`.
 
-Let's write this in code. We'll start by writing an infix-to-postfix converter. We are not writing a comprehensive arithmetic evaluator, so we will make a number of simplifying assumptions, including:
+Let's write this in code. We'll start by writing an infix-to-reverse-polish representation converter. We are not writing a comprehensive arithmetic evaluator, so we will make a number of simplifying assumptions, including:
 
 - We will only handle singe-digit values and single-character operators.
 - We will not allow ambiguos operators. For example, in ordinary arithmetic, the `-` operator is both a prefix operator that negates integer values, as well as an infix operator for subtraction. In our evaluator, `-` can be one, or the other, but not both.
-- We'll only process strings when converting to RPN. It'll be up to the eventual evaluator to know that the string `'3'` is actually the number 3.
+- We'll only process strings when converting to reverse-polish representation. It'll be up to the eventual evaluator to know that the string `'3'` is actually the number 3.
 - We aren't going to allow whitespace. `1 + 1` will fail, `1+1` will not.
 
 We'll also parameterize the definitions for operators. This will allow us to reuse our evaluator for regular expressions simply by changing the operator definitions.
 
 ---
 
-### converting infix to postfix
+### converting infix to reverse-polish representation
 
 Here's our definition for arithmetic operators:
 
@@ -303,9 +303,9 @@ const arithmetic = {
 
 Note that for each operator, we define a symbol. We'll use that when we push things into the output queue so that our evaluator can disambiguate symbols from values (Meaning, of course, that these symbols can't be values.) We also define a precedence, and an `eval` function that the evaluator will use later.
 
-Armed with this, how do we convert infix expression to postfix? WIth a "shunting yard."
+Armed with this, how do we convert infix expressions to reverse-polish representation? With a "shunting yard."
 
-The [Shunting Yard Algorithm] is a method for parsing mathematical expressions specified in infix notation with parentheses. As we implement it here, it will produce a postfix (a/k/a "Reverse Polish) notation without parentheses. The shunting yard algorithm was invented by Edsger Dijkstra and named the "shunting yard" algorithm because its operation resembles that of a railroad shunting yard.
+The [Shunting Yard Algorithm] is a method for parsing mathematical expressions specified in infix notation with parentheses. As we implement it here, it will produce a reverse-polish representation without parentheses. The shunting yard algorithm was invented by Edsger Dijkstra, and named the "shunting yard" algorithm because its operation resembles that of a railroad shunting yard.
 
 [Shunting Yard Algorithm]: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
 
@@ -658,13 +658,13 @@ verifyShunter(shuntingYardSecondCut, {
   //=> All 7 tests passing
 ```
 
-We now have enough to get started with evaluating the postfix notation produced by our shunting yard.
+We now have enough to get started with evaluating the reverse-polish representation produced by our shunting yard.
 
 ---
 
-### evaluating postfix
+### evaluating the reverse-polish representation with a stack machine
 
-Our first cut at the code for evaluating the postfix code produced by our shunting yard will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
+Our first cut at the code for evaluating the reverse-polish representation produced by our shunting yard, will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
 
 ```javascript
 function evaluatePostfixExpression (expression, {
