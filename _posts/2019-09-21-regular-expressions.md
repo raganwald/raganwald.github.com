@@ -3,6 +3,8 @@ title: "Exploring Regular Expressions and Finite-State Recognizers, Part I"
 tags: [recursion,allonge,mermaid]
 ---
 
+[![Prelude](/assets/images/fsa/prelude.jpg)](https://flickr.com/photos/rueful/7723555418)
+
 # Prelude
 
 In this essay, we're going to explore regular expressions by implementing various features of regular expressions. Along the way, we will demonstrate a number of important results concerning regular expressions, regular languages, and finite-state automata, such as:
@@ -95,6 +97,10 @@ And now to the essay.
 
 ---
 
+[![Taocp](/assets/images/fsa/taocp.jpg)](https://flickr.com/photos/csammis/2683740238)
+
+---
+
 # [Table of Contents](#table-of-contents)
 
 ### [Prelude](#prelude)
@@ -161,6 +167,10 @@ And now to the essay.
   - [for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions,-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
   - [for every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
   - [every regular language can be recognized in linear time](#every-regular-language-can-be-recognized-in-linear-time)
+
+---
+
+[![Camera](/assets/images/fsa/camera.jpg)](https://flickr.com/photos/x1brett/1276535427)
 
 ---
 
