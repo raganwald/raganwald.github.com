@@ -206,7 +206,7 @@ function shuntingYard (
 }
 
 function evaluate (expression, configuration) {
-  return evaluatePostfixExpression(
+  return evaluateReversePolishRepresentation(
     shuntingYard(
       expression, configuration
     ),

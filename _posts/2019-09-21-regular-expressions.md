@@ -667,7 +667,7 @@ We now have enough to get started with evaluating the reverse-polish representat
 Our first cut at the code for evaluating the reverse-polish representation produced by our shunting yard, will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
 
 ```javascript
-function evaluatePostfixExpression (expression, {
+function evaluateReversePolishRepresentation (representationList, {
   operators,
   toValue
 }) {
@@ -679,7 +679,7 @@ function evaluatePostfixExpression (expression, {
 
   const stack = [];
 
-  for (const element of expression) {
+  for (const element of representationList) {
     if (typeof element === 'string') {
       stack.push(toValue(element));
     } else if (functions.has(element)) {
@@ -715,7 +715,7 @@ We can then wire the shunting yard up to the postfix evaluator, to make a functi
 
 ```javascript
 function evaluateFirstCut (expression, configuration) {
-  return evaluatePostfixExpression(
+  return evaluateReversePolishRepresentation(
     shuntingYardSecondCut(
       expression, configuration
     ),
@@ -1416,7 +1416,7 @@ function shuntingYard (
 }
 
 function evaluate (expression, configuration) {
-  return evaluatePostfixExpression(
+  return evaluateReversePolishRepresentation(
     shuntingYard(
       expression, configuration
     ),

@@ -366,7 +366,7 @@ function verify(fn, tests, ...additionalArgs) {
   }
 }
 
-function evaluatePostfixExpression (expression, {
+function evaluateReversePolishRepresentation (representationList, {
   operators,
   toValue
 }) {
@@ -378,7 +378,7 @@ function evaluatePostfixExpression (expression, {
 
   const stack = [];
 
-  for (const element of expression) {
+  for (const element of representationList) {
     if (typeof element === 'string') {
       stack.push(toValue(element));
     } else if (functions.has(element)) {
@@ -410,7 +410,7 @@ function evaluatePostfixExpression (expression, {
 }
 
 function evaluateFirstCut(expression, configuration) {
-  return evaluatePostfixExpression(
+  return evaluateReversePolishRepresentation(
     shuntingYardSecondCut(
       expression, configuration
     ),
@@ -994,7 +994,7 @@ function shuntingYard (
 }
 
 function evaluate (expression, configuration) {
-  return evaluatePostfixExpression(
+  return evaluateReversePolishRepresentation(
     shuntingYard(
       expression, configuration
     ),
