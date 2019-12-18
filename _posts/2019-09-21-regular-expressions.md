@@ -3591,6 +3591,8 @@ But we know that if a formal regular expression or regex describes a regular lan
 
 And with that, we bring Part I to a close.
 
+(discuss on [reddit](https://www.reddit.com/r/javascript/comments/eci420/exploring_regular_expressions_and_finitestate/))
+
 ---
 
 # Notes
