@@ -3,7 +3,7 @@ title: "Exploring Regular Expressions and Finite-State Recognizers, Part I"
 tags: [recursion,allonge,mermaid]
 ---
 
-[![Prelude](/assets/images/fsa/prelude.jpg)](https://flickr.com/photos/rueful/7723555418)
+[![Snowblower](/assets/images/fsa/snowblower.jpg)](https://flickr.com/photos/kecko/10347634396)
 
 # Prelude
 
@@ -97,7 +97,7 @@ And now to the essay.
 
 ---
 
-[![Taocp](/assets/images/fsa/taocp.jpg)](https://flickr.com/photos/csammis/2683740238)
+[![Roundhouse](/assets/images/fsa/roundhouse.jpg)](https://flickr.com/photos/129679309@N05/32652066416)
 
 ---
 
@@ -162,7 +162,7 @@ And now to the essay.
 
   - [implementing the kleene star](#implementing-the-kleene-star)
 
-### [Before We Move Beyond Formal Regular Expressions](#before-we-move-beyond-formal-regular-expressions-1)
+### [What We Have Learned So Far](#what-we-have-learned-so-far-1)
 
   - [for every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions](#for-every-finite-state-recognizer-with-epsilon-transitions,-there-exists-a-finite-state-recognizer-without-epsilon-transitions)
   - [for every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer](#For-every-finite-state-recognizer-there-exists-an-equivalent-deterministic-finite-state-recognizer)
@@ -170,7 +170,7 @@ And now to the essay.
 
 ---
 
-[![Camera](/assets/images/fsa/camera.jpg)](https://flickr.com/photos/x1brett/1276535427)
+[![Ffestiniog Locomotive](/assets/images/fsa/Ffestiniog-Locomotive.jpg)](https://flickr.com/photos/45131642@N00/2692652443)
 
 ---
 
@@ -752,6 +752,10 @@ That is enough to begin work on compiling regular expressions to finite-state re
 
 ---
 
+[![Trainspotters](/assets/images/fsa/trainspotters.jpg)](https://flickr.com/photos/sjpowermac/46518506972)
+
+---
+
 # Finite-State Recognizers
 
 If we're going to compile regular expressions to finite-state recognizers, we need a representation for finite-state recognizers. There are many ways to notate finite-state automata. For example, state diagrams are particularly easy to read for smallish examples:
@@ -975,6 +979,10 @@ verifyRecognizer(binary, {
 We now have a function, `automate`, that takes a data description of a finite-state automaton/recognizer, and returns a Javascript recognizer function we can play with and verify.
 
 Verifying recognizers will be extremely important when we want to verify that when we compile a regular expression to a finite-state recognizer, that the finite-state recognizer is equivalent to the regular expression.
+
+---
+
+[![Building Blocks](../assets/images/fsa/building-blocks.jpg)](https://flickr.com/photos/treflyn/46568715554)
 
 ---
 
@@ -1464,6 +1472,10 @@ Regular expressions and regexen are both built with composition. If you have two
 Our `evaluate` functions don't know how to do that, and we aren't going to update them to try. Instead, we'll write combinator functions that take two recognizers and return the finite-state recognizer representing the alternation, or catenation of their arguments.
 
 We'll begin with alternation.
+
+---
+
+[![Shunting](/assets/images/fsa/shunting.jpg)](https://flickr.com/photos/time-to-look/19943922152)
 
 ---
 
@@ -2012,6 +2024,10 @@ If we accept all those states where `a` reaches an accepting state _but `b` does
 We could even compute all those states where either `a` or `b` reach an accepting state, _but not both_. This would compute the `disjunction` of the two recognizers.
 
 We'll return to some of these other uses for `product` after we satisfy ourselves that we can generate a finite-state recognizer for any formal regular expression we like.
+
+---
+
+[![Connecting](/assets/images/fsa/connecting.jpg)](https://flickr.com/photos/14583963@N00/9218175382)
 
 ---
 
@@ -3221,6 +3237,10 @@ Before we move on to implement the `kleene*`, let's also recapitule two major re
 
 ---
 
+[![Margie](../assets/images/fsa/margie.jpg)](https://flickr.com/photos/satransport/7863807856)
+
+---
+
 # Quantifying Regular Expressions
 
 Formal regular expressions are made with three constants and three operators. We've implemented the three constants:
@@ -3501,7 +3521,11 @@ And best of all, we know that whatever formal regular expression we devise, we c
 
 ---
 
-# Before We Move Beyond Formal Regular Expressions
+[![Caboose](../assets/images/fsa/caboose.jpg)](https://flickr.com/photos/74816677@N07/7514757812)
+
+---
+
+# What We Have Learned So Far
 
 In Part II, we will go beyond formal regular expressions, exploring other features of regexen that still compile to finite-state recognizers. We'll also look at features not commonly found in regexen, but are nevertheless highly useful. And we'll use two different constructive demonstrations that pattern-matching expressions built with those features are still equivalent in power to formal regular expressions.
 
