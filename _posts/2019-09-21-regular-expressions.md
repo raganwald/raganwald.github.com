@@ -7,7 +7,11 @@ tags: [recursion,allonge,mermaid]
 
 # Prelude
 
-In this essay, we're going to explore regular expressions by implementing various features of regular expressions. Along the way, we will demonstrate a number of important results concerning regular expressions, regular languages, and finite-state automata, such as:
+In this essay, we're going to explore regular expressions by implementing various features of regular expressions.
+
+This essay will be of interest to anyone who would like a refresher on the fundamentals of regular expressions and pattern matching. It is not intended as a practical "how-to" for using modern regexen, but the exercise of implementing basic regular expressions is a terrific foundation for understanding how to use and optimize regular expressions in production code.
+
+As we develop our implementation, we will demonstrate a number of important results concerning regular expressions, regular languages, and finite-state automata, such as:
 
   - For every formal regular expression, there exists an equivalent finite-state recognizer.
   - For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions.
