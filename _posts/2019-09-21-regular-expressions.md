@@ -9,12 +9,13 @@ tags: [recursion,allonge,mermaid]
 
 In this essay, we're going to explore regular expressions by implementing various features of regular expressions. Along the way, we will demonstrate a number of important results concerning regular expressions, regular languages, and finite-state automata, such as:
 
+  - For every formal regular expression, there exists an equivalent finite-state recognizer.
   - For every finite-state recognizer with epsilon-transitions, there exists a finite-state recognizer without epsilon-transitions.
   - For every finite-state recognizer, there exists an equivalent deterministic finite-state recognizer.
   - The set of finite-state recognizers is closed under union, catenation, and kleene*.
-  - For every formal regular expression, there exists an equivalent finite-state recognizer.
   - Every regular language can be recognized by a finite-state recognizer.
-  - If a finite-state automaton recognizes a language, that language is regular.
+
+Then, in [Part II], we will explore more features of regular expressions, and show that if a finite-state automaton recognizes a language, that language is regular.
 
 All of these things have been proven, and there are numerous explanations of the proofs available in literature and online. In this essay, we will demonstrate these results in a [constructive proof] style. For example, to demonstrate that for every formal regular expression, there exists an *equivalent* finite-state recognizer, we will construct a function that takes a formal regular expression as an argument, and returns an equivalent finite-state recognizer.[^equivalent]
 
@@ -3527,11 +3528,13 @@ And best of all, we know that whatever formal regular expression we devise, we c
 
 # What We Have Learned So Far
 
-In Part II, we will go beyond formal regular expressions, exploring other features of regexen that still compile to finite-state recognizers. We'll also look at features not commonly found in regexen, but are nevertheless highly useful. And we'll use two different constructive demonstrations that pattern-matching expressions built with those features are still equivalent in power to formal regular expressions.
+In [Part II], we will go beyond formal regular expressions, exploring other features of regexen that still compile to finite-state recognizers. We'll also look at features not commonly found in regexen, but are nevertheless highly useful. And we'll use two different constructive demonstrations that pattern-matching expressions built with those features are still equivalent in power to formal regular expressions.
 
 In this essay, we demonstrated that for every formal regular expression, there is an equivalent finite-state recognizer (more on that in our summary below). In Part II, we'll demonstrate the converse: That for every finite-state recognizer, there is an equivalent formal regular expression.
 
 But before we move on, let's recapitulate what we've established so far.
+
+[Part II]: http://raganwald.com/2019/12/17/regular-expressions.html "Exploring Regular Expressions, Part II: Beyond Formal Regular Expressions""
 
 ---
 

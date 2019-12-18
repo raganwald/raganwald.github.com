@@ -1,6 +1,6 @@
 ---
-title: "Exploring Regular Expressions (And not just *those* Regular Expressions!)"
-tags: [recursion,allonge,mermaid,wip]
+title: "Exploring Regular Expressions, Part II: Beyond Formal Regular Expressions"
+tags: [recursion,allonge,mermaid,wip,noindex]
 ---
 
 ---
