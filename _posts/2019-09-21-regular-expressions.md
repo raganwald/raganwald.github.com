@@ -27,7 +27,7 @@ All of these things have been proven, and there are numerous explanations of the
 
 [^equivalent]: We will use the word "equivalent" a lot in this essay. When we say "equivalent," we don't mean structurally identical, we mean functionally identical. For example, the regular expressions `0|1(0|1)*` and `0|1|(0|1)*(0|1)` are equivalent, because they both describe the same language, the language of binary numbers. We will also sometimes say that an expression is equivalent to a finite-state recognizer. When we do so, we mean that that the expression describes the exact same language that the finite-state recognizer recognizes.
 
-We'll also look at various extensions to formal regular languages that make it easier to write regular expressions. Some--like `+` and `?`--will mirror existing regex features, while others--like `intersection`, `difference`, and `complement`--do not have direct regex equivalents.
+We'll also look at various extensions to formal regular languages that make it easier to write regular expressions. Some--like `+` and `?`--will mirror existing regex features, while others--like `∩` (intersection), `\` (difference), and `¬` (complement)--do not have direct regex equivalents.
 
 When we're finished, we'll know a lot more about regular expressions, finite-state recognizers, and pattern matching.
 
@@ -69,30 +69,33 @@ Formal regular expressions are made with three "atomic" or indivisible expressio
 
 - The symbol `∅` describes the language with no sentences, also called "the empty set."
 - The symbol `ε` describes the language containing only the empty string.
-- Literals such as `x`, `y`, or `z` describe languages containing single sentences, containing single symbols. e.g. The literal `r` describes the language `R`, which contains just one sentence: `'r'`.
+- Literals such as `x`, `y`, or `z` describe languages containing single sentences, containing single symbols. e.g. The literal `r` describes the language which contains just one sentence: `'r'`. We will sometimes express this language as `{ 'r' }`.
 
 What makes formal regular expressions powerful, is that we have operators for alternating, catenating, and quantifying regular expressions. Given that _x_ is a regular expression describing some language `X`, and _y_ is a regular expression describing some language `Y`:
 
-1. The expression _x_`|`_y_ describes to the union of the languages `X` and `Y`, meaning, the sentence `w` belongs to `x|y` if and only if `w` belongs to the language `X` or `w` belongs to the language `Y`. We can also say that _x_`|`_y_ represents the _alternation_ of _x_ and _y_.
-2. The expression _xy_ describes the language `XY`, where a sentence `ab` belongs to the language `XY` if and only if `a` belongs to the language `X` and `b` belongs to the language `Y`. We can also say that _xy_ represents the _catenation_ of the expressions _x_ and _y_.
-3. The expression _x_`*` describes the language `Z`, where the sentence `ε` (the empty string) belongs to `Z`, and, the sentence `pq` belongs to `Z` if and only if `p` is a sentence belonging to `X`, and `q` is a sentence belonging to `Z`. We can also say that _x_`*` represents a _quantification_ of _x_, as it allows a regular expression to represent a language containing sentences that match some number of sentences represented by _x_ catenated together.
-
+1. The expression _x_`|`_y_ describes the union of the languages `X` and `Y`, meaning, the sentence `w` belongs to `x|y` if and only if `w` belongs to the language `X`, or `w` belongs to the language `Y`. We can also say that _x_`|`_y_ represents the _alternation_ of _x_ and _y_.
+2. The expression _xy_ describes the language `XY`, where a sentence `ab` belongs to the language `XY` if and only if `a` belongs to the language `X`, and `b` belongs to the language `Y`. We can also say that _xy_ represents the _catenation_ of the expressions _x_ and _y_.
+3. The expression _x_`*` describes the language `Z`, where the sentence `ε` (the empty string) belongs to `Z`, and, the sentence `pq` belongs to `Z` if and only if `p` is a sentence belonging to `X`, and `q` is a sentence belonging to `Z`. We can also say that _x_`*` represents a _quantification_ of _x_.
 
 [Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
 
 Before we add the last rule for regular expressions, let's clarify these three rules with some examples. Given the constants `a`, `b`, and `c`, resolving to the languages `{ 'a' }`, `{ 'b' }`, and `{ 'b' }`:
 
-- The expression `b|c` resolves to the language `{ 'b', 'c' }`, by rule 1.
-- The expression `ab` resolves to the language `{ 'ab' }` by rule 2.
-- The expression `a*` resolves to the language `{ '', 'a', 'aa', 'aaa', ... }` by rule 3.
+- The expression `b|c` describes the language `{ 'b', 'c' }`, by rule 1.
+- The expression `ab` describes the language `{ 'ab' }` by rule 2.
+- The expression `a*` describes the language `{ '', 'a', 'aa', 'aaa', ... }` by rule 3.
 
-Our operations have a precedence, and it is the order of the rules as presented. So the expression `ab*` resolves to the language `{ 'a', 'ab', 'abb', 'abbb', ... }`, the expression `a|bc` resolves to the language `{ 'a', 'bc' }`, and the expression `b|c*` resolves to the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`.
+Our operations have a precedence, and it is the order of the rules as presented. So:
+
+- The expression `a|bc` describes the language `{ 'a', 'bc' }` by rules 1 and 2.
+- The expression `ab*` describes the language `{ 'a', 'ab', 'abb', 'abbb', ... }` by rules 2 and 3.
+- The expression `b|c*` describes the language `{ '', 'b', 'c', 'cc', 'ccc', ... }` by rules 1 and 3.
 
 As with the algebraic notation we are familiar with, we can use parentheses:
 
-- Given a regular expression _x_, the expression `(`_x_`)` resolves to the language described by _x_.
+- Given a regular expression _x_, the expression `(`_x_`)` describes the language described by _x_.
 
-This allows us to alter the way the operators are combined. As we have seen, the expression `b|c*` resolves to the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`. But the expression `(b|c)*` resolves to the language `{ '', 'b', 'c', 'bb', 'cc', 'bbb', 'ccc', ... }`.
+This allows us to alter the way the operators are combined. As we have seen, the expression `b|c*` describes the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`. But the expression `(b|c)*` describes the language `{ '', 'b', 'c', 'bb', 'cc', 'bbb', 'ccc', ... }`.
 
 It is quite obvious that regexen borrowed a lot of their syntax and semantics from regular expressions. Leaving aside the mechanism of capturing and extracting portions of a match, almost every regular expressions is also a regex. For example, `/reggiee*/` is a regular expression that matches words like `reggie`, `reggiee`, and `reggieee` anywhere in a string.
 
