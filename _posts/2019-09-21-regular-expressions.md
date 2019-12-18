@@ -1023,7 +1023,7 @@ It's called `emptySet`, because the the set of all sentences this language recog
 
 Now, how do we get our evaluator to handle it? Our `evaluate` function takes a configuration object as a parameter, and that's where we define operators. We're going to define `∅` as an atomic operator.[^atomic]
 
-[^atomic] Atomic operators take zero arguments, as contrasted with postfix operators that take one argument, or infix operators that take two operators.
+[^atomic]: Atomic operators take zero arguments, as contrasted with postfix operators that take one argument, or infix operators that take two operators.
 
 ```javascript
 const regexA = {
