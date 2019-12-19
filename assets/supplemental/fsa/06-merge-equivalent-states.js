@@ -109,9 +109,9 @@ const regexD = {
   }
 };
 
-function verifyStateCount (configuration, examples) {
+function verifyStateCount (definition, examples) {
   function countStates (regex) {
-    const fsr = evaluate(regex, configuration);
+    const fsr = evaluate(regex, definition);
 
     const states = toStateSet(fsr.transitions);
     states.add(fsr.start);

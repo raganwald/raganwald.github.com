@@ -271,31 +271,31 @@ const arithmetic = {
       symbol: Symbol('+'),
       type: 'infix',
       precedence: 1,
-      eval: (a, b) => a + b
+      fn: (a, b) => a + b
     },
     '-': {
       symbol: Symbol('-'),
       type: 'infix',
       precedence: 1,
-      eval: (a, b) => a - b
+      fn: (a, b) => a - b
     },
     '*': {
       symbol: Symbol('*'),
       type: 'infix',
       precedence: 3,
-      eval: (a, b) => a * b
+      fn: (a, b) => a * b
     },
     '/': {
       symbol: Symbol('/'),
       type: 'infix',
       precedence: 2,
-      eval: (a, b) => a / b
+      fn: (a, b) => a / b
     },
     '!': {
       symbol: Symbol('!'),
       type: 'postfix',
       precedence: 4,
-      eval: function factorial (a, memo = 1) {
+      fn: function factorial(a, memo = 1) {
         if (a < 2) {
           return a * memo;
         } else {
@@ -305,7 +305,6 @@ const arithmetic = {
     }
   }
 };
-
 ```
 
 Note that for each operator, we define a symbol. We'll use that when we push things into the output queue so that our evaluator can disambiguate symbols from values (Meaning, of course, that these symbols can't be values.) We also define a precedence, and an `eval` function that the evaluator will use later.
@@ -323,7 +322,7 @@ The shunting yard algorithm is stack-based. Infix expressions are the form of ma
 Here's our shunting yard implementation. There are a few extra bits and bobs we'll fill in in a moment:
 
 ```javascript
-function shuntingYardFirstCut (inputString, { operators }) {
+function shuntingYardFirstCut (infixExpression, { operators }) {
   const operatorsMap = new Map(
     Object.entries(operators)
   );
@@ -349,9 +348,9 @@ function shuntingYardFirstCut (inputString, { operators }) {
   const isCombinator =
     symbol => isInfix(symbol) || isPostfix(symbol);
 
-  const input = inputString.split('');
+  const input = infixExpression.split('');
   const operatorStack = [];
-  const outputQueue = [];
+  const reversePolishRepresentation = [];
   let awaitingValue = true;
 
   while (input.length > 0) {
@@ -364,7 +363,7 @@ function shuntingYardFirstCut (inputString, { operators }) {
       awaitingValue = true;
     } else if (symbol === '(') {
       // value catenation
-      error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
+      error(`values ${peek(reversePolishRepresentation)} and ${symbol} cannot be catenated`);
     } else if (symbol === ')') {
       // closing parenthesis case, clear the
       // operator stack
@@ -372,7 +371,7 @@ function shuntingYardFirstCut (inputString, { operators }) {
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const op = operatorStack.pop();
 
-        outputQueue.push(representationOf(op));
+        reversePolishRepresentation.push(representationOf(op));
       }
 
       if (peek(operatorStack) === '(') {
@@ -391,7 +390,7 @@ function shuntingYardFirstCut (inputString, { operators }) {
         if (precedence < opPrecedence) {
           const op = operatorStack.pop();
 
-          outputQueue.push(representationOf(op));
+          reversePolishRepresentation.push(representationOf(op));
         } else {
           break;
         }
@@ -402,11 +401,11 @@ function shuntingYardFirstCut (inputString, { operators }) {
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
-      outputQueue.push(representationOf(symbol));
+      reversePolishRepresentation.push(representationOf(symbol));
       awaitingValue = false;
     } else {
       // value catenation
-      error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
+      error(`values ${peek(reversePolishRepresentation)} and ${symbol} cannot be catenated`);
     }
   }
 
@@ -416,13 +415,13 @@ function shuntingYardFirstCut (inputString, { operators }) {
 
     if (operatorsMap.has(op)) {
       const { symbol: opSymbol } = operatorsMap.get(op);
-      outputQueue.push(opSymbol);
+      reversePolishRepresentation.push(opSymbol);
     } else {
       error(`Don't know how to push operator ${op}`);
     }
   }
 
-  return outputQueue;
+  return reversePolishRepresentation;
 }
 ```
 
@@ -515,7 +514,7 @@ const arithmeticB = {
   defaultOperator: '*'
 }
 
-function shuntingYardSecondCut (inputString, { operators, defaultOperator }) {
+function shuntingYardSecondCut (infixExpression, { operators, defaultOperator }) {
   const operatorsMap = new Map(
     Object.entries(operators)
   );
@@ -545,9 +544,9 @@ function shuntingYardSecondCut (inputString, { operators, defaultOperator }) {
   const awaitsValue =
     symbol => isInfix(symbol) || isPrefix(symbol);
 
-  const input = inputString.split('');
+  const input = infixExpression.split('');
   const operatorStack = [];
-  const outputQueue = [];
+  const reversePolishRepresentation = [];
   let awaitingValue = true;
 
   while (input.length > 0) {
@@ -571,7 +570,7 @@ function shuntingYardSecondCut (inputString, { operators, defaultOperator }) {
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const op = operatorStack.pop();
 
-        outputQueue.push(representationOf(op));
+        reversePolishRepresentation.push(representationOf(op));
       }
 
       if (peek(operatorStack) === '(') {
@@ -591,7 +590,7 @@ function shuntingYardSecondCut (inputString, { operators, defaultOperator }) {
           if (precedence < opPrecedence) {
             const op = operatorStack.pop();
 
-            outputQueue.push(representationOf(op));
+            reversePolishRepresentation.push(representationOf(op));
           } else {
             break;
           }
@@ -616,7 +615,7 @@ function shuntingYardSecondCut (inputString, { operators, defaultOperator }) {
         if (precedence < opPrecedence) {
           const op = operatorStack.pop();
 
-          outputQueue.push(representationOf(op));
+          reversePolishRepresentation.push(representationOf(op));
         } else {
           break;
         }
@@ -627,7 +626,7 @@ function shuntingYardSecondCut (inputString, { operators, defaultOperator }) {
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
-      outputQueue.push(representationOf(symbol));
+      reversePolishRepresentation.push(representationOf(symbol));
       awaitingValue = false;
     } else {
       // value catenation
@@ -644,13 +643,13 @@ function shuntingYardSecondCut (inputString, { operators, defaultOperator }) {
 
     if (operatorsMap.has(op)) {
       const { symbol: opSymbol } = operatorsMap.get(op);
-      outputQueue.push(opSymbol);
+      reversePolishRepresentation.push(opSymbol);
     } else {
       error(`Don't know how to push operator ${op}`);
     }
   }
 
-  return outputQueue;
+  return reversePolishRepresentation;
 }
 
 verifyShunter(shuntingYardSecondCut, {
@@ -671,10 +670,10 @@ We now have enough to get started with evaluating the reverse-polish representat
 
 ### evaluating the reverse-polish representation with a stack machine
 
-Our first cut at the code for evaluating the reverse-polish representation produced by our shunting yard, will take the configuration for operators as an argument, and it will also take a function for converting strings to values.
+Our first cut at the code for evaluating the reverse-polish representation produced by our shunting yard, will take the definition for operators as an argument, and it will also take a function for converting strings to values.
 
 ```javascript
-function evaluateReversePolishRepresentation (representationList, {
+function stateMachine (representationList, {
   operators,
   toValue
 }) {
@@ -721,12 +720,12 @@ function evaluateReversePolishRepresentation (representationList, {
 We can then wire the shunting yard up to the postfix evaluator, to make a function that evaluates infix notation:
 
 ```javascript
-function evaluateFirstCut (expression, configuration) {
-  return evaluateReversePolishRepresentation(
+function evaluateFirstCut (expression, definition) {
+  return stateMachine(
     shuntingYardSecondCut(
-      expression, configuration
+      expression, definition
     ),
-    configuration
+    definition
   );
 }
 
@@ -1037,7 +1036,7 @@ verifyRecognizer(emptySet(), {
 
 It's called `emptySet`, because the the set of all sentences this language recognizes is empty. Note that while hand-written recognizers can have any arbitrary names for their states, we're using the `names` generator to generate state names for us. This automatically avoid two recognizers ever having state names in common, which makes some of the code we write later a great deal simpler.
 
-Now, how do we get our evaluator to handle it? Our `evaluate` function takes a configuration object as a parameter, and that's where we define operators. We're going to define `∅` as an atomic operator.[^atomic]
+Now, how do we get our evaluator to handle it? Our `evaluate` function takes a definition object as a parameter, and that's where we define operators. We're going to define `∅` as an atomic operator.[^atomic]
 
 [^atomic]: Atomic operators take zero arguments, as contrasted with postfix operators that take one argument, or infix operators that take two operators.
 
@@ -1075,7 +1074,7 @@ verifyRecognizer(emptyString(), {
   //=> All 3 tests passing
 ```
 
-And then we'll add it to the configuration:
+And then we'll add it to the definition:
 
 ```javascript
 const regexA = {
@@ -1210,9 +1209,9 @@ verifyRecognizer(rRecognizer, {
 We'll do this enough that it's worth building a helper for verifying our work:
 
 ```javascript
-function verifyEvaluateFirstCut (expression, configuration, examples) {
+function verifyEvaluateFirstCut (expression, definition, examples) {
   return verify(
-    automate(evaluateFirstCut(expression, configuration)),
+    automate(evaluateFirstCut(expression, definition)),
     examples
   );
 }
@@ -1259,7 +1258,7 @@ We'll set it up so that we can choose whatever we like, but by default we'll use
 
 ```javascript
 function shuntingYard (
-  inputString,
+  infixExpression,
   {
     operators,
     defaultOperator,
@@ -1296,9 +1295,9 @@ function shuntingYard (
   const awaitsValue =
     symbol => isInfix(symbol) || isPrefix(symbol);
 
-  const input = inputString.split('');
+  const input = infixExpression.split('');
   const operatorStack = [];
-  const outputQueue = [];
+  const reversePolishRepresentation = [];
   let awaitingValue = true;
 
   while (input.length > 0) {
@@ -1313,7 +1312,7 @@ function shuntingYard (
         if (awaitingValue) {
           // push the escaped value of the symbol
 
-          outputQueue.push(escapedValue(valueSymbol));
+          reversePolishRepresentation.push(escapedValue(valueSymbol));
         } else {
           // value catenation
 
@@ -1341,7 +1340,7 @@ function shuntingYard (
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const op = operatorStack.pop();
 
-        outputQueue.push(representationOf(op));
+        reversePolishRepresentation.push(representationOf(op));
       }
 
       if (peek(operatorStack) === '(') {
@@ -1361,7 +1360,7 @@ function shuntingYard (
           if (precedence < opPrecedence) {
             const op = operatorStack.pop();
 
-            outputQueue.push(representationOf(op));
+            reversePolishRepresentation.push(representationOf(op));
           } else {
             break;
           }
@@ -1386,7 +1385,7 @@ function shuntingYard (
         if (precedence < opPrecedence) {
           const op = operatorStack.pop();
 
-          outputQueue.push(representationOf(op));
+          reversePolishRepresentation.push(representationOf(op));
         } else {
           break;
         }
@@ -1397,7 +1396,7 @@ function shuntingYard (
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
-      outputQueue.push(representationOf(symbol));
+      reversePolishRepresentation.push(representationOf(symbol));
       awaitingValue = false;
     } else {
       // value catenation
@@ -1414,21 +1413,21 @@ function shuntingYard (
 
     if (operatorsMap.has(op)) {
       const { symbol: opSymbol } = operatorsMap.get(op);
-      outputQueue.push(opSymbol);
+      reversePolishRepresentation.push(opSymbol);
     } else {
       error(`Don't know how to push operator ${op}`);
     }
   }
 
-  return outputQueue;
+  return reversePolishRepresentation;
 }
 
-function evaluate (expression, configuration) {
-  return evaluateReversePolishRepresentation(
+function evaluate (expression, definition) {
+  return stateMachine(
     shuntingYard(
-      expression, configuration
+      expression, definition
     ),
-    configuration
+    definition
   );
 }
 ```
@@ -1436,9 +1435,9 @@ function evaluate (expression, configuration) {
 And now to test it:
 
 ```javascript
-function verifyEvaluate (expression, configuration, examples) {
+function verifyEvaluate (expression, definition, examples) {
   return verify(
-    automate(evaluate(expression, configuration)),
+    automate(evaluate(expression, definition)),
     examples
   );
 }
@@ -3095,9 +3094,9 @@ const regexD = {
 Now let's compare the old:
 
 ```javascript
-function verifyStateCount (configuration, examples) {
+function verifyStateCount (definition, examples) {
   function countStates (regex) {
-    const fsr = evaluate(regex, configuration);
+    const fsr = evaluate(regex, definition);
 
     const states = toStateSet(fsr.transitions);
     states.add(fsr.start);
@@ -3526,7 +3525,7 @@ verifyEvaluate('(R|r)eg(ε|gie(ε|ee*!))', formalRegularExpressions, {
 });
 ```
 
-And best of all, we know that whatever formal regular expression we devise, we can produce a finite-state recognizer that accept sentences in the language the formal regular expression describes, simply by feeding it to our `evaluate` function along with the `formalRegulaExpressions` configuration dictionary.
+And best of all, we know that whatever formal regular expression we devise, we can produce a finite-state recognizer that accept sentences in the language the formal regular expression describes, simply by feeding it to our `evaluate` function along with the `formalRegulaExpressions` definition dictionary.
 
 ---
 

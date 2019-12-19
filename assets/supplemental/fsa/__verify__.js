@@ -50,7 +50,7 @@ function peek(stack) {
   return stack[stack.length - 1];
 }
 
-function shuntingYardFirstCut(inputString, {
+function shuntingYardFirstCut(infixExpression, {
   operators
 }) {
   const operatorsMap = new Map(
@@ -80,9 +80,9 @@ function shuntingYardFirstCut(inputString, {
   const isCombinator =
     symbol => isInfix(symbol) || isPostfix(symbol);
 
-  const input = inputString.split('');
+  const input = infixExpression.split('');
   const operatorStack = [];
-  const outputQueue = [];
+  const reversePolishRepresentation = [];
   let awaitingValue = true;
 
   while (input.length > 0) {
@@ -95,7 +95,7 @@ function shuntingYardFirstCut(inputString, {
       awaitingValue = true;
     } else if (symbol === '(') {
       // value catenation
-      error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
+      error(`values ${peek(reversePolishRepresentation)} and ${symbol} cannot be catenated`);
     } else if (symbol === ')') {
       // closing parenthesis case, clear the
       // operator stack
@@ -103,7 +103,7 @@ function shuntingYardFirstCut(inputString, {
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const op = operatorStack.pop();
 
-        outputQueue.push(representationOf(op));
+        reversePolishRepresentation.push(representationOf(op));
       }
 
       if (peek(operatorStack) === '(') {
@@ -124,7 +124,7 @@ function shuntingYardFirstCut(inputString, {
         if (precedence < opPrecedence) {
           const op = operatorStack.pop();
 
-          outputQueue.push(representationOf(op));
+          reversePolishRepresentation.push(representationOf(op));
         } else {
           break;
         }
@@ -135,11 +135,11 @@ function shuntingYardFirstCut(inputString, {
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
-      outputQueue.push(representationOf(symbol));
+      reversePolishRepresentation.push(representationOf(symbol));
       awaitingValue = false;
     } else {
       // value catenation
-      error(`values ${peek(outputQueue)} and ${symbol} cannot be catenated`);
+      error(`values ${peek(reversePolishRepresentation)} and ${symbol} cannot be catenated`);
     }
   }
 
@@ -151,16 +151,16 @@ function shuntingYardFirstCut(inputString, {
       const {
         symbol: opSymbol
       } = operatorsMap.get(op);
-      outputQueue.push(opSymbol);
+      reversePolishRepresentation.push(opSymbol);
     } else {
       error(`Don't know how to push operator ${op}`);
     }
   }
 
-  return outputQueue;
+  return reversePolishRepresentation;
 }
 
-function shuntingYardSecondCut(inputString, {
+function shuntingYardSecondCut(infixExpression, {
   operators,
   defaultOperator
 }) {
@@ -195,9 +195,9 @@ function shuntingYardSecondCut(inputString, {
   const awaitsValue =
     symbol => isInfix(symbol) || isPrefix(symbol);
 
-  const input = inputString.split('');
+  const input = infixExpression.split('');
   const operatorStack = [];
-  const outputQueue = [];
+  const reversePolishRepresentation = [];
   let awaitingValue = true;
 
   while (input.length > 0) {
@@ -221,7 +221,7 @@ function shuntingYardSecondCut(inputString, {
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const op = operatorStack.pop();
 
-        outputQueue.push(representationOf(op));
+        reversePolishRepresentation.push(representationOf(op));
       }
 
       if (peek(operatorStack) === '(') {
@@ -241,7 +241,7 @@ function shuntingYardSecondCut(inputString, {
           if (precedence < opPrecedence) {
             const op = operatorStack.pop();
 
-            outputQueue.push(representationOf(op));
+            reversePolishRepresentation.push(representationOf(op));
           } else {
             break;
           }
@@ -268,7 +268,7 @@ function shuntingYardSecondCut(inputString, {
         if (precedence < opPrecedence) {
           const op = operatorStack.pop();
 
-          outputQueue.push(representationOf(op));
+          reversePolishRepresentation.push(representationOf(op));
         } else {
           break;
         }
@@ -279,7 +279,7 @@ function shuntingYardSecondCut(inputString, {
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
-      outputQueue.push(representationOf(symbol));
+      reversePolishRepresentation.push(representationOf(symbol));
       awaitingValue = false;
     } else {
       // value catenation
@@ -298,13 +298,13 @@ function shuntingYardSecondCut(inputString, {
       const {
         symbol: opSymbol
       } = operatorsMap.get(op);
-      outputQueue.push(opSymbol);
+      reversePolishRepresentation.push(opSymbol);
     } else {
       error(`Don't know how to push operator ${op}`);
     }
   }
 
-  return outputQueue;
+  return reversePolishRepresentation;
 }
 
 function deepEqual(obj1, obj2) {
@@ -366,7 +366,7 @@ function verify(fn, tests, ...additionalArgs) {
   }
 }
 
-function evaluateReversePolishRepresentation (representationList, {
+function stateMachine (representationList, {
   operators,
   toValue
 }) {
@@ -409,12 +409,12 @@ function evaluateReversePolishRepresentation (representationList, {
   }
 }
 
-function evaluateFirstCut(expression, configuration) {
-  return evaluateReversePolishRepresentation(
+function evaluateFirstCut(expression, definition) {
+  return stateMachine(
     shuntingYardSecondCut(
-      expression, configuration
+      expression, definition
     ),
-    configuration
+    definition
   );
 }
 
@@ -829,7 +829,7 @@ function literal (symbol) {
 }
 
 function shuntingYard (
-  inputString,
+  infixExpression,
   {
     operators,
     defaultOperator,
@@ -866,9 +866,9 @@ function shuntingYard (
   const awaitsValue =
     symbol => isInfix(symbol) || isPrefix(symbol);
 
-  const input = inputString.split('');
+  const input = infixExpression.split('');
   const operatorStack = [];
-  const outputQueue = [];
+  const reversePolishRepresentation = [];
   let awaitingValue = true;
 
   while (input.length > 0) {
@@ -883,7 +883,7 @@ function shuntingYard (
         if (awaitingValue) {
           // push the escaped value of the symbol
 
-          outputQueue.push(escapedValue(valueSymbol));
+          reversePolishRepresentation.push(escapedValue(valueSymbol));
         } else {
           // value catenation
 
@@ -911,7 +911,7 @@ function shuntingYard (
       while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
         const op = operatorStack.pop();
 
-        outputQueue.push(representationOf(op));
+        reversePolishRepresentation.push(representationOf(op));
       }
 
       if (peek(operatorStack) === '(') {
@@ -931,7 +931,7 @@ function shuntingYard (
           if (precedence < opPrecedence) {
             const op = operatorStack.pop();
 
-            outputQueue.push(representationOf(op));
+            reversePolishRepresentation.push(representationOf(op));
           } else {
             break;
           }
@@ -956,7 +956,7 @@ function shuntingYard (
         if (precedence < opPrecedence) {
           const op = operatorStack.pop();
 
-          outputQueue.push(representationOf(op));
+          reversePolishRepresentation.push(representationOf(op));
         } else {
           break;
         }
@@ -967,7 +967,7 @@ function shuntingYard (
     } else if (awaitingValue) {
       // as expected, go straight to the output
 
-      outputQueue.push(representationOf(symbol));
+      reversePolishRepresentation.push(representationOf(symbol));
       awaitingValue = false;
     } else {
       // value catenation
@@ -984,34 +984,34 @@ function shuntingYard (
 
     if (operatorsMap.has(op)) {
       const { symbol: opSymbol } = operatorsMap.get(op);
-      outputQueue.push(opSymbol);
+      reversePolishRepresentation.push(opSymbol);
     } else {
       error(`Don't know how to push operator ${op}`);
     }
   }
 
-  return outputQueue;
+  return reversePolishRepresentation;
 }
 
-function evaluate (expression, configuration) {
-  return evaluateReversePolishRepresentation(
+function evaluate (expression, definition) {
+  return stateMachine(
     shuntingYard(
-      expression, configuration
+      expression, definition
     ),
-    configuration
+    definition
   );
 }
 
-function verifyEvaluateFirstCut (expression, configuration, examples) {
+function verifyEvaluateFirstCut (expression, definition, examples) {
   return verify(
-    automate(evaluateFirstCut(expression, configuration)),
+    automate(evaluateFirstCut(expression, definition)),
     examples
   );
 }
 
-function verifyEvaluate (expression, configuration, examples) {
+function verifyEvaluate (expression, definition, examples) {
   return verify(
-    automate(evaluate(expression, configuration)),
+    automate(evaluate(expression, definition)),
     examples
   );
 }
@@ -1819,9 +1819,9 @@ const regexD = {
   }
 };
 
-function verifyStateCount (configuration, examples) {
+function verifyStateCount (definition, examples) {
   function countStates (regex) {
-    const fsr = evaluate(regex, configuration);
+    const fsr = evaluate(regex, definition);
 
     const states = toStateSet(fsr.transitions);
     states.add(fsr.start);

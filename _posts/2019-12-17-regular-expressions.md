@@ -3,15 +3,22 @@ title: "Exploring Regular Expressions, Part II: Beyond Formal Regular Expression
 tags: [recursion,allonge,mermaid,wip]
 ---
 
-This is Part II of a series about "Exploring Regular Expressions and Finite-State Recognizers." If you haven't already, you may want to read [Part I], first, where we wrote a comnplier that translates formal regular expressions into [finite-state recognizers][fsm].
+This is Part II of a series about "Exploring Regular Expressions and Finite-State Recognizers." If you haven't already, you may want to read [Part I] first, where we wrote a comnplier that translates [formal regular expressions][regular expression] into [finite-state recognizers][fsm].
 
 [Part I]: https://raganwald.com/2019/09/21/regular-expressions.html
-[formal regular expressions]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
+[regular expression]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
 [fsm]: https://en.wikipedia.org/wiki/Finite-state_machine
 
 ---
 
 # [Table of Contents](#table-of-contents)
+
+### [Our Code So Far](#our-code-so-far-1)
+
+  - [the shunting yard](#the-shunting-yard)
+  - [the stack machine](#the-stack-machine)
+  - [evaluating arithmetic expressions](#evaluating-arithmetic-expressions)
+  - [compiling formal regular expressions](#compiling-formal-regular-expressions)
 
 ### [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions)
 
@@ -44,9 +51,410 @@ This is Part II of a series about "Exploring Regular Expressions and Finite-Stat
 
 ---
 
+# Our Code So Far
+
+In [Part I], we established that for every [formal regular expression][regular expression], there is an equivalent [finite-state recognizer][fsm], establishing that the set of all languages described by formal regular expressions--that is to say, [regular languages]--is a subset of the set of all languages recognized by finite-state automata.
+
+We did this in [constructive proof] fashion by writing a compiler that takes any formal regular expression as input, and returns a JSON description of an equivalent finite-state recognizer. We also wrote an autoimator that turns teh description of a finite state recognizer into a JavaScript function that takes any string as input and answers whether the string is recognized.
+
+[constructive proof]: https://en.wikipedia.org/wiki/Constructive_proof
+
+Thus, we can take any formal regular expression and get a function that recognizes strings in the language described by the formal regular expression. And because the implementation is a finite-state automaton, we know that it can recognie strings in at most linear time, which can be an improvement over some regex implementations for certain regular expressions.
+
+we're going to reprint the final version of all of our functions. If you're familiar with themn from [Part I], or just plain impatient, you can skip ahead to [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions).
+
+---
+
+### the shunting yard
+
+Our pipeline of tools starts with a [shunting yard][Shunting Yard Algorithm] function that takes a regular expression in infix notation, and translates it into [reverse-polish representation][reverse-polish notation]. It also takes a definition dictionary that configures the shunting yard by defining operators, a default operator to handle catenation, and some details on how to handle escaping symbols like parentheses that would otherwise be treated as operators.
+
+It is hard-wired to treat `(` and `)` as parentheses for controlling the order of evaluation.
+
+[Shunting Yard Algorithm]: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
+[reverse-polish notation]: https://en.wikipedia.org/wiki/Reverse_Polish_notation
+
+```javascript
+function error(m) {
+  console.log(m);
+  throw m;
+}
+
+function peek(stack) {
+  return stack[stack.length - 1];
+}
+
+function shuntingYard (
+  infixExpression,
+  {
+    operators,
+    defaultOperator,
+    escapeSymbol = '`',
+    escapedValue = string => string
+  }
+) {
+  const operatorsMap = new Map(
+    Object.entries(operators)
+  );
+
+  const representationOf =
+    something => {
+      if (operatorsMap.has(something)) {
+        const { symbol } = operatorsMap.get(something);
+
+        return symbol;
+      } else if (typeof something === 'string') {
+        return something;
+      } else {
+        error(`${something} is not a value`);
+      }
+    };
+  const typeOf =
+    symbol => operatorsMap.has(symbol) ? operatorsMap.get(symbol).type : 'value';
+  const isInfix =
+    symbol => typeOf(symbol) === 'infix';
+  const isPrefix =
+    symbol => typeOf(symbol) === 'prefix';
+  const isPostfix =
+    symbol => typeOf(symbol) === 'postfix';
+  const isCombinator =
+    symbol => isInfix(symbol) || isPrefix(symbol) || isPostfix(symbol);
+  const awaitsValue =
+    symbol => isInfix(symbol) || isPrefix(symbol);
+
+  const input = infixExpression.split('');
+  const operatorStack = [];
+  const reversePolishRepresentation = [];
+  let awaitingValue = true;
+
+  while (input.length > 0) {
+    const symbol = input.shift();
+
+    if (symbol === escapeSymbol) {
+      if (input.length === 0) {
+        error('Escape symbol ${escapeSymbol} has no following symbol');
+      } else {
+        const valueSymbol = input.shift();
+
+        if (awaitingValue) {
+          // push the escaped value of the symbol
+
+          reversePolishRepresentation.push(escapedValue(valueSymbol));
+        } else {
+          // value catenation
+
+          input.unshift(valueSymbol);
+          input.unshift(escapeSymbol);
+          input.unshift(defaultOperator);
+        }
+        awaitingValue = false;
+      }
+    } else if (symbol === '(' && awaitingValue) {
+      // opening parenthesis case, going to build
+      // a value
+      operatorStack.push(symbol);
+      awaitingValue = true;
+    } else if (symbol === '(') {
+      // value catenation
+
+      input.unshift(symbol);
+      input.unshift(defaultOperator);
+      awaitingValue = false;
+    } else if (symbol === ')') {
+      // closing parenthesis case, clear the
+      // operator stack
+
+      while (operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const op = operatorStack.pop();
+
+        reversePolishRepresentation.push(representationOf(op));
+      }
+
+      if (peek(operatorStack) === '(') {
+        operatorStack.pop();
+        awaitingValue = false;
+      } else {
+        error('Unbalanced parentheses');
+      }
+    } else if (isPrefix(symbol)) {
+      if (awaitingValue) {
+        const { precedence } = operatorsMap.get(symbol);
+
+        // pop higher-precedence operators off the operator stack
+        while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+          const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+          if (precedence < opPrecedence) {
+            const op = operatorStack.pop();
+
+            reversePolishRepresentation.push(representationOf(op));
+          } else {
+            break;
+          }
+        }
+
+        operatorStack.push(symbol);
+        awaitingValue = awaitsValue(symbol);
+      } else {
+        // value catenation
+
+        input.unshift(symbol);
+        input.unshift(defaultOperator);
+        awaitingValue = false;
+      }
+    } else if (isCombinator(symbol)) {
+      const { precedence } = operatorsMap.get(symbol);
+
+      // pop higher-precedence operators off the operator stack
+      while (isCombinator(symbol) && operatorStack.length > 0 && peek(operatorStack) !== '(') {
+        const opPrecedence = operatorsMap.get(peek(operatorStack)).precedence;
+
+        if (precedence < opPrecedence) {
+          const op = operatorStack.pop();
+
+          reversePolishRepresentation.push(representationOf(op));
+        } else {
+          break;
+        }
+      }
+
+      operatorStack.push(symbol);
+      awaitingValue = awaitsValue(symbol);
+    } else if (awaitingValue) {
+      // as expected, go straight to the output
+
+      reversePolishRepresentation.push(representationOf(symbol));
+      awaitingValue = false;
+    } else {
+      // value catenation
+
+      input.unshift(symbol);
+      input.unshift(defaultOperator);
+      awaitingValue = false;
+    }
+  }
+
+  // pop remaining symbols off the stack and push them
+  while (operatorStack.length > 0) {
+    const op = operatorStack.pop();
+
+    if (operatorsMap.has(op)) {
+      const { symbol: opSymbol } = operatorsMap.get(op);
+      reversePolishRepresentation.push(opSymbol);
+    } else {
+      error(`Don't know how to push operator ${op}`);
+    }
+  }
+
+  return reversePolishRepresentation;
+}
+```
+
+---
+
+### the stack machine
+
+We then use a [stack machine] to evaluate the reverse-polish representation. It uses the same definition dictionary to evaluate the effect of operators.
+
+[stack machine]: https://en.wikipedia.org/wiki/Stack_machine
+
+```javascript
+function stateMachine (representationList, {
+  operators,
+  toValue
+}) {
+  const functions = new Map(
+    Object.entries(operators).map(
+      ([key, { symbol, fn }]) => [symbol, fn]
+    )
+  );
+
+  const stack = [];
+
+  for (const element of representationList) {
+    if (typeof element === 'string') {
+      stack.push(toValue(element));
+    } else if (functions.has(element)) {
+      const fn = functions.get(element);
+      const arity = fn.length;
+
+      if (stack.length < arity) {
+        error(`Not enough values on the stack to use ${element}`)
+      } else {
+        const args = [];
+
+        for (let counter = 0; counter < arity; ++counter) {
+          args.unshift(stack.pop());
+        }
+
+        stack.push(fn.apply(null, args))
+      }
+    } else {
+      error(`Don't know what to do with ${element}'`)
+    }
+  }
+  if (stack.length === 0) {
+    return undefined;
+  } else if (stack.length > 1) {
+    error(`should only be one value to return, but there were ${stack.length} values on the stack`);
+  } else {
+    return stack[0];
+  }
+}
+```
+
+---
+
+### evaluating arithmetic expressions
+
+To evaluate an infix expression, the expression and definition dictionary are fed to the shunting yard, and then the resulting reverse-polish representation and definition dictionary are fed to the stack machine. For convenience, we have an evaluation function to do that:
+
+```javascript
+function evaluate (expression, definition) {
+  return stateMachine(
+    shuntingYard(
+      expression, definition
+    ),
+    definition
+  );
+}
+```
+
+The `evaluate` function takes a definition dictionary as an argument, and passes it to both the shunting yard and the state machine. If we pass in one kind of definition, we have a primitive evaluator for arithmetic expressions:
+
+```javascript
+const arithmetic = {
+  operators: {
+    '+': {
+      symbol: Symbol('+'),
+      type: 'infix',
+      precedence: 1,
+      fn: (a, b) => a + b
+    },
+    '-': {
+      symbol: Symbol('-'),
+      type: 'infix',
+      precedence: 1,
+      fn: (a, b) => a - b
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'infix',
+      precedence: 3,
+      fn: (a, b) => a * b
+    },
+    '/': {
+      symbol: Symbol('/'),
+      type: 'infix',
+      precedence: 2,
+      fn: (a, b) => a / b
+    },
+    '!': {
+      symbol: Symbol('!'),
+      type: 'postfix',
+      precedence: 4,
+      fn: function factorial (a, memo = 1) {
+        if (a < 2) {
+          return a * memo;
+        } else {
+          return factorial(a - 1, a * memo);
+        }
+      }
+    }
+  },
+  defaultOperator: '*',
+  toValue: n => +n
+};
+
+evaluate('(1+2)3!', arithmetic)
+  //=> 18
+```
+
+---
+
+### compiling formal regular expressions
+
+With a different definition dictionary, we can compile formal regular expressions to a finite-state recognizer description:
+
+```javascript
+const formalRegularExpressions = {
+  operators: {
+    '∅': {
+      symbol: Symbol('∅'),
+      type: 'atomic',
+      fn: emptySet
+    },
+    'ε': {
+      symbol: Symbol('ε'),
+      type: 'atomic',
+      fn: emptyString
+    },
+    '|': {
+      symbol: Symbol('|'),
+      type: 'infix',
+      precedence: 10,
+      fn: union2merged
+    },
+    '→': {
+      symbol: Symbol('→'),
+      type: 'infix',
+      precedence: 20,
+      fn: catenation2
+    },
+    '*': {
+      symbol: Symbol('*'),
+      type: 'postfix',
+      precedence: 30,
+      fn: zeroOrMore
+    }
+  },
+  defaultOperator: '→',
+  toValue (string) {
+    return literal(string);
+  }
+};
+```
+
+We will not reproduce all of the code needed to implement `emptySet`, `emptyString`, `union2merged`, `catenation2`, and `zeroOrMore` here in the text, but the full implementations can be found [here][base].
+
+[base]: /assets/supplemental/fsa-2/01-base.js
+
+Here it is working:
+
+```javascript
+evaluate('0|1(0|1)*', formalRegularExpressions);
+  //=>
+    {
+      "start": "G37",
+      "transitions": [
+        { "from": "G37", "consume": "0", "to": "G23" },
+        { "from": "G37", "consume": "1", "to": "G25" },
+        { "from": "G25", "consume": "0", "to": "G25" },
+        { "from": "G25", "consume": "1", "to": "G25" }
+      ],
+      "accepting": [ "G23", "G25" ]
+    }
+```
+
+This is a description in JSON of this finite-state recognizer:
+
+<div class="mermaid">
+  stateDiagram
+    [*]-->G37
+    G37-->G23 : 0
+    G37-->G25 : 1
+    G25-->G25 : 0, 1
+    G23-->[*]
+    G25-->[*]
+</div>
+
+It recognizes the language consisting of the set of all binary numbers.
+
+---
+
 # Beyond Formal Regular Expressions
 
-Formal regular expressions are--deliberately--as minimal as possible. There are only three kinds of literals (`∅`, `ε`, and literal symbols), and three operations (alternation, catenation, and quantification via the kleene star). Minimalism is extremely important from a computer science perspective, but unwieldy when trying to "Get Stuff Done."
+Formal regular expressions are--deliberately--as minimal as possible. There are only three kinds of literals (`∅`, `ε`, and literal symbols), and three operations (alternation with `|`, catenation, and quantification with `*`). Minimalism is extremely important from a computer science perspective, but unwieldy when trying to "Get Stuff Done."
 
 Thus, all regexen provide functionality above and beyond formal regular expressions.
 
@@ -356,7 +764,7 @@ In addition to convenient operators like `?` and `+`, regexen also shorthand cha
 
 In regexen, instead of associating shorthand character classes with their own symbols, the regexen syntax overloads the escape character `\` so that it usually means "Match this character as a character, ignoring any special meaning," but sometimes--as with `\d`, `\w`, and with `\s`--it means "match this shorthand character class."
 
-Fortunately, we left a back-door in our shunting yard function just for the purpose of overloading the escape character's behaviour. Here's the full configuration:
+Fortunately, we left a back-door in our shunting yard function just for the purpose of overloading the escape character's behaviour. Here's the full definition:
 
 ```javascript
 const UNDERSCORE ='_';
@@ -927,7 +1335,7 @@ const levelTwoExpressions = {
 
   }
 
-  // ... other configuration ...
+  // ... other definition ...
 
 };
 
@@ -1003,7 +1411,7 @@ const levelTwoExpressions = {
 
   }
 
-  // ... other configuration ...
+  // ... other definition ...
 
 };
 
