@@ -1,7 +1,13 @@
 ---
 title: "Exploring Regular Expressions, Part II: Beyond Formal Regular Expressions"
-tags: [recursion,allonge,mermaid,wip,noindex]
+tags: [recursion,allonge,mermaid,wip]
 ---
+
+This is Part II of a series about "Exploring Regular Expressions and Finite-State Recognizers." If you haven't already, you may want to read [Part I], first, where we wrote a comnplier that translates formal regular expressions into [finite-state recognizers][fsm].
+
+[Part I]: https://raganwald.com/2019/09/21/regular-expressions.html
+[formal regular expressions]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
+[fsm]: https://en.wikipedia.org/wiki/Finite-state_machine
 
 ---
 
