@@ -990,7 +990,7 @@ Verifying recognizers will be extremely important when we want to verify that wh
 
 ---
 
-[![Building Blocks](../assets/images/fsa/building-blocks.jpg)](https://flickr.com/photos/treflyn/46568715554)
+[![Building Blocks](/assets/images/fsa/building-blocks.jpg)](https://flickr.com/photos/treflyn/46568715554)
 
 ---
 
@@ -1052,6 +1052,7 @@ const regexA = {
   },
   // ...
 };
+```
 
 Next, we need a recognizer that recognizes the language containing only the empty string, `''`. Once again, we'll write a function that returns a recognizer:
 
@@ -3245,7 +3246,7 @@ Before we move on to implement the `kleene*`, let's also recapitule two major re
 
 ---
 
-[![Margie](../assets/images/fsa/margie.jpg)](https://flickr.com/photos/satransport/7863807856)
+[![Margie](/assets/images/fsa/margie.jpg)](https://flickr.com/photos/satransport/7863807856)
 
 ---
 
@@ -3529,7 +3530,7 @@ And best of all, we know that whatever formal regular expression we devise, we c
 
 ---
 
-[![Caboose](../assets/images/fsa/caboose.jpg)](https://flickr.com/photos/74816677@N07/7514757812)
+[![Caboose](/assets/images/fsa/caboose.jpg)](https://flickr.com/photos/74816677@N07/7514757812)
 
 ---
 
