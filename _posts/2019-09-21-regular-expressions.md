@@ -67,9 +67,9 @@ Regex programming tools evolved as a practical application for [Formal Regular E
 
 Formal regular expressions are made with three "atomic" or indivisible expressions:
 
-- The symbol `∅` describes the language with no sentences, also called "the empty set."
-- The symbol `ε` describes the language containing only the empty string.
-- Literals such as `x`, `y`, or `z` describe languages containing single sentences, containing single symbols. e.g. The literal `r` describes the language which contains just one sentence: `'r'`. We will sometimes express this language as `{ 'r' }`.
+- The symbol `∅` describes the language with no sentences, `{ }`, also called "the empty set."
+- The symbol `ε` describes the language containing only the empty string, `{ '' }`.
+- Literals such as `x`, `y`, or `z` describe languages containing single sentences, containing single symbols. e.g. The literal `r` describes the language `{ 'r' }`.
 
 What makes formal regular expressions powerful, is that we have operators for alternating, catenating, and quantifying regular expressions. Given that _x_ is a regular expression describing some language `X`, and _y_ is a regular expression describing some language `Y`:
 

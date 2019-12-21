@@ -13,7 +13,11 @@ This is Part II of a series about "Exploring Regular Expressions and Finite-Stat
 
 # [Table of Contents](#table-of-contents)
 
-### [Our Code So Far](#our-code-so-far-1)
+### [The Essentials from Part I](#the-essentials-from-part-i-1)
+
+[Regular Expressions](#regular-expressions)
+
+[Our Code So Far](#our-code-so-far)
 
   - [the shunting yard](#the-shunting-yard)
   - [the stack machine](#the-stack-machine)
@@ -52,7 +56,47 @@ This is Part II of a series about "Exploring Regular Expressions and Finite-Stat
 
 ---
 
-# Our Code So Far
+# The Essentials from Part I
+
+## Regular Expressions
+
+In [Part I], and again in this essay, we will spend a lot of time talking about [formal regular expressions][regular expression]. Formal regular expressions are a minimal way to describe "regular" languages, and serve as the building blocks for the regexen we find in most programming languages.
+
+Formal regular expressions describe languages as sets of sentences. The three basic building blocks for formal regular expressions are the empty set, the empty string, and literal symbols:
+
+- The symbol `∅` describes the language with no sentences, `{ }`, also called "the empty set."
+- The symbol `ε` describes the language containing only the empty string, `{ '' }`.
+- Literals such as `x`, `y`, or `z` describe languages containing single sentences, containing single symbols. e.g. The literal `r` describes the language `{ 'r' }`.
+
+What makes formal regular expressions powerful, is that we have operators for alternating, catenating, and quantifying regular expressions. Given that _x_ is a regular expression describing some language `X`, and _y_ is a regular expression describing some language `Y`:
+
+1. The expression _x_`|`_y_ describes the union of the languages `X` and `Y`, meaning, the sentence `w` belongs to `x|y` if and only if `w` belongs to the language `X`, or `w` belongs to the language `Y`. We can also say that _x_`|`_y_ represents the _alternation_ of _x_ and _y_.
+2. The expression _xy_ describes the language `XY`, where a sentence `ab` belongs to the language `XY` if and only if `a` belongs to the language `X`, and `b` belongs to the language `Y`. We can also say that _xy_ represents the _catenation_ of the expressions _x_ and _y_.
+3. The expression _x_`*` describes the language `Z`, where the sentence `ε` (the empty string) belongs to `Z`, and, the sentence `pq` belongs to `Z` if and only if `p` is a sentence belonging to `X`, and `q` is a sentence belonging to `Z`. We can also say that _x_`*` represents a _quantification_ of _x_.
+
+[Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
+
+Before we add the last rule for regular expressions, let's clarify these three rules with some examples. Given the constants `a`, `b`, and `c`, resolving to the languages `{ 'a' }`, `{ 'b' }`, and `{ 'b' }`:
+
+- The expression `b|c` describes the language `{ 'b', 'c' }`, by rule 1.
+- The expression `ab` describes the language `{ 'ab' }` by rule 2.
+- The expression `a*` describes the language `{ '', 'a', 'aa', 'aaa', ... }` by rule 3.
+
+Our operations have a precedence, and it is the order of the rules as presented. So:
+
+- The expression `a|bc` describes the language `{ 'a', 'bc' }` by rules 1 and 2.
+- The expression `ab*` describes the language `{ 'a', 'ab', 'abb', 'abbb', ... }` by rules 2 and 3.
+- The expression `b|c*` describes the language `{ '', 'b', 'c', 'cc', 'ccc', ... }` by rules 1 and 3.
+
+As with the algebraic notation we are familiar with, we can use parentheses:
+
+- Given a regular expression _x_, the expression `(`_x_`)` describes the language described by _x_.
+
+This allows us to alter the way the operators are combined. As we have seen, the expression `b|c*` describes the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`. But the expression `(b|c)*` describes the language `{ '', 'b', 'c', 'bb', 'cc', 'bbb', 'ccc', ... }`.
+
+It is quite obvious that regexen borrowed a lot of their syntax and semantics from regular expressions. Leaving aside the mechanism of capturing and extracting portions of a match, almost every regular expressions is also a regex. For example, `/reggiee*/` is a regular expression that matches words like `reggie`, `reggiee`, and `reggieee` anywhere in a string.
+
+## Our Code So Far
 
 In [Part I], we established that for every [formal regular expression][regular expression], there is an equivalent [finite-state recognizer][fsm], establishing that the set of all languages described by formal regular expressions--that is to say, [regular languages]--is a subset of the set of all languages recognized by finite-state automata.
 
@@ -596,7 +640,7 @@ Thus, all regexen provide functionality above and beyond formal regular expressi
 
 ### a hierarchy of regex functionality
 
-Functionality in regexen can be organized into a rough hierarchy. Level Zero of the hierarchy is functionality provided by formal regular expressions. Everything we've written so far is at this base level.
+Functionality in regexen can be organized into a rough hierarchy. Level Zero of the hierarchy is functionality provided by formal regular expressions. Everything we've written in [Part I] is at this base level.
 
 Level One of the hierarchy is functionality that can be directly implemented in terms of formal regular expressions. For example, regexen provide a `?` postfix operator that provides "zero or one" quantification, and a `+` postfix operator that provides "one or more" quantification.
 
