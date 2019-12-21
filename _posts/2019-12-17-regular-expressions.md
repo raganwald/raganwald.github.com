@@ -5,6 +5,8 @@ tags: [recursion,allonge,mermaid,wip]
 
 This is Part II of a series about "Exploring Regular Expressions and Finite-State Recognizers." If you haven't already, you may want to read [Part I] first, where we wrote a comnplier that translates [formal regular expressions][regular expression] into [finite-state recognizers][fsm].
 
+You may also want another look at the essay, [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]. It covers the cocnepts behind finite-state machines and the the kinds of "languages"  they can and cannot recognize.
+
 [Part I]: https://raganwald.com/2019/09/21/regular-expressions.html
 [regular expression]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
 [fsm]: https://en.wikipedia.org/wiki/Finite-state_machine
@@ -58,6 +60,10 @@ This is Part II of a series about "Exploring Regular Expressions and Finite-Stat
 
 # The Essentials from Part I
 
+If you're familiar with formal regular expressions, and are very comfortable with the code we presented in [Part I], or just plain impatient, you can skip ahead to [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions).
+
+But for those who want a refersher, we'll quickly recap regular expressions and the code we have so far.
+
 ## Regular Expressions
 
 In [Part I], and again in this essay, we will spend a lot of time talking about [formal regular expressions][regular expression]. Formal regular expressions are a minimal way to describe "regular" languages, and serve as the building blocks for the regexen we find in most programming languages.
@@ -106,7 +112,7 @@ We did this in [constructive proof] fashion by writing a compiler that takes any
 
 Thus, we can take any formal regular expression and get a function that recognizes strings in the language described by the formal regular expression. And because the implementation is a finite-state automaton, we know that it can recognie strings in at most linear time, which can be an improvement over some regex implementations for certain regular expressions.
 
-We're going to revisit the final version of most of our functions. If you're familiar with themn from [Part I], or just plain impatient, you can skip ahead to [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions).
+We're going to revisit the final version of most of our functions.
 
 ---
 
