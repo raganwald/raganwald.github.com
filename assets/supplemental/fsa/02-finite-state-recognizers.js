@@ -188,36 +188,25 @@ function automate (description) {
       transitions
     } = validatedAndProcessed(description);
 
-    return function (string) {
+    return function (input) {
       let state = start;
-      let unconsumed = string;
 
-      while (unconsumed !== '') {
+      for (const symbol of input) {
         const transitionsForThisState = stateMap.get(state) || [];
         const transition =
         	transitionsForThisState.find(
-            ({ consume }) => consume === unconsumed[0]
+            ({ consume }) => consume === symbol
         	);
 
         if (transition == null) {
-          // the machine stops
-        	break;
+          return false;
         }
 
-        const { to } = transition;
-        unconsumed = unconsumed.substring(1);
-
-        state = to;
+        state = transition.to;
       }
 
-      // machine has reached a terminal state.
-      if (unconsumed === '') {
-        // reached the end. do we accept?
-        return acceptingSet.has(state);
-      } else {
-        // stopped before reaching the end is a fail
-        return false;
-      }
+      // reached the end. do we accept?
+      return acceptingSet.has(state);
     }
   }
 }

@@ -19,6 +19,7 @@ This is Part II of a series about "Exploring Regular Expressions and Finite-Stat
   - [the stack machine](#the-stack-machine)
   - [evaluating arithmetic expressions](#evaluating-arithmetic-expressions)
   - [compiling formal regular expressions](#compiling-formal-regular-expressions)
+  - [automation and verification](#automation-and-verification)
 
 ### [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions)
 
@@ -61,7 +62,7 @@ We did this in [constructive proof] fashion by writing a compiler that takes any
 
 Thus, we can take any formal regular expression and get a function that recognizes strings in the language described by the formal regular expression. And because the implementation is a finite-state automaton, we know that it can recognie strings in at most linear time, which can be an improvement over some regex implementations for certain regular expressions.
 
-we're going to reprint the final version of all of our functions. If you're familiar with themn from [Part I], or just plain impatient, you can skip ahead to [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions).
+We're going to revisit the final version of most of our functions. If you're familiar with themn from [Part I], or just plain impatient, you can skip ahead to [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions).
 
 ---
 
@@ -436,7 +437,7 @@ evaluate('0|1(0|1)*', formalRegularExpressions);
     }
 ```
 
-This is a description in JSON of this finite-state recognizer:
+This is a description in JSON, of this finite-state recognizer:
 
 <div class="mermaid">
   stateDiagram
@@ -449,6 +450,139 @@ This is a description in JSON of this finite-state recognizer:
 </div>
 
 It recognizes the language consisting of the set of all binary numbers.
+
+---
+
+### automation and verification
+
+We don't rely strictly on inspection to have confidence that the finite-state recognizers created by `evaluate` recognize the languages described by regular expressions. We use two tools.
+
+First, we have an `automate` function that takes a JSON decription of a finite-state recognizer as an argument, and returns a JavaScript *recognizer function*. The recognizer function takes a string as an argument, and returns `true` if the string beloings to the language recgnized by that finite-state recognizer, and `false` if it doesn't.
+
+This is the core `automate` function:
+
+```javascript
+function automate (description) {
+  if (description instanceof RegExp) {
+    return string => !!description.exec(string)
+  } else {
+    const {
+      stateMap,
+      start,
+      acceptingSet,
+      transitions
+    } = validatedAndProcessed(description);
+
+    return function (input) {
+      let state = start;
+
+      for (const symbol of input) {
+        const transitionsForThisState = stateMap.get(state) || [];
+        const transition =
+        	transitionsForThisState.find(
+            ({ consume }) => consume === symbol
+        	);
+
+        if (transition == null) {
+          return false;
+        }
+
+        state = transition.to;
+      }
+
+      // reached the end. do we accept?
+      return acceptingSet.has(state);
+    }
+  }
+}
+```
+
+`automate` interprets the finite-state recognizers as it goes, and could be faster. But for the purposes of running test cases, it is sufficient for our needs. Its supporting functions can be found [here][base].
+
+Speaking of running tests, we use a general-purpose `verify` function that works for any function, and for convenience, a `verifyEvaluate` function that uses `evaluate` and `automate` to convert any expression into a recognizer function first:
+
+```javascript
+function deepEqual(obj1, obj2) {
+  function isPrimitive(obj) {
+    return (obj !== Object(obj));
+  }
+
+  if (obj1 === obj2) // it's just the same object. No need to compare.
+    return true;
+
+  if (isPrimitive(obj1) && isPrimitive(obj2)) // compare primitives
+    return obj1 === obj2;
+
+  if (Object.keys(obj1).length !== Object.keys(obj2).length)
+    return false;
+
+  // compare objects with same number of keys
+  for (let key in obj1) {
+    if (!(key in obj2)) return false; //other object doesn't have this prop
+    if (!deepEqual(obj1[key], obj2[key])) return false;
+  }
+
+  return true;
+}
+
+const pp = value => value instanceof Array ? value.map(x => x.toString()) : value;
+
+function verify(fn, tests, ...additionalArgs) {
+  try {
+    const testList =
+      typeof tests.entries === 'function'
+        ? [...tests.entries()]
+        : Object.entries(tests);
+    const numberOfTests = testList.length;
+
+    const outcomes = testList.map(
+      ([example, expected]) => {
+        const actual = fn(example, ...additionalArgs);
+
+        if (deepEqual(actual, expected)) {
+          return 'pass';
+        } else {
+          return `fail: ${JSON.stringify({ example, expected: pp(expected), actual: pp(actual) })}`;
+        }
+      }
+    )
+
+    const failures = outcomes.filter(result => result !== 'pass');
+    const numberOfFailures = failures.length;
+    const numberOfPasses = numberOfTests - numberOfFailures;
+
+    if (numberOfFailures === 0) {
+      console.log(`All ${numberOfPasses} tests passing`);
+    } else {
+      console.log(`${numberOfFailures} tests failing: ${failures.join('; ')}`);
+    }
+  } catch (error) {
+    console.log(`Failed to validate: ${error}`)
+  }
+}
+
+function verifyEvaluate (expression, definition, examples) {
+  return verify(
+    automate(evaluate(expression, definition)),
+    examples
+  );
+}
+```
+
+We can put it all together and verify our "binary numbers" expression:
+
+```javascript
+verifyEvaluate('0|1(0|1)*', formalRegularExpressions, {
+  '': false,
+  'an odd number of characters': false,
+  'an even number of characters': false,
+  '0': true,
+  '10': true,
+  '101': true,
+  '1010': true,
+  '10101': true
+});
+```
 
 ---
 
@@ -485,6 +619,8 @@ The [Chomsky–Schützenberger hierarchy] categorizes grammars from Type-3 to Ty
 [Chomsky–Schützenberger hierarchy]: https://en.wikipedia.org/wiki/Chomsky_hierarchyhttps://en.wikipedia.org/wiki/Chomsky_hierarchy
 
 As we recall from [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], languages like "balanced parentheses" are a Type-2 grammar, and cannot be recognized by a finite-state automata. Thus, features that some regexen provide like recursive regular expressions are beyond our levels.
+
+[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
 
 In addition to features that enable regexen to recognize languages beyond the capabilities of finite-state recognizers, regexen also provide plenty of features for extracting match or partial match data, like capture groups. This functionality is also outside of our levels, as we are strictly concerned with recognizing sentences.
 
