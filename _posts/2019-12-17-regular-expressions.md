@@ -27,6 +27,8 @@ You may also want another look at the essay, [A Brutal Look at Balanced Parenthe
   - [compiling formal regular expressions](#compiling-formal-regular-expressions)
   - [automation and verification](#automation-and-verification)
 
+[For Every Regular Expression, There Exists an Equivalent Finite-State Recognizer](#for-every-regular-expression-there-exists-an-equivalent-finite-state-recognizer)
+
 ### [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions)
 
   - [a hierarchy of regex functionality](#a-hierarchy-of-regex-functionality)
@@ -54,7 +56,7 @@ You may also want another look at the essay, [A Brutal Look at Balanced Parenthe
 - [the between function](#the-between-function)
 - [using the regularExpression function](#using-the-regularexpression-function)
 - [a test suite for  the regularExpression function](#a-test-suite-for--the-regularExpression-function)
-- [conclusions](#conclusions)
+- [conclusion](#conclusion)
 
 ---
 
@@ -633,6 +635,18 @@ verifyEvaluate('0|1(0|1)*', formalRegularExpressions, {
   '10101': true
 });
 ```
+
+---
+
+## For Every Regular Expression, There Exists an Equivalent Finite-State Recognizer
+
+Armed with the code that compiles a formal regular expression to an equivalent finite-state recognzier, we have a constructive demonstration of the fact that for every regular expression, there exists an equivalent finite-stae recognizer.
+
+If someone were to hand us a formal regular expression and claim that there is no euivalent finite-state recognizer for that expression, we would feed the expression into our `evaluate` function, it would return an equivalent finite-staterecognizer, and wee would thus invalidate their alleged counter-example.
+
+Another way to put this is to state that the set of all languages described by formal regular expressions is a subset of the set of all languages recognized by finite-state recognizers. In ths essay, we will establish, amongst other things, that the set of all languages described by formal regular expressions is equal to the set of all languages recognized by finite-state recognizers.
+
+In other words, we will also show that for evenery finite-state recognizer, there exists an equivalent formal regular expression. We'll begin by looking at some ways to extend formal regular expressions, while still being equivalent to finite-state recognizers.
 
 ---
 
@@ -2230,11 +2244,11 @@ Success! There is an equivalent formal regular expression for the finite-state r
 
 ---
 
-### conclusions
+### conclusion
 
 We have now demonstrated, in constructive fashion, that for every finite-state recognizer, there is an equivalent formal regular expression.
 
-This implies several important things. First and foremost, since we have also established that for every formal regular expression, there is an equivalent finite-state recognizer, we now know that **The set of langauges described by formnal regular expressions--regular languages--is identical to the set of languages recognized by finite-state automata.** Finite-state automata recognzie regular languages, and regular languages can be re recognized by finite-state automata.
+This implies several important things. First and foremost, since we have also established that for every formal regular expression, there is an equivalent finite-state recognizer, we now know that **The set of langauges described by formnal regular expressions--regular languages--is identical to the set of languages recognized by finite-state automata.** Finite-state automata recognzie regular languages, and regular languages can be recognized by finite-state automata.
 
 Second, if we devise any arbitrary extension to formal regular languages--or even an entirely new kind of language, and we also devise a way to  compile such descriptions to finite-state recognizers, then we know that the languages we can describe with these extenmsions or languages are still regular languages.
 
