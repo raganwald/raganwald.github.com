@@ -8,9 +8,9 @@ older: ["2013", "2012", "2011", "2010", "2009", "2008"]
 
 *This is a repository of essays and presentations by [Reginald "Raganwald" Braithwaite](http://braythwayt.com)*
 
-<iframe src="https://player.vimeo.com/video/153097877" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3t75HPU2c44" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-<p><a href="https://vimeo.com/153097877">JavaScript Combinators, the &ldquo;six&rdquo; edition</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+<p><a href="https://www.youtube.com/watch?v=3t75HPU2c44">JavaScript Combinators, the &ldquo;six&rdquo; edition</a> from <a href="https://devconf.pl">DevDay 2016</a>.</p>
 
 * about: [Reginald "raganwald" Braithwaite](http://braythwayt.com)
 * contact: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
