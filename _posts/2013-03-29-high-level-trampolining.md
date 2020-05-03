@@ -1,6 +1,6 @@
 ---
 layout: default
-tags: [allonge, recursion]
+tags: [allonge]
 ---
 
 <a href="http://www.flickr.com/photos/mr_tentacle/2834914130/" title="Gymnastics Venue with Trampolines by mr_tentacle, on Flickr"><img src="http://farm4.staticflickr.com/3057/2834914130_c3b6733551_z.jpg" alt="Gymnastics Venue with Trampolines"></a>

@@ -1,7 +1,7 @@
 ---
 title: An ES6 function to compute the nth Fibonacci number
 layout: default
-tags: [allonge, recursion]
+tags: [allonge]
 ---
 
 ![Fibonacci Spiral](/assets/images/fibonacci.png)

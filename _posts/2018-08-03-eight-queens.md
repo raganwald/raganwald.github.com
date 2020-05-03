@@ -1,6 +1,6 @@
 ---
 title: "The Eight Queens Problem... and Raganwald's Unexpected Nostalgia"
-tags: [allonge, recursion]
+tags: [allonge]
 ---
 
 A few weeks ago, I ordered a copy of the Sesquicentennial Edition of [The Annotated Alice][aa].

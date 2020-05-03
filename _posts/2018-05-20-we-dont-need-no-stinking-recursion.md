@@ -1,6 +1,6 @@
 ---
 title: "Recursion? We don't need no stinking recursion!"
-tags: [allonge, recursion]
+tags: [allonge]
 ---
 
 **Interviewer**: "Please whiteboard an algorithm that Counts the leaves in a tree/Solves Towers of Hanoi/Random pet recursion problem."

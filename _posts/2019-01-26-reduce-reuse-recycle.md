@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Structural Sharing and Copy-on-Write Semantics, Part II: Reduce-Reuse-Recycle"
-tags: [allonge, recursion, mermaid]
+tags: [allonge, mermaid]
 ---
 
 This is Part II of an essay that takes a highly informal look at two related techniques for achieving high performance when using large data structures: _Structural Sharing_, and _Copy-on-Write Semantics_.

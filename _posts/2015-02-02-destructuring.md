@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Destructuring and Recursion in ES-6
-tags: [allonge, recursion]
+tags: [allonge]
 ---
 
 [![Drink HAND-POURED coffee.](/assets/images/hand-poured.jpg)](https://www.flickr.com/photos/wunderle/8336797898/)

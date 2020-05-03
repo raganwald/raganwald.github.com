@@ -1,7 +1,7 @@
 ---
 title: Reginald Braithwaite
 layout: default
-tags: [allonge, recursion]
+tags: [allonge]
 years: ["2019", "2018", "2017", "2016", "2015", "2014"]
 older: ["2013", "2012", "2011", "2010", "2009", "2008"]
 ---
@@ -17,8 +17,6 @@ older: ["2013", "2012", "2011", "2010", "2009", "2008"]
 * code: <a href="https://github.com/raganwald">https://github.com/raganwald</a>
 * books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
 * talks: <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
-
-<p>I'm working on a new book, <a href="https://leanpub.com/recursion"><strong>Functions all the way down</strong></a>, a recreational exploration of recursion and other fundamental ideas in computing <i>...in JavaScript</i>. <a href="https://leanpub.com/recursion">Sign up here</a> to be notified when it's available to read online for free.</p>
 
 ---
 

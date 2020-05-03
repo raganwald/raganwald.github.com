@@ -1,7 +1,7 @@
 ---
 layout: default
 title: "Exploring Structural Sharing and Copy-on-Write Semantics, Part I"
-tags: [allonge, recursion, mermaid]
+tags: [allonge, mermaid]
 ---
 
 This essay takes a highly informal look at two related techniques for achieving high performance when using large data structures: _Structural Sharing_, and _Copy-on-Write Semantics_. In Part I, we'll look at the background of Structural Sharing and start making a `Slice` class that abstracts the concept of a slice of an array. In [Part II], we'll consider the problem of resource ownership when mutating objects.

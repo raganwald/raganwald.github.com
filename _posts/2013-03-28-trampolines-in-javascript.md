@@ -1,7 +1,7 @@
 ---
 title: Trampolines in JavaScript
 layout: default
-tags: [allonge, recursion]
+tags: [allonge]
 ---
 
 > A trampoline is a loop that iteratively invokes [thunk]-returning functions ([continuation-passing style][cps]). A single trampoline is sufficient to express all control transfers of a program; a program so expressed is trampolined, or in trampolined style; converting a program to trampolined style is trampolining. Trampolined functions can be used to implement [tail-recursive] function calls in stack-oriented programming languages.--[Wikipedia][trampolining]
