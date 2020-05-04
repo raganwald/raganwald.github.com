@@ -39,6 +39,8 @@ body {
 }
 ol, ul {
 	list-style: none;
+  padding-left: 30px;
+  text-indent -20px;
 }
 ol.a, ul.a {
   list-style-position: outside;
@@ -318,12 +320,10 @@ blockquote {
 
 ul li {
   list-style: disc inside;
-  padding-left: 20px;
 }
 
 ol li {
   list-style: decimal inside;
-  padding-left: 3px;
 }
 
 dl dt {
