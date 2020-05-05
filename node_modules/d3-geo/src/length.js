@@ -1,7 +1,7 @@
-import adder from "./adder";
-import {abs, atan2, cos, radians, sin, sqrt} from "./math";
-import noop from "./noop";
-import stream from "./stream";
+import adder from "./adder.js";
+import {abs, atan2, cos, radians, sin, sqrt} from "./math.js";
+import noop from "./noop.js";
+import stream from "./stream.js";
 
 var lengthSum = adder(),
     lambda0,

@@ -1,6 +1,6 @@
-import {atan, cos, sin} from "../math";
-import {azimuthalInvert} from "./azimuthal";
-import projection from "./index";
+import {atan, cos, sin} from "../math.js";
+import {azimuthalInvert} from "./azimuthal.js";
+import projection from "./index.js";
 
 export function stereographicRaw(x, y) {
   var cy = cos(y), k = 1 + cos(x) * cy;

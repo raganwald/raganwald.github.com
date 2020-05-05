@@ -1,6 +1,6 @@
-import adder from "../adder";
-import {abs} from "../math";
-import noop from "../noop";
+import adder from "../adder.js";
+import {abs} from "../math.js";
+import noop from "../noop.js";
 
 var areaSum = adder(),
     areaRingSum = adder(),

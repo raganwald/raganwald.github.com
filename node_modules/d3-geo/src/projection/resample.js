@@ -1,6 +1,6 @@
-import {cartesian} from "../cartesian";
-import {abs, asin, atan2, cos, epsilon, radians, sqrt} from "../math";
-import {transformer} from "../transform";
+import {cartesian} from "../cartesian.js";
+import {abs, asin, atan2, cos, epsilon, radians, sqrt} from "../math.js";
+import {transformer} from "../transform.js";
 
 var maxDepth = 16, // maximum depth of subdivision
     cosMinDistance = cos(30 * radians); // cos(minimum angular distance)

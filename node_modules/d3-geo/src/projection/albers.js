@@ -1,4 +1,4 @@
-import conicEqualArea from "./conicEqualArea";
+import conicEqualArea from "./conicEqualArea.js";
 
 export default function() {
   return conicEqualArea()

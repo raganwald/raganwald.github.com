@@ -1,4 +1,4 @@
-import {asin, atan2, cos, degrees, haversin, radians, sin, sqrt} from "./math";
+import {asin, atan2, cos, degrees, haversin, radians, sin, sqrt} from "./math.js";
 
 export default function(a, b) {
   var x0 = a[0] * radians,

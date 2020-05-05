@@ -1,6 +1,6 @@
-import {asin, atan2, cos, degrees, epsilon, epsilon2, radians, sin, sqrt} from "./math";
-import noop from "./noop";
-import stream from "./stream";
+import {asin, atan2, cos, degrees, epsilon, epsilon2, radians, sin, sqrt} from "./math.js";
+import noop from "./noop.js";
+import stream from "./stream.js";
 
 var W0, W1,
     X0, Y0, Z0,

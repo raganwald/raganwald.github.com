@@ -1,6 +1,6 @@
-import {asin, sqrt} from "../math";
-import {azimuthalRaw, azimuthalInvert} from "./azimuthal";
-import projection from "./index";
+import {asin, sqrt} from "../math.js";
+import {azimuthalRaw, azimuthalInvert} from "./azimuthal.js";
+import projection from "./index.js";
 
 export var azimuthalEqualAreaRaw = azimuthalRaw(function(cxcy) {
   return sqrt(2 / (1 + cxcy));

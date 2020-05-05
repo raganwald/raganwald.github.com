@@ -1,7 +1,7 @@
-import adder from "./adder";
-import {atan2, cos, quarterPi, radians, sin, tau} from "./math";
-import noop from "./noop";
-import stream from "./stream";
+import adder from "./adder.js";
+import {atan2, cos, quarterPi, radians, sin, tau} from "./math.js";
+import noop from "./noop.js";
+import stream from "./stream.js";
 
 export var areaRingSum = adder();
 

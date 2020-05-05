@@ -1,5 +1,5 @@
-import {atan, exp, halfPi, log, tan} from "../math";
-import {mercatorProjection} from "./mercator";
+import {atan, exp, halfPi, log, tan} from "../math.js";
+import {mercatorProjection} from "./mercator.js";
 
 export function transverseMercatorRaw(lambda, phi) {
   return [log(tan((halfPi + phi) / 2)), -lambda];

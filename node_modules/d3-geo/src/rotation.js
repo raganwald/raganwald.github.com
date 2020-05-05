@@ -1,5 +1,5 @@
-import compose from "./compose";
-import {abs, asin, atan2, cos, degrees, pi, radians, sin, tau} from "./math";
+import compose from "./compose.js";
+import {abs, asin, atan2, cos, degrees, pi, radians, sin, tau} from "./math.js";
 
 function rotationIdentity(lambda, phi) {
   return [abs(lambda) > pi ? lambda + Math.round(-lambda / tau) * tau : lambda, phi];

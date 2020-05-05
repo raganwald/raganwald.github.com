@@ -1,4 +1,4 @@
-import length from "./length";
+import length from "./length.js";
 
 var coordinates = [null, null],
     object = {type: "LineString", coordinates: coordinates};

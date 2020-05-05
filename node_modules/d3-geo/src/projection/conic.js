@@ -1,5 +1,5 @@
-import {degrees, pi, radians} from "../math";
-import {projectionMutator} from "./index";
+import {degrees, pi, radians} from "../math.js";
+import {projectionMutator} from "./index.js";
 
 export function conicProjection(projectAt) {
   var phi0 = 0,

@@ -1,4 +1,4 @@
-import formatLocale from "./locale";
+import formatLocale from "./locale.js";
 
 var locale;
 export var format;
@@ -8,7 +8,8 @@ defaultLocale({
   decimal: ".",
   thousands: ",",
   grouping: [3],
-  currency: ["$", ""]
+  currency: ["$", ""],
+  minus: "-"
 });
 
 export default function defaultLocale(definition) {

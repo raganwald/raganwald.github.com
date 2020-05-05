@@ -1,8 +1,8 @@
-import {cartesian, cartesianAddInPlace, cartesianCross, cartesianDot, cartesianScale, spherical} from "../cartesian";
-import {circleStream} from "../circle";
-import {abs, cos, epsilon, pi, radians, sqrt} from "../math";
-import pointEqual from "../pointEqual";
-import clip from "./index";
+import {cartesian, cartesianAddInPlace, cartesianCross, cartesianDot, cartesianScale, spherical} from "../cartesian.js";
+import {circleStream} from "../circle.js";
+import {abs, cos, epsilon, pi, radians, sqrt} from "../math.js";
+import pointEqual from "../pointEqual.js";
+import clip from "./index.js";
 
 export default function(radius) {
   var cr = cos(radius),

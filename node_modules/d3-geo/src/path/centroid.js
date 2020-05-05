@@ -1,4 +1,4 @@
-import {sqrt} from "../math";
+import {sqrt} from "../math.js";
 
 // TODO Enforce positive area for exterior, negative area for interior?
 

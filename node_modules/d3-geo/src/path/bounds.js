@@ -1,4 +1,4 @@
-import noop from "../noop";
+import noop from "../noop.js";
 
 var x0 = Infinity,
     y0 = x0,

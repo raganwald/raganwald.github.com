@@ -1,7 +1,7 @@
-import {abs, epsilon} from "../math";
-import clipBuffer from "./buffer";
-import clipLine from "./line";
-import clipRejoin from "./rejoin";
+import {abs, epsilon} from "../math.js";
+import clipBuffer from "./buffer.js";
+import clipLine from "./line.js";
+import clipRejoin from "./rejoin.js";
 import {merge} from "d3-array";
 
 var clipMax = 1e9, clipMin = -clipMax;

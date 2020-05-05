@@ -1,5 +1,5 @@
-import projection from "./index";
-import {abs, epsilon} from "../math";
+import projection from "./index.js";
+import {abs, epsilon} from "../math.js";
 
 export function naturalEarth1Raw(lambda, phi) {
   var phi2 = phi * phi, phi4 = phi2 * phi2;

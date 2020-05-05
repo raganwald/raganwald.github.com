@@ -1,5 +1,5 @@
-import {default as geoStream} from "../stream";
-import boundsStream from "../path/bounds";
+import {default as geoStream} from "../stream.js";
+import boundsStream from "../path/bounds.js";
 
 function fit(projection, fitBounds, object) {
   var clip = projection.clipExtent && projection.clipExtent();

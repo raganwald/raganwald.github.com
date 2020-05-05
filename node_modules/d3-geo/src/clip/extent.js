@@ -1,4 +1,4 @@
-import clipRectangle from "./rectangle";
+import clipRectangle from "./rectangle.js";
 
 export default function() {
   var x0 = 0,

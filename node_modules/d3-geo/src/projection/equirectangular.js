@@ -1,4 +1,4 @@
-import projection from "./index";
+import projection from "./index.js";
 
 export function equirectangularRaw(lambda, phi) {
   return [lambda, phi];

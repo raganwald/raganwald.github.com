@@ -1,4 +1,4 @@
-import {asin, cos, sin} from "../math";
+import {asin, cos, sin} from "../math.js";
 
 export function cylindricalEqualAreaRaw(phi0) {
   var cosPhi0 = cos(phi0);

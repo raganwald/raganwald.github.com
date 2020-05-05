@@ -1,6 +1,6 @@
-import adder from "../adder";
-import {sqrt} from "../math";
-import noop from "../noop";
+import adder from "../adder.js";
+import {sqrt} from "../math.js";
+import noop from "../noop.js";
 
 var lengthSum = adder(),
     lengthRing,

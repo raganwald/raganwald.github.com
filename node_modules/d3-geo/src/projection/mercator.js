@@ -1,6 +1,6 @@
-import {atan, exp, halfPi, log, pi, tan, tau} from "../math";
-import rotation from "../rotation";
-import projection from "./index";
+import {atan, exp, halfPi, log, pi, tan, tau} from "../math.js";
+import rotation from "../rotation.js";
+import projection from "./index.js";
 
 export function mercatorRaw(lambda, phi) {
   return [lambda, log(tan((halfPi + phi) / 2))];

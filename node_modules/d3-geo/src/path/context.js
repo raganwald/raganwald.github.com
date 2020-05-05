@@ -1,5 +1,5 @@
-import {tau} from "../math";
-import noop from "../noop";
+import {tau} from "../math.js";
+import noop from "../noop.js";
 
 export default function PathContext(context) {
   this._context = context;

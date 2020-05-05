@@ -1,6 +1,6 @@
-import {asin, cos, epsilon, sin} from "../math";
-import {azimuthalInvert} from "./azimuthal";
-import projection from "./index";
+import {asin, cos, epsilon, sin} from "../math.js";
+import {azimuthalInvert} from "./azimuthal.js";
+import projection from "./index.js";
 
 export function orthographicRaw(x, y) {
   return [cos(y) * sin(x), sin(y)];

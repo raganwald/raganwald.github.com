@@ -1,11 +1,11 @@
-import identity from "../identity";
-import stream from "../stream";
-import pathArea from "./area";
-import pathBounds from "./bounds";
-import pathCentroid from "./centroid";
-import PathContext from "./context";
-import pathMeasure from "./measure";
-import PathString from "./string";
+import identity from "../identity.js";
+import stream from "../stream.js";
+import pathArea from "./area.js";
+import pathBounds from "./bounds.js";
+import pathCentroid from "./centroid.js";
+import PathContext from "./context.js";
+import pathMeasure from "./measure.js";
+import PathString from "./string.js";
 
 export default function(projection, context) {
   var pointRadius = 4.5,

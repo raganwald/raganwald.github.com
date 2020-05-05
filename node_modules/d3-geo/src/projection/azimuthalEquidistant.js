@@ -1,6 +1,6 @@
-import {acos, sin} from "../math";
-import {azimuthalRaw, azimuthalInvert} from "./azimuthal";
-import projection from "./index";
+import {acos, sin} from "../math.js";
+import {azimuthalRaw, azimuthalInvert} from "./azimuthal.js";
+import projection from "./index.js";
 
 export var azimuthalEquidistantRaw = azimuthalRaw(function(c) {
   return (c = acos(c)) && c / sin(c);

@@ -1,5 +1,5 @@
 import {range} from "d3-array";
-import {abs, ceil, epsilon} from "./math";
+import {abs, ceil, epsilon} from "./math.js";
 
 function graticuleX(y0, y1, dy) {
   var y = range(y0, y1 - epsilon, dy).concat(y1);

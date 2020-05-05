@@ -1,4 +1,4 @@
-import {asin, atan2, cos, sin, sqrt} from "../math";
+import {asin, atan2, cos, sin, sqrt} from "../math.js";
 
 export function azimuthalRaw(scale) {
   return function(x, y) {

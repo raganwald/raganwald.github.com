@@ -1,7 +1,7 @@
-import {epsilon} from "../math";
-import albers from "./albers";
-import conicEqualArea from "./conicEqualArea";
-import {fitExtent, fitSize, fitWidth, fitHeight} from "./fit";
+import {epsilon} from "../math.js";
+import albers from "./albers.js";
+import conicEqualArea from "./conicEqualArea.js";
+import {fitExtent, fitSize, fitWidth, fitHeight} from "./fit.js";
 
 // The projections must have mutually exclusive clip regions on the sphere,
 // as this will avoid emitting interleaving lines and polygons.
