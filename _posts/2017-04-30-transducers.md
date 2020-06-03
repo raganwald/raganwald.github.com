@@ -262,7 +262,7 @@ Let's go back to our first reducer:
 ```javascript
 const arrayOf = (acc, val) => { acc.push(val); return acc; };
 
-reduceWith(arrayOf, 0, one2ten)
+reduceWith(arrayOf, [], one2ten)
   //=> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 ```
 
@@ -347,7 +347,7 @@ const divideByTwo = x => x / 2;
 plusFive(3)
   //=> 8
 
-divideByTow(8)
+divideByTwo(8)
   //=> 4
 
 const compose2 =
