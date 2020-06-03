@@ -3,7 +3,7 @@ title: "Duck Programming"
 tags: [allonge]
 ---
 
-Prior to joining [Unspace Interactive], one of our developers worked on an “interesting” project, a project that taught them many lessons. One of those lessons was to beware of “duck programming.” Before we explain that term, let’s have a look at the project and get a feel for what the designers were trying to accomplish.
+Prior to joining [Unspace Interactive], one of our developers worked on an “interesting” project, a project that taught them many lessons. One of those lessons was to beware of “duck programming.” Before we explain that term, let’s have a look at the project and get a feel for what the designers were trying to accomplish.[^0]
 
 [Unspace Interactive]: http://unspace.ca
 
@@ -103,6 +103,8 @@ They learned from their experience that with a little common sense and appropria
 
 ### Notes
 
+[^0]: This essay was originally published January 8, 2012, on [unspace.ca]. It has been lightly edited to--amongst other things--remove gendered pronouns.
+
 [^1]: “Trivial” is programmer slang for “I understand what to do and I’m ignoring how much time it will take to do it,” much as one might say that adding two large numbers by representing them as piles of pennies, pushing them into one pile, and then counting the pennies is a “trivial” exercise.
 
 [^2]: James Whitcomb Riley (1849–1916)
@@ -110,3 +112,5 @@ They learned from their experience that with a little common sense and appropria
 [^3]: “Problem exists between keyboard and chair.”
 
 [^4]: Many organizations have even more practices, but these are fairly minimal and commonplace as of this essay's writing (2012).
+
+[unspace.ca]: http://unspace.ca/dev/2012/duck-programming
