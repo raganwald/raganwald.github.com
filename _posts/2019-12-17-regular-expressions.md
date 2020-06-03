@@ -1,5 +1,5 @@
 ---
-title: "Exploring Regular Expressions, Part II: Beyond Formal Regular Expressions"
+title: "Exploring Regular Expressions, Part II: Regular Languages and Finite-State Automata"
 tags: [recursion,allonge,mermaid]
 ---
 
@@ -2254,6 +2254,7 @@ Second, if we devise any arbitrary extension to formal regular languages--or eve
 
 Although we are not emphasizing performance, we also know that sentences in any such extensions or languages we may care to create can still be recognized in at worst linear time, because finite-state recognizers recognize sentences in at worst linear time.
 
+(discuss on [Hacker News](https://news.ycombinator.com/item?id=23403974))
 
 [Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
 [Shunting Yard Algorithm]: https://en.wikipedia.org/wiki/Shunting-yard_algorithm
