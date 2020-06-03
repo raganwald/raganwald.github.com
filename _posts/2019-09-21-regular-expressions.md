@@ -7,7 +7,7 @@ tags: [recursion,allonge,mermaid]
 
 # Prelude
 
-In this essay, we're going to explore regular expressions by implementing various features of regular expressions.
+In this essay, we're going to explore regular expressions by implementing regular expressions.
 
 This essay will be of interest to anyone who would like a refresher on the fundamentals of regular expressions and pattern matching. It is not intended as a practical "how-to" for using modern regexen, but the exercise of implementing basic regular expressions is a terrific foundation for understanding how to use and optimize regular expressions in production code.
 
