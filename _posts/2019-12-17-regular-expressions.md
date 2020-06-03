@@ -3,9 +3,9 @@ title: "Exploring Regular Expressions, Part II: Beyond Formal Regular Expression
 tags: [recursion,allonge,mermaid]
 ---
 
-This is Part II of a series about "Exploring Regular Expressions and Finite-State Recognizers." If you haven't already, you may want to read [Part I] first, where we wrote a comnplier that translates [formal regular expressions][regular expression] into [finite-state recognizers][fsm].
+This is Part II of a series about "Exploring Regular Expressions and Finite-State Recognizers." If you haven't already, you may want to read [Part I] first, where we wrote a compiler that translates [formal regular expressions][regular expression] into [finite-state recognizers][fsm].
 
-You may also want another look at the essay, [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]. It covers the cocnepts behind finite-state machines and the the kinds of "languages"  they can and cannot recognize.
+You may also want another look at the essay, [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]. It covers the concepts behind finite-state machines and the the kinds of "languages"  they can and cannot recognize.
 
 [Part I]: https://raganwald.com/2019/09/21/regular-expressions.html
 [regular expression]: https://en.wikipedia.org/wiki/Regular_expression#Formal_language_theory
@@ -64,7 +64,7 @@ You may also want another look at the essay, [A Brutal Look at Balanced Parenthe
 
 If you're familiar with formal regular expressions, and are very comfortable with the code we presented in [Part I], or just plain impatient, you can skip ahead to [Beyond Formal Regular Expressions](#beyond-formal-regular-expressions).
 
-But for those who want a refersher, we'll quickly recap regular expressions and the code we have so far.
+But for those who want a refresher, we'll quickly recap regular expressions and the code we have so far.
 
 ## Regular Expressions
 
@@ -108,11 +108,11 @@ It is quite obvious that regexen borrowed a lot of their syntax and semantics fr
 
 In [Part I], we established that for every [formal regular expression][regular expression], there is an equivalent [finite-state recognizer][fsm], establishing that the set of all languages described by formal regular expressions--that is to say, [regular languages]--is a subset of the set of all languages recognized by finite-state automata.
 
-We did this in [constructive proof] fashion by writing a compiler that takes any formal regular expression as input, and returns a JSON description of an equivalent finite-state recognizer. We also wrote an autoimator that turns teh description of a finite state recognizer into a JavaScript function that takes any string as input and answers whether the string is recognized.
+We did this in [constructive proof] fashion by writing a compiler that takes any formal regular expression as input, and returns a JSON description of an equivalent finite-state recognizer. We also wrote an automator that turns the description of a finite state recognizer into a JavaScript function that takes any string as input and answers whether the string is recognized.
 
 [constructive proof]: https://en.wikipedia.org/wiki/Constructive_proof
 
-Thus, we can take any formal regular expression and get a function that recognizes strings in the language described by the formal regular expression. And because the implementation is a finite-state automaton, we know that it can recognie strings in at most linear time, which can be an improvement over some regex implementations for certain regular expressions.
+Thus, we can take any formal regular expression and get a function that recognizes strings in the language described by the formal regular expression. And because the implementation is a finite-state automaton, we know that it can recognize strings in at most linear time, which can be an improvement over some regex implementations for certain regular expressions.
 
 We're going to revisit the final version of most of our functions.
 
@@ -509,7 +509,7 @@ It recognizes the language consisting of the set of all binary numbers.
 
 We don't rely strictly on inspection to have confidence that the finite-state recognizers created by `evaluate` recognize the languages described by regular expressions. We use two tools.
 
-First, we have an `automate` function that takes a JSON decription of a finite-state recognizer as an argument, and returns a JavaScript *recognizer function*. The recognizer function takes a string as an argument, and returns `true` if the string beloings to the language recgnized by that finite-state recognizer, and `false` if it doesn't.
+First, we have an `automate` function that takes a JSON description of a finite-state recognizer as an argument, and returns a JavaScript *recognizer function*. The recognizer function takes a string as an argument, and returns `true` if the string belongs to the language recognized by that finite-state recognizer, and `false` if it doesn't.
 
 This is the core `automate` function:
 
@@ -640,13 +640,13 @@ verifyEvaluate('0|1(0|1)*', formalRegularExpressions, {
 
 ## For Every Regular Expression, There Exists an Equivalent Finite-State Recognizer
 
-Armed with the code that compiles a formal regular expression to an equivalent finite-state recognzier, we have a constructive demonstration of the fact that for every regular expression, there exists an equivalent finite-stae recognizer.
+Armed with the code that compiles a formal regular expression to an equivalent finite-state recognizer, we have a constructive demonstration of the fact that for every regular expression, there exists an equivalent finite-state recognizer.
 
-If someone were to hand us a formal regular expression and claim that there is no euivalent finite-state recognizer for that expression, we would feed the expression into our `evaluate` function, it would return an equivalent finite-staterecognizer, and wee would thus invalidate their alleged counter-example.
+If someone were to hand us a formal regular expression and claim that there is no equivalent finite-state recognizer for that expression, we would feed the expression into our `evaluate` function, it would return an equivalent finite-state recognizer, and would thus invalidate their alleged counter-example.
 
-Another way to put this is to state that the set of all languages described by formal regular expressions is a subset of the set of all languages recognized by finite-state recognizers. In ths essay, we will establish, amongst other things, that the set of all languages described by formal regular expressions is equal to the set of all languages recognized by finite-state recognizers.
+Another way to put this is to state that the set of all languages described by formal regular expressions is a subset of the set of all languages recognized by finite-state recognizers. In the essay, we will establish, amongst other things, that the set of all languages described by formal regular expressions is equal to the set of all languages recognized by finite-state recognizers.
 
-In other words, we will also show that for evenery finite-state recognizer, there exists an equivalent formal regular expression. We'll begin by looking at some ways to extend formal regular expressions, while still being equivalent to finite-state recognizers.
+In other words, we will also show that for every finite-state recognizer, there exists an equivalent formal regular expression. We'll begin by looking at some ways to extend formal regular expressions, while still being equivalent to finite-state recognizers.
 
 ---
 
@@ -1097,7 +1097,7 @@ Custom character classes are a language within a language. However, implementing
 
 ### eschewing transpilation
 
-There are lots of other regexen features we can implement using this transpilation technique,[^times] but having implemnted a feature using transpilation, we've demonstarted that it provides not functional advantage over formal regular expressions. Having done so, we can return to implementing the features directly in JavaScript, which saves addinga transpilation step to our evaluator.
+There are lots of other regexen features we can implement using this transpilation technique,[^times] but having implemented a feature using transpilation, we've demonstrated that it provides not functional advantage over formal regular expressions. Having done so, we can return to implementing the features directly in JavaScript, which saves adding a transpilation step to our evaluator.
 
 [^times]: If you feel like having a go at one more, try implementing another quantification operator, explicit repetition. In many regexen flavours, we can write `(expr){5}` to indicate we wish to match `(expr)(expr)(expr)(expr)(expr)`. The syntax allows other possibilities, such as `(expr){2,3}` and `(expr){3,}`, but ignoring those, the effect of `(expr){n}` for any `n` from 1 to 9 could be emulated with an infix operator, such as `⊗`, so that `(expr)⊗5` would be transpiled to `(expr)(expr)(expr)(expr)(expr)`.
 
@@ -1509,7 +1509,7 @@ The second test above includes an interesting pattern.
 
 ### complement
 
-If `s` is an expression, then `.*\s` is the [complement] of the expression `s`. In set theory, the complement of a set `S` is everything that does not belong to `S`. If we presume the existence of a universal set `U`, where `u` belongs to `U` for _any_ `u`, then the comnplement of a set `S` is the difference between `U` and `S`.
+If `s` is an expression, then `.*\s` is the [complement] of the expression `s`. In set theory, the complement of a set `S` is everything that does not belong to `S`. If we presume the existence of a universal set `U`, where `u` belongs to `U` for _any_ `u`, then the complement of a set `S` is the difference between `U` and `S`.
 
 [complement]: https://en.wikipedia.org/wiki/Complement_(set_theory)
 
@@ -1639,17 +1639,17 @@ The Level Two features we've implemented are useful, and they demonstrate some i
 
 We already know that:
 
-- if `x` is a finite state recognizer that recognzies sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` belongs to either `X` or `Y`. We demonstrated this by writing functions like `union2` that take `x` and `y` as arguments and return `z`.
-- if `x` is a finite state recognizer that recognzies sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `ab` belongs to `Z` if and only if `a` belongs to `X` and `b` belongs to `Y`. We demonstrated this by writing the function `catenation2` that takes `x` and `y` as arguments and returns `z`.
-- if `x` is a finite state recognizer that recognzies sentences in the language `X`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `ab` belongs to `Z` if and only if `a` is either the empty string or a sentence belonging to `X, and `b` is a sentence belonging to `Z`. We demonstrated this by writing the function `zeroOrMore` that takes `x` as an argument and returns `z`.
+- if `x` is a finite state recognizer that recognizes sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` belongs to either `X` or `Y`. We demonstrated this by writing functions like `union2` that take `x` and `y` as arguments and return `z`.
+- if `x` is a finite state recognizer that recognizes sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `ab` belongs to `Z` if and only if `a` belongs to `X` and `b` belongs to `Y`. We demonstrated this by writing the function `catenation2` that takes `x` and `y` as arguments and returns `z`.
+- if `x` is a finite state recognizer that recognizes sentences in the language `X`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `ab` belongs to `Z` if and only if `a` is either the empty string or a sentence belonging to `X, and `b` is a sentence belonging to `Z`. We demonstrated this by writing the function `zeroOrMore` that takes `x` as an argument and returns `z`.
 
 These three results tell us that the set of finite-state recognizers is closed under alternation, catenation, and quantification.
 
 Implementing our Level Two features has also demonstrated that:
 
-- if `x` is a finite state recognizer that recognzies sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` belongs to both `X` and `Y`. We demonstrated this by writing the function `intersection` that takes `x` and `y` as arguments and returns `z`.
-- if `x` is a finite state recognizer that recognzies sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` belongs to `X` and `a` does not belong to `Y`. We demonstrated this by writing the function `difference` that takes `x` and `y` as arguments and returns `z`.
-- if `x` is a finite state recognizer that recognzies sentences in the language `X`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` does not belong to `X. We demonstrated this by writing the function `complement` that takes `x` as an argument and returns `z`.
+- if `x` is a finite state recognizer that recognizes sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` belongs to both `X` and `Y`. We demonstrated this by writing the function `intersection` that takes `x` and `y` as arguments and returns `z`.
+- if `x` is a finite state recognizer that recognizes sentences in the language `X`, and `y` is a finite-state recognizer that recognizes sentences in the language `Y`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` belongs to `X` and `a` does not belong to `Y`. We demonstrated this by writing the function `difference` that takes `x` and `y` as arguments and returns `z`.
+- if `x` is a finite state recognizer that recognizes sentences in the language `X`, there exists a finite-state recognizer `z` that recognizes sentences in the language `Z`, where a sentence `a` belongs to `Z` if and only if `a` does not belong to `X. We demonstrated this by writing the function `complement` that takes `x` as an argument and returns `z`.
 
 These three results also tell us that the set of finite-state recognizers is closed under intersection, difference, and complementation.
 
@@ -1665,7 +1665,7 @@ With Level One expressions, we showed that for every Level One expression, there
 
 If we know that for every finite-state recognizer, there is an equivalent Level Zero expression, and we also know that for every Level Zero expression, there is an equivalent finite-state recognizer, then we know that the set of languages recognized by finite-state recognizers is equal to the set of languages recognized by Level Zero expressions, a/k/a [Regular Languages].
 
-And if we know that for everly Level Two expression, there is an equivalent finite-state recognizer, then it would follow that for every Level two expression, ther is an equivalent Level Zero expression, and it would follow that the set of all languages described by Level Two expressions is the set of regular languages.
+And if we know that for every Level Two expression, there is an equivalent finite-state recognizer, then it would follow that for every Level two expression, there is an equivalent Level Zero expression, and it would follow that the set of all languages described by Level Two expressions is the set of regular languages.
 
 ---
 
@@ -1678,9 +1678,9 @@ It is time to demonstrate that for every finite-state recognizer, there exists a
 
 Our [constructive proof]-like approach will be to write a function that takes as its argument a description of a finite-state recognizer, and returns an equivalent formal regular expression in our syntax. The approach will be an old one in computer science:
 
-For any pair of states (_any_ par implies that both states could be the same state) in a finite-state recognizer, we will find all the paths from one to another, and for each path, we can write a regular expression representing that path usiing catenation. WHen we have more than one path between them, we can combine them together using alternation. We'll explain how quantification comes into that in a moment.
+For any pair of states (_any_ par implies that both states could be the same state) in a finite-state recognizer, we will find all the paths from one to another, and for each path, we can write a regular expression representing that path using catenation. When we have more than one path between them, we can combine them together using alternation. We'll explain how quantification comes into that in a moment.
 
-But if we had such a function, we could apply it to the start state and any accepting states, getting a formal regular expression for the paths from teh start state to each accepting state. And if there are mnore than oneaccepting states, we could use alternation to combine the relular expressions into one big regular expression that is equivalent to the finite-state recognizer.
+But if we had such a function, we could apply it to the start state and any accepting states, getting a formal regular expression for the paths from the start state to each accepting state. And if there are more than one accepting states, we could use alternation to combine the regular expressions into one big regular expression that is equivalent to the finite-state recognizer.
 
 ---
 
@@ -1823,7 +1823,7 @@ function regularExpression (description) {
 };
 ```
 
-There's another special case thrown in: Although we haven't written our `between` function yet, we know that if a finite-state recognizer beins in an accpting state, then it accepts the empty string, and thus we can take all the other expressions for getting from a start state to an accepting state, and union them with `ε`.
+There's another special case thrown in: Although we haven't written our `between` function yet, we know that if a finite-state recognizer beins in an accepting state, then it accepts the empty string, and thus we can take all the other expressions for getting from a start state to an accepting state, and union them with `ε`.
 
 Now how about the `between` function?
 
@@ -1838,7 +1838,7 @@ The way it works is to divide-and-conquer. We begin by choosing any state as the
 1. All the paths from `from` to `to` that go through some state we shall call `via` least once, and;
 2. All the paths from `from` to `to` that do not go through `via` at all.
 
-If we could compute formal regular expressions for each of these two sets of paths, we could return the union of the two regular expressions and be done. So let's begin by picking a `viaState`. Kleene numbered the states and beguan with the largest state, we will simply take whatever state is first in the `viaStates` set's enumeration:
+If we could compute formal regular expressions for each of these two sets of paths, we could return the union of the two regular expressions and be done. So let's begin by picking a `viaState`. Kleene numbered the states and begin with the largest state, we will simply take whatever state is first in the `viaStates` set's enumeration:
 
 ```javascript
 function between ({ from, to, viaStates = [...allStates] }) {
@@ -1922,7 +1922,7 @@ function between ({ from, to, viaStates = [...allStates] }) {
 }
 ```
 
-Now how about the second part of our case? It's the expression for all the paths from `from` to `to` that do not go through `via`. Which we then alternate with the expression for all the paths going throught `via`:
+Now how about the second part of our case? It's the expression for all the paths from `from` to `to` that do not go through `via`. Which we then alternate with the expression for all the paths going through `via`:
 
 ```javascript
 function between ({ from, to, viaStates = [...allStates] }) {
@@ -1945,7 +1945,7 @@ function between ({ from, to, viaStates = [...allStates] }) {
 }
 ```
 
-Eventually,[^eventually] this fuunction will end up calling itself and passing an empty list of states. That's our degenerate case. Given two states, what are all the paths between them that don't go through any other states? Why, just the transitions directly between them. And the expressions for those are the symbols consumed, plus some allowance for symbols we have to escape.
+Eventually,[^eventually] this function will end up calling itself and passing an empty list of states. That's our degenerate case. Given two states, what are all the paths between them that don't go through any other states? Why, just the transitions directly between them. And the expressions for those are the symbols consumed, plus some allowance for symbols we have to escape.
 
 [^eventually]: How eventually? With enough states in a recognizer, it could take a _very_ long time. This particular algorithm has exponential running time! But that being said, we are writing it to prove that it can be done, we don't actually need to do it to actually recognize sentences.
 
@@ -1980,14 +1980,14 @@ regularExpression(a)
   //=> ((((∅|a)∅∅)|∅)(((∅|a)∅∅)|∅)(((∅|a)∅∅)|(∅|a)))|(((∅|a)∅∅)|(∅|a))
 ```
 
-This is a valid regular expression, but all the `∅`s make it unreadable. We'rer not going to get into functions for finding the minimal expression for a finite-state recognizer, but we can make things less ridiculous with five easy optimizations:
+This is a valid regular expression, but all the `∅`s make it unreadable. We're not going to get into functions for finding the minimal expression for a finite-state recognizer, but we can make things less ridiculous with five easy optimizations:
 
 1. catenating any expression `a` with the empty set returns the empty set.
 2. alternating any expression `a` with the empty set returns the expression `a`.
 3. Repeating the empty zeroOrMore times returns the empty set.
 
 ```javascript
-ffunction alternateExpr(...exprs) {
+function alternateExpr(...exprs) {
   const uniques = [...new Set(exprs)];
   const notEmptySets = uniques.filter( x => x !== '∅' );
 
@@ -2146,7 +2146,7 @@ verifyEvaluate(reconstitutedBinaryExpr, formalRegularExpressions, {
 
 `0|((1((0|1)*)(0|1))|1)` may be a fugly way to describe binary numbers, but it is equivalent to `0|1(0|1)*`, and what counts is that for any finite-state recognizer, our function finds an equivalent formal regular expression. And if we know that for every finite-state recognizer, there is an equivalent formal-state recognizer, then we now have a universal demonstration that our Level One and Level Two features describe regular languages just like formal regular expressions. This is true even if--like our Level Two features--there is no obvious and direct translation to a formal regular expression.
 
-However, testing `binary` doesn't actually demnonstrate that the finite-state recognizer produced by compiling a Level Two expression to a finite-state recognizer can be compiled back to an equivalent finite-state recognizer. We already know that binary numbers is a regular language. So let's try our function with some level two examples.
+However, testing `binary` doesn't actually demonstrate that the finite-state recognizer produced by compiling a Level Two expression to a finite-state recognizer can be compiled back to an equivalent finite-state recognizer. We already know that binary numbers is a regular language. So let's try our function with some level two examples.
 
 ---
 
@@ -2248,9 +2248,9 @@ Success! There is an equivalent formal regular expression for the finite-state r
 
 We have now demonstrated, in constructive fashion, that for every finite-state recognizer, there is an equivalent formal regular expression.
 
-This implies several important things. First and foremost, since we have also established that for every formal regular expression, there is an equivalent finite-state recognizer, we now know that **The set of langauges described by formnal regular expressions--regular languages--is identical to the set of languages recognized by finite-state automata.** Finite-state automata recognzie regular languages, and regular languages can be recognized by finite-state automata.
+This implies several important things. First and foremost, since we have also established that for every formal regular expression, there is an equivalent finite-state recognizer, we now know that **The set of languages described by formal regular expressions--regular languages--is identical to the set of languages recognized by finite-state automata.** Finite-state automata recognize regular languages, and regular languages can be recognized by finite-state automata.
 
-Second, if we devise any arbitrary extension to formal regular languages--or even an entirely new kind of language, and we also devise a way to  compile such descriptions to finite-state recognizers, then we know that the languages we can describe with these extenmsions or languages are still regular languages.
+Second, if we devise any arbitrary extension to formal regular languages--or even an entirely new kind of language, and we also devise a way to  compile such descriptions to finite-state recognizers, then we know that the languages we can describe with these extensions or languages are still regular languages.
 
 Although we are not emphasizing performance, we also know that sentences in any such extensions or languages we may care to create can still be recognized in at worst linear time, because finite-state recognizers recognize sentences in at worst linear time.
 
