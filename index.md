@@ -43,7 +43,6 @@ older: ["2013", "2012", "2011", "2010", "2009", "2008"]
 
 <div class="related">
   <ul>
-  <ul>
     {% for oldyear in page.older %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
@@ -54,7 +53,6 @@ older: ["2013", "2012", "2011", "2010", "2009", "2008"]
         {% endunless %}
       {% endfor %}
     {% endfor %}
-  </ul>
   </ul>
 </div>
 
