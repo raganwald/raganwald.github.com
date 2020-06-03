@@ -1671,7 +1671,7 @@ And if we know that for every Level Two expression, there is an equivalent finit
 
 # For Every Finite-State Recognizer, There Exists An Equivalent Formal Regular Expression
 
-It is time to demonstrate that for every finite-state recognizer, there exists an equivalent formal regular expression. We're going to follow Sttephen Kleene's marvellous proof, very much leaning on Shunichi Toida's excellent notes for [CS390 Introduction to Theoretical Computer Science Structures][CS390] The proof of this aspect of Kleene's Theorem can be found [here][CS390-2].
+It is time to demonstrate that for every finite-state recognizer, there exists an equivalent formal regular expression. We're going to follow Stephen Kleene's marvellous proof, very much leaning on Shunichi Toida's excellent notes for [CS390 Introduction to Theoretical Computer Science Structures][CS390] The proof of this aspect of Kleene's Theorem can be found [here][CS390-2].
 
 [CS390]: https://www.cs.odu.edu/~toida/courses/TE.CS390.13sp/index.html
 [CS390-2]: https://www.cs.odu.edu/~toida/nerzic/390teched/regular/fa/kleene-2.html
