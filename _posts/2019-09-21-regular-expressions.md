@@ -3530,7 +3530,7 @@ In this essay, we demonstrated that for every formal regular expression, there i
 
 But before we move on, let's recapitulate what we've established so far.
 
-[Part II]: http://raganwald.com/2019/12/17/regular-expressions.html "Exploring Regular Expressions, Part II: Beyond Formal Regular Expressions""
+[Part II]: http://raganwald.com/2019/12/17/regular-expressions.html "Exploring Regular Expressions, Part II: Regular Languages and Finite-State Automata"
 
 ---
 
