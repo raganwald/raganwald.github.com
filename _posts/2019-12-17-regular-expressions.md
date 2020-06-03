@@ -3,7 +3,7 @@ title: "Exploring Regular Expressions, Part II: Regular Languages and Finite-Sta
 tags: [recursion,allonge,mermaid]
 ---
 
-This is Part II of a series about "Exploring Regular Expressions and Finite-State Recognizers." If you haven't already, you may want to read [Part I] first, where we wrote a compiler that translates [formal regular expressions][regular expression] into [finite-state recognizers][fsm].
+This is Part II of "Exploring Regular Expressions." If you haven't already, you may want to read [Part I] first, where we wrote a compiler that translates [formal regular expressions][regular expression] into [finite-state recognizers][fsm].
 
 You may also want another look at the essay, [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]. It covers the concepts behind finite-state machines and the the kinds of "languages"  they can and cannot recognize.
 
