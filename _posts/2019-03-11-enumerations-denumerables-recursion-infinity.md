@@ -252,7 +252,7 @@ In our examples above, `naturals`, `negatives`, `positives`, and `a` are all enu
 
 When enumerating denumerables, things can sometimes be tricky. If we say that an enumeration puts the elements of a denumerable into a one-to-one correspondance with the natural numbers, we must provide the following guarantee: **Every element of the enumeration correspondes to a finite natural number.** And in the case of an enumeration we write on a computer, it follows that for any member of the set, there is a natural number `n`, such that the member of the set appears as the `nth` element yielded by the enumeration.
 
-So in our example of `function * a { ... }` above, we know that we can name any element, such as `aaaaaaaaaa`, and indeed, it will appear as the tenth value yielded of the enumeration (and corresponds to the natural number `0`).
+So in our example of `function * a { ... }` above, we know that we can name any element, such as `aaaaaaaaaa`, and indeed, it will appear as the tenth value yielded of the enumeration (and corresponds to the natural number `10`).
 
 As we will see in more detail below, this sometimes means we must be careful how we arrange our enumerations. Recall `merge` from above.
 
