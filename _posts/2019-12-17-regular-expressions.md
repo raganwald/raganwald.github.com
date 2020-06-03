@@ -1705,7 +1705,7 @@ It will be a matter of finding the regular expressions for the paths from `start
 
 Note that `from`, `to`, and `via` can be _any_ of the states in the recognizer, including being the same state.
 
-[^nomenclature]: In most proofs, this function is called `L`, and its arguments are called `p`, 'q', and `k`. One-character names are terrific when writing proofs by hand using chalk and a blackboard, but we've moved on since 1951 and we'll use descriptive names. Likewise, Kleene numbered the states in order to create an ordering that is easy to work with by hand. We'll work with sets instead of numbers, because once again, we have computers do do all the bookkeeping for us.
+[^nomenclature]: In most proofs, this function is called `L`, and its arguments are called `p`, `q`, and `k`. One-character names are terrific when writing proofs by hand using chalk and a blackboard, but we've moved on since 1951 and we'll use descriptive names. Likewise, Kleene numbered the states in order to create an ordering that is easy to work with by hand. We'll work with sets instead of numbers, because once again, we have computers do do all the bookkeeping for us.
 
 Here's an empty function for what we want to begin with:
 
