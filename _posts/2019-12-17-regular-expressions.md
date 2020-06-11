@@ -108,6 +108,8 @@ It is quite obvious that regexen borrowed a lot of their syntax and semantics fr
 
 In [Part I], we established that for every [formal regular expression][regular expression], there is an equivalent [finite-state recognizer][fsm], establishing that the set of all languages described by formal regular expressions--that is to say, [regular languages]--is a subset of the set of all languages recognized by finite-state automata.
 
+[regular languages]: https://en.wikipedia.org/wiki/Regular_language
+
 We did this in [constructive proof] fashion by writing a compiler that takes any formal regular expression as input, and returns a JSON description of an equivalent finite-state recognizer. We also wrote an automator that turns the description of a finite state recognizer into a JavaScript function that takes any string as input and answers whether the string is recognized.
 
 [constructive proof]: https://en.wikipedia.org/wiki/Constructive_proof
@@ -422,6 +424,10 @@ const arithmetic = {
 evaluate('(1+2)3!', arithmetic)
   //=> 18
 ```
+
+The code for both the shunting yard and stack machine have been extracted into a [Github repository][raganwald-shunting-yard].
+
+[raganwald-shunting-yard]: https://github.com/raganwald/shunting-yard
 
 ---
 
