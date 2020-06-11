@@ -3592,3 +3592,7 @@ And with that, we bring Part I to a close.
 ---
 
 # Notes
+
+The code for both the shunting yard and stack machine have been extracted into a [Github repository][raganwald-shunting-yard].
+
+[raganwald-shunting-yard]: https://github.com/raganwald/shunting-yard
