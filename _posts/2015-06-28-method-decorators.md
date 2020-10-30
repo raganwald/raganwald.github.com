@@ -337,7 +337,7 @@ Object.defineProperty(Person.prototype, 'setName', { value: once(Person.prototyp
 
 This is weak for two reasons. First, it's fugly and full of accidental complexity. Second, modifying the prototype after defining the class separates two things that conceptually ought to be together. The `class` keyword giveth, but it also taketh away.
 
-To solve a problem created by ECMAScript 2015, [method decorators] have been proposed for ES.later.[^ESdotlater] The syntax is similar to class decorators, but where a class decorator takes a class asan argument and returns the same (or a different) class, a method decorator actually intercedes when a property is defined on the prototype.
+To solve a problem created by ECMAScript 2015, [method decorators] have been proposed for ES.later.[^ESdotlater] The syntax is similar to class decorators, but where a class decorator takes a class as an argument and returns the same (or a different) class, a method decorator actually intercedes when a property is defined on the prototype.
 
 Thus, a `fluent` (a/k/a `chain`) decorator would look like this:
 
