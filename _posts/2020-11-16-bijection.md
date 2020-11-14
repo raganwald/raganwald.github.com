@@ -3,6 +3,10 @@ title: "A Rational Visit to Hilbert's Grand Hotel"
 tags: [allonge, noindex]
 ---
 
+[![Grand Hotel](/assets/bijection/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
+
+---
+
 [Hilbert's paradox of the Grand Hotel][hh] is a thought experiment which illustrates a counterintuitive property of infinite sets: It demonstrates that a fully occupied hotel with infinitely many rooms may still accommodate additional guests, even infinitely many of them, and this process may be repeated infinitely often.
 
 [hh]: https://en.wikipedia.org/wiki/Hilbert%27s_paradox_of_the_Grand_Hotel
