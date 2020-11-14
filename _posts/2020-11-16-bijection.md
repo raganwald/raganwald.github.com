@@ -25,6 +25,10 @@ Today we're going to look at other ways in which two infinite sets can be relate
 
 ---
 
+[![Key](/assets/bijection/key.jpg)](https://www.flickr.com/photos/26344495@N05/32743331307)
+
+---
+
 ## The Night Clerk
 
 ---
