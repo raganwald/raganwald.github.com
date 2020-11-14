@@ -11,7 +11,7 @@ tags: [allonge, noindex]
 
 [hh]: https://en.wikipedia.org/wiki/Hilbert%27s_paradox_of_the_Grand_Hotel
 
-When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of countably infinite sets by building JavaScript [generators][g] for them. The principle was that if you can write a generator for all of the elements of an infinite set, and if you can show that every element of the set must be generated within a finite number of calls to the generator, then you have found a way to put the infinite set into a 1-to-1 correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same cardinality, i.e. they have the same size.
+When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of [countably infinite][ci] sets by building JavaScript [generators][g] for them. The principle was that if you can write a generator for all of the elements of an infinite set, and if you can show that every element of the set must be generated within a finite number of calls to the generator, then you have found a way to put the infinite set into a 1-to-1 correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same cardinality, i.e. they have the same size.
 
 [hhr]: http://raganwald.com/2015/04/24/hilberts-school.html
 [g]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
@@ -51,22 +51,20 @@ The night clerk's general problem is to devise a correspondence between guests a
 const p = ticketNumber => ticketNumber;
 ```
 
----
-
-## injection
-
----
+### injection
 
 Using identity to establish a correspondence between positive even numbers and positive natural numbers establishes an [injection] between even numbers and natural numbers. "Injection" is the mathematical term for a one-to-one relationship, i.e. For each even number, there is exactly one natural number, and for each natural number, there is *at most* one even number.
+
+[injection]: https://en.wikipedia.org/wiki/Injective_function
 
 To give another example of an injection, consider the set of all canonical forms of the positive [rational] numbers. That is, the sent of all positive [irreducible fractions]. Can we establish a one-to-one relationship between positive irreducible fractions and the natural numbers?
 
 [rational]: https://en.wikipedia.org/wiki/Rational_number
-[irrediducible franctions]: https://en.wikipedia.org/wiki/Irreducible_fraction
+[irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
 
-Certainly we can, and to do so we'll borrow a trick we used in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][fractran], [Gödel Numbering]. Given a finite ordered set of positive natural numbers, we can map them to a single number using prime factorization. In the case of a numerator and denominator, we can map the pair to a single natural number with this JavaScript:
+Certainly we can, and to do so we'll use [Gödel Numbering], a trick we used in Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language[^fractran]. Given a finite ordered set of positive natural numbers, we can map them to a single number using prime factorization. In the case of a numerator and denominator, we can map the pair to a single natural number with this JavaScript:
 
-[fractran]: http://raganwald.com/2020/05/03/fractran.html
+[^fractran]: [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language](http://raganwald.com/2020/05/03/fractran.html)
 [Gödel Numbering]: https://en.wikipedia.org/wiki/Gödel_numbering
 
 ```javascript
@@ -76,13 +74,11 @@ p(7, 8)
   //=> 839808
 ```
 
-Because every positive natural number can be reduced to a unique prime factorization, we know that no two positive irreducible fractions could resolve to the same natural number. This shows that the number of irreducible fractions is countable: There is one natural number for every irreducible fraction, and there is at most one irreducible fraction for every natural number.
+Because every positive natural number can be reduced to a unique prime factorization,[^fundamental] we know that no two positive irreducible fractions could resolve to the same natural number. This shows that the number of irreducible fractions is countable: There is one natural number for every irreducible fraction, and there is at most one irreducible fraction for every natural number.
 
----
+[^fundamental]: The [fundamental theorem of arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic) is that every integer has a unique prime factorization.
 
-## bijection
-
----
+### bijection
 
 We established that there is one natural number for every irreducible fraction, and there is *at most* one irreducible fraction. It is certainly *at most* one, because there are lots of natural numbers that don't map to positive irreducible fractions using the Gödel Numbering scheme. The numbers two and three don't map to positive irreducible fractions: `2` would map to `2/0`, and `3` would map to `0/3`. And any number divisible by a prime larger than two or three also wouldn't map to an irreducible fraction using Gödel Numbering.
 
@@ -114,84 +110,25 @@ There's a also a name for the mapping from positive even numbers to positive nat
 
 [bijection]: https://en.wikipedia.org/wiki/Bijective_function
 
-Bijections between infinities are useful, because they establish that both infinities have the same cardinality. Using identity to map even numbers to positive natural numbers established that they are countable. Using division to establish a bijection with the positive natural numbers established that they are countably infinite. Which is to say, there are exactly as many positive even natural numbers as there are positive natural numbers.
-
-
+Bijections between infinities are useful, because they establish that both infinities have the same cardinality. Using identity to map even numbers to positive natural numbers established that they are countable. Using division to establish a bijection with the positive natural numbers established that they are [countably infinite][ci]. Which is to say, there are exactly as many positive even natural numbers as there are positive natural numbers.
 
 ---
 
-### appendix: a generator of prime numbers
+[![Fractional Hugs And Kisses](/assets/bijection/fractional-hugs-and-kisses.jpg)](https://www.flickr.com/photos/clearlyambiguous/60431147)
 
-This code from [The Hubris of Impatient Sieves of Eratosthenes](http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html) implements a naïve JavaScript generator that yields the prime numbers in ascending order:
+---
 
-```javascript
-function * multiplesOf (startingWith, n) {
-  let number = startingWith;
+## a bijective mapping between positive irreducible fractions and positive natural numbers
 
-  while (true) {
-    yield number;
-    number = number + n;
-  }
-}
+---
 
-function destructure (iterable) {
-  const iterator = iterable[Symbol.iterator]();
-  const { done, value } = iterator.next();
+Bijections with the natural numbers have other uses. They provide a way of enumerating an infinite set: If we have a way of mapping natural numbers to exactly one positive irreducible fraction, we can generate all of the fractions by generating the positive natural numbers and mapping them to the positive irreducible fractions, without having to filter out positive natural numbers that do not map to positive irreducible fractions.
 
-  if (!done) {
-    return { first: value, rest: iterator }
-  }
-}
+Consider trying to generate the 10,000th positive irreducible fraction. How many positive natural numbers would we have to try to find it using the Gödel Numbering function? If we could devise a bijective mapping between positive irreducible fractions and positive natural numbers, we could simply feed it `10000` and get an immediate answer.
 
-class HashSieve {
-  constructor () {
-    this._hash = Object.create(null);
-  }
+There are a number of such mappings. We're going to construct one based on the [Euclidean algorithm] for determining the [greatest common divisor] of two integers.
 
-  addAll (iterable) {
-    const { first, rest } = destructure(iterable);
-
-    if (this._hash[first]) {
-      this._hash[first].push(rest);
-    }
-    else this._hash[first] = [rest];
-
-    return this;
-  }
-
-  has (number) {
-    if (this._hash[number]) {
-      this._remove(number);
-      return true;
-    }
-    else return false;
-  }
-
-  _remove (number) {
-    const iterables = this._hash[number];
-
-    if (iterables == null) return false;
-
-    delete this._hash[number];
-    iterables.forEach((iterable) => this.addAll(iterable));
-
-    return number;
-  }
-}
-
-function * Primes () {
-  let prime = 2;
-  const composites = new HashSieve();
-
-  while (true) {
-    yield prime;
-    composites.addAll(multiplesOf(prime * prime, prime));
-
-    while (composites.has(++prime)) {
-      // do nothing
-    }
-  }
-}
-```
+[Euclidean algorithm]: https://en.wikipedia.org/wiki/Euclidean_algorithm
+[greatest common divisor]: https://en.wikipedia.org/wiki/Greatest_common_divisor
 
 ### notes
