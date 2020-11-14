@@ -131,4 +131,55 @@ There are a number of such mappings. We're going to construct one based on the [
 [Euclidean algorithm]: https://en.wikipedia.org/wiki/Euclidean_algorithm
 [greatest common divisor]: https://en.wikipedia.org/wiki/Greatest_common_divisor
 
+### the euclidean algorithm for determining the greatest common divisor of two integers
+
+Given two integers `p` and `q`, the Euclidean algorithm for determining the greatest common divisor of two integers in its most simple form works like this:
+
+- If `p === q`, stop.
+  - If `p === q === 1`, the original `p` and `q` are coprime;[^coprime]
+  - If `p === q > 1`, `p` (and `q`) is the greatest common divisor of the two original numbers.
+- If `p` > `q`, then return the greatest common divisor of `p-q, q`;
+- If `q > p`, then return the greatest common divisor of `p, q-p`;
+
+[^coprime]: two numbers are coprime if their greatest common divisor is 1.
+
+Here it is in JavaScript:
+
+```javascript
+const gcd = (p, q) => {
+  if (p > q) {
+    return gcd(p-q, q);
+  } else if (p < q) {
+    return gcd(p, q-p);
+  } else {
+    return p;
+  }
+};
+
+gcd(42, 15)
+  //=> 3
+
+gcd(42, 14)
+  //=> 14
+
+gcd(42, 13)
+  //=> 1
+```
+
+Consider how this algorithm works. If we consider give it any pair of positive natural numbers, it reduces one or the other repeatedly until both are equal. Thus, all pairs of positive numbers eventually converge on a positive natural number. Here are the intermediate results of the above three calculations:
+
+```
+(42, 15) -> (27, 15) -> (12, 15) -> (12, 3) -> (9, 3) -> (6, 3) -> (3, 3)
+
+(42, 14) -> (28, 14) -> (14, 14)
+
+(42, 13) -> (29, 13) -> (16, 13) -> (3, 13) -> (3, 10) -> (3, 7) -> (3, 4) -> (3, 1) -> (2, 1) -> (1, 1)
+```
+
+Every pair of positive natural numbers traces a path through the set of all pairs of positive natural numbers, terminating with a pair of equal natural numbers. And as it happens, this algorithm partitions the set of all pairs of positive natural numbers into a forest of trees. One tree has a 'root' of `(1, 1)`. The next has a root of `(2, 2)`, the next a root of `(3, 3)` and so on.
+
+We're interested in the tree with a root of `(1, 1)`, because the set of all pairs of numbers that resolve to a root of `(1, 1)` is the set of all pairs of numbers that form irreducible fractions, because an irreducible fraction is a fraction where the numerator and denominator are coprime.
+
+---
+
 ### notes
