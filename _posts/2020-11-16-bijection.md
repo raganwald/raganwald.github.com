@@ -51,6 +51,8 @@ The night clerk's general problem is to devise a correspondence between guests a
 const p = ticketNumber => ticketNumber;
 ```
 
+---
+
 ### injection
 
 Using identity to establish a correspondence between positive even numbers and positive natural numbers establishes an [injection] between even numbers and natural numbers. "Injection" is the mathematical term for a one-to-one relationship, i.e. For each even number, there is exactly one natural number, and for each natural number, there is *at most* one even number.
@@ -77,6 +79,8 @@ p(7, 8)
 Because every positive natural number can be reduced to a unique prime factorization,[^fundamental] we know that no two positive irreducible fractions could resolve to the same natural number. This shows that the number of irreducible fractions is countable: There is one natural number for every irreducible fraction, and there is at most one irreducible fraction for every natural number.
 
 [^fundamental]: The [fundamental theorem of arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic) is that every integer has a unique prime factorization.
+
+---
 
 ### bijection
 
@@ -180,6 +184,8 @@ Every pair of positive natural numbers traces a path through the set of all pair
 
 We're interested in the tree with a root of `(1, 1)`, because the set of all pairs of numbers that resolve to a root of `(1, 1)` is the set of all pairs of numbers that form irreducible fractions, because an irreducible fraction is a fraction where the numerator and denominator are coprime.
 
+---
+
 ### the irreducible tree
 
 The tree is, of course, infinite. But here are the last four nodes of the tree. Every node is a positive irreducible fraction:
@@ -205,6 +211,8 @@ graph TD
 How doos this help us map positive irreducible fractions to positive natural numbers? Note that our upside-down tree is a binary tree: There are exactly two child nodes for every node. One represents adding `p` to `q`, the other adding `q` to `p`. But working from leaf back to root, at each step we must either subtract `p` from `q` or subtract `q` from `p`, depending upon which is bigger.
 
 In doing so, we are forming a path through the space of pairs of positive natural numbers. What we're looking for is an encoding of our path that forms a bijection with the set of positive natural numbers. And there is a very simple one, thanks to this being a binary tree.
+
+---
 
 ### encoding paths as numbers
 
@@ -288,6 +296,8 @@ toNatural(toPath(1, 1))
 This mechanism converts positive irreducible fractions to positive natural numbers. It has "more moving parts" than the Gödel Numbering approach, but it is more useful, in that it is a bijection and not an injection. To see how that works, we have to not just convert fractions to natural numbers, but go the other way around and map positive natural numbers to irreducible fractions.
 
 To do that, we'll reverse our approach. We'll start by converting positive natural numbers to paths, and then we'll convert paths to positive irreducible fractions.
+
+---
 
 ### converting numbers back to fractions with paths
 
@@ -384,6 +394,8 @@ fromPath(fromNatural(2)
 fromPath(fromNatural(1)
   //=> [1, 1]
 ```
+
+---
 
 ### the final bijection
 
