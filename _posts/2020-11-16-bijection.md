@@ -1,5 +1,5 @@
 ---
-title: "A Rational Visit to Hilbert's Grand Hotel"
+title: "A Reversible Visit to Hilbert's Grand Hotel"
 tags: [allonge, noindex, mermaid]
 ---
 
@@ -17,7 +17,7 @@ When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties o
 [g]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 [natural]: https://en.wikipedia.org/wiki/Natural_number
 
-Today we're going to look at other ways in which two infinite sets can be related, and in doing so, we'll review the properties of [bijective], [injective], and [surjective] functions.
+Today we're going to look at other ways in which two infinite sets can be related, and in doing so, we'll review the properties of [injective] and [bijective] mappings. We'll then use those as a springboard for exploring reversible functions.
 
 [bijective]: https://en.wikipedia.org/wiki/Bijection
 [injective]: https://en.wikipedia.org/wiki/Injective_function
@@ -29,7 +29,7 @@ Today we're going to look at other ways in which two infinite sets can be relate
 
 ---
 
-## The Night Clerk
+## The Night Clerk at Hilbert's Hotel
 
 ---
 
@@ -41,6 +41,10 @@ The night clerk is responsible for assigning every guest a room. The night clerk
 
 [uncountable]: https://en.wikipedia.org/wiki/Uncountable_set
 
+---
+
+### even numbers, irreducible fractions, and injection
+
 We'll illustrate the principle with one example, and thereafter we'll dispense with the metaphor. One evening, an infinite number of guests arrive, each presenting a ticket bearing a unique positive even number. Can the night clerk register them all? Certainly! Each guest can be dispatched to the room number that matches the number of their ticket. This shows that the set of all even numbers is countable.
 
 The night clerk's general problem is to devise a correspondence between guests and natural numbers. That is, for each guest there is a natural number, and no two guests have the same natural number. In the example given, the correspondance is given by the [identity] function: Every even number is its own unique natural number. In JavaScript:
@@ -48,18 +52,20 @@ The night clerk's general problem is to devise a correspondence between guests a
 [identity]: https://en.wikipedia.org/wiki/Identity_function
 
 ```javascript
-const p = ticketNumber => ticketNumber;
+const I = x => x;
+
+const evenToNatural = I;
 ```
 
----
-
-### injection
-
-Using identity to establish a correspondence between positive even numbers and positive natural numbers establishes an [injection] between even numbers and natural numbers. "Injection" is the mathematical term for a one-to-one relationship, i.e. For each even number, there is exactly one natural number, and for each natural number, there is *at most* one even number.
+Using identity to establish a correspondence between positive even numbers and positive natural numbers establishes an [injection] between even numbers and natural numbers. "Injection" is mathematical jargon for a one-to-one relationship, i.e. For each even number, there is exactly one natural number, and for each natural number, there is *at most* one even number.
 
 [injection]: https://en.wikipedia.org/wiki/Injective_function
 
-To give another example of an injection, consider the set of all canonical forms of the positive [rational] numbers. That is, the sent of all positive [irreducible fractions]. Can we establish a one-to-one relationship between positive irreducible fractions and the natural numbers?
+To give another example of an injection, consider the set of all canonical forms of the positive [rational] numbers. That is, the sent of all positive [irreducible fractions]. To review, a positive irreducible ration is a rational number wher ethe numerator and denominator are coprime.[^coprime] `1/1`, `1/3`, and `5/3` are irreducible fractions. `4/2` is not an irreducible fraction, because four and two are both divisible by two, and thus it can be reduced to `2/1`.
+
+[^coprime]: Two numbers are coprime if their greatest common divisor is 1.
+
+Can we establish a one-to-one relationship between positive irreducible fractions and the natural numbers?
 
 [rational]: https://en.wikipedia.org/wiki/Rational_number
 [irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
@@ -82,13 +88,13 @@ Because every positive natural number can be reduced to a unique prime factoriza
 
 ---
 
-### bijection
+### even numbers, irreducible fractions, and bijection
 
-We established that there is one natural number for every irreducible fraction, and there is *at most* one irreducible fraction. It is certainly *at most* one, because there are lots of natural numbers that don't map to positive irreducible fractions using the Gödel Numbering scheme. The numbers two and three don't map to positive irreducible fractions: `2` would map to `2/0`, and `3` would map to `0/3`. And any number divisible by a prime larger than two or three also wouldn't map to an irreducible fraction using Gödel Numbering.
+We established that there is one natural number for every irreducible fraction, and there is *at most* one irreducible fraction for every natural number. It is certainly *at most* one, because there are lots of natural numbers that don't map to positive irreducible fractions using the Gödel Numbering scheme. The numbers two and three don't map to positive irreducible fractions: `2` would map to `2/0`, and `3` would map to `0/3`. And any number divisible by a prime larger than two or three also wouldn't map to an irreducible fraction using Gödel Numbering.
 
 The set of all irreducible fractions maps to a proper subset of all natural numbers, specifically the set of all natural numbers whose prime factorization includes both primes two and three but no other primes. But mappings don't always have to work this way.
 
-Let's recall the very first example, positiv even numbers. When mapping positive even numbers to natural numbers using the identify function, positive each even numbers map to exactly one positive natural number, but the positive natural numbers do not map to exactly one positive even number: None of the odd positive natural numbers map to a positive natural even number.
+Let's recall the very first example, positive even numbers. When mapping positive even numbers to natural numbers using the identify function, positive each even numbers map to exactly one positive natural number, but the positive natural numbers do not map to exactly one positive even number: None of the odd positive natural numbers map to a positive natural even number.
 
 But we would arrange our mapping differently. What if we used this function for mapping positive even numbers to positive natural numbers?
 
@@ -110,7 +116,7 @@ q(21)
 
 We saw that the mapping from positive even numbers to positive natural numbers using identity was an injection: It maps one-to-exactly-one in one direction, and one-to-at-most-one in the other.
 
-There's a also a name for the mapping from positive even numbers to positive natural numbers using division: It's a [bijection]. The  name implies symmetry between the two relationships, and indeed it maps one-to-exactly-one in one both directions.
+There's a also a name for the mapping from positive even numbers to positive natural numbers using division: It's a [bijection]. The name implies symmetry between the two relationships, and indeed it maps one-to-exactly-one in one both directions.
 
 [bijection]: https://en.wikipedia.org/wiki/Bijective_function
 
@@ -140,12 +146,10 @@ There are a number of such mappings. We're going to construct one based on the [
 Given two integers `p` and `q`, the Euclidean algorithm for determining the greatest common divisor of two integers in its most simple form works like this:
 
 - If `p === q`, stop.
-  - If `p === q === 1`, the original `p` and `q` are coprime;[^coprime]
+  - If `p === q === 1`, the original `p` and `q` are coprime;
   - If `p === q > 1`, `p` (and `q`) is the greatest common divisor of the two original numbers.
 - If `p` > `q`, then return the greatest common divisor of `p-q, q`;
 - If `q > p`, then return the greatest common divisor of `p, q-p`;
-
-[^coprime]: Two numbers are coprime if their greatest common divisor is 1.
 
 Here it is in JavaScript:
 
@@ -172,23 +176,30 @@ gcd(42, 13)
 
 Consider how this algorithm works. If we consider give it any pair of positive natural numbers, it reduces one or the other repeatedly until both are equal. Thus, all pairs of positive numbers eventually converge on a positive natural number. Here are the intermediate results of the above three calculations:
 
-```
-(42, 15) -> (27, 15) -> (12, 15) -> (12, 3) -> (9, 3) -> (6, 3) -> (3, 3)
+<div class="mermaid">
+graph LR
+  42/15 --> 27/15 --> 12/15 --> 12/3 --> 9/3 --> 6/3 --> 3/3
+</div>
 
-(42, 14) -> (28, 14) -> (14, 14)
+<div class="mermaid">
+graph LR
+  42/14 --> 28/14 --> 14/14
+</div>
 
-(42, 13) -> (29, 13) -> (16, 13) -> (3, 13) -> (3, 10) -> (3, 7) -> (3, 4) -> (3, 1) -> (2, 1) -> (1, 1)
-```
+<div class="mermaid">
+graph LR
+  42/13 --> 29/13 --> 16/13 --> 3/13 --> 3/10 --> 3/7 --> 3/4 --> 3/1 --> 2/1 --> 1/1
+</div>
 
-Every pair of positive natural numbers traces a path through the set of all pairs of positive natural numbers, terminating with a pair of equal natural numbers. And as it happens, this algorithm partitions the set of all pairs of positive natural numbers into a forest of trees. One tree has a 'root' of `(1, 1)`. The next has a root of `(2, 2)`, the next a root of `(3, 3)` and so on.
+Every pair of positive natural numbers traces a **path** through the set of all pairs of positive natural numbers, terminating with a pair of equal natural numbers. And as it happens, this algorithm partitions the set of all pairs of positive natural numbers into a forest of trees. One tree has a 'root' of `1/1`. The next has a root of `2/2`, the next a root of `3/3` and so on.
 
-We're interested in the tree with a root of `(1, 1)`, because the set of all pairs of numbers that resolve to a root of `(1, 1)` is the set of all pairs of numbers that form irreducible fractions, because an irreducible fraction is a fraction where the numerator and denominator are coprime.
+We're interested in the tree with a root of `1/1`, because the set of all pairs of numbers that resolve to a root of `1/1` is the set of all pairs of numbers that are coprime, and the set of all pairs of coprime natural numbers is the set of all irreducible fractions, because an irreducible fraction is a fraction where the numerator and denominator are coprime.
 
 ---
 
 ### the irreducible tree
 
-The tree is, of course, infinite. But here are the last four nodes of the tree. Every node is a positive irreducible fraction:
+The tree with a root of `1/1`, is, of course, infinite. But here is a small part of the tree that illustrates its shape. Every node is a positive irreducible fraction:
 
 <div class="mermaid">
 graph TD
