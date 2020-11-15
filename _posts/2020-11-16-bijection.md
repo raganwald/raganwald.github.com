@@ -11,11 +11,12 @@ tags: [allonge, noindex, mermaid]
 
 [hh]: https://en.wikipedia.org/wiki/Hilbert%27s_paradox_of_the_Grand_Hotel
 
-When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of [countably infinite][ci] sets by building JavaScript [generators][g] for them. The principle was that if you can write a generator for all of the elements of an infinite set, and if you can show that every element of the set must be generated within a finite number of calls to the generator, then you have found a way to put the infinite set into a 1-to-1 correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same cardinality, i.e. they have the same size.
+When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of [countably infinite][ci] sets by building JavaScript [generators][g]. The principle was that if we can write a generator for all of the elements of an infinite set, and if we can show that every element of the set must be generated within a finite number of calls to the generator, then we have found a way to put the infinite set into a 1-to-1 correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same [cardinality].
 
 [hhr]: http://raganwald.com/2015/04/24/hilberts-school.html
 [g]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 [natural]: https://en.wikipedia.org/wiki/Natural_number
+[cardinality]: https://en.wikipedia.org/wiki/Cardinality
 
 Today we're going to look at other ways in which two infinite sets can be related, and in doing so, we'll review the properties of [injective] and [bijective] mappings. We'll then use those as a springboard for exploring reversible functions.
 
