@@ -70,27 +70,34 @@ Can we establish a one-to-one relationship between positive irreducible fraction
 [rational]: https://en.wikipedia.org/wiki/Rational_number
 [irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
 
-Certainly we can, and to do so we'll use [Gödel Numbering], a trick we used in Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language[^fractran]. Given a finite ordered set of positive natural numbers, we can map them to a single number using prime factorization. In the case of a numerator and denominator, we can map the pair to a single natural number with this JavaScript:
+Certainly we can, and to do so we'll use [Gödel Numbering], a trick we used in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN]. Given a finite ordered set of positive natural numbers, we can map them to a single number using [prime factorization].
 
-[^fractran]: [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language](http://raganwald.com/2020/05/03/fractran.html)
+[FRACTRAN]: http://raganwald.com/2020/05/03/fractran.html
 [Gödel Numbering]: https://en.wikipedia.org/wiki/Gödel_numbering
+[prime factorization]: https://en.wikipedia.org/wiki/Integer_factorization
+
+In the case of a numerator and denominator, we can map the pair to a single natural number with this JavaScript:
 
 ```javascript
-const p = (numerator, denominator) => Math.pow(2, numerator) * Math.pow(3, denominator);
+const fractionToNatural = (numerator, denominator) => Math.pow(2, numerator) * Math.pow(3, denominator);
 
-p(7, 8)
+fractionToNatural(7, 8)
   //=> 839808
 ```
 
-Because every positive natural number can be reduced to a unique prime factorization,[^fundamental] we know that no two positive irreducible fractions could resolve to the same natural number. This shows that the number of irreducible fractions is countable: There is one natural number for every irreducible fraction, and there is at most one irreducible fraction for every natural number.
+Because every positive natural number can be reduced to a unique prime factorization,[^fundamental] we know that no two positive irreducible fractions could resolve to the same natural number.
 
 [^fundamental]: The [fundamental theorem of arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic) is that every integer has a unique prime factorization.
+
+This shows that the number of irreducible fractions is countable: There is one natural number for every irreducible fraction, and there is at most one irreducible fraction for every natural number.
 
 ---
 
 ### even numbers, irreducible fractions, and bijection
 
-We established that there is one natural number for every irreducible fraction, and there is *at most* one irreducible fraction for every natural number. It is certainly *at most* one, because there are lots of natural numbers that don't map to positive irreducible fractions using the Gödel Numbering scheme. The numbers two and three don't map to positive irreducible fractions: `2` would map to `2/0`, and `3` would map to `0/3`. And any number divisible by a prime larger than two or three also wouldn't map to an irreducible fraction using Gödel Numbering.
+We established that there is one natural number for every irreducible fraction, and there is *at most* one irreducible fraction for every natural number. It is certainly *at most* one, because there are lots of natural numbers that don't map to positive irreducible fractions using the Gödel Numbering scheme.
+
+The numbers two and three don't map to positive irreducible fractions: `2` would map to `2/0`, and `3` would map to `0/3`. And any number divisible by a prime larger than two or three also wouldn't map to an irreducible fraction using Gödel Numbering.
 
 The set of all irreducible fractions maps to a proper subset of all natural numbers, specifically the set of all natural numbers whose prime factorization includes both primes two and three but no other primes. But mappings don't always have to work this way.
 
@@ -99,18 +106,18 @@ Let's recall the very first example, positive even numbers. When mapping positiv
 But we would arrange our mapping differently. What if we used this function for mapping positive even numbers to positive natural numbers?
 
 ```javascript
-const p = even => even / 2;
+const evenToNatural = even => even / 2;
 
-p(42)
+evenToNatural(42)
   //=> 21
 ```
 
 Now every positive even number maps to exactly one positive natural number, and every positive natural number maps to exactly one positive even number:
 
 ```javascript
-const q = natural => natural * 2;
+const naturalToEven = natural => natural * 2;
 
-q(21)
+naturalToEven(21)
   //=> 42
 ```
 
