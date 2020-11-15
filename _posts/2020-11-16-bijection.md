@@ -148,6 +148,8 @@ There are a number of such mappings. We're going to construct one based on the [
 [Euclidean algorithm]: https://en.wikipedia.org/wiki/Euclidean_algorithm
 [greatest common divisor]: https://en.wikipedia.org/wiki/Greatest_common_divisor
 
+---
+
 ### the euclidean algorithm for determining the greatest common divisor of two integers
 
 Given two integers `p` and `q`, the Euclidean algorithm for determining the greatest common divisor of two integers in its most simple form works like this:
@@ -420,16 +422,16 @@ fromPath(fromNatural(1)
 And now we can express the final mapping from positive canonical fraction to positive natural number:
 
 ```javascript
-const p = fraction => toNatural(toPath(fraction));
+const fractionToNatural = fraction => toNatural(toPath(fraction));
 ```
 
 And positive natural number to positive canonical fraction:
 
 ```javascript
-const q = natural => fromPath(fromNatural(natural));
+const naturalToFraction = natural => fromPath(fromNatural(natural));
 ```
 
-Every positive canonical fraction maps to exactly one positive natural number (via `p`), and every positive natural number maps to exactly one positive canonical fraction (via `q`). Therefore this is a bijection between the set of all positive canonical fractions and the set of all positive natural numbers, which implies that the set of all positive canonical fractions has exactly the same cardinality as the set of all positive natural numbers: Both are countably infinite.
+Every positive canonical fraction maps to exactly one positive natural number (via `fractionToNatural`), and every positive natural number maps to exactly one positive canonical fraction (via `naturalToFraction`). Therefore this is a bijection between the set of all positive canonical fractions and the set of all positive natural numbers, which implies that the set of all positive canonical fractions has exactly the same cardinality as the set of all positive natural numbers: Both are countably infinite.
 
 ---
 
