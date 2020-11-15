@@ -180,6 +180,116 @@ Every pair of positive natural numbers traces a path through the set of all pair
 
 We're interested in the tree with a root of `(1, 1)`, because the set of all pairs of numbers that resolve to a root of `(1, 1)` is the set of all pairs of numbers that form irreducible fractions, because an irreducible fraction is a fraction where the numerator and denominator are coprime.
 
+### the irreducible tree
+
+The tree is, of course, infinite. But here are the last four nodes of the tree. Every node is a positive irreducible fraction:
+
+<div class="mermaid">
+graph TD
+  2/1 --> 1/1
+  1/2 --> 1/1
+  3/1 --> 2/1
+  2/3 --> 2/1
+  3/2 --> 1/2
+  1/3 --> 1/2
+  4/1 --> 3/1
+  3/4 --> 3/1
+  5/3 --> 2/3
+  2/5 --> 2/3
+  5/2 --> 3/2
+  3/5 --> 3/2
+  4/3 --> 1/3
+  1/4 --> 1/3
+</div>
+
+How doos this help us map positive irreducible fractions to positive natural numbers? Note that our upside-down tree is a binary tree: There are exactly two child nodes for every node. One represents adding `p` to `q`, the other adding `q` to `p`. But working from leaf back to root, at each step we must either subtract `p` from `q` or subtract `q` from `p`, depending upon which is bigger.
+
+In doing so, we are forming a path through the space of pairs of positive natural numbers. What we're looking for is an encoding of our path that forms a bijection with the set of positive natural numbers. And there is a very simple one, thanks to this being a binary tree.
+
+### encoding paths as numbers
+
+Since at each step we either subtract `p` from `q` or subtract `q` from `p` until we reach the root, what we can do is make a note of which one we subtract at every step. Let's say we call subtracting `p` from `q` a `0`, and subtracting `q` from `p` a `1`.
+
+We can produce a list of 1s and 0s representing our path by modifying the `gcd` algorithm:
+
+```javascript
+const toPath = (p, q, path = []) => {
+  if (p > q) {
+    return toPath(p-q, q, [1].concat(path));
+  } else if (p < q) {
+    return toPath(p, q-p, [0].concat(path));
+  } else {
+    return path;
+  }
+};
+
+toPath(5, 3)
+  //=> [1, 0, 1]
+
+toPath(1, 3)
+  //=> [0, 0]
+
+toPath(1, 1)
+  //=> []
+```
+
+Here's our diagram again, with the paths shown:
+
+<div class="mermaid">
+graph TD
+  2/1 ==1==> 1/1
+  1/2 ==0==> 1/1
+  3/1 --> 2/1
+  2/3 ==0==> 2/1
+  3/2 --> 1/2
+  1/3 ==0==> 1/2
+  4/1 --> 3/1
+  3/4 --> 3/1
+  5/3 ==1==> 2/3
+  2/5 --> 2/3
+  5/2 --> 3/2
+  3/5 --> 3/2
+  4/3 --> 1/3
+  1/4 --> 1/3
+</div>
+
+The paths can be converted to positive natural numbers by prefixing them with a `1` and treating the number as binary:
+
+```javascript
+const toNatural = path => {
+  const prependedPath = [1].concat(path);
+  let n = 0;
+  let powerOfTwo = 1;
+
+  for (const element of prependedPath.reverse()) {
+    n += element * powerOfTwo;
+    powerOfTwo *= 2;
+  }
+
+  return n;
+};
+
+toNatural(toPath(5, 3))
+  //=> 13
+
+toNatural(toPath(1, 3))
+  //=> 4
+
+toNatural(toPath(2, 1))
+  //=> 3
+
+toNatural(toPath(1, 2))
+  //=> 2
+
+toNatural(toPath(1, 1))
+  //=> 1
+```
+
+This mechanism converts positive irreducible fractions to positive natural numbers. It has "more moving parts" than the Gödel Numbering approach, but it is more useful, in that it is a bijection and not an injection. To see how that works, we have to not just convert fractions to natural numbers, but go the other way around and map positive natural numbers to irreducible fractions.
+
+### converting numbers back to fractions with paths
+
+
 ---
 
 ### notes
