@@ -1,6 +1,6 @@
 ---
 title: "A Rational Visit to Hilbert's Grand Hotel"
-tags: [allonge, noindex]
+tags: [allonge, noindex, mermaid]
 ---
 
 [![Grand Hotel](/assets/bijection/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
@@ -287,7 +287,63 @@ toNatural(toPath(1, 1))
 
 This mechanism converts positive irreducible fractions to positive natural numbers. It has "more moving parts" than the Gödel Numbering approach, but it is more useful, in that it is a bijection and not an injection. To see how that works, we have to not just convert fractions to natural numbers, but go the other way around and map positive natural numbers to irreducible fractions.
 
+To do that, we'll reverse our approach. We'll start by converting positive natural numbers to paths, and then we'll convert paths to positive irreducible fractions.
+
 ### converting numbers back to fractions with paths
+
+Our first step in reversing our mapping will be to generate paths from natural numbers:
+
+
+```javascript
+const fromNatural = natural => {
+  const path = [];
+  let n = natural;
+  while (n > 1) {
+    path.push(n % 2);
+    n = Math.floor(n/2);
+  }
+
+  return path;
+};
+
+
+fromNatural(13)
+  //=> [1, 0, 1]
+
+fromNatural(4)
+  //=> [0, 0]
+
+fromNatural(3)
+  //=> [1]
+
+fromNatural(2)
+  //=> [0]
+
+fromNatural(1)
+  //=> []
+```
+
+The second step will be to reconstruct fractions from paths. This is straightforward: Where we constructed the path by noting whether we subtracted `p` from `q` or `q` from `p`, when reconstructing we'll go in the other direction and use the path to decide whether to add `p` to `q` or add `q` to `p`.
+
+Before we jump back into the code, here's our tree again:
+
+<div class="mermaid">
+graph TD
+  1/1 ==1==> 2/1
+  1/1 ==0==> 1/2
+  2/1 -->    3/1
+  2/1 ==0==> 2/3
+  1/2 -->    3/2
+  1/2 ==0==> 1/3
+  3/1 -->    4/1
+  3/1 -->    3/4
+  2/3 ==1==> 5/3
+  2/3 -->    2/5
+  3/2 -->    5/2
+  3/2 -->    3/5
+  1/3 -->    4/3
+  1/3 -->    1/4
+</div>
 
 
 ---
