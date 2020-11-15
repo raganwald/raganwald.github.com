@@ -141,7 +141,7 @@ Given two integers `p` and `q`, the Euclidean algorithm for determining the grea
 - If `p` > `q`, then return the greatest common divisor of `p-q, q`;
 - If `q > p`, then return the greatest common divisor of `p, q-p`;
 
-[^coprime]: two numbers are coprime if their greatest common divisor is 1.
+[^coprime]: Two numbers are coprime if their greatest common divisor is 1.
 
 Here it is in JavaScript:
 
@@ -325,7 +325,7 @@ fromNatural(1)
 
 The second step will be to reconstruct fractions from paths. This is straightforward: Where we constructed the path by noting whether we subtracted `p` from `q` or `q` from `p`, when reconstructing we'll go in the other direction and use the path to decide whether to add `p` to `q` or add `q` to `p`.
 
-Before we jump back into the code, here's our tree again:
+Before we jump back into the code, here's our tree again, this time with the root at the top so we can more easily see the paths we'll follow:
 
 <div class="mermaid">
 graph TD
@@ -345,6 +345,71 @@ graph TD
   1/3 -->    1/4
 </div>
 
+Getting a fraction from a path is performed by starting with the root and then adding `p` to `q` or `q` to `p` for each step of the path. When there are no steps, we stick with the root.
+
+Starting with `[1, 1]`:
+
+* The path `[]` returns `[1, 1]` because there's nothing to follow;
+* The path `[0, 0]` becomes `[1, 2]` because when the step is `0`, we turn `[p, q]` into `[p, p+q]`, and `[1, 1+1]` is [1, 2], And again, the second step is `0`, so turning `[p, q]` into `[p, p+q]` means turning `[1, 2]` into `[1, 1+2]`, which is `[1, 3]`
+* Using the above logic, the path `[1, 0, 1]` is treated as `[p+q, q]`, `[p, p+q]`, `[p+q, q]` and thus `[1, 1]` becomes `[2, 1]`, `[2, 3]`, and finally `[5, 3]`
+
+And some code to do this for us:
+
+```javascript
+const fromPath = (path, root = [1, 1]) => {
+  if (path.length === 0) {
+    return root;
+  } else {
+    const [head, ...butHead] = path;
+    const [p, q] = root;
+
+    const nextRoot = head === 0 ? [p, p+q] : [p+q, q];
+
+    return fromPath(butHead, nextRoot);
+  }
+};
+
+fromPath(fromNatural(13)
+  //=> [5, 3]
+
+fromPath(fromNatural(4)
+  //=> [1, 3]
+
+fromPath(fromNatural(3)
+  //=> [2, 1]
+
+fromPath(fromNatural(2)
+  //=> [1, 2]
+
+fromPath(fromNatural(1)
+  //=> [1, 1]
+```
+
+### the final bijection
+
+And now we can express the final mapping from positive canonical fraction to positive natural number:
+
+```javascript
+const p = fraction => toNatural(toPath(fraction));
+```
+
+And positive natural number to positive canonical fraction:
+
+```javascript
+const q = natural => fromPath(fromNatural(natural));
+```
+
+Every positive canonical fraction maps to exactly one positive natural number (via `p`), and every positive natural number maps to exactly one positive canonical fraction (via `q`). Therefore this is a bijection between the set of all positive canonical fractions and the set of all positive natural numbers, which implies that the set of all positive canonical fractions has exactly the same cardinality as the set of all positive natural numbers: Both are countably infinite.
+
+---
+
+![Green U Turn](/assets/bijection/green-u-turn.jpg)
+
+---
+
+## Reversibility
+
+*Coming Soon...*
 
 ---
 
