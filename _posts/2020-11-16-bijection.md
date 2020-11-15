@@ -61,7 +61,7 @@ Using identity to establish a correspondence between positive even numbers and p
 
 [injection]: https://en.wikipedia.org/wiki/Injective_function
 
-To give another example of an injection, consider the set of all canonical forms of the positive [rational] numbers. That is, the sent of all positive [irreducible fractions]. To review, a positive irreducible ration is a rational number wher ethe numerator and denominator are coprime.[^coprime] `1/1`, `1/3`, and `5/3` are irreducible fractions. `4/2` is not an irreducible fraction, because four and two are both divisible by two, and thus it can be reduced to `2/1`.
+To give another example of an injection, consider the set of all canonical forms of the positive [rational] numbers. That is, the sent of all positive [irreducible fractions]. To review, a positive irreducible ration is a rational number where the numerator and denominator are coprime.[^coprime] `1/1`, `1/3`, and `5/3` are irreducible fractions. `4/2` is not an irreducible fraction, because four and two are both divisible by two, and thus it can be reduced to `2/1`.
 
 [^coprime]: Two numbers are coprime if their greatest common divisor is 1.
 
@@ -380,10 +380,10 @@ Getting a fraction from a path is performed by starting with the root and then a
 Starting with `[1, 1]`:
 
 * The path `[]` returns `[1, 1]` because there's nothing to follow;
-* The path `[0, 0]` becomes `[1, 2]` because when the step is `0`, we turn `[p, q]` into `[p, p+q]`, and `[1, 1+1]` is [1, 2], And again, the second step is `0`, so turning `[p, q]` into `[p, p+q]` means turning `[1, 2]` into `[1, 1+2]`, which is `[1, 3]`
+* The path `[0, 0]` becomes `[1, 2]` because when the step is `0`, we turn `[p, q]` into `[p, p+q]`, and `[1, 1+1]` is `[1, 2]`, And again, the second step is `0`, so turning `[p, q]` into `[p, p+q]` means turning `[1, 2]` into `[1, 1+2]`, which is `[1, 3]`
 * Using the above logic, the path `[1, 0, 1]` is treated as `[p+q, q]`, `[p, p+q]`, `[p+q, q]` and thus `[1, 1]` becomes `[2, 1]`, `[2, 3]`, and finally `[5, 3]`
 
-And some code to do this for us:
+Some code to do this for us:
 
 ```javascript
 const fromPath = (path, root = [1, 1]) => {
@@ -441,7 +441,7 @@ Every positive canonical fraction maps to exactly one positive natural number (v
 
 ## Reversibility
 
-*Coming Soon...*
+*Coming soon, thoughts on reversible functions and concatenative programming...*
 
 ---
 
