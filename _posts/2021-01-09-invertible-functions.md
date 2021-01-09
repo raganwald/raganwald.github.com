@@ -13,25 +13,51 @@ tags: [allonge, noindex, mermaid]
 
 [hh]: https://en.wikipedia.org/wiki/Hilbert%27s_paradox_of_the_Grand_Hotel
 
-When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of [countably infinite][ci] sets by building JavaScript [generators][g]. The principle was that if we can write a generator for all of the elements of an infinite set, and if we can show that every element of the set must be generated within a finite number of calls to the generator, then we have found a way to put the infinite set into a 1-to-1 correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same [cardinality].
+When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of [countably infinite][ci] sets by building JavaScript [generators][g]. The principle was that if we can write a generator for all of the elements of an infinite set, and if we can show that every element of the set must be generated within a finite number of calls to the generator, then we have found a way to put the infinite set into a one-to-one correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same [cardinality].
 
 [hhr]: http://raganwald.com/2015/04/24/hilberts-school.html
 [g]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 [natural]: https://en.wikipedia.org/wiki/Natural_number
 [cardinality]: https://en.wikipedia.org/wiki/Cardinality
 
-Another way to put two sets into a 1-to-1 correspondance with each other is to write functions that map elements of the sets to each other. For example, here are two functions: One maps even numbers to natural numbers, the other maps natural numbers to even numbers:
+## Functions that Map Sets to Sets
+
+Another way to put two sets into a one-to-one correspondance with each other is to write functions that map elements of the sets to each other. For example, here are two functions: One maps even numbers to natural numbers, the other maps natural numbers to even numbers:
 
 ```javascript
 const evenToNatural = even => even / 2;
 const naturalToEven = natural => natural * 2;
 ```
 
-These two functions have an interesting property: They are _inversions_ of each other. In other words, for all `n` where `n ∈ N`:
+These two functions are _inversions_ of each other:
 
 ```javascript
-n === evenToNatural(naturalToEven(n)) && n === naturalToEven(evenToNatural(n))
+evenToNatural(14)
+  //=> 7
+
+naturalToEven(7)
+  //=> 14
 ```
+
+Furthermore, for all `n ∈ N`:
+
+```javascript
+n === evenToNatural(naturalToEven(n)) &&
+n === naturalToEven(evenToNatural(n))
+```
+
+A function A is considered _invertible_ if there also exists a function B such that A and B are inversions of each other. Invertible functions are a handy way to map sets to each other and show they have the same cardinality.
+
+Take the set of even numbers, and the set of natural numbers: The existance of the function `evenToNatural` and the knowledge that it is invertible proves the two sets have the same cardinality. For any even number, there is one and only one natural number, and for every natural number, there is one and only one even number. Our functions tell us which ones they are.
+
+
+---
+
+*leftovers below*
+
+ Invertible functions are another way to put sets into a one-to-one correspondance with each other.
+
+If, for two sets A and B, there exist two functions f and g such that for every `a ∈ A, f(a) = b` and `b ∈ B`. Likewise, for every `b ∈ B, g(b) = a` and `a ∈ A`. If f and g are also inversions of each other,
 
 Today we're going to look at other ways in which two infinite sets can be related, and in doing so, we'll review the properties of [injective] and [bijective] mappings. We'll then use those as a springboard for exploring reversible functions.
 
