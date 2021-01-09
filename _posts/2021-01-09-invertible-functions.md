@@ -1,14 +1,15 @@
 ---
-title: "A Reversible Visit to Hilbert's Grand Hotel"
+title: "Invertible Functions"
 tags: [allonge, noindex, mermaid]
-published: false
 ---
 
-[![Grand Hotel](/assets/bijection/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
+[![Grand Hotel](/assets/invertible/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
 
 ---
 
-[Hilbert's paradox of the Grand Hotel][hh] is a thought experiment which illustrates a counterintuitive property of infinite sets: It demonstrates that a fully occupied hotel with infinitely many rooms may still accommodate additional guests, even infinitely many of them, and this process may be repeated infinitely often.
+## Prelude: The Night Clerk at Hilbert's Hotel
+
+[Hilbert's Paradox of the Grand Hotel][hh] is a thought experiment which illustrates a counterintuitive property of infinite sets: It demonstrates that a fully occupied hotel with infinitely many rooms may still accommodate additional guests, even infinitely many of them, and this process may be repeated infinitely often.
 
 [hh]: https://en.wikipedia.org/wiki/Hilbert%27s_paradox_of_the_Grand_Hotel
 
@@ -19,6 +20,19 @@ When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties o
 [natural]: https://en.wikipedia.org/wiki/Natural_number
 [cardinality]: https://en.wikipedia.org/wiki/Cardinality
 
+Another way to put two sets into a 1-to-1 correspondance with each other is to write functions that map elements of the sets to each other. For example, here are two functions: One maps even numbers to natural numbers, the other maps natural numbers to even numbers:
+
+```javascript
+const evenToNatural = even => even / 2;
+const naturalToEven = natural => natural * 2;
+```
+
+These two functions have an interesting property: They are _inversions_ of each other. In other words, for all `n` where `n ∈ N`:
+
+```javascript
+n === evenToNatural(naturalToEven(n)) && n === naturalToEven(evenToNatural(n))
+```
+
 Today we're going to look at other ways in which two infinite sets can be related, and in doing so, we'll review the properties of [injective] and [bijective] mappings. We'll then use those as a springboard for exploring reversible functions.
 
 [bijective]: https://en.wikipedia.org/wiki/Bijection
@@ -27,7 +41,7 @@ Today we're going to look at other ways in which two infinite sets can be relate
 
 ---
 
-[![Key](/assets/bijection/key.jpg)](https://www.flickr.com/photos/26344495@N05/32743331307)
+[![Key](/assets/invertible/key.jpg)](https://www.flickr.com/photos/26344495@N05/32743331307)
 
 ---
 
@@ -133,7 +147,7 @@ Bijections between infinities are useful, because they establish that both infin
 
 ---
 
-[![Fractional Hugs And Kisses](/assets/bijection/fractional-hugs-and-kisses.jpg)](https://www.flickr.com/photos/clearlyambiguous/60431147)
+[![Fractional Hugs And Kisses](/assets/invertible/fractional-hugs-and-kisses.jpg)](https://www.flickr.com/photos/clearlyambiguous/60431147)
 
 ---
 
@@ -437,7 +451,7 @@ Every positive canonical fraction maps to exactly one positive natural number (v
 
 ---
 
-![Green U Turn](/assets/bijection/green-u-turn.jpg)
+![Green U Turn](/assets/invertible/green-u-turn.jpg)
 
 ---
 
