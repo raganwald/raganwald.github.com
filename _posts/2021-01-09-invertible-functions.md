@@ -7,7 +7,7 @@ tags: [allonge, noindex, mermaid]
 
 ---
 
-## Prelude: The Night Clerk at Hilbert's Hotel
+## Hilbert's Hotel and Invertible Functions
 
 [Hilbert's Paradox of the Grand Hotel][hh] is a thought experiment which illustrates a counterintuitive property of infinite sets: It demonstrates that a fully occupied hotel with infinitely many rooms may still accommodate additional guests, even infinitely many of them, and this process may be repeated infinitely often.
 
@@ -20,7 +20,7 @@ When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties o
 [natural]: https://en.wikipedia.org/wiki/Natural_number
 [cardinality]: https://en.wikipedia.org/wiki/Cardinality
 
-## Functions that Map Sets to Sets
+### mapping sets to sets
 
 Another way to put two sets into a one-to-one correspondance with each other is to write functions that map elements of the sets to each other. For example, here are two functions: One maps even numbers to natural numbers, the other maps natural numbers to even numbers:
 
@@ -50,6 +50,11 @@ A function A is considered _invertible_ if there also exists a function B such t
 
 Take the set of even numbers, and the set of natural numbers: The existance of the function `evenToNatural` and the knowledge that it is invertible proves the two sets have the same cardinality. For any even number, there is one and only one natural number, and for every natural number, there is one and only one even number. Our functions tell us which ones they are.
 
+### mapping natural numbers to irreducible fractions
+
+An [irreducible fraction] is a fraction in which the numerator and denominator are integers that have no other common divisors than 1.
+
+[irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
 
 ---
 
@@ -110,7 +115,7 @@ To give another example of an injection, consider the set of all canonical forms
 Can we establish a one-to-one relationship between positive irreducible fractions and the natural numbers?
 
 [rational]: https://en.wikipedia.org/wiki/Rational_number
-[irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
+
 
 Certainly we can, and to do so we'll use [Gödel Numbering], a trick we used in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN]. Given a finite ordered set of positive natural numbers, we can map them to a single number using [prime factorization].
 
