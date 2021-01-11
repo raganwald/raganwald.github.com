@@ -7,6 +7,83 @@ tags: [allonge, noindex, mermaid]
 
 ---
 
+## Invertible Functions
+
+Consider these two functions:
+
+```javascript
+const evenToNatural = even => even / 2;
+
+const naturalToEven = natural => natural * 2;
+```
+
+`evenToNatural` and `naturalToEven` are _inversions_ of each other:
+
+```javascript
+evenToNatural(14)
+  //=> 7
+
+naturalToEven(7)
+  //=> 14
+```
+
+Which is to say, each function inverts or reverses the computation of the other function. This implies that for all `n ∈ N`:
+
+```javascript
+n === evenToNatural(naturalToEven(n)) &&
+n === naturalToEven(evenToNatural(n))
+```
+
+And, subject to JavaScript's implementation limitations, this expression is `true`.[^disclaimer]
+
+[^disclaimer]: We're making a number of assumptions here that are fairly obvious. For example, we are assuming that the input to `evenToNatural` and `naturalToEven` is a number, and that the number is not one for which the underlying implementation will do something unusual. This is why actual math and actual computer science is hard: Making the jump from demnonstrating that something is true to **proving** that it is true means embracing rigour and detail, not just focusing on the pleasant "aha!" moments.
+
+A function `f` is considered _invertible_ if there also exists a function `g` such that `f` and `g` are inversions of each other. `evenToNatural` is an invertible function, because `naturalToEven` is its inversion, and vice-versa.
+
+The following functions are also invertible, even though we do not give their inversions:
+
+```javascript
+const increment = n => n + 1;
+
+const cons = ([head, tail]) => [head, ...tail];
+```
+
+The `cons` function given implies that where compound types like lists or maps are concerned, we base our reasoning on structural equality, not referential equality.[^equality]
+
+[^equality]: Structural (or "semantic") equality is when two compound objects behave identically. Referential (or "physical") equality is when two references refer to the same entity in the language's implementation. JavaScript uses referential equality by default, but this is not what we want for the purposes of exploring invertible functions.
+
+Some functions are their own inversion. This still makes them invertible functions. `I`—also known as the "identity" or "idiot bird" function—is its own inversion. Other functions that are their own inversions include:
+
+```javascript
+const oddsAndEvens = n => n % 2 === 0 ? n + 1 : n - 1;
+
+const positiveNegative = n => -n;
+```
+
+### functions that aren't invertible
+
+Lots of functions aren't invertible. For a function to be invertible, it must map exactly one elements of its input to exactly one element of its output. Thus, any function for which two or more different inputs produce the same output cannot be invertible:
+
+```javascript
+const square = n => n * n;
+
+const roundTen = Math.floor(n / 10) * 10;
+
+const collatz = n => n % 2 === 0 ? n / 2 : 3 * x + 1;
+```
+
+`square` is not invertible because every positive output has two possible inputs, one positive and one negative. Presuming that we are sticking with natural numbers, `roundTen` has ten possible inputs for each output. And `collatz` has multiple possible inputs as well: For example, if the output is `10`, the input could be `3` or `20`.[^collatz]
+
+[^collatz]: We touched on [The Collatz Conjecture] in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language](http://raganwald.com/2020/05/03/fractran.html).
+
+[The Collatz Conjecture]: https://en.wikipedia.org/wiki/Collatz_conjecture
+
+When there are multiple inputs for the same output, what would an inversion of the function return for that output? For example, if we assume the function `ztalloc` inverts `collatz`, what does `ztalloc(10)` return? Three? Or Twenty?
+
+---
+
+*leftovers below*
+
 ## Hilbert's Hotel and Invertible Functions
 
 [Hilbert's Paradox of the Grand Hotel][hh] is a thought experiment which illustrates a counterintuitive property of infinite sets: It demonstrates that a fully occupied hotel with infinitely many rooms may still accommodate additional guests, even infinitely many of them, and this process may be repeated infinitely often.
@@ -24,41 +101,16 @@ When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties o
 
 Another way to put two sets into a one-to-one correspondance with each other is to write functions that map elements of the sets to each other. For example, here are two functions: One maps even numbers to natural numbers, the other maps natural numbers to even numbers:
 
-```javascript
-const evenToNatural = even => even / 2;
-const naturalToEven = natural => natural * 2;
-```
+### invertible functions
 
-These two functions are _inversions_ of each other:
+Amongst other things, invertible functions are a handy way to map sets to each other and show that they have the same cardinality. Take the set of even numbers, and the set of natural numbers: The existance of the function `evenToNatural` and the knowledge that it is invertible proves the two sets have the same cardinality. For any even number, there is one and only one natural number, and for every natural number, there is one and only one even number. Our functions tell us which ones they are.
 
-```javascript
-evenToNatural(14)
-  //=> 7
-
-naturalToEven(7)
-  //=> 14
-```
-
-Furthermore, for all `n ∈ N`:
-
-```javascript
-n === evenToNatural(naturalToEven(n)) &&
-n === naturalToEven(evenToNatural(n))
-```
-
-A function A is considered _invertible_ if there also exists a function B such that A and B are inversions of each other. Invertible functions are a handy way to map sets to each other and show they have the same cardinality.
-
-Take the set of even numbers, and the set of natural numbers: The existance of the function `evenToNatural` and the knowledge that it is invertible proves the two sets have the same cardinality. For any even number, there is one and only one natural number, and for every natural number, there is one and only one even number. Our functions tell us which ones they are.
-
+In
 ### mapping natural numbers to irreducible fractions
 
 An [irreducible fraction] is a fraction in which the numerator and denominator are integers that have no other common divisors than 1.
 
 [irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
-
----
-
-*leftovers below*
 
  Invertible functions are another way to put sets into a one-to-one correspondance with each other.
 
