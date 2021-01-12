@@ -36,7 +36,7 @@ n === naturalToEven(evenToNatural(n))
 
 And, subject to JavaScript's implementation limitations, this expression is `true`.[^disclaimer]
 
-[^disclaimer]: We're making a number of assumptions here that are fairly obvious. For example, we are assuming that the input to `evenToNatural` and `naturalToEven` is a number, and that the number is not one for which the underlying implementation will do something unusual. This is why actual math and actual computer science is hard: Making the jump from demnonstrating that something is true to **proving** that it is true means embracing rigour and detail, not just focusing on the pleasant "aha!" moments.
+[^disclaimer]: We're making a number of assumptions here that are fairly obvious. For example, we are assuming that the input to `evenToNatural` and `naturalToEven` is a number, and that the number is not one for which the underlying implementation will do something unusual. This is why actual math and actual computer science is hard: Making the jump from demonstrating that something is true to **proving** that it is true means embracing rigour and detail, not just focusing on the pleasant "aha!" moments.
 
 A function `f` is considered _invertible_ if there also exists a function `g` such that `f` and `g` are inversions of each other. `evenToNatural` is an invertible function, because `naturalToEven` is its inversion, and vice-versa.
 
@@ -62,7 +62,7 @@ const positiveNegative = n => -n;
 
 ### functions that aren't invertible
 
-Lots of functions aren't invertible. For a function to be invertible, it must map exactly one elements of its input to exactly one element of its output. Thus, any function for which two or more different inputs produce the same output cannot be invertible:
+For a function to be invertible, it must map exactly one elements of its input to exactly one element of its output. Thus, any function for which two or more different inputs produce the same output cannot be invertible:
 
 ```javascript
 const square = n => n * n;
@@ -80,19 +80,19 @@ const collatz = n => n % 2 === 0 ? n / 2 : 3 * x + 1;
 
 When there are multiple inputs for the same output, what would an inversion of the function return for that output? For example, if we assume the function `ztalloc` inverts `collatz`, what does `ztalloc(10)` return? Three? Or Twenty?
 
-That isn't possible, which is why a function that is invertible must have exactly one unique input for each unique output.
+Returning two different values where one is expected isn't possible, which is why a function that is invertible must have exactly one unique input for each unique output.
 
 ### Invertible functions and compound values
 
-Invertible functions can really only have one input and one output. Therefore, this function is not invertible:
+Invertible functions can't have two outputs. They also can't have two inputs. Therefore, this function is not invertible as written:
 
 ```javascript
 const cons = (head, tail) => [head, ...tail];
 ```
 
-Instead, we must find a way to represent multiple values as a single compound value.
+Instead, we must find a way to represent multiple inputs as a single compound value.
 
-For example, we can reqrite our function to take a single tuple as input, and realy on the semantics of structural equality, as we mentioned above:[^equality]
+For example, we can rewrite our function to take a single tuple as input, and rely on the semantics of structural equality, as we mentioned above:[^equality]
 
 ```javascript
 const cons = ([head, tail]) => [head, ...tail];
@@ -104,7 +104,7 @@ Now our function can be inverted:
 const carcdr = ([head, ...tail]) => [head, tail];
 ```
 
-In general, all functions mapping multiple inputs to one output can be rewritten as taking a list or other compund value as an input and returning a single value.
+In general, all functions mapping multiple inputs to one output can be rewritten as taking a list or other compound value as an input and returning a single value.
 
 ---
 
@@ -114,9 +114,7 @@ The most basic rule of composition for invertible functions is this. If `f` and 
 
 `(f ֯  g)⁻¹ = (g⁻¹ ֯  f⁻¹)`
 
-In other words, if we compose two invertible functions, the inversion of that composition can be computed by taking the composition of the inversions of each function, in reverse order.
-
-Let's put that in JavaScript:
+If we compose two invertible functions, the inversion of that composition can be computed by taking the composition of the inversions of each function, in reverse order:
 
 ```javascript
 const plusOne = n => n + 1;
@@ -197,9 +195,9 @@ fromBinary(23)
   //=> [1, 0, 1, 1, 1]
 ```
 
-We can tell from careful inspection that for non-negative naturals within implementation bounds, `toBinary` and `fromBinary` are inversions of eacxh other. But even with such a simple function, it requries careful examination to determine that they are inversions of each other.
+We can tell from careful inspection that for non-negative naturals within implementation bounds, `toBinary` and `fromBinary` are inversions of each other. But even with such a simple function, it requires examination to determine that they are inversions of each other.
 
-This is especially true because the two functions are written in different styles, one uses a `do... while` loop, the ther `.forEach` loop, and the ways in which they do basic arithmetic aren't obviously symmetrical the way   `n => n + 1` and `n => n - 1` are.
+This is especially true because the two functions are written in different styles, one uses a `do... while` loop, the other a `for... of` loop, and the ways in which they do basic arithmetic aren't obviously symmetrical the way `n => n + 1` and `n => n - 1` are.
 
 Let's approach this problem from the perspective of making it easier to generate two functions that are inversions of each other. We'll use function composition to help.
 
@@ -213,7 +211,7 @@ const divideByTwoWithRemainder = n => [Math.floor(n / 2), n % 2];
 const multiplyByTwoWithRemainder = ([n, r]) => n * 2 + r;
 ```
 
-Satisfy yourself that these two functions are inversions of each other, then let's move on and refactor our functions to use them:
+We can satisfy ourselves that these two functions are inversions of each other, then write:
 
 ```javascript
 const toBinary = n => {
@@ -240,7 +238,7 @@ function fromBinary(b) {
 };
 ```
 
-Now we have a small pair of invertible functions, each of which is wrapped in some ceremony to apply them. We'll rafactor the ceremony next.
+Now we have a small pair of invertible functions, each of which is wrapped in some ceremony to apply them. We'll refactor the ceremony next.
 
 ### refactoring to folds and unfolds
 
@@ -250,7 +248,7 @@ Now we have a small pair of invertible functions, each of which is wrapped in so
 
 Here is a higher-order `fold` that takes a `base` (sometimes called a "seed") value, plus a combining function. It is specific to lists. To make it useful for our purposes, instead of the combining function taking two arguments, this fold expects its combining function to take a one argument, a list with two elements.
 
-It is implemented as a loop, because loops are trivially equivalent to linear recursion. It is also implementd as a higher-order function that returns a function. we'll see why in a moment:
+It is implemented as a loop, because loops are trivially equivalent to linear recursion. It is also implemented as a higher-order function that returns a function. we'll see why in a moment:
 
 ```javascript
 const foldList = ([base, combiner]) =>
@@ -317,7 +315,7 @@ const toBinary = unfoldToList([0, divideByTwoWithRemainder]);
 
 Using `foldList`, `unfoldToList`, `multiplyByTwoWithRemainder`, and `divideByTwoWithRemainder` to derive the invertible functions `fromBinary` and `toBinary` feels like a lot of work if that's all we want to do.
 
-However, let's think about what `foldList` and `unfoldToList` really do: They repeatedly apply an invertible function to a value. This is analagous to composing an invertible function with itself. From this we infer that if we use an invertible combiner with `foldList`, we get an invertible fold. And if we use an invertible uncombiner with `unfoldToList`, we get an invertible unfold.
+However, let's think about what `foldList` and `unfoldToList` really do: They repeatedly apply an invertible function to a value. This is analogous to composing an invertible function with itself. From this we infer that if we use an invertible combiner with `foldList`, we get an invertible fold. And if we use an invertible uncombiner with `unfoldToList`, we get an invertible unfold.
 
 Now we have something: `foldList` and `unfoldToList` are higher-order invertible functions. This helps us reason, because once we've satisfied ourselves that `foldList` and `unfoldToList` are higher-order invertible functions, we can use them to compose functions, and all we have to satisfy ourselves with is the invertibility of our arguments.
 
@@ -330,10 +328,12 @@ const foldUnfoldList = ([base, combiner, uncombiner]) => [
   foldList([base, combiner]), unfoldToList([base, uncombiner])
 ];
 
-const [fromBinary, toBinary] = foldUnfoldList([0, multiplyByTwoWithRemainder, divideByTwoWithRemainder]);
+const [fromBinary, toBinary] = foldUnfoldList([
+  0, multiplyByTwoWithRemainder, divideByTwoWithRemainder
+]);
 ```
 
-By writing higher-order functions for compising invertible functions that preserve "invertibility," we make it easier to reason about what our code does.
+By writing higher-order functions for composing invertible functions that preserve "invertibility," we make it easier to reason about what our code does.
 
 And so it goes for all composition, really: Composing functions with well-understood patterns like folding and unfolding makes it easier for us to reason about what our code does.
 
@@ -360,7 +360,7 @@ Another way to put two sets into a one-to-one correspondance with each other is 
 
 ### invertible functions
 
-Amongst other things, invertible functions are a handy way to map sets to each other and show that they have the same cardinality. Take the set of even numbers, and the set of natural numbers: The existance of the function `evenToNatural` and the knowledge that it is invertible proves the two sets have the same cardinality. For any even number, there is one and only one natural number, and for every natural number, there is one and only one even number. Our functions tell us which ones they are.
+Amongst other things, invertible functions are a handy way to map sets to each other and show that they have the same cardinality. Take the set of even numbers, and the set of natural numbers: The existence of the function `evenToNatural` and the knowledge that it is invertible proves the two sets have the same cardinality. For any even number, there is one and only one natural number, and for every natural number, there is one and only one even number. Our functions tell us which ones they are.
 
 In
 ### mapping natural numbers to irreducible fractions
