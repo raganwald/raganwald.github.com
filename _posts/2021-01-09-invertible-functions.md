@@ -80,6 +80,263 @@ const collatz = n => n % 2 === 0 ? n / 2 : 3 * x + 1;
 
 When there are multiple inputs for the same output, what would an inversion of the function return for that output? For example, if we assume the function `ztalloc` inverts `collatz`, what does `ztalloc(10)` return? Three? Or Twenty?
 
+That isn't possible, which is why a function that is invertible must have exactly one unique input for each unique output.
+
+### Invertible functions and compound values
+
+Invertible functions can really only have one input and one output. Therefore, this function is not invertible:
+
+```javascript
+const cons = (head, tail) => [head, ...tail];
+```
+
+Instead, we must find a way to represent multiple values as a single compound value.
+
+For example, we can reqrite our function to take a single tuple as input, and realy on the semantics of structural equality, as we mentioned above:[^equality]
+
+```javascript
+const cons = ([head, tail]) => [head, ...tail];
+```
+
+Now our function can be inverted:
+
+```javascript
+const carcdr = ([head, ...tail]) => [head, tail];
+```
+
+In general, all functions mapping multiple inputs to one output can be rewritten as taking a list or other compund value as an input and returning a single value.
+
+---
+
+## Composing Invertible Functions
+
+The most basic rule of composition for invertible functions is this. If `f` and `g` are invertible functions, `⁻¹` as a suffix denotes "the inversion of" a function, then:
+
+`(f ֯  g)⁻¹ = (g⁻¹ ֯  f⁻¹)`
+
+In other words, if we compose two invertible functions, the inversion of that composition can be computed by taking the composition of the inversions of each function, in reverse order.
+
+Let's put that in JavaScript:
+
+```javascript
+const plusOne = n => n + 1;
+const minusOne = n => n - 1;
+
+const timesTwo = n => n * 2;
+const dividedByTwo = n => n / 2;
+
+const compose = (f, g) => n => f(g(n));
+
+const plusOneTimesTwo = compose(plusOne, timesTwo);
+const dividedByTwoMinusOne = compose(dividedByTwo, minusOne);
+
+plusOneTimesTwo(42)
+  //=> 85
+
+dividedByTwoMinusOne(85)
+  //=> 42
+```
+
+Having a well-defined pattern for composing invertible functions is the basis for reasoning about invertible functions. Let's take an example, converting between primitive numbers and their binary representation.
+
+### converting between numbers and their binary representation
+
+Here's a function that converts a non-negative natural number into a list form of its binary representation, without relying on JavaScript's capabilities for parsing and representing numbers in various bases:
+
+```javascript
+const toBinary = n => {
+  const b = [];
+
+  do {
+    const bit = n % 2;
+    n = Math.floor(n / 2);
+
+    b.unshift(bit);
+  } while (n > 0);
+
+  return b;
+};
+
+toBinary(0)
+  //=> [0]
+
+toBinary(1)
+  //=> [1]
+
+toBinary(6)
+  //=> [1, 1, 0]
+
+toBinary(23)
+  //=> [1, 0, 1, 1, 1]
+```
+
+And here's its inversion, a function that converts the list form of a non-negative natural number's binary representation into the number:
+
+```javascript
+function fromBinary(b) {
+  let n = 0;
+
+  for (const bit of b) {
+    n *= 2;
+    n += bit;
+  }
+
+  return n;
+};
+
+fromBinary([0])
+  //=> 0
+
+fromBinary([1])
+  //=> [1]
+
+fromBinary(6)
+  //=> [1, 1, 0]
+
+fromBinary(23)
+  //=> [1, 0, 1, 1, 1]
+```
+
+We can tell from careful inspection that for non-negative naturals within implementation bounds, `toBinary` and `fromBinary` are inversions of eacxh other. But even with such a simple function, it requries careful examination to determine that they are inversions of each other.
+
+This is especially true because the two functions are written in different styles, one uses a `do... while` loop, the ther `.forEach` loop, and the ways in which they do basic arithmetic aren't obviously symmetrical the way   `n => n + 1` and `n => n - 1` are.
+
+Let's approach this problem from the perspective of making it easier to generate two functions that are inversions of each other. We'll use function composition to help.
+
+### refactoring to use invertible functions
+
+We're going to refactor these two invertible functions, beginning by extracting an invertible function at the core of each function's loop:
+
+```javascript
+const divideByTwoWithRemainder = n => [Math.floor(n / 2), n % 2];
+
+const multiplyByTwoWithRemainder = ([n, r]) => n * 2 + r;
+```
+
+Satisfy yourself that these two functions are inversions of each other, then let's move on and refactor our functions to use them:
+
+```javascript
+const toBinary = n => {
+  const b = [];
+  let bit;
+
+  do {
+    [n, bit] = divideByTwoWithRemainder(n);
+
+    b.unshift(bit);
+  } while (n > 0);
+
+  return b;
+};
+
+function fromBinary(b) {
+  let n = 0;
+
+  for (const bit of b) {
+    n = multiplyByTwoWithRemainder([n, bit]);
+  }
+
+  return n;
+};
+```
+
+Now we have a small pair of invertible functions, each of which is wrapped in some ceremony to apply them. We'll rafactor the ceremony next.
+
+### refactoring to folds and unfolds
+
+> In functional programming, `fold` (also termed `reduce`, `accumulate`, `aggregate`, `compress`, or `inject`) refers to a family of higher-order functions that analyze a recursive data structure and through use of a given combining operation, recombine the results of recursively processing its constituent parts, building up a return value.
+>
+> Fold is in a sense dual to `unfold`, which takes a seed value and apply a function corecursively to decide how to progressively construct a corecursive data structure.--[Wikipedia](https://en.wikipedia.org/wiki/Fold_%28higher-order_function%29)
+
+Here is a higher-order `fold` that takes a `base` (sometimes called a "seed") value, plus a combining function. It is specific to lists. To make it useful for our purposes, instead of the combining function taking two arguments, this fold expects its combining function to take a one argument, a list with two elements.
+
+It is implemented as a loop, because loops are trivially equivalent to linear recursion. It is also implementd as a higher-order function that returns a function. we'll see why in a moment:
+
+```javascript
+const foldList = ([base, combiner]) =>
+  list => {
+    let folded = base;
+
+    for (const element of list) {
+      folded = combiner([folded, element]);
+    }
+
+    return folded;
+  };
+```
+
+We can use it with our `multiplyByTwoWithRemainder` function to generate `fromBinary`:
+
+```javascript
+const fromBinary = foldList([0, multiplyByTwoWithRemainder]);
+```
+
+And here's `unfoldToList`. Our unfold is also written as a loop. We will use a simple equality test that works for primitive values and strings, but not objects and especially not maps of any kind.[^prodequal] We also  note that this flavour of unfold is written as an eager right unfold, which is to say, it assembles its list in the reverse order of our fold. That's different from how unfolds are usually written, but then again, most people aren't trying to invert a fold.
+
+We'll use our unfold to derive `toBinary`:
+
+[^prodequal]: For production use, deep equality must be carefully crafted to match the semantics of the entities we wish to compare.
+
+```javascript
+const deepEqual = (a, b) => {
+  if (a instanceof Array && b instanceof Array) {
+    if (a.length !== b.length) {
+      return false;
+    } else {
+      for (let i = 0; i < a.length; ++i) {
+        if (!deepEqual(a[i], b[i])) {
+          return false;
+        }
+      }
+      return true;
+    }
+  } else if (a instanceof Array || b instanceof Array) {
+    return false;
+  } else {
+    return a === b;
+  }
+};
+
+const unfoldToList = ([base, uncombiner]) =>
+  folded => {
+    let list = [];
+    let element;
+
+    while (!deepEqual(folded, base)) {
+      [folded, element] = uncombiner(folded);
+      list.unshift(element);
+    }
+
+    return list;
+  };
+
+const toBinary = unfoldToList([0, divideByTwoWithRemainder]);
+```
+
+### why refactoring to fold and unfold matters
+
+Using `foldList`, `unfoldToList`, `multiplyByTwoWithRemainder`, and `divideByTwoWithRemainder` to derive the invertible functions `fromBinary` and `toBinary` feels like a lot of work if that's all we want to do.
+
+However, let's think about what `foldList` and `unfoldToList` really do: They repeatedly apply an invertible function to a value. This is analagous to composing an invertible function with itself. From this we infer that if we use an invertible combiner with `foldList`, we get an invertible fold. And if we use an invertible uncombiner with `unfoldToList`, we get an invertible unfold.
+
+Now we have something: `foldList` and `unfoldToList` are higher-order invertible functions. This helps us reason, because once we've satisfied ourselves that `foldList` and `unfoldToList` are higher-order invertible functions, we can use them to compose functions, and all we have to satisfy ourselves with is the invertibility of our arguments.
+
+And it's much easier to satisfy ourselves that one-liners like `n => [Math.floor(n / 2), n % 2]` and `([n, r]) => n * 2 + r` are invertible than functions with arbitrary loops and conditions.
+
+Thus, we see the utility of the following function that makes higher-order invertible folds and unfolds:
+
+```javascript
+const foldUnfoldList = ([base, combiner, uncombiner]) => [
+  foldList([base, combiner]), unfoldToList([base, uncombiner])
+];
+
+const [fromBinary, toBinary] = foldUnfoldList([0, multiplyByTwoWithRemainder, divideByTwoWithRemainder]);
+```
+
+By writing higher-order functions for compising invertible functions that preserve "invertibility," we make it easier to reason about what our code does.
+
+And so it goes for all composition, really: Composing functions with well-understood patterns like folding and unfolding makes it easier for us to reason about what our code does.
+
 ---
 
 *leftovers below*
