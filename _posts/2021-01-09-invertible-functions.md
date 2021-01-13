@@ -9,6 +9,8 @@ tags: [allonge, noindex, mermaid]
 
 ## Invertible Functions
 
+---
+
 Consider these two functions:
 
 ```javascript
@@ -86,7 +88,7 @@ When there are multiple inputs for the same output, what would an inversion of t
 
 Returning two different values where one is expected isn't possible, which is why a function that is invertible must have exactly one unique input for each unique output.
 
-### Invertible functions and compound values
+### invertible functions and compound values
 
 Invertible functions can't have two outputs. They also can't have two inputs. Therefore, this function is not invertible as written:
 
@@ -112,7 +114,13 @@ In general, all functions mapping multiple inputs to one output can be rewritten
 
 ---
 
+[![Fractional Hugs And Kisses](/assets/invertible/fractional-hugs-and-kisses.jpg)](https://www.flickr.com/photos/clearlyambiguous/60431147)
+
+---
+
 ## Composing Invertible Functions
+
+---
 
 If `f` and `g` are invertible functions, and `⁻¹` as a suffix denotes "the inversion of" a function, then `(f ֯  g)⁻¹ = (g⁻¹ ֯  f⁻¹)`.
 
@@ -343,13 +351,32 @@ And so it goes for all composition, really: Composing functions with well-unders
 
 ---
 
-*leftovers below*
+[![Key](/assets/invertible/key.jpg)](https://www.flickr.com/photos/26344495@N05/32743331307)
 
-## Hilbert's Hotel and Invertible Functions
+---
+
+## The Night Clerk at Hilbert's Hotel
+
+---
 
 [Hilbert's Paradox of the Grand Hotel][hh] is a thought experiment which illustrates a counterintuitive property of infinite sets: It demonstrates that a fully occupied hotel with infinitely many rooms may still accommodate additional guests, even infinitely many of them, and this process may be repeated infinitely often.
 
 [hh]: https://en.wikipedia.org/wiki/Hilbert%27s_paradox_of_the_Grand_Hotel
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of [countably infinite][ci] sets by building JavaScript [generators][g]. The principle was that if we can write a generator for all of the elements of an infinite set, and if we can show that every element of the set must be generated within a finite number of calls to the generator, then we have found a way to put the infinite set into a one-to-one correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same [cardinality].
 
@@ -383,15 +410,7 @@ Today we're going to look at other ways in which two infinite sets can be relate
 [injective]: https://en.wikipedia.org/wiki/Injective_function
 [surjective]: https://en.wikipedia.org/wiki/Surjective_function
 
----
 
-[![Key](/assets/invertible/key.jpg)](https://www.flickr.com/photos/26344495@N05/32743331307)
-
----
-
-## The Night Clerk at Hilbert's Hotel
-
----
 
 In Hilbert's Grand Hotel, there are a [countably infinite][ci] number of rooms, and they have been numbered 1, 2, 3, and so on. Every evening, an infinite number of guests arrive, stay for one night, and then leave the next day. That evening, another infinite number of guests arrive, and the process begins anew.
 
@@ -490,8 +509,6 @@ There's a also a name for the mapping from positive even numbers to positive nat
 Bijections between infinities are useful, because they establish that both infinities have the same cardinality. Using identity to map even numbers to positive natural numbers established that they are countable. Using division to establish a bijection with the positive natural numbers established that they are [countably infinite][ci]. Which is to say, there are exactly as many positive even natural numbers as there are positive natural numbers.
 
 ---
-
-[![Fractional Hugs And Kisses](/assets/invertible/fractional-hugs-and-kisses.jpg)](https://www.flickr.com/photos/clearlyambiguous/60431147)
 
 ---
 
