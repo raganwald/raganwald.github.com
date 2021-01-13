@@ -52,7 +52,11 @@ The `cons` function given implies that where compound types like lists or maps a
 
 [^equality]: Structural (or "semantic") equality is when two compound objects behave identically. Referential (or "physical") equality is when two references refer to the same entity in the language's implementation. JavaScript uses referential equality by default, but this is not what we want for the purposes of exploring invertible functions.
 
-Some functions are their own inversion. This still makes them invertible functions. `I`—also known as the "identity" or "idiot bird" function—is its own inversion. Other functions that are their own inversions include:
+Some functions are their own inversion. This still makes them invertible functions. `I`—also known as the "identity" or "idiot bird" function—is its own inversion.[^I]
+
+[^I]: `const I = x => x;`
+
+Other functions that are their own inversions include:
 
 ```javascript
 const oddsAndEvens = n => n % 2 === 0 ? n + 1 : n - 1;
