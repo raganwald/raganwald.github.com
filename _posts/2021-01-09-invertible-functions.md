@@ -236,7 +236,7 @@ function fromBinary(b) {
 };
 ```
 
-Now we have a small pair of invertible functions, each of which is wrapped in some ceremony to apply them. We'll refactor the ceremony next.
+Now we have a small pair of invertible functions, each of which is wrapped in loops to apply them. We'll refactor the loops next.
 
 ### refactoring to folds and unfolds
 
@@ -244,9 +244,9 @@ Now we have a small pair of invertible functions, each of which is wrapped in so
 >
 > Fold is in a sense dual to `unfold`, which takes a seed value and apply a function corecursively to decide how to progressively construct a corecursive data structure.--[Wikipedia](https://en.wikipedia.org/wiki/Fold_%28higher-order_function%29)
 
-Here is a higher-order `fold` that takes a `base` (sometimes called a "seed") value, plus a combining function. It is specific to lists. To make it useful for our purposes, instead of the combining function taking two arguments, this fold expects its combining function to take a one argument, a list with two elements.
+Here is a higher-order `fold` that takes a `base` (sometimes called a `seed`) value, plus a `combiner` function. It is specific to lists. To make it useful for our purposes, instead of the combining function taking two arguments, this fold expects its combiner function to take a one argument, a list with two elements.
 
-It is implemented as a loop, because loops are trivially equivalent to linear recursion. It is also implemented as a higher-order function that returns a function. we'll see why in a moment:
+It is implemented as a loop, because loops are trivially equivalent to linear recursion. It is also implemented as a higher-order function that returns a function.
 
 ```javascript
 const foldList = ([base, combiner]) =>
@@ -261,17 +261,19 @@ const foldList = ([base, combiner]) =>
   };
 ```
 
-We can use it with our `multiplyByTwoWithRemainder` function to generate `fromBinary`:
+We use it with our `multiplyByTwoWithRemainder` function to generate `fromBinary`:
 
 ```javascript
 const fromBinary = foldList([0, multiplyByTwoWithRemainder]);
 ```
 
-And here's `unfoldToList`. Our unfold is also written as a loop. We will use a simple equality test that works for primitive values and strings, but not objects and especially not maps of any kind.[^prodequal] We also  note that this flavour of unfold is written as an eager right unfold, which is to say, it assembles its list in the reverse order of our fold. That's different from how unfolds are usually written, but then again, most people aren't trying to invert a fold.
-
-We'll use our unfold to derive `toBinary`:
+And here's `unfoldToList`. Our unfold is also written as a loop. We will use a simple equality test that works for primitive values and strings, but not objects and especially not maps of any kind.[^prodequal]
 
 [^prodequal]: For production use, deep equality must be carefully crafted to match the semantics of the entities we wish to compare.
+
+This unfold is written as an "eager right unfold," which is to say, it assembles its list in the reverse order of our fold. That's different from how unfolds are usually written, but then again, most people aren't trying to invert a fold.
+
+We'll use our unfold to derive `toBinary`:
 
 ```javascript
 const deepEqual = (a, b) => {
