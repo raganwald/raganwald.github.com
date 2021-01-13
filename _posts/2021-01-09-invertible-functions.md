@@ -110,11 +110,9 @@ In general, all functions mapping multiple inputs to one output can be rewritten
 
 ## Composing Invertible Functions
 
-The most basic rule of composition for invertible functions is this. If `f` and `g` are invertible functions, `⁻¹` as a suffix denotes "the inversion of" a function, then:
+If `f` and `g` are invertible functions, and `⁻¹` as a suffix denotes "the inversion of" a function, then `(f ֯  g)⁻¹ = (g⁻¹ ֯  f⁻¹)`.
 
-`(f ֯  g)⁻¹ = (g⁻¹ ֯  f⁻¹)`
-
-If we compose two invertible functions, the inversion of that composition can be computed by taking the composition of the inversions of each function, in reverse order:
+Thius, if we compose two invertible functions, the inversion of that composition can be computed by taking the composition of the inversions of each function, in reverse order:
 
 ```javascript
 const plusOne = n => n + 1;
