@@ -359,23 +359,86 @@ And so it goes for all composition, really: Composing functions with well-unders
 
 ---
 
-[Hilbert's Paradox of the Grand Hotel][hh] is a thought experiment which illustrates a counterintuitive property of infinite sets: It demonstrates that a fully occupied hotel with infinitely many rooms may still accommodate additional guests, even infinitely many of them, and this process may be repeated infinitely often.
+[Hilbert's Paradox of the Grand Hotel][hh] is a thought experiment which illustrates a counterintuitive property of countably infinite sets: It demonstrates that although it may seem "obvious" that some infinite sets are larger than others, many of them are in fact equal in cardinality to the set of natural numbers.
 
 [hh]: https://en.wikipedia.org/wiki/Hilbert%27s_paradox_of_the_Grand_Hotel
 
+The proposition is that the Grand Hotel has a countably infinite number of rooms, each of which is denoted by a natural number. The hotel's night clerk has the problem of coming up with an algorithm for assigning an infinite number of guests to the countably infinite number of rooms.
+
+### gödel and irreducible fractions
+
+A positive [irreducible fraction][irreducible fractions] is a [rational] number where the numerator and denominator are coprime.[^coprime] `1/1`, `1/3`, and `5/3` are irreducible fractions. `4/2` is not an irreducible fraction, because four and two are both divisible by two, and thus it can be reduced to `2/1`.
+
+[rational]: https://en.wikipedia.org/wiki/Rational_number
+[irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
+[^coprime]: Two numbers are coprime if their greatest common divisor is 1.
+
+One night at the Grand Hotel, an infinite number of guests show up, each of which is associated with a unique irreducible fraction. The night clerk has to assign the guests to rooms, and comes up with an idea: Write an invertible function that maps positive irreducible numbers to positive natural numbers.
+
+That way, each guest can use the function mappping positive irreducible fractions to natural numbers to find their room. And given an occupied room, we can use the function mapping positive natural numbers to positive irreducible fractions to find the guest.
+
+In JavaScript terms, we need a function that maps lists of two coprime numbers to numbers, and another that maps numbers to lists of two coprime numbers. Th enight clerk's first version uses [prime factorization]:
+
+[FRACTRAN]: http://raganwald.com/2020/05/03/fractran.html
+[Gödel Numbering]: https://en.wikipedia.org/wiki/Gödel_numbering
+[prime factorization]: https://en.wikipedia.org/wiki/Integer_factorization
+
+```javascript
+const guestToRoom = ([n, d]) => 2**n * 3**d
+
+An [irreducible fraction] is a fraction in which the numerator and denominator are integers that have no common divisors other than one. `2 / 3` and `23 / 5` are irreducible fractions. `8 / 6` is not an irreducible fraction.  There's a guest for `1 / 1`, `1 / 2`, `2 / 1`, and so on.
+
+[irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
 
 
+The night clerk's first attempt is based on [prime factorization], a trick they read about in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN]:
 
+[FRACTRAN]: http://raganwald.com/2020/05/03/fractran.html
+[prime factorization]: https://en.wikipedia.org/wiki/Integer_factorization
 
+```javascript
+const guestToRoom = ([n, d]) => 2**n * 3**d;
 
+const roomToGuest = n => [2, 3].reduce(
+  (acc, prime) => {
+    let exponent = 0;
 
+    while (n >= prime && n % prime === 0) {
+      ++exponent;
+      n /= prime;
+    }
 
+    return acc.concat([exponent]);
+  },
+  []
+);
 
+guestToRoom([1, 1])
+  //=> 6
 
+guestToRoom([1, 2])
+  //=> 18
 
+guestToRoom([3, 2])
+  //=> 72
 
+guestToRoom([1, 3])
+  //=> 54
 
+guestToRoom([2, 1])
+  //=> 12
 
+guestToRoom([3, 1])
+  //=> 24
+guestToRoom([2, 3])
+  //=> 108
+```
+
+This works fine, but it assigns guests to a subset of the rooms of the Grand Hotel. It's undesireable to have empty rooms at any hotel, even one with an infinite number of rooms. And from a maths perspective, this doesn't demonstrate that there are an equal number of positive irreducible fractions as there are positive natural numbers, because itthere are an infinite number of positive natural numbers that are not associated with a positive irreducible fraction, e.g. the numbers one through five, and anything divisible by a prime larger than three.
+
+---
+
+# JUNK BELOW
 
 
 When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of [countably infinite][ci] sets by building JavaScript [generators][g]. The principle was that if we can write a generator for all of the elements of an infinite set, and if we can show that every element of the set must be generated within a finite number of calls to the generator, then we have found a way to put the infinite set into a one-to-one correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same [cardinality].
@@ -442,11 +505,11 @@ Using identity to establish a correspondence between positive even numbers and p
 
 To give another example of an injection, consider the set of all canonical forms of the positive [rational] numbers. That is, the sent of all positive [irreducible fractions]. To review, a positive irreducible ration is a rational number where the numerator and denominator are coprime.[^coprime] `1/1`, `1/3`, and `5/3` are irreducible fractions. `4/2` is not an irreducible fraction, because four and two are both divisible by two, and thus it can be reduced to `2/1`.
 
+[rational]: https://en.wikipedia.org/wiki/Rational_number
 [^coprime]: Two numbers are coprime if their greatest common divisor is 1.
 
 Can we establish a one-to-one relationship between positive irreducible fractions and the natural numbers?
 
-[rational]: https://en.wikipedia.org/wiki/Rational_number
 
 
 Certainly we can, and to do so we'll use [Gödel Numbering], a trick we used in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN]. Given a finite ordered set of positive natural numbers, we can map them to a single number using [prime factorization].
