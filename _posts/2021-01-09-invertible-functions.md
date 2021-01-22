@@ -3,7 +3,7 @@ title: "Invertible Functions"
 tags: [allonge, noindex, mermaid]
 ---
 
-[![Grand Hotel](/assets/invertible/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
+[![Bach Puzzle Canon](/assets/invertible/bach-puzzle-canon.png)](https://godel-escher-bach.fandom.com/wiki/Crab_Canon)
 
 ---
 
@@ -133,26 +133,81 @@ const minusOne = n => n - 1;
 const timesTwo = n => n * 2;
 const dividedByTwo = n => n / 2;
 
-const compose = (f, g) => n => f(g(n));
+const compose = fns => argument =>
+  fns.reduceRight((value, fn) => fn(value), argument);
 
-const plusOneTimesTwo = compose(plusOne, timesTwo);
-const dividedByTwoMinusOne = compose(dividedByTwo, minusOne);
+const plusOneTimesTwo = compose([plusOne, timesTwo]);
+const dividedByTwoMinusOne = compose([dividedByTwo, minusOne]);
 
 plusOneTimesTwo(42)
   //=> 85
 
-dividedByTwoMinusOne(85)
+dividedByTwoMinusOne(85 )
   //=> 42
 ```
 
-Having a well-defined pattern for composing invertible functions is the basis for reasoning about invertible functions. Let's take an example, converting between primitive numbers and their binary representation.
+Keeping track of functions and their inversions can be a bit of a headache, especially as we compose invertible functions. To keep things relatively simple, we'll introduce an object to do the work for us:
+
+```javascript
+const R = {
+  _inversions: new Map(),
+  add([f, g]) {
+    this._inversions.set(f, g);
+    this._inversions.set(g, f);
+
+    return f;
+  },
+  has(f) {
+    return this._inversions.has(f);
+  },
+  get(f) {
+    return this._inversions.get(f);
+  }
+};
+
+R.add(plusOneTimesTwo, dividedByTwoMinusOne);
+
+R.get(dividedByTwoMinusOne)(42)
+  //=> 85
+
+R.get(plusOneTimesTwo)(85)
+  //=> 42
+```
+
+Let's write a `compose` method for `R` that composes a list of invertible functions and their inversions simultaneously:
+
+```javascript
+const R = {
+  // ...
+
+  compose(fns) {
+    const composition = argument =>
+      fns.reduceRight((value, fn) => fn(value), argument);
+    const inversion = argument =>
+      fns.reduce((value, fn) => this.get(fn)(value), argument);
+
+    return this.add([composition, inversion]);
+  }
+};
+
+R.add([plusOne, minusOne]);
+R.add([timesTwo, dividedByTwo]);
+
+plusOneTimesTwo(42)
+  //=> 85
+
+R.get(plusOneTimesTwo)(85)
+  //=> 42
+```
+
+We'll use this later.
 
 ### converting between numbers and their binary representation
 
-Here's a function that converts a non-negative natural number into a list form of its binary representation, without relying on JavaScript's capabilities for parsing and representing numbers in various bases:
+Here's a function that converts a non-negative natural number into the list form of its binary representation, without relying on JavaScript's capabilities for parsing and representing numbers in various bases:
 
 ```javascript
-const toBinary = n => {
+const toBinaryNaive = n => {
   const b = [];
 
   do {
@@ -165,23 +220,23 @@ const toBinary = n => {
   return b;
 };
 
-toBinary(0)
+toBinaryNaive(0)
   //=> [0]
 
-toBinary(1)
+toBinaryNaive(1)
   //=> [1]
 
-toBinary(6)
+toBinaryNaive(6)
   //=> [1, 1, 0]
 
-toBinary(23)
+toBinaryNaive(23)
   //=> [1, 0, 1, 1, 1]
 ```
 
 And here's its inversion, a function that converts the list form of a non-negative natural number's binary representation into the number:
 
 ```javascript
-function fromBinary(b) {
+function fromBinaryNaive(b) {
   let n = 0;
 
   for (const bit of b) {
@@ -192,39 +247,40 @@ function fromBinary(b) {
   return n;
 };
 
-fromBinary([0])
+fromBinaryNaive([0])
   //=> 0
 
-fromBinary([1])
-  //=> [1]
+fromBinaryNaive([1])
+  //=> 1
 
-fromBinary(6)
-  //=> [1, 1, 0]
+fromBinaryNaive([1, 1, 0])
+  //=> 6
 
-fromBinary(23)
-  //=> [1, 0, 1, 1, 1]
+fromBinaryNaive([1, 0, 1, 1, 1])
+  //=> 23
 ```
 
-We can tell from careful inspection that for non-negative naturals within implementation bounds, `toBinary` and `fromBinary` are inversions of each other. But even with such a simple function, it requires examination to determine that they are inversions of each other.
+We can tell from careful inspection that for non-negative naturals within implementation bounds, `toBinaryNaive` and `fromBinaryNaive` are inversions of each other. But even with such a simple function, it requires examination to determine that they are inversions of each other.
 
 This is especially true because the two functions are written in different styles, one uses a `do... while` loop, the other a `for... of` loop, and the ways in which they do basic arithmetic aren't obviously symmetrical the way `n => n + 1` and `n => n - 1` are.
 
-Let's approach this problem from the perspective of making it easier to generate two functions that are inversions of each other. We'll use function composition to help.
+When we used simple composittion of invertibvle functions, we were able to _derive_ the composition of their inversions automatically. We'll apply the same approach here.
 
 ### refactoring to use invertible functions
 
-We're going to refactor these two invertible functions, beginning by extracting an invertible function at the core of each function's loop:
+We're going to refactor these two invertible functions, beginning by extracting a pair of inversions at the core of each function's loop:
 
 ```javascript
-const divideByTwoWithRemainder = n => [Math.floor(n / 2), n % 2];
-
-const multiplyByTwoWithRemainder = ([n, r]) => n * 2 + r;
+const divideByTwoWithRemainder = R.add([
+  n => [Math.floor(n / 2), n % 2],
+  ([n, r]) => n * 2 + r
+]);
 ```
 
-We can satisfy ourselves that these two functions are inversions of each other, then write:
+Now we can write:
 
 ```javascript
-const toBinary = n => {
+const toBinaryRefactored = n => {
   const b = [];
   let bit;
 
@@ -237,18 +293,42 @@ const toBinary = n => {
   return b;
 };
 
-function fromBinary(b) {
+toBinaryRefactored(0)
+  //=> [0]
+
+toBinaryRefactored(1)
+  //=> [1]
+
+toBinaryRefactored(6)
+  //=> [1, 1, 0]
+
+toBinaryRefactored(23)
+  //=> [1, 0, 1, 1, 1]
+
+function fromBinaryRefactored(b) {
   let n = 0;
 
   for (const bit of b) {
-    n = multiplyByTwoWithRemainder([n, bit]);
+    n = R.get(divideByTwoWithRemainder)([n, bit]);
   }
 
   return n;
 };
+
+fromBinaryRefactored([0])
+  //=> 0
+
+fromBinaryRefactored([1])
+  //=> 1
+
+fromBinaryRefactored([1, 1, 0])
+  //=> 6
+
+fromBinaryRefactored([1, 0, 1, 1, 1])
+  //=> 23
 ```
 
-Now we have a small pair of invertible functions, each of which is wrapped in loops to apply them. We'll refactor the loops next.
+We'll refactor the loops next.
 
 ### refactoring to folds and unfolds
 
@@ -258,7 +338,7 @@ Now we have a small pair of invertible functions, each of which is wrapped in lo
 
 Here is a higher-order `fold` that takes a `base` (sometimes called a `seed`) value, plus a `combiner` function. It is specific to lists. To make it useful for our purposes, instead of the combining function taking two arguments, this fold expects its combiner function to take a one argument, a list with two elements.
 
-It is implemented as a loop, because loops are trivially equivalent to linear recursion. It is also implemented as a higher-order function that returns a function.
+It is implemented as a loop, because loops are trivially equivalent to linear recursion. It is also implemented as a higher-order function that returns a function:
 
 ```javascript
 const foldList = ([base, combiner]) =>
@@ -273,10 +353,10 @@ const foldList = ([base, combiner]) =>
   };
 ```
 
-We use it with our `multiplyByTwoWithRemainder` function to generate `fromBinary`:
+We use it with our `multiplyByTwoWithRemainder` function to generate `fromBinaryFold`:
 
 ```javascript
-const fromBinary = foldList([0, multiplyByTwoWithRemainder]);
+const fromBinaryFold = foldList([0, multiplyByTwoWithRemainder]);
 ```
 
 And here's `unfoldToList`. Our unfold is also written as a loop. We will use a simple equality test that works for primitive values and strings, but not objects and especially not maps of any kind.[^prodequal]
@@ -285,7 +365,7 @@ And here's `unfoldToList`. Our unfold is also written as a loop. We will use a s
 
 This unfold is written as an "eager right unfold," which is to say, it assembles its list in the reverse order of our fold. That's different from how unfolds are usually written, but then again, most people aren't trying to invert a fold.
 
-We'll use our unfold to derive `toBinary`:
+We'll use our unfold to derive `toBinaryUnfold`:
 
 ```javascript
 const deepEqual = (a, b) => {
@@ -312,46 +392,79 @@ const unfoldToList = ([base, uncombiner]) =>
     let list = [];
     let element;
 
-    while (!deepEqual(folded, base)) {
+    do {
       [folded, element] = uncombiner(folded);
       list.unshift(element);
-    }
+    } while (!deepEqual(folded, base))
 
     return list;
   };
 
-const toBinary = unfoldToList([0, divideByTwoWithRemainder]);
+const toBinaryUnfold = unfoldToList([0, R.get(multiplyByTwoWithRemainder)]);
+```
+
+We have demonstrated another form of composition of invertible functions: Given a common base, `foldList` of an invertible function is the inversion of `unfoldToList` of its inversion.
+
+Let's add this to `R`:
+
+```javascript
+const R = {
+  // ...
+
+  foldList([base, combiner]) {
+    const folder = foldList([base, combiner]);
+    const unfolder = unfoldToList([base, this.get(combiner)]);
+
+    return this.add([folder, unfolder]);
+  },
+  unfoldToList([base, uncombiner]) {
+    const unfolder = unfoldToList([base, uncombiner]);
+    const folder = foldList([base, this.get(uncombiner)]);
+
+    return this.add([unfolder, folder]);
+  }
+};
+
+const toBinary = R.unfoldToList([0, divideByTwoWithRemainder]);
+
+toBinary(0)
+  //=> [0]
+
+toBinary(1)
+  //=> [1]
+
+toBinary(6)
+  //=> [1, 1, 0]
+
+toBinary(23)
+  //=> [1, 0, 1, 1, 1]
+
+const fromBinary = R.get(toBinary);
+
+fromBinary([0])
+  //=> 0
+
+fromBinary([1])
+  //=> 1
+
+fromBinary([1, 1, 0])
+  //=> 6
+
+fromBinary([1, 0, 1, 1, 1])
+  //=> 23
 ```
 
 ### why refactoring to fold and unfold matters
 
-Using `foldList`, `unfoldToList`, `multiplyByTwoWithRemainder`, and `divideByTwoWithRemainder` to derive the invertible functions `fromBinary` and `toBinary` feels like a lot of work if that's all we want to do.
+`R.foldList`, and `R.unfoldToList` are higher-order invertible functions. This helps us compose new invertible functions by applyiung linear recursion to invertible functions like `divideByTwoWithRemainder`. Once we're satisfied that one-liners like `n => [Math.floor(n / 2), n % 2]` and `([n, r]) => n * 2 + r` are invertible, we can compose `toBinary` and `from Binary` out of them, confident that `toBinary` and `from Binary` will also be invertible.
 
-However, let's think about what `foldList` and `unfoldToList` really do: They repeatedly apply an invertible function to a value. This is analogous to composing an invertible function with itself. From this we infer that if we use an invertible combiner with `foldList`, we get an invertible fold. And if we use an invertible uncombiner with `unfoldToList`, we get an invertible unfold.
+By writing higher-order functions for composing invertible functions that preserve "invertibility," we make it easier to reason about what our code does. And so it goes for all composition: Composing functions with well-understood patterns like folding and unfolding makes it easier for us to reason about what our code does.
 
-Now we have something: `foldList` and `unfoldToList` are higher-order invertible functions. This helps us reason, because once we've satisfied ourselves that `foldList` and `unfoldToList` are higher-order invertible functions, we can use them to compose functions, and all we have to satisfy ourselves with is the invertibility of our arguments.
-
-And it's much easier to satisfy ourselves that one-liners like `n => [Math.floor(n / 2), n % 2]` and `([n, r]) => n * 2 + r` are invertible than functions with arbitrary loops and conditions.
-
-Thus, we see the utility of the following function that makes higher-order invertible folds and unfolds:
-
-```javascript
-const foldUnfoldList = ([base, combiner, uncombiner]) => [
-  foldList([base, combiner]), unfoldToList([base, uncombiner])
-];
-
-const [fromBinary, toBinary] = foldUnfoldList([
-  0, multiplyByTwoWithRemainder, divideByTwoWithRemainder
-]);
-```
-
-By writing higher-order functions for composing invertible functions that preserve "invertibility," we make it easier to reason about what our code does.
-
-And so it goes for all composition, really: Composing functions with well-understood patterns like folding and unfolding makes it easier for us to reason about what our code does.
+Now let's look at a "contrived" problem we will solve with invertible functions.
 
 ---
 
-[![Key](/assets/invertible/key.jpg)](https://www.flickr.com/photos/26344495@N05/32743331307)
+[![Grand Hotel](/assets/invertible/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
 
 ---
 
@@ -373,25 +486,13 @@ A positive [irreducible fraction][irreducible fractions] is a [rational] number 
 [irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
 [^coprime]: Two numbers are coprime if their greatest common divisor is 1.
 
-One night at the Grand Hotel, an infinite number of guests show up, each of which is associated with a unique irreducible fraction. The night clerk has to assign the guests to rooms, and comes up with an idea: Write an invertible function that maps positive irreducible numbers to positive natural numbers.
+One night at the Grand Hotel, an infinite number of guests show up. They're members of a club that reveres irreducible fractions, and each member of the club is given their own unique irreducible fraction as an identifier.
 
-That way, each guest can use the function mappping positive irreducible fractions to natural numbers to find their room. And given an occupied room, we can use the function mapping positive natural numbers to positive irreducible fractions to find the guest.
+The night clerk has to assign the guests to rooms, and comes up with an idea: Write an invertible function that maps positive irreducible numbers to positive natural numbers. That way, each guest can use the function mappping positive irreducible fractions to natural numbers to find their room. And given an occupied room, we can use the function mapping positive natural numbers to positive irreducible fractions to find the guest.
 
-In JavaScript terms, we need a function that maps lists of two coprime numbers to numbers, and another that maps numbers to lists of two coprime numbers. Th enight clerk's first version uses [prime factorization]:
+In JavaScript terms, we need a function that maps lists of two coprime numbers to numbers, and another that maps numbers to lists of two coprime numbers. The night clerk's first attempt is based on [prime factorization]:[^fractran]
 
-[FRACTRAN]: http://raganwald.com/2020/05/03/fractran.html
-[Gödel Numbering]: https://en.wikipedia.org/wiki/Gödel_numbering
-[prime factorization]: https://en.wikipedia.org/wiki/Integer_factorization
-
-```javascript
-const guestToRoom = ([n, d]) => 2**n * 3**d
-
-An [irreducible fraction] is a fraction in which the numerator and denominator are integers that have no common divisors other than one. `2 / 3` and `23 / 5` are irreducible fractions. `8 / 6` is not an irreducible fraction.  There's a guest for `1 / 1`, `1 / 2`, `2 / 1`, and so on.
-
-[irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
-
-
-The night clerk's first attempt is based on [prime factorization], a trick they read about in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN]:
+[^fractran]: [Prime factorization][prime factorization] is a trick the night clerk read about in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN].
 
 [FRACTRAN]: http://raganwald.com/2020/05/03/fractran.html
 [prime factorization]: https://en.wikipedia.org/wiki/Integer_factorization
@@ -430,11 +531,77 @@ guestToRoom([2, 1])
 
 guestToRoom([3, 1])
   //=> 24
+
 guestToRoom([2, 3])
   //=> 108
 ```
 
-This works fine, but it assigns guests to a subset of the rooms of the Grand Hotel. It's undesireable to have empty rooms at any hotel, even one with an infinite number of rooms. And from a maths perspective, this doesn't demonstrate that there are an equal number of positive irreducible fractions as there are positive natural numbers, because itthere are an infinite number of positive natural numbers that are not associated with a positive irreducible fraction, e.g. the numbers one through five, and anything divisible by a prime larger than three.
+This works fine, but it assigns guests to a subset of the rooms of the Grand Hotel. It's undesireable to have empty rooms at any hotel, even one with an infinite number of rooms. And from a maths perspective, this doesn't demonstrate that there are an equal number of positive irreducible fractions as there are positive natural numbers, because there are an infinite number of positive natural numbers that are not associated with a positive irreducible fraction, e.g. the numbers one through five, and anything divisible by a prime larger than three.
+
+The night clerk decides to try againn, this time taking advantage of an interesting rule about the relationship between members of the irreducible fraction club.
+
+### the irreducible fraction family tree
+
+The irreducible fractions club has an interesting rule: Each member of the club is required to recruit exactly two more meembers of the club, who in turn must recruit two more members of the club, and so forth. Furthermore, they have a specific rule for assigning irreducible fractions to new members.
+
+The founder's fraction was `1 / 1`. `1 / 1`'s two recruits were the fractions `2 / 1` and `1 / 2`. Their recruits were given the fractions `3 / 1`, `2 / 3` and `3 / 2`, `1 / 3` respectively. And this tree of recruits and names continues, to infinity. The rules for constructing the irreducible fraction "family tree" are as follows:
+
+1. All members are given a unique irreducible fraction;
+2. Irreducible fractions are of the form `n / d`, representing a numerator and denominator;
+3. Every member has two recruits. If the member is `n / d`, their two recruits are always `n + d / d` and `n / n + d`.
+4. The founder is `1 / 1`.
+
+From this, the tree grows, starting with:
+
+<div class="mermaid">
+graph TD
+  2/1 --> 1/1
+  1/2 --> 1/1
+  3/1 --> 2/1
+  2/3 --> 2/1
+  3/2 --> 1/2
+  1/3 --> 1/2
+  4/1 --> 3/1
+  3/4 --> 3/1
+  5/3 --> 2/3
+  2/5 --> 2/3
+  5/2 --> 3/2
+  3/5 --> 3/2
+  4/3 --> 1/3
+  1/4 --> 1/3
+</div>
+
+The club claims that every irreducible fraction appears exactly once somewhere in the tree, and therefore, there is a club member for every irreducible fraction.
+
+The night clerk observes that if every irreducible fraction appears exactly once somewhere in the tree, there is a unique path to every irreducible fraction from the founding fraction `1 / 1`. For example, the path to `2 / 5` is `1 / 1 >> 2 / 1 >> 2 / 3 >> 2 / 5`.
+
+### mapping irreducible fractions to paths
+
+Let's formalize an algorithm for going from irreducible fractions to paths. Given some irreducible fraction `n / d`, we know that if `n` and `d` are both `1`, the path will be `[]` (the empty path). If it's some other irreducible fraction, we have to find its parent and determine whethert the arc between fraction and parent is labeled `0` or `1`.
+
+The paths can be simplified by observing that at each step, we go from `n / d` to either `n + d / d` or `n / n + d`. The night clerk encodes these two options as `0` and `1`. Therefore, we can encode `2 / 5` as the path `[0, 1, 1]`.  Now the night clerk prepends the path with an extra `1`, like this: `[1, 0, 1, 1]`. And what happens if we take those 1s and 0s and treat them as a binary number?
+
+We get the positive natural number eleven. Therefore, the irreducible fraction `2 / 5` maps to the positive natural number `11`. If we take `[]` as the empty path for `1 / 1`, its positive natural number will be `1`, and its two immediate children will be `3` and `2`. Their children will be `7`, `6` and `5`, `4` respectively. And so the positive natural numbers will grow as the tree grows.
+
+We can use paths as the basis for an invertible function to map positive natural numbers to positive irreducible fractions. Our algorithm will be:
+
+1. Map
+
+Let's start with the easy bit:
+
+```javascript
+const appendElementToList =
+  ([list, element]) => [...list, element];
+
+const removeElementFromList =
+  list => [list.slice(0, list.length - 1), list[list.length - 1]];
+
+const [prependOne, removeOne] = foldUnfoldList([
+  [1],
+  appendElementToList,
+  removeElementFromList
+]);
+```
 
 ---
 
@@ -876,6 +1043,10 @@ Every positive canonical fraction maps to exactly one positive natural number (v
 ---
 
 ![Green U Turn](/assets/invertible/green-u-turn.jpg)
+
+
+
+[![Key](/assets/invertible/key.jpg)](https://www.flickr.com/photos/26344495@N05/32743331307)
 
 ---
 
