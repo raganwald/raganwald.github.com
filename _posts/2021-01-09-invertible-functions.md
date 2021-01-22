@@ -542,7 +542,7 @@ The night clerk decides to try againn, this time taking advantage of an interest
 
 ### the irreducible fraction family tree
 
-The irreducible fractions club has an interesting rule: Each member of the club is required to recruit exactly two more meembers of the club, who in turn must recruit two more members of the club, and so forth. Furthermore, they have a specific rule for assigning irreducible fractions to new members.
+The irreducible fractions club has an interesting rule: Each member of the club is required to recruit exactly two more members of the club, who in turn must recruit two more members of the club, and so forth. Furthermore, they have a specific rule for assigning irreducible fractions to new members.
 
 The founder's fraction was `1 / 1`. `1 / 1`'s two recruits were the fractions `2 / 1` and `1 / 2`. Their recruits were given the fractions `3 / 1`, `2 / 3` and `3 / 2`, `1 / 3` respectively. And this tree of recruits and names continues, to infinity. The rules for constructing the irreducible fraction "family tree" are as follows:
 
@@ -551,7 +551,7 @@ The founder's fraction was `1 / 1`. `1 / 1`'s two recruits were the fractions `2
 3. Every member has two recruits. If the member is `n / d`, their two recruits are always `n + d / d` and `n / n + d`.
 4. The founder is `1 / 1`.
 
-From this, the tree grows, starting with:
+From this, the tree grows "upwards" to infinity:
 
 <div class="mermaid">
 graph TD
@@ -573,13 +573,115 @@ graph TD
 
 The club claims that every irreducible fraction appears exactly once somewhere in the tree, and therefore, there is a club member for every irreducible fraction.
 
-The night clerk observes that if every irreducible fraction appears exactly once somewhere in the tree, there is a unique path to every irreducible fraction from the founding fraction `1 / 1`. For example, the path to `2 / 5` is `1 / 1 >> 2 / 1 >> 2 / 3 >> 2 / 5`.
+The night clerk observes that if every irreducible fraction appears exactly once somewhere in the tree, there is a unique path from the founding fraction `1 / 1` to every irreducible fraction, and if we label the arcs from each parent to child with a `0` and a `1`, each unique path has a unique encoding as a list of `0`s and `1`s.
+
+For example, the path from  `1 / 1` to `2 / 5` encoded as `[1, 1, 0]`, while the path from `1 / 1` to `1 / 2` is encoded as `[0, 0]`:
+
+<div class="mermaid">
+graph TD
+  2/3 ==0==> 2/5
+  1/1 ==1==> 2/1
+  1/1 ==0==> 1/2
+  2/1 -->    3/1
+  2/1 ==0==> 2/3
+  1/2 -->    3/2
+  1/2 ==0==> 1/3
+  3/1 -->    4/1
+  3/1 -->    3/4
+  2/3 -->    5/3
+  3/2 -->    5/2
+  3/2 -->    3/5
+  1/3 -->    4/3
+  1/3 -->    1/4
+</div>
 
 ### mapping irreducible fractions to paths
 
-Let's formalize an algorithm for going from irreducible fractions to paths. Given some irreducible fraction `n / d`, we know that if `n` and `d` are both `1`, the path will be `[]` (the empty path). If it's some other irreducible fraction, we have to find its parent and determine whethert the arc between fraction and parent is labeled `0` or `1`.
+Let's formalize an algorithm for going from irreducible fractions to paths. Given some irreducible fraction `n / d`, we know that if `n` and `d` are both `1`, the path will be `[]` (the empty path). If it's some other irreducible fraction, we have to find its parent and determine whether the arc between fraction and parent is labeled `0` or `1`.
 
-The paths can be simplified by observing that at each step, we go from `n / d` to either `n + d / d` or `n / n + d`. The night clerk encodes these two options as `0` and `1`. Therefore, we can encode `2 / 5` as the path `[0, 1, 1]`.  Now the night clerk prepends the path with an extra `1`, like this: `[1, 0, 1, 1]`. And what happens if we take those 1s and 0s and treat them as a binary number?
+At each step, we go from `n / d` to either `n / d - n` or `n - d / d`. And if `n < d`, we go from `n / d` to `n / d - n` along a path labeled `0`. While if `n > d`, we go from `n / d` to `n - d / d` along a path labeled `1`.
+
+That's enough to write an unfold, representing irreducible fractions as a list with two numbers:
+
+```javascript
+const irreducibleToParentAndArc = ([n, d]) =>
+  n < d ? [[n, d - n], 0] : [[n - d, d], 1];
+
+const irreducibleToPath = unfoldToList([[1, 1], irreducibleToParentAndArc]);
+
+irreducibleToPath([2, 5])
+  //=> [1, 0, 0]
+
+irreducibleToPath([1, 3	])
+  //=> [0, 0]
+```
+
+Hmmm. If we can write an unfold around the uncombiner function `([n, d]) => n < d ? [[n, d - n], 0] : [[n - d, d], 1]`, does that mean that if we can write an inversion, we can get a fold as well? Yes:
+
+```javascript
+const parentAndArcToIrreducible = ([[n, d], arc]) =>
+  arc === 0 ? [n, n + d] : [n + d, d];
+
+const pathToIrreducible = foldList([[1, 1], parentAndArcToIrreducible]);
+
+pathToIrreducible([1, 0, 0])
+  //=> [2, 5]
+
+pathToIrreducible([0, 0])
+  //=> [1, 3]
+```
+
+And from this, it follows that:
+
+```javascript
+const pathToIrreducible = R.foldList([
+  [1, 1],
+  R.add([
+    ([[n, d], arc]) =>
+      arc === 0 ? [n, n + d] : [n + d, d],
+    ([n, d]) =>
+      n < d ? [[n, d - n], 0] : [[n - d, d], 1]
+  ])
+]);
+
+pathToIrreducible([1, 0, 0])
+  //=> [2, 5]
+
+pathToIrreducible([0, 0])
+  //=> [1, 3]
+
+R.get(pathToIrreducible)([2, 5])
+  //=> [1, 0, 0]
+
+R.get(pathToIrreducible)([1, 3])
+  //=> [0, 0]
+```
+
+### from positive numbers to paths
+
+The night clerk has one more step to complete: Going from positive natural numbers to paths. We have already seen invertible functions for converting between positive natural numbers and binary representations, but there's a problem. Let's take a look:
+
+|n|binary|
+|-:|-:|
+|1 |[1]|
+|2 |[1, 0]|
+|3 |[1, 1]|
+|4 |[1, 0, 0]|
+|5 |[1, 0, 1]|
+|6 |[1, 1, 0]|
+|7 |[1, 1, 1]|
+|8 |[1, 0, 0, 0]|
+|9 |[1, 0, 0, 1]|
+|10|[1, 0, 1, 0]|
+|11|[1, 0, 1, 1]|
+|12|[1, 1, 0, 0]|
+|13|[1, 1, 0, 1]|
+|14|[1, 1, 1, 0]|
+|15|[1, 1, 1, 1]|
+|16|[1, 0, 0, 0, 0]|
+|17|[1, 0, 0, 0, 1]|
+|18|[1, 0, 0, 1, 0]|
+|19|[1, 0, 0, 1, 1]|
 
 We get the positive natural number eleven. Therefore, the irreducible fraction `2 / 5` maps to the positive natural number `11`. If we take `[]` as the empty path for `1 / 1`, its positive natural number will be `1`, and its two immediate children will be `3` and `2`. Their children will be `7`, `6` and `5`, `4` respectively. And so the positive natural numbers will grow as the tree grows.
 
