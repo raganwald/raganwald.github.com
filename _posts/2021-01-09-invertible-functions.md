@@ -661,27 +661,47 @@ R.get(pathToIrreducible)([1, 3])
 
 The night clerk has one more step to complete: Going from positive natural numbers to paths. We have already seen invertible functions for converting between positive natural numbers and binary representations, but there's a problem. Let's take a look:
 
-|n|binary|
-|-:|-:|
-|1 |[1]|
-|2 |[1, 0]|
-|3 |[1, 1]|
-|4 |[1, 0, 0]|
-|5 |[1, 0, 1]|
-|6 |[1, 1, 0]|
-|7 |[1, 1, 1]|
-|8 |[1, 0, 0, 0]|
-|9 |[1, 0, 0, 1]|
-|10|[1, 0, 1, 0]|
-|11|[1, 0, 1, 1]|
-|12|[1, 1, 0, 0]|
-|13|[1, 1, 0, 1]|
-|14|[1, 1, 1, 0]|
-|15|[1, 1, 1, 1]|
-|16|[1, 0, 0, 0, 0]|
-|17|[1, 0, 0, 0, 1]|
-|18|[1, 0, 0, 1, 0]|
-|19|[1, 0, 0, 1, 1]|
+```
+ 1: [1]
+ 2: [1, 0]
+ 3: [1, 1]
+ 4: [1, 0, 0]
+ 5: [1, 0, 1]
+ 6: [1, 1, 0]
+ 7: [1, 1, 1]
+ 8: [1, 0, 0, 0]
+ 9: [1, 0, 0, 1]
+10: [1, 0, 1, 0]
+11: [1, 0, 1, 1]
+12: [1, 1, 0, 0]
+13: [1, 1, 0, 1]
+14: [1, 1, 1, 0]
+15: [1, 1, 1, 1]
+16: [1, 0, 0, 0, 0]
+17: [1, 0, 0, 0, 1]
+18: [1, 0, 0, 1, 0]
+19: [1, 0, 0, 1, 1]
+```
+
+Every number greater than zero has a binary representation that starts with a `1`. If we map these directly to paths, we only get half of the tree:
+
+<div class="mermaid">
+graph TD
+  2/3 --1--> 2/5
+  1/1 --1--> 2/1
+  2/1 --1--> 3/1
+  2/1 --0--> 2/3
+  3/1 --1--> 4/1
+  3/1 --0--> 3/4
+  2/3 --0--> 5/3
+  1/1  -.->  1/2
+  1/2  -.->  3/2
+  1/2  -.->  1/3
+  3/2  -.->  5/2
+  3/2  -.->  3/5
+  1/3  -.->  4/3
+  1/3  -.->  1/4
+</div>
 
 We get the positive natural number eleven. Therefore, the irreducible fraction `2 / 5` maps to the positive natural number `11`. If we take `[]` as the empty path for `1 / 1`, its positive natural number will be `1`, and its two immediate children will be `3` and `2`. Their children will be `7`, `6` and `5`, `4` respectively. And so the positive natural numbers will grow as the tree grows.
 
