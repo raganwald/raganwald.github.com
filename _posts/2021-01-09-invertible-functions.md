@@ -476,7 +476,7 @@ Now let's look at a "contrived" problem we will solve with invertible functions.
 
 [hh]: https://en.wikipedia.org/wiki/Hilbert%27s_paradox_of_the_Grand_Hotel
 
-The proposition is that the Grand Hotel has a countably infinite number of rooms, each of which is denoted by a natural number. The hotel's night clerk has the problem of coming up with an algorithm for assigning an infinite number of guests to the countably infinite number of rooms.
+The proposition is that the Grand Hotel has a countably infinite number of rooms, each of which is denoted by a natural number. The hotel's Night Clerk has the problem of coming up with an algorithm for assigning an infinite number of guests to the countably infinite number of rooms.
 
 ### gödel and irreducible fractions
 
@@ -488,11 +488,11 @@ A positive [irreducible fraction][irreducible fractions] is a [rational] number 
 
 One night at the Grand Hotel, an infinite number of guests show up. They're members of a club that reveres irreducible fractions, and each member of the club is given their own unique irreducible fraction as an identifier.
 
-The night clerk has to assign the guests to rooms, and comes up with an idea: Write an invertible function that maps positive irreducible numbers to positive natural numbers. That way, each guest can use the function mappping positive irreducible fractions to natural numbers to find their room. And given an occupied room, we can use the function mapping positive natural numbers to positive irreducible fractions to find the guest.
+The Night Clerk has to assign the guests to rooms, and comes up with an idea: Write an invertible function that maps positive irreducible numbers to positive natural numbers. That way, each guest can use the function mappping positive irreducible fractions to natural numbers to find their room. And given an occupied room, we can use the function mapping positive natural numbers to positive irreducible fractions to find the guest.
 
-In JavaScript terms, we need a function that maps lists of two coprime numbers to numbers, and another that maps numbers to lists of two coprime numbers. The night clerk's first attempt is based on [prime factorization]:[^fractran]
+In JavaScript terms, we need a function that maps lists of two coprime numbers to numbers, and another that maps numbers to lists of two coprime numbers. The Night Clerk's first attempt is based on [prime factorization]:[^fractran]
 
-[^fractran]: [Prime factorization][prime factorization] is a trick the night clerk read about in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN].
+[^fractran]: [Prime factorization][prime factorization] is a trick the Night Clerk read about in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN].
 
 [FRACTRAN]: http://raganwald.com/2020/05/03/fractran.html
 [prime factorization]: https://en.wikipedia.org/wiki/Integer_factorization
@@ -538,11 +538,11 @@ guestToRoom([2, 3])
 
 This works fine, but it assigns guests to a subset of the rooms of the Grand Hotel. It's undesireable to have empty rooms at any hotel, even one with an infinite number of rooms. And from a maths perspective, this doesn't demonstrate that there are an equal number of positive irreducible fractions as there are positive natural numbers, because there are an infinite number of positive natural numbers that are not associated with a positive irreducible fraction, e.g. the numbers one through five, and anything divisible by a prime larger than three.
 
-The night clerk decides to try againn, this time taking advantage of an interesting rule about the relationship between members of the irreducible fraction club.
+The Night Clerk decides to try againn, this time taking advantage of an interesting rule about the relationship between members of the irreducible fraction club.
 
 ### the irreducible fraction family tree
 
-The irreducible fractions club has an interesting rule: Each member of the club is required to recruit exactly two more members of the club, who in turn must recruit two more members of the club, and so forth. Furthermore, they have a specific rule for assigning irreducible fractions to new members.
+The Irreducible Fractions Club has an interesting rule: Each member of the club is required to recruit exactly two more members of the club, who in turn must recruit two more members of the club, and so forth. Furthermore, they have a specific rule for assigning irreducible fractions to new members.
 
 The founder's fraction was `1 / 1`. `1 / 1`'s two recruits were the fractions `2 / 1` and `1 / 2`. Their recruits were given the fractions `3 / 1`, `2 / 3` and `3 / 2`, `1 / 3` respectively. And this tree of recruits and names continues, to infinity. The rules for constructing the irreducible fraction "family tree" are as follows:
 
@@ -573,7 +573,7 @@ graph TD
 
 The club claims that every irreducible fraction appears exactly once somewhere in the tree, and therefore, there is a club member for every irreducible fraction.
 
-The night clerk observes that if every irreducible fraction appears exactly once somewhere in the tree, there is a unique path from the founding fraction `1 / 1` to every irreducible fraction, and if we label the arcs from each parent to child with a `0` and a `1`, each unique path has a unique encoding as a list of `0`s and `1`s.
+The Night Clerk observes that if every irreducible fraction appears exactly once somewhere in the tree, there is a unique path from the founding fraction `1 / 1` to every irreducible fraction, and if we label the arcs from each parent to child with a `0` and a `1`, each unique path has a unique encoding as a list of `0`s and `1`s.
 
 For example, the path from  `1 / 1` to `2 / 5` encoded as `[1, 1, 0]`, while the path from `1 / 1` to `1 / 2` is encoded as `[0, 0]`:
 
@@ -659,7 +659,7 @@ R.get(pathToIrreducible)([1, 3])
 
 ### a wild infinite loop appears
 
-The night clerk has one more step to complete: Going from positive natural numbers to paths. We have already seen invertible functions for converting between positive natural numbers and binary representations, but there's a problem. Let's take a look:
+The Night Clerk has one more step to complete: Going from positive natural numbers to paths. We have already seen invertible functions for converting between positive natural numbers and binary representations, but there's a problem. Let's take a look:
 
 ```
  1 :             [1]
@@ -788,5 +788,16 @@ tail([7, 0, 0])
 
 Functions that don't return are undesirable in production, but from a semantic perspective, they fit the bill as much as functions that raise helpful exceptions. To be invertible, there must exist a function such that for every value that `ttail` returns, its inversion takes `tail`'s output as its input and returns `tail`'s input.
 
-Input that don;'t produce outputs don't count, so this version of `tail` is invertible, even if it is not suitable for production use.
+Input that don't produce outputs don't count, so `tail` is invertible.
 
+---
+
+[![Key](/assets/invertible/key.jpg)](https://www.flickr.com/photos/26344495@N05/32743331307)
+
+---
+
+## Finding Rooms for The Irreducible Fractions Club
+
+The Night Clerk now has what they need to map positive invertible fractions to positive natural numbers, which means that given a member of the Irreducible Fractions Club, they can assign them to a room in the Grand Hotel:
+
+```javascript
