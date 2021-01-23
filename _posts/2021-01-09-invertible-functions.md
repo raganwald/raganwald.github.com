@@ -3,7 +3,7 @@ title: "Composing Invertible Functions"
 tags: [allonge, noindex, mermaid]
 ---
 
-[![Bach Puzzle Canon](/assets/invertible/bach-puzzle-canon.png)](https://godel-escher-bach.fandom.com/wiki/Crab_Canon)
+[![Grand Hotel](/assets/invertible/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
 
 ---
 
@@ -120,7 +120,7 @@ In general, all functions mapping multiple inputs to one output can be rewritten
 
 ---
 
-[![Fractional Hugs And Kisses](/assets/invertible/fractional-hugs-and-kisses.jpg)](https://www.flickr.com/photos/clearlyambiguous/60431147)
+[![Bach Puzzle Canon](/assets/invertible/bach-puzzle-canon.png)](https://godel-escher-bach.fandom.com/wiki/Crab_Canon)
 
 ---
 
@@ -455,7 +455,7 @@ Now let's look at a "contrived" problem we will solve with invertible functions.
 
 ---
 
-[![Grand Hotel](/assets/invertible/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
+[![Fractional Hugs And Kisses](/assets/invertible/fractional-hugs-and-kisses.jpg)](https://www.flickr.com/photos/clearlyambiguous/60431147)
 
 ---
 
