@@ -619,19 +619,19 @@ Hmmm. If we can write an unfold around the uncombiner function `([n, d]) => n < 
 const parentAndArcToIrreducible = ([[n, d], arc]) =>
   arc === 0 ? [n, n + d] : [n + d, d];
 
-const pathToIrreducible = foldList([[1, 1], parentAndArcToIrreducible]);
+const toIrreducible = foldList([[1, 1], parentAndArcToIrreducible]);
 
-pathToIrreducible([1, 0, 0])
+toIrreducible([1, 0, 0])
   //=> [2, 5]
 
-pathToIrreducible([0, 0])
+toIrreducible([0, 0])
   //=> [1, 3]
 ```
 
 And from this, it follows that:
 
 ```javascript
-const pathToIrreducible = R.foldList([
+const toIrreducible = R.foldList([
   [1, 1],
   R.add([
     ([[n, d], arc]) =>
@@ -641,16 +641,16 @@ const pathToIrreducible = R.foldList([
   ])
 ]);
 
-pathToIrreducible([1, 0, 0])
+toIrreducible([1, 0, 0])
   //=> [2, 5]
 
-pathToIrreducible([0, 0])
+toIrreducible([0, 0])
   //=> [1, 3]
 
-R.get(pathToIrreducible)([2, 5])
+R.get(toIrreducible)([2, 5])
   //=> [1, 0, 0]
 
-R.get(pathToIrreducible)([1, 3])
+R.get(toIrreducible)([1, 3])
   //=> [0, 0]
 ```
 
@@ -798,3 +798,107 @@ Input that don't produce outputs don't count, so `tail` is invertible: Every out
 The Night Clerk now has what they need to map positive invertible fractions to positive natural numbers, which means that given a member of the Irreducible Fractions Club, they can assign them to a room in the Grand Hotel:
 
 ```javascript
+const binaryToNumber = R.foldList([
+  0,
+  R.add([
+    ([n, r]) => n * 2 + r,
+    n => [Math.floor(n / 2), n % 2]
+  ])
+]);
+
+const pathToBinary = R.foldList([
+  [1],
+  R.add([
+    ([list, element]) =>
+    	[...list, element],
+    list =>
+      [list.slice(0, list.length - 1), list[list.length - 1]]
+  ])
+]);
+
+const irreducibleToPath = R.unfoldToList([
+  [1, 1],
+  R.add([
+    ([n, d]) =>
+      n < d ? [[n, d - n], 0] : [[n - d, d], 1],
+    ([[n, d], arc]) =>
+      arc === 0 ? [n, n + d] : [n + d, d]
+  ])
+]);
+
+const roomNumber = R.compose([
+  binaryToNumber,
+  pathToBinary,
+  irreducibleToPath
+]);
+
+roomNumber([1,1])
+  //=> 1
+roomNumber([1,2])
+  //=> 2
+roomNumber([2,1])
+  //=> 3
+roomNumber([1,3])
+  //=> 4
+roomNumber([3,2])
+  //=> 5
+roomNumber([2,3])
+  //=> 6
+roomNumber([3,1])
+  //=> 7
+roomNumber([1,4])
+  //=> 8
+roomNumber([4,3])
+  //=> 9
+roomNumber([3,5])
+  //=> 10
+roomNumber([5,2])
+  //=> 11
+roomNumber([2,5])
+  //=> 12
+roomNumber([5,3])
+  //=> 13
+roomNumber([3,4])
+  //=> 14
+roomNumber([4,1])
+  //=> 15
+```
+
+The `roomNumber` function is composed out of invertible functions, and uses composition that preserves invertibility, so of course it is invertible, giving us a function for computing the occupant, given a room number:
+
+```javascript
+const occupant = R.get(roomNumber);
+
+occupant(1)
+  //=> [1,1]
+occupant(2)
+  //=> [1,2]
+occupant(3)
+  //=> [2,1]
+occupant(4)
+  //=> [1,3]
+occupant(5)
+  //=> [3,2]
+occupant(6)
+  //=> [2,3]
+occupant(7)
+  //=> [3,1]
+occupant(8)
+  //=> [1,4]
+occupant(9)
+  //=> [4,3]
+occupant(10)
+  //=> [3,5]
+occupant(11)
+  //=> [5,2]
+occupant(12)
+  //=> [2,5]
+occupant(13)
+  //=> [5,3]
+occupant(14)
+  //=> [3,4]
+occupant(15)
+  //=> [4,1]
+```
+
+The Night Clerk can now say with confidence that every room in the Grand Hotel has been occupied by a member of the Irreducible Fractions Club, and that every member of the Irreducible Fractions Club occupies a room. This establishes that there are exactly as many positive irreducible fractions as there are positive natural numbers.
