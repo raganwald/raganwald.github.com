@@ -1,5 +1,5 @@
 ---
-title: "Invertible Functions"
+title: "Composing Invertible Functions"
 tags: [allonge, noindex, mermaid]
 ---
 
@@ -7,7 +7,7 @@ tags: [allonge, noindex, mermaid]
 
 ---
 
-## Composing Invertible Functions
+## Invertible Functions
 
 ---
 
@@ -905,7 +905,7 @@ The Night Clerk can now say with confidence that every room in the Grand Hotel h
 
 ### what can we learn from this?
 
-The need for composing invertible functions comes up rarely, if at all. However, we often compose functions. And from our examination of invertible functions, we see that one evalue of composing functions with standard composition tools is that they make it easier for us to reason about what our code does.
+The need for composing invertible functions comes up rarely, if at all. However, we often compose functions. And from our examination of invertible functions, we see that one value of composing functions with standard composition tools is that they make it easier for us to reason about what our code does.
 
 This is no different than the the innovation of what was one called "Structured Programming." By limiting looping code to specific constructs (e.g. `for`, `while`, and `do... while`), programmers discovered they had just as much power as when they used GOTOs and registers, but the code was easier to  understand.
 
