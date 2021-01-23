@@ -11,7 +11,9 @@ tags: [allonge, noindex, mermaid]
 
 ---
 
-Consider these two functions:
+In this essay, we're going to work with invertible functions. A function is invertible if it has an [inverse c]. Consider these two functions:
+
+[inverse function]: https://en.wikipedia.org/wiki/Inverse_function
 
 ```javascript
 const evenToNatural = even => even / 2;
@@ -19,7 +21,7 @@ const evenToNatural = even => even / 2;
 const naturalToEven = natural => natural * 2;
 ```
 
-`evenToNatural` and `naturalToEven` are _inversions_ of each other:
+`evenToNatural` and `naturalToEven` are _inverses_ of each other:
 
 ```javascript
 evenToNatural(14)
@@ -40,9 +42,9 @@ And, subject to JavaScript's implementation limitations, this expression is `tru
 
 [^disclaimer]: We're making a number of assumptions here that are fairly obvious. For example, we are assuming that the input to `evenToNatural` and `naturalToEven` is a number, and that the number is not one for which the underlying implementation will do something unusual. This is why actual math and actual computer science is hard: Making the jump from demonstrating that something is true to **proving** that it is true means embracing rigour and detail, not just focusing on the pleasant "aha!" moments.
 
-A function `f` is considered _invertible_ if there also exists a function `g` such that `f` and `g` are inversions of each other. `evenToNatural` is an invertible function, because `naturalToEven` is its inversion, and vice-versa.
+A function `f` is considered _invertible_ if there also exists a function `g` such that `f` and `g` are inverses of each other. `evenToNatural` is an invertible function, because `naturalToEven` is its inverse, and vice-versa.
 
-The following functions are also invertible, even though we do not give their inversions:
+The following functions are also invertible, even though we do not give their inverses:
 
 ```javascript
 const increment = n => n + 1;
@@ -54,11 +56,11 @@ The `cons` function given implies that where compound types like lists or maps a
 
 [^equality]: Structural (or "semantic") equality is when two compound objects behave identically. Referential (or "physical") equality is when two references refer to the same entity in the language's implementation. JavaScript uses referential equality by default, but this is not what we want for the purposes of exploring invertible functions.
 
-Some functions are their own inversion. This still makes them invertible functions. `I`—also known as the "identity" or "idiot bird" function—is its own inversion.[^I]
+Some functions are their own inverse. This still makes them invertible functions. `I`—also known as the "identity" or "idiot bird" function—is its own inverse.[^I]
 
 [^I]: `const I = x => x;`
 
-Other functions that are their own inversions include:
+Other functions that are their own inverses include:
 
 ```javascript
 const oddsAndEvens = n => n % 2 === 0 ? n + 1 : n - 1;
@@ -66,7 +68,7 @@ const oddsAndEvens = n => n % 2 === 0 ? n + 1 : n - 1;
 const positiveNegative = n => -n;
 ```
 
-### functions that aren't invertible
+### functions that return the same output for different inputs aren't invertible
 
 For a function to be invertible, it must map exactly one elements of its input to exactly one element of its output. Thus, any function for which two or more different inputs produce the same output cannot be invertible:
 
@@ -76,6 +78,8 @@ const square = n => n * n;
 const roundTen = Math.floor(n / 10) * 10;
 
 const collatz = n => n % 2 === 0 ? n / 2 : 3 * x + 1;
+
+const butFirst = ([first, ...rest]) => rest;
 ```
 
 `square` is not invertible because every positive output has two possible inputs, one positive and one negative. Presuming that we are sticking with natural numbers, `roundTen` has ten possible inputs for each output. And `collatz` has multiple possible inputs as well: For example, if the output is `10`, the input could be `3` or `20`.[^collatz]
@@ -84,7 +88,9 @@ const collatz = n => n % 2 === 0 ? n / 2 : 3 * x + 1;
 
 [The Collatz Conjecture]: https://en.wikipedia.org/wiki/Collatz_conjecture
 
-When there are multiple inputs for the same output, what would an inversion of the function return for that output? For example, if we assume the function `ztalloc` inverts `collatz`, what does `ztalloc(10)` return? Three? Or Twenty?
+When there are multiple inputs for the same output, what would an inverse of the function return for that output? For example, if we assume the function `ztalloc` inverts `collatz`, what does `ztalloc(10)` return? Three? Or Twenty?
+
+Finally, `butFirst` isn't invertible because it has infinitely many inputs that produce the same output. For example, all lists of length one produce as output the empty list `[]`.
 
 Returning two different values where one is expected isn't possible, which is why a function that is invertible must have exactly one unique input for each unique output.
 
@@ -122,9 +128,9 @@ In general, all functions mapping multiple inputs to one output can be rewritten
 
 ---
 
-If `f` and `g` are invertible functions, and `⁻¹` as a suffix denotes "the inversion of" a function, then `(f ֯  g)⁻¹ = (g⁻¹ ֯  f⁻¹)`.
+If `f` and `g` are invertible functions, and `⁻¹` as a suffix denotes "the inverse of" a function, then `(f ֯  g)⁻¹ = (g⁻¹ ֯  f⁻¹)`.
 
-Thius, if we compose two invertible functions, the inversion of that composition can be computed by taking the composition of the inversions of each function, in reverse order:
+Thius, if we compose two invertible functions, the inverse of that composition can be computed by taking the composition of the inverses of each function, in reverse order:
 
 ```javascript
 const plusOne = n => n + 1;
@@ -146,22 +152,22 @@ dividedByTwoMinusOne(85 )
   //=> 42
 ```
 
-Keeping track of functions and their inversions can be a bit of a headache, especially as we compose invertible functions. To keep things relatively simple, we'll introduce an object to do the work for us:
+Keeping track of functions and their inverses can be a bit of a headache, especially as we compose invertible functions. To keep things relatively simple, we'll introduce an object to do the work for us:
 
 ```javascript
 const R = {
-  _inversions: new Map(),
+  _inverses: new Map(),
   add([f, g]) {
-    this._inversions.set(f, g);
-    this._inversions.set(g, f);
+    this._inverses.set(f, g);
+    this._inverses.set(g, f);
 
     return f;
   },
   has(f) {
-    return this._inversions.has(f);
+    return this._inverses.has(f);
   },
   get(f) {
-    return this._inversions.get(f);
+    return this._inverses.get(f);
   }
 };
 
@@ -174,7 +180,7 @@ R.get(plusOneTimesTwo)(85)
   //=> 42
 ```
 
-Let's write a `compose` method for `R` that composes a list of invertible functions and their inversions simultaneously:
+Let's write a `compose` method for `R` that composes a list of invertible functions and their inverses simultaneously:
 
 ```javascript
 const R = {
@@ -183,10 +189,10 @@ const R = {
   compose(fns) {
     const composition = argument =>
       fns.reduceRight((value, fn) => fn(value), argument);
-    const inversion = argument =>
+    const inverse = argument =>
       fns.reduce((value, fn) => this.get(fn)(value), argument);
 
-    return this.add([composition, inversion]);
+    return this.add([composition, inverse]);
   }
 };
 
@@ -233,7 +239,7 @@ toBinaryNaive(23)
   //=> [1, 0, 1, 1, 1]
 ```
 
-And here's its inversion, a function that converts the list form of a non-negative natural number's binary representation into the number:
+And here's its inverse, a function that converts the list form of a non-negative natural number's binary representation into the number:
 
 ```javascript
 function fromBinaryNaive(b) {
@@ -260,15 +266,15 @@ fromBinaryNaive([1, 0, 1, 1, 1])
   //=> 23
 ```
 
-We can tell from careful inspection that for non-negative naturals within implementation bounds, `toBinaryNaive` and `fromBinaryNaive` are inversions of each other. But even with such a simple function, it requires examination to determine that they are inversions of each other.
+We can tell from careful inspection that for non-negative naturals within implementation bounds, `toBinaryNaive` and `fromBinaryNaive` are inverses of each other. But even with such a simple function, it requires examination to determine that they are inverses of each other.
 
 This is especially true because the two functions are written in different styles, one uses a `do... while` loop, the other a `for... of` loop, and the ways in which they do basic arithmetic aren't obviously symmetrical the way `n => n + 1` and `n => n - 1` are.
 
-When we used simple composittion of invertibvle functions, we were able to _derive_ the composition of their inversions automatically. We'll apply the same approach here.
+When we used simple composition of invertible functions, we were able to _derive_ the composition of their inverses automatically. We'll apply the same approach here.
 
 ### refactoring to use invertible functions
 
-We're going to refactor these two invertible functions, beginning by extracting a pair of inversions at the core of each function's loop:
+We're going to refactor these two invertible functions, beginning by extracting a pair of inverses at the core of each function's loop:
 
 ```javascript
 const divideByTwoWithRemainder = R.add([
@@ -403,7 +409,7 @@ const unfoldToList = ([base, uncombiner]) =>
 const toBinaryUnfold = unfoldToList([0, R.get(multiplyByTwoWithRemainder)]);
 ```
 
-We have demonstrated another form of composition of invertible functions: Given a common base, `foldList` of an invertible function is the inversion of `unfoldToList` of its inversion.
+We have demonstrated another form of composition of invertible functions: Given a common base, `foldList` of an invertible function is the inverse of `unfoldToList` of its inverse.
 
 Let's add this to `R`:
 
@@ -488,7 +494,7 @@ A positive [irreducible fraction][irreducible fractions] is a [rational] number 
 
 One night at the Grand Hotel, an infinite number of guests show up. They're members of a club that reveres irreducible fractions, and each member of the club is given their own unique irreducible fraction as an identifier.
 
-The Night Clerk has to assign the guests to rooms, and comes up with an idea: Write an invertible function that maps positive irreducible numbers to positive natural numbers. That way, each guest can use the function mappping positive irreducible fractions to natural numbers to find their room. And given an occupied room, we can use the function mapping positive natural numbers to positive irreducible fractions to find the guest.
+The Night Clerk has to assign the guests to rooms, and comes up with an idea: Write an invertible function that maps positive irreducible numbers to positive natural numbers. That way, each guest can use the function mapping positive irreducible fractions to natural numbers to find their room. And given an occupied room, we can use the function mapping positive natural numbers to positive irreducible fractions to find the guest.
 
 In JavaScript terms, we need a function that maps lists of two coprime numbers to numbers, and another that maps numbers to lists of two coprime numbers. The Night Clerk's first attempt is based on [prime factorization]:[^fractran]
 
@@ -616,7 +622,7 @@ irreducibleToPath([1, 3	])
   //=> [0, 0]
 ```
 
-Hmmm. If we can write an unfold around the uncombiner function `([n, d]) => n < d ? [[n, d - n], 0] : [[n - d, d], 1]`, does that mean that if we can write an inversion, we can get a fold as well? Yes:
+Hmmm. If we can write an unfold around the uncombiner function `([n, d]) => n < d ? [[n, d - n], 0] : [[n - d, d], 1]`, does that mean that if we can write an inverse, we can get a fold as well? Yes:
 
 ```javascript
 const parentAndArcToIrreducible = ([[n, d], arc]) =>
@@ -752,7 +758,7 @@ This is the problem:
    //=> [1, 0, 0]
 ```
 
-There are inputs for which `corrigansTail` will accept and output a value, but it's proposed inversion will not take the resulting output and return the original input.
+There are inputs for which `corrigansTail` will accept and output a value, but it's proposed inverse will not take the resulting output and return the original input.
 
 As we saw earlier when discussing invertible functions, `[head, ...tail] => tail` is not invertible. It can't be, as it loses information. It outputs fewer bits than it takes as an argument.
 
@@ -786,7 +792,7 @@ tail([7, 0, 0])
   //=> 💀
 ```
 
-Functions that don't return are undesirable in production, but from a semantic perspective, they fit the bill as much as functions that raise helpful exceptions. To be invertible, there must exist a function such that for every value that `ttail` returns, its inversion takes `tail`'s output as its input and returns `tail`'s input.
+Functions that don't return are undesirable in production, but from a semantic perspective, they fit the bill as much as functions that raise helpful exceptions. To be invertible, there must exist a function such that for every value that `ttail` returns, its inverse takes `tail`'s output as its input and returns `tail`'s input.
 
 Input that don't produce outputs don't count, so `tail` is invertible.
 
