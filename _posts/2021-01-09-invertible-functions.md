@@ -7,7 +7,7 @@ tags: [allonge, noindex, mermaid]
 
 ---
 
-## Invertible Functions
+## Composing Invertible Functions
 
 ---
 
@@ -902,3 +902,20 @@ occupant(15)
 ```
 
 The Night Clerk can now say with confidence that every room in the Grand Hotel has been occupied by a member of the Irreducible Fractions Club, and that every member of the Irreducible Fractions Club occupies a room. This establishes that there are exactly as many positive irreducible fractions as there are positive natural numbers.
+
+### what can we learn from this?
+
+The need for composing invertible functions comes up rarely, if at all. However, we often compose functions. And from our examination of invertible functions, we see that one evalue of composing functions with standard composition tools is that they make it easier for us to reason about what our code does.
+
+This is no different than the the innovation of what was one called "Structured Programming." By limiting looping code to specific constructs (e.g. `for`, `while`, and `do... while`), programmers discovered they had just as much power as when they used GOTOs and registers, but the code was easier to  understand.
+
+A generation later, programmers discovered that constructs like mapping, reducing, and transducers again provided the same power as loops, but were easier to reason about. And so it is with composing functions: Carefully chosen constructs can provide the same power, but also make it easier to reason about the code.
+
+Our takeaway is thus:
+
+1. Prefer composition to just about everything else;
+2. When composing, prefer patterns that make it easier to reason about the functions we're composing.
+
+---
+
+# Notes
