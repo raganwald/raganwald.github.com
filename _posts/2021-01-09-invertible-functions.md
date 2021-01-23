@@ -456,7 +456,7 @@ fromBinary([1, 0, 1, 1, 1])
 
 ### why refactoring to fold and unfold matters
 
-`R.foldList`, and `R.unfoldToList` are higher-order invertible functions. This helps us compose new invertible functions by applyiung linear recursion to invertible functions like `divideByTwoWithRemainder`. Once we're satisfied that one-liners like `n => [Math.floor(n / 2), n % 2]` and `([n, r]) => n * 2 + r` are invertible, we can compose `toBinary` and `from Binary` out of them, confident that `toBinary` and `from Binary` will also be invertible.
+`R.foldList`, and `R.unfoldToList` are higher-order invertible functions. This helps us compose new invertible functions by applying linear recursion to invertible functions like `divideByTwoWithRemainder`. Once we're satisfied that one-liners like `n => [Math.floor(n / 2), n % 2]` and `([n, r]) => n * 2 + r` are invertible, we can compose `toBinary` and `from Binary` out of them, confident that `toBinary` and `from Binary` will also be invertible.
 
 By writing higher-order functions for composing invertible functions that preserve "invertibility," we make it easier to reason about what our code does. And so it goes for all composition: Composing functions with well-understood patterns like folding and unfolding makes it easier for us to reason about what our code does.
 
@@ -657,30 +657,30 @@ R.get(pathToIrreducible)([1, 3])
   //=> [0, 0]
 ```
 
-### from positive numbers to paths
+### a wild infinite loop appears
 
 The night clerk has one more step to complete: Going from positive natural numbers to paths. We have already seen invertible functions for converting between positive natural numbers and binary representations, but there's a problem. Let's take a look:
 
 ```
- 1: [1]
- 2: [1, 0]
- 3: [1, 1]
- 4: [1, 0, 0]
- 5: [1, 0, 1]
- 6: [1, 1, 0]
- 7: [1, 1, 1]
- 8: [1, 0, 0, 0]
- 9: [1, 0, 0, 1]
-10: [1, 0, 1, 0]
-11: [1, 0, 1, 1]
-12: [1, 1, 0, 0]
-13: [1, 1, 0, 1]
-14: [1, 1, 1, 0]
-15: [1, 1, 1, 1]
-16: [1, 0, 0, 0, 0]
-17: [1, 0, 0, 0, 1]
-18: [1, 0, 0, 1, 0]
-19: [1, 0, 0, 1, 1]
+ 1 :             [1]
+ 2 :          [1, 0]
+ 3 :          [1, 1]
+ 4 :       [1, 0, 0]
+ 5 :       [1, 0, 1]
+ 6 :       [1, 1, 0]
+ 7 :       [1, 1, 1]
+ 8 :    [1, 0, 0, 0]
+ 9 :    [1, 0, 0, 1]
+10 :    [1, 0, 1, 0]
+11 :    [1, 0, 1, 1]
+12 :    [1, 1, 0, 0]
+13 :    [1, 1, 0, 1]
+14 :    [1, 1, 1, 0]
+15 :    [1, 1, 1, 1]
+16 : [1, 0, 0, 0, 0]
+17 : [1, 0, 0, 0, 1]
+18 : [1, 0, 0, 1, 0]
+19 : [1, 0, 0, 1, 1]
 ```
 
 Every number greater than zero has a binary representation that starts with a `1`. If we map these directly to paths, we only get half of the tree:
@@ -703,479 +703,90 @@ graph TD
   1/3  -.->  1/4
 </div>
 
-We get the positive natural number eleven. Therefore, the irreducible fraction `2 / 5` maps to the positive natural number `11`. If we take `[]` as the empty path for `1 / 1`, its positive natural number will be `1`, and its two immediate children will be `3` and `2`. Their children will be `7`, `6` and `5`, `4` respectively. And so the positive natural numbers will grow as the tree grows.
+Although the binary representation cannot be taken directly as paths, it can be used. If we remove the frontmost `1` from every representation, we get an enumeration of every path in the tree:
 
-We can use paths as the basis for an invertible function to map positive natural numbers to positive irreducible fractions. Our algorithm will be:
+```
+ 1 :             [1] :          [1]
+ 2 :          [1, 0] :          [0]
+ 3 :          [1, 1] :          [1]
+ 4 :       [1, 0, 0] :       [0, 0]
+ 5 :       [1, 0, 1] :       [0, 1]
+ 6 :       [1, 1, 0] :       [1, 0]
+ 7 :       [1, 1, 1] :       [1, 1]
+ 8 :    [1, 0, 0, 0] :    [0, 0, 0]
+ 9 :    [1, 0, 0, 1] :    [0, 0, 1]
+10 :    [1, 0, 1, 0] :    [0, 1, 0]
+11 :    [1, 0, 1, 1] :    [0, 1, 1]
+12 :    [1, 1, 0, 0] :    [1, 0, 0]
+13 :    [1, 1, 0, 1] :    [1, 0, 1]
+14 :    [1, 1, 1, 0] :    [1, 1, 0]
+15 :    [1, 1, 1, 1] :    [1, 1, 1]
+16 : [1, 0, 0, 0, 0] : [0, 0, 0, 0]
+17 : [1, 0, 0, 0, 1] : [0, 0, 0, 1]
+18 : [1, 0, 0, 1, 0] : [0, 0, 1, 0]
+19 : [1, 0, 0, 1, 1] : [0, 0, 1, 1]
+```
 
-1. Map
-
-Let's start with the easy bit:
+We'll need an invertible way to remove the `1` from the head of each list. There is a way, but we must be careful. This won't work, even though it looks like it works:
 
 ```javascript
-const appendElementToList =
+const corrigansTail = R.add([
+  [head, ...tail] => tail,
+  tail => [1, ...tail]
+]);
+
+corrigansTail([1, 0, 0])
+  //=> [0, 0]
+
+R.get(corrigansTail)([0, 0])
+  //=> [1, 0, 0]
+```
+
+This is the problem:
+
+```javascript
+ corrigansTail([7, 0, 0])
+   //=> [0, 0]
+
+ R.get(corrigansTail)([0, 0])
+   //=> [1, 0, 0]
+```
+
+There are inputs for which `corrigansTail` will accept and output a value, but it's proposed inversion will not take the resulting output and return the original input.
+
+As we saw earlier when discussing invertible functions, `[head, ...tail] => tail` is not invertible. It can't be, as it loses information. It outputs fewer bits than it takes as an argument.
+
+But consider this:
+
+```javascript
+const butLastAndLast = list => [
+  list.slice(0, list.length - 1),
+  list[list.length - 1]
+];
+
+const append =
   ([list, element]) => [...list, element];
 
-const removeElementFromList =
-  list => [list.slice(0, list.length - 1), list[list.length - 1]];
-
-const [prependOne, removeOne] = foldUnfoldList([
+const tail = R.unfoldToList([
   [1],
-  appendElementToList,
-  removeElementFromList
+  R.add([butLastAndLast, append])
 ]);
-```
 
----
-
-# JUNK BELOW
-
-
-When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of [countably infinite][ci] sets by building JavaScript [generators][g]. The principle was that if we can write a generator for all of the elements of an infinite set, and if we can show that every element of the set must be generated within a finite number of calls to the generator, then we have found a way to put the infinite set into a one-to-one correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same [cardinality].
-
-[hhr]: http://raganwald.com/2015/04/24/hilberts-school.html
-[g]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
-[natural]: https://en.wikipedia.org/wiki/Natural_number
-[cardinality]: https://en.wikipedia.org/wiki/Cardinality
-
-### mapping sets to sets
-
-Another way to put two sets into a one-to-one correspondance with each other is to write functions that map elements of the sets to each other. For example, here are two functions: One maps even numbers to natural numbers, the other maps natural numbers to even numbers:
-
-### invertible functions
-
-Amongst other things, invertible functions are a handy way to map sets to each other and show that they have the same cardinality. Take the set of even numbers, and the set of natural numbers: The existence of the function `evenToNatural` and the knowledge that it is invertible proves the two sets have the same cardinality. For any even number, there is one and only one natural number, and for every natural number, there is one and only one even number. Our functions tell us which ones they are.
-
-In
-### mapping natural numbers to irreducible fractions
-
-An [irreducible fraction] is a fraction in which the numerator and denominator are integers that have no other common divisors than 1.
-
-[irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
-
- Invertible functions are another way to put sets into a one-to-one correspondance with each other.
-
-If, for two sets A and B, there exist two functions f and g such that for every `a ∈ A, f(a) = b` and `b ∈ B`. Likewise, for every `b ∈ B, g(b) = a` and `a ∈ A`. If f and g are also inversions of each other,
-
-Today we're going to look at other ways in which two infinite sets can be related, and in doing so, we'll review the properties of [injective] and [bijective] mappings. We'll then use those as a springboard for exploring reversible functions.
-
-[bijective]: https://en.wikipedia.org/wiki/Bijection
-[injective]: https://en.wikipedia.org/wiki/Injective_function
-[surjective]: https://en.wikipedia.org/wiki/Surjective_function
-
-
-
-In Hilbert's Grand Hotel, there are a [countably infinite][ci] number of rooms, and they have been numbered 1, 2, 3, and so on. Every evening, an infinite number of guests arrive, stay for one night, and then leave the next day. That evening, another infinite number of guests arrive, and the process begins anew.
-
-[ci]: https://en.wikipedia.org/wiki/Countably_infinite
-
-The night clerk is responsible for assigning every guest a room. The night clerk's problem, then, is to take an infinite number of guests, and give each one their own unique natural number. Given the definition of an infinite set of guests, if we can devise an algorithm to assign each guest their own room number, we know that the set of guests is countably infinite. Conversely, if we can show that there is at least one guest that cannot be assigned a room number, we know that the set is [uncountable].
-
-[uncountable]: https://en.wikipedia.org/wiki/Uncountable_set
-
----
-
-### even numbers, irreducible fractions, and injection
-
-We'll illustrate the principle with one example, and thereafter we'll dispense with the metaphor. One evening, an infinite number of guests arrive, each presenting a ticket bearing a unique positive even number. Can the night clerk register them all? Certainly! Each guest can be dispatched to the room number that matches the number of their ticket. This shows that the set of all even numbers is countable.
-
-The night clerk's general problem is to devise a correspondence between guests and natural numbers. That is, for each guest there is a natural number, and no two guests have the same natural number. In the example given, the correspondance is given by the [identity] function: Every even number is its own unique natural number. In JavaScript:
-
-[identity]: https://en.wikipedia.org/wiki/Identity_function
-
-```javascript
-const I = x => x;
-
-const evenToNatural = I;
-```
-
-Using identity to establish a correspondence between positive even numbers and positive natural numbers establishes an [injection] between even numbers and natural numbers. "Injection" is mathematical jargon for a one-to-one relationship, i.e. For each even number, there is exactly one natural number, and for each natural number, there is *at most* one even number.
-
-[injection]: https://en.wikipedia.org/wiki/Injective_function
-
-To give another example of an injection, consider the set of all canonical forms of the positive [rational] numbers. That is, the sent of all positive [irreducible fractions]. To review, a positive irreducible ration is a rational number where the numerator and denominator are coprime.[^coprime] `1/1`, `1/3`, and `5/3` are irreducible fractions. `4/2` is not an irreducible fraction, because four and two are both divisible by two, and thus it can be reduced to `2/1`.
-
-[rational]: https://en.wikipedia.org/wiki/Rational_number
-[^coprime]: Two numbers are coprime if their greatest common divisor is 1.
-
-Can we establish a one-to-one relationship between positive irreducible fractions and the natural numbers?
-
-
-
-Certainly we can, and to do so we'll use [Gödel Numbering], a trick we used in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN]. Given a finite ordered set of positive natural numbers, we can map them to a single number using [prime factorization].
-
-[FRACTRAN]: http://raganwald.com/2020/05/03/fractran.html
-[Gödel Numbering]: https://en.wikipedia.org/wiki/Gödel_numbering
-[prime factorization]: https://en.wikipedia.org/wiki/Integer_factorization
-
-In the case of a numerator and denominator, we can map the pair to a single natural number with this JavaScript:
-
-```javascript
-const fractionToNatural = (numerator, denominator) => Math.pow(2, numerator) * Math.pow(3, denominator);
-
-fractionToNatural(7, 8)
-  //=> 839808
-```
-
-Because every positive natural number can be reduced to a unique prime factorization,[^fundamental] we know that no two positive irreducible fractions could resolve to the same natural number.
-
-[^fundamental]: The [fundamental theorem of arithmetic](https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic) is that every integer has a unique prime factorization.
-
-This shows that the number of irreducible fractions is countable: There is one natural number for every irreducible fraction, and there is at most one irreducible fraction for every natural number.
-
----
-
-### even numbers, irreducible fractions, and bijection
-
-We established that there is one natural number for every irreducible fraction, and there is *at most* one irreducible fraction for every natural number. It is certainly *at most* one, because there are lots of natural numbers that don't map to positive irreducible fractions using the Gödel Numbering scheme.
-
-The numbers two and three don't map to positive irreducible fractions: `2` would map to `2/0`, and `3` would map to `0/3`. And any number divisible by a prime larger than two or three also wouldn't map to an irreducible fraction using Gödel Numbering.
-
-The set of all irreducible fractions maps to a proper subset of all natural numbers, specifically the set of all natural numbers whose prime factorization includes both primes two and three but no other primes. But mappings don't always have to work this way.
-
-Let's recall the very first example, positive even numbers. When mapping positive even numbers to natural numbers using the identify function, positive each even numbers map to exactly one positive natural number, but the positive natural numbers do not map to exactly one positive even number: None of the odd positive natural numbers map to a positive natural even number.
-
-But we would arrange our mapping differently. What if we used this function for mapping positive even numbers to positive natural numbers?
-
-```javascript
-const evenToNatural = even => even / 2;
-
-evenToNatural(42)
-  //=> 21
-```
-
-Now every positive even number maps to exactly one positive natural number, and every positive natural number maps to exactly one positive even number:
-
-```javascript
-const naturalToEven = natural => natural * 2;
-
-naturalToEven(21)
-  //=> 42
-```
-
-We saw that the mapping from positive even numbers to positive natural numbers using identity was an injection: It maps one-to-exactly-one in one direction, and one-to-at-most-one in the other.
-
-There's a also a name for the mapping from positive even numbers to positive natural numbers using division: It's a [bijection]. The name implies symmetry between the two relationships, and indeed it maps one-to-exactly-one in one both directions.
-
-[bijection]: https://en.wikipedia.org/wiki/Bijective_function
-
-Bijections between infinities are useful, because they establish that both infinities have the same cardinality. Using identity to map even numbers to positive natural numbers established that they are countable. Using division to establish a bijection with the positive natural numbers established that they are [countably infinite][ci]. Which is to say, there are exactly as many positive even natural numbers as there are positive natural numbers.
-
----
-
----
-
-## a bijective mapping between positive irreducible fractions and positive natural numbers
-
----
-
-Bijections with the natural numbers have other uses. They provide a way of enumerating an infinite set: If we have a way of mapping natural numbers to exactly one positive irreducible fraction, we can generate all of the fractions by generating the positive natural numbers and mapping them to the positive irreducible fractions, without having to filter out positive natural numbers that do not map to positive irreducible fractions.
-
-Consider trying to generate the 10,000th positive irreducible fraction. How many positive natural numbers would we have to try to find it using the Gödel Numbering function? If we could devise a bijective mapping between positive irreducible fractions and positive natural numbers, we could simply feed it `10000` and get an immediate answer.
-
-There are a number of such mappings. We're going to construct one based on the [Euclidean algorithm] for determining the [greatest common divisor] of two integers.
-
-[Euclidean algorithm]: https://en.wikipedia.org/wiki/Euclidean_algorithm
-[greatest common divisor]: https://en.wikipedia.org/wiki/Greatest_common_divisor
-
----
-
-### the euclidean algorithm for determining the greatest common divisor of two integers
-
-Given two integers `p` and `q`, the Euclidean algorithm for determining the greatest common divisor of two integers in its most simple form works like this:
-
-- If `p === q`, stop.
-  - If `p === q === 1`, the original `p` and `q` are coprime;
-  - If `p === q > 1`, `p` (and `q`) is the greatest common divisor of the two original numbers.
-- If `p` > `q`, then return the greatest common divisor of `p-q, q`;
-- If `q > p`, then return the greatest common divisor of `p, q-p`;
-
-Here it is in JavaScript:
-
-```javascript
-const gcd = (p, q) => {
-  if (p > q) {
-    return gcd(p-q, q);
-  } else if (p < q) {
-    return gcd(p, q-p);
-  } else {
-    return p;
-  }
-};
-
-gcd(42, 15)
-  //=> 3
-
-gcd(42, 14)
-  //=> 14
-
-gcd(42, 13)
-  //=> 1
-```
-
-Consider how this algorithm works. If we consider give it any pair of positive natural numbers, it reduces one or the other repeatedly until both are equal. Thus, all pairs of positive numbers eventually converge on a positive natural number. Here are the intermediate results of the above three calculations:
-
-<div class="mermaid">
-graph LR
-  42/15 --> 27/15 --> 12/15 --> 12/3 --> 9/3 --> 6/3 --> 3/3
-</div>
-
-<div class="mermaid">
-graph LR
-  42/14 --> 28/14 --> 14/14
-</div>
-
-<div class="mermaid">
-graph LR
-  42/13 --> 29/13 --> 16/13 --> 3/13 --> 3/10 --> 3/7 --> 3/4 --> 3/1 --> 2/1 --> 1/1
-</div>
-
-Every pair of positive natural numbers traces a **path** through the set of all pairs of positive natural numbers, terminating with a pair of equal natural numbers. And as it happens, this algorithm partitions the set of all pairs of positive natural numbers into a forest of trees. One tree has a 'root' of `1/1`. The next has a root of `2/2`, the next a root of `3/3` and so on.
-
-We're interested in the tree with a root of `1/1`, because the set of all pairs of numbers that resolve to a root of `1/1` is the set of all pairs of numbers that are coprime, and the set of all pairs of coprime natural numbers is the set of all irreducible fractions, because an irreducible fraction is a fraction where the numerator and denominator are coprime.
-
----
-
-### the irreducible tree
-
-The tree with a root of `1/1`, is, of course, infinite. But here is a small part of the tree that illustrates its shape. Every node is a positive irreducible fraction:
-
-<div class="mermaid">
-graph TD
-  2/1 --> 1/1
-  1/2 --> 1/1
-  3/1 --> 2/1
-  2/3 --> 2/1
-  3/2 --> 1/2
-  1/3 --> 1/2
-  4/1 --> 3/1
-  3/4 --> 3/1
-  5/3 --> 2/3
-  2/5 --> 2/3
-  5/2 --> 3/2
-  3/5 --> 3/2
-  4/3 --> 1/3
-  1/4 --> 1/3
-</div>
-
-How doos this help us map positive irreducible fractions to positive natural numbers? Note that our upside-down tree is a binary tree: There are exactly two child nodes for every node. One represents adding `p` to `q`, the other adding `q` to `p`. But working from leaf back to root, at each step we must either subtract `p` from `q` or subtract `q` from `p`, depending upon which is bigger.
-
-In doing so, we are forming a path through the space of pairs of positive natural numbers. What we're looking for is an encoding of our path that forms a bijection with the set of positive natural numbers. And there is a very simple one, thanks to this being a binary tree.
-
----
-
-### encoding paths as numbers
-
-Since at each step we either subtract `p` from `q` or subtract `q` from `p` until we reach the root, what we can do is make a note of which one we subtract at every step. Let's say we call subtracting `p` from `q` a `0`, and subtracting `q` from `p` a `1`.
-
-We can produce a list of 1s and 0s representing our path by modifying the `gcd` algorithm:
-
-```javascript
-const toPath = (p, q, path = []) => {
-  if (p > q) {
-    return toPath(p-q, q, [1].concat(path));
-  } else if (p < q) {
-    return toPath(p, q-p, [0].concat(path));
-  } else {
-    return path;
-  }
-};
-
-toPath(5, 3)
-  //=> [1, 0, 1]
-
-toPath(1, 3)
+tail([1, 0, 0])
   //=> [0, 0]
 
-toPath(1, 1)
-  //=> []
+R.get(tail)([0, 0])
+  //=> [1, 0, 0]
 ```
 
-Here's our diagram again, with the paths shown:
-
-<div class="mermaid">
-graph TD
-  2/1 ==1==> 1/1
-  1/2 ==0==> 1/1
-  3/1 --> 2/1
-  2/3 ==0==> 2/1
-  3/2 --> 1/2
-  1/3 ==0==> 1/2
-  4/1 --> 3/1
-  3/4 --> 3/1
-  5/3 ==1==> 2/3
-  2/5 --> 2/3
-  5/2 --> 3/2
-  3/5 --> 3/2
-  4/3 --> 1/3
-  1/4 --> 1/3
-</div>
-
-The paths can be converted to positive natural numbers by prefixing them with a `1` and treating the number as binary:
+`tail` has the same effect as `corrigansTail` for lists beginning with `1`, but when we give it a list beginning with another number, it does not return a result:
 
 ```javascript
-const toNatural = path => {
-  const prependedPath = [1].concat(path);
-  let n = 0;
-  let powerOfTwo = 1;
-
-  for (const element of prependedPath.reverse()) {
-    n += element * powerOfTwo;
-    powerOfTwo *= 2;
-  }
-
-  return n;
-};
-
-toNatural(toPath(5, 3))
-  //=> 13
-
-toNatural(toPath(1, 3))
-  //=> 4
-
-toNatural(toPath(2, 1))
-  //=> 3
-
-toNatural(toPath(1, 2))
-  //=> 2
-
-toNatural(toPath(1, 1))
-  //=> 1
+tail([7, 0, 0])
+  //=> 💀
 ```
 
-This mechanism converts positive irreducible fractions to positive natural numbers. It has "more moving parts" than the Gödel Numbering approach, but it is more useful, in that it is a bijection and not an injection. To see how that works, we have to not just convert fractions to natural numbers, but go the other way around and map positive natural numbers to irreducible fractions.
+Functions that don't return are undesirable in production, but from a semantic perspective, they fit the bill as much as functions that raise helpful exceptions. To be invertible, there must exist a function such that for every value that `ttail` returns, its inversion takes `tail`'s output as its input and returns `tail`'s input.
 
-To do that, we'll reverse our approach. We'll start by converting positive natural numbers to paths, and then we'll convert paths to positive irreducible fractions.
+Input that don;'t produce outputs don't count, so this version of `tail` is invertible, even if it is not suitable for production use.
 
----
-
-### converting numbers back to fractions with paths
-
-Our first step in reversing our mapping will be to generate paths from natural numbers:
-
-
-```javascript
-const fromNatural = natural => {
-  const path = [];
-  let n = natural;
-  while (n > 1) {
-    path.push(n % 2);
-    n = Math.floor(n/2);
-  }
-
-  return path;
-};
-
-
-fromNatural(13)
-  //=> [1, 0, 1]
-
-fromNatural(4)
-  //=> [0, 0]
-
-fromNatural(3)
-  //=> [1]
-
-fromNatural(2)
-  //=> [0]
-
-fromNatural(1)
-  //=> []
-```
-
-The second step will be to reconstruct fractions from paths. This is straightforward: Where we constructed the path by noting whether we subtracted `p` from `q` or `q` from `p`, when reconstructing we'll go in the other direction and use the path to decide whether to add `p` to `q` or add `q` to `p`.
-
-Before we jump back into the code, here's our tree again, this time with the root at the top so we can more easily see the paths we'll follow:
-
-<div class="mermaid">
-graph TD
-  1/1 ==1==> 2/1
-  1/1 ==0==> 1/2
-  2/1 -->    3/1
-  2/1 ==0==> 2/3
-  1/2 -->    3/2
-  1/2 ==0==> 1/3
-  3/1 -->    4/1
-  3/1 -->    3/4
-  2/3 ==1==> 5/3
-  2/3 -->    2/5
-  3/2 -->    5/2
-  3/2 -->    3/5
-  1/3 -->    4/3
-  1/3 -->    1/4
-</div>
-
-Getting a fraction from a path is performed by starting with the root and then adding `p` to `q` or `q` to `p` for each step of the path. When there are no steps, we stick with the root.
-
-Starting with `[1, 1]`:
-
-* The path `[]` returns `[1, 1]` because there's nothing to follow;
-* The path `[0, 0]` becomes `[1, 2]` because when the step is `0`, we turn `[p, q]` into `[p, p+q]`, and `[1, 1+1]` is `[1, 2]`, And again, the second step is `0`, so turning `[p, q]` into `[p, p+q]` means turning `[1, 2]` into `[1, 1+2]`, which is `[1, 3]`
-* Using the above logic, the path `[1, 0, 1]` is treated as `[p+q, q]`, `[p, p+q]`, `[p+q, q]` and thus `[1, 1]` becomes `[2, 1]`, `[2, 3]`, and finally `[5, 3]`
-
-Some code to do this for us:
-
-```javascript
-const fromPath = (path, root = [1, 1]) => {
-  if (path.length === 0) {
-    return root;
-  } else {
-    const [head, ...butHead] = path;
-    const [p, q] = root;
-
-    const nextRoot = head === 0 ? [p, p+q] : [p+q, q];
-
-    return fromPath(butHead, nextRoot);
-  }
-};
-
-fromPath(fromNatural(13)
-  //=> [5, 3]
-
-fromPath(fromNatural(4)
-  //=> [1, 3]
-
-fromPath(fromNatural(3)
-  //=> [2, 1]
-
-fromPath(fromNatural(2)
-  //=> [1, 2]
-
-fromPath(fromNatural(1)
-  //=> [1, 1]
-```
-
----
-
-### the final bijection
-
-And now we can express the final mapping from positive canonical fraction to positive natural number:
-
-```javascript
-const fractionToNatural = fraction => toNatural(toPath(fraction));
-```
-
-And positive natural number to positive canonical fraction:
-
-```javascript
-const naturalToFraction = natural => fromPath(fromNatural(natural));
-```
-
-Every positive canonical fraction maps to exactly one positive natural number (via `fractionToNatural`), and every positive natural number maps to exactly one positive canonical fraction (via `naturalToFraction`). Therefore this is a bijection between the set of all positive canonical fractions and the set of all positive natural numbers, which implies that the set of all positive canonical fractions has exactly the same cardinality as the set of all positive natural numbers: Both are countably infinite.
-
----
-
-![Green U Turn](/assets/invertible/green-u-turn.jpg)
-
-
-
-[![Key](/assets/invertible/key.jpg)](https://www.flickr.com/photos/26344495@N05/32743331307)
-
----
-
-## Reversibility
-
-*Coming soon, thoughts on reversible functions and concatenative programming...*
-
----
-
-### notes
