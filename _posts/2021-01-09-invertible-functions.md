@@ -11,7 +11,7 @@ tags: [allonge, noindex, mermaid]
 
 ---
 
-In this essay, we're going to work with invertible functions. A function is invertible if it has an [inverse c]. Consider these two functions:
+In this essay, we're going to work with **invertible functions**. A function is invertible if it has an [inverse function]. Consider:
 
 [inverse function]: https://en.wikipedia.org/wiki/Inverse_function
 
@@ -130,7 +130,7 @@ In general, all functions mapping multiple inputs to one output can be rewritten
 
 If `f` and `g` are invertible functions, and `⁻¹` as a suffix denotes "the inverse of" a function, then `(f ֯  g)⁻¹ = (g⁻¹ ֯  f⁻¹)`.
 
-Thius, if we compose two invertible functions, the inverse of that composition can be computed by taking the composition of the inverses of each function, in reverse order:
+Thus, if we compose two invertible functions, the inverse of that composition can be computed by taking the composition of the inverses of each function, in reverse order:
 
 ```javascript
 const plusOne = n => n + 1;
@@ -210,24 +210,21 @@ We'll use this later.
 
 ### converting between numbers and their binary representation
 
-Here's a function that converts a non-negative natural number into the list form of its binary representation, without relying on JavaScript's capabilities for parsing and representing numbers in various bases:
+Here's a function that converts a positive natural number into the list form of its binary representation, without relying on JavaScript's capabilities for parsing and representing numbers in various bases:
 
 ```javascript
 const toBinaryNaive = n => {
   const b = [];
 
-  do {
+  while (n !== 0) {
     const bit = n % 2;
     n = Math.floor(n / 2);
 
     b.unshift(bit);
-  } while (n > 0);
+  }
 
   return b;
 };
-
-toBinaryNaive(0)
-  //=> [0]
 
 toBinaryNaive(1)
   //=> [1]
@@ -239,7 +236,7 @@ toBinaryNaive(23)
   //=> [1, 0, 1, 1, 1]
 ```
 
-And here's its inverse, a function that converts the list form of a non-negative natural number's binary representation into the number:
+And here's its inverse, a function that converts the list form of a positive natural number's binary representation into the number:
 
 ```javascript
 function fromBinaryNaive(b) {
@@ -253,9 +250,6 @@ function fromBinaryNaive(b) {
   return n;
 };
 
-fromBinaryNaive([0])
-  //=> 0
-
 fromBinaryNaive([1])
   //=> 1
 
@@ -266,11 +260,11 @@ fromBinaryNaive([1, 0, 1, 1, 1])
   //=> 23
 ```
 
-We can tell from careful inspection that for non-negative naturals within implementation bounds, `toBinaryNaive` and `fromBinaryNaive` are inverses of each other. But even with such a simple function, it requires examination to determine that they are inverses of each other.
+We can tell from careful inspection that for positive naturals within implementation bounds, `toBinaryNaive` and `fromBinaryNaive` are inverses of each other. But even with such a simple function, it requires examination to determine that they are inverses of each other.
 
-This is especially true because the two functions are written in different styles, one uses a `do... while` loop, the other a `for... of` loop, and the ways in which they do basic arithmetic aren't obviously symmetrical the way `n => n + 1` and `n => n - 1` are.
+This is especially true because the two functions are written in different styles, one uses a `while` loop, the other a `for... of` loop, and the ways in which they do basic arithmetic aren't obviously symmetrical the way `n => n + 1` and `n => n - 1` are.
 
-When we used simple composition of invertible functions, we were able to _derive_ the composition of their inverses automatically. We'll apply the same approach here.
+When we used simple composition of invertible functions, we were able to _derive_ the composition of their inverses automatically. It's possible to use that same approach to make more complex functions like `toBinary`. We'll see how in the next section.
 
 ### refactoring to use invertible functions
 
@@ -290,17 +284,14 @@ const toBinaryRefactored = n => {
   const b = [];
   let bit;
 
-  do {
+  while (n > 0) {
     [n, bit] = divideByTwoWithRemainder(n);
 
     b.unshift(bit);
-  } while (n > 0);
+  }
 
   return b;
 };
-
-toBinaryRefactored(0)
-  //=> [0]
 
 toBinaryRefactored(1)
   //=> [1]
@@ -320,9 +311,6 @@ function fromBinaryRefactored(b) {
 
   return n;
 };
-
-fromBinaryRefactored([0])
-  //=> 0
 
 fromBinaryRefactored([1])
   //=> 1
@@ -398,10 +386,10 @@ const unfoldToList = ([base, uncombiner]) =>
     let list = [];
     let element;
 
-    do {
+    while (!deepEqual(folded, base)) {
       [folded, element] = uncombiner(folded);
       list.unshift(element);
-    } while (!deepEqual(folded, base))
+    }
 
     return list;
   };
@@ -409,7 +397,7 @@ const unfoldToList = ([base, uncombiner]) =>
 const toBinaryUnfold = unfoldToList([0, R.get(multiplyByTwoWithRemainder)]);
 ```
 
-We have demonstrated another form of composition of invertible functions: Given a common base, `foldList` of an invertible function is the inverse of `unfoldToList` of its inverse.
+We have demonstrated another form of composition of invertible functions: Given a common `base`, `foldList` of an invertible function is the inverse of `unfoldToList` of its inverse.
 
 Let's add this to `R`:
 
@@ -432,9 +420,6 @@ const R = {
 };
 
 const toBinary = R.unfoldToList([0, divideByTwoWithRemainder]);
-
-toBinary(0)
-  //=> [0]
 
 toBinary(1)
   //=> [1]
@@ -484,7 +469,7 @@ Now let's look at a "contrived" problem we will solve with invertible functions.
 
 The proposition is that the Grand Hotel has a countably infinite number of rooms, each of which is denoted by a natural number. The hotel's Night Clerk has the problem of coming up with an algorithm for assigning an infinite number of guests to the countably infinite number of rooms.
 
-### gödel and irreducible fractions
+### kurt gödel and the irreducible fractions club
 
 A positive [irreducible fraction][irreducible fractions] is a [rational] number where the numerator and denominator are coprime.[^coprime] `1/1`, `1/3`, and `5/3` are irreducible fractions. `4/2` is not an irreducible fraction, because four and two are both divisible by two, and thus it can be reduced to `2/1`.
 
@@ -492,7 +477,7 @@ A positive [irreducible fraction][irreducible fractions] is a [rational] number 
 [irreducible fractions]: https://en.wikipedia.org/wiki/Irreducible_fraction
 [^coprime]: Two numbers are coprime if their greatest common divisor is 1.
 
-One night at the Grand Hotel, an infinite number of guests show up. They're members of a club that reveres irreducible fractions, and each member of the club is given their own unique irreducible fraction as an identifier.
+One night at the Grand Hotel, an infinite number of guests show up. They're members of the Irreducible Fractions Club, and each member of the club is given their own unique irreducible fraction as an identifier.
 
 The Night Clerk has to assign the guests to rooms, and comes up with an idea: Write an invertible function that maps positive irreducible numbers to positive natural numbers. That way, each guest can use the function mapping positive irreducible fractions to natural numbers to find their room. And given an occupied room, we can use the function mapping positive natural numbers to positive irreducible fractions to find the guest.
 
@@ -542,15 +527,15 @@ guestToRoom([2, 3])
   //=> 108
 ```
 
-This works fine, but it assigns guests to a subset of the rooms of the Grand Hotel. It's undesireable to have empty rooms at any hotel, even one with an infinite number of rooms. And from a maths perspective, this doesn't demonstrate that there are an equal number of positive irreducible fractions as there are positive natural numbers, because there are an infinite number of positive natural numbers that are not associated with a positive irreducible fraction, e.g. the numbers one through five, and anything divisible by a prime larger than three.
+This works fine, but it assigns guests to a subset of the rooms of the Grand Hotel. It's undesirable to have empty rooms at any hotel, even one with an infinite number of rooms. And from a maths perspective, this doesn't demonstrate that there are an equal number of positive irreducible fractions as there are positive natural numbers, because there are an infinite number of positive natural numbers that are not associated with a positive irreducible fraction, e.g. the numbers one through five, and anything divisible by a prime larger than three.
 
-The Night Clerk decides to try againn, this time taking advantage of an interesting rule about the relationship between members of the irreducible fraction club.
+The Night Clerk decides to try again, this time taking advantage of an interesting rule about the relationship between members of the irreducible fraction club.
 
-### the irreducible fraction family tree
+### the irreducible fractions club family tree
 
 The Irreducible Fractions Club has an interesting rule: Each member of the club is required to recruit exactly two more members of the club, who in turn must recruit two more members of the club, and so forth. Furthermore, they have a specific rule for assigning irreducible fractions to new members.
 
-The founder's fraction was `1 / 1`. `1 / 1`'s two recruits were the fractions `2 / 1` and `1 / 2`. Their recruits were given the fractions `3 / 1`, `2 / 3` and `3 / 2`, `1 / 3` respectively. And this tree of recruits and names continues, to infinity. The rules for constructing the irreducible fraction "family tree" are as follows:
+The founder's fraction was `1 / 1`. The founder's recruits were the fractions `2 / 1` and `1 / 2`. Their recruits were given the fractions `3 / 1`, `2 / 3` and `3 / 2`, `1 / 3` respectively. And this tree of recruits and names continues, to infinity. The rules for constructing the Irreducible Fractions Club's "family tree" are as follows:
 
 1. All members are given a unique irreducible fraction;
 2. Irreducible fractions are of the form `n / d`, representing a numerator and denominator;
@@ -577,7 +562,13 @@ graph TD
   1/4 --> 1/3
 </div>
 
-The club claims that every irreducible fraction appears exactly once somewhere in the tree, and therefore, there is a club member for every irreducible fraction.
+The club claims that every irreducible fraction appears exactly once somewhere in the tree, and therefore, there is exactly one club member for every irreducible fraction.[^club-claim]
+
+[^club-claim]: The club is correct. The club's rules for recruiting and assigning fractions to the recruits do guarantee that there is exactly one member for every irreducible fraction. This is a direct consequence of the [Euclidean algorithm] for determining the [greatest common divisor] of two integers.
+
+[Euclidean algorithm]: https://en.wikipedia.org/wiki/Euclidean_algorithm
+[greatest common divisor]: https://en.wikipedia.org/wiki/Greatest_common_divisor
+
 
 The Night Clerk observes that if every irreducible fraction appears exactly once somewhere in the tree, there is a unique path from the founding fraction `1 / 1` to every irreducible fraction, and if we label the arcs from each parent to child with a `0` and a `1`, each unique path has a unique encoding as a list of `0`s and `1`s.
 
@@ -794,7 +785,7 @@ tail([7, 0, 0])
 
 Functions that don't return are undesirable in production, but from a semantic perspective, they fit the bill as much as functions that raise helpful exceptions. To be invertible, there must exist a function such that for every value that `ttail` returns, its inverse takes `tail`'s output as its input and returns `tail`'s input.
 
-Input that don't produce outputs don't count, so `tail` is invertible.
+Input that don't produce outputs don't count, so `tail` is invertible: Every output it actually produces is an input to its inverse function.
 
 ---
 
