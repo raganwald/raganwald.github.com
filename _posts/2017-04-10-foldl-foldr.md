@@ -2,6 +2,7 @@
 title: "A quick look at reduce, foldl, foldr, and associative order"
 layout: default
 tags: [allonge]
+published: false
 ---
 
 [![Star](/assets/images/star.jpg)](https://www.flickr.com/photos/ambs/2993482908)

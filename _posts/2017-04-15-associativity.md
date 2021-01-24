@@ -2,6 +2,7 @@
 title: "Disambiguating Left-Association, Right-Association, and the Associative Property"
 layout: default
 tags: [allonge]
+published: false
 ---
 
 [![Star](/assets/images/1024px-Thales_A_calculating_machine_2009-08-23.jpg)](https://commons.wikimedia.org/wiki/File:Thales_A_calculating_machine_2009-08-23.jpg)
