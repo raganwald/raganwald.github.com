@@ -924,7 +924,52 @@ Our takeaway is thus:
 
 # Structuring and Destructuring
 
+Purely invertible functions may be rare in everyday programming, but many programming languages--including JavaScript--provide support for [destructuring assignment] with built-in compound data types like POJOs and Arrays. In this section, we'll explore how invertible functions can be used to implement destructuring assignment.
 
+[destructuring assignment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
+
+Before we get into the main work, we'll begin with a new kind of invertible function, the invertible generator.
+
+### invertible generators
+
+Because functions only return one value in fundamental computation models like the lambda calculus, and because functions in languages like JavaScript cannot return more than one value, an invertible function can only acept one value as an argument and only return one value.
+
+But there is a way to return multiple values from a function in JavaScript, and that way is to make the function a [generator]. Here're `cons` and `carcdr` implemented as simple generators:
+
+```javascript
+function* cons(head, tail) {
+  yield [head, ...tail];
+}
+
+function* carcdr([head, ...tail]) {
+  yield head;
+  yield tail;
+}
+
+function log(expr) {
+  for (const value of expr]) {
+    console.log(value)
+  }
+}
+
+log(carcdr(...cons(1, [2, 3]))
+  //=> [1, 2, 3]
+
+log(carcdr([1, 2, 3]))
+  //=> 1
+  //=> [2, 3]
+```
+
+Our syntax for composing generators is slightly different, but we get to the same place:
+
+```javascript
+log(cons(...carcdr([1, 2, 3])))
+  //=> [1, 2, 3]
+
+log(carcdr(...cons(1, [2, 3])))
+  //=> 1
+  //=> [2, 3]
+```
 
 ---
 
