@@ -7,7 +7,7 @@ tags: [allonge, noindex, mermaid]
 
 ---
 
-## Invertible Functions
+# Invertible Functions
 
 ---
 
@@ -915,6 +915,16 @@ Our takeaway is thus:
 
 1. Prefer composition to just about everything else;
 2. When composing, prefer patterns that make it easier to reason about the functions we're composing.
+
+---
+
+[![Ontario College of Art and Design ©John Vetterli 2007](/assets/invertible/ocad.jpg)](https://www.flickr.com/photos/jvetterli/1493007441)
+
+---
+
+# Structuring and Destructuring
+
+
 
 ---
 
