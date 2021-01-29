@@ -94,6 +94,104 @@ Finally, `butFirst` isn't invertible because it has infinitely many inputs that 
 
 Returning two different values where one is expected isn't possible, which is why a function that is invertible must have exactly one unique input for each unique output.
 
+### maps can be invertible
+
+Consider the maps `lettersToNumbers` and `numbersToLetters`:
+
+```javascript
+const az = {
+  a: 0,
+  b: 1,
+  c: 2,
+  d: 3,
+  e: 4,
+  f: 5,
+  g: 6,
+  h: 7,
+  i: 8,
+  j: 9,
+  k: 10,
+  l: 11,
+  m: 12,
+  n: 13,
+  o: 14,
+  p: 15,
+  q: 16,
+  r: 17,
+  s: 18,
+  t: 19,
+  u: 20,
+  v: 21,
+  w: 22,
+  x: 23,
+  y: 24,
+  z: 25
+};
+
+const lettersToNumbers = new Map(Object.entries(az));
+const numbersToLetters = new Map(Object.entries(az).map(([k, v]) => [v, k]));
+
+lettersToNumbers.get('c')
+  //=> 2
+
+numbersToLetters.get(2)
+  //=> 'c'
+```
+
+Because the original `az` POJO maps a unique set of values to another unique set of values, `lettersToNumbers` and `numbersToLetters` are inversions of each other. They aren't invertible functions, because in JavaScript a Map is not a function. In some other languages--like Clojure--maps are automatically functions.
+
+But this being JavaScript, we can write some code to convert our maps into invertible functions:
+
+```javascript
+const numberOf = letter => lettersToNumbers.get(letter);
+const letterOf = number => numbersToLetters.get(number);
+
+numberOf('c')
+  //=> 2
+
+letterOf(2)
+  //=> 'c'
+```
+
+Note that by convention, `undefined` is not considered a value when we work with invertible functions. Thus, the following does **not** mean that our functions return the same favlue for two different inputs:
+
+```javascript
+numberOf(6)
+  //=> undefined
+
+numberOf(42)
+  //=> undefined
+
+letterOf('snafu')
+  //=> undefined
+
+letterOf('fubar')
+  //=> undefined
+```
+
+It literally just means that our functions do not define an ouput for those inputs.
+
+### trivially invertible functions
+
+A function that only produces one output—a constant function—can be invertible, provided it only accepts one input. Such functions are called _trivially invertible_. This follows directly from our invertible maps. What if an invertible map only maps one key to one value?
+
+```javascript
+const m = {
+  here: 'there'
+};
+
+const fromHereToThere = new Map(Object.entries(m));
+const fromThereToHere = new Map(Object.entries(m).map(([k, v]) => [v, k]));
+const toThere = from => fromHereToThere.get(from);
+const toFrom = there => fromThereToHere.get(there);
+
+toThere('here')
+  //=> 'there'
+
+toFrom('there')
+  //=> 'here'
+```
+
 ### invertible functions and compound values
 
 Invertible functions can't have two outputs. They also can't have two inputs. Therefore, this function is not invertible as written:
@@ -192,12 +290,12 @@ const R = {
     const inverse = argument =>
       fns.reduce((value, fn) => this.get(fn)(value), argument);
 
-    return this.add([composition, inverse]);
+    return this.add(composition, inverse);
   }
 };
 
-R.add([plusOne, minusOne]);
-R.add([timesTwo, dividedByTwo]);
+R.add(plusOne, minusOne);
+R.add(timesTwo, dividedByTwo);
 
 plusOneTimesTwo(42)
   //=> 85
@@ -271,10 +369,10 @@ When we used simple composition of invertible functions, we were able to _derive
 We're going to refactor these two invertible functions, beginning by extracting a pair of inverses at the core of each function's loop:
 
 ```javascript
-const divideByTwoWithRemainder = R.add([
+const divideByTwoWithRemainder = R.add(
   n => [Math.floor(n / 2), n % 2],
   ([n, r]) => n * 2 + r
-]);
+);
 ```
 
 Now we can write:
@@ -409,13 +507,13 @@ const R = {
     const folder = foldList([base, combiner]);
     const unfolder = unfoldToList([base, this.get(combiner)]);
 
-    return this.add([folder, unfolder]);
+    return this.add(folder, unfolder);
   },
   unfoldToList([base, uncombiner]) {
     const unfolder = unfoldToList([base, uncombiner]);
     const folder = foldList([base, this.get(uncombiner)]);
 
-    return this.add([unfolder, folder]);
+    return this.add(unfolder, folder);
   }
 };
 
@@ -633,12 +731,12 @@ And from this, it follows that:
 ```javascript
 const toIrreducible = R.foldList([
   [1, 1],
-  R.add([
+  R.add(
     ([[n, d], arc]) =>
       arc === 0 ? [n, n + d] : [n + d, d],
     ([n, d]) =>
       n < d ? [[n, d - n], 0] : [[n - d, d], 1]
-  ])
+  )
 ]);
 
 toIrreducible([1, 0, 0])
@@ -727,10 +825,10 @@ Although the binary representation cannot be taken directly as paths, it can be 
 We'll need an invertible way to remove the `1` from the head of each list. There is a way, but we must be careful. This won't work, even though it looks like it works:
 
 ```javascript
-const corrigansTail = R.add([
+const corrigansTail = R.add(
   [head, ...tail] => tail,
   tail => [1, ...tail]
-]);
+);
 
 corrigansTail([1, 0, 0])
   //=> [0, 0]
@@ -766,7 +864,7 @@ const append =
 
 const tail = R.unfoldToList([
   [1],
-  R.add([butLastAndLast, append])
+  R.add(butLastAndLast, append)
 ]);
 
 tail([1, 0, 0])
@@ -800,30 +898,30 @@ The Night Clerk now has what they need to map positive invertible fractions to p
 ```javascript
 const binaryToNumber = R.foldList([
   0,
-  R.add([
+  R.add(
     ([n, r]) => n * 2 + r,
     n => [Math.floor(n / 2), n % 2]
-  ])
+  )
 ]);
 
 const pathToBinary = R.foldList([
   [1],
-  R.add([
+  R.add(
     ([list, element]) =>
     	[...list, element],
     list =>
       [list.slice(0, list.length - 1), list[list.length - 1]]
-  ])
+  )
 ]);
 
 const irreducibleToPath = R.unfoldToList([
   [1, 1],
-  R.add([
+  R.add(
     ([n, d]) =>
       n < d ? [[n, d - n], 0] : [[n - d, d], 1],
     ([[n, d], arc]) =>
       arc === 0 ? [n, n + d] : [n + d, d]
-  ])
+  )
 ]);
 
 const roomNumber = R.compose([
@@ -934,7 +1032,9 @@ Before we get into the main work, we'll begin with a new kind of invertible func
 
 Because functions only return one value in fundamental computation models like the lambda calculus, and because functions in languages like JavaScript cannot return more than one value, an invertible function can only acept one value as an argument and only return one value.
 
-But there is a way to return multiple values from a function in JavaScript, and that way is to make the function a [generator]. Here're `cons` and `carcdr` implemented as simple generators:
+But there is a way to return multiple values from a function in JavaScript, and that way is to make the function return a [generator]. Here're `cons` and `carcdr` implemented as simple generators:
+
+[generator]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*
 
 ```javascript
 function* cons(head, tail) {
@@ -960,15 +1060,73 @@ log(carcdr([1, 2, 3]))
   //=> [2, 3]
 ```
 
-Our syntax for composing generators is slightly different, but we get to the same place:
+Now let's consider *stackifying* invertible generators. `stackify` is a function that takes an invertible generator (a generator function from that takes zero or more inputs and yields zero or more outputs) as an argument, and returns a function that takes a stack as an argument and returns a stack.
 
 ```javascript
-log(cons(...carcdr([1, 2, 3])))
-  //=> [1, 2, 3]
+const stackify = fn => stack => {
+  if (stack.length < fn.length) return;
 
-log(carcdr(...cons(1, [2, 3])))
-  //=> 1
-  //=> [2, 3]
+  const inputs = stack.slice(stack.length - fn.length);
+  const remainder = stack.slice(0, stack.length - fn.length);
+  const outputs = [...fn(...inputs)];
+
+  if (!outputs.some(o => o === undefined)) {
+      return remainder.concat([...fn(...inputs)])
+  }
+}
+
+const stackifiedCons = stackify(cons);
+const stackifiedCarCdr = stackify(carcdr);
+
+stackifiedCons([1, 2, 3, 4, [5, 6]])
+  //=> [1, 2, 3, [4, 5, 6]]
+
+stackifiedCarCdr([1, 2, 3, [4, 5, 6]])
+  //=> [1, 2, 3, 4, [5, 6]]
+```
+
+A stackified invertible generator becomes an ordinary invertible function that instead of mapping zero or more inputs to zero or more outputs, maps a stack to a stack. It's just that it pops the arguments it needs from the top of the stack, and then pushes the values it return back onto the top. (Well, actually, it makes a copy of the original stack, but this is semantically what it does to the copy.)
+
+Thus, stackified invertible functions are just like the invertible functions we built with `R`, and we'll add `stackify` to it:
+
+```javascript
+const R = {
+  // ...
+
+  stackify(invertibleGenerator) {
+    const stackify = fn => stack => {
+      if (stack.length < fn.length) return;
+
+      const inputs = stack.slice(stack.length - fn.length);
+      const remainder = stack.slice(0, stack.length - fn.length);
+
+      return remainder.concat([...fn(...inputs)])
+    };
+
+    return this.add(
+      stackify(invertibleGenerator),
+      stackify(this.get(invertibleGenerator))
+    );
+  }
+};
+
+const cons = R.stackify(
+  R.add(
+    function*(head, tail) {
+      yield [head, ...tail];
+    },
+    function*([head, ...tail]) {
+      yield head;
+      yield tail;
+    }
+  )
+);
+
+cons([1, 2, 3, []])
+  //=> [1, 2, [3]]
+
+R.get(cons)([1, 2, [3]])
+  //=> [1, 2, 3, []]
 ```
 
 ---
