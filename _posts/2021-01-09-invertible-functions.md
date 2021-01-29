@@ -1,13 +1,9 @@
 ---
-title: "Composing Invertible Functions"
+title: "Invertible Functions"
 tags: [allonge, noindex, mermaid]
 ---
 
 [![Grand Hotel](/assets/invertible/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
-
----
-
-# Invertible Functions
 
 ---
 
@@ -1007,7 +1003,7 @@ Purely invertible functions may be rare in everyday programming, but many progra
 
 [destructuring assignment]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Destructuring_assignment
 
-Before we get into the main work, we'll begin with a new kind of invertible function, the invertible generator.
+Before we get into the main work, we'll begin with a new kind of invertible function, the *invertible generator*. Then we'll talk about *stackified invertible generators*, invertible functions that map from a stack to a stack.
 
 ### invertible generators
 
@@ -1117,7 +1113,7 @@ R.get(cons)([1, 2, [3]])
 
 An invertible function must take an argument and must return a non-undefined value. Invertible generators can take zero or more arguments, and return zero or more non-undefined values. In that sense, and invertible generator is not a direct analogue of an invertible function.
 
-However, once we stackifyu an invertible generator, it becomes an invertible function that takes exactly one argument—a stack— and returns exactly one value—another stack. This allows us to write invertible generators such as:
+However, once we stackify an invertible generator, it becomes an invertible function that takes exactly one argument—a stack— and returns exactly one value—another stack. This allows us to write invertible generators such as:
 
 ```javascript
 const one = R.stackify(
