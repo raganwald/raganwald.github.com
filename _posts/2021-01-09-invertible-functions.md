@@ -1037,6 +1037,10 @@ log(carcdr([1, 2, 3]))
   //=> [2, 3]
 ```
 
+Liberated from the constraints of taking exactly one argument and returning exactly one non-undefined value, our invertible generators can take zero or more arguments, and yield zero or more values.
+
+### stackification
+
 Now let's consider *stackifying* invertible generators. `stackify` is a function that takes an invertible generator (a generator function from that takes zero or more inputs and yields zero or more outputs) as an argument, and returns a function that takes a stack as an argument and returns a stack.
 
 ```javascript
@@ -1047,7 +1051,7 @@ const stackify = fn => stack => {
   const remainder = stack.slice(0, stack.length - fn.length);
   const outputs = [...fn(...inputs)];
 
-  if (!outputs.some(o => o === undefined)) {
+  if (outputs.every(o => o !== undefined)) {
       return remainder.concat([...fn(...inputs)])
   }
 }
@@ -1064,7 +1068,9 @@ stackifiedCarCdr([1, 2, 3, [4, 5, 6]])
 
 A stackified invertible generator becomes an ordinary invertible function that instead of mapping zero or more inputs to zero or more outputs, maps a stack to a stack. It's just that it pops the arguments it needs from the top of the stack, and then pushes the values it return back onto the top. (Well, actually, it makes a copy of the original stack, but this is semantically what it does to the copy.)
 
-Thus, stackified invertible functions are just like the invertible functions we built with `R`, and we'll add `stackify` to it:
+The interesting things about "stackification" is this: **If some function `fn` is invertible, then `stackify(fn)` is also invertible**. Stackification is a way of taking functions that take zero or more arguments and return zero or more values, and turning them into properly invertible functions that take exactly one argument and return exactly one value.
+
+We'll see later that they have another important property, but first let's add `stackify` to `R`:
 
 ```javascript
 const R = {
@@ -1109,11 +1115,9 @@ R.get(cons)([1, 2, [3]])
   //=> [1, 2, 3, []]
 ```
 
-### something new: push and pop
+### push and pop
 
-An invertible function must take an argument and must return a non-undefined value. Invertible generators can take zero or more arguments, and return zero or more non-undefined values. In that sense, and invertible generator is not a direct analogue of an invertible function.
-
-However, once we stackify an invertible generator, it becomes an invertible function that takes exactly one argument—a stack— and returns exactly one value—another stack. This allows us to write invertible generators such as:
+Consider this invertible generator:
 
 ```javascript
 const one = R.stackify(
@@ -1135,7 +1139,7 @@ R.get(one)([5, 4, 3, 2, 1, 0])
   //=> undefined
 ```
 
-We have found another way to write an invertible function that appends or removes a specific value from a list. And now we can add this to `R`:
+We have found another way to write an invertible function that appends or removes a specific value from a list. We can generalize this ideqa and add it to `R`:
 
 ```javascript
 const R = {
@@ -1161,6 +1165,14 @@ fortyTwo([1, 2, 3])
 R.get(fortyTwo)([1, 2, 3, 42])
   //=> [1, 2, 3]
 ```
+
+Now we're ready for something big.
+
+---
+
+---
+
+### Invertible Expressions
 
 ---
 
