@@ -100,32 +100,13 @@ Consider the maps `lettersToNumbers` and `numbersToLetters`:
 
 ```javascript
 const az = {
-  a: 0,
-  b: 1,
-  c: 2,
-  d: 3,
-  e: 4,
-  f: 5,
-  g: 6,
-  h: 7,
-  i: 8,
-  j: 9,
-  k: 10,
-  l: 11,
-  m: 12,
-  n: 13,
-  o: 14,
-  p: 15,
-  q: 16,
-  r: 17,
-  s: 18,
-  t: 19,
-  u: 20,
-  v: 21,
-  w: 22,
-  x: 23,
-  y: 24,
-  z: 25
+  a: 0, b: 1, c: 2, d: 3,
+  e: 4, f: 5, g: 6, h: 7,
+  i: 8, j: 9, : 10, l: 11,
+  m: 12, n: 13, o: 14, p: 15,
+  q: 16, r: 17, s: 18, t: 19,
+  u: 20, v: 21, w: 22, x: 23,
+  y: 24, z: 25
 };
 
 const lettersToNumbers = new Map(Object.entries(az));
@@ -255,7 +236,7 @@ Keeping track of functions and their inverses can be a bit of a headache, especi
 ```javascript
 const R = {
   _inverses: new Map(),
-  add([f, g]) {
+  add(f, g) {
     this._inverses.set(f, g);
     this._inverses.set(g, f);
 
@@ -448,7 +429,7 @@ const foldList = ([base, combiner]) =>
 We use it with our `multiplyByTwoWithRemainder` function to generate `fromBinaryFold`:
 
 ```javascript
-const fromBinaryFold = foldList([0, multiplyByTwoWithRemainder]);
+const fromBinaryFold = foldList(0, multiplyByTwoWithRemainder);
 ```
 
 And here's `unfoldToList`. Our unfold is also written as a loop. We will use a simple equality test that works for primitive values and strings, but not objects and especially not maps of any kind.[^prodequal]
@@ -479,7 +460,7 @@ const deepEqual = (a, b) => {
   }
 };
 
-const unfoldToList = ([base, uncombiner]) =>
+const unfoldToList = (base, uncombiner) =>
   folded => {
     let list = [];
     let element;
@@ -492,7 +473,7 @@ const unfoldToList = ([base, uncombiner]) =>
     return list;
   };
 
-const toBinaryUnfold = unfoldToList([0, R.get(multiplyByTwoWithRemainder)]);
+const toBinaryUnfold = unfoldToList(0, R.get(multiplyByTwoWithRemainder));
 ```
 
 We have demonstrated another form of composition of invertible functions: Given a common `base`, `foldList` of an invertible function is the inverse of `unfoldToList` of its inverse.
@@ -503,21 +484,21 @@ Let's add this to `R`:
 const R = {
   // ...
 
-  foldList([base, combiner]) {
-    const folder = foldList([base, combiner]);
-    const unfolder = unfoldToList([base, this.get(combiner)]);
+  foldList(base, combiner) {
+    const folder = foldList(base, combiner);
+    const unfolder = unfoldToList(base, this.get(combiner));
 
     return this.add(folder, unfolder);
   },
-  unfoldToList([base, uncombiner]) {
-    const unfolder = unfoldToList([base, uncombiner]);
-    const folder = foldList([base, this.get(uncombiner)]);
+  unfoldToList(base, uncombiner) {
+    const unfolder = unfoldToList(base, uncombiner);
+    const folder = foldList(base, this.get(uncombiner));
 
     return this.add(unfolder, folder);
   }
 };
 
-const toBinary = R.unfoldToList([0, divideByTwoWithRemainder]);
+const toBinary = R.unfoldToList(0, divideByTwoWithRemainder);
 
 toBinary(1)
   //=> [1]
@@ -702,7 +683,7 @@ That's enough to write an unfold, representing irreducible fractions as a list w
 const irreducibleToParentAndArc = ([n, d]) =>
   n < d ? [[n, d - n], 0] : [[n - d, d], 1];
 
-const irreducibleToPath = unfoldToList([[1, 1], irreducibleToParentAndArc]);
+const irreducibleToPath = unfoldToList([1, 1], irreducibleToParentAndArc);
 
 irreducibleToPath([2, 5])
   //=> [1, 0, 0]
@@ -717,7 +698,7 @@ Hmmm. If we can write an unfold around the uncombiner function `([n, d]) => n < 
 const parentAndArcToIrreducible = ([[n, d], arc]) =>
   arc === 0 ? [n, n + d] : [n + d, d];
 
-const toIrreducible = foldList([[1, 1], parentAndArcToIrreducible]);
+const toIrreducible = foldList([1, 1], parentAndArcToIrreducible);
 
 toIrreducible([1, 0, 0])
   //=> [2, 5]
@@ -729,7 +710,7 @@ toIrreducible([0, 0])
 And from this, it follows that:
 
 ```javascript
-const toIrreducible = R.foldList([
+const toIrreducible = R.foldList(
   [1, 1],
   R.add(
     ([[n, d], arc]) =>
@@ -737,7 +718,7 @@ const toIrreducible = R.foldList([
     ([n, d]) =>
       n < d ? [[n, d - n], 0] : [[n - d, d], 1]
   )
-]);
+);
 
 toIrreducible([1, 0, 0])
   //=> [2, 5]
@@ -862,10 +843,10 @@ const butLastAndLast = list => [
 const append =
   ([list, element]) => [...list, element];
 
-const tail = R.unfoldToList([
+const tail = R.unfoldToList(
   [1],
   R.add(butLastAndLast, append)
-]);
+);
 
 tail([1, 0, 0])
   //=> [0, 0]
@@ -896,15 +877,15 @@ Input that don't produce outputs don't count, so `tail` is invertible: Every out
 The Night Clerk now has what they need to map positive invertible fractions to positive natural numbers, which means that given a member of the Irreducible Fractions Club, they can assign them to a room in the Grand Hotel:
 
 ```javascript
-const binaryToNumber = R.foldList([
+const binaryToNumber = R.foldList(
   0,
   R.add(
     ([n, r]) => n * 2 + r,
     n => [Math.floor(n / 2), n % 2]
   )
-]);
+);
 
-const pathToBinary = R.foldList([
+const pathToBinary = R.foldList(
   [1],
   R.add(
     ([list, element]) =>
@@ -912,9 +893,9 @@ const pathToBinary = R.foldList([
     list =>
       [list.slice(0, list.length - 1), list[list.length - 1]]
   )
-]);
+);
 
-const irreducibleToPath = R.unfoldToList([
+const irreducibleToPath = R.unfoldToList(
   [1, 1],
   R.add(
     ([n, d]) =>
@@ -922,7 +903,7 @@ const irreducibleToPath = R.unfoldToList([
     ([[n, d], arc]) =>
       arc === 0 ? [n, n + d] : [n + d, d]
   )
-]);
+);
 
 const roomNumber = R.compose([
   binaryToNumber,
@@ -1099,8 +1080,11 @@ const R = {
 
       const inputs = stack.slice(stack.length - fn.length);
       const remainder = stack.slice(0, stack.length - fn.length);
+      const outputs = [...fn(...inputs)];
 
-      return remainder.concat([...fn(...inputs)])
+	    if (outputs.every(o => o !== undefined)) {
+        return remainder.concat(outputs);
+      }
     };
 
     return this.add(
@@ -1127,6 +1111,59 @@ cons([1, 2, 3, []])
 
 R.get(cons)([1, 2, [3]])
   //=> [1, 2, 3, []]
+```
+
+### something new: push and pop
+
+An invertible function must take an argument and must return a non-undefined value. Invertible generators can take zero or more arguments, and return zero or more non-undefined values. In that sense, and invertible generator is not a direct analogue of an invertible function.
+
+However, once we stackifyu an invertible generator, it becomes an invertible function that takes exactly one argument—a stack— and returns exactly one value—another stack. This allows us to write invertible generators such as:
+
+```javascript
+const one = R.stackify(
+  R.add(
+    function*() => { yield 1; },
+    function*(n) => {
+      if (n !== 1) yield undefined;
+    }
+  )
+);
+
+one([5, 4, 3, 2])
+  //=> [5, 4, 3, 2, 1]
+
+R.get(one)([5, 4, 3, 2, 1])
+  //=> [5, 4, 3, 2]
+
+R.get(one)([5, 4, 3, 2, 1, 0])
+  //=> undefined
+```
+
+We have found another way to write an invertible function that appends or removes a specific value from a list. And now we can add this to `R`:
+
+```javascript
+const R = {
+  // ...
+
+  push(value) {
+    return R.stackify(
+      R.add(
+        function*() { yield value; },
+        function*(input) {
+          if (input !== value) yield undefined;
+        }
+      )
+    )
+  }
+};
+
+const fortyTwo = R.push(42);
+
+fortyTwo([1, 2, 3])
+  //=> [1, 2, 3, 42]
+
+R.get(fortyTwo)([1, 2, 3, 42])
+  //=> [1, 2, 3]
 ```
 
 ---
