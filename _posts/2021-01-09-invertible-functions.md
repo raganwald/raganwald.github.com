@@ -130,7 +130,7 @@ letterOf(2)
   //=> 'c'
 ```
 
-Note that by convention, `undefined` is not considered a value when we work with invertible functions. Thus, the following does **not** mean that our functions return the same favlue for two different inputs:
+Note that by convention, `undefined` is not considered a value when we work with invertible functions. Thus, the following does **not** mean that our functions return the same value for two different inputs:
 
 ```javascript
 numberOf(6)
@@ -146,7 +146,7 @@ letterOf('fubar')
   //=> undefined
 ```
 
-It literally just means that our functions do not define an ouput for those inputs.
+It literally just means that our functions do not define an output for those inputs.
 
 ### trivially invertible functions
 
@@ -410,7 +410,7 @@ Here is a higher-order `fold` that takes a `base` (sometimes called a `seed`) va
 It is implemented as a loop, because loops are trivially equivalent to linear recursion. It is also implemented as a higher-order function that returns a function:
 
 ```javascript
-const foldList = ([base, combiner]) =>
+const foldList = (base, combiner) =>
   list => {
     let folded = base;
 
@@ -997,7 +997,7 @@ Our takeaway is thus:
 
 ---
 
-# Structuring and Destructuring
+# Concatenative Invertibility, Wherein We Make a Language
 
 Purely invertible functions may be rare in everyday programming, but many programming languages--including JavaScript--provide support for [destructuring assignment] with built-in compound data types like POJOs and Arrays. In this section, we'll explore how invertible functions can be used to implement destructuring assignment.
 
@@ -1007,7 +1007,7 @@ Before we get into the main work, we'll begin with a new kind of invertible func
 
 ### invertible generators
 
-Because functions only return one value in fundamental computation models like the lambda calculus, and because functions in languages like JavaScript cannot return more than one value, an invertible function can only acept one value as an argument and only return one value.
+Because functions only return one value in fundamental computation models like the lambda calculus, and because functions in languages like JavaScript cannot return more than one value, an invertible function can only accept one value as an argument and only return one value.
 
 But there is a way to return multiple values from a function in JavaScript, and that way is to make the function return a [generator]. Here're `cons` and `carcdr` implemented as simple generators:
 
@@ -1139,7 +1139,7 @@ R.get(one)([5, 4, 3, 2, 1, 0])
   //=> undefined
 ```
 
-We have found another way to write an invertible function that appends or removes a specific value from a list. We can generalize this ideqa and add it to `R`:
+We have found another way to write an invertible function that appends or removes a specific value from a list. We can generalize this idea and add it to `R`:
 
 ```javascript
 const R = {
@@ -1166,14 +1166,167 @@ R.get(fortyTwo)([1, 2, 3, 42])
   //=> [1, 2, 3]
 ```
 
-Now we're ready for something big.
+Now we're ready for the big insight.
 
 ---
 
----
-
-### Invertible Expressions
+[![Thank You](./invertible/thank-you.jpg)](https://www.flickr.com/photos/prayitnophotography/49298463898)
 
 ---
+
+### Concatenative Programming Languages
+
+---
+
+A [concatenative programming language] is formally defined as, _a point-free computer programming language in which all expressions denote functions, and the juxtaposition of expressions denotes function composition._
+
+[concatenative programming language]: https://en.wikipedia.org/wiki/Concatenative_programming_language
+
+Taking that step-by step:
+
+- There are no bindings of values to labels via arguments, functions operate directly upon each other.
+- Every expression written in the evaluates to a function, nothing else.
+- If you write two expressions next to each other, e.g. `expr1 expr2`, you are writing two expressions that evaluate to functions (this is given by the previous rule). Which gives us `fn1 fn2`. The value of this expression is the functional composition of the two functions, equivalent to `x => fn2(fn1(x))` in JavaScript.
+
+All of this can be hard to imagine in the abstract, so we'll consider that nearly all concatenative languages are implemented as stack machines. So we'll describe a very simple stack machine for interpreting a concatenative language, and that will demonstrate how things work.
+
+Our stack machine has just two kinds of storage. There is the program, which is a list of functions, and a stack:
+
+```javascript
+function stackMachine(functions, stack = []) {
+  for (const fn of functions) {
+    fn(stack);
+  }
+
+  return stack;
+}
+```
+
+Our programs are lists of functions, each of which takes the stack as an argument, and which we constrain to only push values on top of the stack or pop values off of the stack. Here's a very simple program: It adds two to whatever number is on top of the stack. We run it by giving the stack machine our program and a stack with our input on top, and it returns the result on the stack:
+
+````javascript
+const plusTwo = stack => {
+  stack.push(stack.pop() + 2);
+}
+
+stackMachine(
+  [plusTwo],
+  [1]
+)
+  //=> [3]
+```
+
+We aren't actually working with a programming language in the practical sense, of course, because we don't have a notation for writing programs, nor do we have a lexer or parser. But this is more-or-less exactly how languages like Forth or Joy operate under the hood.
+
+### two properties of concatenating programs
+
+Here's a program for multiplying a number by three:
+
+````javascript
+const timesThree = stack => {
+  stack.push(stack.pop() * 3);
+}
+
+stackMachine(
+  [timesThree],
+  [3]
+)
+  //=> [9]
+```
+
+What makes concatenative languages "concatenative," is that if we want to compose two programs, we literally concatenate their representation:
+
+````javascript
+stackMachine(
+  [plusTwo, timesThree],
+  [1]
+)
+  //=> [9]
+```
+
+Another thing about concatenative programs is that although our first stack machine relies upon mutating a single "global variable," the stack, we can construct an equivalent stack machine that operates with pure functions. Instead of taking a stack as an argument and mutating it in place, our functions will take a stack as an argument and return a new stack that will replace the old:
+
+```javascript
+const plusTwo = ([...stack]) => {
+  stack.push(stack.pop() + 2);
+
+  return stack;
+}
+
+const timesThree = ([...stack])  => {
+  stack.push(stack.pop() * 3);
+
+  return stack;
+}
+
+const fStackMachine(functions, stack = []) {
+  for (const fn of functions) {
+    stack = fn(stack);
+  }
+
+  return stack;
+}
+
+fStackMachine(
+  [plusTwo, timesThree],
+  [1]
+)
+  //=> [9]
+```
+
+This illustrates that every concatenative program is the simple, linear composition of its functions. let's make one more refactor, from a loop to a fold:
+
+```javascript
+const pureStackMachine =
+  (functions, stack = []) => foldList(stack, ([s, fn]) => fn(s))(functions);
+```
+
+That is very interesting in the context of invertible functions, because a "stackified" invertible function is exactly the same thing as one of the functions we're using with our stack machine:
+
+```javascript
+const plusTwo = R.stackify(
+  R.add(
+    function*(n) {
+      yield n + 2;
+    },
+    function*(n) {
+      yield n - 2;
+    }
+  )
+);
+
+const timesThree = R.stackify(
+  R.add(
+    function*(n) {
+      yield n * 3;
+    },
+    function*(n) {
+      yield n / 3;
+    }
+  )
+);
+
+pureStackMachine(
+  [plusTwo, timesThree],
+  [1]
+)
+  //=> [9]
+```
+
+Aha!
+
+### every concatenative program composed of invertible functions is an invertible program
+
+As we know, the composition of invertible function is itself invertible. This goes for our concatenative "programs" as well:
+
+```javascript
+const inversionOf = program => program.reverse().map(fn => R.get(fn));
+
+pureStackMachine(
+  inversionOf([plusTwo, timesThree]),
+  [9]
+)
+  //=> 1
+```
 
 # Notes
