@@ -1274,7 +1274,9 @@ fStackMachine(
   //=> [9]
 ```
 
-This illustrates that every concatenative program is the simple, linear composition of its functions. let's make one more refactor, from a loop to a fold:
+This illustrates the first interesting property of concatenative programs: **Every concatenative program can be implemented as  the simple, linear composition of pure functions**.
+
+Let's make one more refactor, from a loop to a fold:
 
 ```javascript
 const pureStackMachine =
@@ -1313,11 +1315,14 @@ pureStackMachine(
   //=> [9]
 ```
 
-Aha!
+Aha! Stackified invertible functions are equivalent to the functions used in concatenative programs. And thus we can reason:
 
-### every concatenative program composed of invertible functions is an invertible program
+1. A stackified invertible function is an invertible function, and;
+2. The composition of invertible functions is invertible, therefore:
+3. The composition of stackified invertible functions is invertible, and thus:
+4. **A concatenative program that consists of stackified invertible functions is an invertible concatenative program**.
 
-As we know, the composition of invertible function is itself invertible. This goes for our concatenative "programs" as well:
+Let's try it!
 
 ```javascript
 const inversionOf = program => program.reverse().map(fn => R.get(fn));
@@ -1328,5 +1333,7 @@ pureStackMachine(
 )
   //=> 1
 ```
+
+When we make a concatenative program out of invertible functions, we are making an invertible program.
 
 # Notes
