@@ -5,13 +5,17 @@ tags: [allonge]
 
 ![Mouse Trap](/assets/mousetrap/mouse-trap.jpg)
 
+---
+
 In the board game [Mouse Trap], players build an elaborate [Rube Goldberg Machine](https://www.rubegoldberg.com/). Wikipedia explains:
 
 > The player turns the crank (A) which rotates the gears (B) causing the lever (C) to move and push the stop sign against the shoe (D), which tips the bucket holding the metal ball (E) which rolls down the stairs (F) and into the pipe (G) which leads it to hit the rod held by the hands (H), causing the bowling ball (I) to fall from the top of the rod, roll down the groove (J), fall into and then out of the bottom of the bathtub (K), landing on the diving board (L). The weight of the bowling ball catapults the diver (M) through the air and right into the bucket (N), causing the cage (O) to fall from the top of the post (P) and trap the unsuspecting mouse (i.e. the player who occupies the spot on the board at that time).
 
 [Mouse Trap]: https://en.wikipedia.org/wiki/Mouse_Trap_(board_game)
 
-Software sometimes suffers from a **Mouse Trap Architecture**, it becomes a chain of fundamentally incompatible components used for purposes far removed from their core competencies, incomprehensibly connected to each other with brittle technologies. And here is the tale of how one such system came about.
+Software sometimes suffers from a **Mouse Trap Architecture**, it becomes a chain of fundamentally incompatible components used for purposes far removed from their core competencies, incomprehensibly connected to each other with brittle technologies.
+
+Here is the story of how one such system came about.
 
 ---
 
