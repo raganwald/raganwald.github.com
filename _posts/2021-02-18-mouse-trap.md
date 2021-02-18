@@ -1,5 +1,5 @@
 ---
-title: 'The Mouse Trap'
+title: 'The Mouse Trap (2008)'
 tags: [allonge]
 ---
 
@@ -74,4 +74,4 @@ All that remains of his work are a few XSL files [somewhere](http://raganwald.co
 
 ---
 
-_The story depicted here is 100% true. Any similarities in tone and style to [The Daily WTF](https://thedailywtf.com) are intentional._
+_The story depicted here is 100% true. Any similarities in tone and style to [The Daily WTF](https://thedailywtf.com) are intentional. Originally published 2008-02-21._
