@@ -17,6 +17,8 @@ Software sometimes suffers from a **Mouse Trap Architecture**, it becomes a chai
 
 ![Architecture](/assets/mousetrap/architecture.jpeg)
 
+---
+
 ## The Project
 
 The project was originally designed by a Business Analyst who had been a DBA in her younger days. One of the key requirements of the system was that it be completely flexible: it was designed to accommodate almost any change in business requirements without reprogramming. Her approach to designing a program that would be very nearly Turing-complete was to make a data-driven design: nearly none of the business logic was to be written in code, it was to exist in various tables in the database. Changes to business logic would be accomplished by updating the database.
@@ -35,6 +37,8 @@ Implementation being an obvious slam dunk, the company put a few people on the p
 
 ![Hello New Guy](/assets/mousetrap/hello-new-guy.png)
 
+---
+
 ## The New Guy
 
 But just to be sure, they hired the New Guy (not to be confused with the New Girl). The New Guy had a lot of New Ideas. Generally, his ideas fit into one of two categories: Some were sound but unworkable in the company’s environment, and the others were unsound and still unworkable in the company’s environment. His early days were marked by attempts to hook up his own wifi so he could surf on his shiny new Tablet PC during meetings, attempts to disconnect the loud pager that would interrupt all programming in the cubicle farm whenever the receptionist was paging a salesperson, and attempts to get the project to fix all bugs on completed features before moving on to write new features.
@@ -49,8 +53,9 @@ Depressed and quite pessimistic about the team’s ability to orchestrate Java d
 
 ---
 
-<iframe width="420" height="315" src="https://www.youtube.com/embed/qybUFnY7Y8w" frameborder="0" allowfullscreen></iframe><br/
+<iframe width="420" height="315" src="https://www.youtube.com/embed/qybUFnY7Y8w" frameborder="0" allowfullscreen></iframe><br/>
 
+---
 
 ## Excel >> VBA >> XML >> XSLT >> Java!
 
@@ -63,6 +68,12 @@ Management wasted no time in responding. Brilliant! He was obviously far too val
 Expecting to get the axe, he was shocked by their warm reception. He had failed to realize that management was indifferent to the idea’s actual development value, but had a keen sense of what played well with clients in Enterprise environments. These companies lived and breathed integration between wildly disparate technologies, many of which didn’t work, had never worked, and never would work.
 
 I suspect this is typical of Mouse Trap architectures everywhere. Built with the best of intentions, they survive for reasons their creators could never have anticipated.
+
+---
+
+![Epilogue](/assets/mousetrap/epilogue.png)
+
+---
 
 ## Epilogue
 
