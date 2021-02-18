@@ -81,7 +81,7 @@ Management wasted no time in responding: *It's Brilliant!* He was obviously far 
 
 Expecting to get the axe, he was shocked by their warm reception. He had failed to realize that management was indifferent to the idea’s actual development value, but had a keen sense of what played well with clients in Enterprise environments. These companies lived and breathed integration between wildly disparate technologies, many of which didn’t work, had never worked, and never would work.
 
-I suspect this is typical of Mouse Trap architectures everywhere. Built with the best of intentions, they survive for reasons their creators could never have anticipated.
+Alas, this is typical of Mouse Trap Architectures everywhere. Built with the best of intentions, they survive for reasons their creators could never have anticipated.
 
 ---
 
