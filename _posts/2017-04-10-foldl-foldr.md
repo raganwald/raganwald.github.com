@@ -151,7 +151,7 @@ We composed `half` with `increment`, then composed the result with `square`. Wor
 
 [ja]: https://leanpub.com/javascriptallongesix
 
-To make `pipeline` our of `compose2`, we want to associate the folding function from right to left. That is to say, given `pipeline(half, increment, square)(4)`, we want to `compose2` `square` with `increment`, and then compose the result with `half`, like this: `compose2(half, compose2(increment square))`. There are a few ways to write `pipeline` without using a fold, but since we're talking about folding, we'll make `pipeline` with a fold.
+To make `pipeline` our of `compose2`, we want to associate the folding function from right to left. That is to say, given `pipeline(half, increment, square)(4)`, we want to `compose2` `square` with `increment`, and then compose the result with `half`, like this: `compose2(half, compose2(increment, square))`. There are a few ways to write `pipeline` without using a fold, but since we're talking about folding, we'll make `pipeline` with a fold.
 
 `foldl` won't do, because it associates the folding function from the left. What we want is the opposite, `foldr`. Here's a recursive version:[^foldrlimit]
 
