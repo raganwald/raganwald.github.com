@@ -1,7 +1,7 @@
 ---
 title: "A quick look at reduce, foldl, foldr, and associative order"
 layout: default
-tags: [allonge, noindex]
+tags: [allonge]
 published: true
 ---
 
