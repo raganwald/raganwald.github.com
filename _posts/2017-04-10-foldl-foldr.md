@@ -46,11 +46,7 @@ Folding is a very fundamental kind of iteration over a collection. It can be use
 
 ### foldl
 
-Let's write our own fold, `foldl`.
-
-Here's a recursive version. Thanks to almost every implementation of JavaScript punting on tail recursion optimization, there's no easy way to write a version that doesn't consume the stack in proportion to the number of elements being folded.
-
-But from a discussion perspective, the structure will pay off in a few moments:
+Let's write our own fold, `foldl`:
 
 ```javascript
 let foldl = (fn, valueSoFar, iterable) => {
@@ -68,7 +64,11 @@ foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])
   //=> 15
 ```
 
-Now let's talk associativity.
+This is a recursive implementation. Thanks to almost every implementation of JavaScript punting on tail recursion optimization, there's no easy way to write a version that doesn't consume the stack in proportion to the number of elements being folded. Nevertheless, we'll work with the recursive implementation for now.[^tco]
+
+[^tco]: Languages like Haskell and Scheme that support [tail call optimization](https://en.wikipedia.org/wiki/Tail_call) can automatically transform linear recursion into a loop. Since loops are not difficult to write, that doesn't seem like a big deal. But as we'll see when we write `foldr` below, having two different functions share the same general shape communicates their design and relationship. Writing one as a loop and the other recursively conceals that which should be manifest.
+
+With `foldl` in hand, we can look at its commutative and associative properties.
 
 ### the commutative and associative properties
 
@@ -84,7 +84,9 @@ foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])
   //=> 15
 ```
 
-Addition is **commutative**, meaning that it makes no difference how we group the operations, we get the same result.  But not all operators are commutative. Subtraction is not commutative, we get different results depending upon how we group or order the operations:
+Addition is **commutative**, meaning that it makes no difference how we group the operations, we get the same result.  But not all operators are commutative.
+
+Subtraction is not commutative, we get different results depending upon how we group or order the operations:
 
 ```javascript
 (((((0 - 1) - 2) - 3) - 4) - 5)
@@ -153,7 +155,7 @@ Although it consumes its elements from the left, `foldr` associates its operatio
 
 ### hard work pays off in the future;<br/>laziness pays off right away
 
-When we're working with finite iterables, `foldl` can be used to implement `map` just as `reduce` can be used to implement `map`:
+When we're working with finite iterables, `foldl` can be used to implement `map`:
 
 ```javascript
 let mapl = (fn, iterable) =>
@@ -167,11 +169,12 @@ mapl(current => current * current, [1, 2, 3, 4, 5])
   //=> [1, 4, 9, 16, 25]
 ```
 
-`mapl` cannot be used on an infinite iterable. With care, we *can* make a fold that handles infinite iterables, but we begin with `foldr` rather than `foldl`. Languages like Haskell that have lazy evaluation don't need any special treatment to make this work, but since JavaScript is an "eager" language, we have to make some adjustments.
+`foldl` is eager, meaning it computes`mapl` cannot be used on an infinite iterable. With care, we *can* make a fold that handles infinite iterables, but we begin with `foldr` rather than `foldl`.
 
-What we'll do is structure the code as with our eager version of `foldr`, but instead of passing the remainder of the computation to the folding function, we'll pass [memoized thunks][thunk], and require the folding function to invoke the thunks when it needs them.
+What we'll do is structure the code as with our eager version of `foldr`, but instead of passing the remainder of the computation to the folding function, we'll pass a [memoized thunks][thunk] of the remainder of the computation, and require the folding function to explicitly invoke the thunk when it needs to evaluate the computation.[^haskell]
 
 [thunk]: https://en.wikipedia.org/wiki/Thunk
+[^haskell]: Languages like Haskell that have lazy evaluation don't need any special treatment to make this work, but since JavaScript is an "eager" language, we have to make some adjustments.
 
 This allows us to create a lazy `foldr`:
 
@@ -186,27 +189,26 @@ const memoized = (fn, keymaker = JSON.stringify) => {
     }
   };
 
-let lazyfoldr = (fn, valueToCompute, iterable) => {
+let foldr = (fn, valueToCompute, iterable) => {
   const iterator = iterable[Symbol.iterator]();
   const { value: current, done } = iterator.next();
 
   if (done) {
     return valueToCompute;
   } else {
-    const currentThunk = () => current;
     const toComputeThunk = memoized(
-      () => lazyfoldr(fn, valueToCompute, iterator)
+      () => foldr(fn, valueToCompute, iterator)
     );
 
-    return fn(currentThunk, toComputeThunk);
+    return fn(current, toComputeThunk);
   }
 };
 
-lazyfoldr(
-  (currentThunk, toComputeThunk) => currentThunk() + toComputeThunk(), 0, [1, 2, 3, 4, 5])
+foldr(
+  (current, toComputeThunk) => current + toComputeThunk(), 0, [1, 2, 3, 4, 5])
   //=> 15
 
-lazyfoldr((currentThunk, toComputeThunk) => currentThunk() - toComputeThunk(), 5, [0, 1, 2, 3, 4])
+foldr((current, toComputeThunk) => current - toComputeThunk(), 5, [0, 1, 2, 3, 4])
   //=> -3
 ```
 
@@ -214,9 +216,9 @@ Laziness won't help us sum an infinite series, so we won't try that. But we coul
 
 ```javascript
 let first = (predicate, iterable) =>
-  lazyfoldr(
-    (currentThunk, toComputeThunk) =>
-      predicate(currentThunk()) ? currentThunk() : toComputeThunk(),
+  foldr(
+    (current, toComputeThunk) =>
+      predicate(current) ? current : toComputeThunk(),
     undefined,
     iterable
   );
@@ -239,20 +241,20 @@ first(n => n > 0 && n % 7 === 0, fibonacci())
 
 It's counter-intuitive that associating operations to the right makes working with infinite iterables possible, but `foldr` is quite explicit about separating the current value from the remainder of the computations to be performed, and since it consumes elements from the left, it can stop at any time by not evaluating the thunk representing the remainder of the computation.
 
-And now to implement a lazy map:
+And now to implement a lazy map. Our lazy map can take any iterable (whether bounded or unbounded) as an argument, and it always returns an iterable:[^lazycons]
 
 ```javascript
-let prependToThunk = (value, iterableThunk) => {
-  return function * () {
+const lazycons = (value, iterableThunk) => {
+  return function * conscell () {
     yield value;
     yield * iterableThunk();
   }();
 };
 
 let lazymap = (mapper, iterable) =>
-  lazyfoldr(
-    (currentThunk, toComputeThunk) =>
-      prependToThunk(mapper(currentThunk()), toComputeThunk),
+  foldr(
+    (current, toComputeThunk) =>
+      lazycons(mapper(current), toComputeThunk),
     [],
     iterable
   );
@@ -263,16 +265,39 @@ let lazymap = (mapper, iterable) =>
   //=> [0, 1, 1, 4, 9, 25, 64]
 ```
 
+[^lazycons]: `lazycons` implements a linked list of sorts, with each `conscell` generator yielding a single value and then invoking a thunk to get a generator for the remainder of its values. This arrangement creates a lazily computed iterable that optimizes for the simplicity of prepending elements to the list.
+
 As we can see, the unique combination of consuming from the left and associating from the right makes the lazy version of `foldr` very useful for working with short-circuit semantics like `first`, or working with unbounded iterables like `fibonacci`.
 
-### what we've learned about foldl, foldr, and lazyfoldr
+### what we've learned about foldl, foldr, and foldr
 
 As we've seen, the order of consuming values and the order of association are independent, and because they are independent, we get different semantics:
 
 - Both `foldl` and `foldr` consume from the left. And thus, they can be written to consume iterables.
 - `foldl` associates its folding function from the left.
 - `foldr` associates its folding function from the right.
-- Because `foldr` consumes from the left and associates from the right, a lazy implementation--lazyfoldr--can provide short-circuit semantics and/or manage unbounded iterables.
+- Because `foldr` consumes from the left and associates from the right, a lazy implementation can provide short-circuit semantics and/or manage unbounded iterables.
 
 In sum, the order of *consuming* values and the order of *associating* a folding function are two separate concepts, and they both matter.
 
+We've also learned that `foldl` is best used when we want to eagerly evaluate a fold. We initially wrote it recursively, but were we working with it in production using a language like JavaScript that cannot optimize linear recursion, we would rewrite it as a loop, e.g.:
+
+```javascript
+let foldl = (fn, valueSoFar, iterable) => {
+  for (const current of iterable) {
+    valueSoFar = fn(valueSoFar, current);
+  }
+
+  return valueSoFar;
+};
+```
+
+Likewise, we've learned that `foldr`'s semantics of consuming fromt he left but associating from the right make it ideal for lazy computations, such as working with short-circuit semantics or unbounded iterables. We are likely then to prefer to use the lazy implementation for `foldr`.
+
+The final "rule of thumb" is this: *Use `foldl` for eager computations, `foldr` for lazy computations*.[^rot]
+
+[^rot]: The English phrase **rule of thumb** refers to a principle with broad application that is not intended to be strictly accurate or reliable for every situation. It refers to an easily learned and easily applied procedure or standard, based on practical experience rather than theory. This usage of the phrase can be traced back to the seventeenth century and has been associated with various trades where quantities were measured by comparison to the width or length of a thumb. --[Wikipedia](https://en.wikipedia.org/wiki/Rule_of_thumb)
+
+---
+
+# Notes
