@@ -5,7 +5,7 @@ tags: [allonges]
 published: true
 ---
 
-[![Star](/assets/images/star.jpg)](https://www.flickr.com/photos/ambs/2993482908)
+![New And Improved](../assets/folding/new-and-improved.jpg)
 
 JavaScript has a method on arrays called [reduce]. It's used for "reducing" a collection to a value of some kind.
 
