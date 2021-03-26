@@ -48,7 +48,7 @@ Folding is a very fundamental kind of iteration over a collection. It can be use
 
 Let's write our own fold, `foldl`.
 
-Here's a recursive version that uses destructuring. Thanks to almost every implementation of JavaScript punting on tail recursion optimization, there's no easy way to write a version that doesn't consume the stack in proportion to the number of elements being folded.
+Here's a recursive version. Thanks to almost every implementation of JavaScript punting on tail recursion optimization, there's no easy way to write a version that doesn't consume the stack in proportion to the number of elements being folded.
 
 But from a discussion perspective, the structure will pay off in a few moments:
 
