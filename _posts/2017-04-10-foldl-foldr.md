@@ -1,5 +1,5 @@
 ---
-title: "Reduce, foldl, foldr, and associative order"
+title: "foldl, foldr, and associative order"
 layout: default
 tags: [allonges]
 published: true
