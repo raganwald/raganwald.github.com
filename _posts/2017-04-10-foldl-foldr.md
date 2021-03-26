@@ -169,9 +169,13 @@ mapl(current => current * current, [1, 2, 3, 4, 5])
 
 `foldl` is eager, meaning it computes`mapl` cannot be used on an infinite iterable. With care, we *can* make a fold that handles infinite iterables, but we begin with `foldr` rather than `foldl`.
 
-What we'll do is structure the code as with our eager version of `foldr`, but instead of passing the remainder of the computation to the folding function, we'll pass a [memoized thunks][thunk] of the remainder of the computation, and require the folding function to explicitly invoke the thunk when it needs to evaluate the computation.[^haskell]
+What we'll do is structure the code as with our eager version of `foldr`, but instead of passing the remainder of the computation to the folding function, we'll pass a [memoized][thunk] of the remainder of the computation.
 
+The folding function will explicitly invoke the thunk when it needs to evaluate the computation.[^haskell]
+
+[memoized]: https://en.wikipedia.org/wiki/Memoization
 [thunk]: https://en.wikipedia.org/wiki/Thunk
+
 [^haskell]: Languages like Haskell that have lazy evaluation don't need any special treatment to make this work, but since JavaScript is an "eager" language, we have to make some adjustments.
 
 This allows us to create a lazy `foldr`:
