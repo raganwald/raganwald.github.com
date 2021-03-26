@@ -151,8 +151,7 @@ foldr((current, valueToCompute) => current - valueToCompute, 5, [0, 1, 2, 3, 4])
 
 Although it consumes its elements from the left, `foldr` associates its operations from the right.
 
-### hard work pays off in the future;
-### laziness pays off right away
+### hard work pays off in the future;<br/>laziness pays off right away
 
 When we're working with finite iterables, `foldl` can be used to implement `map` just as `reduce` can be used to implement `map`:
 
