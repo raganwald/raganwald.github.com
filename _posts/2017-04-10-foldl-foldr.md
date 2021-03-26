@@ -7,22 +7,16 @@ published: true
 
 ![New And Improved](/assets/folding/new-and-improved.jpg)
 
-JavaScript has a method on arrays called [reduce]. It's used for "reducing" a collection to a value of some kind.
+JavaScript has a method on arrays called [reduce]. It's used for "reducing" a collection to a value of some kind. Here we use it to "reduce" an array of numbers to the sum of the numbers:
 
 [reduce]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
-
-For example, we can use it to "reduce" an array of numbers to the sum of the numbers:
 
 ```javascript
 [1, 2, 3, 4, 5].reduce((x, y) => x + y, 0)
   //=> 15
 ```
 
-Another way to put it is to say that reduce **folds** the array into a single value.
-
-If all we saw was stuff like summing the elements of arrays, we might think that "folding" is about taking a collections of things and turning it into just one of those things. Like turning an array of numbers into a number. But not so! Folding can produce any arbitrary value.
-
-For example, mapping can be implemented as folding. Here we fold an array of numbers into an array of the squares of the numbers:
+Reduce **folds** the array into a single value. Mapping can be implemented as folding. Here we fold an array of numbers into an array of the squares of the numbers:
 
 ```javascript
 [1, 2, 3, 4, 5].reduce(
@@ -42,7 +36,7 @@ And if we can map an array with a fold, we can also filter an array with a fold:
   //=> [2, 4]
 ```
 
-Folding is a very fundamental kind of iteration over a collection. It can be used in many other ways, but let's move along and talk about what kinds of collections we might want to fold.
+Folding is a very fundamental kind of operation on a collection. It can be used in many other ways, but let's move along and talk about what kinds of collections we might want to fold.
 
 ### foldl
 
