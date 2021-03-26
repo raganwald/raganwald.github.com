@@ -7,6 +7,10 @@ published: true
 
 ![New And Improved](/assets/folding/new-and-improved.jpg)
 
+*This essay originally appeared in 2017. Eagle-eyed readers pointed out that the original implementation of `foldr` had incorrect semantics. The essay has now been substantially revised to provide an implementation of `foldr` that is much closer to the one we find in lazy languages like Haskell.*
+
+---
+
 JavaScript has a method on arrays called [reduce]. It's used for "reducing" a collection to a value of some kind. Here we use it to "reduce" an array of numbers to the sum of the numbers:
 
 [reduce]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
@@ -36,7 +40,7 @@ And if we can map an array with a fold, we can also filter an array with a fold:
   //=> [2, 4]
 ```
 
-Folding is a very fundamental kind of operation on a collection. It can be used in many other ways, but let's move along and talk about what kinds of collections we might want to fold.
+Folding is a very fundamental kind of operation on     a collection. It can be used in many other ways, but let's move along and talk about what kinds of collections we might want to fold.
 
 ### foldl
 
