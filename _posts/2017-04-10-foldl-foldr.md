@@ -296,6 +296,8 @@ The final "rule of thumb" is this: *Use `foldl` for eager computations, `foldr` 
 
 [^rot]: The English phrase **rule of thumb** refers to a principle with broad application that is not intended to be strictly accurate or reliable for every situation. It refers to an easily learned and easily applied procedure or standard, based on practical experience rather than theory. This usage of the phrase can be traced back to the seventeenth century and has been associated with various trades where quantities were measured by comparison to the width or length of a thumb. --[Wikipedia](https://en.wikipedia.org/wiki/Rule_of_thumb)
 
+(Discuss on [/r/javascript](https://www.reddit.com/r/javascript/comments/mdntyc/foldl_foldr_and_associative_order/))
+
 ---
 
 # Notes
