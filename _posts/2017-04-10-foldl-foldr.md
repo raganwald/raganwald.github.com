@@ -25,7 +25,7 @@ If all we saw was stuff like summing the elements of arrays, we might think that
 For example, mapping can be implemented as folding. Here we fold an array of numbers into an array of the squares of the numbers:
 
 ```javascript
-[1, 2, 3, 4, 5].reduceRight(
+[1, 2, 3, 4, 5].reduce(
   (acc, n) => acc.concat([n*n]),
   []
 )
@@ -46,9 +46,9 @@ Folding is a very fundamental kind of iteration over a collection. It can be use
 
 ### foldl
 
-`.reduce` is handy, but let's write our own fold. We're going to call it `foldl`.
+Let's write our own fold, `foldl`.
 
-Here's a recursive version that uses destructuring. It is rather "pessimum" because of the way JavaScript makes copies of arrays, it cannot handle iterables that contain `undefined`, and thanks to almost every implementation of JavaScript punting on tail recursion optimization, there's no way to write a version that doesn't consume the stack in proportion to the number of elements being folded.
+Here's a recursive version that uses destructuring. Thanks to almost every implementation of JavaScript punting on tail recursion optimization, there's no easy way to write a version that doesn't consume the stack in proportion to the number of elements being folded.
 
 But from a discussion perspective, the structure will pay off in a few moments:
 
@@ -70,9 +70,11 @@ foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])
 
 Now let's talk associativity.
 
-### associativity
+### the commutative and associative properties
 
-`foldl` _consumes_ the elements from the left of the collection.  But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it associates its folding function from the left. In other words, when we write `foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])`, we're computing the sum as if we wrote `(((((0 + 1) + 2) + 3) + 4) + 5)`:
+`foldl` _consumes_ the elements from the left of the collection.  But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it associates its folding function from the left.
+
+When we write `foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])`, we're computing the sum as if we wrote `(((((0 + 1) + 2) + 3) + 4) + 5)`:
 
 ```javascript
 foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])
@@ -82,7 +84,7 @@ foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])
   //=> 15
 ```
 
-Addition is **commutative**, meaning that it makes no difference how we group the operations, we get the same result.  But not all operators are associative. Subtraction is not associative, we get different results depending upon how we group the operations:
+Addition is **commutative**, meaning that it makes no difference how we group the operations, we get the same result.  But not all operators are commutative. Subtraction is not commutative, we get different results depending upon how we group or order the operations:
 
 ```javascript
 (((((0 - 1) - 2) - 3) - 4) - 5)
@@ -92,7 +94,7 @@ Addition is **commutative**, meaning that it makes no difference how we group th
   //=> -3
 ```
 
-Because subtraction is not associative, if we write an expression without explicitly forcing the order of operations with parentheses, we leave the order up to rules we arbitrarily establish about how we evaluate expressions.
+Because subtraction is not commutative, if we write an expression without explicitly forcing the order of operations with parentheses, we leave the order up to rules we arbitrarily establish about how we evaluate expressions.
 
 How does JavaScript associate expressions by default? That's easy to test:
 
@@ -264,16 +266,14 @@ let lazymap = (mapper, iterable) =>
 
 As we can see, the unique combination of consuming from the left and associating from the right makes the lazy version of `foldr` very useful for working with short-circuit semantics like `first`, or working with unbounded iterables like `fibonacci`.
 
-### the bottom line
+### what we've learned about foldl, foldr, and lazyfoldr
 
-If we look at the implementation of `foldr` and think about stacks and recursion and so on, we can come to the conclusion that while `foldr` does associate the folding function from the right, it actually applies the folding function from the left, it's just that we've used recursion and the call stack to reverse the order of elements.
-
-This is true in a certain sense, but it's really just an implementation detail. The point is to understand the semantics of `foldl` and `foldr`, and the semantics are:
+As we've seen, the order of consuming values and the order of association are independent, and because they are independent, we get different semantics:
 
 - Both `foldl` and `foldr` consume from the left. And thus, they can be written to consume iterables.
 - `foldl` associates its folding function from the left.
 - `foldr` associates its folding function from the right.
-- Because `foldr` consumes from the left and associates from the right, a lazy implementation can provide short-circuit semantics and/or manage unbounded iterables.
+- Because `foldr` consumes from the left and associates from the right, a lazy implementation--lazyfoldr--can provide short-circuit semantics and/or manage unbounded iterables.
 
 In sum, the order of *consuming* values and the order of *associating* a folding function are two separate concepts, and they both matter.
 
