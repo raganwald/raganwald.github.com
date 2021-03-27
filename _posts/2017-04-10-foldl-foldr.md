@@ -282,7 +282,21 @@ As we've seen, the order of consuming values and the order of association are in
 
 In sum, the order of *consuming* values and the order of *associating* a folding function are two separate concepts, and they both matter.
 
-We've also learned that `foldl` is best used when we want to eagerly evaluate a fold. We initially wrote it recursively, but were we working with it in production using a language like JavaScript that cannot optimize linear recursion, we would rewrite it as a loop, e.g.:
+We've also learned that `foldl` is best used when we want to eagerly evaluate a fold.
+
+Likewise, we've learned that `foldr`'s semantics of consuming from the left but associating from the right make it ideal for lazy computations, such as working with short-circuit semantics or unbounded iterables. We are likely then to prefer to use the lazy implementation for `foldr`.
+
+The penultimate "rule of thumb" is this: *Use `foldl` for eager computations, `foldr` for lazy computations*.[^rot]
+
+[^rot]: The English phrase **rule of thumb** refers to a principle with broad application that is not intended to be strictly accurate or reliable for every situation. It refers to an easily learned and easily applied procedure or standard, based on practical experience rather than theory. This usage of the phrase can be traced back to the seventeenth century and has been associated with various trades where quantities were measured by comparison to the width or length of a thumb. --[Wikipedia](https://en.wikipedia.org/wiki/Rule_of_thumb)
+
+### just because we could, doesn't mean we should
+
+The examples in this essay were chosen to be simple enough that we could focus on the mechanisms of `foldl` and `foldr`. That helps us communicate with members of the larger programming community whose experience is grounded in orthodox functional programming.
+
+However, writing all of our code as if we are thinking in Scheme/haskell/ML and then translating those functions directly into JavaScript is often "cutting against the grain." We initially wrote `foldl` recursively, but that most implementations of JavaScript cannot optimize linear recursion, we should actually rewrite implement it with a loop:[^andyet]
+
+[^andyet]: There's another consideration for code bases where `for... of` loops are unreliable because of the behaviour of `Symbol` shims, but this consideration is well outside the scope of this essay. Throughout this collection of essays, we presume that all features of ES2015 are available except for TCO.
 
 ```javascript
 let foldl = (fn, valueSoFar, iterable) => {
@@ -294,11 +308,56 @@ let foldl = (fn, valueSoFar, iterable) => {
 };
 ```
 
-Likewise, we've learned that `foldr`'s semantics of consuming fromt he left but associating from the right make it ideal for lazy computations, such as working with short-circuit semantics or unbounded iterables. We are likely then to prefer to use the lazy implementation for `foldr`.
+This implementation is faster and consumes less memory than the recursive implementation. Likewise, for working with [lazy iterables], there are some benefits to the `foldr` approach, but for many linear higher-order operations on iterables, there are simpler higher-order functions we can write in a non-recursive style using iterators and generators.
 
-The final "rule of thumb" is this: *Use `foldl` for eager computations, `foldr` for lazy computations*.[^rot]
+[lazy iterables]: https://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html "Lazy Iterables in JavaScript"
 
-[^rot]: The English phrase **rule of thumb** refers to a principle with broad application that is not intended to be strictly accurate or reliable for every situation. It refers to an easily learned and easily applied procedure or standard, based on practical experience rather than theory. This usage of the phrase can be traced back to the seventeenth century and has been associated with various trades where quantities were measured by comparison to the width or length of a thumb. --[Wikipedia](https://en.wikipedia.org/wiki/Rule_of_thumb)
+We can map iterables lazily:
+
+```javascript
+function * mapIterableWith (mapper, iterable) {
+  for (const element of iterable) {
+    yield mapper(element);
+  }
+}
+
+[a, b, c, d, e, f, g] = mapIterableWith(c => c * c, fibonacci());
+
+[a, b, c, d, e, f, g]
+  //=> [0, 1, 1, 4, 9, 25, 64]
+```
+
+Filter iterables lazily:
+
+```javascript
+function * filterIterableWith (predicate, iterable) {
+  for (const element of iterable) {
+    if (predicate(element)) yield element;
+  }
+}
+
+first(n => n > 0 && n % 7 === 0, fibonacci())
+
+[a, b, c, d, e, f, g] = filterIterableWith(n => n % 7 === 0, fibonacci());
+
+[a, b, c, d, e, f, g]
+  //=> [0, 21, 987, 46368, 2178309, 102334155, 4807526976]
+```
+
+And short-circuit semantics like `first` are also easy to write directly:
+
+```
+function first (predicate, iterable) {
+  const [head] = filterIterableWith(predicate, iterable);
+
+  return head;
+}
+
+first(n => n > 0 && n % 7 === 0, mapIterableWith(c => c * c, fibonacci()))
+  //=> 441
+```
+
+The final rule of thumb is thus: *Our code should make the simple things easy, and the complex things possible*. Therefore, we write simle functions for mapping, filtering, or finding things in a lazy way, and we use tools like `foldr` when we encounter something that doesn't neatly correspond to one of our simple tools.
 
 (Discuss on [/r/javascript](https://www.reddit.com/r/javascript/comments/mdntyc/foldl_foldr_and_associative_order/))
 
