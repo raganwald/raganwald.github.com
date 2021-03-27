@@ -298,9 +298,9 @@ The penultimate "rule of thumb" is this: *Use `foldl` for eager computations, `f
 
 ### just because we could, doesn't mean we should
 
-The examples in this essay were chosen to be simple enough that we could focus on the mechanisms of `foldl` and `foldr`. That helps us communicate with members of the larger programming community whose experience is grounded in orthodox functional programming.
+The examples in this essay were chosen to be simple enough that we could focus on the mechanisms of `foldl` and `foldr`. This helps us communicate with members of the larger programming community whose experience is grounded in orthodox functional programming.
 
-However, writing all of our code as if we are thinking in Scheme/haskell/ML and then translating those functions directly into JavaScript is often "cutting against the grain." We initially wrote `foldl` recursively, but that most implementations of JavaScript cannot optimize linear recursion, we should actually rewrite implement it with a loop:[^andyet]
+However, writing all of our code as if we are thinking in Scheme/Haskell/ML and then translating those functions directly into JavaScript is often "cutting against the grain." We initially wrote `foldl` recursively, but since most implementations of JavaScript cannot optimize linear recursion, we should usually implement `foldl` with a loop:[^andyet]
 
 [^andyet]: There's another consideration for code bases where `for... of` loops are unreliable because of the behaviour of `Symbol` shims, but this consideration is well outside the scope of this essay. Throughout this collection of essays, we presume that all features of ES2015 are available except for TCO.
 
@@ -352,7 +352,7 @@ first(n => n > 0 && n % 7 === 0, fibonacci())
 
 And short-circuit semantics like `first` are also easy to write directly:
 
-```
+```javascript
 function first (predicate, iterable) {
   const [head] = filterIterableWith(predicate, iterable);
 
