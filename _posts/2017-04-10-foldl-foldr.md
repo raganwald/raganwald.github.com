@@ -290,6 +290,12 @@ The penultimate "rule of thumb" is this: *Use `foldl` for eager computations, `f
 
 [^rot]: The English phrase **rule of thumb** refers to a principle with broad application that is not intended to be strictly accurate or reliable for every situation. It refers to an easily learned and easily applied procedure or standard, based on practical experience rather than theory. This usage of the phrase can be traced back to the seventeenth century and has been associated with various trades where quantities were measured by comparison to the width or length of a thumb. --[Wikipedia](https://en.wikipedia.org/wiki/Rule_of_thumb)
 
+---
+
+![Dr. Ian Malcolm, Jurrasic Park](/assets/folding/drianmalcolm.png)
+
+---
+
 ### just because we could, doesn't mean we should
 
 The examples in this essay were chosen to be simple enough that we could focus on the mechanisms of `foldl` and `foldr`. That helps us communicate with members of the larger programming community whose experience is grounded in orthodox functional programming.
