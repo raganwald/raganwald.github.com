@@ -21,7 +21,7 @@ Here we go.
 
 ---
 
-[![Pine Trees](../assets/folding/pine-trees.jpg)](http://rhymeswithmagicart.blogspot.com/2011/12/december-pine-tree-folded-book-pattern.html)
+[![Pine Trees](/assets/folding/pine-trees.jpg)](http://rhymeswithmagicart.blogspot.com/2011/12/december-pine-tree-folded-book-pattern.html)
 
 ---
 
