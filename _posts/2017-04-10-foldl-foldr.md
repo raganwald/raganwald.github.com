@@ -11,9 +11,19 @@ published: true
 
 ---
 
-When talking with people in the functional programming "community," we often hear the term "fold." Folding is an abstraction of operations to be carried out on linear collections, and it's always implemented as a higher-order function. In this essay we're going to look at what "folding" does by writing our own implementations. In addition to exploring its basic purpose, we'll look at variations on folding that use different associativities ("left-associative folds" and "right-associative folds") and explore the use of right-associative folds for performing lazy operations on possibly unbounded iterables.
+When talking with people in the functional programming community, we often hear the term *fold*. Folding is an abstraction of operations to be carried out on linear collections, and it's nearly always implemented as a higher-order function.
 
-By the end of the essay, we'll have a basic grasp of common terms of art such as `foldl` and `foldr`, as well as a grasp of when each pattern should be applied--and when they cut against javaScript's gran and should be eschewed in favour of simpler constructs. Here we go.
+In this essay we're going to look at what "folding" does by writing our own implementations. In addition to exploring its basic purpose, we'll look at variations on folding that use different associativities ("left-associative folds" and "right-associative folds") and explore the use of right-associative folds for performing lazy operations on possibly unbounded iterables.
+
+By the end of the essay, we'll have a basic grasp of common terms of art such as `foldl` and `foldr`, as well as a grasp of when each pattern should be applied--and when they cut against javaScript's gran and should be eschewed in favour of simpler constructs.
+
+Here we go.
+
+---
+
+[![Pine Trees](../assets/folding/pine-trees.jpg)](http://rhymeswithmagicart.blogspot.com/2011/12/december-pine-tree-folded-book-pattern.html)
+
+---
 
 ### preamble: Array.prototype.reduce
 
