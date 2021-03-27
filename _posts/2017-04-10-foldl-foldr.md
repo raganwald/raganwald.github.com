@@ -363,7 +363,7 @@ first(n => n > 0 && n % 7 === 0, mapIterableWith(c => c * c, fibonacci()))
   //=> 441
 ```
 
-The final rule of thumb is thus: *Our code should make the simple things easy, and the complex things possible*. Therefore, we write simle functions for mapping, filtering, or finding things in a lazy way, and we use tools like `foldr` when we encounter something that doesn't neatly correspond to one of our simple tools.
+The final rule of thumb is thus: *Our code should make the simple things easy, and the complex things possible*. Therefore, we write simple functions for mapping, filtering, or finding things in a lazy way, and we use tools like `foldr` when we encounter something that doesn't neatly correspond to one of our simple tools.
 
 (Discuss on [/r/javascript](https://www.reddit.com/r/javascript/comments/mdntyc/foldl_foldr_and_associative_order/))
 
