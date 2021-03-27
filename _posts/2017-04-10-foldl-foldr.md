@@ -11,6 +11,12 @@ published: true
 
 ---
 
+When talking with people in the functional programming "community," we often hear the term "fold." Folding is an abstraction of operations to be carried out on linear collections, and it's always implemented as a higher-order function. In this essay we're going to look at what "folding" does by writing our own implementations. In addition to exploring its basic purpose, we'll look at variations on folding that use different associativities ("left-associative folds" and "right-associative folds") and explore the use of right-associative folds for performing lazy operations on possibly unbounded iterables.
+
+By the end of the essay, we'll have a basic grasp of common terms of art such as `foldl` and `foldr`, as well as a grasp of when each pattern should be applied--and when they cut against javaScript's gran and should be eschewed in favour of simpler constructs. Here we go.
+
+### preamble: Array.prototype.reduce
+
 JavaScript has a method on arrays called [reduce]. It's used for "reducing" a collection to a value of some kind. Here we use it to "reduce" an array of numbers to the sum of the numbers:
 
 [reduce]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/Reduce
@@ -40,7 +46,7 @@ And if we can map an array with a fold, we can also filter an array with a fold:
   //=> [2, 4]
 ```
 
-Folding is a very fundamental kind of operation on     a collection. It can be used in many other ways, but let's move along and talk about what kinds of collections we might want to fold.
+Folding is a very fundamental kind of operation on collections. It can be used in many other ways, but let's move along and talk about what kinds of collections we might want to fold.
 
 ### foldl
 
