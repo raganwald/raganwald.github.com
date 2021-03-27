@@ -287,7 +287,7 @@ let lazymap = (mapper, iterable) =>
 
 As we can see, the unique combination of consuming from the left and associating from the right makes the lazy version of `foldr` very useful for working with short-circuit semantics like `first`, or working with unbounded iterables like `fibonacci`.
 
-### what we've learned about foldl, foldr, and foldr
+### what we've learned about foldl and foldr
 
 As we've seen, the order of consuming values and the order of association are independent, and because they are independent, we get different semantics:
 
