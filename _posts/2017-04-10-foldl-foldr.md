@@ -86,7 +86,7 @@ With `foldl` in hand, we can look at its commutative and associative properties.
 
 ### the commutative and associative properties
 
-`foldl` _consumes_ the elements from the left of the collection.  But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it associates its folding function from the left.
+`foldl` _consumes_ the elements from the left of the collection.  But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it *associates* its folding function from the left.
 
 When we write `foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])`, we're computing the sum as if we wrote `(((((0 + 1) + 2) + 3) + 4) + 5)`:
 
@@ -145,7 +145,7 @@ foldr((current, valueToCompute) => current - valueToCompute, 5, [0, 1, 2, 3, 4])
 
 Note that with `foldl`, we supplied `0` as an initial value and `[1, 2, 3, 4, 5]` as the iterable, because we associate from the left. With `foldr`, we supplied `5` as the initial value, and `[0, 1, 2, 3, 4]` as the iterable, because `foldr` associates from the right, and thus the first thing we want it to evaluate will be `4 - 5`.
 
-We can write `foldr` just like `foldl`, but with one small change:
+Here's `foldr`:
 
 ```javascript
 let foldr = (fn, valueToCompute, iterable) => {
@@ -165,7 +165,19 @@ foldr((current, valueToCompute) => current - valueToCompute, 5, [0, 1, 2, 3, 4])
   //=> -3
 ```
 
+We can see that like `foldl`, we consume the elements from the right. But because we write:
+
+```javascript
+valueToCompute = foldr(fn, valueToCompute, iterator);
+
+return fn(current, valueToCompute);
+```
+
+The remainder of the compputation is evaluated first using recursion, and then its passed to the folding function `fn`. This is what makes it right-associative: Givien `0 - 1 - 2 - 3 - 4 - 5`, it computes `1 - (2 - (3 - (4 - 5))) => 3` first, then returns `0 - 3` as the final result.
+
 Although it consumes its elements from the left, `foldr` associates its operations from the right.
+
+`foldr` also passes the arguments into `fn` in the opposite order from the way `foldl`. It's easy to remember which function works which way: The argument representing the aggregated computation is on the left with `foldl` and on the right with `foldr`, which matches the associativity.
 
 ### hard work pays off in the future;<br/>laziness pays off right away
 
