@@ -210,7 +210,7 @@ This allows us to create a lazy `foldr`:
 
 ```javascript
 const memoized = (fn, keymaker = JSON.stringify) => {
-    const lookupTable = new Map();
+    const lookupTable = Object.create(null);
 
     return function (...args) {
       const key = keymaker.call(this, args);

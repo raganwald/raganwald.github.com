@@ -57,7 +57,7 @@ Here's a memoization decorator, snarfed from [Time, Space, and Life As We Know I
 
 ```javascript
 const memoized = (fn, keymaker = JSON.stringify) => {
-  const lookupTable = new Map();
+  const lookupTable = Object.create(null);
 
   return function (...args) {
     const key = keymaker.call(this, args);

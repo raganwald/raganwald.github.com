@@ -142,7 +142,7 @@ As seen [elsewhere](https://github.com/raganwald/javascript-allonge-six/blob/mas
 
 ```javascript
 const memoized = (fn, keymaker = JSON.stringify) => {
-    const lookupTable = new Map();
+    const lookupTable = Object.create(null);
 
     return function (...args) {
       const key = keymaker.call(this, args);
@@ -1324,7 +1324,7 @@ function multirec({ indivisible, value, divide, combine }) {
 }
 
 const memoized = (fn, keymaker = JSON.stringify) => {
-    const lookupTable = new Map();
+    const lookupTable = Object.create(null);
 
     return function (...args) {
       const key = keymaker.call(this, args);
