@@ -36,7 +36,7 @@ The mechanism behind terrible textbooks is the same mechanism behind terrible en
 
 But even one chicken with direct management authority or veto power can ruin an enterprise project: They "coattail" requirements that suit their own objectives at the expense of the project's success, and you end up with nonsense. (This happens everywhere. Microsoft is suffering now because its "cash cows," Windows and Office, behaved like chickens on steriods for decades, making almost every other division and department subordinate to their goals.)
 
-So about textbooks. It's fairly obvious that the problem with textbook quality and price is that the students are pigs and everyone else--faculty, adminsitartion, publishers--are chickens with authority. Fixing this problem could be done by routing around the whole system. For example, make universities irrelevant.
+So about textbooks. It's fairly obvious that the problem with textbook quality and price is that the students are pigs and everyone else--faculty, administration, publishers--are chickens with authority. Fixing this problem could be done by routing around the whole system. For example, make universities irrelevant.
 
 ### why we are about chickens and pigs
 
