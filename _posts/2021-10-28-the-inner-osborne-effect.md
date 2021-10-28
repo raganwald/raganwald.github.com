@@ -44,6 +44,8 @@ If the company was to continue to grow, It needed to escape its niche with a bol
 
 <center><img src="/assets/images/vp-marketing.jpg"></center>
 
+---
+
 ## Enter the VP of Marketing
 
 By this time, trust between the C-Suite and Engineering was at an all-time low. The executives didn’t understand why bugs were climbing and velocity was dropping. The Director of Engineering was articulate in explaining exactly what was going on, but the VP of Marketing would always interject with “Poppycock! Back when I worked at FamousCo, we had none of these problems!”
@@ -64,6 +66,8 @@ Meanwhile, product management was in chaos. Every time they wanted to build some
 
 <center><img src="/assets/images/wizard-of-oz.jpg"></center>
 
+---
+
 ## Whither The Product of Tomorrow?
 
 I was long gone by the time the Product of Tomorrow was killed. Yes, the Product of Tomorrow failed, and the Inner Osborne Effect took the existing product and the company with it. The Product of Tomorrow turned out to be demo-ware, carefully crafted to look good in front of the CEO, but lacked essential features “under the hood.”
@@ -73,6 +77,8 @@ The central cause of the Product of Tomorrow failing is another anti-pattern, on
 ---
 
 <center><img src="/assets/images/osborne-1.jpg"></center>
+
+---
 
 ## Osborne, again
 
