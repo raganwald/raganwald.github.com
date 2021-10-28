@@ -28,7 +28,7 @@ But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s
 
 # The Product of Tomorrow
 
-I worked for two different companies who inflicted the Inner Osborne Effect on themselves. Pull up a pew, and I’ll tell roughly what happened, and how it became a disaster:
+I worked for two different companies who inflicted the Inner Osborne Effect on themselves. One of them went "pear-shaped" in a  particularly dramatic way. Pull up a pew, and I’ll describe roughly what happened, and how it became a disaster. Of course, I am obfuscating things and blending a few details together. Consider this a fable.
 
 Our semi-fictitious company began its life as a scrappy startup selling into mid- to enterprise-sized customers. It found early success, and powered by its sales-led revenues, grew to dominate its niche. Driven by closing deals, its long-term development was constantly derailed by “fire drills” to ship new features that were alleged to be keys to closing big contracts, or by bug fixes driven by whichever customer complained the loudest at contract renewal time.
 
@@ -100,6 +100,4 @@ Could the Product of Tomorrow have succeeded? Maybe. But following Apple's examp
 
 ## post scriptum
 
-The “Obsborne Effect” was not the sole cause of the failure of the Osborne Computer Company, and the internal “Osborne Effect” I experienced twice wasn’t the sole cause of failure either.
-
-But I believe that in both cases I experienced, the company would have had a fighting chance to succeed had it not pre-announced that it was going all-in on an all-singing, all-dancing piece of vapourware built outside of its core product development group.
+The Obsborne Effect was not the sole cause of the failure of the Osborne Computer Company, and the Inner Osborne Effect I described above wasn’t the sole cause of failure either. But the company would have had a fighting chance to succeed had it not pre-announced that it was going all-in on an all-singing, all-dancing piece of vapourware built outside of its core product development group.
