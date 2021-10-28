@@ -14,7 +14,7 @@ In software development, we talk a lot about software anti-patterns, how to reco
 
 [AntiPatterns]: https://en.wikipedia.org/wiki/AntiPatterns
 
-One famous business anti-pattern is “To Osborne yourself,” which is to pre-announce something will obsolete the thing you’re selling today, thus killing your revenue and driving you out of business because all interest in your current business ceases. But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s also a product management anti-pattern, **The Inner Osborne Effect.
+One famous business anti-pattern is “To Osborne yourself,” which is to pre-announce something will obsolete the thing you’re selling today, thus killing your revenue and driving you out of business because all interest in your current business ceases. But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s also a product management anti-pattern, **The Inner Osborne Effect**.
 
 [Osborne Effect]: https://en.wikipedia.org/wiki/Osborne_effect
 
