@@ -14,7 +14,9 @@ In software development, we talk a lot about software anti-patterns, how to reco
 
 [AntiPatterns]: https://en.wikipedia.org/wiki/AntiPatterns
 
-Anti-patterns occur throughout businesses, not just in software code and architecture. One famous business anti-pattern is the [Osborne Effect], which is when a company pre-announces a future product that will obsolete the product line it’s selling today. Customers take notice and cancel their orders for the current product, waiting for the wonderful future in the company's marketing brochure. This stalls the company's momentum, kills the company's revenue, and in extreme cases, drives it right out of business.
+Anti-patterns occur throughout businesses, not just in software code and architecture. One famous business anti-pattern is the [Osborne Effect], which is when a company pre-announces a future product that will obsolete the product line it’s selling today.
+
+Customers take notice and cancel their orders for the current product, waiting for the wonderful future in the company's marketing brochure. This stalls the company's momentum, kills the company's revenue, and in extreme cases, drives it right out of business.
 
 But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s also a product management anti-pattern, called **The Inner Osborne Effect**. Here it is in action:
 
