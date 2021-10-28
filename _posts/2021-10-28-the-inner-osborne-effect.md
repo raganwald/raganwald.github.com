@@ -46,7 +46,7 @@ If the company was to continue to grow, It needed to escape its niche with a bol
 
 ---
 
-## Enter Lumburgh
+## Lumburgh
 
 By this time, trust between the C-Suite and Engineering was at an all-time low. The executives didn’t understand why bugs were climbing and velocity was dropping. The [Director of Engineering][raganwald] was articulate in explaining exactly what was going on, but Lumburgh, the VP of Marketing, would always interject with “Poppycock! Back when I worked at FamousCo, we had none of these problems!”
 
