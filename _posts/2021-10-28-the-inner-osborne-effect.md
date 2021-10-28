@@ -28,7 +28,7 @@ But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s
 
 # The Product of Tomorrow
 
-I worked for two different companies who inflicted the Inner Osborne Effect on themselves. One of them went "pear-shaped" in a  particularly dramatic way. Pull up a pew, and I’ll describe roughly what happened, and how it became a disaster. Of course, I am obfuscating things and blending a few details together. Consider this a fable.
+I worked for two different companies who inflicted the Inner Osborne Effect on themselves, and one of them went "pear-shaped" in a particularly dramatic way. Pull up a pew, I’ll describe what happened, and how it became a disaster. Of course, I am obfuscating things and blending a few details together. Consider this a fable.
 
 Our semi-fictitious company began its life as a scrappy startup selling into mid- to enterprise-sized customers. It found early success, and powered by its sales-led revenues, grew to dominate its niche. Driven by closing deals, its long-term development was constantly derailed by “fire drills” to ship new features that were alleged to be keys to closing big contracts, or by bug fixes driven by whichever customer complained the loudest at contract renewal time.
 
@@ -86,7 +86,7 @@ The central cause of the Product of Tomorrow failing is another anti-pattern, **
 
 ## Osborne, again
 
-But getting back to our company and its executives, the problem wasn't that they bet on the Product of Tomorrow, but they also _announced to its product development group that they was betting everything on the Product of Tomorrow_.
+But getting back to our company and its executives, the problem wasn't that the executives bet on the Product of Tomorrow, but that they also _announced to its Engineering and Product Management groups that they were betting everything on the Product of Tomorrow_. And then they followed through by blocking any attempt by Engineering or Product Management to invest in the original product.
 
 Compare and contrast this approach with Apple, who having succeeded with Apple II, went on to make big bets on Apple III, Lisa, Macintosh, Newton, iPhone, and iPad.
 
@@ -94,7 +94,7 @@ Apple III and Lisa failed. Macintosh was underpowered and overpriced on launch. 
 
 [pink]: https://en.wikipedia.org/wiki/Taligent#Development
 
-Could the Product of Tomorrow have succeeded? Maybe. But following Apple's example, the way to do that would have been to make it fully independent, and continue to build the existing product as if the plans for the Product of Tomorrow did not exist. Call the Product of Tomorrow “research.” Or an “experiment.” Locate its team in [Texaco Towers]. But don’t call it the future that will obsolete the present.
+Could the Product of Tomorrow have succeeded? Maybe. But following Apple's example, the way to do that would have been to make it fully independent, and continue to build the existing product as if the plans for the Product of Tomorrow did not exist. Call the Product of Tomorrow “research.” Or an “experiment.” Locate its team in [Texaco Towers]. But don’t call it the future that will obsolete the present. And especially don't respond to that by choking all progress on the cash cow that is financing the company's bets.
 
 [Texaco Towers]: https://www.folklore.org/StoryView.py?story=Texaco_Towers.txt
 
