@@ -60,7 +60,9 @@ How did the engineers feel about this? Engineering were already demoralized by t
 
 Resignations followed, first a trickle, then a flow.
 
-Meanwhile, product management was in chaos. Every time they wanted to build something, they’d be stopped with “Hold up, that will be half the cost and twice the value with the Product of Tomorrow!” The product was eventually put on life support, because the company had neither the will, nor the resources, to do anything except fix bugs while waiting for the Product of Tomorrow.
+Meanwhile, the company's Product Management was in chaos. Every time they wanted to build something, they’d be stopped with “Hold up, that will be half the cost and twice the value with the Product of Tomorrow!”
+
+The current product was eventually put on life support, because the company had neither the will, nor the resources, to do anything except fix bugs while waiting for the Product of Tomorrow.
 
 ---
 
