@@ -46,23 +46,25 @@ If the company was to continue to grow, It needed to escape its niche with a bol
 
 ---
 
-## Enter the VP of Marketing
+## Enter Lumburgh
 
-By this time, trust between the C-Suite and Engineering was at an all-time low. The executives didn’t understand why bugs were climbing and velocity was dropping. The Director of Engineering was articulate in explaining exactly what was going on, but the VP of Marketing would always interject with “Poppycock! Back when I worked at FamousCo, we had none of these problems!”
+By this time, trust between the C-Suite and Engineering was at an all-time low. The executives didn’t understand why bugs were climbing and velocity was dropping. The [Director of Engineering][raganwald] was articulate in explaining exactly what was going on, but Lumburgh, the VP of Marketing, would always interject with “Poppycock! Back when I worked at FamousCo, we had none of these problems!”
 
-The C-Suite were receptive when approached on the sly by the VP of Marketing. “I can start a skunkworks, remotely, under my direct command, to build **The Product of Tomorrow**. It will be [both a floor wax _and_ a dessert topping][shimmer]!”
+[raganwald]: http://raganwald.com
+
+The C-Suite were receptive when Lumburgh approached them on the sly. “I can start a skunkworks, remotely, under my direct command, to build **The Product of Tomorrow**. It will be [both a floor wax _and_ a dessert topping][shimmer]!”
 
 [shimmer]: https://www.youtube.com/watch?v=wPO8PqHGWFU
 
-Engineering was strictly fire-walled off from The Product of Tomorrow, which would emerge from stealth RealSoonNow™️ to replace everything Engineering was working on today.
+Engineering was strictly fire-walled off from The Product of Tomorrow Team, which would emerge from stealth RealSoonNow™️ to replace everything Engineering was working on today.
 
-How did the engineers feel about this? Engineering were already demoralized by the feature factory mindset. They had been complaining forever that if they weren’t given the time to build the product right, they’d never find the time to build it over, and now they felt punished for management’s choice to ignore their warnings.
+How did the engineers feel about this? They were already demoralized by the feature factory mindset. They had been complaining forever that if they weren’t given the time to build the product right, they’d never find the time to build it over, and now they felt punished for management’s choice to ignore their warnings.
 
 Resignations followed, first a trickle, then a flow.
 
-Meanwhile, the company's Product Management was in chaos. Every time they wanted to build something, they’d be stopped with “Hold up, that will be half the cost and twice the value with the Product of Tomorrow!”
+Meanwhile, the company's Product Management group was in chaos. Every time they wanted to build something, they’d be stopped with “Hold up, that will be half the cost and twice the value with the Product of Tomorrow!”
 
-The current product was eventually put on life support, because the company had neither the will, nor the resources, to do anything except fix bugs while waiting for the Product of Tomorrow.
+The current product was eventually put on life support, because senior management had neither the will, nor the resources, to do anything except fix bugs while waiting for the Product of Tomorrow.
 
 ---
 
@@ -74,7 +76,7 @@ The current product was eventually put on life support, because the company had 
 
 I was long gone by the time the Product of Tomorrow was killed. Yes, the Product of Tomorrow failed, and the Inner Osborne Effect took the existing product and the company with it. The Product of Tomorrow turned out to be demo-ware, carefully crafted to look good in front of the CEO, but lacked essential features “under the hood.”
 
-The central cause of the Product of Tomorrow failing is another anti-pattern, one I call “CEO as Customer.” And it turns out that a company that can’t invest in the quality of its mainline product, won’t invest in the quality of its replacement, either. That’s a management anti-pattern, and starting over with new people and a blank piece of paper doesn’t change management. Only management can change management.
+The central cause of the Product of Tomorrow failing is another anti-pattern, **CEO as Customer**. And it turns out that a company that can’t invest in the quality of its mainline product, won’t invest in the quality of its replacement, either. That’s a management anti-pattern, and starting over with new people and a blank piece of paper doesn’t change management. Only management can change management.
 
 ---
 
@@ -96,8 +98,6 @@ Could the Product of Tomorrow have succeeded? Maybe. But following Apple's examp
 
 [Texaco Towers]: https://www.folklore.org/StoryView.py?story=Texaco_Towers.txt
 
----
+### post scriptum
 
-## post scriptum
-
-The Obsborne Effect was not the sole cause of the failure of the Osborne Computer Company, and the Inner Osborne Effect I described above wasn’t the sole cause of failure either. But the company would have had a fighting chance to succeed had it not pre-announced that it was going all-in on an all-singing, all-dancing piece of vapourware built outside of its core product development group.
+_The Obsborne Effect was not the sole cause of the failure of the Osborne Computer Company, and the Inner Osborne Effect I described above wasn’t the sole cause of failure either. But the company would have had a fighting chance to succeed had it not pre-announced that it was going all-in on an all-singing, all-dancing piece of vapourware built outside of its core product development group._
