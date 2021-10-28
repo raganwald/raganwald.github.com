@@ -14,9 +14,9 @@ In software development, we talk a lot about software anti-patterns, how to reco
 
 [AntiPatterns]: https://en.wikipedia.org/wiki/AntiPatterns
 
-One famous business anti-pattern is “To Osborne yourself,” which is to pre-announce something will obsolete the thing you’re selling today, thus killing your revenue and driving you out of business because all interest in your current business ceases.
+Anti-patterns occur throught businesses, not just in software code and architecture. One famous business anti-pattern is the [Osborne Effect], which is when a company pre-announces a future product that will obsolete the product line it’s selling today. Customers take notice and cancel their orders for the current product, waiting for the wonderful future in the company's marketing brochure. This stalls the company's momentum, kills the company's revenue, and in extreme cases, drives it right out of business.
 
-But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s also a product management anti-pattern, **The Inner Osborne Effect**. Here it is in action:
+But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s also a product management anti-pattern, called **The Inner Osborne Effect**. Here it is in action:
 
 [Osborne Effect]: https://en.wikipedia.org/wiki/Osborne_effect
 
@@ -28,7 +28,7 @@ But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s
 
 # The Product of Tomorrow
 
-I worked for two different companies who inflicted the Inner Osborne Effect on themselves. Pull up a pew, and I’ll tell you all about what we did, and how it became a disaster. Both cases worked roughly along the following lines:
+I worked for two different companies who inflicted the Inner Osborne Effect on themselves. Pull up a pew, and I’ll tell roughly what happened, and how it became a disaster:
 
 Our semi-fictitious company began its life as a scrappy startup selling into mid- to enterprise-sized customers. It found early success, and powered by its sales-led revenues, grew to dominate its niche. Driven by closing deals, its long-term development was constantly derailed by “fire drills” to ship new features that were alleged to be keys to closing big contracts, or by bug fixes driven by whichever customer complained the loudest at contract renewal time.
 
