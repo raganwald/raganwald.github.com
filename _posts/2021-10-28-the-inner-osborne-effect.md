@@ -18,7 +18,7 @@ Anti-patterns occur throughout businesses, not just in software code and archite
 
 Customers take notice and cancel their orders for the current product, waiting for the wonderful future in the company's marketing brochure. This stalls the company's momentum, kills the company's revenue, and in extreme cases, drives it right out of business.
 
-But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s also a product management anti-pattern, called **The Inner Osborne Effect**. Here it is in action:
+But the Osborne Effect isn’t just a marketing and sales anti-pattern. It’s also a product management anti-pattern, called **The Inner Osborne Effect**. Here it is in action:
 
 [Osborne Effect]: https://en.wikipedia.org/wiki/Osborne_effect
 
@@ -30,7 +30,7 @@ But the [Osborne Effect] isn’t just a marketing and sales anti-pattern. It’s
 
 # The Product of Tomorrow
 
-I worked for two different companies who inflicted the Inner Osborne Effect on themselves, and one of them went "pear-shaped" in a particularly dramatic way. Pull up a pew, I’ll describe what happened, and how it became a disaster. Of course, I am obfuscating things and blending a few details together. Consider this a fable.
+I worked for two different companies who inflicted the Inner Osborne Effect on themselves, and both did so in theatrically dramatic ways. Pull up a pew, I’ll describe what happened, and how it became a disaster. The following story is a mashup inspired by both sets of circumstances, with some artistic license taken. Consider it a fable.
 
 Our semi-fictitious company began its life as a scrappy startup selling into mid- to enterprise-sized customers. It found early success, and powered by its sales-led revenues, grew to dominate its niche. Driven by closing deals, its long-term development was constantly derailed by “fire drills” to ship new features that were alleged to be keys to closing big contracts, or by bug fixes driven by whichever customer complained the loudest at contract renewal time.
 
@@ -76,7 +76,7 @@ The current product was eventually put on life support, because senior managemen
 
 ## Whither The Product of Tomorrow?
 
-I was long gone by the time the Product of Tomorrow was killed. Yes, the Product of Tomorrow failed, and the Inner Osborne Effect took the existing product and the company with it. The Product of Tomorrow turned out to be demo-ware, carefully crafted to look good in front of the CEO, but lacked essential features “under the hood.”
+I was long gone by the time the Product of Tomorrow was killed. Yes, the Product of Tomorrow failed, and the Inner Osborne Effect took the existing product with it. The Product of Tomorrow turned out to be demo-ware, carefully crafted to look good in front of the CEO, but lacked essential features “under the hood.”
 
 The central cause of the Product of Tomorrow failing is another anti-pattern, **CEO as Customer**. And it turns out that a company that can’t invest in the quality of its mainline product, won’t invest in the quality of its replacement, either. That’s a management anti-pattern, and starting over with new people and a blank piece of paper doesn’t change management. Only management can change management.
 
@@ -88,7 +88,7 @@ The central cause of the Product of Tomorrow failing is another anti-pattern, **
 
 ## Osborne, again
 
-But getting back to our company and its executives, the problem wasn't that the executives bet on the Product of Tomorrow, but that they also _announced to its Engineering and Product Management groups that they were betting everything on the Product of Tomorrow_. And then they followed through by blocking any attempt by Engineering or Product Management to invest in the original product.
+But getting back to our company and its executives, the problem wasn't that the executives bet on the Product of Tomorrow, but that they also _announced to its Engineering and Product Management groups that they were betting everything on the Product of Tomorrow_. And then they followed through by obstructing any attempt by Engineering or Product Management to invest in the original product.
 
 Compare and contrast this approach with Apple, who having succeeded with Apple II, went on to make big bets on Apple III, Lisa, Macintosh, Newton, iPhone, and iPad.
 
@@ -102,4 +102,4 @@ Could the Product of Tomorrow have succeeded? Maybe. But following Apple's examp
 
 ### post scriptum
 
-_The Obsborne Effect was not the sole cause of the failure of the Osborne Computer Company, and the Inner Osborne Effect I described above wasn’t the sole cause of failure either. But the company would have had a fighting chance to succeed had it not pre-announced that it was going all-in on an all-singing, all-dancing piece of vapourware built outside of its core product development group._
+_The Obsborne Effect was not the sole cause of the failure of the Osborne Computer Company, and the Inner Osborne Effect I described above wasn’t the sole cause of either source company's failures. But both companies would have had a fighting chance to succeed had they not pre-announced that they were going all-in on an all-singing, all-dancing piece of vapourware built outside of their core product development groups._
