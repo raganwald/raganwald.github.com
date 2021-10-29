@@ -3,12 +3,6 @@ layout: default
 published: true
 ---
 
----
-
-<center><img src="/assets/images/osborne-1.jpg"></center>
-
----
-
 In software development, we talk a lot about software anti-patterns, how to recognize them, and how to extricate yourself from them via refactoring.
 
 > An **anti-pattern** is a common response to a recurring problem that is usually ineffective and risks being highly counterproductive. The term, coined in 1995 by computer programmer [Andrew Koening], was inspired by the book [Design Patterns], which highlights a number of design patterns in software development that its authors considered to be highly reliable and effective.
