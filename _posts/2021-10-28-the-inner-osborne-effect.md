@@ -3,6 +3,12 @@ layout: default
 published: true
 ---
 
+---
+
+<center><img src="/assets/images/osborne-1.jpg"></center>
+
+---
+
 In software development, we talk a lot about software anti-patterns, how to recognize them, and how to extricate yourself from them via refactoring.
 
 > An **anti-pattern** is a common response to a recurring problem that is usually ineffective and risks being highly counterproductive. The term, coined in 1995 by computer programmer [Andrew Koening], was inspired by the book [Design Patterns], which highlights a number of design patterns in software development that its authors considered to be highly reliable and effective.
@@ -82,11 +88,11 @@ The central cause of the Product of Tomorrow failing is another anti-pattern, **
 
 ---
 
-<center><img src="/assets/images/osborne-1.jpg"></center>
+<center><img src="/assets/images/messagepad-100.jpg"></center>
 
 ---
 
-## Osborne, again
+## From Osborne 1 to MessagePad 100
 
 But getting back to our company and its executives, the problem wasn't that the executives bet on the Product of Tomorrow, but that they also _announced to its Engineering and Product Management groups that they were betting everything on the Product of Tomorrow_. And then they followed through by obstructing any attempt by Engineering or Product Management to invest in the original product.
 
