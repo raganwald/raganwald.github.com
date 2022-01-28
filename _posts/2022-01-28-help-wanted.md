@@ -5,22 +5,31 @@ tags: [allonge]
 
 ![Piet Mondrian - Tableau No. IV; Lozenge Composition (1924/1925)](/assets/images/tableau-iv.jpg)
 
-Hello, my name is [Reginald](http://raganwald.com), and I am seeking someone to collaborate with me on a small, one-page interactive puzzle.
+### me and my puzzle
 
-I have designed the puzzle conceptually, and I will be responsible for the JavaScript that operates the puzzle. I am looking for someone with design sensibilities and HTML/CSS experience to make the puzzle visually interesting.
+Hello, my name is [Reginald](http://raganwald.com). I sometimes [blog](http://raganwald.com) and have written a few [books](https://leanpub.com/u/raganwald) about programming. My love-affair with puzzles started early. Here's one example: [The Eight Queens Problem... and Raganwald's Unexpected Nostalgia](/2018/08/03/eight-queens.html).
 
-This project is strictly for fun, and will be [CC-licensed](http://creativecommons.org). I am willing to pay a token honorarium for your work on this, but it is not a contract in the "putting bread on the table" sense, nor is it a job.
+I have an idea for a small, one-page interactive puzzle, based on some simple math that may or may not be interesting to the kind of person who finds Raymond Smullyan or Martin Gardner's work interesting. This puzzle will be strictly for fun, and will be [CC-licensed](http://creativecommons.org).
 
-There are no plans to monetize this puzzle, and if someone else takes advantage of the CC license to do so themselves, there are no plans to require that they share their revenue with either of us. I am not planning any features to make it "viral," e.g. I have no plans for users to tweet out their solutions.
+There are no plans to monetize this puzzle, and if someone else takes advantage of the license to do so, there are no plans to take a share of their revenue. I am not planning any features to make it "viral," e.g. I have no plans for users to [tweet out their solutions](https://www.powerlanguage.co.uk/wordle/).
 
-Speaking of which, this project is not a clone of any puzzle that I'm aware of, although the underpinnings will be familiar to people who like to solve math and computer science problems.
+### the project
 
-I would like both the visual experience and the code behind it to be minimalist. Everyone with a browser can "view source," and it's intended that the source be as easy to read and understand as the puzzle is to play. For this reason, frameworks like React are off the table.
+I have designed the puzzle conceptually, and I will be responsible for the JavaScript that operates the puzzle. I am looking for someone with design sensibilities and HTML/CSS experience to make the puzzle visually interesting. 
 
-Putting it all together, why would you be interested in collaborating with me?
+I would like both the visual experience and the code behind it to be minimalist. Everyone with a browser can "view source," and it's intended that the source be as easy to read and understand as the puzzle is to play. For this reason, frameworks like React are off the table, and my goal is to use zero libraries, not even [the ones I adore](https://ramdajs.com).
 
-Fun. That's the only reason I can think of. If you think it would be fun to design the visual appearance of a puzzle, and contribute the CSS and/or HTML to bring the puzzle to life, you're the person I'm looking for.
+### why?
 
-If you're that person, my email is reg@braythwayt.com. No need for a resumé or portfolio, please send me a link to one thing you're proud of making yourself.
+Putting it all together, why would you be interested in collaborating with me on a puzzle that won't make either of us famous or rich?
 
-Thank you for reading this, have a great day!
+**Fun**. If you think it would be fun to design the visual appearance of a puzzle, and contribute the CSS and/or HTML to bring the puzzle to life, you're the person I'm looking for. I am willing to pay a token honorarium for your work on this, but it is not a contract in the "putting bread on the table" sense, nor is it a job.
+
+It's just something that could be fun to do, for the sake of doing something fun.
+
+
+### the next step
+
+If you're still reading, my email is reg@braythwayt.com. No need for a resumé or portfolio, please send me a link to one thing you're proud of making yourself.
+
+Thank you, have a great day!
