@@ -9,7 +9,7 @@ tags: [allonge]
 
 Hello, my name is [Reginald](http://raganwald.com). I sometimes [blog](http://raganwald.com) and have written a few [books](https://leanpub.com/u/raganwald) about programming. My love-affair with puzzles started early. Here's one example: [The Eight Queens Problem... and Raganwald's Unexpected Nostalgia](/2018/08/03/eight-queens.html).
 
-I have an idea for a small, one-page interactive puzzle, based on some simple math that may or may not be interesting to the kind of person who finds Raymond Smullyan or Martin Gardner's work interesting. This puzzle will be strictly for fun, and will be [CC-licensed](http://creativecommons.org).
+I have an idea for a modest, one-page interactive puzzle, based on some simple math that may or may not be interesting to the kind of person who likes Raymond Smullyan or Martin Gardner's work. This puzzle will be strictly for fun, and will be [CC-licensed](http://creativecommons.org).
 
 There are no plans to monetize this puzzle, and if someone else takes advantage of the license to do so, there are no plans to take a share of their revenue. I am not planning any features to make it "viral," e.g. I have no plans for users to [tweet out their solutions](https://www.powerlanguage.co.uk/wordle/).
 
