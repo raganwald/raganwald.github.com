@@ -3,7 +3,7 @@ title: "Help Wanted"
 tags: [allonge]
 ---
 
-![Piet Mondrian - Tableau No. IV; Lozenge Composition (1924/1925)](/assets/images/tableau-iv.jpg)
+![A generic image suggestion an idea](/assets/images/generic-idea.jpg)
 
 ### me and my puzzle
 
