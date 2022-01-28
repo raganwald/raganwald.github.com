@@ -13,11 +13,11 @@ I have an idea for a small, one-page interactive puzzle, based on some simple ma
 
 There are no plans to monetize this puzzle, and if someone else takes advantage of the license to do so, there are no plans to take a share of their revenue. I am not planning any features to make it "viral," e.g. I have no plans for users to [tweet out their solutions](https://www.powerlanguage.co.uk/wordle/).
 
-### the project
+### where you come in
 
-I have designed the puzzle conceptually, and I will be responsible for the JavaScript that operates the puzzle. I am looking for someone with design sensibilities and HTML/CSS experience to make the puzzle visually interesting. 
+I will be responsible for the JavaScript that operates the puzzle. Both the visual experience and the code behind it to be minimalist. Everyone with a browser can "view source," and it's intended that the source be as easy to read and understand as the puzzle is to play. For this reason, frameworks like React are off the table, and my goal is to use zero libraries, not even [the ones I adore](https://ramdajs.com).
 
-I would like both the visual experience and the code behind it to be minimalist. Everyone with a browser can "view source," and it's intended that the source be as easy to read and understand as the puzzle is to play. For this reason, frameworks like React are off the table, and my goal is to use zero libraries, not even [the ones I adore](https://ramdajs.com).
+I am looking for someone with design sensibilities and HTML/CSS experience to make the puzzle visually interesting. I'm looking for someone comfortable with a minimalist approach. We will share attribution and copyright.
 
 ### why?
 
