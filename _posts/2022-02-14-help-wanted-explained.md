@@ -21,5 +21,8 @@ For example, on the first move, only one square can be changed, from light-grey 
 
 ![First Move](/assets/images/game/first-move.png)
 
-Having chosen to change the colour to spring-green, on the second move there are a new set of available chocies:
+Having chosen to change the colour to spring-green, on the second move there are a new set of available chocies. The first square can be changed to light-grey or gray, and the second square can now be changed to gray (but not spring-green):
 
+![Second Move](/assets/images/game/second-move.png)
+
+### the rules
