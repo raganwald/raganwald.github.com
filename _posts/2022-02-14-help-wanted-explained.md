@@ -41,6 +41,14 @@ Fifth move:
 
 ![Fifth Move](/assets/images/game/fifth-move.png)
 
+Penultimate move:
+
+![Sixth Move](../assets/images/game/sixth-move.png)
+
+Final move:
+
+![Final Move](../assets/images/game/final-move.png)
+
 ### the rules
 
 For the above simple game, each square can be one of three colours, and there are three squares.
