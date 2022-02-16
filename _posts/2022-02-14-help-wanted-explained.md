@@ -3,6 +3,8 @@ title: "Help Wanted, Explained"
 tags: [allonge, noindex]
 ---
 
+# the first puzzle
+
 This looks like a "Wordle:"
 
 ![Wordle](/assets/images/game/wordle.png)
@@ -49,7 +51,11 @@ Final move:
 
 ![Final Move](/assets/images/game/final-move.png)
 
-### the rules
+Which brings us to the winning condition for this puzzle:
+
+![Winning](/assets/images/game/winning.png)
+
+### hanoing
 
 For the above simple game, each square can be one of three colours, and there are three squares. If we accept that the ordering of the squares from left-to-right is significant, the rules for which changes are allowed are:
 
@@ -77,3 +83,25 @@ And after the second move, it looks like this:
 ![Hanoi Third](/assets/images/game/hanoi-third.png)
 
 If we think of our row of squares representing the discs from smallest to largest, the color shows which peg the disc is on, and the two Hanoing rules describe that you can only move a disc from the top of a peg, and only onto a peg that doesn't have a smaller disc on top.
+
+### beyond lucas' tower
+
+"Hanoing" is just the first of several puzzles, intended of be of increasing difficulty to solve, especially without being told the rules in advance. Other puzzles will use roughly the same interface, but emulate variations on Lucas' Tower.
+
+In all of the variations, you cannot place a disc on top of a smaller disc, and both the number of discs and the number of pegs remain constant.
+
+**Random** is a variation where the initial position and winning position are chosen randomly, rather than starting with all the discs on one peg and the winning position being all the discs on another peg. In the wordle interface, this corresponds to beginning with a random assortment of colours and trying to achieve a different assortment of colours.
+
+A much harder variation of Random that **only** applies to the Wordle interface begins with all the discs being the light grey, and attempting to turn them all green. But instead of the colours mapping to the same pegs, each square would have its own mapping. This can be very disorienting to figure out. 
+
+**Adjacent** is a variation where discs can be moved either one peg to the left or one peg to the right, but cannot skip a peg. In the Wordle interface, this limits every possible colour change to be either changing another colour to gray, or changing gray to another colour.
+
+**Ring** is a variation that works just like regular Hanoing, but discs can only move one peg to the right. Discs on the last peg can be moved back to the first peg, because the pegs form a ring. In the Wordle interface, if a square can change colour, there is only one possible colour it can change to.
+
+**Siblings** is a variation where there can be more than one disc of the same size. The rules state that a disc cannot be moved onto a smaller disc, which allows a disc to be placed on a larger disc or a disc of the same size.
+
+A more complex version of Siblings involves marking some of the discs and requiring the winning condition to include specific discs on specific pegs. Here're the initial and winning positions, represented as the traditional towers:
+
+![Advanced Siblings Tower Initial](/assets/images/game/fruit-initial.png)
+
+![Advanced Siblings Tower Final](/assets/images/game/fruit-final.png)
