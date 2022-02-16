@@ -21,6 +21,8 @@ Each move they make changes one square's colour. The sequence of moves above is 
 
 The reason it takes seven moves and not three is that it isn't as simple as changing the first square to green then the second, and then the third. The squares the player is allowed to change, and the colours they're allowed to change them to, change with every move. And it's the player's job to try to deduce the underlying rules governing the "topology" of the game.
 
+This is obviously not "Wordle," which is a word-deduction game, so we will call this type of interface "wordoid."
+
 ### the options
 
 On the first move, only one square can be changed, from light-grey to either gray or spring-green:
@@ -90,18 +92,28 @@ If we think of our row of squares representing the discs from smallest to larges
 
 In all of the variations, you cannot place a disc on top of a smaller disc, and both the number of discs and the number of pegs remain constant.
 
-**Random** is a variation where the initial position and winning position are chosen randomly, rather than starting with all the discs on one peg and the winning position being all the discs on another peg. In the wordle interface, this corresponds to beginning with a random assortment of colours and trying to achieve a different assortment of colours.
+**Random** is a variation where the initial position and winning position are chosen randomly, rather than starting with all the discs on one peg and the winning position being all the discs on another peg. In the wordoid interface, this corresponds to beginning with a random assortment of colours and trying to achieve a different assortment of colours.
 
-A much harder variation of Random that **only** applies to the Wordle interface begins with all the discs being the light grey, and attempting to turn them all green. But instead of the colours mapping to the same pegs, each square would have its own mapping. This can be very disorienting to figure out. 
+A much harder variation of Random that **only** applies to the wordoid interface begins with all the discs being the light grey, and attempting to turn them all green. But instead of the colours mapping to the same pegs, each square would have its own mapping. This can be very disorienting to figure out. 
 
-**Adjacent** is a variation where discs can be moved either one peg to the left or one peg to the right, but cannot skip a peg. In the Wordle interface, this limits every possible colour change to be either changing another colour to gray, or changing gray to another colour.
+**Adjacent** is a variation where discs can be moved either one peg to the left or one peg to the right, but cannot skip a peg. In the wordoid interface, this limits every possible colour change to be either changing another colour to gray, or changing gray to another colour.
 
-**Ring** is a variation that works just like regular Hanoing, but discs can only move one peg to the right. Discs on the last peg can be moved back to the first peg, because the pegs form a ring. In the Wordle interface, if a square can change colour, there is only one possible colour it can change to.
+**Ring** is a variation that works just like regular Hanoing, but discs can only move one peg to the right. Discs on the last peg can be moved back to the first peg, because the pegs form a ring. In the wordoid interface, if a square can change colour, there is only one possible colour it can change to.
 
 **Siblings** is a variation where there can be more than one disc of the same size. The rules state that a disc cannot be moved onto a smaller disc, which allows a disc to be placed on a larger disc or a disc of the same size.
 
-A more complex version of Siblings involves marking some of the discs and requiring the winning condition to include specific discs on specific pegs. Here're the initial and winning positions, represented as the traditional towers:
+Another version of Siblings involves marking some of the discs and requiring the winning condition to include specific discs on specific pegs. Here's the initial:
 
 ![Advanced Siblings Tower Initial](/assets/images/game/fruit-initial.png)
 
+And winning position:
+
 ![Advanced Siblings Tower Final](/assets/images/game/fruit-final.png)
+
+In the wordoid interface, the initial position looks like this:
+
+![Initial Advanced Siblings](/assets/images/game/initial-advanced-siblings.png)
+
+And the final position looks like this:
+
+![Final Position Advanced Siblings](/assets/images/game/final-position-advanced-siblings.png)
