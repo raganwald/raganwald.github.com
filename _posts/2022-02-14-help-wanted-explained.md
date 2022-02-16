@@ -43,7 +43,7 @@ Fifth move:
 
 Penultimate move:
 
-![Sixth Move](/assets/images/game/sixth-move.png)![Hanoi Second](../assets/images/game/hanoi-second.png)
+![Sixth Move](/assets/images/game/sixth-move.png)
 
 Final move:
 
@@ -70,10 +70,10 @@ The initial position looks like this:
 
 And after the first move, the game looks like this:
 
-![Hanoi Second](../assets/images/game/hanoi-second.png)
+![Hanoi Second](/assets/images/game/hanoi-second.png)
 
 And after the second move, it looks like this:
 
-![Hanoi Third](../assets/images/game/hanoi-third.png)
+![Hanoi Third](/assets/images/game/hanoi-third.png)
 
 If we think of our row of squares representing the discs from smallest to largest, the color shows which peg the disc is on, and the two Hanoing rules describe that you can only move a disc from the top of a peg, and only onto a peg that doesn't have a smaller disc on top.
