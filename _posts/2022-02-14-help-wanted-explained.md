@@ -5,15 +5,15 @@ tags: [allonge, noindex]
 
 This looks like a "Wordle:"
 
-<div max-width=290><img alt="Wordle" src="/assets/images/game/wordle.png"/></div>
+![Wordle](/assets/images/game/wordle.png)
 
 The plyer starts with an initial condition that looks like this:
 
-<div max-width=290><img alt="Initial" src="/assets/images/game/initial.png"/></div>
+![Initial](/assets/images/game/initial.png)
 
 And is trying to make the "winning" condition, which looks like this:
 
-<div max-width=290><img alt="Winning" src="/assets/images/game/winning.png"/></div>
+![Winning](/assets/images/game/winning.png)
 
 Each move they make changes one square's colour. The sequence of moves above is the optimal solution.
 
@@ -23,17 +23,18 @@ The reason it takes seven moves and not three is that it isn't as simple as chan
 
 On the first move, only one square can be changed, from light-grey to either gray or spring-green:
 
-<div max-width=290><img alt="First Move" src="/assets/images/game/first-move.png"/></div>
+![First Move](/assets/images/game/first-move.png)
 
 Having chosen to change the colour to spring-green, on the second move there are a new set of available choices. The first square can be changed to light-grey or gray, and the second square can now be changed to gray (but not spring-green):
 
-<div max-width=290><img alt="Second Move" src="/assets/images/game/second-move.png"/></div>
+![Second Move](/assets/images/game/second-move.png)
 
 As we can tell from looking at the history of moves above, the best choice is to change the second square to gray. The options for the remaining moves are:
 
-<div max-width=290><img alt="Third Move" src="/assets/images/game/third-move.png"/></div>
+![Third Move](/assets/images/game/third-move.png)
 
-<div max-width=290><img alt="Fourth Move" src="/assets/images/game/fourth-move.png"/></div>
+![Fourth Move](../assets/images/game/fourth-move.png)
+
 
 
 ### the rules
