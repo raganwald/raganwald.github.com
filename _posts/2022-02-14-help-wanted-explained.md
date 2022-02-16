@@ -43,7 +43,7 @@ Fifth move:
 
 Penultimate move:
 
-![Sixth Move](/assets/images/game/sixth-move.png)
+![Sixth Move](/assets/images/game/sixth-move.png)![Hanoi Second](../assets/images/game/hanoi-second.png)
 
 Final move:
 
@@ -62,6 +62,18 @@ This game has a name, it is called **Hanoing**. Its name is taken from the class
 
 [^FernandoRodriguezVillegas] The Hanoing representation is attributed to [Fernando Rodriguez Villegas](https://users.ictp.it/~villegas/)
 
-To see the similarity, here's a three-disc tower, with the pegs coloured. We'll pretend the discs are made of some transparent material that takes on the colour of the peg it is on. The initial position looks like this:
+To see the similarity, here's a three-disc tower, with the pegs coloured. We'll pretend the discs are made of some transparent material that takes on the colour of the peg it is on.
+
+The initial position looks like this:
 
 ![Hanoi Initial](/assets/images/game/hanoi-initial.png)
+
+And after the first move, the game looks like this:
+
+![Hanoi Second](../assets/images/game/hanoi-second.png)
+
+And after the second move, it looks like this:
+
+![Hanoi Third](../assets/images/game/hanoi-third.png)
+
+If we think of our row of squares representing the discs from smallest to largest, the color shows which peg the disc is on, and the two Hanoing rules describe that you can only move a disc from the top of a peg, and only onto a peg that doesn't have a smaller disc on top.
