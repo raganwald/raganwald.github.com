@@ -33,7 +33,7 @@ As we can tell from looking at the history of moves above, the best choice is to
 
 <div width=290>![Third Move](/assets/images/game/third-move.png)</div>
 
-<div width=290>![Fourth Move](../assets/images/game/fourth-move.png)</div>
+<div width=290>![Fourth Move](/assets/images/game/fourth-move.png)</div>
 
 
 ### the rules
