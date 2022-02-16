@@ -29,13 +29,17 @@ Having chosen to change the colour to spring-green, on the second move there are
 
 ![Second Move](/assets/images/game/second-move.png)
 
-As we can tell from looking at the history of moves above, the best choice is to change the second square to gray. The options for the remaining moves are:
+As we can tell from looking at the history of moves above, the best choice is to change the second square to gray. The options for the remaining moves are... Third move:
 
 ![Third Move](/assets/images/game/third-move.png)
 
-![Fourth Move](../assets/images/game/fourth-move.png)
+Fourth move:
 
+![Fourth Move](/assets/images/game/fourth-move.png)
 
+Fifth move:
+
+![Fifth Move](/assets/images/game/fifth-move.png)
 
 ### the rules
 
