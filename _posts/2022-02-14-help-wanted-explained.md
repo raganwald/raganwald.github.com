@@ -33,6 +33,8 @@ As we can tell from looking at the history of moves above, the best choice is to
 
 ![Third Move](/assets/images/game/third-move.png)
 
+![Fourth Move](../assets/images/game/fourth-move.png)
+
 
 
 ### the rules
