@@ -100,20 +100,28 @@ A much harder variation of Random that **only** applies to the wordoid interface
 
 **Ring** is a variation that works just like regular Hanoing, but discs can only move one peg to the right. Discs on the last peg can be moved back to the first peg, because the pegs form a ring. In the wordoid interface, if a square can change colour, there is only one possible colour it can change to.
 
-**Siblings** is a variation where there can be more than one disc of the same size. The rules state that a disc cannot be moved onto a smaller disc, which allows a disc to be placed on a larger disc or a disc of the same size.
+**Siblings** is a variation where there is more than one disc of the same size. The rules of Lucas' Tower state that a disc cannot be moved onto a smaller disc, which allows a disc to be placed on a larger disc or also on a disc of the same size.
 
-Another version of Siblings involves marking some of the discs and requiring the winning condition to include specific discs on specific pegs. Here's the initial:
+Here's a six-disc example tower:
 
-![Advanced Siblings Tower Initial](/assets/images/game/fruit-initial.png)
-
-And winning position:
-
-![Advanced Siblings Tower Final](/assets/images/game/fruit-final.png)
+![Siblings Initial](/assets/images/game/siblings-initial.png)
 
 In the wordoid interface, the initial position looks like this:
 
-![Initial Advanced Siblings](/assets/images/game/initial-advanced-siblings.png)
+![Siblings Initial Wordoid](/assets/images/game/siblings-initial-wordoid.png)
 
-And the final position looks like this:
+In the normal game, the number of moves required is two to the power of the number of discs, minus one. That's not the case with siblings, it only requires two to the power of the number of sizes of discs, times the number of discs per size.
 
-![Final Position Advanced Siblings](/assets/images/game/final-position-advanced-siblings.png)
+So while the normal game requires 63 moves to solve six discs, siblings only requires 14.
+
+Siblings is especially interesting when the discs are marked in a special way, like this:
+
+![Advanced Siblings Tower Initial](/assets/images/game/fruit-initial.png)
+
+And when the winning position requires putting specific discs on specific pegs, like this:
+
+![Advanced Siblings Tower Final](/assets/images/game/fruit-final.png)
+
+In the wordoid interface, marking the discs is not required, just setting a winning condition where specific discs must end up with specific colours:
+
+![Final Position Advanced Siblings](../assets/images/game/final-position-advanced-siblings.png)
