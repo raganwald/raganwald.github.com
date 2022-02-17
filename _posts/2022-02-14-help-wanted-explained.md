@@ -61,8 +61,8 @@ Which brings us to the winning condition for this puzzle:
 
 For the above simple game, each square can be one of three colours, and there are three squares. If we accept that the ordering of the squares from left-to-right is significant, the rules for which changes are allowed are:
 
-1. A square can change colour to another colour if it is the first square of the colour it is changing *from*, and;
-2. A square can change colour to another colour if it will become the first square of the colour it is changing *to*.
+1. A square can only change colour to another colour if it is the first square of the colour it is changing *from*, and;
+2. A square can only change colour to another colour if it will become the first square of the colour it is changing *to*.
 
 This game has a name, it is called **[Hanoing]**. Its name is taken from the classic Lucas' Tower problem, which is often called [The Towers of Hanoi][towers]. It's named after the Towers of Hanoi because mathematically, it's the exact same problem, just with a different visual representation that disguises the problem for those who've seen it before.[^FernandoRodriguezVillegas]
 
@@ -112,20 +112,30 @@ In the wordloid interface, the initial position looks like this:
 
 ![Siblings Initial wordloid](/assets/images/game/siblings-initial-wordloid.png)
 
-In the normal game, the number of moves required is two to the power of the number of discs, minus one. That's not the case with siblings, it only requires two to the power of the number of sizes of discs, times the number of discs per size.
+Siblings breaks both of the Hanoing rules. Consider this position after changing the first square to spring-green:
 
-So while the normal game requires 63 moves to solve six discs, siblings only requires 14.
+![Siblings Second Choice](/assets/images/game/siblings-second-choice.png)
 
-"Siblings" is especially interesting when the discs are marked in a special way, like this:
+This breaks the second hanoing rule: *A square can only change colour to another colour if it will become the first square of the colour it is changing to*. Changing the second square to spring-green will not make it the first spring-green square.
 
-![Advanced Siblings Tower Initial](/assets/images/game/fruit-initial.png)
+If we make that change, something really wild happens:
+
+![Siblings Third Choice](../assets/images/game/siblings-third-choice.png)
+
+Now the first square cannot be changed at all, violating the first hanoing rule: *A square can only change colour to another colour if it is the first square of the colour it is changing from*. The reason for this is that if the squares represent discs being moved onto pegs, moving the first disc to the third peg and then moving the second disc to the third peg reverses their order, so what was originally the first disc is now underneath what was originally the second disc.
+
+We don't show it in the wordloid interface, but essentially, the two squares have swapped positions.
+
+In the tower form, Siblings is especially interesting when the discs are marked in a special way, like this:
+
+![Bicolour Tower Initial](/assets/images/game/bicolour-initial.png)
 
 And when the winning position requires putting specific discs on specific pegs, like this:
 
-![Advanced Siblings Tower Final](/assets/images/game/fruit-final.png)
+![Bicolour Tower Final](/assets/images/game/bicolour-final.png)
 
 This variation has been called **Bicolour** after the name of a puzzle that was offered to grade 3-6 students at *2ème Championnat de France des Jeux Mathématiques et Logiques* held in July 1988.
 
-In the wordloid interface, marking the discs is not required, just setting a winning condition where specific discs must end up with specific colours:
+In the wordloid interface, marking the discs is not required, setting initial and winning conditions where specific discs end up with specific colours creates the same puzzle:
 
 ![Final Position Advanced Siblings](/assets/images/game/final-position-advanced-siblings.png)
