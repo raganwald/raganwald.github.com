@@ -130,7 +130,7 @@ Siblings breaks both of the Hanoing rules. Consider this position after changing
 
 ![Siblings Second Choice](/assets/images/game/siblings-second-choice.png)
 
-This breaks the second hanoing rule: *A square can only change colour to another colour if it will become the first square of the colour it is changing to*. Changing the second square to spring-green will not make it the first spring-green square.
+As we expect, the first square can be changed to either light-grey or gray, but something if different than we expect from the hanoing puzzle: We expect to be able to change the second square to gray, but we do **not **not  breaks the second hanoing rule: *A square can only change colour to another colour if it will become the first square of the colour it is changing to*. Changing the second square to spring-green will not make it the first spring-green square.
 
 If we make that change, something really wild happens:
 
@@ -153,3 +153,7 @@ This variation has been called **Bicolour** after the name of a puzzle that was 
 In the wordloid interface, marking the discs is not required, setting initial and winning conditions where specific discs end up with specific colours creates the same puzzle:
 
 ![Final Position Advanced Siblings](/assets/images/game/final-position-advanced-siblings.png)
+
+---
+
+# Notes
