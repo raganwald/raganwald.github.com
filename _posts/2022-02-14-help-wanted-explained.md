@@ -1,5 +1,5 @@
 ---
-title: "Help Wanted, Explained"
+title: "Wordloid"
 tags: [allonge, noindex]
 ---
 
@@ -21,7 +21,7 @@ Each move they make changes one square's colour. The sequence of moves above is 
 
 The reason it takes seven moves and not three is that it isn't as simple as changing the first square to green then the second, and then the third. The squares the player is allowed to change, and the colours they're allowed to change them to, change with every move. And it's the player's job to try to deduce the underlying rules governing the "topology" of the game.
 
-This is obviously not "Wordle," which is a word-deduction game, so we will call this type of interface "wordloid."
+This is obviously not "Wordle," which is a word-deduction game, so we will call this type of interface "wordloid," and that gives the game its name: **Wordloid**.
 
 ### the options
 
