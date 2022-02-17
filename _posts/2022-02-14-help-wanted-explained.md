@@ -3,27 +3,29 @@ title: "Wordloid"
 tags: [allonge, noindex]
 ---
 
-# the first puzzle
+This page documents one design for a "game" that consists of a set of related puzzles, ideally offered to players to solve in order of increasing difficulty. We begin with the simplest version of the puzzles.
 
-This looks like a "Wordle:"
+## The First Puzzle
+
+This looks a little like a wordle:[^wordle]
+
+[^wordle]: The original [wordle](https://www.nytimes.com/games/wordle/index.html)  was created by Brooklyn-based software developer Josh Wardle for his girlfriend, who loves word games. In October 2021, Mr. Wardle released it to the world, and in 2022 it was purchased by The New York Times.
 
 ![Wordle](/assets/images/game/wordle.png)
 
-The player starts with an initial condition that looks like this:
+Each row is one position of a "game," the first row is the initial position:
 
 ![Initial](/assets/images/game/initial.png)
 
-And is trying to make the "winning" condition, which looks like this:
+Each row thereafter represents the position after the player has changed one square's colour. The final position is the "winning" position:
 
 ![Winning](/assets/images/game/winning.png)
 
-Each move they make changes one square's colour. The sequence of moves above is the optimal solution.
+The player's first objective is to solve the problem. A secondary objective is to solve the problem in the minimum number of moves. Another problem is to solve the problem in the *maximum* number of moves without repeating any position.
 
 The reason it takes seven moves and not three is that it isn't as simple as changing the first square to green then the second, and then the third. The squares the player is allowed to change, and the colours they're allowed to change them to, change with every move. And it's the player's job to try to deduce the underlying rules governing the "topology" of the game.
 
-This is obviously not "Wordle," which is a word-deduction game, so we will call this type of interface "wordloid," and that gives the game its name: **Wordloid**.
-
-### the options
+### the first puzzle's rules
 
 On the first move, only one square can be changed, from light-grey to either gray or spring-green:
 
@@ -57,7 +59,7 @@ Which brings us to the winning condition for this puzzle:
 
 ![Winning](/assets/images/game/winning.png)
 
-### the puzzle, explained
+### the first puzzle, explained
 
 For the above simple game, each square can be one of three colours, and there are three squares. If we accept that the ordering of the squares from left-to-right is significant, the rules for which changes are allowed are:
 
@@ -88,7 +90,7 @@ And after the second move, it looks like this:
 
 If we think of our row of squares representing the discs from smallest to largest, the color shows which peg the disc is on, and the two Hanoing rules describe that you can only move a disc from the top of a peg, and only onto a peg that doesn't have a smaller disc on top.
 
-### beyond lucas' tower
+## More Complex Puzzles
 
 "Hanoing" is just the first of several puzzles, intended of be of increasing difficulty to solve, especially without being told the rules in advance. Other puzzles will use roughly the same interface, but emulate variations on Lucas' Tower.
 
