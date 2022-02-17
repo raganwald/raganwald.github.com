@@ -70,7 +70,7 @@ This game has a name, it is called **[Hanoing]**. Its name is taken from the cla
 
 [towers]: https://en.wikipedia.org/wiki/Tower_of_Hanoi
 
-[^FernandoRodriguezVillegas] The Hanoing representation is attributed to [Fernando Rodriguez Villegas](https://users.ictp.it/~villegas/)
+[^FernandoRodriguezVillegas]: The Hanoing representation is attributed to [Fernando Rodriguez Villegas](https://users.ictp.it/~villegas/)
 
 To see the similarity, here's a three-disc tower, with the pegs coloured. We'll pretend the discs are made of some transparent material that takes on the colour of the peg it is on.
 
@@ -134,7 +134,7 @@ This breaks the second hanoing rule: *A square can only change colour to another
 
 If we make that change, something really wild happens:
 
-![Siblings Third Choice](../assets/images/game/siblings-third-choice.png)
+![Siblings Third Choice](/assets/images/game/siblings-third-choice.png)
 
 Now the first square cannot be changed at all, violating the first hanoing rule: *A square can only change colour to another colour if it is the first square of the colour it is changing from*. The reason for this is that if the squares represent discs being moved onto pegs, moving the first disc to the third peg and then moving the second disc to the third peg reverses their order, so what was originally the first disc is now underneath what was originally the second disc.
 
