@@ -122,15 +122,15 @@ Here's a six-disc example tower:
 
 ![Siblings Initial](/assets/images/game/siblings-initial.png)
 
-In the wordloid interface, the initial position looks like this:
+In the wordloid interface, the initial position looks like a Hanoing initial position:
 
 ![Siblings Initial wordloid](/assets/images/game/siblings-initial-wordloid.png)
 
-Siblings breaks both of the Hanoing rules. Consider this position after changing the first square to spring-green:
+However, when it comes to permissible changes, Siblings breaks both of the Hanoing rules. Consider this position after changing the first square to spring-green:
 
 ![Siblings Second Choice](/assets/images/game/siblings-second-choice.png)
 
-As we expect, the first square can be changed to either light-grey or gray, but something is unexpected with the second square's options: We expect to be able to change the second square to gray, but changing it to spring-green breaks the second hanoing rule: *A square can only change colour to another colour if it will become the first square of the colour it is changing to*.
+As we expect, the first square can be changed to either light-grey or gray, but something is unexpected with the second square's options: We expect to be able to change the second square to gray, but changing it to spring-green would break the second hanoing rule: *A square can only change colour to another colour if it will become the first square of the colour it is changing to*.
 
 This makes sense when we "peek behind the curtain" and recognize that we are modelling the first two squares representing two discs of the same size, but when presented without explaining the rules, this appears to break the rule.
 
@@ -154,7 +154,7 @@ This variation has been called **Bicolour** after the name of a puzzle that was 
 
 In the wordloid interface, marking the discs is not required, setting initial and winning conditions where specific discs end up with specific colours creates the same puzzle. The above tower puzzle can be posed in the wordloid interface with this starting position:
 
-
+![Bicolour Wordloid Initial](/assets/images/game/bicolour-wordloid-initial.png)
 
 And this final position:
 
