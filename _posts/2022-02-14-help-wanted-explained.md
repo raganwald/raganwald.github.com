@@ -124,4 +124,4 @@ And when the winning position requires putting specific discs on specific pegs, 
 
 In the wordoid interface, marking the discs is not required, just setting a winning condition where specific discs must end up with specific colours:
 
-![Final Position Advanced Siblings](../assets/images/game/final-position-advanced-siblings.png)
+![Final Position Advanced Siblings](/assets/images/game/final-position-advanced-siblings.png)
