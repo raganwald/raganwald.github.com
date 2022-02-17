@@ -102,6 +102,20 @@ A much harder variation of Random that **only** applies to the wordloid interfac
 
 **Ring** is a variation that works just like regular Hanoing, but discs can only move one peg to the right. Discs on the last peg can be moved back to the first peg, because the pegs form a ring. In the wordloid interface, if a square can change colour, there is only one possible colour it can change to.
 
+### more than three colours
+
+Several variations of the original Lucas' Towers involve four or more pegs, which we represent as having four colours, instead of three.[^four]
+
+[^four]: https://www.cs.wm.edu/~pkstoc/boca.pdf
+
+The **Reeve's Puzzle** has four pegs, and no restriction on the movement of discs. In the wordoid interface, we have four colours instead of three. This is easier to solve than the normal game, but finding the optimal solution is interesting:
+
+**Four-in-a-Row** has four pegs, and the restriction that discs can only be moved to adjacent pegs.
+
+**Star** has four (or more, in theory) pegs, one of which is considered the "center peg." Moves are only allowed between pegs if one of the two pegs is the center peg.
+
+### siblings
+
 **Siblings** is a variation where there is more than one disc of the same size. The rules of Lucas' Tower state that a disc cannot be moved onto a smaller disc, which allows a disc to be placed on a larger disc or also on a disc of the same size.
 
 Here's a six-disc example tower:
