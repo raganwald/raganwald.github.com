@@ -106,7 +106,7 @@ A much harder variation of Random that **only** applies to the wordloid interfac
 
 Several variations of the original Lucas' Towers involve four or more pegs, which we represent as having four colours, instead of three.[^four]
 
-[^four]: https://www.cs.wm.edu/~pkstoc/boca.pdf
+[^four]: [Variations on the Four-Post Tower of Hanoi Puzzle](https://www.cs.wm.edu/~pkstoc/boca.pdf)
 
 The **Reeve's Puzzle** has four pegs, and no restriction on the movement of discs. In the wordoid interface, we have four colours instead of three. This is easier to solve than the normal game, but finding the optimal solution is interesting:
 
