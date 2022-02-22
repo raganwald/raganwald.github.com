@@ -162,23 +162,37 @@ And this final position:
 
 ![Final Position Advanced Siblings](/assets/images/wordloid/bicolour-wordloid-final.png)
 
-## The Twins Interface
+## The Identical Twins Interface
 
-![Twins 1](../assets/images/wordloid/twins/twins-1.png)
-![Twins 2](../assets/images/wordloid/twins/twins-2.png)
-![Twins 3](../assets/images/wordloid/twins/twins-3.png)
-![Twins 4](../assets/images/wordloid/twins/twins-4.png)
-![Twins 5](../assets/images/wordloid/twins/twins-5.png)
-![Twins 6](../assets/images/wordloid/twins/twins-6.png)
-![Twins 7](../assets/images/wordloid/twins/twins-7.png)
-![Twins 8](../assets/images/wordloid/twins/twins-8.png)
-![Twins 9](../assets/images/wordloid/twins/twins-9.png)
-![Twins 10](../assets/images/wordloid/twins/twins-10.png)
-![Twins 11](../assets/images/wordloid/twins/twins-11.png)
-![Twins 12](../assets/images/wordloid/twins/twins-12.png)
-![Twins 13](../assets/images/wordloid/twins/twins-13.png)
-![Twins 14](../assets/images/wordloid/twins/twins-14.png)
-![Twins 15](../assets/images/wordloid/twins/twins-15.png)
+![Twins 1](/assets/images/wordloid/twins/twins-1.png)
+
+![Twins 2](/assets/images/wordloid/twins/twins-2.png)
+
+![Twins 3](/assets/images/wordloid/twins/twins-3.png)
+
+![Twins 4](/assets/images/wordloid/twins/twins-4.png)
+
+![Twins 5](/assets/images/wordloid/twins/twins-5.png)
+
+![Twins 6](/assets/images/wordloid/twins/twins-6.png)
+
+![Twins 7](/assets/images/wordloid/twins/twins-7.png)
+
+![Twins 8](/assets/images/wordloid/twins/twins-8.png)
+
+![Twins 9](/assets/images/wordloid/twins/twins-9.png)
+
+![Twins 10](/assets/images/wordloid/twins/twins-10.png)
+
+![Twins 11](/assets/images/wordloid/twins/twins-11.png)
+
+![Twins 12](/assets/images/wordloid/twins/twins-12.png)
+
+![Twins 13](/assets/images/wordloid/twins/twins-13.png)
+
+![Twins 14](/assets/images/wordloid/twins/twins-14.png)
+
+![Twins 15](/assets/images/wordloid/twins/twins-15.png)
 
 ---
 
