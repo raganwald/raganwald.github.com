@@ -11,15 +11,15 @@ This looks a little like a wordle:[^wordle]
 
 [^wordle]: The original [wordle](https://www.nytimes.com/games/wordle/index.html)  was created by Brooklyn-based software developer Josh Wardle for his girlfriend, who loves word games. In October 2021, Mr. Wardle released it to the world, and in 2022 it was purchased by The New York Times.
 
-![Wordle](/assets/images/game/wordle.png)
+![Wordle](/assets/images/wordloid/wordle.png)
 
 Each row is one position of a "game," the first row is the initial position:
 
-![Initial](/assets/images/game/initial.png)
+![Initial](/assets/images/wordloid/initial.png)
 
 Each row thereafter represents the position after the player has changed one square's colour. The final position is the "winning" position:
 
-![Winning](/assets/images/game/winning.png)
+![Winning](/assets/images/wordloid/winning.png)
 
 The player's first objective is to solve the problem. A secondary objective is to solve the problem in the minimum number of moves. Another problem is to solve the problem in the *maximum* number of moves without repeating any position.
 
@@ -29,35 +29,35 @@ The reason it takes seven moves and not three is that it isn't as simple as chan
 
 On the first move, only one square can be changed, from light-grey to either gray or spring-green:
 
-![First Move](/assets/images/game/first-move.png)
+![First Move](/assets/images/wordloid/first-move.png)
 
 Having chosen to change the colour to spring-green, on the second move there are a new set of available choices. The first square can be changed to light-grey or gray, and the second square can now be changed to gray (but not spring-green):
 
-![Second Move](/assets/images/game/second-move.png)
+![Second Move](/assets/images/wordloid/second-move.png)
 
 As we can tell from looking at the history of moves above, the best choice is to change the second square to gray. The options for the remaining moves are... Third move:
 
-![Third Move](/assets/images/game/third-move.png)
+![Third Move](/assets/images/wordloid/third-move.png)
 
 Fourth move:
 
-![Fourth Move](/assets/images/game/fourth-move.png)
+![Fourth Move](/assets/images/wordloid/fourth-move.png)
 
 Fifth move:
 
-![Fifth Move](/assets/images/game/fifth-move.png)
+![Fifth Move](/assets/images/wordloid/fifth-move.png)
 
 Penultimate move:
 
-![Sixth Move](/assets/images/game/sixth-move.png)
+![Sixth Move](/assets/images/wordloid/sixth-move.png)
 
 Final move:
 
-![Final Move](/assets/images/game/final-move.png)
+![Final Move](/assets/images/wordloid/final-move.png)
 
 Which brings us to the winning condition for this puzzle:
 
-![Winning](/assets/images/game/winning.png)
+![Winning](/assets/images/wordloid/winning.png)
 
 ### the first puzzle, explained
 
@@ -78,15 +78,15 @@ To see the similarity, here's a three-disc tower, with the pegs coloured. We'll 
 
 The initial position looks like this:
 
-![Hanoi Initial](/assets/images/game/hanoi-initial.png)
+![Hanoi Initial](/assets/images/wordloid/hanoi-initial.png)
 
 And after the first move, the game looks like this:
 
-![Hanoi Second](/assets/images/game/hanoi-second.png)
+![Hanoi Second](/assets/images/wordloid/hanoi-second.png)
 
 And after the second move, it looks like this:
 
-![Hanoi Third](/assets/images/game/hanoi-third.png)
+![Hanoi Third](/assets/images/wordloid/hanoi-third.png)
 
 If we think of our row of squares representing the discs from smallest to largest, the color shows which peg the disc is on, and the two Hanoing rules describe that you can only move a disc from the top of a peg, and only onto a peg that doesn't have a smaller disc on top.
 
@@ -122,15 +122,15 @@ The **Reeve's Puzzle** has four pegs, and no restriction on the movement of disc
 
 Here's a six-disc example tower:
 
-![Siblings Initial](/assets/images/game/siblings-initial.png)
+![Siblings Initial](/assets/images/wordloid/siblings-initial.png)
 
 In the wordloid interface, the initial position looks like a Hanoing initial position:
 
-![Siblings Initial wordloid](/assets/images/game/siblings-initial-wordloid.png)
+![Siblings Initial wordloid](/assets/images/wordloid/siblings-initial-wordloid.png)
 
 However, when it comes to permissible changes, Siblings breaks both of the Hanoing rules. Consider this position after changing the first square to spring-green:
 
-![Siblings Second Choice](/assets/images/game/siblings-second-choice.png)
+![Siblings Second Choice](/assets/images/wordloid/siblings-second-choice.png)
 
 As we expect, the first square can be changed to either light-grey or gray, but something is unexpected with the second square's options: We expect to be able to change the second square to gray, but changing it to spring-green would break the second hanoing rule: *A square can only change colour to another colour if it will become the first square of the colour it is changing to*.
 
@@ -138,7 +138,7 @@ This makes sense when we "peek behind the curtain" and recognize that we are mod
 
 Let's make that change and see what our options become:
 
-![Siblings Third Choice](/assets/images/game/siblings-third-choice.png)
+![Siblings Third Choice](/assets/images/wordloid/siblings-third-choice.png)
 
 Now the first square cannot be changed at all, violating the first hanoing rule: *A square can only change colour to another colour if it is the first square of the colour it is changing from*. The reason for this is that if the squares represent discs being moved onto pegs, moving the first disc to the third peg and then moving the second disc to the third peg reverses their order, so what was originally the first disc is now underneath what was originally the second disc.
 
@@ -146,21 +146,39 @@ We don't show it in the wordloid interface, but essentially, the two squares hav
 
 In the tower form, Siblings is especially interesting when the discs are marked in a special way, like this:
 
-![Bicolour Tower Initial](/assets/images/game/bicolour-initial.png)
+![Bicolour Tower Initial](/assets/images/wordloid/bicolour-initial.png)
 
 And when the winning position requires putting specific discs on specific pegs, like this:
 
-![Bicolour Tower Final](/assets/images/game/bicolour-final.png)
+![Bicolour Tower Final](/assets/images/wordloid/bicolour-final.png)
 
 This variation has been called **Bicolour** after the name of a puzzle that was offered to grade 3-6 students at *2ème Championnat de France des Jeux Mathématiques et Logiques* held in July 1988.
 
 In the wordloid interface, marking the discs is not required, setting initial and winning conditions where specific discs end up with specific colours creates the same puzzle. The above tower puzzle can be posed in the wordloid interface with this starting position:
 
-![Bicolour Wordloid Initial](/assets/images/game/bicolour-wordloid-initial.png)
+![Bicolour Wordloid Initial](/assets/images/wordloid/bicolour-wordloid-initial.png)
 
 And this final position:
 
-![Final Position Advanced Siblings](/assets/images/game/bicolour-wordloid-final.png)
+![Final Position Advanced Siblings](/assets/images/wordloid/bicolour-wordloid-final.png)
+
+## The Twins Interface
+
+![Twins 1](../assets/images/wordloid/twins/twins-1.png)
+![Twins 2](../assets/images/wordloid/twins/twins-2.png)
+![Twins 3](../assets/images/wordloid/twins/twins-3.png)
+![Twins 4](../assets/images/wordloid/twins/twins-4.png)
+![Twins 5](../assets/images/wordloid/twins/twins-5.png)
+![Twins 6](../assets/images/wordloid/twins/twins-6.png)
+![Twins 7](../assets/images/wordloid/twins/twins-7.png)
+![Twins 8](../assets/images/wordloid/twins/twins-8.png)
+![Twins 9](../assets/images/wordloid/twins/twins-9.png)
+![Twins 10](../assets/images/wordloid/twins/twins-10.png)
+![Twins 11](../assets/images/wordloid/twins/twins-11.png)
+![Twins 12](../assets/images/wordloid/twins/twins-12.png)
+![Twins 13](../assets/images/wordloid/twins/twins-13.png)
+![Twins 14](../assets/images/wordloid/twins/twins-14.png)
+![Twins 15](../assets/images/wordloid/twins/twins-15.png)
 
 ---
 
