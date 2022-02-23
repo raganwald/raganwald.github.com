@@ -177,17 +177,17 @@ That is represented in the identical twins interface as three solid squares, eac
 
 If both discs of the same size are different colours, we represent them as a coloured square superimposed on a differently coloured square. The three possibilities are:
 
-One disc is light grey, one is gray:
+When one disc is light grey, and one is gray:
 
-<img title="Light Grey Gray" height="210" width="210" href="assets/images/wordloid/twins/light-grey-gray.png"/>
+<img title="Light Grey Gray" height="210" width="210" src="assets/images/wordloid/twins/light-grey-gray.png"/>
 
-One disc is light grey, one is spring green:
+When one disc is light grey, and one is spring green:
 
-<img title="Light Grey Spring Green" height="210" width="210" href="/assets/images/wordloid/twins/light-grey-spring-green.png"/>
+<img title="Light Grey Spring Green" height="210" width="210" src="/assets/images/wordloid/twins/light-grey-spring-green.png"/>
 
-One disc is gray, one is spring green:
+When one disc is gray, and one is spring green:
 
-<img title="Gray Spring Green" height="210" width="210" href="/assets/images/wordloid/twins/gray-spring-green.png"/>
+<img title="Gray Spring Green" height="210" width="210" src="/assets/images/wordloid/twins/gray-spring-green.png"/>
 
 ### affordances for twins
 
