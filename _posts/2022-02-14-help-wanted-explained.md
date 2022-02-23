@@ -167,7 +167,7 @@ We can fix this by representing twins in a different way.
 
 In the "identical twins" interface, instead of showing six squares, we show three squares, one for each pair of twins that share the same size.
 
-We represent the two discs of each size as follows. If both discs are of the same colour (i.e. representing both discs on the same peg), we show a square of a solid colour. For example, in this sibling position, each pair of discs is the same colour:
+We represent the two discs of each size as follows. If both discs are of the same colour (i.e. representing both discs on the same peg), we show a square of a solid colour. If each pair of discs is placed together on its own peg, the naïve representation would be://
 
 ![Siblings Two Of Each](/assets/images/wordloid/twins/siblings-two-of-each.png)
 
@@ -179,19 +179,19 @@ If both discs of the same size are different colours, we represent them as a col
 
 One disc is light grey, one is gray:
 
-![Light Grey Gray](/assets/images/wordloid/twins/light-grey-gray.png)
+<a title="Light Grey Gray" href="assets/images/wordloid/twins/light-grey-gray.png">
 
 One disc is light grey, one is spring green:
 
-![Light Grey Spring Green](/assets/images/wordloid/twins/light-grey-spring-green.png)
+<a title="Light Grey Spring Green" href="/assets/images/wordloid/twins/light-grey-spring-green.png">
 
 One disc is gray, one is spring green:
 
-![Gray Spring Green](/assets/images/wordloid/twins/gray-spring-green.png)
+<a title="Gray Spring Green" href="/assets/images/wordloid/twins/gray-spring-green.png">
 
 ### affordances for twins
 
-In the original hanoing interface, each square represents one disc, and only those discs that can move have affordances. In the initial position, for example, only the top disc can move, and therefore the affordances in the siblings interface looks like this:
+In the original interface, each square represents one disc, and only those discs that can move have affordances. In the initial position, for example, only the top disc can move, and therefore the affordances in the siblings interface looks like this:
 
 ![Siblings Initial Choice](/assets/images/wordloid/siblings-initial-choice.png)
 
