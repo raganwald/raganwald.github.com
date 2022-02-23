@@ -164,11 +164,11 @@ And this final position:
 
 ## The Identical Twins Interface
 
-![Twins 1](/assets/images/wordloid/twins/twins-1.png)
+![Twins 1](/assets/images/wordloid/twins/twins-1-affordances.png)
 
-![Twins 2](/assets/images/wordloid/twins/twins-2.png)
+![Twins 2](/assets/images/wordloid/twins/twins-2-affordances.png)
 
-![Twins 3](/assets/images/wordloid/twins/twins-3.png)
+![Twins 3](/assets/images/wordloid/twins/twins-3-affordances.png)
 
 ![Twins 4](/assets/images/wordloid/twins/twins-4.png)
 
