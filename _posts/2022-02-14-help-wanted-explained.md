@@ -118,63 +118,54 @@ The **Reeve's Puzzle** has four pegs, and no restriction on the movement of disc
 
 **Star** has four (or more, in theory) pegs, one of which is considered the "center peg." Moves are only allowed between pegs if one of the two pegs is the center peg.
 
-### siblings
-
-**Siblings** is a variation where there is more than one disc of the same size. The rules of Lucas' Tower state that a disc cannot be moved onto a smaller disc, which allows a disc to be placed on a larger disc or also on a disc of the same size.
-
-Here's a six-disc example tower:
-
-![Siblings Initial](/assets/images/wordloid/siblings-initial.png)
-
-In the wordloid interface, the initial position looks like a Hanoing initial position:
-
-![Siblings Initial wordloid](/assets/images/wordloid/siblings-initial-wordloid.png)
-
-However, when it comes to permissible changes, Siblings breaks both of the Hanoing rules. Consider this position after changing the first square to spring-green:
-
-![Siblings Second Choice](/assets/images/wordloid/siblings-second-choice.png)
-
-As we expect, the first square can be changed to either light-grey or gray, but something is unexpected with the second square's options: We expect to be able to change the second square to gray, but changing it to spring-green would break the second hanoing rule: *A square can only change colour to another colour if it will become the first square of the colour it is changing to*.
-
-This makes sense when we "peek behind the curtain" and recognize that we are modelling the first two squares representing two discs of the same size, but when presented without explaining the rules, this appears to break the rule.
-
-Let's make that change and see what our options become:
-
-![Siblings Third Choice](/assets/images/wordloid/siblings-third-choice.png)
-
-Now the first square cannot be changed at all, violating the first hanoing rule: *A square can only change colour to another colour if it is the first square of the colour it is changing from*. The reason for this is that if the squares represent discs being moved onto pegs, moving the first disc to the third peg and then moving the second disc to the third peg reverses their order, so what was originally the first disc is now underneath what was originally the second disc.
-
-We don't show it in the wordloid interface, but essentially, the two squares have swapped positions.
-
-In the tower form, Siblings is especially interesting when the discs are marked in a special way, like this:
-
-![Bicolour Tower Initial](/assets/images/wordloid/bicolour-initial.png)
-
-And when the winning position requires putting specific discs on specific pegs, like this:
-
-![Bicolour Tower Final](/assets/images/wordloid/bicolour-final.png)
-
-This variation has been called **Bicolour** after the name of a puzzle that was offered to grade 3-6 students at *2ème Championnat de France des Jeux Mathématiques et Logiques* held in July 1988.
-
-In the wordloid interface, marking the discs is not required, setting initial and winning conditions where specific discs end up with specific colours creates the same puzzle. The above tower puzzle can be posed in the wordloid interface with this starting position:
-
-![Bicolour Wordloid Initial](/assets/images/wordloid/bicolour-wordloid-initial.png)
-
-And this final position:
-
-![Final Position Advanced Siblings](/assets/images/wordloid/bicolour-wordloid-final.png)
-
 ---
 
 ## Twins
 
-Another way to represent the siblings interfaces is by combining the representation for two or more discs of identical size into a single square. When the discs are on different pegs, the square displays more than one colour.
+**Twins** is a variation where there are two discs of each size.[^triplets] The rules of Lucas' Tower state that a disc cannot be moved onto a smaller disc, which allows a disc to be placed on a larger disc or also on a disc of the same size.
 
-We begin with the simplest representation, "identical twins."
+[^triplets]: The same ideas generalize to triplets, quadruplets, &c. But to keep the exposition compact, we will speak only of twins.
+
+Here's a six-disc example tower:
+
+![Siblings Initial](/assets/images/wordloid/twins/siblings-initial.png)
+
+The rules of moving the discs between pegs in twins are the same as the rules of [The Towers of Hanoi][towers]: You can only move the topmost disc from any peg, and you cannot place that disc on a larger disc.
+
+### troublesome twins
+
+If we attempt to represent twins as a row of six squares, we run into two problems. Consider this position, where we have moved the first disc to the third peg.
+
+![Siblings Second](/assets/images/wordloid/twins/siblings-second.png)
+
+There are four available moves:
+
+1. The top disc from the light-grey peg can be moved onto the empty gray peg.
+1. The top disc from the light-grey peg can be moved on top of its "twin" on the spring-green peg.
+1. The top disc from the spring-green peg can be moved onto the empty gray peg.
+1. The top disc from the spring-green peg can be moved on top of its "twin" on the light-grey peg.
+
+The position can be represented with one square per peg, but it presents two problems. First, the affordances violate the expectations set by hanoing:
+
+![Siblings Second Choice](/assets/images/wordloid/twins/siblings-second-choice.png)
+
+All four choices are represented, but changing the second square to green violates the hanoing rule that a square's colour can only be changed if it would become the leftmost square of the colour it is changing to. 
+
+Another problem concerns positions where each twin is on a different peg. The arrangement of discs on pegs shown above can be represented in two different ways:
+
+![Siblings Second Position 1](/assets/images/wordloid/twins/siblings-second-position-1.png)
+
+And also:
+
+![Siblings Second Position 2](/assets/images/wordloid/twins/siblings-second-position-2.png)
+
+There should be a 1-to-1 relationship between the positions we see in the disc-and-peg form and our wordloid representations.
+
+We can fix this by representing twins in a different way.
 
 ### identical twins
 
-The identical twins interface is a different view/controller paradigm for the "siblings" puzzle. In this example, there are three sizes of disc, and there are two discs of each size that are indistinguishable from each other. But instead of showing six squares, we show three squares, one for each size.
+In the "identical twins" interface, instead of showing six squares, we show three squares, one for each pair of twins that share the same size.
 
 We represent the two discs of each size as follows. If both discs are of the same colour (i.e. representing both discs on the same peg), we show a square of a solid colour. For example, in this sibling position, each pair of discs is the same colour:
 
@@ -200,7 +191,7 @@ One disc is gray, one is spring green:
 
 ### affordances for twins
 
-In the siblings interface, each square represents one disc, and only those discs that can move have affordances. In the initial position, for example, only the top disc can move, and therefore the affordances in the siblings interface looks like this:
+In the original hanoing interface, each square represents one disc, and only those discs that can move have affordances. In the initial position, for example, only the top disc can move, and therefore the affordances in the siblings interface looks like this:
 
 ![Siblings Initial Choice](/assets/images/wordloid/siblings-initial-choice.png)
 
@@ -216,17 +207,28 @@ In the identical twins interface, all four affordances are represented as change
 
 ![Twins 2](/assets/images/wordloid/twins/twins-2-affordances.png)
 
-### what problem does the twins interface solve?
+The identical twins interface solves both of the problems with using one square per disc:
 
-The siblings interface is inconsistent with the Hanoing interface in two ways:
+1. Since both twins are represented as a single (possibly two-colour) square, there is no situation where a disc is changed to be the same colour as a disc to its left.
+1. When the two twins are of different colours, we always use the same two-colour representation, preserving a 1-to-1 relationship between representations with discs and pegs and our representation as a row of squares.
 
-1. As shown above, when siblings are different colours, it is sometimes possible to change the right sibling to be the same colour as the left sibling, which violates the hanoing expectation that a square can only change colour if it will become the left-most square of that colour.
-2. When siblings are different colours, the hanoing interface can represent them in two different ways, e.g. light-grey followed by spring-green, or spring-green followed by light-grey. But with the siblings puzzle, both are the same position. To fix this, the siblings interface reorders the squares to be in "canonical" order. Reordering squares also violates the expectations set by the hanoing interface, where squares never move.
+### bicolour twins
 
-The identical twins interface solves both of these problems:
+![Bicolour Tower Initial](/assets/images/wordloid/bicolour-initial.png)
 
-1. By unifying all of the affordances for both siblings into one affordance for the square representing both twins, changing the rightmost twin to the colour of the leftmost twin does not violate the expectation that a square cannot change colour unless it will become the rightmost square of that colour.
-2. By unifying the appearance of two twins in one square, we can present a canonical appearance without reordering squares.
+And when the winning position requires putting specific discs on specific pegs, like this:
+
+![Bicolour Tower Final](/assets/images/wordloid/bicolour-final.png)
+
+This variation has been called **Bicolour** after the name of a puzzle that was offered to grade 3-6 students at *2ème Championnat de France des Jeux Mathématiques et Logiques* held in July 1988.
+
+In the wordloid interface, marking the discs is not required, setting initial and winning conditions where specific discs end up with specific colours creates the same puzzle. The above tower puzzle can be posed in the wordloid interface with this starting position:
+
+![Bicolour Wordloid Initial](/assets/images/wordloid/bicolour-wordloid-initial.png)
+
+And this final position:
+
+![Final Position Advanced Siblings](/assets/images/wordloid/bicolour-wordloid-final.png)
 
 
 ---
