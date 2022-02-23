@@ -162,37 +162,57 @@ And this final position:
 
 ![Final Position Advanced Siblings](/assets/images/wordloid/bicolour-wordloid-final.png)
 
-## The Identical Twins Interface
+## Twins
+
+Another way to represent the siblings interfaces is by combining the representation for two or more discs of identical size into a single square. When the discs are on different pegs, the square displays more than one colour.
+
+We begin with the simplest representation, "identical twins."
+
+### identical twins
+
+The identical twins interface is a different view/controller paradigm for the "siblings" puzzle. In this example, there are three sizes of disc, and there are two discs of each size that are indistinguishable from each other. But instead of showing six squares, we show three squares, one for each size.
+
+We represent the two discs of each size as follows. If both discs are of the same colour (i.e. representing both discs on the same peg), we show a square of a solid colour. For example, in this sibling position, each pair of discs is the same colour:
+
+![Siblings Two Of Each](/assets/images/wordloid/twins/siblings-two-of-each.png)
+
+That is represented in the identical twins interface as three solid squares, each of which represents two discs:
+
+![Identical Twins two of each](/assets/images/wordloid/twins/twins-5.png)
+
+If both discs of the same size are different colours, we represent them as a coloured square superimposed on a differently coloured square. The three possibilities are:
+
+One disc is light grey, one is gray:
+
+![Light Grey Gray](/assets/images/wordloid/twins/light-grey-gray.png)
+
+One disc is light grey, one is spring green:
+
+![Light Grey Spring Green](/assets/images/wordloid/twins/light-grey-spring-green.png)
+
+One disc is gray, one is spring green:
+
+![Gray Spring Green](/assets/images/wordloid/twins/gray-spring-green.png)
+
+### affordances for twins
+
+In the siblings interface, each square represents one disc, and only those discs that can move have affordances. In the initial position, for example, only the top disc can move, and therefore the affordances in the siblings interface looks like this:
+
+![Siblings Initial Choice](/assets/images/wordloid/siblings-initial-choice.png)
+
+In the identical twins interface, there are the exact same two affordances, and they are represented like this:
 
 ![Twins 1](/assets/images/wordloid/twins/twins-1-affordances.png)
 
+When both discs of the same size have different colours, sometimes both can be changed. After moving the first disc to the third peg, the siblings interface and its affordances looks like this:
+
+![Siblings Second Choice](/assets/images/wordloid/twins/siblings-second-choice.png)
+
+In the identical twins interface, all four affordances are represented as changes to the first of the three squares:
+
 ![Twins 2](/assets/images/wordloid/twins/twins-2-affordances.png)
 
-![Twins 3](/assets/images/wordloid/twins/twins-3-affordances.png)
 
-![Twins 4](/assets/images/wordloid/twins/twins-4.png)
-
-![Twins 5](/assets/images/wordloid/twins/twins-5.png)
-
-![Twins 6](/assets/images/wordloid/twins/twins-6.png)
-
-![Twins 7](/assets/images/wordloid/twins/twins-7.png)
-
-![Twins 8](/assets/images/wordloid/twins/twins-8.png)
-
-![Twins 9](/assets/images/wordloid/twins/twins-9.png)
-
-![Twins 10](/assets/images/wordloid/twins/twins-10.png)
-
-![Twins 11](/assets/images/wordloid/twins/twins-11.png)
-
-![Twins 12](/assets/images/wordloid/twins/twins-12.png)
-
-![Twins 13](/assets/images/wordloid/twins/twins-13.png)
-
-![Twins 14](/assets/images/wordloid/twins/twins-14.png)
-
-![Twins 15](/assets/images/wordloid/twins/twins-15.png)
 
 ---
 
