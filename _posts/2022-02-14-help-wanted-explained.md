@@ -179,15 +179,15 @@ If both discs of the same size are different colours, we represent them as a col
 
 One disc is light grey, one is gray:
 
-<a title="Light Grey Gray" href="assets/images/wordloid/twins/light-grey-gray.png">
+<a title="Light Grey Gray" height="210" width="210" href="assets/images/wordloid/twins/light-grey-gray.png">
 
 One disc is light grey, one is spring green:
 
-<a title="Light Grey Spring Green" href="/assets/images/wordloid/twins/light-grey-spring-green.png">
+<a title="Light Grey Spring Green" height="210" width="210" href="/assets/images/wordloid/twins/light-grey-spring-green.png">
 
 One disc is gray, one is spring green:
 
-<a title="Gray Spring Green" href="/assets/images/wordloid/twins/gray-spring-green.png">
+<a title="Gray Spring Green" height="210" width="210" href="/assets/images/wordloid/twins/gray-spring-green.png">
 
 ### affordances for twins
 
