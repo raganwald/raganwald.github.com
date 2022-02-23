@@ -90,6 +90,8 @@ And after the second move, it looks like this:
 
 If we think of our row of squares representing the discs from smallest to largest, the color shows which peg the disc is on, and the two Hanoing rules describe that you can only move a disc from the top of a peg, and only onto a peg that doesn't have a smaller disc on top.
 
+---
+
 ## More Complex Puzzles
 
 "Hanoing" is just the first of several puzzles, intended of be of increasing difficulty to solve, especially without being told the rules in advance. Other puzzles will use roughly the same interface, but emulate variations on Lucas' Tower.
@@ -162,6 +164,8 @@ And this final position:
 
 ![Final Position Advanced Siblings](/assets/images/wordloid/bicolour-wordloid-final.png)
 
+---
+
 ## Twins
 
 Another way to represent the siblings interfaces is by combining the representation for two or more discs of identical size into a single square. When the discs are on different pegs, the square displays more than one colour.
@@ -212,6 +216,17 @@ In the identical twins interface, all four affordances are represented as change
 
 ![Twins 2](/assets/images/wordloid/twins/twins-2-affordances.png)
 
+### what problem does the twins interface solve?
+
+The siblings interface is inconsistent with the Hanoing interface in two ways:
+
+1. As shown above, when siblings are different colours, it is sometimes possible to change the right sibling to be the same colour as the left sibling, which violates the hanoing expectation that a square can only change colour if it will become the left-most square of that colour.
+2. When siblings are different colours, the hanoing interface can represent them in two different ways, e.g. light-grey followed by spring-green, or spring-green followed by light-grey. But with the siblings puzzle, both are the same position. To fix this, the siblings interface reorders the squares to be in "canonical" order. Reordering squares also violates the expectations set by the hanoing interface, where squares never move.
+
+The identical twins interface solves both of these problems:
+
+1. By unifying all of the affordances for both siblings into one affordance for the square representing both twins, changing the rightmost twin to the colour of the leftmost twin does not violate the expectation that a square cannot change colour unless it will become the rightmost square of that colour.
+2. By unifying the appearance of two twins in one square, we can present a canonical appearance without reordering squares.
 
 
 ---
