@@ -212,9 +212,9 @@ The identical twins interface solves both of the problems with using one square 
 1. Since both twins are represented as a single (possibly two-colour) square, there is no situation where a disc is changed to be the same colour as a disc to its left.
 1. When the two twins are of different colours, we always use the same two-colour representation, preserving a 1-to-1 relationship between representations with discs and pegs and our representation as a row of squares.
 
-### bicolour twins
+### textures
 
-**Bicolour** is a variant of the twins puzzle where each of the twins is marked. In the original puzzle with discs and pegs, the discs were of two different colours:[^bicolour]
+**Textures** is a variant of the twins puzzle where each of the twins is marked. In the original puzzle with discs and pegs, the discs were of two different colours:[^bicolour]
 
 [^bicolour]: This variation has been called **Bicolour** after the name of a puzzle that was offered to grade 3-6 students at *2ème Championnat de France des Jeux Mathématiques et Logiques* held in July 1988.
 
@@ -224,21 +224,27 @@ And when the winning position requires putting specific discs on specific pegs, 
 
 ![Bicolour Pegs Final](/assets/images/wordloid/twins/bicolour-pegs-final.png)
 
-Wordloid uses colours as a proxy for the peg the disc is on, so instead of using colours, we use "textures" such as solid versus polka-dots
+Wordloid uses colours as a proxy for the peg the disc is on, so instead of using colours, we use textures such as solid versus polka-dots to represent the two different discs of each size:
 
 ![Bicolour Pegs Initial Decorated](/assets/images/wordloid/twins/bicolour-pegs-initial-decorated.png)
 
 In the twins interface, a square with "one colour" now has two textures, so we always show both outer and inner square, e.g.
 
-![Light Grey Light Grey](/assets/images/wordloid/twins/light-grey-light-grey.png)
+<img title="Light Grey Light Grey" height="210" width="210" src="/assets/images/wordloid/twins/light-grey-light-grey.png"/>
 
 Squares with two colours can also show textures, e.g.
 
-![Gray Spring Green Textured](/assets/images/wordloid/twins/gray-spring-green-textured.png)
+<img title="Gray Spring Green Textured" height="210" width="210" src="/assets/images/wordloid/twins/gray-spring-green-textured.png"/>
 
-The initial position is thus:
+### textures and affordances 
+
+The initial textures position is:
 
 ![Bicolour Initial](/assets/images/wordloid/twins/bicolour-initial.png)
+
+And the desired end state is:
+
+![Bicolour Final](/assets/images/wordloid/twins/bicolour-final.png)
 
 
 ---
