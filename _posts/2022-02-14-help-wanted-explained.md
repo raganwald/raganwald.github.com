@@ -214,21 +214,31 @@ The identical twins interface solves both of the problems with using one square 
 
 ### bicolour twins
 
-![Bicolour Tower Initial](/assets/images/wordloid/bicolour-initial.png)
+**Bicolour** is a variant of the twins puzzle where each of the twins is marked. In the original puzzle with discs and pegs, the discs were of two different colours:[^bicolour]
+
+[^bicolour]: This variation has been called **Bicolour** after the name of a puzzle that was offered to grade 3-6 students at *2ème Championnat de France des Jeux Mathématiques et Logiques* held in July 1988.
+
+![Bicolour Pegs Initial](/assets/images/wordloid/twins/bicolour-pegs-initial.png)
 
 And when the winning position requires putting specific discs on specific pegs, like this:
 
-![Bicolour Tower Final](/assets/images/wordloid/bicolour-final.png)
+![Bicolour Pegs Final](/assets/images/wordloid/twins/bicolour-pegs-final.png)
 
-This variation has been called **Bicolour** after the name of a puzzle that was offered to grade 3-6 students at *2ème Championnat de France des Jeux Mathématiques et Logiques* held in July 1988.
+Wordloid uses colours as a proxy for the peg the disc is on, so instead of using colours, we use "textures" such as solid versus polka-dots
 
-In the wordloid interface, marking the discs is not required, setting initial and winning conditions where specific discs end up with specific colours creates the same puzzle. The above tower puzzle can be posed in the wordloid interface with this starting position:
+![Bicolour Pegs Initial Decorated](/assets/images/wordloid/twins/bicolour-pegs-initial-decorated.png)
 
-![Bicolour Wordloid Initial](/assets/images/wordloid/bicolour-wordloid-initial.png)
+In the twins interface, a square with "one colour" now has two textures, so we always show both outer and inner square, e.g.
 
-And this final position:
+![Light Grey Light Grey](/assets/images/wordloid/twins/light-grey-light-grey.png)
 
-![Final Position Advanced Siblings](/assets/images/wordloid/bicolour-wordloid-final.png)
+Squares with two colours can also show textures, e.g.
+
+![Gray Spring Green Textured](/assets/images/wordloid/twins/gray-spring-green-textured.png)
+
+The initial position is thus:
+
+![Bicolour Initial](/assets/images/wordloid/twins/bicolour-initial.png)
 
 
 ---
