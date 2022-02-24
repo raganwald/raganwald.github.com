@@ -179,7 +179,7 @@ If both discs of the same size are different colours, we represent them as a col
 
 When one disc is light grey, and one is gray:
 
-<img title="Light Grey Gray" height="210" width="210" src="assets/images/wordloid/twins/light-grey-gray.png"/>
+<img title="Light Grey Gray" height="210" width="210" src="/assets/images/wordloid/twins/light-grey-gray.png"/>
 
 When one disc is light grey, and one is spring green:
 
