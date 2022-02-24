@@ -224,7 +224,9 @@ And when the winning position requires putting specific discs on specific pegs, 
 
 ![Bicolour Pegs Final](/assets/images/wordloid/twins/bicolour-pegs-final.png)
 
-Wordloid uses colours as a proxy for the peg the disc is on, so instead of using colours, we use textures such as solid versus polka-dots to represent the two different discs of each size:
+Wordloid uses colours as a proxy for the peg the disc is on, so instead of using colours, we use textures such as solid versus polka-dots to represent the two different discs of each size:[^polka-dots]
+
+[^polka-dots]: The specific textures are to-be-determined, they may be polka-dots, they could just as easily be patterns like stripes, or checks.
 
 ![Bicolour Pegs Initial Decorated](/assets/images/wordloid/twins/bicolour-pegs-initial-decorated.png)
 
@@ -236,15 +238,19 @@ Squares with two colours can also show textures, e.g.
 
 <img title="Gray Spring Green Textured" height="210" width="210" src="/assets/images/wordloid/twins/gray-spring-green-textured.png"/>
 
-### textures and affordances 
-
-The initial textures position is:
+The initial textures position equivalent to the "bicolour" problem is represented as:
 
 ![Bicolour Initial](/assets/images/wordloid/twins/bicolour-initial.png)
 
-And the desired end state is:
+And the desired end state is represented as:
 
 ![Bicolour Final](/assets/images/wordloid/twins/bicolour-final.png)
+
+### textures and affordances
+
+When first presented with the bicolour puzzle, there are only two possible "moves:" The topmost disc can be moved to the second or third peg. In the textures interface, the affordances are:
+
+![Bicolour Initial Affordances](/assets/images/wordloid/twins/bicolour-initial-affordances.png)
 
 
 ---
