@@ -258,6 +258,12 @@ After making the first move, the affordances become:
 
 Although things look very different from identical twins, they are the same four options for moving discs, we're just showing the distinction between the discs.
 
+Also, one of the affordances leads to this position:
+
+![Bicolour 3](/assets/images/wordloid/twins/bicolour-3.png)
+
+As we can see, not only has the first square changed from entirely light-grey to entirely gray, but the textures have been exchanged. The challenge in the textures puzzle is managing the two discs of each size so that the final position has both the correct arrangement of colours and the correct arrangement of textures.
+
 
 ---
 
