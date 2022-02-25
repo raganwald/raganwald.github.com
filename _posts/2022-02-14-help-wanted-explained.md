@@ -252,6 +252,12 @@ When first presented with the bicolour puzzle, there are only two possible "move
 
 ![Bicolour Initial Affordances](/assets/images/wordloid/twins/bicolour-initial-affordances.png)
 
+After making the first move, the affordances become:
+
+![Bicolour Second Affordances](/assets/images/wordloid/twins/bicolour-second-affordances.png)
+
+Although things look very different from identical twins, they are the same four options for moving discs, we're just showing the distinction between the discs.
+
 
 ---
 
