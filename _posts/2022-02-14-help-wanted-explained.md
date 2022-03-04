@@ -189,7 +189,7 @@ When one disc is gray, and one is spring green:
 
 <img title="Gray Spring Green" height="210" width="210" src="/assets/images/wordloid/twins/gray-spring-green.png"/>
 
-### affordances for twins
+### affordances for identical twins
 
 In the original interface, each square represents one disc, and only those discs that can move have affordances. In the initial position, for example, only the top disc can move, and therefore the affordances in the siblings interface looks like this:
 
@@ -212,9 +212,9 @@ The identical twins interface solves both of the problems with using one square 
 1. Since both twins are represented as a single (possibly two-colour) square, there is no situation where a disc is changed to be the same colour as a disc to its left.
 1. When the two twins are of different colours, we always use the same two-colour representation, preserving a 1-to-1 relationship between representations with discs and pegs and our representation as a row of squares.
 
-### textures
+### fraternal twins
 
-**Textures** is a variant of the twins puzzle where each of the twins is marked. In the original puzzle with discs and pegs, the discs were of two different colours:[^bicolour]
+**Fraternal twins** is a variant of identical twins where one or both of the twin discs are marked so that they can be distinguished from each other. In the original puzzle with discs and pegs, the discs were of two different colours:[^bicolour]
 
 [^bicolour]: This variation has been called **Bicolour** after the name of a puzzle that was offered to grade 3-6 students at *2ème Championnat de France des Jeux Mathématiques et Logiques* held in July 1988.
 
@@ -224,9 +224,9 @@ And when the winning position requires putting specific discs on specific pegs, 
 
 ![Bicolour Pegs Final](/assets/images/wordloid/twins/bicolour-pegs-final.png)
 
-Wordloid uses colours as a proxy for the peg the disc is on, so instead of using colours, we use textures such as solid versus polka-dots to represent the two different discs of each size:[^polka-dots]
+Wordloid uses colours as a proxy for the peg the disc is on, so instead of using colours to establish a distinction, we can use textures such as solid versus polka-dots to represent the two different discs of each size:[^polka-dots]
 
-[^polka-dots]: The specific textures are to-be-determined, they may be polka-dots, they could just as easily be patterns like stripes, or checks.
+[^polka-dots]: The specific textures are to-be-determined, they may be polka-dots, they could just as easily be patterns like stripes, or checks. Likewise, we may use some other means to distinguish the twins such as a badge or maybe even a shape.
 
 ![Bicolour Pegs Initial Decorated](/assets/images/wordloid/twins/bicolour-pegs-initial-decorated.png)
 
@@ -238,7 +238,7 @@ Squares with two colours can also show textures, e.g.
 
 <img title="Gray Spring Green Textured" height="210" width="210" src="/assets/images/wordloid/twins/gray-spring-green-textured.png"/>
 
-The initial textures position equivalent to the "bicolour" problem is represented as:
+The initial fraternal twins position equivalent to the "bicolour" problem is represented as:
 
 ![Bicolour Initial](/assets/images/wordloid/twins/bicolour-initial.png)
 
@@ -246,7 +246,7 @@ And the desired end state is represented as:
 
 ![Bicolour Final](/assets/images/wordloid/twins/bicolour-final.png)
 
-### textures and affordances
+### fraternal twins and affordances
 
 When first presented with the bicolour puzzle, there are only two possible "moves:" The topmost disc can be moved to the second or third peg. In the textures interface, the affordances are:
 
