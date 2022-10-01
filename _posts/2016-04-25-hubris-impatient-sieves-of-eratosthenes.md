@@ -435,11 +435,11 @@ take(100, Primes())
 
 Althea congratulated him. "You've got it!"
 
-"So," Ben smiled, "I guess the problem as that the OP had the hubris to write about a lazy algorithm, but not one that was impatient enough to run quickly!"
+"So," Ben smiled, "I guess the problem was that the OP had the hubris to write about a lazy algorithm, but not one that was impatient enough to run quickly!"
 
 "Absolutely!" Althea was reassuring. "This has improved on the OP's code style *and* performance. And now you're ready to discuss the Sieve of Eratosthenes with greater rigour."
 
-"What's there to discuss?" For someone who had only hours before written their own Unfaithful Sieve, Ben was was exhibiting some hubris of his own: "This is way faster. Given the number of broken sieves on the internet, I'll bet this is better than anything the interviewer sees from anyone else."
+"What's there to discuss?" For someone who had only hours before written their own Unfaithful Sieve, Ben was exhibiting some hubris of his own: "This is way faster. Given the number of broken sieves on the internet, I'll bet this is better than anything the interviewer sees from anyone else."
 
 ---
 
