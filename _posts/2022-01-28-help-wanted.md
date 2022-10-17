@@ -1,6 +1,6 @@
 ---
 title: "Help Wanted"
-tags: [allonge]
+tags: [allonge, noindex]
 ---
 
 ![A generic image suggestion an idea](/assets/images/generic-idea.jpg)
