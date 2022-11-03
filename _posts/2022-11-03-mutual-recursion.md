@@ -19,6 +19,6 @@ A **calque**, on the other hand, is a word or phrase taken from another language
 
 ### the grand conclusion
 
-But wait! *Calque* is a word taken from French and used without translation, so *calque* is a loanword! Meanwhile, *loanword* calques German's *lehnwort*.
+But wait: *Calque* is a word taken from French and used without translation, so *calque* is a loanword! Meanwhile, *loanword* calques German's *lehnwort*.
 
 Therefore... *"Loanword" is a calque, and "calque" is a loanword!*
