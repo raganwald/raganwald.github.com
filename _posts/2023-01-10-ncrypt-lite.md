@@ -20,7 +20,7 @@ On the plus side, we uploaded it to various sites, one of which was [CompuServe]
 
 [CompuServe]: https://en.wikipedia.org/wiki/CompuServe
 
-And here is the original text, which has been hosted for all these years by Peter Conrad on his [university home page][peter-uni].
+And here is the original text, which has been hosted for all these years by [Peter Conrad][peter-uni]. You can find it [here](https://www.unix-ag.uni-kl.de/~conrad/krypto/misc/nCrypt.html).
 
 [peter-uni]: https://www.unix-ag.uni-kl.de/~conrad/
 
