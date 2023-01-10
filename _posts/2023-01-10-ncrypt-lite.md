@@ -1,5 +1,5 @@
 ---
-published: false
+published: true
 title: Cryptographic techniques used by nCrypt Light
 ---
 
@@ -7,8 +7,9 @@ title: Cryptographic techniques used by nCrypt Light
 
 # Preface (2023)
 
-The following described the cryptographic protocol and algorithm used by nCrypt Light back in 1993-94. I wrote nCrypt Lite in the hope of creating a strong cryptography app for the orginal [Newton MessagePad 100][MessagePad]. Rolling your own crypto is well-understood to be the complete opposite of implementing secure cryptography, so this is presented purely for nostalgia and amusement purposes.
+The following described the cryptographic protocol and algorithm used by [nCrypt Light] back in 1993-94. I wrote nCrypt Light in the hope of creating a strong cryptography app for the orginal [Newton MessagePad 100][MessagePad]. Rolling your own crypto is well-understood to be the complete opposite of implementing secure cryptography, so this is presented purely for nostalgia and amusement purposes.
 
+[nCrypt Light]: https://www.applefritter.com/node/15682
 [MessagePad]: https://en.wikipedia.org/wiki/MessagePad
 
 The MessagePad at that time had messaging and email if connected to a network of some kind, but it did not have strong, secure protocol for ensuring the privacy of messages or documents. My business partner and I thought there might be a market for encrypting messages much as Telegram or Signal do today. Our first goal was to ship a symmetrical encryption app (where sender and receiver must share a passphrase as the secret), and he hoped to write a public-key app later.
