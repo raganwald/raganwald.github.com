@@ -94,11 +94,11 @@ Peter Gutman (`pgut01@cs.aukuni.ac.nz`) pointed out that rA and rB could enter t
 
 The XORing of rL and rR could assist an attacker using differential cryptanalysis[4].
 
-Bill Stewart bill.stewart@pleasantonca.ncr.com suggested that the use of TimeInSeconds() as the salt value could be too limited a range of salt values; an attacker using a dictionary attack against a weak passphrase may not be sufficiently hampered if the range of possible salts is too small. A possible improvement would be to concatenate additional information to TimeInSeconds() such as the plaintext, a range of memory in the Newton, or other values and hash the result with SHA into a 160 bit salt. This may add significantly to the number of possible salt values and frustrate dictionary precomputation.
+Bill Stewart (`bill.stewart@pleasantonca.ncr.com`) suggested that the use of `TimeInSeconds()` as the salt value could be too limited a range of salt values; an attacker using a dictionary attack against a weak passphrase may not be sufficiently hampered if the range of possible salts is too small. A possible improvement would be to concatenate additional information to `TimeInSeconds()` such as the plaintext, a range of memory in the Newton, or other values and hash the result with SHA into a 160 bit salt. This may add significantly to the number of possible salt values and frustrate dictionary precomputation.
 
 Bill Stewart also suggested incorporating passphrase material into each iteration of the session key generation process.
 
-The use of highly regular initial registers for rL, rR and rA could assist an attacker in cryptanalizing the session key. Possible imporvements would be:
+The use of highly regular initial registers for rL, rR and rA could assist an attacker in cryptanalizing the session key. Possible improvements would be:
 
 - Expand the session key and use key material for the initial registers. We conjecture that this approach necessitates splitting the key material into parts which are generated separately: the key material used to generate the initial registers should be independant of the key material used to generate the keys for each generator.
 - Abandon the SMAC functions and use SHA for all three generators, but expand the key material to fill the three registers with different initial states.
