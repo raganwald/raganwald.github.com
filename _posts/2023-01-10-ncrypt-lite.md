@@ -24,7 +24,7 @@ And here is the original text, which has been hosted for all these years by Pete
 
 [peter-uni]: https://www.unix-ag.uni-kl.de/~conrad/
 
-(_The description below is Copyright 1994 CustomWare, Inc. and Reginald Braithwaite-Lee. That copyright overrides the create commons license that applies to the remainder of this blog._)
+(_The description below is Copyright 1994 CustomWare, Inc. and Reginald Braithwaite-Lee. That copyright overrides the create commons license that applies to the remainder of this blog. Note the use of pseudocode in the description: At the time, we were concerned that sharing source code directly could place us in jeopardy of the laws of the time, which considered cryptography a munition covered by strict export restrictions backed by draconian penalties for noncompliance._)
 
 # 1. Introduction
 
