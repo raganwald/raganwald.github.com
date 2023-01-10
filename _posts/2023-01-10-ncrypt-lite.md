@@ -1,6 +1,6 @@
 ---
 published: true
-title: Cryptographic techniques used by nCrypt Light
+title: Cryptographic techniques used by nCrypt Light in 1994
 ---
 
 ![Newton MessagePad 100, circa 1993](/assets/images/messagepad-100.jpeg)
@@ -24,9 +24,13 @@ And here is the original text, which has been hosted for all these years by [Pet
 
 [peter-uni]: https://www.unix-ag.uni-kl.de/~conrad/
 
-(_The description below is Copyright 1994 CustomWare, Inc. and Reginald Braithwaite-Lee. That copyright overrides the create commons license that applies to the remainder of this blog. Note the use of pseudocode in the description: At the time, we were concerned that sharing source code directly could place us in jeopardy of the laws of the time, which considered cryptography a munition covered by strict export restrictions backed by draconian penalties for noncompliance._)
+---
 
-# 1. Introduction
+_The description below is © 1994 CustomWare, Inc. and Reginald Braithwaite-Lee. That copyright overrides the create commons license that applies to the remainder of this blog. Note the use of pseudocode in the description: At the time, we were concerned that sharing source code directly could place us in jeopardy of the laws of the time, which considered cryptography a munition covered by strict export restrictions backed by draconian penalties for noncompliance._
+
+---
+
+## Introduction
 
 nCrypt Light ("nCrypt") is a password protection application for the Apple Newton. A derivative application, incorporating public key cryptographic techniques, is currently being developed. nCrypt Light is an enabling architecture; cryptographic protocols are "installed" into nCrypt, and those protocols become available for users.
 
@@ -40,7 +44,7 @@ The Stop & Go protocol is constructed from independant modules. The most basic, 
 
 CustomWare hereby places its interest in the cryptographic techniques used in Stop & Go ("SMAC" and "Stop & Go") in the public domain, with no restrictions on their use (CustomWare does not indemnify users from any consequences of such use: before proceeding, perform a thorough patent search and consult qualified legal counsel). nCrypt (the application) remains the proprietary property of CustomWare and may only be used and distributed as allowed by the license agreement accompanying nCrypt.
 
-# 2. The Secure Message Authentication Code
+## The Secure Message Authentication Code
 
 The Secure Message Authentication Code ("SMAC") is a modification of the Secure Hash Algorithm ("SHA").[^1] SHA is an 80 round hash which securely compresses a 512 bit value to a 160 bit result. It is conjectured that:
 
@@ -52,7 +56,7 @@ SMAC makes use of a 160 bit key, which is divided into five 32 bit buffers. The 
 
 We conjecture that setting the internal buffers to cryptographically secure values produced by SHA or SMAC produces a hash which is as secure as SHA. Our reasoning is that this operation is equivalent to prepending SMAC's inputs with key material before hashing.
 
-# 3. The Alternating Stop and Go Generator Algorithm
+## The Alternating Stop and Go Generator Algorithm
 
 The Alternating Stop and Go Generator ("Stop & Go") is based on a stream cipher described by Schneier[^2] from a paper presented by Günther[^3]. Stop & Go uses three generators ("rL", "rR", & "rA") constructed from SMACs. The output of Stop & Go is independant of the plaintext; it is a large generator which outputs 160 bits per round.
 
@@ -66,7 +70,7 @@ For the second and each subsequent block of plaintext, a bit from the result of 
 
 Should more than 160 blocks need to be encrypted, rA is clocked to produce 160 more bits for alternation. The first bit of rA's new result is then used to clock rL or rR and the resulting mask is used for the next block of plaintext.
 
-# 4. Generating Session Keys from Passphrases
+## Generating Session Keys from Passphrases
 
 Generating a Session Key
 
@@ -86,7 +90,7 @@ The Stop & Go protocol allows for variable effective keylengths from 8 to 160 bi
 
 nCrypt's shareware implementation of the Stop & Go protocol only encrypts with 40 bits of effective keylength. It can decrypt messages created with any number of effective bits of keylength.
 
-# 5. Cryptanalytic Comments
+## Cryptanalytic Comments
 
 The basis for the security of Stop & Go is the conjecture that the difficulty of guessing the initial buffer value given a chosen SMAC register and a known output is as difficult as guessing a SMAC register given a known initial buffer and a known output. Could this conjecture be false?
 
@@ -105,7 +109,7 @@ The use of highly regular initial registers for rL, rR and rA could assist an at
 - Devise a "chosen register" attack in which an attacker can discover information about a SMAC's registers from the result when the attacker gets to choose the input. Determine the worst possible register values for this type of attack and use those for the initial states.
 - nCrypt is implemented on an Apple Newton MessagePad. The Newton's "operating system" is completely dynamic and may relocate objects at any time, without warning. An attacker with access to a Newton used to generate ciphertext may be able to recover the plaintext or even the passphrase from RAM. For this reason, CustomWare suggest that nCrypt only be used to generate messages for secure transmission or storage on other systems.
 
-# 6. PseudoCode
+## PseudoCode
 
 ```
 FUNCTION Stop&Go IS LAMBDA( paddedBinary, sessionKey, bitsInKey )
@@ -185,7 +189,7 @@ paddedBinary FROM i TO i+19 );
   END
 ```
 
-# 7. Bibliography
+## Bibliography
 
 1. "SHA: The Secure Hash Algorithm," William Stallings, Dr. Dobb's Journal, April 1994, pp. 32-34.
 2. "Applied Cryptography," Bruce Schneier, John Wiley & Sons, 1994, pp. 360-361.
