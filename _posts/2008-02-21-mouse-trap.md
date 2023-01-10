@@ -1,5 +1,5 @@
 ---
-title: 'The Mouse Trap (2008)'
+title: 'The Mouse Trap'
 tags: [allonge]
 ---
 
