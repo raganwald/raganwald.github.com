@@ -42,7 +42,7 @@ CustomWare hereby places its interest in the cryptographic techniques used in St
 
 # 2. The Secure Message Authentication Code
 
-The Secure Message Authentication Code ("SMAC") is a modification of the Secure Hash Algorithm ("SHA") [1]. SHA is an 80 round hash which securely compresses a 512 bit value to a 160 bit result. It is conjectured that:
+The Secure Message Authentication Code ("SMAC") is a modification of the Secure Hash Algorithm ("SHA").[^1] SHA is an 80 round hash which securely compresses a 512 bit value to a 160 bit result. It is conjectured that:
 
 Given any message, 2^160 operations are required to discover another message which generates the same hash result.
 2^80 operations are required to find any two messages which generate the same hash value.
@@ -54,7 +54,7 @@ We conjecture that setting the internal buffers to cryptographically secure valu
 
 # 3. The Alternating Stop and Go Generator Algorithm
 
-The Alternating Stop and Go Generator ("Stop & Go") is based on a stream cipher described by Schneier [2] from a paper presented by Günther [3]. Stop & Go uses three generators ("rL", "rR", & "rA") constructed from SMACs. The output of Stop & Go is independant of the plaintext; it is a large generator which outputs 160 bits per round.
+The Alternating Stop and Go Generator ("Stop & Go") is based on a stream cipher described by Schneier[^2] from a paper presented by Günther[^3]. Stop & Go uses three generators ("rL", "rR", & "rA") constructed from SMACs. The output of Stop & Go is independant of the plaintext; it is a large generator which outputs 160 bits per round.
 
 Each generator consists of a register and a SMAC function. The keys for all three generators in nCrypt are identical. If more key material is available, using independant keys could increase security. Also, generating separate keys by "expanding" a single key could increase security.
 
@@ -92,7 +92,7 @@ The basis for the security of Stop & Go is the conjecture that the difficulty of
 
 Peter Gutman (`pgut01@cs.aukuni.ac.nz`) pointed out that rA and rB could enter the same state (i.e. their registers become identical) which would produce an extremely weak sequence. A possible improvement would be to check for this possibility and immediately clock again should this happen.
 
-The XORing of rL and rR could assist an attacker using differential cryptanalysis[4].
+The XORing of rL and rR could assist an attacker using differential cryptanalysis.[^4]
 
 Bill Stewart (`bill.stewart@pleasantonca.ncr.com`) suggested that the use of `TimeInSeconds()` as the salt value could be too limited a range of salt values; an attacker using a dictionary attack against a weak passphrase may not be sufficiently hampered if the range of possible salts is too small. A possible improvement would be to concatenate additional information to `TimeInSeconds()` such as the plaintext, a range of memory in the Newton, or other values and hash the result with SHA into a 160 bit salt. This may add significantly to the number of possible salt values and frustrate dictionary precomputation.
 
@@ -187,10 +187,7 @@ paddedBinary FROM i TO i+19 );
 
 # 7. Bibliography
 
-[1] "SHA: The Secure Hash Algorithm," William Stallings, Dr. Dobb's Journal, April 1994, pp. 32-34.
-
-[2] "Applied Cryptography," Bruce Schneier, John Wiley & Sons, 1994, pp. 360-361.
-
-[3] "Alternating Step Generators Controlled by de Bruijn Sequences," C. G. Gunther, Advances in Cryptology[EUROCRYPT ]87 Proceedsings, Springer-Verlag, 1988, pp. 5-14.
-
-[4] "Differential Cryptanalysis," Eli Bihem & Adi Shamir, Springer-Verlag, 1993
+1. "SHA: The Secure Hash Algorithm," William Stallings, Dr. Dobb's Journal, April 1994, pp. 32-34.
+2. "Applied Cryptography," Bruce Schneier, John Wiley & Sons, 1994, pp. 360-361.
+3. "Alternating Step Generators Controlled by de Bruijn Sequences," C. G. Gunther, Advances in Cryptology[EUROCRYPT ]87 Proceedsings, Springer-Verlag, 1988, pp. 5-14.
+4. "Differential Cryptanalysis," Eli Bihem & Adi Shamir, Springer-Verlag, 1993
