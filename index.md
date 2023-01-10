@@ -2,7 +2,8 @@
 title: Reginald Braithwaite
 layout: default
 tags: [allonge]
-years: ["2023", "2022", "2021", "2020", "2019", "2018", "2017", "2016", "2015", "2014", "2013"]
+recent: ["2023", "2022", "2021", "2020"]
+years: ["2019", "2018", "2017", "2016", "2015", "2014", "2013"]
 older: ["2012", "2011", "2010", "2009", "2008"]
 ---
 
@@ -19,6 +20,23 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 * talks: <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
 
 ---
+
+### Recent Writing
+
+<div class="related">
+  <ul>
+    {% for oldyear in page.recent %}
+      {% for post in site.posts %}
+        {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+        {% unless post.tags contains "noindex" or postyear != oldyear %}
+          <li>
+            <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+          </li>
+        {% endunless %}
+      {% endfor %}
+    {% endfor %}
+  </ul>
+</div>
 
 {% for sectionyear in page.years %}
 
