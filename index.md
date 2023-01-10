@@ -30,7 +30,7 @@ older: ["2012", "2011", "2010", "2009", "2008"]
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
         {% endunless %}
       {% endfor %}
