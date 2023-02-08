@@ -19,6 +19,8 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 * books: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>
 * talks: <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
 
+New! Free download: <a href="/assets/javascriptallongesix.pdf">JavaScript Allongé, The "Six" Edition</a>.
+
 ---
 
 ### This Decade
