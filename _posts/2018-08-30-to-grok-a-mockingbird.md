@@ -520,7 +520,7 @@ No more `myself(myself, ...)`!
 
 The why bird makes the code we write much simpler. And like the mockingbird, it allows us to separate the mechanism for recursion from the function we wish to make recursive.
 
-(We look at how to derive the why bird and Y combinator from the mockingbird and M combinator in the literally named [Deriving the Y Combinator and Why Bird from the Mockingbird](http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html))
+(We look at how to derive the Why bird and Y combinator from the Mockingbird and M combinator in the literally named [Why Y? Deriving the Y Combinator in JavaScript])
 
 ---
 
