@@ -19,8 +19,9 @@ _One model of life is to see it as writing a story, and one seeks to write a goo
 
 # ~Air~ Supply
 
-- Interrupting people to tell them I know something about what they are telling me is rude, even if I tell myself I'm sharing something they may find inteersting. If it's that interesting, I can tell them later.
-- Jokes, banter, and humour of any kind on the flightline is succumbing to the thirst. Continue to write them all down, it forces attention and leverages the Hawthorne Effect.
+- Interrupting people to tell them I know something about what they are telling me is rude, even if I tell myself I'm sharing something they may find inteersting. If it's that interesting, I can tell them later. _Task_: Make a note of when I do this.
+- Jokes, banter, and humour of any kind on the flightline is succumbing to the thirst. _Task_: Continue to write them all down, it forces attention and leverages the Hawthorne Effect.
+- I have the last word more than 50% of the time... Nearly 100% actually. That's addictive behaviour. _Task_: After a ping is followed by a pong, be intentional about whether further communication is required, or if I'm just trying to slake the thirst.
 
 # The Path
 
@@ -31,4 +32,8 @@ _One model of life is to see it as writing a story, and one seeks to write a goo
 # The Soul
 
 - My soul is as real as my bank account.
+
+# Languages
+
+- If Alice wants quality time but Bob treats it as an act of service, they're gonna have a bad time.
 
