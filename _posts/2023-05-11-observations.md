@@ -37,3 +37,11 @@ _One model of life is to see it as writing a story, and one seeks to write a goo
 
 - If Alice wants quality time but Bob treats it as an act of service, they're gonna have a bad time.
 
+# The Rs
+
+- I can sit in my remorse and regret for what I have done to others.
+- I can pursue reform
+- I can try to provide redress (a/k/a "make amends")
+- I must not seek to reinvent myself, that reeks of avoiding responsibility for what I have done.
+- Redemption is not up to me 
+
