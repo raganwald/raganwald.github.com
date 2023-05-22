@@ -26,7 +26,7 @@ _One model of life is to see it as writing a story, and one seeks to write a goo
 
 - It is corrosive to my soul to be competitive as an expression of anger.
 - It is corrosive to my soul to allow the thirst to currupt my path into a competition.
-- Taking a step on the path doe snot entitle me to lecture people about the path. Doing so actually means I have forgotten why the path matters.
+- Taking a step on the path does not entitle me to lecture people about the path. Doing so actually means I have forgotten why the path matters.
 
 # The Soul
 
