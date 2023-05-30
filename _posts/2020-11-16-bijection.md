@@ -1,6 +1,6 @@
 ---
 title: "A Reversible Visit to Hilbert's Grand Hotel"
-tags: [allonge, noindex, mermaid]
+tags: [allonge, wip, mermaid]
 published: false
 ---
 

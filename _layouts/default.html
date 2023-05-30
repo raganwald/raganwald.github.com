@@ -15,7 +15,7 @@
 
           {% include book.html %}
 
-          {% if page.tags contains 'wip' or page.tags contains 'noindex' %}
+          {% if page.tags contains 'wip' %}
             <p title="This essay is a{% if page.tags contains 'noindex'%}n unpublished{% endif %} work in progress"><i>
               {% if page.tags contains 'wip' %}
                 <span class="fas fa-edit"></span>

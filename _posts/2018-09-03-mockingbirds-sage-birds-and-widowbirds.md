@@ -1,6 +1,6 @@
 ---
 title: Deriving the Y Combinator and Why Bird from the Mockingbird
-tags: [recursion,noindex]
+tags: [recursion,wip]
 ---
 
 **This essay has been incorporated into [Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html)**
