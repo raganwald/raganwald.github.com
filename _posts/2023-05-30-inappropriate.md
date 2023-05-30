@@ -3,6 +3,6 @@ title: An Inappropriate Post
 tags: noindex
 ---
 
-“Why are dick-measuring contests so vicious?”
+Why are dick-measuring contests so vicious?
 
-Because the [stakes](/assets/images/IMG_3034.jpeg) are so small.
+_Because the [stakes](/assets/images/IMG_3034.jpeg) are so small._
