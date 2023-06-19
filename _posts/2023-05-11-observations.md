@@ -45,3 +45,14 @@ _One model of life is to see it as writing a story, and one seeks to write a goo
 - I must not seek to reinvent myself, that reeks of avoiding responsibility for what I have done.
 - Redemption is not up to me 
 
+# The Pursuit of Self-Actualization
+
+- Maslow's hierarchy is roughly correct, and thus pursuing self-actualization while the lower levels of motivation are unsound is premature: It becomes performative, a means of denying the reality of my unfulfillment.
+- I need not be socially-oriented, but I must live in harmony with those around me if I am to have my "belongining and love" motivation fulfilled. Without that, self-actualization is built upon rickety stilts.
+- I may live with regret and self-criticism for my life's chocies to date, but I must find self-esteem for who I am today if I am to seek self-actualization. Without that, self-actualization is but a tissue-paper façade over a collapsing house.
+
+> Art is not the reproduction of what we see, but the revealing of that which is invisible.
+
+—Paul Klee, as expressed in "BAUHAUS," by Valentina Grande and Sergio Varbella
+
+Perhaps software development is not the reproduction of what we imagine, but the revealing of what our imagination leads us towards?
