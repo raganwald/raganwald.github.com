@@ -1,7 +1,7 @@
 ---
 published: true
 layout: default
-tags: anansi,noindex,wip
+tags: [anansi, noindex, wip]
 ---
 
 # Appendices
