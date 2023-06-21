@@ -7,11 +7,17 @@ tags: anansi, noindex, wip
 
 # Appendices
 
-### notes
+### devices
+
+- How Anansi got married is congruent to the game "Warri" coming from marriage
+- A library of all games: Prove it cannot exist via the Wonderful Set: The existance of a game where you can only choose a game that does not choose itself implies an impossible set. Does this mean that you cannot 'fix' Hypergame by demanding that a player choose any game that does not permit choosing itself?
+- Classic hidden romance story where a young Anansi meets a Hausa who wears robes, turban, and face scarf against the desert. Or maybe disguised as a [Taureg], including a blue veil in the style of "blue people."
+
+[Taureg]: https://en.wikipedia.org/wiki/Tuareg_people
 
 ### research on games
 
-- [finite games](https://en.wikipedia.org/wiki/Finite_game) on WIkipedia, introducing totally finite and somewhat finite games. Supergame is a somewhat final game that is not paradoxical because it demands that its player choose a totally finite game. Hyperhame is utside of finite-ness because it allows for the choice of a somewhat final game.
+- [finite games](https://en.wikipedia.org/wiki/Finite_game) on WIkipedia, introducing totally finite and somewhat finite games. Supergame is a somewhat final game that is not paradoxical because it demands that its player choose a totally finite game. Hypergame is outside of finite-ness because it allows for the choice of a somewhat final game.
 
 ### research on anansi
 
