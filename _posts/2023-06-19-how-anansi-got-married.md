@@ -11,6 +11,9 @@ tags: [anansi, noindex, wip]
 - A library of all games: Prove it cannot exist via the Wonderful Set: The existance of a game where you can only choose a game that does not choose itself implies an impossible set. Does this mean that you cannot 'fix' Hypergame by demanding that a player choose any game that does not permit choosing itself?
 - Could the library be a magic tree?
 - Two-player games are congruent to a graph where every node is a "position," and outbound arcs represent the transition to another position with the other player's turn to play. Although these are "moves" we think of as being "within" a game, we can show the equivalence by positing that there is a game somewhere with the same setup as an intermediate move from another game. Thus, all games consist of choosing another game for the other player to play, until a terminal position is reached with no outbound moves.
+- Computing machines using oware boards and a set of instructions for manipulating them. Idea: Register machines using pits for registers and stones for the contents of the register. A Minsky Machine in pits and pebbles... Grand reveal is a Universal Minsky Machine.
+- Every Minsky Machine is congruent to some Minsky Game, it's just that every position in the game has exactly one allowable move.
+- Halting problem congruent to the generalized "Is any arbitrary game totally finite?"
 
 ### story devices
 
