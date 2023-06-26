@@ -1,6 +1,6 @@
 ---
 title: "Functions All The Way Down"
-tags: [allonge,recursion,wip]
+tags: [allonge, recursion, wip, noindex]
 ---
 
 [Functions all the way down] is a book about **recursion**, a book about **recreational programming**, and a book about **JavaScript**, in that order.
