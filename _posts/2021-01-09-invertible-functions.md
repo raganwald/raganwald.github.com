@@ -1,6 +1,6 @@
 ---
 title: "Invertible Functions"
-tags: [allonge, wip, mermaid]
+tags: [allonge, wip, noindex, mermaid]
 ---
 
 [![Grand Hotel](/assets/invertible/grand-hotel.jpg)](https://www.flickr.com/photos/jannerboy62/31444461695)
