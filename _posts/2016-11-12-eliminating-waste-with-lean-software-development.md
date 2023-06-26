@@ -1,7 +1,7 @@
 ---
 title: "Eliminating Waste with Lean Software Development"
 layout: default
-tags: [allonge, wip]
+tags: [allonge, wip, noindex]
 ---
 
 ## Preamble: Developing Products "Like This"
