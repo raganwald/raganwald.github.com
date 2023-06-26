@@ -6,6 +6,20 @@ tags: [anansi, noindex, wip]
 
 # Appendices
 
+### hamiltonian ideas
+
+- "Aso's Story."
+  - Why are we writing about Anansi?
+  - Am I the right person to write a story about a woman?
+- "Anansi and Aso, A Love Story"
+  - What if this is a character-driven story arc and not just a thin device for framing puzzles?
+- "Young Anansi"
+  - Who was he before he became a Spider-Man?
+- Hip-Hop
+  - The Revolution Will Not Be Televised
+  - Strange Fruit
+  - The Message
+
 ### puzzle devices
 
 - A library of all games: Prove it cannot exist via the Wonderful Set: The existance of a game where you can only choose a game that does not choose itself implies an impossible set. Does this mean that you cannot 'fix' Hypergame by demanding that a player choose any game that does not permit choosing itself?
@@ -23,8 +37,11 @@ tags: [anansi, noindex, wip]
 - The big reveal is that it is Aso in disguise
 - Aso beats Anansi nearly always, because Anansi is "too clever by half," he always tried to win quickly through trickery, and puts more work into his tricks than into winning with soun dplay
 - Anansi's trickery is entertaining, though, and reflects a sense of "outsider humour:" Anansi does not want to become dour like the wealthy traders.
+- The puzzles all reveal deep, DEEP truths that are lost at the end when Anasi breaks the pot with all the knowledge of the world, leaving tghem to be rediscovered many years later.
+- [African Libraries]
 
 [Taureg]: https://en.wikipedia.org/wiki/Tuareg_people
+[African Libraries]: https://gga.org/the-ancient-libraries-of-africa/
 
 ### research on games
 
