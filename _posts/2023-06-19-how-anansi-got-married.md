@@ -29,12 +29,12 @@ tags: [anansi, noindex, wip]
 - Every Minsky Machine is congruent to some Minsky Game, it's just that every position in the game has exactly one allowable move.
 - Halting problem congruent to the generalized "Is any arbitrary game totally finite?"
 - A subset of Warri games are universal computing machines
-- [Rule 110] automaton as kente cloth weaving.
+- [Rule 110] automaton as kente cloth weaving. A [Cyclic Tag System] as an Oware game?
 - A retelling of [Anansi and the Pot of Wisdom][pot], where the pot doesn't actually break, what breaks is rationality, thanks to Anasi discovering paradoxes. Nyame warns Anansi not to starre too deeply into it, but he is greedy, and breaks the pot. Something about statements of what is in the pot proving that there are true things that are not in the pot? Pot congruent to proveable?
 
 [pot]: https://anikefoundation.org/african-folktales/ananse-and-the-pot-of-wisdom
-
-  [Rule 110]: https://en.wikipedia.org/wiki/Rule_110
+[Cyclic Tag System]: https://en.wikipedia.org/wiki/Tag_system#Cyclic_tag_systems
+[Rule 110]: https://en.wikipedia.org/wiki/Rule_110
 
 ### story devices
 
