@@ -28,6 +28,13 @@ tags: [anansi, noindex, wip]
 - Computing machines using oware boards and a set of instructions for manipulating them. Idea: Register machines using pits for registers and stones for the contents of the register. A Minsky Machine in pits and pebbles... Grand reveal is a Universal Minsky Machine.
 - Every Minsky Machine is congruent to some Minsky Game, it's just that every position in the game has exactly one allowable move.
 - Halting problem congruent to the generalized "Is any arbitrary game totally finite?"
+- A subset of Warri games are universal computing machines
+- [Rule 110] automaton as kente cloth weaving.
+- A retelling of [Anansi and the Pot of Wisdom][pot], where the pot doesn't actually break, what breaks is rationality, thanks to Anasi discovering paradoxes. Nyame warns Anansi not to starre too deeply into it, but he is greedy, and breaks the pot. Something about statements of what is in the pot proving that there are true things that are not in the pot? Pot congruent to proveable?
+
+[pot]: https://anikefoundation.org/african-folktales/ananse-and-the-pot-of-wisdom
+
+  [Rule 110]: https://en.wikipedia.org/wiki/Rule_110
 
 ### story devices
 
@@ -45,7 +52,7 @@ tags: [anansi, noindex, wip]
 
 ### research on games
 
-- [finite games](https://en.wikipedia.org/wiki/Finite_game) on WIkipedia, introducing totally finite and somewhat finite games. Supergame is a somewhat final game that is not paradoxical because it demands that its player choose a totally finite game. Hypergame is outside of finite-ness because it allows for the choice of a somewhat final game.
+- [finite games](https://en.wikipedia.org/wiki/Finite_game) on Wikipedia, introducing totally finite and somewhat finite games. Supergame is a somewhat final game that is not paradoxical because it demands that its player choose a totally finite game. Hypergame is outside of finite-ness because it allows for the choice of a somewhat final game.
 - [Countable set](https://en.wikipedia.org/wiki/Countable_set), the foundation of the adjective "countably many," implying aleph-zero.
 
 ### research on anansi
