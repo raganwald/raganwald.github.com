@@ -3,9 +3,7 @@ title: "Duck Programming"
 tags: [allonge]
 ---
 
-Prior to joining [Unspace Interactive], one of our developers worked on an “interesting” project, a project that taught them many lessons. One of those lessons was to beware of “duck programming.” Before we explain that term, let’s have a look at the project and get a feel for what the designers were trying to accomplish.[^0]
-
-[Unspace Interactive]: http://unspace.ca
+Prior to joining[Unspace Interactive, one of our developers worked on an “interesting” project, a project that taught them many lessons. One of those lessons was to beware of “duck programming.” Before we explain that term, let’s have a look at the project and get a feel for what the designers were trying to accomplish.[^0]
 
 # Prelude: the Project
 
@@ -113,4 +111,4 @@ They learned from their experience that with a little common sense and appropria
 
 [^4]: Many organizations have even more practices, but these are fairly minimal and commonplace as of this essay's writing (2012).
 
-[unspace.ca]: http://unspace.ca/dev/2012/duck-programming
+[unspace.ca]: https://web.archive.org/web/20160304022150/http://unspace.ca/dev/2012/duck-programming
