@@ -354,8 +354,8 @@ We're still performing recursion by name. Which is fine, JavaScript has names an
 
 And we remember how to do that from the essays on recursive combinators: [To Grok a Mockingbird], and [Why Y? Deriving the Y Combinator in JavaScript]:
 
-[To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
-[Why Y? Deriving the Y Combinator in JavaScript]: http://raganwald.com/2018/09/10/why-y.html
+[To Grok a Mockingbird]: https://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[Why Y? Deriving the Y Combinator in JavaScript]: https://raganwald.com/2018/09/10/why-y.html
 
 ```javascript
 const why =
@@ -557,7 +557,7 @@ hm.get(1).get(2).get(3)
 
 [^memoize]: For example, in this exact blog you can find a `memoize` function decorator. It uses an object-based dictionary to store a mapping from keys to result values. Quite obviously, a `Map`-based implementation would be more generally useful.
 
-[^delegate]: In general, we prefer delegation/composition to extension (aka "inheritance"). This is discussed at length in [Mixins, Forwarding, and Delegation in JavaScript](http://raganwald.com/2014/04/10/mixins-forwarding-delegation.html). But it should be noted that with respect to the built-in `Map` class, we should be careful. Extending `Map` generally works in environments that provide a native `Map` class, but can break when transpiling ES6 to ES5 for compatibility.
+[^delegate]: In general, we prefer delegation/composition to extension (aka "inheritance"). This is discussed at length in [Mixins, Forwarding, and Delegation in JavaScript](https://raganwald.com/2014/04/10/mixins-forwarding-delegation.html). But it should be noted that with respect to the built-in `Map` class, we should be careful. Extending `Map` generally works in environments that provide a native `Map` class, but can break when transpiling ES6 to ES5 for compatibility.
 
 Its advantage from an architectural perspective is that there's no `Proxy` magic. We are not against metaprogramming of any kind, but sometimes in a code base we make the decision to prefer explicit to implicit. We can generally expect that if we call a `.get` method on a `HashMap` class, that it will decorate the basic functionality of `Map`. In JavaScript, we don't normally expect the behaviour of `[]` or `.foo` to be customized.
 

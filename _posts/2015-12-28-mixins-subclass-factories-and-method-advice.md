@@ -6,7 +6,7 @@ tags: [allonge]
 
 *Mixins* solve a very common problem in class-centric OOP: For non-trivial applications, there is a messy many-to-many relationship between behaviour and classes, and it does not neatly decompose into a tree. In this essay, we only touch lightly over the benefits of using mixins with classes, and in their stead we will focus on some of the limitations of mixins and ways to not just overcome them, but create designs that are superior to those created with classes alone.
 
-(For more on why mixins matter in the first place, you may want to review [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html), [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html), and [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html).)
+(For more on why mixins matter in the first place, you may want to review [Prototypes are Objects (and why that matters)](https://raganwald.com/2015/06/10/mixins.html), [Functional Mixins in ECMAScript 2015](https://raganwald.com/2015/06/17/functional-mixins.html), and [Using ES.later Decorators as Mixins](https://raganwald.com/2015/06/26/decorators-in-es7.html).)
 
 [![Crossed Wires](/assets/images/crossed-wires.jpg)](https://www.flickr.com/photos/howardlake/4834299551/)
 
@@ -201,7 +201,7 @@ By making `ColouredTodo` extend `Todo`, `TimeSensitiveTodo` can extend `Coloured
 
 But.
 
-What if, instead of manually creating this hierarchy, we use our simple mixins to do the work for us? We can take advantage of the fact that [classes are expressions](http://raganwald.com/2015/06/04/classes-are-expressions.html), like this:
+What if, instead of manually creating this hierarchy, we use our simple mixins to do the work for us? We can take advantage of the fact that [classes are expressions](https://raganwald.com/2015/06/04/classes-are-expressions.html), like this:
 
 ```javascript
 let Coloured = mixin({
@@ -447,7 +447,7 @@ The above adjustment to 'mixin' is fine for simple overwriting, but what about w
 
 Our adjustment will not allow a method in the class to invoke the body of a method in a mixin. So we can't use it to implement `TimeSensitiveTodo`. For that, we need a different tool, [method advice].
 
-[method advice]: http://raganwald.com/2015/08/05/method-advice.html
+[method advice]: https://raganwald.com/2015/08/05/method-advice.html
 
 Method advice is a powerful tool in its own right: It allows us to compose method functionality in a declarative way. Here's a simple "override" function that decorates a class:
 
@@ -698,18 +698,18 @@ No matter which approach we use, we find ourselves needing shallower and shallow
 
 more reading:
 
-- [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html)
-- [Classes are Expressions (and why that matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
-- [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html)
-- [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
+- [Prototypes are Objects (and why that matters)](https://raganwald.com/2015/06/10/mixins.html)
+- [Classes are Expressions (and why that matters)](https://raganwald.com/2015/06/04/classes-are-expressions.html)
+- [Functional Mixins in ECMAScript 2015](https://raganwald.com/2015/06/17/functional-mixins.html)
+- [Using ES.later Decorators as Mixins](https://raganwald.com/2015/06/26/decorators-in-es7.html)
 - [Method Advice in Modern JavaScript][ma-mj]
-- [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
+- [`super()` considered hmmm-ful](https://raganwald.com/2015/12/23/super-considered-hmmmful.html)
 - [JavaScript Mixins, Subclass Factories, and Method Advice][mi-sf-ma]
 - [This is not an essay about 'Traits in Javascript'][traits]
 
-[traits]: http://raganwald.com/2015/12/31/this-is-not-an-essay-about-traits-in-javascript.html
-[mi-sf-ma]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
-[ma-mj]: http://raganwald.com/2015/08/05/method-advice.html
+[traits]: https://raganwald.com/2015/12/31/this-is-not-an-essay-about-traits-in-javascript.html
+[mi-sf-ma]: https://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
+[ma-mj]: https://raganwald.com/2015/08/05/method-advice.html
 
 notes:
 

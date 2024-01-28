@@ -6,7 +6,7 @@
 
 Our `StateMachine` function doesn't respect inheritance. Let's say, for example, that our banking software has an idea of objects that have customers:[^notreally]
 
-[^notreally]: Again, this is absolutely not how real banking software should be written. Come to think of it, it's probably not how _any_ software should really be written, at least not without intentionally [considering and discarding](http://raganwald.com/2016/07/16/why-are-mixins-considered-harmful.html "Why are mixins considered harmful?") the possibility of using a mixin or other technique for sharing the functionality of "having a customer."
+[^notreally]: Again, this is absolutely not how real banking software should be written. Come to think of it, it's probably not how _any_ software should really be written, at least not without intentionally [considering and discarding](https://raganwald.com/2016/07/16/why-are-mixins-considered-harmful.html "Why are mixins considered harmful?") the possibility of using a mixin or other technique for sharing the functionality of "having a customer."
 
 ```javascript
 const CUSTOMER = Symbol("customer");

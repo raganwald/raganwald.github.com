@@ -329,7 +329,7 @@ Untangling the concerns of how to iterate over data from what to do with data le
 
 **next**
 
-In [The "Drunken Walk" Programming Problem](http://raganwald.com/2013/02/17/a-drunken-walk.html), we'll refactor the "Tortoise and Hare" algorithm to solve an isomorphic programming problem.
+In [The "Drunken Walk" Programming Problem](https://raganwald.com/2013/02/17/a-drunken-walk.html), we'll refactor the "Tortoise and Hare" algorithm to solve an isomorphic programming problem.
 
 *This material also appears in the book [JavaScript Allongé](http://leanpub.com/javascript-allongé).*
 

@@ -224,7 +224,7 @@ The difference being, of course, that our `foldl` and `foldr` functions are writ
 
 And if someone asks us what this has to do with the associative property, we reply that an operator with the associative property is one for which for any association of operator and multiple operands, there is no difference to the computed result.
 
-[foldl]: http://raganwald.com/2017/04/10/foldl-foldr.html
+[foldl]: https://raganwald.com/2017/04/10/foldl-foldr.html
 
 ### this seems like a lot of bother
 

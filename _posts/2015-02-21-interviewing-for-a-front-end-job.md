@@ -275,6 +275,6 @@ The Carpenter smiled. "I forgot about them, it's been a while. So, do They Live?
 
 ---
 
-p.s. [(unlikely to be) The Last Word on Interviewing for a JavaScript Job](http://raganwald.com/2015/02/23/the-last-word-on-interviewing.html)
+p.s. [(unlikely to be) The Last Word on Interviewing for a JavaScript Job](https://raganwald.com/2015/02/23/the-last-word-on-interviewing.html)
 
-p.p.s. The Carpenter probably cribbed the solution from [The "Drunken Walk" Programming Problem](http://raganwald.com/2013/02/17/a-drunken-walk.html), and [Solving the "Drunken Walk" problem with iterators](http://raganwald.com/2013/02/18/drunken-walk-solution.html).
+p.p.s. The Carpenter probably cribbed the solution from [The "Drunken Walk" Programming Problem](https://raganwald.com/2013/02/17/a-drunken-walk.html), and [Solving the "Drunken Walk" problem with iterators](https://raganwald.com/2013/02/18/drunken-walk-solution.html).

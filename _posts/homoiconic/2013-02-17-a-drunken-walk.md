@@ -4,7 +4,7 @@ layout: default
 tags : [homoiconic, javascript]
 ---
 
-In [Tortoises, Teleporting Turtles, and Iterators](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html), we looked at the "Tortoise and Hare" algorithm for detecting a linked list. Like many such algorithms, it "tangles" two different concerns:
+In [Tortoises, Teleporting Turtles, and Iterators](https://raganwald.com/2013/02/15/turtles-and-iterators.js.html), we looked at the "Tortoise and Hare" algorithm for detecting a linked list. Like many such algorithms, it "tangles" two different concerns:
 
 1. The mechanism for iterating over a list.
 2. The algorithm for detecting a loop in a list.
@@ -64,7 +64,7 @@ Iterators allow us to write (or refactor) functions to operate on iterators inst
 
 ### refactoring the tortoise and hare
 
-In [the previous post](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html), we refactored other algorithms, but not the Tortoise and Hare. Let's do that now: We'll refactor it to use iterators instead of directly operate on linked lists. We'll add an `.iterator()` method to linked lists, and we'll rewrite our loop detector function to take an "iterable" instead of a list:
+In [the previous post](https://raganwald.com/2013/02/15/turtles-and-iterators.js.html), we refactored other algorithms, but not the Tortoise and Hare. Let's do that now: We'll refactor it to use iterators instead of directly operate on linked lists. We'll add an `.iterator()` method to linked lists, and we'll rewrite our loop detector function to take an "iterable" instead of a list:
 
 ```javascript
 LinkedList.prototype.iterator = function() {
@@ -169,7 +169,7 @@ var Game = (function () {
 })();
 ```
 
-In [Tortoises, Teleporting Turtles, and Iterators](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html), we saw the `fold` function that converts a finite iterator into a value:
+In [Tortoises, Teleporting Turtles, and Iterators](https://raganwald.com/2013/02/15/turtles-and-iterators.js.html), we saw the `fold` function that converts a finite iterator into a value:
 
 ```javascript
 function fold (iter, binaryFn, seed) {
@@ -230,4 +230,4 @@ i();
 
 One possible solution is posted separately to prevent spoilers. Try at least thinking it through before peeking!
 
-[Solving the "Drunken Walk" problem with iterators](http://raganwald.com/2013/02/18/drunken-walk-solution.html).
+[Solving the "Drunken Walk" problem with iterators](https://raganwald.com/2013/02/18/drunken-walk-solution.html).

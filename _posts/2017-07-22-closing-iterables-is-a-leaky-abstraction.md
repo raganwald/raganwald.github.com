@@ -538,7 +538,7 @@ We've seen that iterators need to be closed. We've also seen that the affordance
 
 This conscious design choice does make learning about iterables particularly easy. It's easy to write generators, and when we encounter code like this in a [blog post]:
 
-[blog post]: http://raganwald.com/2016/03/17/programs-must-be-written-for-people-to-read.html "“Programs must be written for people to read, and only incidentally for machines to execute”"
+[blog post]: https://raganwald.com/2016/03/17/programs-must-be-written-for-people-to-read.html "“Programs must be written for people to read, and only incidentally for machines to execute”"
 
 ```javascript
 function * take (numberToTake, iterable) {

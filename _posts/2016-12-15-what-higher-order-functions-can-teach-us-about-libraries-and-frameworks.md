@@ -419,7 +419,7 @@ Roughly speaking, both frameworks and libraries are collections of classes, func
 
 Frameworks typically expect us to write functions or create entities with very specific, proprietary interfaces and behavioural contracts. For example, [Ember] requires us to extend its own base classes for things like component classes, instead of using ordinary JavaScript ES-6 classes. As we noted above, when we have specific interfaces, we limit the expressiveness of our programs, but not the incidental complexity.
 
-[jsm]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html "JavaScript Mixins, Subclass Factories, and Method Advice"
+[jsm]: https://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html "JavaScript Mixins, Subclass Factories, and Method Advice"
 
 The underlying assumption is that we are writing code for the framework, so the framework's author is not concerned with setting-up a many-to-many relationship between the framework's code and our code. For example, we cannot use [JavaScript mixins, subclass factories, or method advice][jsm] with the classes we write in Ember. We have to use the specific, proprietary meta-programming facilities that Ember provides, or are provided in specific plugins written for Ember.
 
@@ -439,7 +439,7 @@ But from our exploration of `linrec`, `binrec`, and `multirec`, we can see that 
 
 ### afterward
 
-There is more to read about `multirec` in the follow-up essay, [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html), and the final chapter, [Time, Space, and Life As We Know It](http://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html).
+There is more to read about `multirec` in the follow-up essay, [Why recursive data structures?](https://raganwald.com/2016/12/27/recursive-data-structures.html), and the final chapter, [Time, Space, and Life As We Know It](https://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html).
 
 An early draft of this post was reviewed by [Jinny Kim](https://github.com/younjin) and [Peter Sobot](https://github.com/psobot). Thank you.
 

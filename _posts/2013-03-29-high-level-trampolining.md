@@ -7,7 +7,7 @@ tags: [allonge]
 
 in [Trampolines in JavaScript][t], we used a ridiculously simple factorial function to understand how [trampolining] works. To recap, we started with:
 
-[t]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
+[t]: https://raganwald.com/2013/03/28/trampolines-in-javascript.html
 [trampolining]: https://en.wikipedia.org/wiki/Trampoline_(computing)
 
 ```javascript

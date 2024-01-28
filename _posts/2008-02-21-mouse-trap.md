@@ -93,9 +93,9 @@ Alas, this is typical of Mouse Trap Architectures everywhere. Built with the bes
 
 The company adopted the new build scripts immediately and assigned a junior programmer who was working on several other projects to maintain them. Within months they had been dismantled, in no little part because the team hated the idea that every time the business analyst changed the business rules, their Java code that was carefully constructed for a previous version would stop compiling.
 
-The New Guy lasted a few months longer before realizing that his sudden accord with management was illusory, and that nothing really had changed. He has now forsworn his love for static typing and is now wandering a production Ruby code base [muttering about software development](http://raganwald.com) the way the very old sit in their easy chairs muttering about the government.
+The New Guy lasted a few months longer before realizing that his sudden accord with management was illusory, and that nothing really had changed. He has now forsworn his love for static typing and is now wandering a production Ruby code base [muttering about software development](https://raganwald.com) the way the very old sit in their easy chairs muttering about the government.
 
-All that remains of his work are a few XSL files [somewhere](http://raganwald.com/source/actions.xsl), like old game pieces that are rolling around the bottom of a drawer at the cottage hoping that someone will open a bottle of wine and call for a game of Mouse Trap to pass the time.
+All that remains of his work are a few XSL files [somewhere](https://raganwald.com/source/actions.xsl), like old game pieces that are rolling around the bottom of a drawer at the cottage hoping that someone will open a bottle of wine and call for a game of Mouse Trap to pass the time.
 
 ---
 

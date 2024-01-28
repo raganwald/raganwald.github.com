@@ -7,7 +7,7 @@ tags: [allonge]
 In [Why Recursive Data Structures?][why?] we used `multirec`, a recursive combinator, to implement [quadtrees][quadtree] and coloured quadtrees (The full code for creating and rotating quadtrees and coloured quadtrees is <a name="ref-quadtrees"></a>[below](#quadtrees)).
 
 [quadtree]: https://en.wikipedia.org/wiki/Quadtree
-[why?]: http://raganwald.com/2016/12/27/recursive-data-structures.html
+[why?]: https://raganwald.com/2016/12/27/recursive-data-structures.html
 
 Our focus was on the notion of an isomorphism between the data structures and the algorithms, more than on the performance of quadtrees. Today, we'll take a closer look at taking advantage of their recursive structure to optimize for time and using [memoization] and [canonicalization].
 
@@ -1527,7 +1527,7 @@ const rotateColouredQuadTree = multirec({
 
 ### afterward
 
-There is more to read about `multirec` in the previous essays, [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html) and [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html).
+There is more to read about `multirec` in the previous essays, [From Higher-Order Functions to Libraries And Frameworks](https://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html) and [Why recursive data structures?](https://raganwald.com/2016/12/27/recursive-data-structures.html).
 
 Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss the post on [hacker news](https://news.ycombinator.com/item?id=13384851) or even [edit this page](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2017-01-12-time-space-life-as-we-know-it.md) yourself.
 

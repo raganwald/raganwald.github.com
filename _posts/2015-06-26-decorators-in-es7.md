@@ -6,7 +6,7 @@ tags: allonge
 
 In [Functional Mixins], we discussed mixing functionality *into* JavaScript classes, changing the class. We observed that this has pitfalls when applied to a class that might already be in use elsewhere, but is perfectly cromulent when used as a technique to build a class from scratch. When used strictly to build a class, mixins help us decompose classes into smaller entities with focused responsibilities that can be shared between classes as necessary.
 
-[Functional Mixins]: http://raganwald.com/2015/06/17/functional-mixins.html
+[Functional Mixins]: https://raganwald.com/2015/06/17/functional-mixins.html
 
 Let's recall our helper for making a functional mixin. We'll just call it `mixin`:
 
@@ -147,7 +147,7 @@ president.collection()
 
 So far, nice, but it feels a bit bolted-on-after-the-fact. Let's take advantage of the fact that [Classes are Expressions]:
 
-[Classes are Expressions]: http://raganwald.com/2015/06/04/classes-are-expressions.html
+[Classes are Expressions]: https://raganwald.com/2015/06/04/classes-are-expressions.html
 
 ```javascript
 const BookCollector = mixin({
@@ -307,7 +307,7 @@ class Person {
 
 And if you want to use decorators to emulate [Purely Functional Composition], it's a fairly simple pattern:
 
-[Purely Functional Composition]: http://raganwald.com/2015/06/20/purely-functional-composition.html
+[Purely Functional Composition]: https://raganwald.com/2015/06/20/purely-functional-composition.html
 
 ```javascript
 class Person {
@@ -345,17 +345,17 @@ If you prefer syntactic sugar that gives the appearance of a declarative constru
 
 more reading:
 
-- [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html)
-- [Classes are Expressions (and why that matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
-- [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html)
-- [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
+- [Prototypes are Objects (and why that matters)](https://raganwald.com/2015/06/10/mixins.html)
+- [Classes are Expressions (and why that matters)](https://raganwald.com/2015/06/04/classes-are-expressions.html)
+- [Functional Mixins in ECMAScript 2015](https://raganwald.com/2015/06/17/functional-mixins.html)
+- [Using ES.later Decorators as Mixins](https://raganwald.com/2015/06/26/decorators-in-es7.html)
 - [Method Advice in Modern JavaScript][ma-mj]
-- [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
+- [`super()` considered hmmm-ful](https://raganwald.com/2015/12/23/super-considered-hmmmful.html)
 - [JavaScript Mixins, Subclass Factories, and Method Advice][mi-sf-ma]
 - [This is not an essay about 'Traits in Javascript'][traits]
 
-[traits]: http://raganwald.com/2015/12/31/this-is-not-an-essay-about-traits-in-javascript.html
-[mi-sf-ma]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
-[ma-mj]: http://raganwald.com/2015/08/05/method-advice.html
+[traits]: https://raganwald.com/2015/12/31/this-is-not-an-essay-about-traits-in-javascript.html
+[mi-sf-ma]: https://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
+[ma-mj]: https://raganwald.com/2015/08/05/method-advice.html
 
 notes:

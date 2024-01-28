@@ -27,7 +27,7 @@ We'll begin our exploration with a look at the *mockingbird*, also called the `M
 
 This is a function that computes exponentiation. If we want to compute something like `2^8` (two to the power of eight), we can compute it like this: `2 * 2 * 2 * 2 * 2 * 2 * 2 * 2`, which requires O(n) operations. Our function exploits basic arithmetic and recursion to obtain the same result in O(log2n) operations:[^fib]
 
-[^fib]: This basic pattern was originally discussed in an essay about a different recursive function, [writing a matrix multiplication implementation of fibonacci](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html).
+[^fib]: This basic pattern was originally discussed in an essay about a different recursive function, [writing a matrix multiplication implementation of fibonacci](https://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html).
 
 ```javascript
 function exponent (x, n) {
@@ -53,7 +53,7 @@ So within the body of the `exponent` function, the function itself is bound to t
 But it's not _always_ exactly what we want. If we want even more performance, we might consider [memoizing](https://en.wikipedia.org/wiki/Memoization) the function.
 
 Here's a memoization decorator, snarfed from [Time, Space, and Life As We Know It
-](http://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html):
+](https://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html):
 
 ```javascript
 const memoized = (fn, keymaker = JSON.stringify) => {
@@ -305,7 +305,7 @@ We know the answer is `true`, but will it actually return at all? No. For techni
 
 One fix for this is to rewrite the function in tail-recursive form, and then allow the engine to automatically execute the function without consuming excess stack space. Here it is again, with its recursive call "in tail position:"[^tail]
 
-[^tail]: See [A Trick of the Tail](http://raganwald.com/2018/05/27/tail.html) for a fuller explanation of how to perform this refactoring.
+[^tail]: See [A Trick of the Tail](https://raganwald.com/2018/05/27/tail.html) for a fuller explanation of how to perform this refactoring.
 
 ```javascript
 const isEven =
@@ -325,7 +325,7 @@ This code works just fine on the Safari browser, which in addition to being far 
 
 There's a workaround for engines that don't support TCO: As discussed in [Trampolines in JavaScript][trampoline], we can get around the call stack problem ourselves with a technique called trampolining:
 
-[trampoline]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
+[trampoline]: https://raganwald.com/2013/03/28/trampolines-in-javascript.html
 
 > A trampoline is a loop that iteratively invokes [thunk]-returning functions ([continuation-passing style][cps]). A single trampoline is sufficient to express all control transfers of a program; a program so expressed is trampolined, or in trampolined style; converting a program to trampolined style is trampolining. Trampolined functions can be used to implement [tail-recursive] function calls in stack-oriented programming languages.--[Wikipedia][trampolining]
 
@@ -544,8 +544,8 @@ Recursive combinators like mockingbirds, widowbirds, and why birds are a few mor
 
 The essays in this series on recursive combinators are: [To Grok a Mockingbird] and [Why Y? Deriving the Y Combinator in JavaScript]. Enjoy them both!
 
-[To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
-[Why Y? Deriving the Y Combinator in JavaScript]: http://raganwald.com/2018/09/10/why-y.html
+[To Grok a Mockingbird]: https://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[Why Y? Deriving the Y Combinator in JavaScript]: https://raganwald.com/2018/09/10/why-y.html
 
 ---
 

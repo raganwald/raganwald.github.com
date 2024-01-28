@@ -27,7 +27,7 @@ At some point, I wrote a *curry* function. To [refresh your memory][cpa], curryi
       }
     }
 
-[cpa]: http://raganwald.com/2013/03/07/currying-and-partial-application.html "What's the difference between Currying and Partial Application?"
+[cpa]: https://raganwald.com/2013/03/07/currying-and-partial-application.html "What's the difference between Currying and Partial Application?"
 
 I also wrote a *flip* function that takes any function and reverses its arguments. For example, here is a function that flips any binary function:
 

@@ -3530,7 +3530,7 @@ In this essay, we demonstrated that for every formal regular expression, there i
 
 But before we move on, let's recapitulate what we've established so far.
 
-[Part II]: http://raganwald.com/2019/12/17/regular-expressions.html "Exploring Regular Expressions, Part II: Regular Languages and Finite-State Automata"
+[Part II]: https://raganwald.com/2019/12/17/regular-expressions.html "Exploring Regular Expressions, Part II: Regular Languages and Finite-State Automata"
 
 ---
 
@@ -3562,7 +3562,7 @@ This tells us that the set of all languages recognized by deterministic finite s
 
 This is not true for other types of automata: In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], we saw that non-deterministic pushdown automata could recognize palindromes, whereas deterministic pushdown automata could not. So the set of languages recognized by deterministic pushdown automata is **not** equal to the set of languages recognized by pushdown automata.
 
-[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
+[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
 
 But it's a very important result, and this is why:
 

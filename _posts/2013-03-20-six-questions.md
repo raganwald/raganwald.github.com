@@ -41,12 +41,12 @@ There is a difference between techniques that are novel and those that are merel
 
 If I read the word "compose" in a codebase and don't know what it means, I can google `function compose` and find out just as if I was looking at a SQL query and needed to be reminded of the semantics of `RIGHT OUTER JOIN`. The same goes for things like partial application,[^pa] or trampolining.[^trampoline]
 
-[^pa]: [Practical Applications of Partial Application](http://raganwald.com/2013/01/05/practical-applications-of-partial-application.html)
+[^pa]: [Practical Applications of Partial Application](https://raganwald.com/2013/01/05/practical-applications-of-partial-application.html)
 [^trampoline]: [Trampoline (Computing) on Wikipedia](https://en.wikipedia.org/wiki/Trampoline_(computing)#High_Level_Programming)
 
 People can learn an unfamiliar technique. And once it is learned, they benefit from it forever. It is straightforward to learn something using Google and/or StackOverflow and/or an excellent programming blog.[^blog] Hundreds of books are written about things like functional programming, including the subject of the comment.
 
-[^blog]: Or a hit and miss blog like [this](http://raganwald.com)
+[^blog]: Or a hit and miss blog like [this](https://raganwald.com)
 
 Familiarity can easily be acquired, provided the technique is unfamiliar to the team, but has been used extensively enough that there is an "information infrastructure" of books, blog posts, StackOverflow questions, sample codebases on Github, libraries, and so on.
 
@@ -82,8 +82,8 @@ There are exceptions, such as refactorings that make legacy code more testable, 
 
 Entertainment is no reason to try a new technique. Neither is learning on someone else's dime. Everyone can be entertained ad infinitum reading about enchanted forests[^ef] or schools teaching JavaScript programming.[^hilbert] In this day and age, you have plenty of opportunity to learn on your own. Everyone reading this blog has access to personal development environments. There's zero need to fool around on a project that has a mission to deliver change in the world outside of your head.
 
-[^ef]: [A long time ago, in a village far, far away](http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html)
-[^hilbert]: [Hilbert's Grand JavaScript School](http://raganwald.com/2013/02/21/hilberts-school.html)
+[^ef]: [A long time ago, in a village far, far away](https://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html)
+[^hilbert]: [Hilbert's Grand JavaScript School](https://raganwald.com/2013/02/21/hilberts-school.html)
 
 You can and should look for practical reasons that a new technique will untangle conflated concerns, or collect scattered responsibilities into a single concern, or clarify the underlying domain logic and intent of code.
 

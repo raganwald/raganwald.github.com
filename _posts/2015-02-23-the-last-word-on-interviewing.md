@@ -4,7 +4,7 @@ title: "(unlikely to be) The Last Word on Interviewing for a JavaScript Job"
 tags: [allonge]
 ---
 
-These are my comments on [Interviewing for a JavaScript Job](http://raganwald.com/2015/02/21/interviewing-for-a-front-end-job.html). The story concerns a job interview, where the interviewer ("Christine") asks the candidate (known as "The Carpenter") to whiteboard JavaScript code solving this problem:
+These are my comments on [Interviewing for a JavaScript Job](https://raganwald.com/2015/02/21/interviewing-for-a-front-end-job.html). The story concerns a job interview, where the interviewer ("Christine") asks the candidate (known as "The Carpenter") to whiteboard JavaScript code solving this problem:
 
 > Consider a finite checkerboard of unknown size. On each square, we randomly place an arrow pointing to one of its four sides. A chequer is placed randomly on the checkerboard. Each move consists of moving the chequer one square in the direction of the arrow in the square it occupies. If the arrow should cause the chequer to move off the edge of the board, the game halts.
 

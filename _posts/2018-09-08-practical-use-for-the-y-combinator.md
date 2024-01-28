@@ -3,7 +3,7 @@ title: "A practical (albeit infrequently needed) use for the Y Combinator"
 tags: [allonge,recursion,noindex]
 ---
 
-**This essay has been incorporated into [Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html)**
+**This essay has been incorporated into [Why Y? Deriving the Y Combinator in JavaScript](https://raganwald.com/2018/09/10/why-y.html)**
 
 ---
 
@@ -27,7 +27,7 @@ While this use case is admittedly rare in production code, it does arise from ti
 
 In [To Grok a Mockingbird], we explored the _mockingbird_, a recursive combinator that decouples recursive functions from themselves. We explored how writing recursive functions "in mockingbird form" decreases couplingand helps us increase reuse and composition.[^m]
 
-[To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[To Grok a Mockingbird]: https://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
 
 [^m]: The mockingbird is more formally known as the M Combinator. Our naming convention is that when discussing formal combinators from combinatory logic, or direct implementations in JavaScript, we will use the formal name. But when using variations designed to work more idiomatically in JavaScript--such as versions that work with functions taking more than one argument), we will use Raymond Smullyan's ornithological nicknames.<br/><br/>For a formalist, the M Combinator's direct translation is `const M = fn => fn(fn)`. This is only useful if `fn` is implemented in "curried" form, e.g. `const isEven = myself => n => n === 0 || !myself(n - 1)`. If we wish to use a function written in idiomatic JavaScript form, such as `const isEven = (myself, n) => n === 0 || !myself(n - 1)`, we use the mockingbird, which is given later as `const mockingbird = fn => (...args) => fn(fn, ...args)`. This is far more practical for programming purposes.
 
@@ -169,7 +169,7 @@ why(
 
 However, not all engines support tail-call optimization, despite it being part of the JavaScript specification. If we wish to execute such a function in constant stack space, one of our options is to "greenspun" tail-call optimization ourselves by implementing a [trampoline]:[^recursion]
 
-[trampoline]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
+[trampoline]: https://raganwald.com/2013/03/28/trampolines-in-javascript.html
 
 [^recursion]: A more complete exploration of ways to convert recursive functions to non-recusrives functions can be found in [Recursion? We don't need no stinking recursion!](/2018/05/20/we-dont-need-no-stinking-recursion.html), and its follow-up, [A Trick of the Tail](/2018/05/27/tail).
 
@@ -544,9 +544,9 @@ That's all!
 
 The essays in this series on recursive combinators are: [To Grok a Mockingbord], [Deriving the Y Combinator and Why Bird from the Mockingbird], and [A practical (albeit infrequently needed) use for the Y Combinator]. Enjoy them all!
 
-[To Grok a Mockingbord]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
-[Deriving the Y Combinator and Why Bird from the Mockingbird]: http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
-[A practical (albeit infrequently needed) use for the Y Combinator]: http://raganwald.com/2018/09/08/practical-use-for-the-y-combinator.html
+[To Grok a Mockingbord]: https://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[Deriving the Y Combinator and Why Bird from the Mockingbird]: https://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
+[A practical (albeit infrequently needed) use for the Y Combinator]: https://raganwald.com/2018/09/08/practical-use-for-the-y-combinator.html
 
 ---
 

@@ -155,7 +155,7 @@ findWith(every(isPalindromic, gt(99)), NumbersUpTo(1000000000))
 
 Luckily, we just finished working with generators[^lastessay] and we know exactly how to make a lazy list of numbers:
 
-[^lastessay]: [“Programs must be written for people to read, and only incidentally for machines to execute”](http://raganwald.com/2016/03/17/programs-must-be-written-for-people-to-read.html)
+[^lastessay]: [“Programs must be written for people to read, and only incidentally for machines to execute”](https://raganwald.com/2016/03/17/programs-must-be-written-for-people-to-read.html)
 
 ```javascript
 function * Numbers () {
@@ -360,7 +360,7 @@ This brings us to an unexpected revelation.
 
 Generators and laziness can be wonderful. Exciting things are happening with using generators to emulate synchronized code with asynchronous operations, for example. But as we've seen, if we want to write lazy code, we have to be careful to be consistently lazy. If we accidentally mix lazy and eager code, we have problems.
 
-This is a [symmetry](http://raganwald.com/2015/03/12/symmetry.html) problem.  And at a deeper level, it exposes a problem with the "duck typing" mindset: There is a general idea that as long as objects handle the correct interface--as long as they respond to the right methods--they are interchangeable.
+This is a [symmetry](https://raganwald.com/2015/03/12/symmetry.html) problem.  And at a deeper level, it exposes a problem with the "duck typing" mindset: There is a general idea that as long as objects handle the correct interface--as long as they respond to the right methods--they are interchangeable.
 
 But this is not always the case. The eager and lazy versions of `compact` both quack like ducks that operate on lists, but one is lazy and the other is not. "Duck typing" does not and cannot capture difference between a function that assures laziness and another that assures eagerness.
 
@@ -370,7 +370,7 @@ We need to ensure that our programs work with each of the types, using the corre
 
 ---
 
-Follow-up: [The Hubris of Impatient Sieves of Eratosthenes](http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html)
+Follow-up: [The Hubris of Impatient Sieves of Eratosthenes](https://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html)
 
 ---
 

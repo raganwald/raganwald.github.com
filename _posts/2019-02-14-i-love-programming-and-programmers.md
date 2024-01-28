@@ -5,7 +5,7 @@ tags: [allonge,mermaid]
 
 As discussed in [Pattern Matching and Recursion], a well-known programming puzzle is to write a function that determines whether a string of parentheses is "balanced," i.e. each opening parenthesis has a corresponding closing parenthesis, and the parentheses are properly nested.
 
-[Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
+[Pattern Matching and Recursion]: https://raganwald.com/2018/10/17/recursive-pattern-matching.html "Pattern Matching and Recursion"
 
 For example:
 
@@ -156,7 +156,7 @@ A Deterministic Finite Automaton is the simplest of all possible state machines:
 
 [^sm]: There are many ways to write DFAs in JavaScript. In [How I Learned to Stop Worrying and ❤️ the State Machine], we built JavaScript programs using the [state pattern], but they were far more complex than a deterministic finite automaton. For example, those state machines could store information in properties, and those state machines had methods that could be called.<br/><br/>Such "state machines" are not "finite" state machines, because in principle they can have an infinite number of states. They have a finite number of defined states in the pattern, but their properties allow them to encode state in other ways, and thus they are not _finite_ state machines.
 
-[How I Learned to Stop Worrying and ❤️ the State Machine]: http://raganwald.com/2018/02/23/forde.html
+[How I Learned to Stop Worrying and ❤️ the State Machine]: https://raganwald.com/2018/02/23/forde.html
 [state pattern]: https://en.wikipedia.org/wiki/State_pattern
 
 Since a DFA can only encode state by being in one of a finite number of states, and since a DFA has a finite number of possible states, we know that a DFA can only encode a finite amount of state.
@@ -1203,7 +1203,7 @@ class PushdownAutomaton {
 
 The new `consume` method calls the internal state method as before, but then uses the array spread syntax to turn the elements it yields into an array. The `fork` method makes a deep copy of a state object.[^fork]
 
-[^fork]: This code makes a number of unnecessary copies of states, we could devise a scheme to use [structural sharing and copy-on-write semantics](http://raganwald.com/2019/01/14/structural-sharing-and-copy-on-write.html), but we don't want to clutter up the basic idea right now.
+[^fork]: This code makes a number of unnecessary copies of states, we could devise a scheme to use [structural sharing and copy-on-write semantics](https://raganwald.com/2019/01/14/structural-sharing-and-copy-on-write.html), but we don't want to clutter up the basic idea right now.
 
 The biggest change is to the `evaluate` static method. we now start with an array of one state. As we loop over the tokens in the string, we take the set of all states and `flatMap` them to the states they return, then filter out any states that halt.
 
@@ -1541,8 +1541,8 @@ For those comfortable with code examples written in Ruby, the general subject of
 
 [formal grammar]: https://en.wikipedia.org/wiki/Formal_grammar
 [regular grammar]: https://en.wikipedia.org/wiki/Formal_grammar#Regular_grammars
-[Pattern Matching and Recursion]: http://raganwald.com/2018/10/17/recursive-pattern-matching.html
-[Alice and Bobbie and Sharleen and Dyck]: http://raganwald.com/2018/11/14/dyck-joke.html
+[Pattern Matching and Recursion]: https://raganwald.com/2018/10/17/recursive-pattern-matching.html
+[Alice and Bobbie and Sharleen and Dyck]: https://raganwald.com/2018/11/14/dyck-joke.html
 [Understanding Computation]: https://www.amazon.com/Understanding-Computation-Machines-Impossible-Programs/dp/1449329276/ref=as_li_ss_tl?ie=UTF8&linkCode=ll1&tag=raganwald001-20&linkId=89116d710802aa56a49fd2dde7e742fa&language=en_US
 
 ---

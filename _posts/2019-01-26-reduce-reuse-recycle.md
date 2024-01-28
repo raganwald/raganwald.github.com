@@ -24,7 +24,7 @@ In [Part I], we created the `Slice` class, with its static method `Slice.of(...)
 
 ```javascript
 //
-// http://raganwald.com/2019/01/14/structural-sharing-and-copy-on-write.html
+// https://raganwald.com/2019/01/14/structural-sharing-and-copy-on-write.html
 //
 
 const SliceHandler = {

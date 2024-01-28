@@ -71,7 +71,7 @@ And there's another problem. How do we know what we want to do with the numbers?
 
 ### separating concerns
 
-Our code at the moment entangles these concerns, and our first improvement is to separate the concerns by rewriting our algorithm as a [generator](http://raganwald.com/2015/11/03/a-coding-problem.html "Solving a Coding Problem with Iterators and Generators"). Generators are an excellent way of separating "what we do with the steps of a calculation" from "how we calculate the steps."
+Our code at the moment entangles these concerns, and our first improvement is to separate the concerns by rewriting our algorithm as a [generator](https://raganwald.com/2015/11/03/a-coding-problem.html "Solving a Coding Problem with Iterators and Generators"). Generators are an excellent way of separating "what we do with the steps of a calculation" from "how we calculate the steps."
 
 ```javascript
 function * fibonacci () {
@@ -309,7 +309,7 @@ Now, there is a performance implication of this expression, but let's set that a
 
 In other words, do we think in arithmetic or geometry?
 
-The answer seems easy: If we're talking about Fibonacci, go with geometry. It is, after all, a _mathematics_ function. If you ever did have to write it for a program, anybody looking at the code ought to have enough of a background in mathematics to appreciate composing sequences recursively. For the same reason, if you wanted to write  [this](http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html):
+The answer seems easy: If we're talking about Fibonacci, go with geometry. It is, after all, a _mathematics_ function. If you ever did have to write it for a program, anybody looking at the code ought to have enough of a background in mathematics to appreciate composing sequences recursively. For the same reason, if you wanted to write  [this](https://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html):
 
 ```javascript
 import { zero, one } from 'big-integer';

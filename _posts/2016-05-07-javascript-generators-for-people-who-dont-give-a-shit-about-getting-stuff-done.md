@@ -442,7 +442,7 @@ for (const something of odds)
 
 We can use `filterWith` and a self-referential generator function to make an [Unfaithful Sieve of Eratosthenes][1]:
 
-[1]: http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html "The Hubris of Impatient Sieves of Eratosthenes"
+[1]: https://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html "The Hubris of Impatient Sieves of Eratosthenes"
 
 ```javascript
 function * primes (numbers = from(2)) {

@@ -117,7 +117,7 @@ In general, we think this is a good thing. But it isn&#8217;t free: somewhere el
 
 But sometimes you have to write the _how_ as well as the _what_. It isn&#8217;t always handed to you. In that case, it is still valuable, because the resulting program still separates concerns. It still factors into separate components. The components can be changed.
 
-I recently separated the concern of describing &#8220;how to generate sample curves for some data mining&#8221; from the concern of &#8220;managing memory when generating the curves.&#8221; I did so by writing my own lazy evaluation code (Both the [story](http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html) and the [code](http://raganwald.com/assets/media/source/lazy_lists.html) are on line). Here&#8217;s the key &#8220;what&#8221; code that generates an infinite list of parameters for sample bezi&eacute;r curves:
+I recently separated the concern of describing &#8220;how to generate sample curves for some data mining&#8221; from the concern of &#8220;managing memory when generating the curves.&#8221; I did so by writing my own lazy evaluation code (Both the [story](http://raganwald.github.com/2007/02/haskell-ruby-and-infinity.html) and the [code](https://raganwald.com/assets/media/source/lazy_lists.html) are on line). Here&#8217;s the key &#8220;what&#8221; code that generates an infinite list of parameters for sample bezi&eacute;r curves:
 
 ```ruby
 def magnitudes

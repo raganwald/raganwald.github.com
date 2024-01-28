@@ -364,7 +364,7 @@ const balanced =
 
 Is this better? Sometimes a more compact definition is considerably better. Sometimes, as with playing code golf, the code is correct, but actually harder to understand. This general problem--how compact is too compact--crops up with recursion all the time. It is mathematically advantageous to be able to implement things like iteration with recursion, and even to [implement recursion without name binding][ToGrokAMockingbird], but in practice, our code is clearer with name binding and looping constructs.
 
-[ToGrokAMockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html "To Grok a Mockingbird"
+[ToGrokAMockingbird]: https://raganwald.com/2018/08/30/to-grok-a-mockingbird.html "To Grok a Mockingbird"
 
 The same is true of composing patterns. Sometimes, the most compact form is most elegant, but less readable than one that lists more cases explicitly. Since most of us are familiar with regular expressions, we'll continue this essay presuming that using `oneOrMore` or `zeroOrMore` is advantageous.
 

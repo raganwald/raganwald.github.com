@@ -6,7 +6,7 @@ tags: [allonge]
 
 In "[How I Learned to Stop Worrying and ❤️ the State Machine][forde]," we built an extremely basic [state machine][fsm] to model a bank account.
 
-[forde]: http://raganwald.com/2018/02/23/forde.html
+[forde]: https://raganwald.com/2018/02/23/forde.html
 
 State machines, as we discussed, are a very useful tool for organizing the behaviour of [domain models], representations of meaningful real-world concepts pertinent to a sphere of knowledge, influence or activity (the "domain") that need to be modelled in software.
 
@@ -34,7 +34,7 @@ Here's a small variation on the "bank account" code we wrote:[^account][^weakmap
 [^weakmap]: We're also using a slightly different pattern for associating state machines with their states, based on [weak maps](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap).
 
 ```javascript
-// The naïve state machine extracted from http://raganwald.com/2018/02/23/forde.html
+// The naïve state machine extracted from https://raganwald.com/2018/02/23/forde.html
 // Modified to use weak maps for "private" state
 
 const STATES = Symbol("states");

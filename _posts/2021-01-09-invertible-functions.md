@@ -80,7 +80,7 @@ const butFirst = ([first, ...rest]) => rest;
 
 `square` is not invertible because every positive output has two possible inputs, one positive and one negative. Presuming that we are sticking with natural numbers, `roundTen` has ten possible inputs for each output. And `collatz` has multiple possible inputs as well: For example, if the output is `10`, the input could be `3` or `20`.[^collatz]
 
-[^collatz]: We touched on [The Collatz Conjecture] in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language](http://raganwald.com/2020/05/03/fractran.html).
+[^collatz]: We touched on [The Collatz Conjecture] in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language](https://raganwald.com/2020/05/03/fractran.html).
 
 [The Collatz Conjecture]: https://en.wikipedia.org/wiki/Collatz_conjecture
 
@@ -560,7 +560,7 @@ In JavaScript terms, we need a function that maps lists of two coprime numbers t
 
 [^fractran]: [Prime factorization][prime factorization] is a trick the Night Clerk read about in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN].
 
-[FRACTRAN]: http://raganwald.com/2020/05/03/fractran.html
+[FRACTRAN]: https://raganwald.com/2020/05/03/fractran.html
 [prime factorization]: https://en.wikipedia.org/wiki/Integer_factorization
 
 ```javascript

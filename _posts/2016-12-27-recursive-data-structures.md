@@ -186,7 +186,7 @@ Here's the algorithm in action:[^teddyh]
 
 ### recursion, see recursion
 
-In [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html), we had a look at `multirec`, a *recursive combinator*.
+In [From Higher-Order Functions to Libraries And Frameworks](https://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html), we had a look at `multirec`, a *recursive combinator*.
 
 ```javascript
 function mapWith (fn) {
@@ -269,7 +269,7 @@ const divideSquareIntoRegions = (square) => {
 ```
 Our `combine` function, `rotateAndCombineArrays`, makes use of a little help from some functions we saw in [an essay about generators][jsg]:
 
-[jsg]: http://raganwald.com/2016/05/07/javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.html "JavaScript Generators for People Who Don't Give a Shit About GettingStuffDone™"
+[jsg]: https://raganwald.com/2016/05/07/javascript-generators-for-people-who-dont-give-a-shit-about-getting-stuff-done.html "JavaScript Generators for People Who Don't Give a Shit About GettingStuffDone™"
 
 ```javascript
 function split (iterable) {
@@ -881,7 +881,7 @@ Separating conversion from operation allows us to benefit from all three reasons
 
 ### afterward
 
-There is more to read about `multirec` in the previous essay, [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html), and in the follow-up, [Time, Space, and Life As We Know It](http://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html).
+There is more to read about `multirec` in the previous essay, [From Higher-Order Functions to Libraries And Frameworks](https://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html), and in the follow-up, [Time, Space, and Life As We Know It](https://raganwald.com/2017/01/12/time-space-life-as-we-know-it.html).
 
 Have an observation? Spot an error? You can open an [issue](https://github.com/raganwald/raganwald.github.com/issues/new), discuss this on [hacker news](https://news.ycombinator.com/item?id=13304487) or [reddit](https://www.reddit.com/r/javascript/comments/5lm0ya/why_recursive_data_structures/), or even [edit this post](https://github.com/raganwald/raganwald.github.com/edit/master/_posts/2016-12-27-recursive-data-structures.md) yourself.
 

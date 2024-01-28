@@ -5,7 +5,7 @@
 
 When we [last][hhr] looked at Hilbert's Hotel, we demonstrated some properties of [countably infinite][ci] sets by building JavaScript [generators][g]. The principle was that if we can write a generator for all of the elements of an infinite set, and if we can show that every element of the set must be generated within a finite number of calls to the generator, then we have found a way to put the infinite set into a one-to-one correspondance with the [positive natural numbers][natural] (1, 2, ...∞), and thus proved that they have the same [cardinality].
 
-[hhr]: http://raganwald.com/2015/04/24/hilberts-school.html
+[hhr]: https://raganwald.com/2015/04/24/hilberts-school.html
 [g]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Generator
 [natural]: https://en.wikipedia.org/wiki/Natural_number
 [cardinality]: https://en.wikipedia.org/wiki/Cardinality
@@ -76,7 +76,7 @@ Can we establish a one-to-one relationship between positive irreducible fraction
 
 Certainly we can, and to do so we'll use [Gödel Numbering], a trick we used in [Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language][FRACTRAN]. Given a finite ordered set of positive natural numbers, we can map them to a single number using [prime factorization].
 
-[FRACTRAN]: http://raganwald.com/2020/05/03/fractran.html
+[FRACTRAN]: https://raganwald.com/2020/05/03/fractran.html
 [Gödel Numbering]: https://en.wikipedia.org/wiki/Gödel_numbering
 [prime factorization]: https://en.wikipedia.org/wiki/Integer_factorization
 

@@ -7,7 +7,7 @@ tags: [allonge, noindex]
 
 ### me and the puzzle
 
-Hello, my name is [Reginald](http://raganwald.com). I sometimes [blog](http://raganwald.com) and have written a few [books](https://leanpub.com/u/raganwald) about programming. My love-affair with puzzles started early. Here's one example: [The Eight Queens Problem... and Raganwald's Unexpected Nostalgia](/2018/08/03/eight-queens.html).
+Hello, my name is [Reginald](https://raganwald.com). I sometimes [blog](https://raganwald.com) and have written a few [books](https://leanpub.com/u/raganwald) about programming. My love-affair with puzzles started early. Here's one example: [The Eight Queens Problem... and Raganwald's Unexpected Nostalgia](/2018/08/03/eight-queens.html).
 
 Is like to explore a modest, one-page interactive puzzle, based on some simple math that may or may not be interesting to the kind of person who likes Raymond Smullyan or Martin Gardner's work. This puzzle will be strictly for fun, and will be [CC-licensed](http://creativecommons.org).
 

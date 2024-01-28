@@ -194,7 +194,7 @@ const transitionsByUser = mapValues(transitions, locationsByUser);
 
 This is very interesting. We can take it a step further, and use [partial application]. We could write or borrow a `leftPartialApply` function, but just to show our hardcore JS creds, let's use `.bind`:
 
-[partial application]: http://raganwald.com/2015/04/01/partial-application.html
+[partial application]: https://raganwald.com/2015/04/01/partial-application.html
 
 ```javascript
 const mapValues = (fn, inMap) => Array.from(inMap.entries()).reduce(
@@ -687,7 +687,7 @@ If this were a car factory, we would have an assembly line, but instead of makin
 
 Ideally, an automobile factory passes the cars along one at a time, so that at each station, inputs are arriving continuously and outputs are being passed to the next station continuously. We can do the same thing in JavaScript, but instead of working with lists, we work with [iterables].
 
-[iterables]: http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html "Lazy Iterables in JavaScript"
+[iterables]: https://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html "Lazy Iterables in JavaScript"
 
 So instead of starting with a massive string that we split into lines, we would start with an iterator over the lines in the log. This could be a library function that reads a physical file a line at a time, or it could be a series of log lines arriving asynchronously from a service that monitors our servers. For testing purposes, we'll take our string and wrap it in a little function that returns an iterable over its lines, but won't let us treat it like a list:
 
@@ -954,7 +954,7 @@ The end goal, as always, is to decompose the algorithm into smaller parts that c
 
 ### further reading
 
-- [What's a Transducer?](http://raganwald.com/2017/04/30/transducers.html)
+- [What's a Transducer?](https://raganwald.com/2017/04/30/transducers.html)
 
 ---
 

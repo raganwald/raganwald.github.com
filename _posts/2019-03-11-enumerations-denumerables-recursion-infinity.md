@@ -1580,7 +1580,7 @@ We are enumerating every finite [balanced parentheses][brutal] string, and becau
 
 This allows us to write a recognizer for whether a string represents balanced parentheses:
 
-[brutal]: http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
+[brutal]: https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
 
 ```javascript
 function isBalanced (str) {

@@ -171,7 +171,7 @@ currentUser.set('first', 'Ragnvald');
 
 And we don't need to call `currentUserView.redraw()`, because the notification built into `.set` does it for us.
 
-We can do other things with `.get` and `.set`, of course. Now that they are methods, we can decorate them with logging or validation if we choose. Methods make our code flexible and open to extension. For example, we can use an [ES.later decorator](http://raganwald.com/2015/08/05/method-advice.html) to add logging advice to `.set`:
+We can do other things with `.get` and `.set`, of course. Now that they are methods, we can decorate them with logging or validation if we choose. Methods make our code flexible and open to extension. For example, we can use an [ES.later decorator](https://raganwald.com/2015/08/05/method-advice.html) to add logging advice to `.set`:
 
 ```javascript
 const after = (behaviour, ...methodNames) =>
@@ -302,7 +302,7 @@ With the `.set` method, we could directly access `Model.prototype.set` and wrap 
 
 For this reason, the naïve `after` decorator given above won't work for getters and setters.[^mixin] We'd have to use one kind of decorator for methods, another for getters, and a third for setters. That doesn't sound like fun, so let's modify our `after` combinator so that you can use a single function with methods, getters, and setters:
 
-[^mixin]: Neither will the `mixin` recipe we've evolved in previous posts like [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html). It can be enhanced to add a special case for getters, setters, and other concerns like working with POJOs. For example, Andrea Giammarchi's [Universal Mixin](https://github.com/WebReflection/universal-mixin).
+[^mixin]: Neither will the `mixin` recipe we've evolved in previous posts like [Using ES.later Decorators as Mixins](https://raganwald.com/2015/06/26/decorators-in-es7.html). It can be enhanced to add a special case for getters, setters, and other concerns like working with POJOs. For example, Andrea Giammarchi's [Universal Mixin](https://github.com/WebReflection/universal-mixin).
 
 ```javascript
 function getPropertyDescriptor (obj, property) {

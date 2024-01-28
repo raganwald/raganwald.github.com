@@ -4,7 +4,7 @@ https://keybase.io/raganwald
 
 I hereby claim:
 
-  * I am an admin of http://raganwald.com
+  * I am an admin of https://raganwald.com
   * I am raganwald (https://keybase.io/raganwald) on keybase.
   * I have a public key with fingerprint EE3E ACF3 8CA5 C802 06D8  6267 D0F0 5DF6 75DD 151D
 

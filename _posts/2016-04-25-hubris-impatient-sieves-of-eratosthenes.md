@@ -16,7 +16,7 @@ Althea and Ben were sipping feature espressos at their local indie coffee shop. 
 
 "Well, I was just reading a blog post about [lazily generating prime numbers][last], and I remember being asked to write a program to generate primes back when I first entered the industry."
 
-[last]: http://raganwald.com/2016/04/15/laziness-is-a-virtue.html "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
+[last]: https://raganwald.com/2016/04/15/laziness-is-a-virtue.html "“We will encourage you to develop the three great virtues of a programmer: laziness, impatience, and hubris”"
 
 Althea laughed. "If you're thinking of the same post that I read, the algorithm is wrong! Or at least, terrible."
 

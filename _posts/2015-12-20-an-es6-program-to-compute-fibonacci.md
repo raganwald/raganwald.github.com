@@ -6,15 +6,15 @@ tags: [allonge]
 
 ![Fibonacci Spiral](/assets/images/fibonacci.png)
 
-Once upon a time, programming interviews would include a [fizz-buzz](http://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") problem to weed out the folks who couldn't string together a few lines of code. We can debate when and how such things are appropriate interview questions, but one thing that is always appropriate is to use them as inspiration for practising our own skills.[^candid]
+Once upon a time, programming interviews would include a [fizz-buzz](https://raganwald.com/2007/01/dont-overthink-fizzbuzz.html "Don't Overthink FizzBuzz") problem to weed out the folks who couldn't string together a few lines of code. We can debate when and how such things are appropriate interview questions, but one thing that is always appropriate is to use them as inspiration for practising our own skills.[^candid]
 
 [^candid]: Actually, let me be candid: I just like programming, and I find it's fun, even if I don't magically transform myself into a 10x programming ninja through putting in 10,000 hours of practice. But practice certainly doesn't hurt.
 
 There are various common problems offered in such a vein, including fizz-buzz itself, computing certain prime numbers, and computing Fibonacci number. [A few years back][2008], I had a go at writing my own Fibonacci function. When I started researching approaches, I discovered an intriguing bit of matrix math, so I learned something while practicing my skills.[^closed]
 
-[2008]: http://raganwald.com/2008/12/12/fibonacci.html
+[2008]: https://raganwald.com/2008/12/12/fibonacci.html
 
-[^closed]: There is a [closed-form solution](http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression) to the function `fib`, but floating point math has some limitations you should be aware of before [using it in an interview](http://raganwald.com/2013/03/26/the-interview.html). Naturally, if you're running into some of those limits, you would use a BigInt library such as [BigInteger.js](https://github.com/peterolson/BigInteger.js).
+[^closed]: There is a [closed-form solution](http://en.wikipedia.org/wiki/Fibonacci_number#Closed-form_expression) to the function `fib`, but floating point math has some limitations you should be aware of before [using it in an interview](https://raganwald.com/2013/03/26/the-interview.html). Naturally, if you're running into some of those limits, you would use a BigInt library such as [BigInteger.js](https://github.com/peterolson/BigInteger.js).
 
 ### enter the matrix
 

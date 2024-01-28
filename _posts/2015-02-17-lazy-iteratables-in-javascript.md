@@ -18,7 +18,7 @@ All of these actions involve going through the contents one by one. Acting on th
 
 ### a look back at functional iterators
 
-When discussing functions, we looked at the benefits of writing [Functional Iterators](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html "Tortoises, Teleporting Turtles, and Iterators"). We can do the same thing for objects. Here's a stack that has its own functional iterator method:
+When discussing functions, we looked at the benefits of writing [Functional Iterators](https://raganwald.com/2013/02/15/turtles-and-iterators.js.html "Tortoises, Teleporting Turtles, and Iterators"). We can do the same thing for objects. Here's a stack that has its own functional iterator method:
 
 ```javascript
 const Stack1 = () =>
@@ -1034,13 +1034,13 @@ Separating concerns with iterators speaks to JavaScript's fundamental nature: It
 
 This post was extracted from a draft of the book, [JavaScript Allongé, The "Six" Edition][ja6]. The extracts so far:
 
-* [OOP, Javascript, and so-called Classes](http://raganwald.com/2015/05/11/javascript-classes.html),
-* [Left-Variadic Functions in JavaScript](http://raganwald.com/2015/04/03/left-variadic.html),
-* [Partial Application in ECMAScript 2015](http://raganwald.com/2015/04/01/partial-application.html),
-* [The Symmetry of JavaScript Functions](http://raganwald.com/2015/03/12/symmetry.html),
-* [Lazy Iterables in JavaScript](http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html),
-* [The Quantum Electrodynamics of Functional JavaScript](http://raganwald.com/2015/02/13/functional-quantum-electrodynamics.html),
-* [Tail Calls, Default Arguments, and Excessive Recycling in ES-6](http://raganwald.com/2015/02/07/tail-calls-defult-arguments-recycling.html), and:
-* [Destructuring and Recursion in ES-6](http://raganwald.com/2015/02/02/destructuring.html).
+* [OOP, Javascript, and so-called Classes](https://raganwald.com/2015/05/11/javascript-classes.html),
+* [Left-Variadic Functions in JavaScript](https://raganwald.com/2015/04/03/left-variadic.html),
+* [Partial Application in ECMAScript 2015](https://raganwald.com/2015/04/01/partial-application.html),
+* [The Symmetry of JavaScript Functions](https://raganwald.com/2015/03/12/symmetry.html),
+* [Lazy Iterables in JavaScript](https://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html),
+* [The Quantum Electrodynamics of Functional JavaScript](https://raganwald.com/2015/02/13/functional-quantum-electrodynamics.html),
+* [Tail Calls, Default Arguments, and Excessive Recycling in ES-6](https://raganwald.com/2015/02/07/tail-calls-defult-arguments-recycling.html), and:
+* [Destructuring and Recursion in ES-6](https://raganwald.com/2015/02/02/destructuring.html).
 
 [ja6]: https://leanpub.com/b/buyjavascriptallongthesixeditiongetjavascriptallongfree

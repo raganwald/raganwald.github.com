@@ -56,7 +56,7 @@ It's a thought experiment, so let's assume we have lots of monkeys and lots of t
 
 So let's presume that we can generate enough pages of text that somewhere, some monkey is writing the works of Shakespeare, and another the works of Phil Dick, and another (possibly in Toronto) is recreating [raganwald.com].
 
-[raganwald.com]: http://raganwald.com
+[raganwald.com]: https://raganwald.com
 
 Even if we have enough monkeys writing enough pages, this still won't work. Because the real problem isn't *writing* Shakespeare, it's *finding* Shakespeare amongst all the dreck.
 
@@ -105,7 +105,7 @@ Maybe it's about writing better tests. Maybe the real problem, the hard problem,
 
 Maybe strong, static typing matters a great deal when we're writing tests, but dynamic languages are just fine for writing implementations? And maybe you can use tabs or spaces as you see fit in the implementation, but it's  crucial that teams synchronize on how to format the test suite?
 
-[poo]: http://raganwald.com/2010/12/01/oop-practiced-backwards-is-poo.html "OOP practiced backwards is 'POO'"
+[poo]: https://raganwald.com/2010/12/01/oop-practiced-backwards-is-poo.html "OOP practiced backwards is 'POO'"
 
 Maybe editors don't matter, but explorers and browsers matter? Maybe when we turned Smalltalk into Eclipse, we threw the wrong thing away? Maybe it's far more important to read programs just the way they've been written than it is to try to write them to be read?
 

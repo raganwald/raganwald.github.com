@@ -7,7 +7,7 @@ It had been a long and gruelling process, but the ThinkWare team had whittled th
 
 "Bob was great," said Alice, "The interview got off to a great start when I fizzbuzzed him with Fibonacci. He asked whether I wanted an Enumerator or iterative function. When I suggested he try something recursive, he had no trouble whatsoever." 
 
-Ted was equally enthusiastic about Carol. "Super solid on algorithms, she brought up [raganwald's matrix implementation](http://raganwald.com/2008/12/12/fibonacci.html) and we had a good laugh about how you could beat the pants off it with a caching solution. She wrote one and it worked just fine with the 10,000th, 100,000th, and 1,000,000th numbers."
+Ted was equally enthusiastic about Carol. "Super solid on algorithms, she brought up [raganwald's matrix implementation](https://raganwald.com/2008/12/12/fibonacci.html) and we had a good laugh about how you could beat the pants off it with a caching solution. She wrote one and it worked just fine with the 10,000th, 100,000th, and 1,000,000th numbers."
 
 ![The Fibonacci Spiral](/assets/images/fib.gif)
 
@@ -17,7 +17,7 @@ The team talked for a while longer before deciding to ask for enough budget to h
 
 "A difficult case?"
 
-"That's putting it mildly," said [Williams](http://raganwald.com/2011/11/01/williams-master-of-the-comefrom.html), the grizzled veteran who had handled Scott's first meeting of the day. "When I asked him to write Fibonacci for me, he refused, saying that this was no way to interview someone."
+"That's putting it mildly," said [Williams](https://raganwald.com/2011/11/01/williams-master-of-the-comefrom.html), the grizzled veteran who had handled Scott's first meeting of the day. "When I asked him to write Fibonacci for me, he refused, saying that this was no way to interview someone."
 
 "I tried to explain that we value craftsmanship, and that this was as good an opportunity as any to discuss the many different considerations when writing software (not to mention validate that someone can actually write software), but I think he flipped the bozo bit on me, he acted like I was a blithering idiot for thinking there was anything to discuss with respect to Fibonacci."
 

@@ -213,7 +213,7 @@ This allows us to use the constructor as an argument in [predicate and multiple 
 var arrayOfSevereProblems = problems.filter(Fubar);
 ```
 
-[2]:http://raganwald.com/2014/06/23/multiple-dispatch.html "Greenspunning Predicate and Multiple Dispatch in JavaScript"
+[2]:https://raganwald.com/2014/06/23/multiple-dispatch.html "Greenspunning Predicate and Multiple Dispatch in JavaScript"
 
 ### solution: kill it with fire
 

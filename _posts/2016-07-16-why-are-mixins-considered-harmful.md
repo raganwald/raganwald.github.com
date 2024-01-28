@@ -4,7 +4,7 @@ layout: default
 tags: [allonge]
 ---
 
-**update**: Part II, [From Mixins to Object Composition](http://raganwald.com/2016/07/20/prefer-composition-to-inheritance.html) is now available.
+**update**: Part II, [From Mixins to Object Composition](https://raganwald.com/2016/07/20/prefer-composition-to-inheritance.html) is now available.
 
 ---
 
@@ -339,7 +339,7 @@ Using either helper functions or symbols for private methods and properties will
 
 We'll do that in [the next post][next].
 
-[next]: http://raganwald.com/2016/07/20/prefer-composition-to-inheritance.html "From Mixins to Object Composition"
+[next]: https://raganwald.com/2016/07/20/prefer-composition-to-inheritance.html "From Mixins to Object Composition"
 
 ---
 

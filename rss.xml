@@ -5,8 +5,8 @@ layout: nil
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>raganwald.com</title>
-    <link>http://raganwald.com/</link>
-    <atom:link href="http://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
+    <link>https://raganwald.com/</link>
+    <atom:link href="https://raganwald.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>Your Website</description>
     <language>en-us</language>
     <pubDate>{{ site.time | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
@@ -16,10 +16,10 @@ layout: nil
       {% unless post.tags contains "noindex" or post.tags contains "posterous" or post.tags contains "homoiconic" %}
         <item>
           <title>{{ post.title }}</title>
-          <link>http://raganwald.com{{ post.url }}</link>
+          <link>https://raganwald.com{{ post.url }}</link>
           <pubDate>{{ post.date | date: "%a, %d %b %Y %H:%M:%S %z" }}</pubDate>
           <author>reg@braythwayt.com (Reginald Braithwaite)</author>
-          <guid>http://raganwald.com{{ post.id }}</guid>
+          <guid>https://raganwald.com{{ post.id }}</guid>
           <description>{{ post.content | xml_escape }}</description>
         </item>
       {% endunless %}

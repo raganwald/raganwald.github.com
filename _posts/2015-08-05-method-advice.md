@@ -4,7 +4,7 @@ layout: default
 tags: allonge
 ---
 
-We've [previously](http://raganwald.com/2015/06/28/method-decorators.html) looked at using ES.later [method decorators] like this:[^ESdotlater]
+We've [previously](https://raganwald.com/2015/06/28/method-decorators.html) looked at using ES.later [method decorators] like this:[^ESdotlater]
 
 [method decorators]: https://github.com/wycats/javascript-decorators
 
@@ -138,7 +138,7 @@ That question matters, because when decomposing responsibilities, we often decid
 
 There is another way to decorate methods: We can decorate multiple methods in a single declaration. This is called providing *method advice*.
 
-In JavaScript, we can implement method advice by decorating the entire class. A class decorator is nothing more than a function that takes a class as an argument and returns the same or a different class. We already have a combinator for making mixins (see [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-ES.later.html)):
+In JavaScript, we can implement method advice by decorating the entire class. A class decorator is nothing more than a function that takes a class as an argument and returns the same or a different class. We already have a combinator for making mixins (see [Using ES.later Decorators as Mixins](https://raganwald.com/2015/06/26/decorators-in-ES.later.html)):
 
 ```javascript
 function mixin (behaviour, sharedBehaviour = {}) {
@@ -369,18 +369,18 @@ const Person = compose(
 
 more reading:
 
-- [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html)
-- [Classes are Expressions (and why that matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
-- [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html)
-- [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
+- [Prototypes are Objects (and why that matters)](https://raganwald.com/2015/06/10/mixins.html)
+- [Classes are Expressions (and why that matters)](https://raganwald.com/2015/06/04/classes-are-expressions.html)
+- [Functional Mixins in ECMAScript 2015](https://raganwald.com/2015/06/17/functional-mixins.html)
+- [Using ES.later Decorators as Mixins](https://raganwald.com/2015/06/26/decorators-in-es7.html)
 - [Method Advice in Modern JavaScript][ma-mj]
-- [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
+- [`super()` considered hmmm-ful](https://raganwald.com/2015/12/23/super-considered-hmmmful.html)
 - [JavaScript Mixins, Subclass Factories, and Method Advice][mi-sf-ma]
 - [This is not an essay about 'Traits in Javascript'][traits]
 
-[traits]: http://raganwald.com/2015/12/31/this-is-not-an-essay-about-traits-in-javascript.html
-[mi-sf-ma]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
-[ma-mj]: http://raganwald.com/2015/08/05/method-advice.html
+[traits]: https://raganwald.com/2015/12/31/this-is-not-an-essay-about-traits-in-javascript.html
+[mi-sf-ma]: https://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
+[ma-mj]: https://raganwald.com/2015/08/05/method-advice.html
 
 notes:
 

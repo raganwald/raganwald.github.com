@@ -1,7 +1,7 @@
 # unfold.rb
 #
 # see "Really simple anamorphisms in Ruby":
-# http://raganwald.com/2007/11/really-simple-anamorphisms-in-ruby.html
+# https://raganwald.com/2007/11/really-simple-anamorphisms-in-ruby.html
 #
 # The MIT License
 # 

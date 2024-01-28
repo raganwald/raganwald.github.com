@@ -29,7 +29,7 @@ Person.prototype.rename = function rename (first, last) {
 
 `Person` is a constructor function, and it's also a class, in the JavaScript sense of the word "[class][class]." As we've written it here, it's a *function declaration*. But let's rewrite it as a *function expression*. We'll use `let` just to get into the ECMAScript 2015 swing of things (many people would use `const`, that doesn't matter here):
 
-[class]: http://raganwald.com/2015/05/11/javascript-classes.html
+[class]: https://raganwald.com/2015/05/11/javascript-classes.html
 
 ```javascript
 let Person = function (first, last) {
@@ -335,18 +335,18 @@ There's no need to have special keywords or magic namespaces. That keeps the "su
 
 more reading:
 
-- [Prototypes are Objects (and why that matters)](http://raganwald.com/2015/06/10/mixins.html)
-- [Classes are Expressions (and why that matters)](http://raganwald.com/2015/06/04/classes-are-expressions.html)
-- [Functional Mixins in ECMAScript 2015](http://raganwald.com/2015/06/17/functional-mixins.html)
-- [Using ES.later Decorators as Mixins](http://raganwald.com/2015/06/26/decorators-in-es7.html)
+- [Prototypes are Objects (and why that matters)](https://raganwald.com/2015/06/10/mixins.html)
+- [Classes are Expressions (and why that matters)](https://raganwald.com/2015/06/04/classes-are-expressions.html)
+- [Functional Mixins in ECMAScript 2015](https://raganwald.com/2015/06/17/functional-mixins.html)
+- [Using ES.later Decorators as Mixins](https://raganwald.com/2015/06/26/decorators-in-es7.html)
 - [Method Advice in Modern JavaScript][ma-mj]
-- [`super()` considered hmmm-ful](http://raganwald.com/2015/12/23/super-considered-hmmmful.html)
+- [`super()` considered hmmm-ful](https://raganwald.com/2015/12/23/super-considered-hmmmful.html)
 - [JavaScript Mixins, Subclass Factories, and Method Advice][mi-sf-ma]
 - [This is not an essay about 'Traits in Javascript'][traits]
 
-[traits]: http://raganwald.com/2015/12/31/this-is-not-an-essay-about-traits-in-javascript.html
-[mi-sf-ma]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
-[ma-mj]: http://raganwald.com/2015/08/05/method-advice.html
+[traits]: https://raganwald.com/2015/12/31/this-is-not-an-essay-about-traits-in-javascript.html
+[mi-sf-ma]: https://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
+[ma-mj]: https://raganwald.com/2015/08/05/method-advice.html
 
 notes:
 

@@ -4,4 +4,4 @@ layout: default
 tags: [allonge, noindex]
 ---
 
-<script type='text/javascript'>window.location="http://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html"</script>
+<script type='text/javascript'>window.location="https://raganwald.com/2016/04/25/hubris-impatient-sieves-of-eratosthenes.html"</script>

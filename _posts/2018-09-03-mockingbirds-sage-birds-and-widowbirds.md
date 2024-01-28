@@ -3,13 +3,13 @@ title: Deriving the Y Combinator and Why Bird from the Mockingbird
 tags: [recursion,wip,noindex]
 ---
 
-**This essay has been incorporated into [Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html)**
+**This essay has been incorporated into [Why Y? Deriving the Y Combinator in JavaScript](https://raganwald.com/2018/09/10/why-y.html)**
 
 ---
 
 In [To Grok a Mockingbird], we explored the _mockingbird_, a recursive combinator that decouples recursive functions from themselves. Decoupling recursive functions from themselves allows us to compose them more flexibly, such as with decorators.[^m]
 
-[To Grok a Mockingbird]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[To Grok a Mockingbird]: https://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
 
 [^m]: The mockingbird is more formally known as the M Combinator. Our naming convention is that when discussing formal combinators from combinatory logic, or direct implementations in JavaScript, we will use the formal name. But when using variations designed to work more idiomatically in JavaScript--such as versions that work with functions taking more than one argument), we will use Raymond Smullyan's ornithological nicknames.<br/><br/>For a formalist, the M Combinator's direct translation is `const M = fn => fn(fn)`. This is only useful if `fn` is implemented in "curried" form, e.g. `const isEven = myself => n => n === 0 || !myself(n - 1)`. If we wish to use a function written in idiomatic JavaScript form, such as `const isEven = (myself, n) => n === 0 || !myself(n - 1)`, we use the mockingbird, which is given later as `const mockingbird = fn => (...args) => fn(fn, ...args)`. This is far more practical for programming purposes.
 
@@ -48,7 +48,7 @@ exponent(2, 7)
 
 Because it calls itself by name, it is tightly coupled to itself. This means that if we want to decorate it--such as by memoizing its return values, or if we want to change its implementation strategy--like employing [trampolining]--we have to rewrite the function.
 
-[trampolining]: http://raganwald.com/2013/03/28/trampolines-in-javascript.html
+[trampolining]: https://raganwald.com/2013/03/28/trampolines-in-javascript.html
 
 We saw that we can decouple a recursive function from itself. Instead of calling itself by name, we arrange to pass the recursive function to itself as a parameter. We begin by rewriting our function to take itself as a parameter, and also to pass itself as a parameter.
 
@@ -376,7 +376,7 @@ const _isEven =
 
 Alas, it now takes two parameters. We fix this by [currying] it:
 
-[currying]: http://raganwald.com/2013/03/07/currying-and-partial-application.html
+[currying]: https://raganwald.com/2013/03/07/currying-and-partial-application.html
 
 
 ```javascript
@@ -523,9 +523,9 @@ We then derived a JavaScript implementation of the Y combinator from the why bir
 
 The essays in this series on recursive combinators are: [To Grok a Mockingbord], [Deriving the Y Combinator and Why Bird from the Mockingbird], and [A practical (albeit infrequently needed) use for the Y Combinator]. Enjoy them all!
 
-[To Grok a Mockingbord]: http://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
-[Deriving the Y Combinator and Why Bird from the Mockingbird]: http://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
-[A practical (albeit infrequently needed) use for the Y Combinator]: http://raganwald.com/2018/09/08/practical-use-for-the-y-combinator.html
+[To Grok a Mockingbord]: https://raganwald.com/2018/08/30/to-grok-a-mockingbird.html
+[Deriving the Y Combinator and Why Bird from the Mockingbird]: https://raganwald.com/2018/09/03/mockingbirds-sage-birds-and-widowbirds.html
+[A practical (albeit infrequently needed) use for the Y Combinator]: https://raganwald.com/2018/09/08/practical-use-for-the-y-combinator.html
 
 ---
 

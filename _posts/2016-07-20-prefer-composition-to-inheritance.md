@@ -6,7 +6,7 @@ tags: [allonge]
 
 In [Why Are Mixins Considered Harmful][harmful], we saw that concatenative sharing--as exemplified by mixins--leads to snowballing complexity because of three effects:
 
-[harmful]: http://raganwald.com/2016/07/16/why-are-mixins-considered-harmful.html
+[harmful]: https://raganwald.com/2016/07/16/why-are-mixins-considered-harmful.html
 
 0. Lack of Encapsulation
 0. Implicit Dependencies
@@ -275,7 +275,7 @@ const Todo = Coloured(class {
 
 Angus Croll calls this a [functional mixin][croll], and [they work very well in ES6][fmes6].
 
-[fmes6]: http://raganwald.com/2015/06/17/functional-mixins.html "Functional Mixins in ECMAScript 2015"
+[fmes6]: https://raganwald.com/2015/06/17/functional-mixins.html "Functional Mixins in ECMAScript 2015"
 
 [croll]: https://javascriptweblog.wordpress.com/2011/05/31/a-fresh-look-at-javascript-mixins/
 
@@ -672,7 +672,7 @@ Note that we are explicit about our dependencies in both directions.[^error2]
 
 Sure. We could use the [subclass factory] pattern, this would allow us to override methods, and call `super`. It also has some performance advantages in a modern JIT. We usually don't need to prematurely optimize for performance, but sometimes we care deeply about that.
 
-[subclass factory]: http://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
+[subclass factory]: https://raganwald.com/2015/12/28/mixins-subclass-factories-and-method-advice.html
 
 Now that we have the beginnings of a protocol for declaring our dependencies in both directions, we can start thinking about other kinds of behaviour we'd like to mix in, like decorating individual methods with before or after advice, e.g. `updateLastModified after setColourRGB`.
 

@@ -182,13 +182,13 @@ This is great because our functions over iterables apply to a wide class of prob
 
 Divide-and-conquer comes up a lot, but it's not always directly transferrable to iteration. For example, we might want to [recursively rotate a square][why]. If we want to separate the mechanics of recursion from the "business logic" of rotating a square, we could move some of the logic into a higher-order function, `multirec`.
 
-[why]: http://raganwald.com/2016/12/27/recursive-data-structures.html "Why Recursive Data Structures?"
+[why]: https://raganwald.com/2016/12/27/recursive-data-structures.html "Why Recursive Data Structures?"
 
 `multirec` is a template function that implements [n-ary recursion][nary]:[^HOF]
 
 [nary]: http://users.monash.edu/~lloyd/tildeAlgDS/Recn/Perm/
 
-[^HOF]: There is more about `multirec`, `linrec`, and another function, `binrec`, in [From Higher-Order Functions to Libraries And Frameworks](http://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html).
+[^HOF]: There is more about `multirec`, `linrec`, and another function, `binrec`, in [From Higher-Order Functions to Libraries And Frameworks](https://raganwald.com/2016/12/15/what-higher-order-functions-can-teach-us-about-libraries-and-frameworks.html).
 
 ```javascript
 function mapWith (fn) {
@@ -233,7 +233,7 @@ const countLeaves = multirec({
 
 Now, this does separate the implementation of a divide-and-conquer recursive algorithm from what we want to accomplish, but it's still obvious that we're doing a divide and conquer algorithm. Balanced against that, `multirec` can do a lot more than we can accomplish with a recursive iterator, like rotating squares, implementing [HashLife], or even finding a solution to the [Towers of Hanoi].
 
-[HashLife]: http://raganwald.com/hashlife/
+[HashLife]: https://raganwald.com/hashlife/
 
 ---
 
@@ -292,7 +292,7 @@ Some recursive algorithms are much simpler than traversing a tree or generating 
 
 No, not _that_ algorithm, the one we are thinking of involves matrix exponentiation, and you can read all about it [here][es6]. In the middle of that algorithm, we have the need to multiply matrices by each other. We'll repeat the same logic here, only using integers so that we can focus on the recursion.
 
-[es6]: http://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html
+[es6]: https://raganwald.com/2015/12/20/an-es6-program-to-compute-fibonacci.html
 
 Let's start with a generic function for multiplying one or more numbers:
 
@@ -622,7 +622,7 @@ The last three ("implement multirec with our own stack," "implementing depth-fir
 
 So now, if we're ever in an interview and our interlocutor asks, "Can you convert this algorithm to use iteration," we can reply, "Sure! But there are at least seven different ways to do that, depending upon what we want to accomplish..."[^nine]
 
-[^nine]: Actually there are _at least two more_, but this blog post is already long enough. I've written elsewhere about using [trampolines](http://raganwald.com/2013/03/28/trampolines-in-javascript.html) to implement tail-call optimization in JavaScript, and then there is the deeply fascinating subject of conversion to [continuation-passing style](https://en.wikipedia.org/wiki/Continuation-passing_style).
+[^nine]: Actually there are _at least two more_, but this blog post is already long enough. I've written elsewhere about using [trampolines](https://raganwald.com/2013/03/28/trampolines-in-javascript.html) to implement tail-call optimization in JavaScript, and then there is the deeply fascinating subject of conversion to [continuation-passing style](https://en.wikipedia.org/wiki/Continuation-passing_style).
 
 (Discuss on [reddit](https://www.reddit.com/r/javascript/comments/8l281i/recursion_we_dont_need_no_stinking_recursion/) and [hacker news](https://news.ycombinator.com/item?id=17120414). If you like this kind of thing, [JavaScript Allongé](https://leanpub.com/javascriptallongesix/) is exactly the kind of thing you'll like.)
 

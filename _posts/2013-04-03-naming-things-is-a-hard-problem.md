@@ -5,7 +5,7 @@ published: false
 
 > "There are only two hard problems in Computer Science: cache invalidation and naming things."--Phil Karlton
 
-Someone asked, "What's the deal with [currying and partial application](http://raganwald.com/2013/03/07/currying-and-partial-application.html)? Why can't we be satisfied with functions that take multiple parameters?" Answering that question led to this one:
+Someone asked, "What's the deal with [currying and partial application](https://raganwald.com/2013/03/07/currying-and-partial-application.html)? Why can't we be satisfied with functions that take multiple parameters?" Answering that question led to this one:
 
 ### what is functional programming?
 

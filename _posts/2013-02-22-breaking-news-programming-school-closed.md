@@ -8,7 +8,7 @@ Much has been made of the lack of diversity in the technology field. While there
 
 You read here about [Hilbert's Grand JavaScript School][hgjs]. After a stunningly successful first week offering its revolutionary *Learn javaScript in Five Days* course, authorities in Thailand have closed it for failing to offer seating on a fair and equitable basis.
 
-[hgjs]: http://raganwald.com/2013/02/21/hilberts-school.html
+[hgjs]: https://raganwald.com/2013/02/21/hilberts-school.html
 
 Operator Dr. Hilbert "Bertie" David protested that he accepted an infinite number of students and was able to accommodate an additional one million, infinity, infinity times infinity, and infinity cubed students on successive days, so clearly his school was incapable of denying education to anyone.
 

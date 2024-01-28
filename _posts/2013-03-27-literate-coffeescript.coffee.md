@@ -6,7 +6,7 @@ tags: [coffeescript, hide-specs]
 
 With the demise of Posterous, I was motivated to "get my blogging house in order" and move all of my blogging onto Github. I've written about using Jekyll and Github Pages elsewhere,[^2013] but the short form is:
 
-[^2013]: [Twenty Thirteen](http://raganwald.com/2013/02/20/twenty-thirteen.html)
+[^2013]: [Twenty Thirteen](https://raganwald.com/2013/02/20/twenty-thirteen.html)
 
 1. I have my own domains via registrar [gandi.net](http://gandi.net). They point to Github's IP.
 2. Each blog gets a repository.
@@ -23,7 +23,7 @@ Recently, Jeremy Ashkenas released a new feature within CoffeeScript: The abilit
 
 [^caveat]: At this time, Literate CoffeeScript respects code indented with four or more spaces. Hopefully, it will one day respect various other flavours of Markdown code markup such as code fences or even Liquid highlight tags.
 
-I recently started writing a serious of posts about [an enchanted forest](http://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html). These posts take the form of a story punctuated with code examples. Literate CoffeeScript is obviously terrific for documenting code, but I thought it might also be ideal for blogging. So I set up a workflow.
+I recently started writing a serious of posts about [an enchanted forest](https://raganwald.com/enchanted-forest/a-long-time-ago-in-a-village-far-far-away.html). These posts take the form of a story punctuated with code examples. Literate CoffeeScript is obviously terrific for documenting code, but I thought it might also be ideal for blogging. So I set up a workflow.
 
 First, I include a code sample in my blog. If you're not 100% familiar with Markdown and code, the raw markdown source is [here](https://raw.github.com/raganwald/raganwald.github.com/master/_posts/2013-03-27-literate-coffeescript.coffee.md). It ends up looking like this:
 

@@ -37,7 +37,7 @@ He simply calls out the numbers as they are printed, and the students file into 
 
 Avoiding the well-travelled road of explaining "this," "closures," or "monads," he decides to explain functional iterators using the Tortoise and Hare algorithm[^tortoise] as an example. People are scratching their heads, but on the second day, all of the students from the first day return. So it must have been a decent lecture.
 
-[^tortoise]: [http://raganwald.com/2013/02/15/turtles-and-iterators.js.html](http://raganwald.com/2013/02/15/turtles-and-iterators.js.html)
+[^tortoise]: [https://raganwald.com/2013/02/15/turtles-and-iterators.js.html](https://raganwald.com/2013/02/15/turtles-and-iterators.js.html)
 
 ### day two
 
@@ -257,6 +257,6 @@ While the students busy themselves writing the test, he sends a pull request to 
 
 ### post-post scriptum
 
-[Dr. Hilbert's School Has Been Closed For Admissions Irregularities](http://raganwald.com/2013/02/22/breaking-news-programming-school-closed.html)
+[Dr. Hilbert's School Has Been Closed For Admissions Irregularities](https://raganwald.com/2013/02/22/breaking-news-programming-school-closed.html)
 
 ### end notes

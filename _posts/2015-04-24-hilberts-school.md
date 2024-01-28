@@ -4,7 +4,7 @@ layout: default
 tags: javascript
 ---
 
-(*This material originally appeared, using ECMAScript-5 semantics, in [2013](http://raganwald.com/2013/02/21/hilberts-school.html).*)
+(*This material originally appeared, using ECMAScript-5 semantics, in [2013](https://raganwald.com/2013/02/21/hilberts-school.html).*)
 
 ---
 
@@ -47,7 +47,7 @@ He simply calls out the numbers as they are printed, and the students file into 
 
 Avoiding the well-travelled road of explaining "this," "closures," or "monads," he decides to explain  the difference between functional iterators and iterables.[^lazy] People are scratching their heads, but on the second day, all of the students from the first day return. So it must have been a decent lecture.
 
-[^lazy]: [Lazy Iterables in JavaScript](http://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html)
+[^lazy]: [Lazy Iterables in JavaScript](https://raganwald.com/2015/02/17/lazy-iteratables-in-javascript.html)
 
 ### day two
 

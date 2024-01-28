@@ -513,7 +513,7 @@ As we add new functionality, if we add it to "flatten" to make a super-compiler,
 
 In [Part II], we are going to add more functionality, and look at how we can pipeline compilers, a pattern that naturally separates and modularizes concerns.
 
-[Part II]: http://raganwald.com/2017/04/16/turing-machines-part-ii.html
+[Part II]: https://raganwald.com/2017/04/16/turing-machines-part-ii.html
 
 ---
 

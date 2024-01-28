@@ -27,11 +27,11 @@ One of the nice things about markdown is that it is what it is. There's very lit
 
 ### and now...
 
-In the last twelve months or so, I've been embracing [Github Pages](http://pages.github.com) for some projects. In exchange for fiddling with a domain registrar, I can host things on my own domains. I took the plunge and moved all of my writing from 2013 over to [http://raganwald.com](http://raganwald.com). I'm now using Jekyll to publish my "bloggy thing" to Github. I get the same lame lack of ability to format my posts, but I can now waste time with layouts.
+In the last twelve months or so, I've been embracing [Github Pages](http://pages.github.com) for some projects. In exchange for fiddling with a domain registrar, I can host things on my own domains. I took the plunge and moved all of my writing from 2013 over to [https://raganwald.com](https://raganwald.com). I'm now using Jekyll to publish my "bloggy thing" to Github. I get the same lame lack of ability to format my posts, but I can now waste time with layouts.
 
 And I get my own domain, that's a win. And the layouts let me do things like pimp my books on every page without doing a global search-and-replace. Or add analytics to the blog. We'll see if I do much more than just post.
 
-But here on [http://raganwald.com](http://raganwald.com), I use the basic (and free) Jekyll behaviour built into Github Pages. That means absolutely no Jekyll plugins. Which suits me fine.
+But here on [https://raganwald.com](https://raganwald.com), I use the basic (and free) Jekyll behaviour built into Github Pages. That means absolutely no Jekyll plugins. Which suits me fine.
 
 New posts go into a `_posts` folder, with a special name. This one is `2013-02-20-twenty-thirteen.md`. The top of each post has some YAML junk:
 
@@ -42,7 +42,7 @@ layout: default
 ---
 ```
 
-If both of those things are set up correctly, the post is automatically published when I push to Github. It's poured into the "tactile" layout, and the resulting HTML is available at  [http://raganwald.com/2013/02/20/twenty-thirteen.html](http://raganwald.com/2013/02/20/twenty-thirteen.html). I can preview my work by running `jekyll` on the command line, `jekyll --auto` if I want it to rebuild the site locally whenever it detects changes, or `jekyll --server 3333` if I want to run a preview web server on port 3333.
+If both of those things are set up correctly, the post is automatically published when I push to Github. It's poured into the "tactile" layout, and the resulting HTML is available at  [https://raganwald.com/2013/02/20/twenty-thirteen.html](https://raganwald.com/2013/02/20/twenty-thirteen.html). I can preview my work by running `jekyll` on the command line, `jekyll --auto` if I want it to rebuild the site locally whenever it detects changes, or `jekyll --server 3333` if I want to run a preview web server on port 3333.
 
 But building locally is optional. The site is rebuilt by Github when I push and that's what's published to the web.
 
@@ -64,11 +64,11 @@ Overall, I think this is going to go well.
 
 Following Github's instructions, I registered my domain and configured the DNS to resolve to Github's servers at `204.232.175.78`. That takes anywhere from a few hours to a few days before a new domain starts 404-ing at Github, showing that the DNS is set up properly.
 
-For each top-level domain, you have two choices. First, and most complicated, you need a fresh Github account with a special repo. For example, you can set up `whizzbang2000` as a Github free account and then create a repo `whizzbang200.github.com`. I then give my `raganwald` account collaboration privileges and we're off to the races. For [http://raganwald.com](http://raganwald.com), I'm already the guy, so there's no need to set up a separate account.
+For each top-level domain, you have two choices. First, and most complicated, you need a fresh Github account with a special repo. For example, you can set up `whizzbang2000` as a Github free account and then create a repo `whizzbang200.github.com`. I then give my `raganwald` account collaboration privileges and we're off to the races. For [https://raganwald.com](https://raganwald.com), I'm already the guy, so there's no need to set up a separate account.
 
 Second, you can set up an ordinary repo under your own account, but your site must be in the `gh-pages` branch. That's what most people do if they have more than one site to manage.
 
-I drop a `CNAME` file into the repo. For [http://raganwald.com](http://raganwald.com), the file contains the text `raganwald.com`. Once you push that, Github starts resolving hits to `raganwald.com` to whatever you are publishing. You could drop an index.html file in there, or an index.md with some YAML to tell Github how to build it, or go wild with Liquid Tags, it's up to you.
+I drop a `CNAME` file into the repo. For [https://raganwald.com](https://raganwald.com), the file contains the text `raganwald.com`. Once you push that, Github starts resolving hits to `raganwald.com` to whatever you are publishing. You could drop an index.html file in there, or an index.md with some YAML to tell Github how to build it, or go wild with Liquid Tags, it's up to you.
 
 A nice thing about Jekyll is that you can control the Markdown rendering with the `_config.yaml` file:
 
