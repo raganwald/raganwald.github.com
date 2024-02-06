@@ -13,19 +13,19 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 <p><a href="https://www.youtube.com/watch?v=3t75HPU2c44">JavaScript Combinators, the &ldquo;six&rdquo; edition</a> from <a href="https://devconf.pl">DevDay 2016</a>.</p>
 
-ℹ️: [Reginald "raganwald" Braithwaite](http://braythwayt.com)  
-📫: <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>
-🐘: <a href="https://social.bau-ha.us/@raganwald">social.bau-ha.us/@raganwald</a>  
-👨‍💻: <a href="https://github.com/raganwald">https://github.com/raganwald</a>  
-📚: <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>  
-🎤: <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
+ℹ️ [Reginald "raganwald" Braithwaite](http://braythwayt.com)  
+📫 <a href="mailto:reg@braythwayt.com">reg@braythwayt.com</a>  
+🐘 <a rel="me" href="https://social.bau-ha.us/@raganwald">social.bau-ha.us/@raganwald</a>  
+👨‍💻 <a href="https://github.com/raganwald">https://github.com/raganwald</a>  
+📚 <a href="https://leanpub.com/u/raganwald/">https://leanpub.com/u/raganwald/</a>  
+🎤 <a href="http://braythwayt.com/talks.html">http://braythwayt.com/talks.html</a>
 
 ---
 
 ### Free Downloads
 
-* <a href="/assets/javascriptallongesix.pdf">JavaScript Allongé, The "Six" Edition</a>;
-* An antiquarian edition of <a href="/assets/coffeescript-ristretto.pdf">CoffeeScript Ristretto</a>.
+☕️ <a href="/assets/javascriptallongesix.pdf">JavaScript Allongé, The "Six" Edition</a>  
+☕️ An antiquarian edition of <a href="/assets/coffeescript-ristretto.pdf">CoffeeScript Ristretto</a>
 
 ---
 
