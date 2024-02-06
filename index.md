@@ -11,6 +11,8 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 | [🛖](http://braythwayt.com) | [📫](mailto:reg@braythwayt.com) | <a rel="me" href="https://social.bau-ha.us/@raganwald">🐘</a> | [👨‍💻](https://github.com/raganwald) | [📚](https://leanpub.com/u/raganwald/) |[📽️](http://braythwayt.com/talks.html) |
 
+---
+
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3t75HPU2c44" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <p><a href="https://www.youtube.com/watch?v=3t75HPU2c44">JavaScript Combinators, the &ldquo;six&rdquo; edition</a> from <a href="https://devconf.pl">DevDay 2016</a>.</p>
