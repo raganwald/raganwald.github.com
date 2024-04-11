@@ -82,9 +82,9 @@ This is a recursive implementation. Thanks to almost every implementation of Jav
 
 [^tco]: Languages like Haskell and Scheme that support [tail call optimization](https://en.wikipedia.org/wiki/Tail_call) can automatically transform linear recursion into a loop. Since loops are not difficult to write, that doesn't seem like a big deal. But as we'll see when we write `foldr` below, having two different functions share the same general shape communicates their design and relationship. Writing one as a loop and the other recursively conceals that which should be manifest.
 
-With `foldl` in hand, we can look at its commutative and associative properties.
+With `foldl` in hand, we can look at its associative property.
 
-### the commutative and associative properties
+### the associative property
 
 `foldl` _consumes_ the elements from the left of the collection.  But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it *associates* its folding function from the left.
 
@@ -98,9 +98,7 @@ foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])
   //=> 15
 ```
 
-Addition is **commutative**, meaning that it makes no difference how we group the operations, we get the same result.  But not all operators are commutative.
-
-Subtraction is not commutative, we get different results depending upon how we group or order the operations:
+Addition is **associative**, meaning that it makes no difference how we group the operations, we get the same result.  But not all operators are associative. For example, subtraction is not associative, we get different results depending upon how we group or order the operations:
 
 ```javascript
 (((((0 - 1) - 2) - 3) - 4) - 5)
@@ -110,7 +108,7 @@ Subtraction is not commutative, we get different results depending upon how we g
   //=> -3
 ```
 
-Because subtraction is not commutative, if we write an expression without explicitly forcing the order of operations with parentheses, we leave the order up to rules we arbitrarily establish about how we evaluate expressions.
+Because subtraction is not associative, if we write an expression without explicitly forcing the order of operations with parentheses, we leave the order up to rules we arbitrarily establish about how we evaluate expressions.
 
 How does JavaScript associate expressions by default? That's easy to test:
 
