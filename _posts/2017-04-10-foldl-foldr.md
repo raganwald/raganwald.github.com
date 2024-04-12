@@ -86,7 +86,7 @@ With `foldl` in hand, we can look at its associative property.
 
 ### the associative property
 
-`foldl` _consumes_ the elements from the left of the collection.  But `foldl` is not called `foldl` because it consumes its elements from the left. It's called `foldl` because it *associates* its folding function from the left.
+`foldl` _consumes_ the elements from the left of the collection.  But `foldl` is not called `foldl` because it consumes its elements from the left: It's called `foldl` because it *associates* its folding function from the left.
 
 When we write `foldl((valueSoFar, current) => valueSoFar + current, 0, [1, 2, 3, 4, 5])`, we're computing the sum as if we wrote `(((((0 + 1) + 2) + 3) + 4) + 5)`:
 
@@ -163,7 +163,7 @@ foldr((current, valueToCompute) => current - valueToCompute, 5, [0, 1, 2, 3, 4])
   //=> -3
 ```
 
-We can see that like `foldl`, we consume the elements from the right. But because we write:
+We can see that like `foldl`, we consume the elements from the left. But because we write:
 
 ```javascript
 valueToCompute = foldr(fn, valueToCompute, iterator);
