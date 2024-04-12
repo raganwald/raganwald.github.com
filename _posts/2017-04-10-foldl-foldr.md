@@ -171,7 +171,7 @@ valueToCompute = foldr(fn, valueToCompute, iterator);
 return fn(current, valueToCompute);
 ```
 
-The remainder of the compputation is evaluated first using recursion, and then its passed to the folding function `fn`. This is what makes it right-associative: Givien `0 - 1 - 2 - 3 - 4 - 5`, it computes `1 - (2 - (3 - (4 - 5))) => 3` first, then returns `0 - 3` as the final result.
+The remainder of the computation is evaluated first using recursion, and then its passed to the folding function `fn`. This is what makes it right-associative: Givien `0 - 1 - 2 - 3 - 4 - 5`, it computes `1 - (2 - (3 - (4 - 5))) => 3` first, then returns `0 - 3` as the final result.
 
 Although it consumes its elements from the left, `foldr` associates its operations from the right.
 
