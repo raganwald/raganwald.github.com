@@ -26,6 +26,16 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ---
 
+### HashLife
+
+<table>
+  <tr><td>&nbsp;</td><td><a href="/hashlife" style="text-decoration: none;">⚫️</a></td><td>&nbsp;</td></tr>
+  <tr><td>&nbsp;</td><td>&nbsp;</td><td><a href="/hashlife" style="text-decoration: none;">⚫️</a></td></tr>
+  <tr><td><a href="/hashlife" style="text-decoration: none;">⚫️</a></td><td><a href="/hashlife" style="text-decoration: none;">⚫️</a></td><td><a href="/hashlife" style="text-decoration: none;">⚫️</a></td></tr>
+</table>how to remove underline in anchor tag in html
+
+---
+
 ### 2020+
 
 <div class="related">
