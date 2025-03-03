@@ -1,89 +1,23 @@
 ---
 title: Reginald Braithwaite
 layout: default
-tags: [allonge]
-recent: ["2023", "2022", "2021", "2020"]
-years: ["2019", "2018", "2017", "2016", "2015", "2014", "2013"]
-older: ["2012", "2011", "2010", "2009", "2008"]
 ---
 
-*This is a repository of essays and presentations by [Reginald "Raganwald" Braithwaite](http://braythwayt.com)*
+# WARNING!
 
-| [🛖](http://braythwayt.com) | [📫](mailto:reg@braythwayt.com) | <a rel="me" href="https://social.bau-ha.us/@raganwald">🐘</a> | [👨‍💻](https://github.com/raganwald) | [📚](https://leanpub.com/u/raganwald/) |[📽️](http://braythwayt.com/talks.html) |
+This page is under construction, live and in real time. If you're looking for code, talks, books, or blog posts, head over to my [creative works](/creative-works.html) page.
 
----
+# Who I Am
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3t75HPU2c44" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+I am a technical product leader whose passion is making something wonderful through software.
 
-<p><a href="https://www.youtube.com/watch?v=3t75HPU2c44">JavaScript Combinators, the &ldquo;six&rdquo; edition</a> from <a href="https://devconf.pl">DevDay 2016</a>.</p>
+_I am technical_: I write software, and I write about software. Everything I do with product design, softare architecture, and leading the process of shipping software is anchored in more than forty years of shipping software that runs businesses. I am well-known for my experience with Java, Ruby, JavaScript, and TypeScript, but go back far enough and I've shipped working software in Pascal, C++, Elixir, and Scala.
 
----
+_I am product-focused_: I have shipped products on floppies, I have shipped products on CD-ROMs and DVD-ROMs. I have shipped SaaS products. Prior to developing software full-time, I worked in Enterprise Sales, Consulting, and Marketing. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association. Even when writing infrastructure, my focus is on enabling both the product and the organization wrapped around the product. 
 
-### Free Downloads
+_I am a technical product leader_: I have shipped software as a Technical Product Manager, Engineering Manager, Program Manager, and Principal Engineer. I integrate my experience as a product-focused technologist into leading teams and groups. In the most recent chapter of my career, I won two company leadership awards for helping our engineering force navigate the challenges of growing from a scrappy startup to a revenue monster and from there to an IPO. I work both within my direct focus and collaboratively across the product, sales, and marketing orgs to ensure we are aligned and in perfect sync on both strategy and execution.
 
-☕️ <a href="/assets/javascriptallongesix.pdf">JavaScript Allongé, The "Six" Edition</a>  
-☕️ An antiquarian edition of <a href="/assets/coffeescript-ristretto.pdf">CoffeeScript Ristretto</a>
-
----
-
-### HashLife
-
-<a href="/hashlife" style="text-decoration: none;"><img src="https://raganwald.com/assets/gifs/animated-glider.gif" alt="Animated image of a glider in Conway's Game of Life"/></a>
-
----
-
-### 2020+
-
-<div class="related">
-  <ul>
-    {% for oldyear in page.recent %}
-      {% for post in site.posts %}
-        {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or postyear != oldyear %}
-          <li>
-            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
-          </li>
-        {% endunless %}
-      {% endfor %}
-    {% endfor %}
-  </ul>
-</div>
-
-{% for sectionyear in page.years %}
-
-### {{ sectionyear }}
-
-<div class="related">
-  <ul>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != sectionyear %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
-        </li>
-      {% endunless %}
-    {% endfor %}
-  </ul>
-</div>
-
-{% endfor %}
-
-### selected older essays
-
-<div class="related">
-  <ul>
-    {% for oldyear in page.older %}
-      {% for post in site.posts %}
-        {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or postyear != oldyear %}
-          <li>
-            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>)
-          </li>
-        {% endunless %}
-      {% endfor %}
-    {% endfor %}
-  </ul>
-</div>
+My passion is _making something wonderful through software_. Shipping software that cuts costs, removes paper cuts, eliminates mistakes, and improves productivity is nNecessary, but insufficient to thrill me in of of itself. I aspire to ship software that causes customers to change the way they think about their businesses, and with their transformation comes a deep loyalty that forms a defensible market position and supercharges the company's valuation.
 
 ---
 
