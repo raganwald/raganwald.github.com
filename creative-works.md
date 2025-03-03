@@ -67,6 +67,7 @@ older: ["2009", "2008"]
 
 - [HashLife in the Browser](/hashlife), computing qudrillions of generations of Conway's Game of Life in a browser.
 - [allong.es](https://github.com/raganwald/allong.es), a library for writing ES5 in a functional style.
+- [oscin.es](https://github.com/raganwald/oscin.es), a library for playing with combinatorial logic puzzles such as those found in [To Mock a Mockingbird](https://en.wikipedia.org/wiki/To_Mock_a_Mockingbird)
 
 ### books
 
@@ -110,6 +111,7 @@ older: ["2009", "2008"]
 - [You Are 'Da Chef](https://github.com/raganwald/YouAreDaChef), aspect-oriented programming tooling for Underscore projects
 - [rewrite_rails](https://github.com/raganwald-deprecated/rewrite_rails), add syntactic abstractions like `andand` and String-to-Block to Rails projects without monkey-patching
 - [ick](https://github.com/raganwald-deprecated/ick), an ad hoc, informally-specified, bug-ridden, slow implementation of half of Monads, written in ES5
+- [String#to_proc](https://github.com/raganwald/string-to-proc-dot-rb), a port of the String Lambdas from Oliver Steele’s Functional Javascript library
 
 ### books
 
