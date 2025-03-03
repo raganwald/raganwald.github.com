@@ -4,25 +4,7 @@ layout: default
 tags: [allonge]
 recent: ["2025", "2024", "2023", "2022", "2021", "2020"]
 posttalkyears: ["2019", "2018"]
-years: ["2016", "2015", "2014", "2013"]
 older: ["2012", "2011", "2010", "2009", "2008"]
----
-
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3t75HPU2c44" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-<p><a href="https://www.youtube.com/watch?v=3t75HPU2c44">JavaScript Combinators, the &ldquo;six&rdquo; edition</a> from <a href="https://devconf.pl">DevDay 2016</a>.</p>
-
----
-
-### Free Book Downloads
-
-☕️ <a href="/assets/javascriptallongesix.pdf">JavaScript Allongé, The "Six" Edition</a>  
-☕️ An antiquarian edition of <a href="/assets/coffeescript-ristretto.pdf">CoffeeScript Ristretto</a>
-
-### HashLife
-
-<a href="/hashlife" style="text-decoration: none;"><img src="https://raganwald.com/assets/gifs/animated-glider.gif" alt="Animated image of a glider in Conway's Game of Life"/></a>
-
 ---
 
 ## 2020+
@@ -69,9 +51,7 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ### talks
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Zh_2OHgYdvg?si=jZza3PmJjKKQIXmN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-
-[Optimism and the Growth Mindset](https://speakerdeck.com/raganwald/optimism-and-the-growth-mindset) from NDC Oslo.
+- [Optimism and the Growth Mindset](https://www.youtube.com/embed/Zh_2OHgYdvg) from NDC Oslo
 
 ### essays
 
@@ -90,37 +70,17 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ## 2016
 
+## books
+
+- [JavaScript Allongé, The "Six" Edition](https://leanpub.com/javascriptallongesix) ([free pdf](/assets/javascriptallongesix.pdf))
+
 ### talks
 
-<iframe width="600" height="337" src="https://www.youtube.com/embed/wYPp4nG7qw4" frameborder="0" allowfullscreen></iframe>
-
-[Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4) from [DevDay](http://devday.pl)
-
----
-
-<iframe width="600" height="337" src="https://www.youtube.com/embed/3t75HPU2c44" frameborder="0" allowfullscreen></iframe>
-
-[JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44) from [DevDay](http://devday.pl)
-
----
-
-<iframe width="600" height="337" src="https://www.youtube.com/embed/8xjntzo-mYc" frameborder="0" allowfullscreen></iframe>
-
-[Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc) from [Nordic Ruby](nordicruby.org)
-
----
-
-<iframe src="https://player.vimeo.com/video/153097877" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-<p><a href="https://vimeo.com/153097877">JavaScript Combinators, the &ldquo;Six&rdquo; Edition</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>.</p>
-
----
-
-<iframe src="https://player.vimeo.com/video/157132267" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-<p><a href="https://vimeo.com/157132267">&ldquo;First-Class Commands:&rdquo; An unexpectedly fertile design pattern</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>.</p>
-
----
+- [Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4) from [DevDay](http://devday.pl)
+- [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44) from [DevDay](http://devday.pl)
+- [Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc) from [Nordic Ruby](nordicruby.org)
+- [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877) from [NDC Conferences](https://vimeo.com/ndcconferences)
+- [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) from [NDC Conferences](https://vimeo.com/ndcconferences)
 
 ### essays
 
@@ -158,29 +118,10 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ### talks
 
-<iframe width="600" height="337" src="https://www.youtube.com/embed/hp7sgLVepF8" frameborder="0" allowfullscreen></iframe>
-
-[The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](http://www.youtube.com/watch?v=hp7sgLVepF8) from [Nordic JS](http://nordicjs.com).
-
----
-
-<iframe src="https://player.vimeo.com/video/97408202" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-<p><a href="https://vimeo.com/97408202">Javascript Combinators</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>.</p>
-
----
-
-<iframe src="https://player.vimeo.com/video/97415345" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-<p><a href="https://vimeo.com/97415345">The Art of the Javascript Metaobject Protocol</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>.</p>
-
----
-
-<iframe width="600" height="337" src="https://www.youtube.com/embed/uYcAjr2J_rU" frameborder="0" allowfullscreen></iframe>
-
-[Invent the future, don't recreate the past](http://www.youtube.com/watch?v=uYcAjr2J_rU) from [Future JS](http://fullstackfest.com)
-
----
+- [The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](http://www.youtube.com/watch?v=hp7sgLVepF8) from [Nordic JS](http://nordicjs.com).
+- [Javascript Combinators](https://vimeo.com/97408202) from [NDC Conferences](https://vimeo.com/ndcconferences)
+- [The Art of the Javascript Metaobject Protocol](https://vimeo.com/97415345) from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>
+- [Invent the future, don't recreate the past](http://www.youtube.com/watch?v=uYcAjr2J_rU) from [Future JS](http://fullstackfest.com)
 
 ### essays
 
@@ -199,20 +140,18 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ## 2013
 
+### code
+
+- [HashLife in the Browser](/hashlife)
+
+### books
+
+- [JavaScript Allongé (ES5)](https://leanpub.com/javascript-allonge)
+
 ### talks
 
-<iframe width="600" height="337" src="https://www.youtube.com/embed/arsK-CN5YDg" frameborder="0" allowfullscreen></iframe>
-
-[The Not-So-Big Software Design](http://www.youtube.com/watch?v=arsK-CN5YDg) from [`wroc_love.rb`](http://www.wrocloverb.com).
-
----
-
-<iframe width="600" height="337" src="https://www.youtube.com/embed/Re2SKhaK73I" frameborder="0" allowfullscreen></iframe>
-
-
-<p><a href="https://youtube.com/watch?v=Re2SKhaK73I">I have a good feeling about this - Why tooling is poised to make the jump to hyperspace</a> from <a href="https://www.webrebels.org/">Web Rebels Conference</a>.</p>
-
----
+- [The Not-So-Big Software Design](http://www.youtube.com/watch?v=arsK-CN5YDg) from [`wroc_love.rb`](http://www.wrocloverb.com).
+- [I have a good feeling about this - Why tooling is poised to make the jump to hyperspace](https://youtube.com/watch?v=Re2SKhaK73I) from [Web Rebels](https://www.webrebels.org)
 
 ### essays
 
@@ -229,46 +168,20 @@ older: ["2012", "2011", "2010", "2009", "2008"]
   </ul>
 </div>
 
-{% for sectionyear in page.years %}
-
-## {{ sectionyear }}
-
-<div class="related">
-  <ul>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != sectionyear %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
-        </li>
-      {% endunless %}
-    {% endfor %}
-  </ul>
-</div>
-
-{% endfor %}
-
 ## Selected older works
+
+### books
+
+- [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([free pdf](/assets/coffeescript-ristretto.pdf))
+- [What I've Learned From Failure](https://leanpub.com/shippingsoftware)
 
 ### talks
 
 <iframe src="https://player.vimeo.com/video/53265664" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
-<p><a href="https://vimeo.com/53265664">The Rebellion Imperative</a> from <a href="https://vimeo.com/user4280938">&Oslash;redev Conference</a>.</p>
-
----
-
-<iframe src="https://player.vimeo.com/video/9967063" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-<p><a href="https://vimeo.com/9967063">Beautiful Failure</a> from <a href="https://vimeo.com/cusec">CUSEC</a>.</p>
-
----
-
-<iframe src="https://player.vimeo.com/video/22957263" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-
-<p><a href="https://vimeo.com/22957263">Reginald Braithwaite calls &quot;Bullshit&quot; (Technologic Dec 2010)</a> from <a href="https://vimeo.com/user6029958">Unspace Interactive</a>.</p>
-
----
+- [The Rebellion Imperative](https://vimeo.com/53265664) from [Øredev](https://vimeo.com/user4280938)
+- [Beautiful Failure](https://vimeo.com/9967063) from [CUSEC](https://vimeo.com/cusec)
+- [Buullshit](https://vimeo.com/22957263) from [Unspace Interactive](https://vimeo.com/user6029958)
 
 ### essays
 
