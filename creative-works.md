@@ -1,16 +1,11 @@
 ---
-title: Reginald "raganwald" Braithwaite's Writing and other Creative Works
+title: Writing and other creative works by Reginald Braithwaite
 layout: default
 tags: [allonge]
 recent: ["2025", "2024", "2023", "2022", "2021", "2020"]
-years: ["2019", "2018", "2017", "2016", "2015", "2014", "2013"]
+posttalkyears: ["2019", "2018"]
+years: ["2016", "2015", "2014", "2013"]
 older: ["2012", "2011", "2010", "2009", "2008"]
----
-
-*This is a repository of essays and presentations by [Reginald "Raganwald" Braithwaite](http://braythwayt.com)*
-
-| [🛖](http://raganwald.com) | [📫](mailto:reg@braythwayt.com) | <a rel="me" href="https://social.bau-ha.us/@raganwald">🐘</a> | [👨‍💻](https://github.com/raganwald) | [📚](https://leanpub.com/u/raganwald/) |[📽️](http://braythwayt.com/talks.html) |
-
 ---
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/3t75HPU2c44" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -19,12 +14,10 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ---
 
-### Free Downloads
+### Free Book Downloads
 
 ☕️ <a href="/assets/javascriptallongesix.pdf">JavaScript Allongé, The "Six" Edition</a>  
 ☕️ An antiquarian edition of <a href="/assets/coffeescript-ristretto.pdf">CoffeeScript Ristretto</a>
-
----
 
 ### HashLife
 
@@ -45,6 +38,46 @@ older: ["2012", "2011", "2010", "2009", "2008"]
           </li>
         {% endunless %}
       {% endfor %}
+    {% endfor %}
+  </ul>
+</div>
+
+{% for posttalkyears in page.years %}
+
+### {{ posttalkyears }}
+
+<div class="related">
+  <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+      {% unless post.tags contains "noindex" or postyear != posttalkyears %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
+{% endfor %}
+
+### 2017
+
+<iframe src="https://channel9.msdn.com/Events/NDC/NDC-Oslo-2017/BRK10/player" width="600" height="337" allowFullScreen frameBorder="0"></iframe>
+
+[Optimism and the Growth Mindset](https://channel9.msdn.com/Events/NDC/NDC-Oslo-2017/BRK10) from NDC Oslo.
+
+---
+
+<div class="related">
+  <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+      {% unless post.tags contains "noindex" or postyear != "2017" %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+        </li>
+      {% endunless %}
     {% endfor %}
   </ul>
 </div>
