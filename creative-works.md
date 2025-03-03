@@ -27,6 +27,8 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ## 2020+
 
+### essays
+
 <div class="related">
   <ul>
     {% for oldyear in page.recent %}
@@ -46,6 +48,8 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ## {{ sectionyear }}
 
+### essays
+
 <div class="related">
   <ul>
     {% for post in site.posts %}
@@ -62,6 +66,8 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 {% endfor %}
 
 ## 2017
+
+### talks
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/Zh_2OHgYdvg?si=jZza3PmJjKKQIXmN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
@@ -83,6 +89,8 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 </div>
 
 ## 2016
+
+### talks
 
 <iframe width="600" height="337" src="https://www.youtube.com/embed/wYPp4nG7qw4" frameborder="0" allowfullscreen></iframe>
 
@@ -129,6 +137,98 @@ older: ["2012", "2011", "2010", "2009", "2008"]
   </ul>
 </div>
 
+## 2015
+
+### essays
+
+<div class="related">
+  <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+      {% unless post.tags contains "noindex" or postyear != "2015" %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
+## 2014
+
+### talks
+
+<iframe width="600" height="337" src="https://www.youtube.com/embed/hp7sgLVepF8" frameborder="0" allowfullscreen></iframe>
+
+[The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](http://www.youtube.com/watch?v=hp7sgLVepF8) from [Nordic JS](http://nordicjs.com).
+
+---
+
+<iframe src="https://player.vimeo.com/video/97408202" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+<p><a href="https://vimeo.com/97408202">Javascript Combinators</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>.</p>
+
+---
+
+<iframe src="https://player.vimeo.com/video/97415345" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+<p><a href="https://vimeo.com/97415345">The Art of the Javascript Metaobject Protocol</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>.</p>
+
+---
+
+<iframe width="600" height="337" src="https://www.youtube.com/embed/uYcAjr2J_rU" frameborder="0" allowfullscreen></iframe>
+
+[Invent the future, don't recreate the past](http://www.youtube.com/watch?v=uYcAjr2J_rU) from [Future JS](http://fullstackfest.com)
+
+---
+
+### essays
+
+<div class="related">
+  <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+      {% unless post.tags contains "noindex" or postyear != "2014" %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
+## 2013
+
+### talks
+
+<iframe width="600" height="337" src="https://www.youtube.com/embed/arsK-CN5YDg" frameborder="0" allowfullscreen></iframe>
+
+[The Not-So-Big Software Design](http://www.youtube.com/watch?v=arsK-CN5YDg) from [`wroc_love.rb`](http://www.wrocloverb.com).
+
+---
+
+<iframe width="600" height="337" src="https://www.youtube.com/embed/Re2SKhaK73I" frameborder="0" allowfullscreen></iframe>
+
+
+<p><a href="https://youtube.com/watch?v=Re2SKhaK73I">I have a good feeling about this - Why tooling is poised to make the jump to hyperspace</a> from <a href="https://www.webrebels.org/">Web Rebels Conference</a>.</p>
+
+---
+
+### essays
+
+<div class="related">
+  <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+      {% unless post.tags contains "noindex" or postyear != "2013" %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
 {% for sectionyear in page.years %}
 
 ## {{ sectionyear }}
@@ -148,7 +248,29 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 {% endfor %}
 
-## selected older essays
+## Selected older works
+
+### talks
+
+<iframe src="https://player.vimeo.com/video/53265664" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+<p><a href="https://vimeo.com/53265664">The Rebellion Imperative</a> from <a href="https://vimeo.com/user4280938">&Oslash;redev Conference</a>.</p>
+
+---
+
+<iframe src="https://player.vimeo.com/video/9967063" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+<p><a href="https://vimeo.com/9967063">Beautiful Failure</a> from <a href="https://vimeo.com/cusec">CUSEC</a>.</p>
+
+---
+
+<iframe src="https://player.vimeo.com/video/22957263" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+<p><a href="https://vimeo.com/22957263">Reginald Braithwaite calls &quot;Bullshit&quot; (Technologic Dec 2010)</a> from <a href="https://vimeo.com/user6029958">Unspace Interactive</a>.</p>
+
+---
+
+### essays
 
 <div class="related">
   <ul>
