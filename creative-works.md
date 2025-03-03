@@ -82,8 +82,6 @@ older: ["2012", "2011", "2010", "2009", "2008"]
   </ul>
 </div>
 
-{% for sectionyear in page.years %}
-
 ## 2016
 
 <iframe width="600" height="337" src="https://www.youtube.com/embed/wYPp4nG7qw4" frameborder="0" allowfullscreen></iframe>
