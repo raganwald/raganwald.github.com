@@ -35,12 +35,14 @@ older: ["2009", "2008"]
 
 ### talks
 
-- [Optimism and the Growth Mindset](https://www.youtube.com/embed/Zh_2OHgYdvg) from NDC Oslo
+- [Optimism and the Growth Mindset](https://www.youtube.com/embed/Zh_2OHgYdvg) from [NDC Conferences][NDC]
 - [Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4) from [DevDay](http://devday.pl)
 - [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44) from [DevDay](http://devday.pl)
 - [Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc) from [Nordic Ruby](nordicruby.org)
-- [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877) from [NDC Conferences](https://vimeo.com/ndcconferences)
-- [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) from [NDC Conferences](https://vimeo.com/ndcconferences)
+- [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877) from [NDC Conferences][NDC]
+- [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) from [NDC Conferences][NDC]
+
+[NDC]: https://vimeo.com/ndcconferences
 
 ### essays
 
@@ -75,7 +77,7 @@ older: ["2009", "2008"]
 ### talks
 
 - [The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](http://www.youtube.com/watch?v=hp7sgLVepF8) from [Nordic JS](http://nordicjs.com).
-- [Javascript Combinators](https://vimeo.com/97408202) from [NDC Conferences](https://vimeo.com/ndcconferences)
+- [Javascript Combinators](https://vimeo.com/97408202) from [NDC Conferences][NDC]
 - [The Art of the Javascript Metaobject Protocol](https://vimeo.com/97415345) from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>
 - [Invent the future, don't recreate the past](http://www.youtube.com/watch?v=uYcAjr2J_rU) from [Future JS](http://fullstackfest.com)
 - [The Not-So-Big Software Design](http://www.youtube.com/watch?v=arsK-CN5YDg) from [`wroc_love.rb`](http://www.wrocloverb.com).
