@@ -25,7 +25,7 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ---
 
-### 2020+
+## 2020+
 
 <div class="related">
   <ul>
@@ -42,49 +42,9 @@ older: ["2012", "2011", "2010", "2009", "2008"]
   </ul>
 </div>
 
-{% for posttalkyears in page.years %}
+{% for sectionyear in page.posttalkyears %}
 
-### {{ posttalkyears }}
-
-<div class="related">
-  <ul>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != posttalkyears %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
-        </li>
-      {% endunless %}
-    {% endfor %}
-  </ul>
-</div>
-
-{% endfor %}
-
-### 2017
-
-<iframe src="https://channel9.msdn.com/Events/NDC/NDC-Oslo-2017/BRK10/player" width="600" height="337" allowFullScreen frameBorder="0"></iframe>
-
-[Optimism and the Growth Mindset](https://channel9.msdn.com/Events/NDC/NDC-Oslo-2017/BRK10) from NDC Oslo.
-
----
-
-<div class="related">
-  <ul>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2017" %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
-        </li>
-      {% endunless %}
-    {% endfor %}
-  </ul>
-</div>
-
-{% for sectionyear in page.years %}
-
-### {{ sectionyear }}
+## {{ sectionyear }}
 
 <div class="related">
   <ul>
@@ -101,7 +61,96 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 {% endfor %}
 
-### selected older essays
+## 2017
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Zh_2OHgYdvg?si=jZza3PmJjKKQIXmN" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+[Optimism and the Growth Mindset](https://speakerdeck.com/raganwald/optimism-and-the-growth-mindset) from NDC Oslo.
+
+### essays
+
+<div class="related">
+  <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+      {% unless post.tags contains "noindex" or postyear != "2017" %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
+{% for sectionyear in page.years %}
+
+## 2016
+
+<iframe width="600" height="337" src="https://www.youtube.com/embed/wYPp4nG7qw4" frameborder="0" allowfullscreen></iframe>
+
+[Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4) from [DevDay](http://devday.pl)
+
+---
+
+<iframe width="600" height="337" src="https://www.youtube.com/embed/3t75HPU2c44" frameborder="0" allowfullscreen></iframe>
+
+[JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44) from [DevDay](http://devday.pl)
+
+---
+
+<iframe width="600" height="337" src="https://www.youtube.com/embed/8xjntzo-mYc" frameborder="0" allowfullscreen></iframe>
+
+[Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc) from [Nordic Ruby](nordicruby.org)
+
+---
+
+<iframe src="https://player.vimeo.com/video/153097877" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+<p><a href="https://vimeo.com/153097877">JavaScript Combinators, the &ldquo;Six&rdquo; Edition</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>.</p>
+
+---
+
+<iframe src="https://player.vimeo.com/video/157132267" width="600" height="337" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+
+<p><a href="https://vimeo.com/157132267">&ldquo;First-Class Commands:&rdquo; An unexpectedly fertile design pattern</a> from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>.</p>
+
+---
+
+### essays
+
+<div class="related">
+  <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+      {% unless post.tags contains "noindex" or postyear != "2016" %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
+{% for sectionyear in page.years %}
+
+## {{ sectionyear }}
+
+<div class="related">
+  <ul>
+    {% for post in site.posts %}
+      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
+      {% unless post.tags contains "noindex" or postyear != sectionyear %}
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+        </li>
+      {% endunless %}
+    {% endfor %}
+  </ul>
+</div>
+
+{% endfor %}
+
+## selected older essays
 
 <div class="related">
   <ul>
@@ -120,6 +169,6 @@ older: ["2012", "2011", "2010", "2009", "2008"]
 
 ---
 
-The essays are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> except where copyright is otherwise asserted.
+These creative works are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> except where copyright is otherwise asserted.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
