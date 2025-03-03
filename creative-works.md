@@ -31,7 +31,7 @@ older: ["2009", "2008"]
 
 ## books
 
-- [JavaScript Allongé, The "Six" Edition](https://leanpub.com/javascriptallongesix) ([free pdf](/assets/javascriptallongesix.pdf))
+- [JavaScript Allongé, The "Six" Edition](https://leanpub.com/javascriptallongesix) ([pdf](/assets/javascriptallongesix.pdf))
 
 ### talks
 
@@ -64,12 +64,12 @@ older: ["2009", "2008"]
 ### code
 
 - [HashLife in the Browser](/hashlife), computing qudrillions of generations of Conway's Game of Life in a browser.
-- [allong.es](https://github.com/raganwald/allong.es), a library for writing ES5 in a functinal style.
+- [allong.es](https://github.com/raganwald/allong.es), a library for writing ES5 in a functional style.
 
 ### books
 
 - [JavaScript Allongé (ES5)](https://leanpub.com/javascript-allonge)
-- [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([free pdf](/assets/coffeescript-ristretto.pdf))
+- [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([pdf](/assets/coffeescript-ristretto.pdf))
 - [Kestrels, Quirky Birds, and Hopeless Egocentricity](https://leanpub.com/combinators)
 
 ### talks
