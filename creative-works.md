@@ -29,6 +29,8 @@ older: ["2009", "2008"]
 
 ## 2015 - 2019
 
+## books
+
 - [JavaScript Allongé, The "Six" Edition](https://leanpub.com/javascriptallongesix) ([free pdf](/assets/javascriptallongesix.pdf))
 
 ### talks
@@ -61,7 +63,8 @@ older: ["2009", "2008"]
 
 ### code
 
-- [HashLife in the Browser](/hashlife)
+- [HashLife in the Browser](/hashlife), computing qudrillions of generations of Conway's Game of Life in a browser.
+- [allong.es](https://github.com/raganwald/allong.es), a library for writing ES5 in a functinal style.
 
 ### books
 
@@ -95,7 +98,16 @@ older: ["2009", "2008"]
     {% endfor %}
   </ul>
 </div>
+
 ## Selected older works
+
+### code
+
+- [andand](https://github.com/raganwald/andand), the Maybe monad in idiomatic Ruby
+- [JQuery Combinators](https://github.com/raganwald/JQuery-Combinators), composition-oriented tooling based on combinatory logic 
+- [You Are 'Da Chef](https://github.com/raganwald/YouAreDaChef), aspect-oriented programming tooling for Underscore projects
+- [rewrite_rails](https://github.com/raganwald-deprecated/rewrite_rails), add syntactic abstractions like `andand` and String-to-Block to Rails projects without monkey-patching
+- [ick](https://github.com/raganwald-deprecated/ick), an ad hoc, informally-specified, bug-ridden, slow implementation of half of Monads, written in ES5
 
 ### books
 
@@ -104,7 +116,7 @@ older: ["2009", "2008"]
 ### talks
 
 - [Beautiful Failure](https://vimeo.com/9967063) from [CUSEC](https://vimeo.com/cusec)
-- [Buullshit](https://vimeo.com/22957263) from [Unspace Interactive](https://vimeo.com/user6029958)
+- [Bullshit](https://vimeo.com/22957263) from [Unspace Interactive](https://vimeo.com/user6029958)
 
 ### essays
 
