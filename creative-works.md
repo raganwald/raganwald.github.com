@@ -29,7 +29,7 @@ older: ["2009", "2008"]
 
 ## 2015 - 2019
 
-## books
+### books
 
 - [JavaScript Allongé, The "Six" Edition](https://leanpub.com/javascriptallongesix) ([pdf](/assets/javascriptallongesix.pdf))
 
