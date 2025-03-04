@@ -8,15 +8,29 @@ twentytwenty: ["2014", "2013", "2012", "2011", "2010"]
 older: ["2009", "2008"]
 ---
 
+## Quotes
+
+---
+
 > [JavaScript Allongé](/assets/javascriptallongesix.pdf) will make you a better programmer, regardless of whether you use JS regularly or not. But if you do, I think this book is as close to capturing the true soul of Javascript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.—[acjohnson55](https://news.ycombinator.com/item?id=6480649)
+
+---
 
 > [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata](http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html) is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I'll be passing around to some of my bootcamp friends who are curious taste some of the theory they don't get exposure to.—[kjeetgil](https://news.ycombinator.com/item?id=19228668)
 
+---
+
 > [Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html) sounds like poetry. Beautifully written!—[nikodunk](https://news.ycombinator.com/item?id=17956855)
 
-> I really enjoyed [Why Recursive Data Structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html) because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.—[johnfn](https://news.ycombinator.com/item?id=13308232)
+---
+
+> I really enjoyed [Why Recursive Data Structures](http://raganwald.com/2016/12/27/recursive-data-structures.html) because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.—[johnfn](https://news.ycombinator.com/item?id=13308232)
+
+---
 
 > What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.—[teh_klev](https://news.ycombinator.com/item?id=16036986) on [How Raganwald Lost His Crown](http://braythwayt.com/2017/12/29/crown.html)
+
+---
 
 ## 2020 - current
 
