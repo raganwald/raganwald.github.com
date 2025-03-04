@@ -23,7 +23,9 @@ Software that cuts waste, eliminates errors, and improves productivity is necess
 
 ### I am available for work.
 
-I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from M$25 ARR to M$450 ARR. I've also worked for GitHub, Unspace Interactive, and Kl Group/Sitraka, where I was the JProbe Threadalyzer TPM and JProbe Suite GPM. I'm open to roles that can leverage the my experience both technical and product-focused, ideally withing a rapidly growingf and iterating startup looking to capture lightningin a bottle. I'm open to 100% remote roles, or hybrid roles in the Greater Toronto Area.
+I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from M$25 ARR to M$450 ARR. I've also worked for GitHub, Unspace Interactive, and KL Group/Sitraka, where I was the JProbe Threadalyzer TPM and JProbe Suite GPM.
+
+I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my cross-group technical and product-focused experience, within a growing and fast-iteration organization that shares my aspiration to change the world. I'm open to 100% remote roles, or hybrid roles in the Greater Toronto Area.
 
 I'm [raganwald@gmail.com](mailto:raganwald@gmail.com). My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request.
 
