@@ -27,6 +27,14 @@ I recently completed nine years as a Principal Engineer with PagerDuty, where I 
 
 I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my cross-group technical and product-focused experience, within a growing and fast-iteration organization that shares my aspiration to change the world. I'm open to 100% remote roles, or hybrid roles in the Greater Toronto Area.
 
+### this is not my first rodeo
+
+I have shipped a lot of software. I know how to ship, and I am familiar with many things that can threaten shipping, and some of the ways to effectively navigate past the obstacles. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission. I have a vision, I have aspirations, but I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+
+I am exactly what I appear to be: A senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran who can be relied upon to maintain calm and focus, suppressing uncertainty and maximizing optionality during rapidly evolving circumstances.
+
+---
+
 I'm [raganwald@gmail.com](mailto:raganwald@gmail.com). My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request.
 
 [LinkedIn]: https://www.linkedin.com/in/raganwald/
