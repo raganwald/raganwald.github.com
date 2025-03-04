@@ -46,6 +46,12 @@ older: ["2009", "2008"]
 
 ### essays
 
+> [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata](http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html) is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I'll be passing around to some of my bootcamp friends who are curious taste some of the theory they don't get exposure to.—[kjeetgil](https://news.ycombinator.com/item?id=19228668)
+
+> [Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html) sounds like poetry. Beautifully written!—[nikodunk](https://news.ycombinator.com/item?id=17956855)
+
+> I really enjoyed [Why recursive data structures?](http://raganwald.com/2016/12/27/recursive-data-structures.html) because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.—[johnfn](https://news.ycombinator.com/item?id=13308232)
+
 <div class="related">
   <ul>
     {% for oldyear in page.twentyfifteen %}
@@ -61,7 +67,7 @@ older: ["2009", "2008"]
   </ul>
 </div>
 
-## 2020 - 2014
+## 2010 - 2014
 
 ### code
 
@@ -70,6 +76,8 @@ older: ["2009", "2008"]
 - [oscin.es](https://github.com/raganwald/oscin.es), a library for playing with combinatorial logic puzzles such as those found in [To Mock a Mockingbird](https://en.wikipedia.org/wiki/To_Mock_a_Mockingbird)
 
 ### books
+
+> [JavaScript Allongé] will make you a better programmer, regardless of whether you use JS regularly or not. But if you do, I think this book is as close to capturing the true soul of Javascript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.—[acjohnson55](https://news.ycombinator.com/item?id=6480649)
 
 - [JavaScript Allongé (ES5)](https://leanpub.com/javascript-allonge)
 - [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([pdf](/assets/coffeescript-ristretto.pdf))
@@ -101,6 +109,12 @@ older: ["2009", "2008"]
     {% endfor %}
   </ul>
 </div>
+
+### bonus essay
+
+> What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.—[teh_klev](https://news.ycombinator.com/item?id=16036986)
+
+- [How Raganwald Lost His Crown](http://braythwayt.com/2017/12/29/crown.html)
 
 ## Selected older works
 
