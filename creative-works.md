@@ -140,7 +140,7 @@ older: ["2009", "2008"]
 
 - [The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](http://www.youtube.com/watch?v=hp7sgLVepF8) from [Nordic JS](http://nordicjs.com).
 - [Javascript Combinators](https://vimeo.com/97408202) from [NDC Conferences][NDC]
-- [The Art of the Javascript Metaobject Protocol](https://vimeo.com/97415345) from <a href="https://vimeo.com/ndcconferences">NDC Conferences</a>
+- [The Art of the Javascript Metaobject Protocol](https://vimeo.com/97415345) from [NDC Conferences][NDC]
 - [Invent the future, don't recreate the past](http://www.youtube.com/watch?v=uYcAjr2J_rU) from [Future JS](http://fullstackfest.com)
 - [The Not-So-Big Software Design](http://www.youtube.com/watch?v=arsK-CN5YDg) from [`wroc_love.rb`](http://www.wrocloverb.com).
 - [I have a good feeling about this - Why tooling is poised to make the jump to hyperspace](https://youtube.com/watch?v=Re2SKhaK73I) from [Web Rebels](https://www.webrebels.org)
