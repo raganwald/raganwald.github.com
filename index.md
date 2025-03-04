@@ -29,9 +29,11 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my cr
 
 ### this is not my first rodeo
 
-I have shipped a lot of software. I know how to ship, and I am familiar with many things that can threaten shipping, and some of the ways to effectively navigate past the obstacles. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission. I have a vision, I have aspirations, but I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+I have shipped a lot of software. I know how to ship, and I am familiar with many things that can threaten shipping, and some of the ways to effectively navigate past the obstacles. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
 
-I am exactly what I appear to be: A senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran who can be relied upon to maintain calm and focus, suppressing uncertainty and maximizing optionality during rapidly evolving circumstances.
+I am exactly what I appear to be: A senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran who can be relied upon to maintain calm and focus, suppressing uncertainty and maximizing optionality during rapidly evolving circumstances. I have a vision, I have aspirations, but I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+
+I bring that experience to those around me who may be experiencing their first rodeo.
 
 ---
 
