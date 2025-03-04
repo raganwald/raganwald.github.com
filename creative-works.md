@@ -8,13 +8,41 @@ twentytwenty: ["2014", "2013", "2012", "2011", "2010"]
 older: ["2009", "2008"]
 ---
 
-## Quotes
+## Quotes on JavaScript Allongé
 
 ---
 
 > [JavaScript Allongé](/assets/javascriptallongesix.pdf) will make you a better programmer, regardless of whether you use JS regularly or not. But if you do, I think this book is as close to capturing the true soul of Javascript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.—[acjohnson55](https://news.ycombinator.com/item?id=6480649)
 
 ---
+
+> Spent the afternoon reading raganwald's JavaScript Allongé, The Six Edition. Highly recommended. Let the refactoring begin!—Marcus Vorwaller
+
+---
+
+> I think it’s one of the best tech books I’ve read since Sedgewick’s Algorithms in C.—Andrey Sidorov
+
+---
+
+> Your explanation of closures in JavaScript Allongé is the best I've read.—Emehrkay
+
+---
+
+---
+
+> This book is awesome and blowing my mind in a great way.”—Johnathan Mukai
+
+---
+
+> The best discussion of functional programming in js I've found so far.”—Nicholas Faiz
+
+---
+
+> Reading JavaScript Allongé by raganwald. This book is so good that it's blowing my mind.—Guillermo Pascual
+
+---
+
+## Quotes on essays
 
 > [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata](http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html) is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I'll be passing around to some of my bootcamp friends who are curious taste some of the theory they don't get exposure to.—[kjeetgil](https://news.ycombinator.com/item?id=19228668)
 
@@ -55,7 +83,7 @@ older: ["2009", "2008"]
 
 ### books
 
-- [JavaScript Allongé, The "Six" Edition](https://leanpub.com/javascriptallongesix) ([pdf](/assets/javascriptallongesix.pdf))
+- [JavaScript Allongé, The "Six" Edition](https://leanpub.com/javascriptallongesix) ([pdf](/assets/javascriptallongesix.pdf) [podcast](https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/))
 
 ### talks
 
@@ -95,7 +123,7 @@ older: ["2009", "2008"]
 
 ### books
 
-- [JavaScript Allongé (ES5)](https://leanpub.com/javascript-allonge)
+- [JavaScript Allongé (ES5)](https://leanpub.com/javascript-allonge) ([podcast](https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/))
 - [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([pdf](/assets/coffeescript-ristretto.pdf))
 - [Kestrels, Quirky Birds, and Hopeless Egocentricity](https://leanpub.com/combinators)
 
