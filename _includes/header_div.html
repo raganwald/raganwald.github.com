@@ -1,5 +1,8 @@
       <div id="header">
-        <h3><a href="/">RAGANWALD.COM</a></h3>
+        {% if page.homelink != "none" %}
+          <h3><a href="/">RAGANWALD.COM</a></h3>
+          <hr/>
+        {% endif %}
         <h1>{{ page.title }}</h1>
         {% if page.subtitle %}
           <h4>{{ page.subtitle }}</h4>
