@@ -1,5 +1,5 @@
 ---
-title: Creative works by Reginald Braithwaite
+title: Creative Works
 layout: default
 tags: [allonge]
 recent: ["2025", "2024", "2023", "2022", "2021", "2020"]

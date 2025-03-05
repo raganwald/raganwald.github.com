@@ -1,21 +1,25 @@
 ---
 title: Reginald Braithwaite
-subtitle: Principal Engineer and Technical Product Manager for Startups
+subtitle: Principal Engineer &amp; Technical Product Manager for Startups
 homelink: none
 layout: default
 ---
 
+### introduction
+
 I am a technical product leader whose passion is collaboration to make something wonderful. I am available for work. And this is not my first rodeo.
+
+ I am strongest in a role that is ⅔ Staff+ Engineer and ⅓ Technical Product Manager, freeing up full-time product management to focus on customer-facing activities, market analysis, strategy, and GTM execution. This role is typically most valuable in a rapidly growing startup or internal skunkworks firewalled off from a larger company's heavyweight processes.
+
+ I'm [raganwald@gmail.com](mailto:raganwald@gmail.com). My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request.
 
 ### I am technical
 
-Everything I do with product design, software architecture, and leading the process of shipping software is anchored in almost forty years of shipping software that runs businesses. I've shipped products written with C++, Java, Ruby, Scala, Elixir, JavaScript, and TypeScript, using too many libraries, frameworks, and patterns to list. My progressive experience as a technologist culminated with nine years as a Principal Engineer with PagerDuty. I also write [technical essays][technical-essays], speak at [tech conferences][tech-conferences], and I've published successful [books] about programming.
+My product design, software architecture, and leading the process of shipping software is anchored in almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written with C++, Java, Ruby, Scala, Elixir, JavaScript, and TypeScript, using too many libraries, frameworks, and patterns to list, although TypeScript and React are the most recent tools I've used personally. My progressive experience as a technologist culminated with nine years as a Principal Engineer with PagerDuty. I also write [technical essays][technical-essays], speak at [tech conferences][tech-conferences], and I've published successful [books] about programming.
 
 ### I ship products
 
- I have shipped software as a Technical Product Manager. The centre of gravity of my approach to shipping is the product and its attendant product strategy. Technology, design, prioritiziation, process, and architecture are all in service to the product we ship and our commitment to the business. I bring to this product focus past professional experience in Enterprise Sales, Consulting, and Marketing. I also leverage my experience as a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
-
- I am strongest in a role that is ⅔ Staff+ Engineer and ⅓ Technical Product Manager, freeing up full-time product managers to focus on customer-facing, market-facting, and GTM execution.
+ I have shipped software as a Technical Product Manager, Program Manager, and in various Engineering roles. The centre of gravity of my approach to shipping is the product and its attendant product strategy. Technology, design, prioritiziation, process, and architecture are all in service to the product we ship and our commitment to the business. I bring to this product focus past professional experience in Enterprise Sales, Consulting, and Marketing. I also leverage my experience as a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
 ### I lead through collaboration
 
@@ -40,10 +44,6 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my cr
 I have shipped a lot of software. I know how to ship, and I am familiar with many things that can threaten shipping, and some of the ways to effectively navigate past the obstacles. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission. I am a senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran who can be relied upon to maintain calm and focus, suppressing uncertainty and maximizing optionality during rapidly evolving circumstances.
 
 I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
-
----
-
-I'm [raganwald@gmail.com](mailto:raganwald@gmail.com). My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request.
 
 [LinkedIn]: https://www.linkedin.com/in/raganwald/
 
