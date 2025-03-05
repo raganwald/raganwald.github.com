@@ -1,5 +1,6 @@
 ---
-title: Reginald Braithwaite, Startup Principal Engineer and Technical Product Manager
+title: Reginald Braithwaite
+subtitle: Principal Engineer and Technical Product Manager for Startups
 layout: default
 ---
 
