@@ -1,6 +1,6 @@
 ---
 title: Reginald Braithwaite
-subtitle: Principal Engineer &amp;&thinsp;Technical Product Manager for Startups
+subtitle: Principal Engineer & Technical Product Manager
 homelink: none
 layout: default
 ---
@@ -9,7 +9,7 @@ layout: default
 
 I am a technical product leader whose passion is collaboration to make something wonderful. I am available for work. And this is not my first rodeo.
 
- I am strongest in a role that is ⅔ Staff+ Engineer and ⅓ Technical Product Manager, freeing up full-time product management to focus on customer-facing activities, market analysis, strategy, and GTM execution. This role is typically most valuable in a rapidly growing startup or internal skunkworks firewalled off from a larger company's heavyweight processes.
+ I am strongest in a role that is ⅔ Staff+ Engineer and ⅓ Technical Product Manager, freeing up full-time product management to focus on customer-facing activities, market analysis, strategy, and GTM execution. I have been most effective in this role working within an independent new product group and several rapidly iterating startups.
 
  I'm [raganwald@gmail.com](mailto:raganwald@gmail.com). My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request.
 
