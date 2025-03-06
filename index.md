@@ -14,7 +14,9 @@ I wrote [JavaScript Allongé][ja] ([pdf][japdf]) amongst other books. I also wri
 
 ### I am technical
 
-My code, product design, and software architecture is built om almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written with in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and many more. I write code that directly powers the product as well as code the powers the organization around the product. As a Principal Engineer my techncial scope ranged from being accountable for technical product road maps to to collaborating across product group lines to developing, reviewing, and implementing engineering wide technical standards and transitions.
+My code, product design, and software architecture is built om almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written with in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and many more. I 
+
+As a Principal Engineer, my technical scope included but was not limited to writing code that directly powered our product, writing code that powers the product development group around the product, handling critical incidents as an Incident Commander, writing technical product road maps, and collaborating across product group lines to developing, reviewing, and implementing engineering wide technical standards and transitions.
 
 ### I ship products
 
