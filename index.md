@@ -6,9 +6,9 @@ layout: default
 
 ### Introduction
 
-I am Reginald Braithwaite, a technical product leader; my passion is collaborating on making something wonderful. I am available for work, and this is not my first rodeo: I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+I am Reginald Braithwaite, a technical product leader. My passion is collaborating on making something wonderful. I am available for work. And this is not my first rodeo: I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
-I am strongest in a role that is two thirds Staff+ Engineer, and one-third Technical Product Manager. This enables product management to focus on customer-facing activities, market analysis, strategy, and GTM execution in a rapidly iterating environment. I have shipped products in this role working within both independent product groups and startups.
+I am strongest in a role that is two-thirds Staff+ Engineer and one-third Technical Product Manager, with real-time and high-bandwidth collaboration with product management. I have shipped products in this role working within both independent product groups and startups.
 
 I wrote [JavaScript Allongé][ja] ([pdf][japdf]) amongst other [books]. I also write [technical essays][technical-essays] and speak at [tech conferences][tech-conferences]. My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request. I can be reached via [raganwald@gmail.com].
 
@@ -18,7 +18,7 @@ My code, product design, and software architecture is built om almost forty year
 
 ### I ship products
 
-I have shipped software as a Technical Product Manager, Program Manager, and in hands-on engineering roles. Under my leadership and influence, technology, design, prioritization, process, and architecture act in service to the product we ship and our commitment to the business and its attendant product strategy. I bring to this product focus past professional experience in Consulting, Technology Marketing, and Enterprise Sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
+I have shipped software as a Technical Product Manager, Program Manager, and in hands-on engineering roles. Under my leadership and influence, technology, design, prioritization, process, and architecture act in service to the product we ship and our commitment to the business and its attendant product strategy. My product focus is informed by my professional experience in Consulting, Technology Marketing, and Enterprise Sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
 ### I lead through collaboration
 
