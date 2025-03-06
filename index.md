@@ -26,7 +26,7 @@ My work is informed by my professional experience in consulting, technology mark
 
 ### I lead through collaboration
 
-I integrate my experience as a product-focused technologist into building and leading both teams and groups of teams. At PagerDuty, I led by example with code and product on our way to its IPO, but after our IPO my focus evolved with the company and I won two company leadership awards for helping our force navigate the challenges of growing from a scrappy startup through rapid growth and then into the post-IPO disciplined environment.
+I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, I led by example with code and product on our way to its IPO, but after our IPO my focus evolved with the company and I won two company leadership awards for helping our force navigate the challenges of growing from a scrappy startup through rapid growth and then into the post-IPO disciplined environment.
 
 ### My passion is making something wonderful
 
@@ -40,15 +40,13 @@ I understand how to manage culture, talent, and tooling for rapid product iterat
 
 ### I am available for work.
 
-I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from M$25 ARR to M$450 ARR. I've also worked for GitHub, Unspace Interactive, and KL Group/Sitraka, where I was the JProbe Threadalyzer Technical Product Manager and JProbe Suite Program Manager.
-
-I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my cross-group technical and product-focused experience, within a growing and rapidly iterating organization that shares my aspiration to change the world.
+I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from M$25 ARR to our IPO and M$450 ARR. I've also worked for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
 
 ### this is not my first rodeo
 
-I have shipped a lot of software. I know how to ship, and I am familiar with many things that can threaten shipping, and some of the ways to effectively navigate past the obstacles. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
+I know how to ship, how to recognize threats to shipping, and how to keep a team on track. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
 
-I am a senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran who can be relied upon to maintain calm and focus, suppressing uncertainty and maximizing optionality during rapidly evolving circumstances.
+I am a senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran whose teams ship on time, without drama.
 
 [LinkedIn]: https://www.linkedin.com/in/raganwald/
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
