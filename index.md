@@ -7,7 +7,7 @@ layout: default
 
 ### introduction
 
-I am a technical product leader whose passion is collaboration to make something wonderful. I am available for work, and this is not my first rodeo: I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+I am a technical product leader whose passion is collaboration to make something wonderful. I am available for work, and this is not my first rodeo: I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect." Together.
 
 I am strongest in a role that is ⅔ Staff+ Engineer and ⅓ Technical Product Manager, freeing up full-time product management to focus on customer-facing activities, market analysis, strategy, and GTM execution. I have been most effective in this role working within an independent new product group and several rapidly iterating startups.
 
