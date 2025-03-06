@@ -22,7 +22,7 @@ As a Principal Engineer, my technical scope included but was not limited to writ
 
 I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy.
 
-My product focus is informed by my professional experience in Consulting, Technology Marketing, and Enterprise Sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
+My work is informed by my professional experience in Consulting, Technology Marketing, and Enterprise Sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
 ### I lead through collaboration
 
