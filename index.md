@@ -6,15 +6,15 @@ layout: default
 
 ### I am Reginald Braithwaite
 
-I am a technical product leader with a passion for collaborating on making something wonderful. I know how to get there by repeatedly shipping "good" without being seduced by "sufficient" or derailed by "perfect." I'm available for work, and this is not my first rodeo. 
+I am a technical product leader with a passion for collaborating on making something wonderful.
 
-I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager, with real-time and high-bandwidth collaboration with product management. I have shipped products in this role working within both independent product groups and startups.
+My teams get there by repeatedly shipping "good" without being seduced by "sufficient" or derailed by "perfect." I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager, working in close collaboration with product management.
 
-I wrote JavaScript Allongé amongst other books. I also write technical essays and speak at tech conferences. My experience is itemized in more detail on LinkedIn, and a résumé is available upon request. My books, essays, and conference talks are available on my [creative works][cw] page. I can be reached via [raganwald@gmail.com].
+I also wrote JavaScript Allongé amongst other books. I write technical essays and speak at tech conferences. My experience is itemized in more detail on LinkedIn, and a résumé is available upon request. My books, essays, and conference talks are available on my [creative works][cw] page. I can be reached via [raganwald@gmail.com].
 
 ### I am technical
 
-My code, product design, and software architecture is built om almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written with in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and many more. I 
+My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written with in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.
 
 As a Principal Engineer, my technical scope included but was not limited to writing code that directly powered our product, writing code that powers the product development group around the product, handling critical incidents as an Incident Commander, writing technical product road maps, and collaborating across product group lines to developing, reviewing, and implementing engineering wide technical standards and transitions.
 
