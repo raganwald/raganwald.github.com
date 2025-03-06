@@ -4,11 +4,11 @@ subtitle: Principal Engineer & Technical Product Manager
 layout: default
 ---
 
-### Introduction
+### I am Reginald Braithwaite
 
-I am Reginald Braithwaite, a technical product leader. My passion is collaborating on making something wonderful. I am available for work. And this is not my first rodeo: I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+I am a technical product leader with a passion for collaborating on making something wonderful. I'm available for work, and this is not my first rodeo. 
 
-I am strongest in a role that is two-thirds Staff+ Engineer and one-third Technical Product Manager, with real-time and high-bandwidth collaboration with product management. I have shipped products in this role working within both independent product groups and startups.
+I am strongest in a role that is two-thirds Staff+ Engineer and one-third Technical Product Manager, with real-time and high-bandwidth collaboration with product management. I have shipped products in this role working within both independent product groups and startups: I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 I wrote [JavaScript Allongé][ja] ([pdf][japdf]) amongst other [books]. I also write [technical essays][technical-essays] and speak at [tech conferences][tech-conferences]. My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request. I can be reached via [raganwald@gmail.com].
 
