@@ -4,7 +4,7 @@ subtitle: Principal Engineer & Technical Product Manager
 layout: default
 ---
 
-### introduction
+### Introduction
 
 I am a technical product leader whose passion is collaboration to make something wonderful. I am available for work, and this is not my first rodeo: I know how to ship *good* without being seduced by *sufficient* or derailed by *perfect*.
 
