@@ -10,10 +10,7 @@ I am a technical product leader with a passion for collaborating on making somet
 
 I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager, with real-time and high-bandwidth collaboration with product management. I have shipped products in this role working within both independent product groups and startups.
 
-I wrote JavaScript Allongé[^fn-ja] amongst other books. I also write technical essays and speak at tech conferences.[^fn-cw] My experience is itemized in more detail on LinkedIn, and a résumé is available upon request. I can be reached via [raganwald@gmail.com].
-
-[^fn-ja]: [JavaScript Allonge is available on LeanPub][ja]. You can also [download a pdf directly][japdf].
-[^fn-cw]: My books, essays, and conference talks are available on my [creative works][cw] page.
+I wrote JavaScript Allongé amongst other books. I also write technical essays and speak at tech conferences. My experience is itemized in more detail on LinkedIn, and a résumé is available upon request. My books, essays, and conference talks are available on my [creative works][cw] page. I can be reached via [raganwald@gmail.com].
 
 ### I am technical
 
