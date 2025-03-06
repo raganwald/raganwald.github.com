@@ -10,7 +10,7 @@ I am a technical product leader with a passion for collaborating on making somet
 
 My teams get there by repeatedly shipping "good" without being seduced by "sufficient" or derailed by "perfect." I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager, working in close collaboration with product management.
 
-I also wrote JavaScript Allongé amongst other books. I write technical essays and speak at tech conferences. My experience is itemized in more detail on LinkedIn, and a résumé is available upon request. My books, essays, and conference talks are available on my [creative works][cw] page. I can be reached via [raganwald@gmail.com].
+I wrote JavaScript Allongé, I write technical essays, and I speak at tech conferences. My experience is itemized in more detail on LinkedIn, and a résumé is available upon request. My books, essays, and conference talks are available on my [creative works][cw] page. I can be reached via [raganwald@gmail.com].
 
 ### I am technical
 
@@ -46,7 +46,9 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my cr
 
 ### this is not my first rodeo
 
-I have shipped a lot of software. I know how to ship, and I am familiar with many things that can threaten shipping, and some of the ways to effectively navigate past the obstacles. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission. I am a senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran who can be relied upon to maintain calm and focus, suppressing uncertainty and maximizing optionality during rapidly evolving circumstances.
+I have shipped a lot of software. I know how to ship, and I am familiar with many things that can threaten shipping, and some of the ways to effectively navigate past the obstacles. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
+
+I am a senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran who can be relied upon to maintain calm and focus, suppressing uncertainty and maximizing optionality during rapidly evolving circumstances.
 
 [LinkedIn]: https://www.linkedin.com/in/raganwald/
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
