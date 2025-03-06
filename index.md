@@ -1,7 +1,6 @@
 ---
 title: Reginald Braithwaite
 subtitle: Principal Engineer & Technical Product Manager
-homelink: none
 layout: default
 ---
 
