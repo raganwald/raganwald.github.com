@@ -20,7 +20,9 @@ As a Principal Engineer, my technical scope included but was not limited to writ
 
 ### I ship products
 
-I have shipped software as a Technical Product Manager, Program Manager, and in hands-on engineering roles. Under my leadership and influence, technology, design, prioritization, process, and architecture act in service to the product we ship and our commitment to the business and its attendant product strategy. My product focus is informed by my professional experience in Consulting, Technology Marketing, and Enterprise Sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
+I have shipped software as a Technical Product Manager, Program Manager, and in hands-on engineering roles. Under my leadership and influence, technology, design, prioritization, process, and architecture act in service to the product we ship and our commitment to the business and its attendant product strategy.
+
+My product focus is informed by my professional experience in Consulting, Technology Marketing, and Enterprise Sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
 ### I lead through collaboration
 
@@ -32,7 +34,7 @@ My belief is that software that cuts waste, eliminates errors, and improves prod
 
 ### I grow engineering
 
-I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering capacity through hiring, through people development, and through technology stewardship. My organizational growth mindset As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I helped grow our engineering capacity through the adoption of tooling, processes, and even programming language choices that supported scaling engineering capacity. I understand when culture, talent, and tooling should be optimized for rapid iteration, how to scale horizontally while remaining "flat," and how to transition the culture, talent, and tooling when growth triggers a phase change.
+I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering capacity through hiring, through people development, and through technology stewardship. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I helped grow our engineering capacity through the adoption of tooling, processes, and even programming language choices that supported scaling engineering capacity horizontally. I understand how to manage culture, talent, and tooling for rapid product iteration and scale, but also how to recognize when growth and strategy trigger organizational change, and how to lead culture, talent, and tooling from the old to the new without drama.
 
 ### I am available for work.
 
