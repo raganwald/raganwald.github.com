@@ -6,19 +6,19 @@ layout: default
 
 ### Introduction
 
-I am a technical product leader whose passion is collaboration to make something wonderful. I am available for work, and this is not my first rodeo: I know how to ship *good* without being seduced by *sufficient* or derailed by *perfect*.
+I am Reginald Braithwaite, a technical product leader; my passion is collaborating on making something wonderful. I am available for work, and this is not my first rodeo: I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
-I am strongest in a role that is ⅔ Staff+ Engineer and ⅓ Technical Product Manager, freeing up full-time product management to focus on customer-facing activities, market analysis, strategy, and GTM execution. I have been most effective in this role working within an independent new product group and several rapidly iterating startups.
+I am strongest in a role that is two thirds Staff+ Engineer, and one-third Technical Product Manager. This enables product management to focus on customer-facing activities, market analysis, strategy, and GTM execution in a rapidly iterating environment. I have shipped products in this role working within both independent product groups and startups.
 
-I'm [raganwald@gmail.com](mailto:raganwald@gmail.com). My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request. I also write [technical essays][technical-essays], speak at [tech conferences][tech-conferences], and I've published successful [books] about programming.
+I wrote [JavaScript Allongé][ja] ([pdf][japdf]) amongst other [books]. I also write [technical essays][technical-essays] and speak at [tech conferences][tech-conferences]. My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request. I can be reached via [raganwald@gmail.com].
 
 ### I am technical
 
-My product design, software architecture, and leading the process of shipping software is anchored in almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written with C++, Java, Ruby, Scala, Elixir, JavaScript, Ember, React, and TypeScript. Most recently, as a Principal Engineer with PagerDuty.
+My code, product design, and software architecture is built om almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written with in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and many more. I write code that directly powers the product as well as code the powers the organization around the product. As a Principal Engineer my techncial scope ranged from being accountable for technical product road maps to to collaborating across product group lines to developing, reviewing, and implementing engineering wide technical standards and transitions.
 
 ### I ship products
 
-I have shipped software as a Technical Product Manager, Program Manager, and in various Engineering roles. The centre of gravity of my approach to shipping is the product and its attendant product strategy. Technology, design, prioritiziation, process, and architecture are all in service to the product we ship and our commitment to the business. I bring to this product focus past professional experience in Enterprise Sales, Consulting, and Marketing. I also leverage my experience as a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
+I have shipped software as a Technical Product Manager, Program Manager, and in hands-on engineering roles. Under my leadership and influence, technology, design, prioritiziation, process, and architecture are all in service to the product we ship and our commitment to the business and its attendant product strategy. I bring to this product focus past professional experience in Consulting, Technology Marketing, and Enterprise Sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
 ### I lead through collaboration
 
@@ -26,11 +26,11 @@ I integrate my experience as a product-focused technologist into building and le
 
 ### My passion is making something wonderful
 
-My belief is that software that cuts waste, eliminates errors, and improves productivity is necessary, but insufficient to launch a movement that will one day change the world. I aspire to ship software that leads customers to change the way they think about the work they do. And with that transformation, comes a virtuous flywheel effect: Customers who change the way they work discover new needs and opportunities, which we in turn serve with follow-on features and products.
+My belief is that software that cuts waste, eliminates errors, and improves productivity is necessary, but insufficient to launch a movement that will one day change the world. I aspire to collaboratively ship software that leads customers to change the way they think about the work they do. And with that transformation, comes a virtuous flywheel effect: Customers who change the way they work discover new needs and opportunities, which we in turn serve with follow-on features and products.
 
 ### I grow engineering
 
-I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering capacity through hiring, through people development, and through technology stewardship. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I help[ed grow our engineering capacity through the adoption of tooling, processes, and even programming language choices that supported scaling engineering capacity.
+I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering capacity through hiring, through people development, and through technology stewardship. My organizational growth mindset As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I helped grow our engineering capacity through the adoption of tooling, processes, and even programming language choices that supported scaling engineering capacity. I understand when culture, talent, and tooling should be optimized for fast iteration, how to scale horizontally while remaining "flat," and how to transition the culture, talent, and tooling when growth triggers a phase change.
 
 ### I am available for work.
 
@@ -43,10 +43,12 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my cr
 I have shipped a lot of software. I know how to ship, and I am familiar with many things that can threaten shipping, and some of the ways to effectively navigate past the obstacles. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission. I am a senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran who can be relied upon to maintain calm and focus, suppressing uncertainty and maximizing optionality during rapidly evolving circumstances.
 
 [LinkedIn]: https://www.linkedin.com/in/raganwald/
-
+[raganwald@gmail.com]: mailto:raganwald@gmail.com
 [technical-essays]: /creative-works.html
 [tech-conferences]: /creative-works.html
 [books]: /creative-works.html
+[ja]: https://leanpub.com/javascriptallongesix
+[japdf]: /assets/javascriptallongesix.pdf
 
 ---
 
