@@ -14,19 +14,19 @@ I wrote JavaScript Allongé, I write technical essays, and I speak at tech confe
 
 ### I am technical
 
-My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written with in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.
+My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.
 
-As a Principal Engineer, my technical scope included but was not limited to writing code that directly powered our product, writing code that powers the product development group around the product, handling critical incidents as an Incident Commander, writing technical product road maps, and collaborating across product group lines to developing, reviewing, and implementing engineering wide technical standards and transitions.
+As a Principal Engineer, my technical scope included but was not limited to writing code that directly powered our product, writing code that powered the product development group, developing prototypes for ideation and prpduct research, handling critical incidents as an Incident Commander, writing technical product road maps, and collaborating across product group lines to developi, review, and implement engineering-wide technical standards and transitions.
 
 ### I ship products
 
-I have shipped software as a Technical Product Manager, Program Manager, and in hands-on engineering roles. Under my leadership and influence, technology, design, prioritization, process, and architecture act in service to the product we ship and our commitment to the business and its attendant product strategy.
+I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy.
 
 My product focus is informed by my professional experience in Consulting, Technology Marketing, and Enterprise Sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
 ### I lead through collaboration
 
-I integrate my experience as a product-focused technologist into building and leading both teams and groups of teams. In the most recent chapter of my career, I won two company leadership awards for helping our engineering force navigate the challenges of growing from a scrappy startup to a revenue monster and from there to an IPO. I work both within my direct focus and collaboratively across the product, sales, customer success, and marketing orgs to ensure we are aligned on both strategy and execution.
+I integrate my experience as a product-focused technologist into building and leading both teams and groups of teams. At PagerDuty, I led by example with code and product on our way to its IPO, but after our IPO my focus evolved with the company and I won two company leadership awards for helping our force navigate the challenges of growing from a scrappy startup through rapid growth and then into the post-IPO disciplined environment.
 
 ### My passion is making something wonderful
 
