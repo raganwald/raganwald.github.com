@@ -46,7 +46,7 @@ I recently completed nine years as a Principal Engineer with PagerDuty, where I 
 
 I know how to ship, how to recognize threats to shipping, and how to keep a team on track. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
 
-I am a senior engineer with forty years of product- and customer-centric business and technical experience. A steady veteran whose teams ship on time, without drama.
+I am a senior engineer with forty years of product- and customer-centric business and technical experience. A veteran whose teams ship on time, without drama.
 
 [LinkedIn]: https://www.linkedin.com/in/raganwald/
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
