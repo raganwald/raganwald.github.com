@@ -37,11 +37,13 @@ My belief is that software that cuts waste, eliminates errors, and improves prod
 
 ### I grow engineering
 
-I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering capacity through hiring, through people development, and through technology stewardship. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I helped grow our engineering capacity through the adoption of tooling, processes, and even programming language choices that supported scaling engineering capacity horizontally. I understand how to manage culture, talent, and tooling for rapid product iteration and scale, but also how to recognize when growth and strategy trigger organizational change, and how to lead culture, talent, and tooling from the old to the new without drama.
+I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering capacity through hiring, through people development, and through technology stewardship. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I helped grow our engineering capacity through the adoption of tooling, processes, and even programming language choices that supported scaling engineering capacity horizontally.
+
+I understand how to manage culture, talent, and tooling for rapid product iteration and scale, but also how to recognize when growth and strategy trigger organizational change, and how to lead culture, talent, and tooling from the old to the new without drama.
 
 ### I am available for work.
 
-I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from M$25 ARR to M$450 ARR. I've also worked for GitHub, Unspace Interactive, and KL Group/Sitraka, where I was the JProbe Threadalyzer TPM and JProbe Suite GPM.
+I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from M$25 ARR to M$450 ARR. I've also worked for GitHub, Unspace Interactive, and KL Group/Sitraka, where I was the JProbe Threadalyzer Technical Product Manager and JProbe Suite Program Manager.
 
 I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my cross-group technical and product-focused experience, within a growing and rapidly iterating organization that shares my aspiration to change the world.
 
