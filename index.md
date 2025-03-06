@@ -16,7 +16,7 @@ I wrote JavaScript Allongé, I write technical essays, and I speak at tech confe
 
 My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.
 
-As a Principal Engineer, my technical scope included but was not limited to writing code that directly powered our product, writing code that powered the product development group, developing prototypes for ideation and prpduct research, handling critical incidents as an Incident Commander, writing technical product road maps, and collaborating across product group lines to developi, review, and implement engineering-wide technical standards and transitions.
+As a Principal Engineer, my technical scope included but was not limited to writing code that directly powered our product, writing code that powered the product development group, developing prototypes for ideation and prpduct research, handling critical incidents as an Incident Commander, writing technical product road maps, and collaborating across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
 
 ### I ship products
 
