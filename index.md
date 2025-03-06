@@ -6,11 +6,11 @@ layout: default
 
 ### I am Reginald Braithwaite
 
-I am a technical product leader with a passion for collaborating on making something wonderful. I'm available for work, and this is not my first rodeo. 
+I am a technical product leader with a passion for collaborating on making something wonderful. I know how to get there by repeatedly shipping "good" without being seduced by "sufficient" or derailed by "perfect." I'm available for work, and this is not my first rodeo. 
 
-I am strongest in a role that is two-thirds Staff+ Engineer and one-third Technical Product Manager, with real-time and high-bandwidth collaboration with product management. I have shipped products in this role working within both independent product groups and startups: I know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager, with real-time and high-bandwidth collaboration with product management. I have shipped products in this role working within both independent product groups and startups.
 
-I wrote [JavaScript Allongé][ja] ([pdf][japdf]) amongst other [books]. I also write [technical essays][technical-essays] and speak at [tech conferences][tech-conferences]. My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request. I can be reached via [raganwald@gmail.com].
+I wrote [JavaScript Allongé][ja] ([pdf][japdf]) amongst other books. I also write [technical essays][technical-essays] and speak at [tech conferences][tech-conferences]. My experience is itemized in more detail on [LinkedIn], and a résumé is available upon request. I can be reached via [raganwald@gmail.com].
 
 ### I am technical
 
