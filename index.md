@@ -26,7 +26,7 @@ My work is informed by my professional experience in consulting, technology mark
 
 ### I lead through collaboration
 
-I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, I led by example with code and product on our way to its IPO, but after our IPO my focus evolved with the company and I won two company leadership awards for helping our force navigate the challenges of growing from a scrappy startup through rapid growth and then into the post-IPO disciplined environment.
+I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, I led by example with code and product on our way to its IPO, but after our IPO my focus evolved with the company and I won two company leadership awards for helping our force navigate the challenges of growing from a scrappy startup through rapid growth and then into the post-IPO environment.
 
 ### My passion is making something wonderful
 
@@ -34,13 +34,13 @@ My belief is that software that cuts waste, eliminates errors, and improves prod
 
 ### I grow engineering
 
-I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering capacity through hiring, through people development, and through technology stewardship. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I helped grow our engineering capacity through the adoption of tooling, processes, and even programming language choices that supported scaling engineering capacity horizontally.
+I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I also grow engineering through people, process  and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I helped grow our engineering capacity through the adoption of tooling, processes, and even programming language choices that supported scaling engineering capacity horizontally.
 
 I understand how to manage culture, talent, and tooling for rapid product iteration and scale, but also how to recognize when growth and strategy trigger organizational change, and how to lead culture, talent, and tooling from the old to the new without drama.
 
 ### I am available for work.
 
-I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from M$25 ARR to our IPO and M$450 ARR. I've also worked for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
+I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from ~M$25 ARR to our IPO and ~M$450 ARR. I've also shipped for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
 
 ### this is not my first rodeo
 
