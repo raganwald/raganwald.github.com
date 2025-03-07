@@ -10,7 +10,7 @@ I am a technical product leader with a passion for collaborating on making somet
 
 My teams get there by repeatedly shipping "good" without being seduced by "sufficient" or derailed by "perfect." I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager, working in close collaboration with product management.
 
-I wrote JavaScript Allongé, I write technical essays, and I speak at tech conferences. My experience is itemized in more detail on LinkedIn, and a résumé is available upon request. My books, essays, and conference talks are available on my [creative works][cw] page. I can be reached via [raganwald@gmail.com].
+I wrote JavaScript Allongé, I write technical essays, and I speak at tech conferences. My experience is itemized in more detail on [LinkedIn][LinkedIn-Experience]; my résumé is available upon request. My books, essays, and conference talks are available on my [creative works][cw] page. I can be reached via [raganwald@gmail.com].
 
 ### I am technical
 
@@ -48,7 +48,7 @@ I know how to ship, how to recognize threats to shipping, and how to keep a team
 
 I am a senior engineer with forty years of product- and customer-centric business and technical experience. A veteran whose teams ship on time, without drama.
 
-[LinkedIn]: https://www.linkedin.com/in/raganwald/
+[LinkedIn-Experience]: https://www.linkedin.com/in/raganwald/details/experience/
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
 [cw]: /creative-works.html
 [ja]: https://leanpub.com/javascriptallongesix
