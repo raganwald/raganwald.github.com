@@ -26,7 +26,7 @@ My work is informed by my professional experience in consulting, technology mark
 
 ### I lead through collaboration
 
-I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, I led by example with code and product on our way to its IPO, but after our IPO my focus evolved with the company and I won two company leadership awards for helping our force navigate the challenges of growing from a scrappy startup through rapid growth and then into the post-IPO environment.
+I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. During this period, I was recognized with two annual leadership awards.
 
 ### My passion is making something wonderful
 
