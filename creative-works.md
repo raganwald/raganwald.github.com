@@ -3,10 +3,10 @@ title: Reginald Braithwaite
 subtitle: Creative Works
 layout: default
 tags: [allonge]
-recent: ["2025", "2024", "2023", "2022", "2021", "2020"]
-twentyfifteen: ["2019", "2018", "2017", "2016", "2015"]
-twentytwenty: ["2014", "2013", "2012", "2011", "2010"]
-older: ["2009", "2008", "2007", "2006", "2005", "2004"]
+twentytwentytodate: ["2025", "2024", "2023", "2022", "2021", "2020"]
+twentyfifteentwentytwenty: ["2019", "2018", "2017", "2016", "2015"]
+twentytentwentyfourteen: ["2014", "2013", "2012", "2011", "2010"]
+beforetwentyten: ["2009", "2008", "2007", "2006", "2005", "2004"]
 ---
 
 ## Quotes on JavaScript Allongé
@@ -76,7 +76,7 @@ older: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 <div class="related">
   <ul>
-    {% for oldyear in page.recent %}
+    {% for oldyear in page.twentytwentytodate %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
@@ -110,7 +110,7 @@ older: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 <div class="related">
   <ul>
-    {% for oldyear in page.twentyfifteen %}
+    {% for oldyear in page.twentyfifteentwentytwenty %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
@@ -151,7 +151,7 @@ older: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 <div class="related">
   <ul>
-    {% for oldyear in page.twentytwenty %}
+    {% for oldyear in page.twentytentwentyfourteen %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
@@ -168,7 +168,7 @@ older: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 - [How Raganwald Lost His Crown](http://braythwayt.com/2017/12/29/crown.html)
 
-## Selected older works
+## Selected beforetwentyten works
 
 ### code
 
@@ -192,7 +192,7 @@ older: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 <div class="related">
   <ul>
-    {% for oldyear in page.older %}
+    {% for oldyear in page.beforetwentyten %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
