@@ -4,11 +4,11 @@ subtitle: Principal Engineer & Technical Product Manager
 layout: default
 ---
 
-### I am Reginald Braithwaite
+***I am Reginald Braithwaite, a technical product leader passionabout collaborating on making something wonderful.***
 
-I am a technical product leader with a passion for collaborating on making something wonderful.
+My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
-My teams get there by repeatedly shipping "good" without being seduced by "sufficient" or derailed by "perfect." I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager, working in close collaboration with product management.
+I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager, working in close collaboration with product management.
 
 I wrote JavaScript Allongé, I write technical essays, and I speak at tech conferences. My experience is itemized in more detail on [LinkedIn][LinkedIn-Experience]; my résumé is available upon request. My books, essays, and conference talks are available on my [creative works][cw] page. I can be reached via [raganwald@gmail.com].
 
@@ -46,7 +46,7 @@ I recently completed nine years as a Principal Engineer with PagerDuty, where I 
 
 I know how to ship, how to recognize threats to shipping, and how to keep a team on track. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
 
-I am a senior engineer with forty years of product- and customer-centric business and technical experience. A veteran whose teams ship on time, without drama.
+I bring forty years of product- and customer-centric business and technical experience to shipping on time, without drama.
 
 [LinkedIn-Experience]: https://www.linkedin.com/in/raganwald/details/experience/
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
