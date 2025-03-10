@@ -12,16 +12,17 @@ My experience is itemized in more detail on [LinkedIn]; my résumé is available
 
 ### I am technical
 
-My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
+I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
 
-I was the hands-on technical product manager for [JProbe] [Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection, I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've also worked at Global scale, as team lead for ING Direct (USA)'s web banking and on GitHub's web flow.[^ing][^GitHub]
+[^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
 
-[^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript. I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
+I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've also worked at Global Scale, as team lead for ING Direct (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
+
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
 
-[JProbe]: http://tan.com/jprobe?lang=en
-[Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
+[JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
+[Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 
 Most recently as a Principal Engineer, I was the hands-on lead for two generations of analytics and reporting features and the launch of our [Response Mobilizer] functionality. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
 
@@ -29,7 +30,9 @@ Most recently as a Principal Engineer, I was the hands-on lead for two generatio
 
 ### I ship products
 
-I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. I have shipped mincomputer and desktop publishing systems, bespoke systems for running financial services businesses, [tooling for Enterprise-grade Java systems][jprobe], web banking for ING Direct (USA), features for GitHub's web-based flow, PagerDuty
+I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. I have shipped mincomputer and desktop publishing systems, bespoke systems for running financial services businesses, [tooling for Enterprise-grade Java systems][JProbe], web banking for ING Direct (USA), features for [GitHub]'s web-based flow, PagerDuty
+
+[GitHub]
 
 My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
