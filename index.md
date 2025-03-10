@@ -8,21 +8,26 @@ I am Reginald Braithwaite, a technical product leader passionate about collabora
 
 I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager. I once wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
 
-My experience is itemized in more detail on [LinkedIn][LinkedIn-Experience]; my résumé is available upon request. My books, essays, and conference talks are available on my [creative works][cw] page. I can be reached via [raganwald@gmail.com].
+My experience is itemized in more detail on [LinkedIn]; my résumé is available upon request. My books, essays, and conference talks are available on my [creative works] page. I can be reached via [raganwald@gmail.com].
 
 ### I am technical
 
-My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
+My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more] I was the hands-on technical product manager for [JProbe] [Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection, I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've also worked at Global scale, as team lead for ING Direct (USA)'s web banking and on Github's web flow.[^ing][^github]
 
 [^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript. I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
+[^ing]: ING Direct (USA) was sold to Capitol One in 2011.
+[^github]: At Github, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
 
-Most recently as Principal Engineer, I was the hands-on technical lead for two generations of analytics and reporting features and the launch of our [Response Mobilizer] functionality. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
+[JProbe]: http://tan.com/jprobe?lang=en
+[Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 
-[Response Mobilizer]: https://www.pagerduty.com/blog/2016-year-review/
+Most recently as a Principal Engineer, I was the hands-on lead for two generations of analytics and reporting features and the launch of our [Response Mobilizer] functionality. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
+
+[Response Mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
 
 ### I ship products
 
-I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy.
+I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. I have shipped mincomputer and desktop publishing systems, bespoke systems for running financial services businesses, [tooling for Enterprise-grade Java systems][jprobe], web banking for ING Direct (USA), features for GitHub's web-based flow, PagerDuty
 
 My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
@@ -50,9 +55,9 @@ I know how to ship, how to recognize threats to shipping, and how to keep a team
 
 I bring forty years of product- and customer-centric business and technical experience to shipping on time, without drama.
 
-[LinkedIn-Experience]: https://www.linkedin.com/in/raganwald/details/experience/
+[LinkedIn]: https://www.linkedin.com/in/raganwald/details/experience/
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
-[cw]: /creative-works.html
+[creative works]: /creative-works.html
 [ja]: https://leanpub.com/javascriptallongesix
 [japdf]: /assets/javascriptallongesix.pdf
 
