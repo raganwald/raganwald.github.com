@@ -12,11 +12,13 @@ My experience is itemized in more detail on [LinkedIn]; my résumé is available
 
 ### I am technical
 
-My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more] I was the hands-on technical product manager for [JProbe] [Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection, I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've also worked at Global scale, as team lead for ING Direct (USA)'s web banking and on Github's web flow.[^ing][^github]
+My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
+
+I was the hands-on technical product manager for [JProbe] [Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection, I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've also worked at Global scale, as team lead for ING Direct (USA)'s web banking and on GitHub's web flow.[^ing][^GitHub]
 
 [^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript. I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
-[^ing]: ING Direct (USA) was sold to Capitol One in 2011.
-[^github]: At Github, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
+[^ing]: ING Direct (USA) was sold to Capital One in 2011.
+[^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
 
 [JProbe]: http://tan.com/jprobe?lang=en
 [Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
