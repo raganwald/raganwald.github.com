@@ -12,8 +12,6 @@ My experience is itemized in more detail on [LinkedIn]; my résumé is available
 
 ### I am technical
 
-[^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
-
 I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've also worked at Global Scale, as team lead for ING Direct (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
 
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
@@ -22,7 +20,7 @@ I was the hands-on technical product manager for [JProbe Threadalyzer], the firs
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 [Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 
-Most recently as a Principal Engineer, I was the hands-on lead for the [insights] and [operational review] features, and the launch of our [Response Mobilizer] functionality. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
+At PagerDuty, I was the hands-on lead for the [insights] and [operational review] features, and the launch of our [Response Mobilizer] functionality. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
@@ -30,9 +28,11 @@ Most recently as a Principal Engineer, I was the hands-on lead for the [insights
 
 I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
 
+[^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
+
 ### I ship products
 
-I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
+I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a technical product manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
 My work has led directly to two exits: KL Group/Sitraka and PagerDuty.[^sitraka-quest][^PDNYSE]
 
