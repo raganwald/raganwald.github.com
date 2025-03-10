@@ -20,11 +20,12 @@ I was the hands-on technical product manager for [JProbe Threadalyzer], the firs
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 [Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 
-At PagerDuty, I was the hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
+At PagerDuty, I was the hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
 [response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
+[recent changes]: https://support.pagerduty.com/main/docs/recent-changes
 
 I've merged code written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
 
