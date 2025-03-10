@@ -4,7 +4,7 @@ subtitle: Principal Engineer & Technical Product Manager
 layout: default
 ---
 
-*I am Reginald Braithwaite, a technical product leader passionate about collaboration in the service of making something wonderful. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."*
+I am Reginald Braithwaite, a technical product leader passionate about collaboration in the service of making something wonderful. I have forty years of experience coding and shipping software that powers businesses. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager. I once wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
 
@@ -12,9 +12,13 @@ My experience is itemized in more detail on [LinkedIn][LinkedIn-Experience]; my 
 
 ### I am technical
 
-My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.
+My code, product design, and software architecture is based on almost forty years of hands-on experience shipping software that runs businesses. I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
 
-As a Principal Engineer, my technical scope included but was not limited to writing code that directly powered our product, writing code that powered the product development group, developing prototypes for ideation and prpduct research, handling critical incidents as an Incident Commander, writing technical product road maps, and collaborating across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
+[^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript. I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
+
+Most recently as Principal Engineer, I was the hands-on technical lead for two generations of analytics and reporting features and the launch of our [Response Mobilizer] functionality. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
+
+[Response Mobilizer]: https://www.pagerduty.com/blog/2016-year-review/
 
 ### I ship products
 
