@@ -12,7 +12,7 @@ My experience is itemized in more detail on [LinkedIn]; my résumé is available
 
 ### I am technical
 
-I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've worked at global scale, as team lead for ING Direct (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
+I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've worked at global scale, as team lead for ING (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
 
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
@@ -20,13 +20,13 @@ I was the hands-on technical product manager for [JProbe Threadalyzer], the firs
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 [Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 
-At PagerDuty, I was the hands-on lead for the [insights] and [operational review] features, and the launch of our [Response Mobilizer] functionality. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
+At PagerDuty, I was the hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
-[Response Mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
+[response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
 
-I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
+I've merged code written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
 
 [^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
 
