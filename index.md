@@ -8,11 +8,9 @@ I am Reginald Braithwaite, a technical product leader passionate about collabora
 
 I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager. I once wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
 
-My experience is itemized in more detail on [LinkedIn]; my résumé is available upon request. My books, essays, and conference talks are available on my [creative works] page. I can be reached via [raganwald@gmail.com].
+My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works] page. I can be reached via [raganwald@gmail.com].
 
 ### I am technical
-
-I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
 
 [^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
 
@@ -24,9 +22,13 @@ I was the hands-on technical product manager for [JProbe Threadalyzer], the firs
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 [Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 
-Most recently as a Principal Engineer, I was the hands-on lead for two generations of analytics and reporting features and the launch of our [Response Mobilizer] functionality. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
+Most recently as a Principal Engineer, I was the hands-on lead for the [insights] and [operational review] features, and the launch of our [Response Mobilizer] functionality. I wrote working prototypes of highly concurrent liveness, advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
 
+[insights]: https://support.pagerduty.com/main/docs/insights
+[operational review]: https://support.pagerduty.com/main/docs/operational-reviews
 [Response Mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
+
+I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
 
 ### I ship products
 
