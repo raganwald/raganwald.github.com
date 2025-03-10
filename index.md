@@ -12,7 +12,7 @@ My experience is itemized in more detail on [LinkedIn]; my résumé is available
 
 ### I am technical
 
-I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've also worked at Global Scale, as team lead for ING Direct (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
+I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've worked at global scale, as team lead for ING Direct (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
 
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
@@ -32,9 +32,9 @@ I've shipped products written in C++, Java, Ruby, JavaScript, Ember, React, Type
 
 ### I ship products
 
-I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a technical product manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
+I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
-My work has led directly to two exits: KL Group/Sitraka and PagerDuty.[^sitraka-quest][^PDNYSE]
+ I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a technical product manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. The products I shipped have led to exits for KL Group/Sitraka and PagerDuty.[^sitraka-quest][^PDNYSE]
 
 [^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
 [^PDNYSE]: PagerDuty went public on the NYSE in 2019.
@@ -47,17 +47,19 @@ I integrate my experience as a product-focused technologist into building and le
 
 ### My passion is making something wonderful
 
-My belief is that software that cuts waste, eliminates errors, and improves productivity is necessary, but insufficient to launch a movement that will one day change the world. I aspire to collaboratively ship software that leads customers to change the way they think about the work they do. And with that transformation, comes a virtuous flywheel effect: Customers who change the way they work discover new needs and opportunities, which we in turn serve with follow-on features and products.
+My belief is that software that cuts waste, eliminates errors, and improves productivity is necessary, but insufficient to launch a movement that will one day change the world. I aspire to collaboratively ship software that leads customers to change the way they think about the work they do.
+
+I believe in the virtuous flywheel effect: Customers who change the way they work discover new needs and opportunities, which we in turn serve with follow-on features and products.
 
 ### I grow engineering
 
-I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I also grow engineering through people, process  and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I helped grow our engineering capacity through the adoption of tooling, processes, and even programming language choices that supported scaling engineering capacity horizontally.
+I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering through people, process and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I co-led the adoption of tooling, processes, and programming language choices that supported scaling engineering capacity.
 
-I understand how to manage culture, talent, and tooling for rapid product iteration and scale, but also how to recognize when growth and strategy trigger organizational change, and how to lead culture, talent, and tooling from the old to the new without drama.
+I understand how to manage culture, talent, and tooling for rapid product iteration and scale; how to recognize when growth and strategy trigger organizational change; and how to lead culture, talent, and tooling from the old to the new without drama.
 
 ### I am available for work.
 
-I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from ~M$25 ARR to our IPO and ~M$450 ARR. I've also shipped for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
+I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from ~M$25 ARR to our IPO and ~M$450 ARR. I've shipped for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
 
 ### this is not my first rodeo
 
