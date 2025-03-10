@@ -30,15 +30,18 @@ Most recently as a Principal Engineer, I was the hands-on lead for two generatio
 
 ### I ship products
 
-I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. I have shipped mincomputer and desktop publishing systems, bespoke systems for running financial services businesses, [tooling for Enterprise-grade Java systems][JProbe], web banking for ING Direct (USA), features for [GitHub]'s web-based flow, PagerDuty
+I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
-[GitHub]
+My work has led directly to two exits: KL Group/Sitraka and PagerDuty.[^sitraka-quest][^PDNYSE]
 
-My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
+[^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
+[^PDNYSE]: PagerDuty went public on the NYSE in 2019.
 
 ### I lead through collaboration
 
-I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. During this period, I was recognized with two annual leadership awards.
+I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. I have been recognized with two leadership awards.[^awards]
+
+[^awards]: I was awarded the Breakthrough award in 2019 for my efforts to elevate the company's product line strategically, and the Inclusively Leading and Learning award in 2022 for my work advancing the company's engineering capabilities. 
 
 ### My passion is making something wonderful
 
