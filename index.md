@@ -25,7 +25,7 @@ flaws. The result was probably the most
 solid codebase that I've ever worked on.”*  
 —Christian Jaekl, Software Engineer and Concurrency Domain Expert
 
-Reg hired me as a senior developer to work
+*“Reg hired me as a senior developer to work
 on a new product. Reg led the team and did
 all the high-level design. Since the team was
 small and the timeframe short, Reg was also
