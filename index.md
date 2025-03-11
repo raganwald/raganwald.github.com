@@ -12,6 +12,35 @@ My experience is itemized in more detail on [LinkedIn]; my résumé is available
 
 ### I am technical
 
+*“When we built Threadalyzer, Reg developed
+the technical design, partitioned it into
+manageable pieces for a group of developers,
+and also wrote a significant chunk of the
+code himself. Along the way, he insisted on
+regular code reviews, asking appropriate and
+probing questions about design decisions. I
+read his code, too (he wouldn't have it any
+other way), but I had a hard time finding
+flaws. The result was probably the most
+solid codebase that I've ever worked on.”*  
+—Christian Jaekl, Software Engineer and Concurrency Domain Expert
+
+Reg hired me as a senior developer to work
+on a new product. Reg led the team and did
+all the high-level design. Since the team was
+small and the timeframe short, Reg was also
+coding a good portion of the product.
+Over that time I obviously had a great deal
+of contact with Reg's design and his code,
+and both were excellent. The project was
+completed on time and was successful.
+Thanks to clean design and code, it has gone
+through several releases with major new
+features added without significant changes to
+the original structure (of the design or the
+code).*  
+John MacMIllan, Software Architect, IBM Canada Research Lab
+
 I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've worked at global scale, as team lead for ING (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
 
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
@@ -34,7 +63,18 @@ I've merged code written in C++, Java, Ruby, JavaScript, Ember, React, TypeScrip
 ### I ship products
 
 *“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
-—MC, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
+—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
+
+*“Reg and I worked together for a year and a
+half. During that time, he spearheaded the
+effort to produce JProbe Threadalyzer, and
+then shepherded the entire JProbe suite
+through two subsequent upgrade releases. By
+that time, Threadalyzer had all but elimi-
+nated its competition in the Java thread
+analysis space, and JProbe had become
+KL's major source of revenue.”*  
+—Christian Jaekl, Software Engineer and Concurrency Domain Expert
 
 I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
@@ -46,7 +86,7 @@ I align technology, design, prioritization, process, and architecture with the c
 ### I lead through collaboration
 
 *“Extraordinary communication skills...able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership...not forced in any way. You talk to, and get respect, from the Interns to the C-Level.”*  
-—RH, Senior Talent Partner, PagerDuty
+—Richard Hartshorne, Senior Talent Partner, PagerDuty
 
 I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. I have been recognized with two leadership awards.[^awards]
 
@@ -61,7 +101,7 @@ I believe in the virtuous flywheel effect: Customers who change the way they wor
 ### I grow engineering
 
 *“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”*  
-—RH, Senior Talent Partner, PagerDuty
+—Richard Hartshorne, Senior Talent Partner, PagerDuty
 
 I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering through people, process and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I co-led the adoption of tooling, processes, and programming language choices that supported scaling engineering capacity.
 
@@ -74,7 +114,7 @@ I recently completed nine years as a Principal Engineer with PagerDuty, where I 
 ### this is not my first rodeo
 
 *“You were a huge asset to \[PagerDuty,\] and wherever you land next will be lucky to have you.”*  
-—MC, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
+—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
 
 I know how to ship, how to recognize threats to shipping, and how to keep a team on track. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
 
