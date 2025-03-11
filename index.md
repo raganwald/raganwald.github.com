@@ -10,6 +10,9 @@ I'm available for work, and this is not my first rodeo. I am highly impactful in
 
 My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works] page. I can be reached via [raganwald@gmail.com].
 
+> You \[were\] such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!
+> — RH, Senior Talent Partner at PagerDuty
+
 ### I am technical
 
 I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've worked at global scale, as team lead for ING (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
