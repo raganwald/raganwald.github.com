@@ -10,9 +10,6 @@ I'm available for work, and this is not my first rodeo. I am highly impactful in
 
 My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works] page. I can be reached via [raganwald@gmail.com].
 
-> You \[were\] such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!
-> — RH, Senior Talent Partner at PagerDuty
-
 ### I am technical
 
 I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've worked at global scale, as team lead for ING (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
@@ -45,6 +42,9 @@ I have shipped as a Technical Product Manager, Program Manager, and in hands-on 
 
 ### I lead through collaboration
 
+> Extraordinary communication skills...able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership...not forced in any way. You talk to, and get respect, from the Interns to the C-Level.  
+—RH, Senior Talent Partner, PagerDuty
+
 I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. I have been recognized with two leadership awards.[^awards]
 
 [^awards]: I was awarded the Breakthrough award in 2019 for my efforts to elevate the company's product line strategically, and the Inclusively Leading and Learning award in 2022 for my work advancing the company's engineering capabilities. 
@@ -57,6 +57,9 @@ I believe in the virtuous flywheel effect: Customers who change the way they wor
 
 ### I grow engineering
 
+> You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!  
+—RH, Senior Talent Partner, PagerDuty
+
 I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering through people, process and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I co-led the adoption of tooling, processes, and programming language choices that supported scaling engineering capacity.
 
 I understand how to manage culture, talent, and tooling for rapid product iteration and scale; how to recognize when growth and strategy trigger organizational change; and how to lead culture, talent, and tooling from the old to the new without drama.
@@ -66,6 +69,9 @@ I understand how to manage culture, talent, and tooling for rapid product iterat
 I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from ~M$25 ARR to our IPO and ~M$450 ARR. I've shipped for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
 
 ### this is not my first rodeo
+
+> You were a huge asset to \[PagerDuty,\] and wherever you land next will be lucky to have you.  
+> —MC, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
 
 I know how to ship, how to recognize threats to shipping, and how to keep a team on track. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
 
