@@ -33,7 +33,7 @@ I've merged code written in C++, Java, Ruby, JavaScript, Ember, React, TypeScrip
 
 ### I ship products
 
-*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*
+*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
 —MC, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
 
 I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
