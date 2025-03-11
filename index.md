@@ -6,13 +6,20 @@ layout: default
 
 I am Reginald Braithwaite, a technical product leader passionate about collaboration in the service of making something wonderful. I have forty years of experience coding and shipping software that powers businesses. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
-I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager. I once wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
+I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager. I once wrote a popular book about JavaScript, I write technical documentation and essays, and I present at everything from meetups to keynoting tech conferences to company-wide events.
 
 My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works] page. I can be reached via [raganwald@gmail.com].
 
+## At a glance
+
+|---|---|
+|Exits| - KL/Group Sitraka (acquired)
+- PagerDuty (IPO) |
+
+
 ### I am technical
 
-I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've worked at global scale, as team lead for ING (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
+I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've shipped at global scale, as team lead for ING (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
 
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
@@ -20,7 +27,7 @@ I was the hands-on technical product manager for [JProbe Threadalyzer], the firs
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 [Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 
-At PagerDuty, I was the hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
+At PagerDuty, I was the hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
