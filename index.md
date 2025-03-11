@@ -33,9 +33,12 @@ I've merged code written in C++, Java, Ruby, JavaScript, Ember, React, TypeScrip
 
 ### I ship products
 
+*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*
+—MC, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
+
 I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
-I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a technical product manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. The products I shipped have led to exits for KL Group/Sitraka and PagerDuty.[^sitraka-quest][^PDNYSE]
+I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a technical product manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. My teams have won both the Jolt Product Excellence and Jolt Software Developer Productivity awards. The products I shipped have led to exits for KL Group/Sitraka and PagerDuty.[^sitraka-quest][^PDNYSE]
 
 [^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
 [^PDNYSE]: PagerDuty went public on the NYSE in 2019.
