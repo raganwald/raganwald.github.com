@@ -8,7 +8,7 @@ I am Reginald Braithwaite, a technical product leader passionate about collabora
 
 I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager. I once wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
 
-My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works] page. I can be reached via [raganwald@gmail.com].
+My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works page]. My personal email is [raganwald@gmail.com].
 
 ### I am technical
 
@@ -102,7 +102,7 @@ I bring forty years of product- and customer-centric business and technical expe
 
 [LinkedIn]: https://www.linkedin.com/in/raganwald/details/experience/
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
-[creative works]: /creative-works.html
+[creative works page]: /creative-works.html
 [ja]: https://leanpub.com/javascriptallongesix
 [japdf]: /assets/javascriptallongesix.pdf
 
