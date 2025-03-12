@@ -7,6 +7,7 @@ twentytwentytodate: ["2025", "2024", "2023", "2022", "2021", "2020"]
 sixteenfifteen: ["2019", "2018", "2017", "2016", "2015"]
 twentytentwentyfourteen: ["2014", "2013", "2012", "2011", "2010"]
 earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
+quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html", "http://raganwald.com/2018/09/10/why-y.html", "http://braythwayt.com/2017/12/29/crown.html", "http://raganwald.com/2016/12/27/recursive-data-structures.html"]
 ---
 
 ## Recent
@@ -18,7 +19,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
     {% for oldyear in page.twentytwentytodate %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or post.url in quoted or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
@@ -32,11 +33,16 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ### books
 
-[JavaScript Allongé](/assets/javascriptallongesix.pdf) *will make you a better programmer, regardless of whether you use JS regularly or not. But if you do, I think this book is as close to capturing the true soul of Javascript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.*—[acjohnson55](https://news.ycombinator.com/item?id=6480649)
+[JavaScript Allongé] ([pdf], [podcast]) *is as close to capturing the true soul of JavaScript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.*—[acjohnson55]
+
+[JavaScript Allongé]: https://leanpub.com/javascriptallongesix
+[pdf]: /assets/javascriptallongesix.pdf
+[podcast]: https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/
+[acjohnson55]: https://news.ycombinator.com/item?id=6480649
 
 *Spent the afternoon reading raganwald's JavaScript Allongé, The Six Edition. Highly recommended. Let the refactoring begin!*—Marcus Vorwaller
 
-*I think it’s one of the best tech books I’ve read since Sedgewick’s Algorithms in C.*—Andrey Sidorov
+*I think it’s one of the best tech books I’ve read since Sedgewick’s* [Algorithms in C](https://archive.org/details/algorithmsinc0000sedg_e7h2).—Andrey Sidorov
 
 *Your explanation of closures in JavaScript Allongé is the best I've read.*—Emehrkay
 
@@ -46,14 +52,12 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 *Reading JavaScript Allongé by raganwald. This book is so good that it's blowing my mind.*—Guillermo Pascual
 
-- [JavaScript Allongé, The "Six" Edition](https://leanpub.com/javascriptallongesix) ([pdf](/assets/javascriptallongesix.pdf), [podcast](https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/))
-
 ### talks
 
 - [Optimism and the Growth Mindset](https://www.youtube.com/embed/Zh_2OHgYdvg) from [NDC Conferences][NDC]
 - [Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4) from [DevDay](http://devday.pl)
-- [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44) from [DevDay](http://devday.pl)
 - [Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc) from [Nordic Ruby](nordicruby.org)
+- [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44) from [DevDay](http://devday.pl)
 - [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877) from [NDC Conferences][NDC]
 - [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) from [NDC Conferences][NDC]
 
@@ -67,7 +71,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2019" %}
+      {% unless post.tags contains "noindex" or post.url in quoted or post.url in quoted or postyear != "2019" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -82,7 +86,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2018" %}
+      {% unless post.tags contains "noindex" or post.url in quoted or postyear != "2018" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -95,12 +99,9 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 <div class="related">
   <ul>
-    <li>
-      <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>
-    </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2017" %}
+      {% unless post.tags contains "noindex" or post.url in quoted or postyear != "2017" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -116,7 +117,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
     {% for oldyear in page.sixteenfifteen %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or post.url in quoted or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
@@ -157,7 +158,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
     {% for oldyear in page.twentytentwentyfourteen %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or post.url in quoted or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
@@ -194,7 +195,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
     {% for oldyear in page.earlyyears %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or post.url in quoted or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>
           </li>
