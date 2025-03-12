@@ -23,7 +23,9 @@ and both were excellent. The project was
 completed on time and was successful.*  
 —John MacMIllan, Software Architect, IBM Canada Research Lab
 
-I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality. I was also the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection, as well as leading development of web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've led development of ING (USA)'s web banking, and shipped features on GitHub's web flow.[^ing][^GitHub]
+I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality. I was also the hands-on technical product manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
+
+I've led development of web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've led development of ING (USA)'s web banking, and shipped features on GitHub's web flow.[^ing][^GitHub][^more]
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
@@ -32,11 +34,9 @@ I was PagerDuty's hands-on lead for the [insights] and [operational review] feat
 
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
-
-[JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 [Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 
-I've merged code written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
+[JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 
 [^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
 
