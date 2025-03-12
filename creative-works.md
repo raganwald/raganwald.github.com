@@ -95,12 +95,12 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 <div class="related">
   <ul>
+    <li>
+      <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>
+    </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != "2017" %}
-        <li>
-          <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>
-        </li>
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
