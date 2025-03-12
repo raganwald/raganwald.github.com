@@ -68,7 +68,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
 <div class="related">
   <ul>
     <li>
-      <a href="http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html">A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata</a> <em>is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I’ll be passing around to some of my bootcamp friends who are curious taste some of the theory they don’t get exposure to.</em>—kjeetgil
+      <a href="http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html">A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata</a> <em>is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I’ll be passing around to some of my bootcamp friends who are curious taste some of the theory they don’t get exposure to.</em> —kjeetgil
     </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
@@ -80,7 +80,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% endfor %}
 
     <li>
-      <a href="http://raganwald.com/2018/09/10/why-y.html">Why Y? Deriving the Y Combinator in JavaScript</a> <em>sounds like poetry. Beautifully written!</em>—nikodunk
+      <a href="http://raganwald.com/2018/09/10/why-y.html">Why Y? Deriving the Y Combinator in JavaScript</a> <em>sounds like poetry. Beautifully written!</em> —nikodunk
     </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
@@ -92,7 +92,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% endfor %}
 
     <li>
-      <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>: <em>What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.</em>—teh_klev
+      <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>: <em>What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.</em> —teh_klev
     </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
@@ -104,7 +104,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% endfor %}
 
     <li>
-      <em>I really enjoyed</em> <a href="http://raganwald.com/2016/12/27/recursive-data-structures.html">Why recursive data structures?</a> <em>because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.</em>—johnfn
+      <em>I really enjoyed</em> <a href="http://raganwald.com/2016/12/27/recursive-data-structures.html">Why recursive data structures?</a> <em>because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.</em> —johnfn
     </li>
     {% for oldyear in page.sixteenfifteen %}
       {% for post in site.posts %}
