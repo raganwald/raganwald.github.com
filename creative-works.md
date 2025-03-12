@@ -20,7 +20,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+            <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
         {% endunless %}
       {% endfor %}
@@ -33,38 +33,31 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 ### books
 ---
 
-> [JavaScript Allongé](/assets/javascriptallongesix.pdf) will make you a better programmer, regardless of whether you use JS regularly or not. But if you do, I think this book is as close to capturing the true soul of Javascript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.  
-> —[acjohnson55](https://news.ycombinator.com/item?id=6480649)
+*[JavaScript Allongé](/assets/javascriptallongesix.pdf) will make you a better programmer, regardless of whether you use JS regularly or not. But if you do, I think this book is as close to capturing the true soul of Javascript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.*—[acjohnson55](https://news.ycombinator.com/item?id=6480649)
 
 ---
 
-> Spent the afternoon reading raganwald's JavaScript Allongé, The Six Edition. Highly recommended. Let the refactoring begin!  
-> —Marcus Vorwaller
+*Spent the afternoon reading raganwald's JavaScript Allongé, The Six Edition. Highly recommended. Let the refactoring begin!*—Marcus Vorwaller
 
 ---
 
-> I think it’s one of the best tech books I’ve read since Sedgewick’s Algorithms in C.  
-> —Andrey Sidorov
+*I think it’s one of the best tech books I’ve read since Sedgewick’s Algorithms in C.*—Andrey Sidorov
 
 ---
 
-> Your explanation of closures in JavaScript Allongé is the best I've read.  
-> —Emehrkay
+*Your explanation of closures in JavaScript Allongé is the best I've read.*—Emehrkay
 
 ---
 
-> This book is awesome and blowing my mind in a great way.”  
-> —Johnathan Mukai
+*This book is awesome and blowing my mind in a great way.”*—Johnathan Mukai
 
 ---
 
-> The best discussion of functional programming in js I've found so far.  
-> —Nicholas Faiz
+*The best discussion of functional programming in js I've found so far.*—Nicholas Faiz
 
 ---
 
-> Reading JavaScript Allongé by raganwald. This book is so good that it's blowing my mind.  
-> —Guillermo Pascual
+*Reading JavaScript Allongé by raganwald. This book is so good that it's blowing my mind.*—Guillermo Pascual
 
 ---
 
@@ -83,8 +76,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ### essays
 
-> [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata](http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html) is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I'll be passing around to some of my bootcamp friends who are curious taste some of the theory they don't get exposure to.  
-> —[kjeetgil](https://news.ycombinator.com/item?id=19228668)
+*[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata](http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html) is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I'll be passing around to some of my bootcamp friends who are curious taste some of the theory they don't get exposure to.*—[kjeetgil](https://news.ycombinator.com/item?id=19228668)
 
 <div class="related">
   <ul>
@@ -92,15 +84,14 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != "2019" %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+          <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
       {% endunless %}
     {% endfor %}
   </ul>
 </div>
 
-> [Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html) sounds like poetry. Beautifully written!  
-> —[nikodunk](https://news.ycombinator.com/item?id=17956855)
+*[Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html) sounds like poetry. Beautifully written!*—[nikodunk](https://news.ycombinator.com/item?id=17956855)
 
 <div class="related">
   <ul>
@@ -108,15 +99,14 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != "2018" %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+          <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
       {% endunless %}
     {% endfor %}
   </ul>
 </div>
 
-> What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.  
-> —[teh_klev](https://news.ycombinator.com/item?id=16036986) on [How Raganwald Lost His Crown](http://braythwayt.com/2017/12/29/crown.html)
+*What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.*—[teh_klev](https://news.ycombinator.com/item?id=16036986) on [How Raganwald Lost His Crown](http://braythwayt.com/2017/12/29/crown.html)
 
 <div class="related">
   <ul>
@@ -124,15 +114,14 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != "2017" %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+          <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
       {% endunless %}
     {% endfor %}
   </ul>
 </div>
 
-> I really enjoyed [Why Recursive Data Structures](http://raganwald.com/2016/12/27/recursive-data-structures.html) because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.  
-> —[johnfn](https://news.ycombinator.com/item?id=13308232)
+*I really enjoyed [Why Recursive Data Structures](http://raganwald.com/2016/12/27/recursive-data-structures.html) because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.*—[johnfn](https://news.ycombinator.com/item?id=13308232)
 
 <div class="related">
   <ul>
@@ -141,7 +130,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+            <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
         {% endunless %}
       {% endfor %}
@@ -182,7 +171,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+            <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
         {% endunless %}
       {% endfor %}
@@ -233,6 +222,6 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ---
 
-These creative works are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> except where copyright is otherwise asserted.
+These creative works are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a*except where copyright is otherwise asserted.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
