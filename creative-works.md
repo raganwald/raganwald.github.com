@@ -71,7 +71,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2019" %}
+      {% unless post.tags contains "noindex" or or post.title == "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata" or postyear != "2019" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -95,7 +95,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
   </ul>
 </div>
 
-*What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.*—[teh_klev](https://news.ycombinator.com/item?id=16036986) on [How Raganwald Lost His Crown](http://braythwayt.com/2017/12/29/crown.html)
+[How Raganwald Lost His Crown](http://braythwayt.com/2017/12/29/crown.html): *What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.*—[teh_klev](https://news.ycombinator.com/item?id=16036986)
 
 <div class="related">
   <ul>
