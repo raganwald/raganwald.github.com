@@ -71,7 +71,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or or post.title == "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata" or postyear != "2019" %}
+      {% unless post.tags contains "noindex" or post.title == "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata" or postyear != "2019" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
