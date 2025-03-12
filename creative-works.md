@@ -7,6 +7,7 @@ twentytwentytodate: ["2025", "2024", "2023", "2022", "2021", "2020"]
 sixteenfifteen: ["2019", "2018", "2017", "2016", "2015"]
 twentytentwentyfourteen: ["2014", "2013", "2012", "2011", "2010"]
 earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
+quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html", "http://raganwald.com/2018/09/10/why-y.html", "http://braythwayt.com/2017/12/29/crown.html", "http://raganwald.com/2016/12/27/recursive-data-structures.html"]
 ---
 
 ## Recent
@@ -18,7 +19,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
     {% for oldyear in page.twentytwentytodate %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or post.url in quoted or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
@@ -70,7 +71,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or post.url == "http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html" or postyear != "2019" %}
+      {% unless post.tags contains "noindex" or post.url in quoted or post.url in quoted or postyear != "2019" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -85,7 +86,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or post.url == "http://raganwald.com/2018/09/10/why-y.html" or postyear != "2018" %}
+      {% unless post.tags contains "noindex" or post.url in quoted or postyear != "2018" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -100,7 +101,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or or postyear != "2017" %}
+      {% unless post.tags contains "noindex" or post.url in quoted or postyear != "2017" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -116,7 +117,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
     {% for oldyear in page.sixteenfifteen %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or post.url == "http://raganwald.com/2016/12/27/recursive-data-structures.html" or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or post.url in quoted or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
