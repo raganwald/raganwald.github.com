@@ -174,6 +174,7 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
 - [rewrite_rails](https://github.com/raganwald-deprecated/rewrite_rails), add syntactic abstractions like `andand` and String-to-Block to Rails projects without monkey-patching
 - [ick](https://github.com/raganwald-deprecated/ick), an ad hoc, informally-specified, bug-ridden, slow implementation of half of Monads, written in ES5
 - [String#to_proc](https://github.com/raganwald/string-to-proc-dot-rb), a port of the String Lambdas from Oliver Steele’s Functional Javascript library
+- [nCrypt Light](https://info-mac.org/viewtopic.php?t=7139), "strong" encryption for the origial Apple Newton in 1994
 
 ### books
 
