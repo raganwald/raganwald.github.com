@@ -45,10 +45,6 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ---
 
-*Your explanation of closures in JavaScript Allongé is the best I've read.*—Emehrkay
-
----
-
 *This book is awesome and blowing my mind in a great way.”*—Johnathan Mukai
 
 ---
