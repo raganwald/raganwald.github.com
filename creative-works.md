@@ -7,7 +7,7 @@ twentytwentytodate: ["2025", "2024", "2023", "2022", "2021", "2020"]
 sixteenfifteen: ["2019", "2018", "2017", "2016", "2015"]
 twentytentwentyfourteen: ["2014", "2013", "2012", "2011", "2010"]
 earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
-quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html", "http://raganwald.com/2018/09/10/why-y.html", "http://braythwayt.com/2017/12/29/crown.html", "http://raganwald.com/2016/12/27/recursive-data-structures.html"]
+quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html", "https://raganwald.com/2018/09/10/why-y.html", "https://braythwayt.com/2017/12/29/crown.html", "https://raganwald.com/2016/12/27/recursive-data-structures.html"]
 ---
 
 ## Recent
@@ -16,10 +16,13 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
 
 <div class="related">
   <ul>
+    <li>
+      <em>Wow! Thank you so much for taking the time to write</em> <a href="https://raganwald.com/2020/05/03/fractran.html">Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language</a><em>, and for sharing it :) Will have to read a few more times before it properly sinks in I think! Really thorough and well written!</em>
+    </li>
     {% for oldyear in page.twentytwentytodate %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or post.title == "Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language" or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
@@ -55,9 +58,9 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
 ### talks
 
 - [Optimism and the Growth Mindset](https://www.youtube.com/embed/Zh_2OHgYdvg) from [NDC Conferences][NDC]
-- [Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4) from [DevDay](http://devday.pl)
+- [Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4) from [DevDay](https://devday.pl)
 - [Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc) from [Nordic Ruby](nordicruby.org)
-- [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44) from [DevDay](http://devday.pl)
+- [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44) from [DevDay](https://devday.pl)
 - [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877) from [NDC Conferences][NDC]
 - [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) from [NDC Conferences][NDC]
 
@@ -68,7 +71,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
 <div class="related">
   <ul>
     <li>
-      <a href="http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html">A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata</a> <em>is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I’ll be passing around to some of my bootcamp friends who are curious taste some of the theory they don’t get exposure to.</em> —kjeetgil
+      <a href="https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html">A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata</a> <em>is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I’ll be passing around to some of my bootcamp friends who are curious taste some of the theory they don’t get exposure to.</em> —kjeetgil
     </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
@@ -80,7 +83,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% endfor %}
 
     <li>
-      <a href="http://raganwald.com/2018/09/10/why-y.html">Why Y? Deriving the Y Combinator in JavaScript</a> <em>sounds like poetry. Beautifully written!</em> —nikodunk
+      <a href="https://raganwald.com/2018/09/10/why-y.html">Why Y? Deriving the Y Combinator in JavaScript</a> <em>sounds like poetry. Beautifully written!</em> —nikodunk
     </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
@@ -92,7 +95,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% endfor %}
 
     <li>
-      <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>: <em>What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.</em> —teh_klev
+      <a href="https://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>: <em>What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.</em> —teh_klev
     </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
@@ -104,7 +107,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% endfor %}
 
     <li>
-      <em>I really enjoyed</em> <a href="http://raganwald.com/2016/12/27/recursive-data-structures.html">Why recursive data structures?</a> <em>because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.</em> —johnfn
+      <em>I really enjoyed</em> <a href="https://raganwald.com/2016/12/27/recursive-data-structures.html">Why recursive data structures?</a> <em>because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.</em> —johnfn
     </li>
     {% for oldyear in page.sixteenfifteen %}
       {% for post in site.posts %}
@@ -136,11 +139,11 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
 
 ### talks
 
-- [The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](http://www.youtube.com/watch?v=hp7sgLVepF8) from [Nordic JS](http://nordicjs.com).
+- [The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](https://www.youtube.com/watch?v=hp7sgLVepF8) from [Nordic JS](https://nordicjs.com).
 - [Javascript Combinators](https://vimeo.com/97408202) from [NDC Conferences][NDC]
 - [The Art of the Javascript Metaobject Protocol](https://vimeo.com/97415345) from [NDC Conferences][NDC]
-- [Invent the future, don't recreate the past](http://www.youtube.com/watch?v=uYcAjr2J_rU) from [Future JS](http://fullstackfest.com)
-- [The Not-So-Big Software Design](http://www.youtube.com/watch?v=arsK-CN5YDg) from [wroc_love.rb](http://www.wrocloverb.com).
+- [Invent the future, don't recreate the past](https://www.youtube.com/watch?v=uYcAjr2J_rU) from [Future JS](https://fullstackfest.com)
+- [The Not-So-Big Software Design](https://www.youtube.com/watch?v=arsK-CN5YDg) from [wroc_love.rb](https://www.wrocloverb.com).
 - [I have a good feeling about this - Why tooling is poised to make the jump to hyperspace](https://youtube.com/watch?v=Re2SKhaK73I) from [Web Rebels](https://www.webrebels.org)
 - [The Rebellion Imperative](https://vimeo.com/53265664) from [Øredev](https://vimeo.com/user4280938)
 
@@ -200,6 +203,6 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
 
 ---
 
-These creative works are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> except where copyright is otherwise asserted.
+These creative works are licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> except where copyright is otherwise asserted.
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+<a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
