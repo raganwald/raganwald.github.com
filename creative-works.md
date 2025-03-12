@@ -78,11 +78,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
         </li>
       {% endunless %}
     {% endfor %}
-  </ul>
-</div>
 
-<div class="related">
-  <ul>
     <li>
       <a href="http://raganwald.com/2018/09/10/why-y.html">Why Y? Deriving the Y Combinator in JavaScript</a> <em>sounds like poetry. Beautifully written!</em>—<a href="https://news.ycombinator.com/item?id=17956855">nikodunk</a>
     </li>
@@ -94,13 +90,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
         </li>
       {% endunless %}
     {% endfor %}
-  </ul>
-</div>
 
-[How Raganwald Lost His Crown](http://braythwayt.com/2017/12/29/crown.html): *What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.*—[teh_klev](https://news.ycombinator.com/item?id=16036986)
-
-<div class="related">
-  <ul>
     <li>
       <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>: <em>What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.</em>—<a href="https://news.ycombinator.com/item?id=16036986">teh_klev</a>
     </li>
@@ -112,13 +102,9 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
         </li>
       {% endunless %}
     {% endfor %}
-  </ul>
-</div>
 
-<div class="related">
-  <ul>
     <li>
-      <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>: <em>What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.</em>—<a href="https://news.ycombinator.com/item?id=16036986">teh_klev</a>
+      <em>I really enjoyed</em> <a href="http://raganwald.com/2016/12/27/recursive-data-structures.html">Why recursive data structures?</a> <em>because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.</em>—<a href="https://news.ycombinator.com/item?id=13308232">johnfn</a>
     </li>
     {% for oldyear in page.sixteenfifteen %}
       {% for post in site.posts %}
@@ -131,6 +117,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
       {% endfor %}
     {% endfor %}
   </ul>
+    
 </div>
 
 ## 2010 - 2014
