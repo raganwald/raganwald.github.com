@@ -4,9 +4,48 @@ subtitle: Creative Works
 layout: default
 tags: [allonge]
 twentytwentytodate: ["2025", "2024", "2023", "2022", "2021", "2020"]
-sixteenfifteen: ["2016", "2015"]
+sixteenfifteen: ["2019", "2018", "2017", "2016", "2015"]
 twentytentwentyfourteen: ["2014", "2013", "2012", "2011", "2010"]
 earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
+---
+
+## Quotes on JavaScript Allongé
+
+---
+
+> [JavaScript Allongé](/assets/javascriptallongesix.pdf) will make you a better programmer, regardless of whether you use JS regularly or not. But if you do, I think this book is as close to capturing the true soul of Javascript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.  
+> —[acjohnson55](https://news.ycombinator.com/item?id=6480649)
+
+---
+
+> Spent the afternoon reading raganwald's JavaScript Allongé, The Six Edition. Highly recommended. Let the refactoring begin!  
+> —Marcus Vorwaller
+
+---
+
+> I think it’s one of the best tech books I’ve read since Sedgewick’s Algorithms in C.  
+> —Andrey Sidorov
+
+---
+
+> Your explanation of closures in JavaScript Allongé is the best I've read.  
+> —Emehrkay
+
+---
+
+> This book is awesome and blowing my mind in a great way.”  
+> —Johnathan Mukai
+
+---
+
+> The best discussion of functional programming in js I've found so far.  
+> —Nicholas Faiz
+
+---
+
+> Reading JavaScript Allongé by raganwald. This book is so good that it's blowing my mind.  
+> —Guillermo Pascual
+
 ---
 
 ## 2020 - current
@@ -20,7 +59,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
         {% endunless %}
       {% endfor %}
@@ -31,18 +70,6 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 ## 2015 - 2019
 
 ### books
-
-*[JavaScript Allongé](/assets/javascriptallongesix.pdf) will make you a better programmer, regardless of whether you use JS regularly or not. But if you do, I think this book is as close to capturing the true soul of Javascript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.*—[acjohnson55](https://news.ycombinator.com/item?id=6480649)
-
-*Spent the afternoon reading raganwald's JavaScript Allongé, The Six Edition. Highly recommended. Let the refactoring begin!*—Marcus Vorwaller
-
-*I think it’s one of the best tech books I’ve read since Sedgewick’s Algorithms in C.*—Andrey Sidorov
-
-*This book is awesome and blowing my mind in a great way.”*—Johnathan Mukai
-
-*The best discussion of functional programming in js I've found so far.*—Nicholas Faiz
-
-*Reading JavaScript Allongé by raganwald. This book is so good that it's blowing my mind.*—Guillermo Pascual
 
 - [JavaScript Allongé, The "Six" Edition](https://leanpub.com/javascriptallongesix) ([pdf](/assets/javascriptallongesix.pdf), [podcast](https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/))
 
@@ -67,7 +94,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != "2019" %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
       {% endunless %}
     {% endfor %}
@@ -82,7 +109,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != "2018" %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
       {% endunless %}
     {% endfor %}
@@ -97,7 +124,10 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != "2017" %}
         <li>
-          <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+          <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a> (<span>2017</span>)
+        </li>
+        <li>
+          <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
       {% endunless %}
     {% endfor %}
@@ -113,7 +143,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
         {% endunless %}
       {% endfor %}
@@ -154,17 +184,13 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a*(<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+            <a href="{{ post.url }}">{{ post.title }}</a> (<span>{{ post.date | date: "%Y" }}</span>){% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
         {% endunless %}
       {% endfor %}
     {% endfor %}
   </ul>
 </div>
-
-### bonus essay
-
-- [How Raganwald Lost His Crown](http://braythwayt.com/2017/12/29/crown.html)
 
 ## Selected early works
 
@@ -205,6 +231,6 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ---
 
-These creative works are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a*except where copyright is otherwise asserted.
+These creative works are licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> except where copyright is otherwise asserted.
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
