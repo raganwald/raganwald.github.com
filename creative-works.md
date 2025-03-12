@@ -65,10 +65,11 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
 
 ### essays
 
-[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata](http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html) *is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I'll be passing around to some of my bootcamp friends who are curious taste some of the theory they don't get exposure to.*—[kjeetgil](https://news.ycombinator.com/item?id=19228668)
-
 <div class="related">
   <ul>
+    <li>
+      <a href="http://raganwald.com/2019/02/14/i-love-programming-and-programmers.html">A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata</a> <em>is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I’ll be passing around to some of my bootcamp friends who are curious taste some of the theory they don’t get exposure to.</em>—<a href="https://news.ycombinator.com/item?id=19228668">kjeetgil</a>
+    </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or post.title == "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata" or postyear != "2019" %}
@@ -80,13 +81,14 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
   </ul>
 </div>
 
-[Why Y? Deriving the Y Combinator in JavaScript](http://raganwald.com/2018/09/10/why-y.html) *sounds like poetry. Beautifully written!*—[nikodunk](https://news.ycombinator.com/item?id=17956855)
-
 <div class="related">
   <ul>
+    <li>
+      <a href="http://raganwald.com/2018/09/10/why-y.html">Why Y? Deriving the Y Combinator in JavaScript</a> <em>sounds like poetry. Beautifully written!</em>—<a href="https://news.ycombinator.com/item?id=17956855">nikodunk</a>
+    </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2018" %}
+      {% unless post.tags contains "noindex" or post.title="Why Y? Deriving the Y Combinator in JavaScript" or postyear != "2018" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -99,6 +101,9 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
 
 <div class="related">
   <ul>
+    <li>
+      <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>: <em>What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.</em>—<a href="https://news.ycombinator.com/item?id=16036986">teh_klev</a>
+    </li>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
       {% unless post.tags contains "noindex" or postyear != "2017" %}
@@ -110,10 +115,11 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
   </ul>
 </div>
 
-*I really enjoyed* [Why Recursive Data Structures](http://raganwald.com/2016/12/27/recursive-data-structures.html) *because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.*—[johnfn](https://news.ycombinator.com/item?id=13308232)
-
 <div class="related">
   <ul>
+    <li>
+      <a href="http://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>: <em>What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.</em>—<a href="https://news.ycombinator.com/item?id=16036986">teh_klev</a>
+    </li>
     {% for oldyear in page.sixteenfifteen %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
