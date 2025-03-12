@@ -19,7 +19,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% for oldyear in page.twentytwentytodate %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or post.url in page.quoted or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
@@ -71,7 +71,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or post.url in page.quoted or postyear != "2019" %}
+      {% unless post.tags contains "noindex" or postyear != "2019" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -86,7 +86,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or post.url in page.quoted or postyear != "2018" %}
+      {% unless post.tags contains "noindex" or postyear != "2018" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -101,7 +101,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
   <ul>
     {% for post in site.posts %}
       {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or post.url in page.quoted or postyear != "2017" %}
+      {% unless post.tags contains "noindex" or postyear != "2017" %}
         <li>
           <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
         </li>
@@ -117,7 +117,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% for oldyear in page.sixteenfifteen %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or post.url in page.quoted or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
@@ -158,7 +158,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% for oldyear in page.twentytentwentyfourteen %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or post.url in page.quoted or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
           </li>
@@ -195,7 +195,7 @@ quoted: ["http://raganwald.com/2019/02/14/i-love-programming-and-programmers.htm
     {% for oldyear in page.earlyyears %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or post.url in page.quoted or postyear != oldyear %}
+        {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>
           </li>
