@@ -12,19 +12,6 @@ My experience is itemized in more detail on [LinkedIn]; my résumé is available
 
 ### I am technical
 
-*“When we built Threadalyzer, Reg developed
-the technical design, partitioned it into
-manageable pieces for a group of developers,
-and also wrote a significant chunk of the
-code himself. Along the way, he insisted on
-regular code reviews, asking appropriate and
-probing questions about design decisions. I
-read his code, too (he wouldn't have it any
-other way), but I had a hard time finding
-flaws. The result was probably the most
-solid codebase that I've ever worked on.”*  
-—Christian Jaekl, Software Engineer and Concurrency Domain Expert
-
 *“Reg hired me as a senior developer to work
 on a new product. Reg led the team and did
 all the high-level design. Since the team was
@@ -33,15 +20,15 @@ coding a good portion of the product.
 Over that time I obviously had a great deal
 of contact with Reg's design and his code,
 and both were excellent. The project was
-completed on time and was successful.
-Thanks to clean design and code, it has gone
-through several releases with major new
-features added without significant changes to
-the original structure (of the design or the
-code).*  
-John MacMIllan, Software Architect, IBM Canada Research Lab
+completed on time and was successful.*  
+—John MacMIllan, Software Architect, IBM Canada Research Lab
 
-I was the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection. I've written web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've worked at global scale, as team lead for ING (USA)'s web banking, on GitHub's web flow, and at PagerDuty.[^ing][^GitHub]
+I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality. I was also the hands-on technical product manager for [JProbe Threadalyzer], the first product to analyze running Java programs and perform predictive and actual deadlock and data race detection, as well as leading development of web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've led development of ING (USA)'s web banking, and shipped features on GitHub's web flow.[^ing][^GitHub]
+
+[insights]: https://support.pagerduty.com/main/docs/insights
+[operational review]: https://support.pagerduty.com/main/docs/operational-reviews
+[response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
+[recent changes]: https://support.pagerduty.com/main/docs/recent-changes
 
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
@@ -49,21 +36,11 @@ I was the hands-on technical product manager for [JProbe Threadalyzer], the firs
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 [Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 
-At PagerDuty, I was the hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality; I handled critical incidents as an Incident Commander, wrote technical product road maps, and collaborated across product group lines to develop, review, and implement engineering-wide technical standards and transitions.
-
-[insights]: https://support.pagerduty.com/main/docs/insights
-[operational review]: https://support.pagerduty.com/main/docs/operational-reviews
-[response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
-[recent changes]: https://support.pagerduty.com/main/docs/recent-changes
-
 I've merged code written in C++, Java, Ruby, JavaScript, Ember, React, TypeScript, and more.[^more]
 
 [^more]: I've written commerical software using Turbo Pascal, Lightspeed C, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the web.
 
 ### I ship products
-
-*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
-—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
 
 *“Reg and I worked together for a year and a
 half. During that time, he spearheaded the
@@ -85,7 +62,7 @@ I align technology, design, prioritization, process, and architecture with the c
 
 ### I lead through collaboration
 
-*“Extraordinary communication skills...able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership...not forced in any way. You talk to, and get respect, from the Interns to the C-Level.”*  
+*“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.”*  
 —Richard Hartshorne, Senior Talent Partner, PagerDuty
 
 I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. I have been recognized with two leadership awards.[^awards]
@@ -93,6 +70,9 @@ I integrate my experience as a product-focused technologist into building and le
 [^awards]: I was awarded the Breakthrough award in 2019 for my efforts to elevate the company's product line strategically, and the Inclusively Leading and Learning award in 2022 for my work advancing the company's engineering capabilities. 
 
 ### My passion is making something wonderful
+
+*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
+—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
 
 My belief is that software that cuts waste, eliminates errors, and improves productivity is necessary, but insufficient to launch a movement that will one day change the world. I aspire to collaboratively ship software that leads customers to change the way they think about the work they do.
 
@@ -125,6 +105,23 @@ I bring forty years of product- and customer-centric business and technical expe
 [creative works]: /creative-works.html
 [ja]: https://leanpub.com/javascriptallongesix
 [japdf]: /assets/javascriptallongesix.pdf
+
+<!--
+
+*“When we built Threadalyzer, Reg developed
+the technical design, partitioned it into
+manageable pieces for a group of developers,
+and also wrote a significant chunk of the
+code himself. Along the way, he insisted on
+regular code reviews, asking appropriate and
+probing questions about design decisions. I
+read his code, too (he wouldn't have it any
+other way), but I had a hard time finding
+flaws. The result was probably the most
+solid codebase that I've ever worked on.”*  
+—Christian Jaekl, Software Engineer and Concurrency Domain Expert
+
+-->
 
 ---
 
