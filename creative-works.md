@@ -20,6 +20,7 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
+          <li>
             {% if post.quoteprefix %}
               <em>{{ post.quoteprefix }}</em>
             {% endif %}
@@ -27,6 +28,7 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
             {% if post.quote %}
               <em>{{ post.quote }}</em>{% if post.quoteauthor %}—{{ post.quoteauthor }}{% endif %}
             {% endif %}
+          </li>
         {% endunless %}
       {% endfor %}
     {% endfor %}
