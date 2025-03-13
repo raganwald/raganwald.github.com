@@ -38,7 +38,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ### books
 
-[JavaScript Allongé] ([pdf], [podcast]) *is as close to capturing the true soul of JavaScript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.*—acjohnson55 • *This book is awesome and blowing my mind in a great way.”*—Johnathan Mukai • *The best discussion of functional programming in js I've found so far.*—Nicholas Faiz • *I think it’s one of the best tech books I’ve read since Sedgewick’s* [Algorithms in C](https://archive.org/details/algorithmsinc0000sedg_e7h2).—Andrey Sidorov
+[JavaScript Allongé] ([pdf], [podcast]) *is as close to capturing the true soul of JavaScript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.*—acjohnson55 • *This book is awesome and blowing my mind in a great way.”*—Johnathan Mukai • *The best discussion of functional programming in js I've found so far.*—Nicholas Faiz • *I think it’s one of the best tech books I’ve read since Sedgewick’s* Algorithms in C.—Andrey Sidorov
 
 [JavaScript Allongé]: https://leanpub.com/javascriptallongesix
 [pdf]: /assets/javascriptallongesix.pdf
