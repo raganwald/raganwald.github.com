@@ -1,5 +1,7 @@
 ---
-title: 'The Mouse Trap'
+title: "The Mouse Trap"
+suffix: "A+ story. Can't believe how much this stuff happens."
+quoteauthor: "Xichekolas"
 tags: [allonge]
 ---
 

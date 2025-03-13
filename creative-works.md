@@ -195,6 +195,9 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>
+            {% if post.quote %}:
+              <em>{{ post.quote }}</em>{% if post.quoteauthor %}&emdash;{{ post.quoteauthor }}{% endif %}
+            {% endif %}
           </li>
         {% endunless %}
       {% endfor %}
