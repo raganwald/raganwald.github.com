@@ -7,7 +7,6 @@ twentytwentytodate: ["2025", "2024", "2023", "2022", "2021", "2020"]
 twentyfifteentwentynineteen: ["2019", "2018", "2017", "2016", "2015"]
 twentytentwentyfourteen: ["2014", "2013", "2012", "2011", "2010"]
 earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
-quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html", "https://raganwald.com/2018/09/10/why-y.html", "https://braythwayt.com/2017/12/29/crown.html", "https://raganwald.com/2016/12/27/recursive-data-structures.html"]
 ---
 
 ## Recent
