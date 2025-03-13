@@ -1,7 +1,7 @@
 ---
 title: OOP practiced backwards is "POO"
 layout: default
-tags: homoiconic
+tags: [homoiconic]
 ---
 
 Over on [Hacker News](http://news.ycombinator.com/item?id=1991949), there was a small discussion about OOP and specifically about inheritance. "lyudmil" pointed out:
