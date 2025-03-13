@@ -1,7 +1,7 @@
 ---
 title: "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata"
-quote: is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I’ll be passing around to some of my bootcamp friends who are curious taste some of the theory they don’t get exposure to.
-quoteauthor:—kjeetgil
+quote: "is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I’ll be passing around to some of my bootcamp friends who are curious taste some of the theory they don’t get exposure to."
+quoteauthor: —kjeetgil
 tags: [allonge,mermaid]
 ---
 
