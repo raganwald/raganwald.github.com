@@ -106,15 +106,15 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
       {% endunless %}
     {% endfor %}
 
-    <li>
-      <em>I really enjoyed</em> <a href="https://raganwald.com/2016/12/27/recursive-data-structures.html">Why recursive data structures?</a> <em>because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.</em> —johnfn
-    </li>
     {% for oldyear in page.sixteenfifteen %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+            <a href="{{ post.url }}">{{ post.title }}</a>
+            {% if post.quote %}
+              <em>{{ post.quote }}</em>{% if post.quoteauthor %}—{{ post.quoteauthor }}{% endif %}
+            {% endif %}
           </li>
         {% endunless %}
       {% endfor %}
@@ -156,7 +156,13 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
+            {% if post.quoteprefix %}
+              <em>{{ post.quoteprefix }}</em>
+            {% endif %}
+              <a href="{{ post.url }}">{{ post.title }}</a>
+            {% if post.quote %}
+              <em>{{ post.quote }}</em>{% if post.quoteauthor %}—{{ post.quoteauthor }}{% endif %}
+            {% endif %}
           </li>
         {% endunless %}
       {% endfor %}
@@ -194,8 +200,11 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a>
-            {% if post.quote %}:
+            {% if post.quoteprefix %}
+              <em>{{ post.quoteprefix }}</em>
+            {% endif %}
+              <a href="{{ post.url }}">{{ post.title }}</a>
+            {% if post.quote %}
               <em>{{ post.quote }}</em>{% if post.quoteauthor %}—{{ post.quoteauthor }}{% endif %}
             {% endif %}
           </li>

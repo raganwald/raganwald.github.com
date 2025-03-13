@@ -1,5 +1,8 @@
 ---
 title: "Why Recursive Data Structures?"
+quoteprefix: I really enjoyed
+quote: because it introduced me to a new data structure and some very elegant and (subjectively) beautiful algorithms.
+quoteauthor: johnfn
 layout: default
 tags: [allonge]
 ---
