@@ -1,5 +1,7 @@
 ---
 title: "Duck Programming"
+quote: While one of the main points of the article seems to be "duck programming is bad because it circumvents proper workflows", I suspect you could also reverse it and say "people write duck programs to avoid terrible workflows"
+quoteauthor: overgard
 tags: [allonge]
 ---
 
