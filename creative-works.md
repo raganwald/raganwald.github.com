@@ -4,7 +4,7 @@ subtitle: Creative Works
 layout: default
 tags: [allonge]
 twentytwentytodate: ["2025", "2024", "2023", "2022", "2021", "2020"]
-sixteenfifteen: ["2019", "2018", "2017", "2016", "2015"]
+twentyfifteentwentynineteen: ["2019", "2018", "2017", "2016", "2015"]
 twentytentwentyfourteen: ["2014", "2013", "2012", "2011", "2010"]
 earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html", "https://raganwald.com/2018/09/10/why-y.html", "https://braythwayt.com/2017/12/29/crown.html", "https://raganwald.com/2016/12/27/recursive-data-structures.html"]
@@ -69,49 +69,21 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
 ### essays
 
 <div class="related">
-  <ul>
-    <li>
-      <a href="https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html">A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata</a> <em>is amazingly well written. You covered a good deal of any introduction to computational theory course in a straightforward, well motivated matter. This is definitely something I’ll be passing around to some of my bootcamp friends who are curious taste some of the theory they don’t get exposure to.</em> —kjeetgil
-    </li>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or post.title == "A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata" or postyear != "2019" %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
-        </li>
-      {% endunless %}
-    {% endfor %}
-
-    <li>
-      <a href="https://raganwald.com/2018/09/10/why-y.html">Why Y? Deriving the Y Combinator in JavaScript</a> <em>sounds like poetry. Beautifully written!</em> —nikodunk
-    </li>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or post.title="Why Y? Deriving the Y Combinator in JavaScript" or postyear != "2018" %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
-        </li>
-      {% endunless %}
-    {% endfor %}
-
+<!--
     <li>
       <a href="https://braythwayt.com/2017/12/29/crown.html">How Raganwald Lost His Crown</a>: <em>What a thoroughly enjoyable yarn which took me on a journey from the periodic table, star formation, islands of stability and a good old Wikipedia vortex.</em> —teh_klev
     </li>
-    {% for post in site.posts %}
-      {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-      {% unless post.tags contains "noindex" or postyear != "2017" %}
-        <li>
-          <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
-        </li>
-      {% endunless %}
-    {% endfor %}
-
-    {% for oldyear in page.sixteenfifteen %}
+-->
+  <ul>
+    {% for oldyear in page.twentyfifteentwentynineteen %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
         {% unless post.tags contains "noindex" or postyear != oldyear %}
           <li>
-            <a href="{{ post.url }}">{{ post.title }}</a>
+            {% if post.quoteprefix %}
+              <em>{{ post.quoteprefix }}</em>
+            {% endif %}
+              <a href="{{ post.url }}">{{ post.title }}</a>
             {% if post.quote %}
               <em>{{ post.quote }}</em>{% if post.quoteauthor %}—{{ post.quoteauthor }}{% endif %}
             {% endif %}
