@@ -1,5 +1,7 @@
 ---
 layout: default
+quote: "Thanks for posting this, great stuff..."
+quoteauthor: Mark Watson
 published: true
 ---
 
