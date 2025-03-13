@@ -16,16 +16,17 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
 
 <div class="related">
   <ul>
-    <li>
-      <em>Wow! Thank you so much for taking the time to write</em> <a href="https://raganwald.com/2020/05/03/fractran.html">Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language</a><em>, and for sharing it :) Will have to read a few more times before it properly sinks in I think! Really thorough and well written!</em>
-    </li>
     {% for oldyear in page.twentytwentytodate %}
       {% for post in site.posts %}
         {% capture postyear %}{{post.date | date: '%Y'}}{% endcapture %}
-        {% unless post.tags contains "noindex" or post.title == "Remembering John Conway's FRACTRAN, a ridiculous, yet surprisingly deep language" or postyear != oldyear %}
-          <li>
-            <a href="{{ post.url }}">{{ post.title }}</a>{% if post.tags contains "wip"%} <span title="This essay is a work in progress" class="fas fa-edit"></span>{% endif %}
-          </li>
+        {% unless post.tags contains "noindex" or postyear != oldyear %}
+            {% if post.quoteprefix %}
+              <em>{{ post.quoteprefix }}</em>
+            {% endif %}
+              <a href="{{ post.url }}">{{ post.title }}</a>
+            {% if post.quote %}
+              <em>{{ post.quote }}</em>{% if post.quoteauthor %}—{{ post.quoteauthor }}{% endif %}
+            {% endif %}
         {% endunless %}
       {% endfor %}
     {% endfor %}
