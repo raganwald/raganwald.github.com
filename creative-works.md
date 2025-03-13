@@ -196,7 +196,7 @@ quoted: ["https://raganwald.com/2019/02/14/i-love-programming-and-programmers.ht
           <li>
             <a href="{{ post.url }}">{{ post.title }}</a>
             {% if post.quote %}:
-              <em>{{ post.quote }}</em>{% if post.quoteauthor %}&emdash;{{ post.quoteauthor }}{% endif %}
+              <em>{{ post.quote }}</em>{% if post.quoteauthor %}—{{ post.quoteauthor }}{% endif %}
             {% endif %}
           </li>
         {% endunless %}
