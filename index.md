@@ -6,13 +6,22 @@ layout: default
 
 ## Who I am
 
-I am Reginald Braithwaite, a technical product leader passionate about collaboration in the service of making something wonderful. I have forty years of experience coding and shipping software that powers businesses. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+I am Reginald Braithwaite, a technical product leader with have forty years of experience coding and shipping software that powers business. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager. I once wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
 
 My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works page]. My personal email is [raganwald@gmail.com].
 
+### What I believe
+
+- I believe that all software is social software. I believe that software that fails to become either the comunication medium or source of truth for people collaborating on critical work... is doomed to become a commodity.
+- I believe in systems-first thinking. I believe that human mistakes are opportunities for organizational improvement.
+- I believe that "improved productivity" is the faster horses of enterprise software. I believe that transforming the way customers think about and do their work is fundamental to creating and dominating entirely new markets.
+
 ## What I do
+
+*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
+—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
 
 ### I am technical
 
@@ -74,15 +83,6 @@ I align technology, design, prioritization, process, and architecture with the c
 I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. I have been recognized with two leadership awards.[^awards]
 
 [^awards]: I was awarded the Breakthrough award in 2019 for my efforts to elevate the company's product line strategically, and the Inclusively Leading and Learning award in 2022 for my work advancing the company's engineering capabilities. 
-
-### My passion is making something wonderful
-
-*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
-—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
-
-My belief is that software that cuts waste, eliminates errors, and improves productivity is necessary, but insufficient to launch a movement that will one day change the world. I aspire to collaboratively ship software that leads customers to change the way they think about the work they do.
-
-I believe in the virtuous flywheel effect: Customers who change the way they work discover new needs and opportunities, which we in turn serve with follow-on features and products.
 
 ### I grow engineering
 
