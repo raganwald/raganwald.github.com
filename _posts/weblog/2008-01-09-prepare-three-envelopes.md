@@ -13,9 +13,9 @@ When they get to their new office, their predecessor is clearing out their desk.
 2. The second is labeled, “*Open when in even more trouble;*”
 3. The third is labeled, "*Open when all hope is lost.*"
 
-Well, they research anti-patterns in software project management; they have a look around; they talk to everyone; they identify the key players; and they go to leadership with a clear explanation of what the problems are, what’s realistic to achieve, and what needs to be done.
+Well, they research anti-patterns in software project management; they talk to everyone; they identify the key players; and they go to leadership with a clear explanation of what the problems are, what’s realistic to achieve, and what needs to be done.
 
-To their surprise, leadership seems to go along with things and tells them to make whatever changes they need. They institute daily builds, stand up meetings, rapid iterations, and the team starts tracking velocity. Two months later, at the quarterly review, they present their progress. The team is producing at 200% of the previous rate, morale is up, and they’re going to get 80% of the previous functionality done with less than 90 days of slip off the impossible schedule.
+To their surprise, leadership goes along with things and tells them to make whatever changes they need. They institute daily builds; they lead stand up meetings, they deploy rapid iterations; and the team starts tracking velocity. Two months later, at the quarterly review, they present their progress: Velocity is 200% of the previous rate, morale is up, and they’re going to get 80% of the previous functionality done with less than 90 days of slip off the impossible schedule.
 
 There is silence, then leadership tells their that this is *unacceptable*. Sure, they agreed they could institute change. That’s their job. However leadership did not approve any compromise in scope or delivery date. This is a competitive business, and there are thousands of qualified managers looking for a job who can come in and get things done. Do they want to admit they can’t do their job?
 
