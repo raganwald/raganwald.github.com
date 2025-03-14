@@ -37,7 +37,7 @@ Things go along well for a month, until the [Hawthorne Effect] wears off--that i
 
 ### even more trouble
 
-Well, the first envelope helped, maybe the second one will too. The manager opens the second envelope, and inside there is another three by five card inscribed, **Reorganize**.
+Well, the first envelope helped, maybe the second one will help as well. The new manager opens the second envelope, and inside there is another three by five card inscribed, **Reorganize**.
 
 The manager declares that the team needs to split into pairs along architectural lines, and has the ticket system reconfigured since individuals are no longer responsible for the end-to-end coding of features. The Hawthorne Effect restarts, morale is improved thanks to "A change is as good as a rest," and the work gets back on track.
 
