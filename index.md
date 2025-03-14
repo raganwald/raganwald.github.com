@@ -7,7 +7,7 @@ layout: default
 ## Who I am
 
 *“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
-—<div style="font-size:0.8em; text-align:right;">Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
+<div style="font-size:0.8em; text-align:right;">—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
 I am technical; I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
 
