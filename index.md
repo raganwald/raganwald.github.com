@@ -83,7 +83,7 @@ My teams know how to ship "good" without being seduced by "sufficient" or derail
 [^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
 [^PDNYSE]: PagerDuty went public on the NYSE in 2019.
 
-### I grow engineering groups
+### I grow engineering
 
 <p style="margin-bottom: 0px;">“<em>You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px;">—Richard Hartshorne, Senior Talent Partner, PagerDuty</div>
@@ -99,18 +99,9 @@ I understand how to manage culture, talent, and tooling for rapid product iterat
 
 I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. I have been recognized with two leadership awards.[^awards]
 
-[^awards]: I was awarded the Breakthrough award in 2019 for my efforts to elevate the company's product line strategically, and the Inclusively Leading and Learning award in 2022 for my work advancing the company's engineering capabilities. 
+[^awards]: I was awarded the *Breakthrough* award in 2019 for my efforts to elevate the company's product line strategically, and the *Inclusively Leading and Learning* award in 2022 for my work advancing the company's engineering capabilities. 
 
-### I grow engineering
-
-<p STYLE="margin-bottom: 0px;">“<em>You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</em>”</p>  
-<div style="font-size:0.8em; text-align:right; margin-bottom: 20px;">—Richard Hartshorne, Senior Talent Partner, PagerDuty</div>
-
-I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering through people, process and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I co-led the adoption of tooling, processes, and programming language choices that supported scaling engineering capacity.
-
-I understand how to manage culture, talent, and tooling for rapid product iteration and scale; how to recognize when growth and strategy trigger organizational change; and how to lead culture, talent, and tooling from the old to the new without drama.
-
-## I'm available for work.
+### I'm available for work.
 
 I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from ~M$25 ARR to our IPO and ~M$450 ARR. I've shipped for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
 
