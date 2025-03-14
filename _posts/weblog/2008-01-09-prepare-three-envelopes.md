@@ -21,7 +21,7 @@ There is silence, then management tells her that this is *unacceptable*. Sure, t
 
 "*We have assigned a product manager to discuss IBM WebSphere Portal integration with your technical lead. And the VP of Marketing needs to talk to you. We have made a commitment to all-singing, all-dancing web services and he needs a forty-minute presentation explaining how your project will be implemented with web services throughout. You look pale. Is there a problem?*"
 
-### the second act and the first envelope
+### trouble
 
 She goes back to her office in a quandary, then remembers the first envelope. Wordlessly, she opens it, and inside there is a three by five card inscribed: **Blame Me**.
 
@@ -31,7 +31,7 @@ Well, things go along quite well for a month, until the [Hawthorne Effect]--that
 
 [Hawthorne Effect]: https://en.wikipedia.org/wiki/Hawthorne_effect
 
-### the third act and the second envelope
+### even more trouble
 
 Well, the first envelope helped, maybe the second one will too. She opens the second envelope, and inside there is another three by five card inscribed: **Reorganize**.
 
@@ -41,7 +41,7 @@ Things go along quite well under the new system until two weeks before the origi
 
 “No,” they tell her baldly, “We agreed on delivering 80% of the functionality on the original date and the remaining 20% of the functionality 45 days later in release 1.1. Furthermore, we are entering into a strategic agreement with IBM and have assigned a product manager to discuss IBM WebSphere Portal integration with your technical lead. And the VP of Marketing needs to talk to you. We have made a strategic corporate commitment to all-singing, all-dancing web services and he needs a forty-minute presentation explaining how your project will be implemented with web services throughout. You look pale. Is there a problem?” She leaves the meeting aghast.
 
-### and the curtain falls
+### all hope is lost and the curtain falls
 
 Well, it’s back to her office and she opens the last envelope with shaking hands. The advice on the card is of little comfort: **Prepare three envelopes**.
 
