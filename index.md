@@ -9,7 +9,7 @@ layout: default
 *“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
 —<span style="font-size:0.8em">Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</span>
 
-I am technical; I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and beyond with gloablly distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
+I am technical; I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
 
 I shipped the products and features responsible for KL Group/Sitraka's and PagerDuty's successful exits[^sitraka-quest][^PDNYSE]
 
