@@ -6,17 +6,17 @@ layout: default
 
 ## Who I am
 
-I am Reginald Braithwaite, a technical product leader with have forty years of experience coding and shipping software that powers business. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+I am a Principal Engineer & Technical Product Manager. I am techical; I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I shipped the products responsible for KL Group/Sitraka's and PagerDuty's successful exits; I've led through growth in size and complexity from startup-in-a-room to IPO and beyond with gloablly distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.[^sitraka-quest][^PDNYSE]
 
-I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager. I once wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
+I'm available for work, and this is not my first rodeo. I have been most impactful as a Technical Product Manager or Staff+ Engineer with a side of TPM. I am a very strong communicator: I wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
 
 My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works page]. My personal email is [raganwald@gmail.com].
 
-### What I believe
+## What I believe
 
-- I believe that all software is social software. I believe that software that fails to become either the comunication medium or source of truth for people collaborating on critical work... is doomed to become a commodity.
+- I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.
 - I believe in systems-first thinking. I believe that human mistakes are opportunities for organizational improvement.
-- I believe that "improved productivity" is the faster horses of enterprise software. I believe that transforming the way customers think about and do their work is fundamental to creating and dominating entirely new markets.
+- I believe that "improved productivity" is the faster horses of enterprise software. I believe that transforming the way customers think about their work, communicate about their work, and do their work is fundamental to creating and dominating entirely new markets.
 
 ## What I do
 
@@ -68,12 +68,23 @@ analysis space, and JProbe had become
 KL's major source of revenue.”*  
 —Christian Jaekl, Software Engineer and Concurrency Domain Expert
 
-I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. My work is informed by my professional experience in consulting, technology marketing, and enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
+I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. My work is informed by my experience consulting, in technology marketing, and in enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
-I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a technical product manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. My teams have won both the Jolt Product Excellence and Jolt Software Developer Productivity awards. The products I shipped have led to exits for KL Group/Sitraka and PagerDuty.[^sitraka-quest][^PDNYSE]
+I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a technical product manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. My teams have won both the Jolt Product Excellence and Jolt Software Developer Productivity awards.
+
+My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 [^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
 [^PDNYSE]: PagerDuty went public on the NYSE in 2019.
+
+### I grow engineering groups
+
+*“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”*  
+—Richard Hartshorne, Senior Talent Partner, PagerDuty
+
+I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering through people, process and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I co-led the adoption of tooling, processes, and programming language choices that supported scaling engineering capacity.
+
+I understand how to manage culture, talent, and tooling for rapid product iteration and scale; how to recognize when growth and strategy trigger organizational change; and how to lead culture, talent, and tooling from the old to the new without drama.
 
 ### I lead through collaboration
 
