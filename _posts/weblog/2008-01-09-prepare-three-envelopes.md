@@ -7,7 +7,7 @@ layout: default
 
 A software manager is brought into a doomed project. It is hopelessly behind, the requirements have changed so often they are effectively kept in chat history instead of JIRA, and Office Space references and memes pepper every conversation. The previous manager resigned.
 
-When they get to their new office, their predecessor is clearing out their desk. “I’ll only be a minute. By the way, I left you something” says the old manager. After the predecessor leaves, the new manager has a look around, and discovers three envelopes in the top drawer of the desk.
+When they get to their new office, their predecessor is clearing out their desk. “*I’ll only be a minute. By the way, I left you something*,” says the old manager. After the predecessor leaves, the new manager has a look around, and discovers three envelopes in the top drawer of the desk.
 
 1. The first envelope is labeled, “*Open when in trouble;*”
 2. The second is labeled, “*Open when in even more trouble;”
@@ -27,7 +27,7 @@ There is silence, then leadership tells their that this is *unacceptable*. Sure,
 
 The new manager goes back to their office in a quandary, then they remember the first envelope. They open it, and inside there is a three by five card inscribed, **Blame Me**.
 
-They go back to leadership a day later with a gdoc emphasizing how the project was way off track, how the architecture was fubar, how morale was poor, and how requirements were incorrectly documented. They don't blame the previous manager directly, but they do identify various management techniques and “best practices” that were not enforced prior to their joining the project.
+They go back to leadership a day later with a gdoc emphasizing how the project was way off track, how the architecture was fubar, how morale was poor, and how requirements were incorrectly documented. They don't blame the previous manager directly, but they do identify various management techniques and best practices that were not enforced prior to their joining the project.
 
 They will work the team to hit the date, but the commitments made by the previous manager were done without actually checking to see whether the team could deliver or making any changes to actually hit the new dates. After some huffing and puffing, leadership buys off on delivering 80% of the promised functionality with a 45 day slip in the delivery date. Whew!
 
@@ -39,7 +39,7 @@ Things go along well for a month, until the [Hawthorne Effect] wears off--that i
 
 Well, the first envelope helped, maybe the second one will help as well. The new manager opens the second envelope, and inside there is another three by five card inscribed, **Reorganize**.
 
-The manager declares that the team needs to split into pairs along architectural lines, and has the ticket system reconfigured since individuals are no longer responsible for the end-to-end coding of features. The Hawthorne Effect restarts, morale is improved thanks to "A change is as good as a rest," and the work gets back on track.
+The manager declares that the team needs to split into pairs along architectural lines, and has the ticket system reconfigured since individuals are no longer responsible for the end-to-end coding of features. The Hawthorne Effect restarts, morale is improved thanks to 'A change is as good as a rest,' and the work gets back on track.
 
 Things go along quite well under the new system until two weeks before the original due date. Leadership calls the new manager in in and asks them to chair the release planning board, there will be a major customer release in two weeks. The new manager reminds them of the 45 day slip they negotiated.
 
