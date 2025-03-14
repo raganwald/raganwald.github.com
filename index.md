@@ -4,11 +4,15 @@ subtitle: Principal Engineer & Technical Product Manager
 layout: default
 ---
 
+## Who I am
+
 I am Reginald Braithwaite, a technical product leader passionate about collaboration in the service of making something wonderful. I have forty years of experience coding and shipping software that powers businesses. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 I'm available for work, and this is not my first rodeo. I am highly impactful in a role that is functionally two-thirds Staff+ Engineer and one-third Technical Product Manager. I once wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
 
 My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works page]. My personal email is [raganwald@gmail.com].
+
+## What I do
 
 ### I am technical
 
@@ -23,7 +27,7 @@ and both were excellent. The project was
 completed on time and was successful.*  
 —John MacMIllan, Software Architect, IBM Canada Research Lab
 
-I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality. I was also the hands-on technical product manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers, and in 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
+In addition to my responsibilities as the principal engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality. I was also the hands-on technical product manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers, and in 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
 
 I've led development of web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've led development of ING (USA)'s web banking, and shipped features on GitHub's web flow.[^ing][^GitHub][^more]
 
@@ -89,7 +93,7 @@ I am a strong partner with recruiting, and I'm known both for expertise evaluati
 
 I understand how to manage culture, talent, and tooling for rapid product iteration and scale; how to recognize when growth and strategy trigger organizational change; and how to lead culture, talent, and tooling from the old to the new without drama.
 
-### I am available for work.
+## I'm available for work.
 
 I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from ~M$25 ARR to our IPO and ~M$450 ARR. I've shipped for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
 
