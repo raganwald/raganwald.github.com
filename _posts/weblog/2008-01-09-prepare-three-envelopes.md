@@ -1,7 +1,9 @@
 ---
-title: Billy Martin's Ternary Technique for Managing his Manager
+title: Billy Martin's Management Secret, a Play in Three Acts
 layout: default
 ---
+
+### the curtain opens on act one
 
 A software manager is brought into a doomed project. It is hopelessly behind, the requirements have changed so often they are now kept on a white board instead of in a document, and the office is wallpapered with Dilbert cartoons. She’s replacing the previous manager, who has resigned.
 
@@ -11,11 +13,15 @@ When she gets to her new office, her predecessor is clearing out her desk. “I�
 2. The second is labeled, “*Open when in even more trouble;”
 3. The third is labeled, "*Open when all hope is lost.*"
 
-Well, she researches anti-patterns in software project management, has a look around, talks to everyone, identifies the key players, and goes to management with a clear explanation of what the problems are, what’s realistic to achieve, and what needs to be done. To her surprise, management seems to go along with things and tells her to make whatever changes she needs. She institutes daily builds, stand up meetings, rapid iterations, and starts tracking velocity. Two months later, at the quarterly review, she presents her progress. The team is producing at 200% of the previous rate, morale is up, and they’re going to get 80% of the previous functionality done with less than 90 days of slip off the impossible schedule.
+Well, she researches anti-patterns in software project management, has a look around, talks to everyone, identifies the key players, and goes to management with a clear explanation of what the problems are, what’s realistic to achieve, and what needs to be done.
+
+To her surprise, management seems to go along with things and tells her to make whatever changes she needs. She institutes daily builds, stand up meetings, rapid iterations, and starts tracking velocity. Two months later, at the quarterly review, she presents her progress. The team is producing at 200% of the previous rate, morale is up, and they’re going to get 80% of the previous functionality done with less than 90 days of slip off the impossible schedule.
 
 There is silence, then management tells her that this is *unacceptable*. Sure, they agreed she could institute change. That’s her job. However they did not approve any compromise in scope or delivery date. This is a competitive business, and there are thousands of qualified managers looking for a job who can come in and get things done. Does she want to admit she can’t do her job? They lay down the law:
 
 "*We have assigned a product manager to discuss IBM WebSphere Portal integration with your technical lead. And the VP of Marketing needs to talk to you. We have made a commitment to all-singing, all-dancing web services and he needs a forty-minute presentation explaining how your project will be implemented with web services throughout. You look pale. Is there a problem?*"
+
+### the second act and the first envelope
 
 She goes back to her office in a quandary, then remembers the first envelope. Wordlessly, she opens it, and inside there is a three by five card inscribed: **Blame Me**.
 
@@ -25,6 +31,8 @@ Well, things go along quite well for a month, until the [Hawthorne Effect]--that
 
 [Hawthorne Effect]: https://en.wikipedia.org/wiki/Hawthorne_effect
 
+### the third act and the second envelope
+
 Well, the first envelope helped, maybe the second one will too. She opens the second envelope, and inside there is another three by five card inscribed: **Reorganize**.
 
 She declares that the team needs to be split into pairs along architectural lines, and has the entire ticket system rewritten since individuals are nbo longer responsible for the end-to-end coding of features. The Hawthorne Effect restarts, morale is improved thanks to "A change is as good as a rest, and the work gets back on track.
@@ -32,6 +40,8 @@ She declares that the team needs to be split into pairs along architectural line
 Things go along quite well under the new system until two weeks before the original due date. Management calls her in and asks her to sit on the release planning board, there will be a major customer release in two weeks. She reminds them of the 45 day slip they negotiated.
 
 “No,” they tell her baldly, “We agreed on delivering 80% of the functionality on the original date and the remaining 20% of the functionality 45 days later in release 1.1. Furthermore, we are entering into a strategic agreement with IBM and have assigned a product manager to discuss IBM WebSphere Portal integration with your technical lead. And the VP of Marketing needs to talk to you. We have made a strategic corporate commitment to all-singing, all-dancing web services and he needs a forty-minute presentation explaining how your project will be implemented with web services throughout. You look pale. Is there a problem?” She leaves the meeting aghast.
+
+### and the curtain falls
 
 Well, it’s back to her office and she opens the last envelope with shaking hands. The advice on the card is of little comfort: **Prepare three envelopes**.
 
