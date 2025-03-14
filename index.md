@@ -6,8 +6,8 @@ layout: default
 
 ## Who I am
 
-*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
-<div style="font-size:0.8em; text-align:right;">—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
+<p style="margin-bottom: 0px;">“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”</p>  
+<div style="font-size:0.8em; text-align:right; margin-bottom: 20px;">—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
 I am technical; I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
 
@@ -29,7 +29,7 @@ I believe that "improved productivity" is the faster horses of enterprise softwa
 
 ### I am technical
 
-*“Reg hired me as a senior developer to work
+<p style="margin-bottom: 0px;">“Reg hired me as a senior developer to work
 on a new product. Reg led the team and did
 all the high-level design. Since the team was
 small and the timeframe short, Reg was also
@@ -37,8 +37,8 @@ coding a good portion of the product.
 Over that time I obviously had a great deal
 of contact with Reg's design and his code,
 and both were excellent. The project was
-completed on time and was successful.*  
-—<div style="font-size:0.8em; text-align:right;">John MacMIllan, Software Architect, IBM Canada Research Lab</div>
+completed on time and was successful.”</p> 
+—<div style="font-size:0.8em; text-align:right; margin-bottom: 20px;">John MacMillan, Software Architect, IBM Canada Research Lab</div>
 
 In addition to my responsibilities as the principal engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality. I was also the hands-on technical product manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers, and in 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
 
@@ -61,7 +61,7 @@ I've led development of web applications that manage NGOs, sales teams, live bus
 
 ### I ship products
 
-*“Reg and I worked together for a year and a
+<p style="margin-bottom: 0px;">“Reg and I worked together for a year and a
 half. During that time, he spearheaded the
 effort to produce JProbe Threadalyzer, and
 then shepherded the entire JProbe suite
@@ -69,8 +69,8 @@ through two subsequent upgrade releases. By
 that time, Threadalyzer had all but elimi-
 nated its competition in the Java thread
 analysis space, and JProbe had become
-KL's major source of revenue.”*  
-—<div style="font-size:0.8em; text-align:right;">Christian Jaekl, Software Engineer and Concurrency Domain Expert</div>
+KL's major source of revenue.”</p>  
+—<div style="font-size:0.8em; text-align:right; margin-bottom: 20px;">Christian Jaekl, Software Engineer and Concurrency Domain Expert</div>
 
 I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. My work is informed by my experience consulting, in technology marketing, and in enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
@@ -83,8 +83,8 @@ My teams know how to ship "good" without being seduced by "sufficient" or derail
 
 ### I grow engineering groups
 
-*“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”*  
-—<div style="font-size:0.8em; text-align:right;">Richard Hartshorne, Senior Talent Partner, PagerDuty</div>
+<p style="margin-bottom: 0px;">“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”</p>  
+—<div style="font-size:0.8em; text-align:right; margin-bottom: 20px;">Richard Hartshorne, Senior Talent Partner, PagerDuty</div>
 
 I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering through people, process and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I co-led the adoption of tooling, processes, and programming language choices that supported scaling engineering capacity.
 
@@ -92,8 +92,8 @@ I understand how to manage culture, talent, and tooling for rapid product iterat
 
 ### I lead through collaboration
 
-*“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.”*  
-—<div style="font-size:0.8em; text-align:right;">Richard Hartshorne, Senior Talent Partner, PagerDuty</div>
+<p STYLE="margin-bottom: 0px;">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.”</p>  
+—<div style="font-size:0.8em; text-align:right; margin-bottom: 20px;">Richard Hartshorne, Senior Talent Partner, PagerDuty</div>
 
 I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. I have been recognized with two leadership awards.[^awards]
 
@@ -101,8 +101,8 @@ I integrate my experience as a product-focused technologist into building and le
 
 ### I grow engineering
 
-*“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”*  
-—<div style="font-size:0.8em; text-align:right;">Richard Hartshorne, Senior Talent Partner, PagerDuty</div>
+<p STYLE="margin-bottom: 0px;">“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”</p>  
+—<div style="font-size:0.8em; text-align:right; margin-bottom: 20px;">Richard Hartshorne, Senior Talent Partner, PagerDuty</div>
 
 I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering through people, process and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I co-led the adoption of tooling, processes, and programming language choices that supported scaling engineering capacity.
 
@@ -114,8 +114,8 @@ I recently completed nine years as a Principal Engineer with PagerDuty, where I 
 
 ### this is not my first rodeo
 
-*“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”*  
-—<div style="font-size:0.8em; text-align:right;">Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
+<p STYLE="margin-bottom: 0px;">“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”</p>  
+—<div style="font-size:0.8em; text-align:right; margin-bottom: 20px;">Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
 I know how to ship, how to recognize threats to shipping, and how to keep a team on track. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
 
@@ -139,7 +139,7 @@ probing questions about design decisions. I
 read his code, too (he wouldn't have it any
 other way), but I had a hard time finding
 flaws. The result was probably the most
-solid codebase that I've ever worked on.”*  
+solid codebase that I've ever worked on.</p>  
 —Christian Jaekl, Software Engineer and Concurrency Domain Expert
 
 -->
