@@ -10,14 +10,16 @@ A software manager is brought into a doomed project. It is hopelessly behind, th
 When they get to their new office, their predecessor is clearing out their desk. “*I’ll only be a minute. By the way, I left you something*,” says the old manager. After the predecessor leaves, the new manager has a look around, and discovers three envelopes in the top drawer of the desk.
 
 1. The first envelope is labeled, “*Open when in trouble;*”
-2. The second is labeled, “*Open when in even more trouble;”
+2. The second is labeled, “*Open when in even more trouble;*”
 3. The third is labeled, "*Open when all hope is lost.*"
 
 Well, they research anti-patterns in software project management; they have a look around; they talk to everyone; they identify the key players; and they go to leadership with a clear explanation of what the problems are, what’s realistic to achieve, and what needs to be done.
 
-To their surprise, leadership seems to go along with things and tells them to make whatever changes they needs. They institute daily builds, stand up meetings, rapid iterations, and the team starts tracking velocity. Two months later, at the quarterly review, they present their progress. The team is producing at 200% of the previous rate, morale is up, and they’re going to get 80% of the previous functionality done with less than 90 days of slip off the impossible schedule.
+To their surprise, leadership seems to go along with things and tells them to make whatever changes they need. They institute daily builds, stand up meetings, rapid iterations, and the team starts tracking velocity. Two months later, at the quarterly review, they present their progress. The team is producing at 200% of the previous rate, morale is up, and they’re going to get 80% of the previous functionality done with less than 90 days of slip off the impossible schedule.
 
-There is silence, then leadership tells their that this is *unacceptable*. Sure, they agreed they could institute change. That’s their job. However leadership did not approve any compromise in scope or delivery date. This is a competitive business, and there are thousands of qualified managers looking for a job who can come in and get things done. Do they want to admit they can’t do their job? Leadership lays down the law:
+There is silence, then leadership tells their that this is *unacceptable*. Sure, they agreed they could institute change. That’s their job. However leadership did not approve any compromise in scope or delivery date. This is a competitive business, and there are thousands of qualified managers looking for a job who can come in and get things done. Do they want to admit they can’t do their job?
+
+Leadership lays down the law:
 
 "*We have assigned a product manager to discuss AI integration with your technical lead. And the VP of Marketing needs to talk to you. We have made a commitment to all-singing, all-dancing Agentic AI, and he needs a forty-minute presentation explaining how your project will be built on top of a platform created by this new company our investors made us buy last week.*
 
