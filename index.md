@@ -11,9 +11,11 @@ layout: default
 
 I am technical; I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
 
-I shipped the products and features responsible for KL Group/Sitraka's and PagerDuty's successful exits[^sitraka-quest][^PDNYSE]
+I shipped the products and features responsible for KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
 
-I'm available for work, and this is not my first rodeo. I have been most impactful as a Technical Product Manager, or Staff+ Engineer with a side of TPM. I am a very strong communicator: I wrote a popular book about JavaScript, I write technical documentation and essays, and I speak at both tech conferences and company-wide events.
+I am a strong communicator: I wrote a popular book about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.
+
+I'm available for work, and this is not my first rodeo. I have been most impactful as a Technical Product Manager, or Staff+ Engineer with a side of TPM.
 
 My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works page]. My personal email is [raganwald@gmail.com].
 
