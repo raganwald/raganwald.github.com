@@ -6,7 +6,10 @@ layout: default
 
 ## Who I am
 
-I am a Principal Engineer & Technical Product Manager. I am technical; I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and beyond with gloablly distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
+*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
+—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
+
+I am technical; I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and beyond with gloablly distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
 
 I shipped the products and features responsible for KL Group/Sitraka's and PagerDuty's successful exits[^sitraka-quest][^PDNYSE]
 
@@ -21,9 +24,6 @@ My experience is itemized in more detail on [LinkedIn]; my résumé is available
 - I believe that "improved productivity" is the faster horses of enterprise software. I believe that transforming the way customers think about their work, communicate about their work, and do their work is fundamental to creating and dominating entirely new markets.
 
 ## What I do
-
-*“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”*  
-—Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
 
 ### I am technical
 
