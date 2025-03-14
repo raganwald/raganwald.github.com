@@ -99,7 +99,7 @@ I recently completed nine years as a Principal Engineer with PagerDuty, where I 
 
 ### this is not my first rodeo
 
-*“You were a huge asset to \[PagerDuty,\] and wherever you land next will be lucky to have you.”*  
+*“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”*  
 —Michael Cucci, Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty
 
 I know how to ship, how to recognize threats to shipping, and how to keep a team on track. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
