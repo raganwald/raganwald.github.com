@@ -29,7 +29,9 @@ I believe that all software is social software. I believe that to thrive, softwa
 
 I believe in systems-first thinking. I believe that human mistakes are opportunities for organizational improvement.
 
-I believe that "improved productivity" is the faster horses of enterprise software. I believe that transforming the way customers think about their work, communicate about their work, and do their work is fundamental to creating and dominating entirely new markets.
+I believe that improving productivity is the “[faster horses]” of enterprise software. I believe that transforming the way customers think about their work, communicate about their work, and do their work is fundamental to creating and dominating entirely new markets.
+
+[faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
 ---
 
