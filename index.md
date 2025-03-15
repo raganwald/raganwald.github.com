@@ -11,25 +11,24 @@ layout: default
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I grow [engineering](#i-grow-engineering). And I foster [collaboration](#i-lead-through-collaboration). I'm [available for work](#im-available-for-work), and [this is not my first rodeo](#this-is-not-my-first-rodeo).
 
-- I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.  
+- I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led through engineering-wide changes to structure, process, tooling, and platforms.  
 
-- I am a strong communicator: I wrote a respected [book about JavaScript](/creative-works.html#books); I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]  
+- I communicate: I wrote a respected [book about JavaScript](/creative-works.html#books); I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]  
 
-- I shipped the products and features responsible for KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
-
-[^creative-works]: My books, essays, and conference talks are available on my [creative works page].
+- I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
 
 My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
+
+[^creative-works]: My books, essays, and conference talks are available on my [creative works page].
+[^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
+[^PDNYSE]: PagerDuty went public on the NYSE in 2019.
 
 ---
 
 ## What I believe
 
-I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.
-
-I believe in systems-first thinking. I believe that human mistakes are opportunities for organizational improvement.
-
-I believe that "improved productivity" is the faster horses of enterprise software. I believe that transforming the way customers think about their work, communicate about their work, and do their work is fundamental to creating and dominating entirely new markets.
+- I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.  
+- I believe that "improved productivity" is the faster horses of enterprise software. I believe that transforming the way customers think about their work, communicate about their work, and do their work is fundamental to creating and dominating entirely new markets.
 
 ---
 
@@ -48,23 +47,22 @@ and both were excellent. The project was
 completed on time and was successful.</em>”</p> 
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—John MacMillan: Software Architect, IBM Canada Research Lab</div>
 
-In addition to my responsibilities as the principal engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of highly concurrent liveness, [recent changes], advanced scheduling, and other strategic functionality. I was also the hands-on technical product manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers, and in 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
-
-I've led development of web applications that manage NGOs, sales teams, live business model design, and other SMB-scale work. I've led development of ING (USA)'s web banking, and shipped features on GitHub's web flow.[^ing][^GitHub][^more]
+- As Principal Engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of features such as [recent changes].  
+- As a member of GitHub's documentation tools and front-end flow teams, I shipped features such as [Rich Prose Diffs].  
+- I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
+- In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
+- As a consultant, I've led development of web applications for a variety of clients in public and private-sector verticals. - I led the web banking team for ING Direct (USA), with more than three million active users.[^ing][^more]
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
 [response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
 [recent changes]: https://support.pagerduty.com/main/docs/recent-changes
+[Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
+[JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
+[nCrypt Light]: https://info-mac.org/viewtopic.php?t=7139
 
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
-[Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
-
-[JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
-
-[nCrypt Light]: https://info-mac.org/viewtopic.php?t=7139
-
 [^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the open web.
 
 ### I ship products
@@ -80,14 +78,15 @@ analysis space, and JProbe had become
 KL's major source of revenue.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</div>
 
+- As the Technical Product Manager for JProbe Threadalyzer, I performed technical and product research, developed the value proposition, and designed the product.  
+- As the Program Manager for the JProbe Suite of products, I collaborated with Sales and Marketing Product Management on prioritization and positioning.<!-- > I was the product contact -->  
+- My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+
+<!--
 I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. My work is informed by my experience consulting, in technology marketing, and in enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
 
-I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a technical product manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. My teams have won both the Jolt Product Excellence and Jolt Software Developer Productivity awards.
-
-My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
-
-[^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
-[^PDNYSE]: PagerDuty went public on the NYSE in 2019.
+I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a Technical Product Manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. - 
+-->
 
 ### I grow engineering
 
