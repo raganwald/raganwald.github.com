@@ -9,13 +9,15 @@ layout: default
 <p style="margin-bottom: 0px;">“<em>Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
-I am [technical](#i-am-technical); I ship [products](#i-ship-products); and I grow [engineering](#i-grow-engineering) [collaboratively](#i-lead-through-collaboration). I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
+I am [technical](#i-am-technical); I ship [products](#i-ship-products); and I grow [engineering](#i-grow-engineering), [collaboratively](#i-lead-through-collaboration). I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
 
 I shipped the products and features responsible for KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
 
-I am a strong communicator: I wrote a respected [book about JavaScript](/creative-works.html#books); I write technical documentation and essays; and I speak at both tech conferences and company-wide events.
+I am a strong communicator: I wrote a respected [book about JavaScript](/creative-works.html#books); I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]
 
-I'm [available for work](#im-available-for-work), and [this is not my first rodeo](#this-is-not-my-first-rodeo). My experience is itemized in more detail on [LinkedIn]; my résumé is available upon [request][raganwald@gmail.com]. My books, essays, and conference talks are available on my [creative works page]. My personal email is [raganwald@gmail.com].
+[^creative-works]: My books, essays, and conference talks are available on my [creative works page]
+
+I'm [available for work](#im-available-for-work), and [this is not my first rodeo](#this-is-not-my-first-rodeo). My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
 
 ## What I believe
 
