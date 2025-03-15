@@ -9,7 +9,7 @@ layout: default
 <p style="margin-bottom: 0px;">“<em>Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
-I am technical; I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
+I am [technical](#technical); I ship products; and I grow engineering collaboratively. I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
 
 I shipped the products and features responsible for KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
 
@@ -29,7 +29,7 @@ I believe that "improved productivity" is the faster horses of enterprise softwa
 
 ## What I do
 
-### I am technical
+### I am technical<a id="technical"/>
 
 <p style="margin-bottom: 0px;">“<em>Reg hired me as a senior developer to work
 on a new product. Reg led the team and did
@@ -105,7 +105,7 @@ I integrate my experience as a product-focused technologist into building and le
 
 I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from ~M$25 ARR to our IPO and ~M$450 ARR. I've shipped for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
 
-### this is not my first rodeo
+### This is not my first rodeo
 
 <p STYLE="margin-bottom: 0px;">“<em>You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
