@@ -29,7 +29,8 @@ I believe that "improved productivity" is the faster horses of enterprise softwa
 
 ## What I do
 
-### I am technical<a id="technical"/>
+<a id="technical"/>
+### I am technical
 
 <p style="margin-bottom: 0px;">“<em>Reg hired me as a senior developer to work
 on a new product. Reg led the team and did
