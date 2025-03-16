@@ -9,7 +9,7 @@ layout: default
 <p style="margin-bottom: 0px;">“<em>Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
-I am [technical](#i-am-technical). I ship [products](#i-ship-products). I grow [engineering](#i-grow-engineering). And I foster [collaboration](#i-lead-through-collaboration). I'm [available for work](#im-available-for-work), and [this is not my first rodeo](#this-is-not-my-first-rodeo).
+I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-grow-engineering). And I foster [collaboration](#i-lead-through-collaboration). I'm [available for work](#im-available-for-work), and [this is not my first rodeo](#this-is-not-my-first-rodeo).
 
 - I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led through engineering-wide changes to structure, process, tooling, and platforms.  
 
@@ -118,7 +118,7 @@ My career-long focus includes the product development work *around* the technica
 
 - I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.
 
-### I lead through collaboration
+### I foster collaboration
 
 <p STYLE="margin-bottom: 0px;">“<em>Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</div>
