@@ -28,6 +28,7 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 ## What I believe
 
 - I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.  
+
 - I believe that "improved productivity" is the faster horses of enterprise software. I believe that transforming the way customers think about their work, communicate about their work, and do their work is fundamental to creating and dominating entirely new markets.
 
 ---
@@ -48,9 +49,13 @@ completed on time and was successful.</em>”</p>
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—John MacMillan: Software Architect, IBM Canada Research Lab</div>
 
 - As Principal Engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of features such as [recent changes].  
+
 - As a member of GitHub's documentation tools and front-end flow teams, I shipped features such as [Rich Prose Diffs].  
-- I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
-- In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
+
+- I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.  
+
+- In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
+
 - As a consultant, I've led development of web applications for a variety of clients in public and private-sector verticals. - I led the web banking team for ING Direct (USA), with more than three million active users.[^ing][^more]
 
 [insights]: https://support.pagerduty.com/main/docs/insights
@@ -78,24 +83,28 @@ analysis space, and JProbe had become
 KL's major source of revenue.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</div>
 
+- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].  
+
+- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for the company's Scheduling and Workflow features, identifying feasible and compelling features to establish strong differentiation from compatitors and complements.  
+
+- At Github, I refined a prototype, designed and developed the user experience, and shipped [Rich Prose Diffs].  
+
 - As the Technical Product Manager for JProbe Threadalyzer, I performed technical and product research, developed the value proposition, and designed the product.  
-- As the Program Manager for the JProbe Suite of products, I collaborated with Sales and Marketing Product Management on prioritization and positioning.<!-- > I was the product contact -->  
-- My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
-<!--
-I have shipped as a Technical Product Manager, Program Manager, and in hands-on engineering roles. My work is informed by my experience consulting, in technology marketing, and in enterprise sales. I am a past-member of both the Toronto Computer-Human Interaction ACM-SIG and the Toronto Product Management Association.
+- As the Program Manager for the JProbe Suite of products, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 
-I align technology, design, prioritization, process, and architecture with the capacity we have, the product we need to ship, and our product strategy. As a Technical Product Manager, I collaborate heavily with my colleagues in Product, Engineering, and Sales, with a heavy emphasis on a culture of writing. - 
--->
+<!-- - My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect." -->
 
 ### I grow engineering
 
 <p style="margin-bottom: 0px;">“<em>You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</div>
 
-I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires. I grow engineering through people, process and technology. As a founding member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I co-led the adoption of tooling, processes, and programming language choices that supported scaling engineering capacity.
+- I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires.  
 
-I understand how to manage culture, talent, and tooling for rapid product iteration and scale; how to recognize when growth and strategy trigger organizational change; and how to lead culture, talent, and tooling from the old to the new without drama.
+- As a Principal Engineer and member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.  
+
+- As a cultural influencer, I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.
 
 ### I lead through collaboration
 
