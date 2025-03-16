@@ -40,7 +40,7 @@ body {
 ol, ul {
 	list-style: none;
   padding-left: 30px;
-  text-indent: -20px;
+  text-indent: -1em;
 }
 ol.a, ul.a {
   list-style-position: outside;
