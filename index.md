@@ -56,7 +56,7 @@ I have designed and built software for paying customers since the 1990s:
 
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
 
-- In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
+- In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers. I then became the Program Manager for the entire JProbe Suite, and wrote a little of the code such as the suite's first configuration wizard.
 
 - In the mid 2000s, I led the web banking team for ING Direct (USA), with more than three million active users. I personally wrote features such as its first ATM and Café locator.[^ing]  
 
