@@ -52,15 +52,17 @@ completed on time and was successful.</em>”</p>
 
 - As Principal Engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].  
 
-- As a member of GitHub's documentation tools and front-end flow teams, I shipped features such as [Rich Prose Diffs].  
-
 - I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.  
 
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
 
 - In the early 90s, I wrote and sold a Classified Advertising Management application for Desktop Publishers.  
 
-- As a consultant, I've led development of web applications for a variety of clients in public and private-sector verticals. - I led the web banking team for ING Direct (USA), with more than three million active users.[^ing][^more]
+- As a consultant, I've led development of web applications for a variety of clients in public and private-sector verticals.  
+
+- I led the web banking team for ING Direct (USA), with more than three million active users.[^ing]  
+
+- As a member of GitHub's documentation tools and front-end flow teams, I shipped features such as [Rich Prose Diffs].[^more]
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
@@ -72,7 +74,7 @@ completed on time and was successful.</em>”</p>
 
 [^ing]: ING Direct (USA) was sold to Capital One in 2011.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
-[^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, Unix, and for the last two decades, the open web.
+[^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web.
 
 ### I ship products
 
@@ -104,11 +106,9 @@ KL's major source of revenue.</em>”</p>
 <p style="margin-bottom: 0px;">“<em>You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</div>
 
-- I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires.  
+- I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.    
 
-- At PagerDuty and elsewhere, I hired for potential: I tried to always look for Staff+ engineers, keeping in mind that it's an excellent strategy to hire them before someone else recognizes their potential, and grow them into the role.  
-
-- I teach (both formally and informally), mentor, and provide positive, constructive feedback to grow my colleagues just as I learn, follow, and accept constructive feedback to grow myself.  
+- I've shared technical and business experience throughout my career, in person, in documentation and papers, and in technical or product presentations.
 
 - As a Principal Engineer and member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.  
 
