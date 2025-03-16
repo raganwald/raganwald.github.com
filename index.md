@@ -48,13 +48,15 @@ and both were excellent. The project was
 completed on time and was successful.</em>”</p> 
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—John MacMillan: Software Architect, IBM Canada Research Lab</div>
 
-- As Principal Engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of [response mobilizer]. I wrote working prototypes of features such as [recent changes].  
+- As Principal Engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].  
 
 - As a member of GitHub's documentation tools and front-end flow teams, I shipped features such as [Rich Prose Diffs].  
 
 - I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.  
 
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
+
+- In the early 90s, I wrote and sold a Classified Advertising Management application for Desktop Publishers.  
 
 - As a consultant, I've led development of web applications for a variety of clients in public and private-sector verticals. - I led the web banking team for ING Direct (USA), with more than three million active users.[^ing][^more]
 
@@ -102,6 +104,10 @@ KL's major source of revenue.</em>”</p>
 
 - I am a strong partner with recruiting, and I'm known both for expertise evaluating prospective engineers, and for my stength closing senior hires.  
 
+- At PagerDuty and elsewhere, I hired for potential: I tried to always look for Staff+ engineers, keeping in mind that it's an excellent strategy to hire them before someone else recognizes their potential, and grow them into the role.  
+
+- I teach (both formally and informally), mentor, and provide positive, constructive feedback to grow my colleagues just as I learn, follow, and accept constructive feedback to grow myself.  
+
 - As a Principal Engineer and member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.  
 
 - As a cultural influencer, I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.
@@ -111,22 +117,32 @@ KL's major source of revenue.</em>”</p>
 <p STYLE="margin-bottom: 0px;">“<em>Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</div>
 
-I integrate my experience as a product-focused technologist into building and leading both teams and product groups. At PagerDuty, my teams focused on product delivery and refinement execution, then our focus evolved into alignment with scaling engineering capacity and cohesion across groups. I have been recognized with two leadership awards.[^awards]
+At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-grow-engineering) outcomes above, I also collaborated across group and functional lines to:
 
-[^awards]: I was awarded the *Breakthrough* award in 2019 for my efforts to elevate the company's product line strategically, and the *Inclusively Leading and Learning* award in 2022 for my work advancing the company's engineering capabilities. 
+- Support complex deployment strategies that in turn supported highly refined product management and sales tactics.  
+
+- Ideate and prototype features and products in conjunction with proposed feature and product strategies.  
+
+- Lead our own Incident Management practice.  
+
+- Launch and support a more rigorous iteration of Engineering's Design Review process.  
+
+- Launch and mannage technical and organizational reorganizations and process iterations.
+
+I was awarded the *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022. 
 
 ### I'm available for work.
 
-I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the leadership that took us from ~M$25 ARR to our IPO and ~M$450 ARR. I've shipped for GitHub, Unspace Interactive, and KL Group/Sitraka. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the world.
+I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the overall leadership while we from roughly M$25 ARR to our IPO and on to roughly M$450 ARR. I've shipped for PagerDuty, GitHub, devTopia, Unspace Interactive, and KL Group/Sitraka amongst others.
+
+I'm available to play a meaningful part in another breakout success. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the way customers think about their business and their work.
 
 ### This is not my first rodeo
 
 <p STYLE="margin-bottom: 0px;">“<em>You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
-I know how to ship, how to recognize threats to shipping, and how to keep a team on track. I know how engineering and product teams evolve with growth and organizational maturity, and some of the ways to maintain the best and most effective parts of a culture while helping to evolve the parts that no longer serve the mission.
-
-I bring forty years of product- and customer-centric business and technical experience to shipping on time, without drama.
+I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 [LinkedIn]: https://www.linkedin.com/in/raganwald/details/experience/
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
