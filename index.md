@@ -29,7 +29,7 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 
 - I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.  
 
-- I believe that improving productivity is the [faster horses] of enterprise software. I believe that transforming the way customers think about their work, communicate about their work, and do their work is fundamental to creating and dominating entirely new markets.
+- I believe that improving productivity is the [faster horses] of enterprise software. I believe that transforming the way customers think about their work, communicate with each other about their work, and do their work together is fundamental to creating and dominating entirely new markets.
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
