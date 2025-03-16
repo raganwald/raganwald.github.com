@@ -64,6 +64,11 @@ I have designed and built software for paying customers since the 1990s:
 
 - In 2015, I was hired as the Principal Engineer for Incident Management. I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
 
+[^tableau]: I was a one-person ISV, doing everything writing Tableau's [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston).
+[^ing]: ING Direct (USA) was sold to Capital One in 2011. I learned a great deal about integration with legacy systems and Enterprise Architectural Patterns for integration with legacy systems and extending their functionality. Ask me about MUMPS and JDBC.
+[^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
+[^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web.
+
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
 [response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
@@ -76,13 +81,8 @@ I have designed and built software for paying customers since the 1990s:
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
 [creative works page]: /creative-works.html
 
-[Tableau's manuals]: /assets/images/tableau-manuals.jpg
+[manuals]: /assets/images/tableau-manuals.jpg
 [reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
-
-[^tableau]: I was a one-person ISV, doing everything writing [Tableau's manuals] to marketing the product at tradeshows (Guy Kawasaki very genrously [posed for a picture with me][reg-at-macworld] at MacWorld Boston).
-[^ing]: ING Direct (USA) was sold to Capital One in 2011. I learned a great deal about integration with legacy systems and Enterprise Architectural Patterns for integration with legacy systems and extending their functionality. Ask me about MUMPS and JDBC.
-[^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
-[^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web.
 
 ### I ship products
 
