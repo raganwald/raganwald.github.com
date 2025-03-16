@@ -50,19 +50,19 @@ and both were excellent. The project was
 completed on time and was successful.</em>”</p> 
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—John MacMillan: Software Architect, IBM Canada Research Lab</div>
 
-- As Principal Engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].  
-
-- I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.  
-
-- In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
+I have designed and built software for paying customers since the 1990s:
 
 - In the early 90s, I wrote and sold a Classified Advertising Management application for Desktop Publishers.  
 
-- As a consultant, I've led development of web applications for a variety of clients in public and private-sector verticals.  
+- In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
 
-- I led the web banking team for ING Direct (USA), with more than three million active users.[^ing]  
+- In the 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
 
-- As a member of GitHub's documentation tools and front-end flow teams, I shipped features such as [Rich Prose Diffs].[^more]
+- I led the web banking team for ING Direct (USA), with more than three million active users. I personally wrote features such as its first ATM and Café locator.[^ing]  
+
+- As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [Rich Prose Diffs].[^more]    
+
+- Since 2015 as the Principal Engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
@@ -72,7 +72,11 @@ completed on time and was successful.</em>”</p>
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 [nCrypt Light]: https://info-mac.org/viewtopic.php?t=7139
 
-[^ing]: ING Direct (USA) was sold to Capital One in 2011.
+[LinkedIn]: https://www.linkedin.com/in/raganwald/details/experience/
+[raganwald@gmail.com]: mailto:raganwald@gmail.com
+[creative works page]: /creative-works.html
+
+[^ing]: ING Direct (USA) was sold to Capital One in 2011. I learned a great deal about integration with legacy systems and Enterprise Architectural Patterns for integration with legacy systems and extending their functionality. Ask me about MUMPS and JDBC.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
 [^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web.
 
@@ -89,17 +93,17 @@ analysis space, and JProbe had become
 KL's major source of revenue.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</div>
 
-- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].  
-
-- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for the company's Scheduling and Workflow features, identifying feasible and compelling features to establish strong differentiation from compatitors and complements.  
-
-- At Github, I refined a prototype, designed and developed the user experience, and shipped [Rich Prose Diffs].  
+My career-long focus includes the product development work *around* the technical work:
 
 - As the Technical Product Manager for JProbe Threadalyzer, I performed technical and product research, developed the value proposition, and designed the product.  
 
-- As the Program Manager for the JProbe Suite of products, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
+- As the Program Manager for the JProbe Suite of products, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.  
 
-<!-- - My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect." -->
+- At Github, I refined a prototype, designed and developed the user experience, and shipped [Rich Prose Diffs].    
+
+- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for the company's Scheduling and Workflow features, identifying feasible and compelling features to establish strong differentiation from compatitors and complements.  
+
+- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].
 
 ### I grow engineering
 
@@ -110,9 +114,9 @@ KL's major source of revenue.</em>”</p>
 
 - I've shared technical and business experience throughout my career, in person, in documentation and papers, and in technical or product presentations.
 
-- As a Principal Engineer and member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.  
+- As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.  
 
-- As a cultural influencer, I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.
+- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.
 
 ### I lead through collaboration
 
@@ -145,10 +149,6 @@ I'm available to play a meaningful part in another breakout success. I'm open to
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
 I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
-
-[LinkedIn]: https://www.linkedin.com/in/raganwald/details/experience/
-[raganwald@gmail.com]: mailto:raganwald@gmail.com
-[creative works page]: /creative-works.html
 [ja]: https://leanpub.com/javascriptallongesix
 [japdf]: /assets/javascriptallongesix.pdf
 
