@@ -110,9 +110,7 @@ My career-long focus includes the product development work *around* the technica
 <p style="margin-bottom: 0px;">“<em>You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</div>
 
-- I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.    
-
-- I've shared technical and business experience throughout my career, in person, in documentation and papers, and in technical or product presentations.
+- I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.  
 
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.  
 
