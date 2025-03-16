@@ -151,8 +151,6 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
 I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
-[ja]: https://leanpub.com/javascriptallongesix
-[japdf]: /assets/javascriptallongesix.pdf
 
 ---
 
