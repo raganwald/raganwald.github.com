@@ -56,13 +56,13 @@ I have designed and built software for paying customers since the 1990s:
 
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
 
-- In the 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
+- In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
 
-- I led the web banking team for ING Direct (USA), with more than three million active users. I personally wrote features such as its first ATM and Café locator.[^ing]  
+- In the mid 2000s, I led the web banking team for ING Direct (USA), with more than three million active users. I personally wrote features such as its first ATM and Café locator.[^ing]  
 
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [Rich Prose Diffs].[^more]    
 
-- Since 2015 as the Principal Engineer for Incident Management, I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
+- In 2015, I was hired as the Principal Engineer for Incident Management. I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
