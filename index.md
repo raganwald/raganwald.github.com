@@ -116,7 +116,9 @@ My career-long focus includes the product development work *around* the technica
 
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.  
 
-- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.
+- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.[^pd-growth]
+
+[^pd-growth]: During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO.
 
 ### I foster collaboration
 
@@ -139,9 +141,9 @@ I was awarded the *Breakthrough* leadership award in 2019 and the *Inclusively L
 
 ### I'm available for work.
 
-I recently completed nine years as a Principal Engineer with PagerDuty, where I was part of the overall leadership while we from roughly M$25 ARR to our IPO and on to roughly M$450 ARR. I've shipped for PagerDuty, GitHub, devTopia, Unspace Interactive, and KL Group/Sitraka amongst others.
+I recently completed nine years as a Principal Engineer with PagerDuty. I've shipped for PagerDuty, GitHub, devTopia, Unspace Interactive, and KL Group/Sitraka amongst others. I'm available to play a meaningful part in another breakout success.
 
-I'm available to play a meaningful part in another breakout success. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus, within a growing and rapidly iterating group that shares my aspiration to change the way customers think about their business and their work.
+I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
 
 ### This is not my first rodeo
 
@@ -151,23 +153,6 @@ I'm available to play a meaningful part in another breakout success. I'm open to
 I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 [ja]: https://leanpub.com/javascriptallongesix
 [japdf]: /assets/javascriptallongesix.pdf
-
-<!--
-
-*“<em>When we built Threadalyzer, Reg developed
-the technical design, partitioned it into
-manageable pieces for a group of developers,
-and also wrote a significant chunk of the
-code himself. Along the way, he insisted on
-regular code reviews, asking appropriate and
-probing questions about design decisions. I
-read his code, too (he wouldn't have it any
-other way), but I had a hard time finding
-flaws. The result was probably the most
-solid codebase that I've ever worked on.</p>  
-—Christian Jaekl: Software Engineer and Concurrency Domain Expert
-
--->
 
 ---
 
