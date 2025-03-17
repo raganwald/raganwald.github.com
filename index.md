@@ -13,7 +13,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 - I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led through engineering-wide changes to structure, process, tooling, and platforms.  
 
-- I wrote a respected [book about JavaScript](/creative-works.html#books); I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]  
+- I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]  
 
 - I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
 
@@ -66,7 +66,7 @@ I have designed and built software for paying customers since the 1990s:
 
 [^tableau]: I was a one-person ISV, doing everything writing Tableau's [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston).
 [^mumps]: Ask me about [MUMPS] and JDBC.
-[^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
+[^GitHub]: At GitHub, my most visible achievement was launching the [rich prose diffs] feature during a Superbowl.
 [^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web.
 
 [ING]: https://www.ing.com/Newsroom/News/Press-releases/PROld/ING-to-sell-ING-Direct-USA-to-Capital-One.htm
@@ -76,7 +76,7 @@ I have designed and built software for paying customers since the 1990s:
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
 [response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
 [recent changes]: https://support.pagerduty.com/main/docs/recent-changes
-[Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
+[rich prose diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 
 [JProbe Suite]: https://www.javaperformancetuning.com/tools/jprobe/
@@ -101,7 +101,7 @@ My career-long focus is the complete product strategy and development workflow a
 
 - As the Program Manager for the [JProbe Suite], I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.  
 
-- At Github, I refined a prototype, designed and developed the user experience, and shipped [Rich Prose Diffs].    
+- At Github, I refined a prototype, designed and developed the user experience, and shipped [rich prose diffs].    
 
 - At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for the company's Scheduling and Workflow features, identifying feasible and compelling features to establish strong differentiation from compatitors and complements.  
 
