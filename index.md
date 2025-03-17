@@ -4,7 +4,7 @@ subtitle: Principal Engineer & Technical Product Manager
 layout: default
 ---
 
-## Who I am
+## Who I Am
 
 <p style="margin-bottom: 0px;">“<em>Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
@@ -25,7 +25,7 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 
 ---
 
-## What I believe
+## What I Believe
 
 - I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.  
 
@@ -35,7 +35,7 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 
 ---
 
-## What I do
+## What I Do
 
 ### I am technical
 
@@ -88,7 +88,7 @@ I have designed and built software for paying customers since the 1990s:
 
 ### I ship products
 
-<p style="margin-bottom: 0px;">“<em>Reg and I worked together for a year and ahalf. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases. By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become
+<p style="margin-bottom: 0px;">“<em>Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases. By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become
 KL's major source of revenue.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</div>
 
@@ -135,6 +135,10 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 - I launched and led technical and organizational reorganizations and process iterations.
 
 I was awarded the *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022.
+
+---
+
+## What's Next?
 
 ### This is not my first rodeo
 
