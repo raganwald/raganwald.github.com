@@ -9,11 +9,11 @@ layout: default
 <p style="margin-bottom: 0px;">“<em>Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
-I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). [This is not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
+I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
 - I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led through engineering-wide changes to structure, process, tooling, and platforms.  
 
-- I communicate: I wrote a respected [book about JavaScript](/creative-works.html#books); I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]  
+- I wrote a respected [book about JavaScript](/creative-works.html#books); I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]  
 
 - I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
 
@@ -137,7 +137,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 - I launched and led technical and organizational reorganizations and process iterations.
 
-I was awarded the *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022.
+I was awarded the *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022. I have MC'd the company's Annual Kickoff and co-hosted the company's IPO Breakfast Party.
 
 ---
 
