@@ -7,7 +7,7 @@ layout: default
 ## Who I Am
 
 <p style="margin-bottom: 0px;">“<em>Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of and he understood our customers and their needs. He was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</em>”</p>  
-<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">Jason Diller: VP of Engineering, Georgias and former Director of Engineering, PagerDuty</div>
+<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Jason Diller: VP of Engineering, Georgias and former Director of Engineering, PagerDuty</div>
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
@@ -16,10 +16,6 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 - I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
 
 My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
-
-[^creative-works]: My books, essays, and conference talks are available on my [creative works page].
-[^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
-[^PDNYSE]: PagerDuty went public on the NYSE in 2019.
 
 ---
 
@@ -56,11 +52,6 @@ I have designed and built software for paying customers since the 1990s:
 - In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.[^mumps]<br/><br/>
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].[^more]<br/><br/>
 - In 2015, I was hired as the Principal Engineer for Incident Management. I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
-
-[^tableau]: I was a one-person ISV, doing everything writing Tableau's [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston).
-[^mumps]: Ask me about [MUMPS] and JDBC.
-[^GitHub]: At GitHub, my most visible achievement was launching the [rich prose diffs] feature during a Superbowl.
-[^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web.
 
 [ING]: https://www.ing.com/Newsroom/News/Press-releases/PROld/ING-to-sell-ING-Direct-USA-to-Capital-One.htm
 [MUMPS]: https://en.wikipedia.org/wiki/MUMPS
@@ -107,7 +98,6 @@ My career-long focus is the complete product strategy and development workflow a
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<br/><br/>
 - I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.[^pd-growth]
 
-[^pd-growth]: During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO.
 
 ### I foster collaboration
 
@@ -146,6 +136,21 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 
 ---
 
-This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> except where copyright is otherwise asserted.
+## Footnotes
 
-<a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a>
+[^creative-works]: My books, essays, and conference talks are available on my [creative works page].
+[^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
+[^PDNYSE]: PagerDuty went public on the NYSE in 2019.
+[^tableau]: I was a one-person ISV, doing everything writing Tableau's [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston).
+[^mumps]: Ask me about [MUMPS] and JDBC.
+[^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web.
+[^pd-growth]: During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO.
+
+
+1. <a id="fn:creative-works" role="doc-endnote"/>My books, essays, and conference talks are available on my creative works page. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:sitraka-quest" role="doc-endnote"/>KL/Group/Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:PDNYSE" role="doc-endnote"/>PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:tableau" role="doc-endnote"/>I was a one-person ISV, doing everything writing Tableau’s manuals to marketing the product at tradeshows (Guy Kawasaki very generously posed for a picture with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:mumps" role="doc-endnote"/>Ask me about MUMPS and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:more" role="doc-endnote"/>I’ve written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I’ve written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web. <a href="#fnref:more" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:pd-growth" role="doc-endnote"/>During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
