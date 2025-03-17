@@ -12,8 +12,8 @@ layout: default
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
 - I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.<br/><br/>
-- I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]<br/><br/>
-- I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
+- I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup id="fnref:creative-works" role="doc-noteref"><a href="#fn:creative-works" class="footnote" rel="footnote">1</a>,&nbsp;</sup><sup id="fnref:PDNYSE" role="doc-noteref"><a href="#fn:PDNYSE" class="footnote" rel="footnote">3</a></sup><br/><br/>
+- I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.<sup id="fnref:sitraka-quest" role="doc-noteref"><a href="#fn:sitraka-quest" class="footnote" rel="footnote">2</a></sup>[^PDNYSE]
 
 My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
 
@@ -147,10 +147,16 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 [^pd-growth]: During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO.
 
 
-1. <a id="fn:creative-works" role="doc-endnote"/>My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:sitraka-quest" role="doc-endnote"/>KL/Group/Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:PDNYSE" role="doc-endnote"/>PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:tableau" role="doc-endnote"/>I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:mumps" role="doc-endnote"/>Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:more" role="doc-endnote"/>I’ve written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I’ve written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web. <a href="#fnref:more" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:pd-growth" role="doc-endnote"/>During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:creative-works" role="doc-endnote"/>My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
+
+1. <a id="fn:sitraka-quest" role="doc-endnote"/>KL/Group/Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
+
+1. <a id="fn:PDNYSE" role="doc-endnote"/>PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
+
+1. <a id="fn:tableau" role="doc-endnote"/>I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
+
+1. <a id="fn:mumps" role="doc-endnote"/>Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
+
+1. <a id="fn:more" role="doc-endnote"/>I’ve written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I’ve written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web. <a href="#fnref:more" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
+
+1. <a id="fn:pd-growth" role="doc-endnote"/>During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
