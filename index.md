@@ -95,6 +95,8 @@ My career-long focus is the complete product strategy and development workflow a
 <p style="margin: 0px 40px 0px 20px;">“<em>You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</em>”</p>  
 <p style="font-size:0.8em; text-align:right; margin: 0px 40px 20px 20px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
+I grow engineering in headcount, in scale of operations, in process maturity, and in tooling sophistication. 
+
 - I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.<br/><br/>
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<br/><br/>
 - I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">6</a></sup>
