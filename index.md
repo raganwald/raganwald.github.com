@@ -6,11 +6,6 @@ layout: default
 
 ## Who I Am
 
-<p>“<em>Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</em></p>
-
-<p style="margin-bottom: 0px;">“<em>“He was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</em>”</p>  
-<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Jason Diller: VP of Engineering, Georgias and former Director of Engineering, PagerDuty</div>
-
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
 - I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.<br/><br/>
@@ -34,7 +29,7 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 
 ### I am technical
 
-<p style="margin-bottom: 0px;">“<em>Reg hired me as a senior developer to work
+<!-- <p style="margin-bottom: 0px;">“<em>Reg hired me as a senior developer to work
 on a new product. Reg led the team and did
 all the high-level design. Since the team was
 small and the timeframe short, Reg was also
@@ -43,7 +38,12 @@ Over that time I obviously had a great deal
 of contact with Reg's design and his code,
 and both were excellent. The project was
 completed on time and was successful.</em>”</p> 
-<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—John MacMillan: Software Architect, IBM Canada Research Lab</div>
+<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—John MacMillan: Software Architect, IBM Canada Research Lab</div> -->
+
+<p>“<em>Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</em></p>
+
+<p style="margin-bottom: 0px;">“<em>Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</em>”</p>  
+<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Jason Diller: VP of Engineering, Georgias and former Director of Engineering, PagerDuty</div>
 
 I have designed and built software for paying customers since the 1990s:
 
@@ -77,8 +77,7 @@ I have designed and built software for paying customers since the 1990s:
 
 ### I ship products
 
-<p style="margin-bottom: 0px;">“<em>Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases. By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become
-KL's major source of revenue.</em>”</p>  
+<p style="margin-bottom: 0px;">“<em>Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases. By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become KL's major source of revenue.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</div>
 
 My career-long focus is the complete product strategy and development workflow around the technical work:
@@ -99,7 +98,6 @@ My career-long focus is the complete product strategy and development workflow a
 - I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.<br/><br/>
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<br/><br/>
 - I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">6</a></sup>
-
 
 ### I foster collaboration
 
