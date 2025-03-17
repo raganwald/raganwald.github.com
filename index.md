@@ -58,16 +58,19 @@ I have designed and built software for paying customers since the 1990s:
 
 - In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers. I then became the Program Manager for the entire [JProbe Suite], and wrote a little of the code such as the suite's first configuration wizard.
 
-- In the mid 2000s, I led the web banking team for ING Direct (USA), with more than three million active users. I personally wrote features such as its first ATM and Café locator.[^ing]  
+- In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.[^mumps]
 
-- As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [Rich Prose Diffs].[^more]    
+- As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].[^more]    
 
 - In 2015, I was hired as the Principal Engineer for Incident Management. I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
 
 [^tableau]: I was a one-person ISV, doing everything writing Tableau's [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston).
-[^ing]: ING Direct (USA) was sold to Capital One in 2011. I learned a great deal about integration with legacy systems and Enterprise Architectural Patterns for integration with legacy systems and extending their functionality. Ask me about MUMPS and JDBC.
+[^mumps]: Ask me about [MUMPS] and JDBC.
 [^GitHub]: At GitHub, my most visible achievement was launching the [Rich Prose Diffs] feature during a Superbowl.
 [^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web.
+
+[ING]: https://www.ing.com/Newsroom/News/Press-releases/PROld/ING-to-sell-ING-Direct-USA-to-Capital-One.htm
+[MUMPS]: https://en.wikipedia.org/wiki/MUMPS
 
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
