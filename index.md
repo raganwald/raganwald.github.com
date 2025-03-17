@@ -11,8 +11,8 @@ layout: default
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
-- I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.<br/>
-- I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]
+- I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.<br/><br/>
+- I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]<br/><br/>
 - I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
 
 My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
@@ -25,8 +25,7 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 
 ## What I Believe
 
-- I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.  
-
+- I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.<br/>
 - I believe that improving productivity is the [faster horses] of enterprise software. I believe that transforming the way customers think about their work, communicate with each other about their work, and do their work together is fundamental to creating and dominating entirely new markets.
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
@@ -50,18 +49,12 @@ completed on time and was successful.</em>”</p>
 
 I have designed and built software for paying customers since the 1990s:
 
-- In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.[^tableau]  
-
-- In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
-
-- In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
-
-- As Program Manager for the [JProbe Suite], I wrote a little code, such as designing and shipping the suite's first configuration tool.
-
-- In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.[^mumps]
-
-- As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].[^more]    
-
+- In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.[^tableau]<br/><br/>
+- In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.<br/><br/>
+- In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<br/><br/>
+- As Program Manager for the [JProbe Suite], I wrote a little code, such as designing and shipping the suite's first configuration tool.<br/><br/>
+- In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.[^mumps]<br/><br/>
+- As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].[^more]<br/><br/>
 - In 2015, I was hired as the Principal Engineer for Incident Management. I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
 
 [^tableau]: I was a one-person ISV, doing everything writing Tableau's [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston).
@@ -97,14 +90,10 @@ KL's major source of revenue.</em>”</p>
 
 My career-long focus is the complete product strategy and development workflow around the technical work:
 
-- As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.  
-
-- As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.  
-
-- At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].    
-
-- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for the company's Scheduling and Workflow features, identifying feasible and compelling features to establish strong differentiation from compatitors and complements.  
-
+- As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.<br/><br/>
+- As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.<br/><br/>
+- At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].<br/><br/>
+- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for the company's Scheduling and Workflow features, identifying feasible and compelling features to establish strong differentiation from compatitors and complements.<br/><br/>
 - At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer]. Ask me about [schedules].
 
 [schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
@@ -114,10 +103,8 @@ My career-long focus is the complete product strategy and development workflow a
 <p style="margin-bottom: 0px;">“<em>You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</div>
 
-- I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.  
-
-- As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.  
-
+- I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.<br/><br/>
+- As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<br/><br/>
 - I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.[^pd-growth]
 
 [^pd-growth]: During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO.
@@ -129,14 +116,10 @@ My career-long focus is the complete product strategy and development workflow a
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
-- I developed an internal capability supporting refined product management shipping strategies.  
-
-- I ideated and prototyped features and products in conjunction with proposed feature and product strategies.  
-
-- I led our own Incident Management practice.  
-
-- I launched and supported a more rigorous iteration of Engineering's Design Review process.  
-
+- I developed an internal capability supporting refined product management shipping strategies.<br/><br/>
+- I ideated and prototyped features and products in conjunction with proposed feature and product strategies.<br/><br/>
+- I led our own Incident Management practice.<br/><br/>
+- I launched and supported a more rigorous iteration of Engineering's Design Review process.<br/><br/>
 - I launched and led technical and organizational reorganizations and process iterations.
 
 I was awarded PagerDuty's *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022. I have MC'd the company's Annual Kickoff, and co-hosted the company's [IPO Breakfast Party](/assets/images/ipo-breakfast.jpg).
