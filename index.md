@@ -9,9 +9,9 @@ layout: default
 <p style="margin-bottom: 0px;">“<em>Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
-I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). I'm [available for work](#im-available-for-work), and [this is not my first rodeo](#this-is-not-my-first-rodeo).
+I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). [This is not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
-- I have led teams from four to forty-five people; I've led through growth in size and complexity from startup-in-a-room to IPO and globally distributed teams; I've led through engineering-wide changes to structure, process, tooling, and platforms.  
+- I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led through engineering-wide changes to structure, process, tooling, and platforms.  
 
 - I communicate: I wrote a respected [book about JavaScript](/creative-works.html#books); I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]  
 
@@ -52,11 +52,11 @@ completed on time and was successful.</em>”</p>
 
 I have designed and built software for paying customers since the 1990s:
 
-- In the early 90s, I wrote and sold Tableau, a Classified Advertising Management application for Desktop Publishers.[^tableau]  
+- In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.[^tableau]  
 
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
 
-- In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers. I then became the Program Manager for the entire JProbe Suite, and wrote a little of the code such as the suite's first configuration wizard.
+- In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers. I then became the Program Manager for the entire [JProbe Suite], and wrote a little of the code such as the suite's first configuration wizard.
 
 - In the mid 2000s, I led the web banking team for ING Direct (USA), with more than three million active users. I personally wrote features such as its first ATM and Café locator.[^ing]  
 
@@ -75,6 +75,8 @@ I have designed and built software for paying customers since the 1990s:
 [recent changes]: https://support.pagerduty.com/main/docs/recent-changes
 [Rich Prose Diffs]: https://docs.github.com/en/repositories/working-with-files/using-files/working-with-non-code-files#rendering-differences-in-prose-documents
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
+
+[JProbe Suite]: https://www.javaperformancetuning.com/tools/jprobe/
 [nCrypt Light]: https://info-mac.org/viewtopic.php?t=7139
 
 [LinkedIn]: https://www.linkedin.com/in/raganwald/details/experience/
@@ -86,22 +88,15 @@ I have designed and built software for paying customers since the 1990s:
 
 ### I ship products
 
-<p style="margin-bottom: 0px;">“<em>Reg and I worked together for a year and a
-half. During that time, he spearheaded the
-effort to produce JProbe Threadalyzer, and
-then shepherded the entire JProbe suite
-through two subsequent upgrade releases. By
-that time, Threadalyzer had all but elimi-
-nated its competition in the Java thread
-analysis space, and JProbe had become
+<p style="margin-bottom: 0px;">“<em>Reg and I worked together for a year and ahalf. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases. By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become
 KL's major source of revenue.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</div>
 
-My career-long focus includes the product development work *around* the technical work:
+My career-long focus is the complete product strategy and development workflow around the technical work:
 
-- As the Technical Product Manager for JProbe Threadalyzer, I performed technical and product research, developed the value proposition, and designed the product.  
+- As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.  
 
-- As the Program Manager for the JProbe Suite of products, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.  
+- As the Program Manager for the [JProbe Suite], I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.  
 
 - At Github, I refined a prototype, designed and developed the user experience, and shipped [Rich Prose Diffs].    
 
@@ -127,25 +122,19 @@ My career-long focus includes the product development work *around* the technica
 <p STYLE="margin-bottom: 0px;">“<em>Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</div>
 
-At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines to:
+At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
-- Support complex deployment strategies that in turn supported highly refined product management and sales tactics.  
+- I developed an internal capability supporting refined product management shipping strategies.  
 
-- Ideate and prototype features and products in conjunction with proposed feature and product strategies.  
+- I ideated and prototyped features and products in conjunction with proposed feature and product strategies.  
 
-- Lead our own Incident Management practice.  
+- I led our own Incident Management practice.  
 
-- Launch and support a more rigorous iteration of Engineering's Design Review process.  
+- I launched and supported a more rigorous iteration of Engineering's Design Review process.  
 
-- Launch and mannage technical and organizational reorganizations and process iterations.
+- I launched and led technical and organizational reorganizations and process iterations.
 
-I was awarded the *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022. 
-
-### I'm available for work.
-
-I recently completed nine years as a Principal Engineer with PagerDuty. I've shipped for PagerDuty, GitHub, devTopia, Unspace Interactive, and KL Group/Sitraka amongst others. I'm available to play a meaningful part in another breakout success.
-
-I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
+I was awarded the *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022.
 
 ### This is not my first rodeo
 
@@ -153,6 +142,12 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
 I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+
+### I'm available for work.
+
+I recently completed nine years as a Principal Engineer with PagerDuty. I've shipped for PagerDuty, GitHub, devTopia, Unspace Interactive, and KL Group/Sitraka amongst others. I'm available to play a meaningful part in another breakout success.
+
+I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
 
 ---
 
