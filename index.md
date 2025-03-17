@@ -25,7 +25,7 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 
 ## What I Believe
 
-- I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.<br/>
+- I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.<br/><br/>
 - I believe that improving productivity is the [faster horses] of enterprise software. I believe that transforming the way customers think about their work, communicate with each other about their work, and do their work together is fundamental to creating and dominating entirely new markets.
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
@@ -116,13 +116,13 @@ My career-long focus is the complete product strategy and development workflow a
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
+- I was awarded PagerDuty's *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022.<br/><br/>
 - I developed an internal capability supporting refined product management shipping strategies.<br/><br/>
-- I ideated and prototyped features and products in conjunction with proposed feature and product strategies.<br/><br/>
+- I ideated and prototyped features and products in partnership with my Product and Leadership colleagues.<br/><br/>
 - I led our own Incident Management practice.<br/><br/>
+- I have MC'd the company's annual kickoff, and co-hosted the company's [IPO Breakfast Party](/assets/images/ipo-breakfast.jpg).<br/><br/>
 - I launched and supported a more rigorous iteration of Engineering's Design Review process.<br/><br/>
 - I launched and led technical and organizational reorganizations and process iterations.
-
-I was awarded PagerDuty's *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022. I have MC'd the company's Annual Kickoff, and co-hosted the company's [IPO Breakfast Party](/assets/images/ipo-breakfast.jpg).
 
 ---
 
