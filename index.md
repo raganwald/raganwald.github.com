@@ -105,9 +105,9 @@ My career-long focus is the complete product strategy and development workflow a
 
 - At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for the company's Scheduling and Workflow features, identifying feasible and compelling features to establish strong differentiation from compatitors and complements.  
 
-- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].[^schedules]
+- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer]. Ask me about [schedules].
 
-[^schedules]: Ask me about [schedules](https://www.pagerduty.com/resources/learn/call-rotations-schedules/).
+[schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
 
 ### I lead engineering growth
 
