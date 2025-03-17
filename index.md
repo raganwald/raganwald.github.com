@@ -6,7 +6,9 @@ layout: default
 
 ## Who I Am
 
-<p style="margin-bottom: 0px;">“<em>Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of and he understood our customers and their needs. He was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</em>”</p>  
+<p>“<em>Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</em></p>
+
+<p style="margin-bottom: 0px;">“<em>R“He was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</em>”</p>  
 <div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Jason Diller: VP of Engineering, Georgias and former Director of Engineering, PagerDuty</div>
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
