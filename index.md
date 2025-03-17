@@ -11,9 +11,9 @@ layout: default
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
-- I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led through engineering-wide changes to structure, process, tooling, and platforms.  
+- I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led through engineering-wide changes to structure, process, tooling, and platforms.
 
-- I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]  
+- I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.[^creative-works]
 
 - I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.[^sitraka-quest][^PDNYSE]
 
@@ -56,7 +56,9 @@ I have designed and built software for paying customers since the 1990s:
 
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.  
 
-- In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers. I then became the Program Manager for the entire [JProbe Suite], and wrote a little of the code such as the suite's first configuration wizard.
+- In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
+
+- As Program Manager for the [JProbe Suite], I wrote a little code, such as designing and shipping the suite's first configuration tool.
 
 - In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.[^mumps]
 
@@ -99,7 +101,7 @@ My career-long focus is the complete product strategy and development workflow a
 
 - As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.  
 
-- As the Program Manager for the [JProbe Suite], I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.  
+- As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.  
 
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].    
 
