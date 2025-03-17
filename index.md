@@ -137,7 +137,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 - I launched and led technical and organizational reorganizations and process iterations.
 
-I was awarded the *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022. I have MC'd the company's Annual Kickoff and co-hosted the company's IPO Breakfast Party.
+I was awarded PagerDuty's *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022. I have MC'd the company's Annual Kickoff, and co-hosted the company's [IPO Breakfast Party](/assets/images/ipo-breakfast.jpg).
 
 ---
 
