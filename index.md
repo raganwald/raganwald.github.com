@@ -45,12 +45,12 @@ completed on time and was successful.</em>”</p>
 
 I have designed and built software for paying customers since the 1990s:
 
-- In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.[^tableau]<br/><br/>
+- In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<sup id="fnref:tableau" role="doc-noteref"><a href="#fn:tableau" class="footnote" rel="footnote">4</a></sup><br/><br/>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.<br/><br/>
 - In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<br/><br/>
 - As Program Manager for the [JProbe Suite], I wrote a little code, such as designing and shipping the suite's first configuration tool.<br/><br/>
-- In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.[^mumps]<br/><br/>
-- As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].[^more]<br/><br/>
+- In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<sup id="fnref:mumps" role="doc-noteref"><a href="#fn:mumps" class="footnote" rel="footnote">5</a></sup><br/><br/>
+- As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].<sup id="fnref:more" role="doc-noteref"><a href="#fn:more" class="footnote" rel="footnote">6</a></sup><br/><br/>
 - In 2015, I was hired as the Principal Engineer for Incident Management. I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
 
 [ING]: https://www.ing.com/Newsroom/News/Press-releases/PROld/ING-to-sell-ING-Direct-USA-to-Capital-One.htm
@@ -96,7 +96,7 @@ My career-long focus is the complete product strategy and development workflow a
 
 - I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.<br/><br/>
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<br/><br/>
-- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.[^pd-growth]
+- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">7</a></sup>
 
 
 ### I foster collaboration
