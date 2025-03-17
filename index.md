@@ -6,8 +6,8 @@ layout: default
 
 ## Who I Am
 
-<p style="margin-bottom: 0px;">“<em>Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</em>”</p>  
-<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
+<p style="margin-bottom: 0px;">“<em>Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of and he understood our customers and their needs. He was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</em>”</p>  
+<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">Jason Diller: VP of Engineering, Georgias and former Director of Engineering, PagerDuty</div>
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
@@ -111,8 +111,8 @@ My career-long focus is the complete product strategy and development workflow a
 
 ### I foster collaboration
 
-<p STYLE="margin-bottom: 0px;">“<em>Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.</em>”</p>  
-<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</div>
+<p style="margin-bottom: 0px;">“<em>Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</em>”</p>  
+<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
@@ -130,12 +130,15 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ### This is not my first rodeo
 
-<p STYLE="margin-bottom: 0px;">“<em>You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</em>”</p>  
-<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
+<p STYLE="margin-bottom: 0px;">“<em>Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.</em>”</p>  
+<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Richard Hartshorne: Senior Talent Partner, PagerDuty</div>
 
 I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 ### I'm available for work.
+
+<p STYLE="margin-bottom: 0px;">“<em>You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</em>”</p>  
+<div style="font-size:0.8em; text-align:right; margin-bottom: 20px; margin-right: 10px;">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</div>
 
 I recently completed nine years as a Principal Engineer with PagerDuty. I've shipped for PagerDuty, GitHub, devTopia, Unspace Interactive, and KL Group/Sitraka amongst others. I'm available to play a meaningful part in another breakout success.
 
