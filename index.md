@@ -50,7 +50,7 @@ I have designed and built software for paying customers since the 1990s:
 - In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<br/><br/>
 - As Program Manager for the [JProbe Suite], I wrote a little code, such as designing and shipping the suite's first configuration tool.<br/><br/>
 - In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<sup id="fnref:mumps" role="doc-noteref"><a href="#fn:mumps" class="footnote" rel="footnote">5</a></sup><br/><br/>
-- As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].<sup id="fnref:more" role="doc-noteref"><a href="#fn:more" class="footnote" rel="footnote">6</a></sup><br/><br/>
+- As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].<br/><br/>
 - In 2015, I was hired as the Principal Engineer for Incident Management. I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
 
 [ING]: https://www.ing.com/Newsroom/News/Press-releases/PROld/ING-to-sell-ING-Direct-USA-to-Capital-One.htm
@@ -96,7 +96,7 @@ My career-long focus is the complete product strategy and development workflow a
 
 - I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.<br/><br/>
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<br/><br/>
-- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">7</a></sup>
+- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">6</a></sup>
 
 
 ### I foster collaboration
@@ -152,5 +152,4 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 1. <a id="fn:PDNYSE" role="doc-endnote"/>PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
 1. <a id="fn:tableau" role="doc-endnote"/>I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
 1. <a id="fn:mumps" role="doc-endnote"/>Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
-1. <a id="fn:more" role="doc-endnote"/>I’ve written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I’ve written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web. <a href="#fnref:more" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
 1. <a id="fn:pd-growth" role="doc-endnote"/>During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
