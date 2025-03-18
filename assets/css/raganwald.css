@@ -1,0 +1,22 @@
+
+.quotation {
+  margin-top: 0px;
+  margin-right: 40px;
+  margin-left: 20px;
+
+  .butlast, .author {
+    margin-bottom: 20px;
+  }
+
+  .last {
+    margin-bottom: 0px;
+  }
+
+  .butlast, .last {
+    font-style: italic;
+  }
+
+  .author {
+    font-size:0.8em; text-align:right;
+  }
+}
