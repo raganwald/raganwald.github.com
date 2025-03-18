@@ -3,20 +3,21 @@
   margin-top: 0px;
   margin-right: 40px;
   margin-left: 20px;
+}
 
-  .butlast, .author {
-    margin-bottom: 20px;
-  }
+.quotation.butlast,
+.quotation.author {
+  margin-bottom: 20px;
+}
 
-  .last {
-    margin-bottom: 0px;
-  }
+.quotation.last {
+  margin-bottom: 0px;
+}
 
-  .butlast, .last {
-    font-style: italic;
-  }
+.quotation.butlast, .quotation.last {
+  font-style: italic;
+}
 
-  .author {
-    font-size:0.8em; text-align:right;
-  }
+.quotation.author {
+  font-size:0.8em; text-align:right;
 }
