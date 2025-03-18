@@ -1,4 +1,3 @@
-
 .quotation {
   margin-top: 0px;
   margin-right: 40px;
@@ -6,11 +5,18 @@
   font-style: italic;
 }
 
-.quotation:not(.author):last-child {
+.quotation:has(+ .quotation) {
+  margin-bottom: 20px;
+}
+
+.quotation:has(+ .author) {
   margin-bottom: 0px;
 }
 
-.quotation.author {
+.author {
+  margin-top: 0px;
+  margin-right: 40px;
+  margin-left: 20px;
   font-size:0.8em;
   text-align:right;
   font-style: normal;
