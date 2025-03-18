@@ -129,14 +129,21 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 <p class="quotation last">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.”</p>  
 <p class="quotation author">Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
-I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. I have experienced both the highs and the lows of the startup trajectory, and I guide my teams with a steady hand on the tiller. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama:
+
+- I have experienced both the highs and the lows of the startup trajectory, and I guide my teams with a steady hand on the tiller.
+- My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 ### I'm available for work.
 
 <p class="quotation last">“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”</p>  
 <p class="quotation author">Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
-I'm enthusiastic about playing a meaningful role in another breakout success. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
+If you are looking for a veteran to play a meaningful role in your breakout success:
+
+- My résumé is available upon [request][raganwald@gmail.com].
+- My personal email is [raganwald@gmail.com].
+- I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
 
 ---
 
