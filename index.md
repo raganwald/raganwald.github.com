@@ -14,6 +14,7 @@ layout: default
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
+- During my nine years (2015&thinsp;-&thinsp;2024) as a PagerDuty Principal Engineer, I served in Applications, Incident Management, and then in the CTO's Office.
 - I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
 - I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup id="fnref:creative-works" role="doc-noteref"><a href="#fn:creative-works" class="footnote" rel="footnote">1</a></sup>
 - I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.<sup id="fnref:sitraka-quest" role="doc-noteref"><a href="#fn:sitraka-quest" class="footnote" rel="footnote">2</a></sup><sup id="fnref:PDNYSE" role="doc-noteref"><a href="#fn:PDNYSE" class="footnote" rel="footnote">3</a></sup>
@@ -124,16 +125,14 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 <p class="quotation last">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.”</p>  
 <p class="quotation author">Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
-I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect." And I have experienced both the highs and the lows of the startup trajectory, and I guide my teams through them all with a steady hand on the tiller.
 
 ### I'm available for work.
 
 <p class="quotation last">“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”</p>  
 <p class="quotation author">Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
-I recently completed nine years as a Principal Engineer with PagerDuty. I've shipped for PagerDuty, GitHub, devTopia, Unspace Interactive, and KL Group/Sitraka amongst others. I'm available to play a meaningful part in another breakout success.
-
-I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
+I recently completed a sabbatical wherein I learned to fly. I'm refreshed and enthusiastic about playing a meaningful role in another breakout success. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
 
 ---
 
