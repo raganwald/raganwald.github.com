@@ -3,23 +3,24 @@
   margin-top: 0px;
   margin-right: 40px;
   margin-left: 20px;
-}
-
-.quotation.butlast,
-.quotation.author {
-  margin-bottom: 20px;
-}
-
-.quotation.last {
-  margin-bottom: 0px;
-}
-
-.quotation.butlast, .quotation.last {
   font-style: italic;
+}
+
+.quotation:last-child {
+  margin-bottom: 0px;
 }
 
 .quotation.author {
   font-size:0.8em;
   text-align:right;
   prefix: "—";
+  font-style: normal;
+}
+
+sup:before {
+  content: ' (';
+}
+
+sup:after {
+  content: ')';
 }

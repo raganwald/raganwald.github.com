@@ -107,7 +107,8 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 ### I foster collaboration
 
-<p class="quotation last">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time. Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.”</p>  
+<p class="quotation butlast">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
+<p class="quotation last">“Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.”</p>  
 <p class="quotation author">Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
