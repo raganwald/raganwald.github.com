@@ -41,8 +41,8 @@ Any growing organization would be fortunate to add Reg to its team.</p>
 ### what I believe about shipping
 
 - Shipping forces us to confront our constraints. Only when shipping are we forced to make uncomfortable but necessary choices.
-- Shipping is a confrontation with reality. Only when we ship do we receive authentic feedback and data from the market, as well as learning what is and isn't feasible to ship.
-- To leverage the value of shipping, our product lifecycle must optimize for shipping continuously, ingesting feedback and data continuously, and  updating our plans and priorities continuously in accordance with what we learn.
+- Shipping also forces us to confront external reality. Only when we ship do we receive authentic feedback and data from the market.
+- To leverage the value of shipping, our product lifecycle must optimize for shipping continuously. Thus making necessary choices continuously, ingesting feedback and data continuously, and updating our plans and priorities continuously, all in alignment with what we learn.
 
 ---
 
@@ -50,7 +50,7 @@ Any growing organization would be fortunate to add Reg to its team.</p>
 
 ### I am technical
 
-<p class="quotation butlast">“Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</em></p>
+<p class="quotation butlast">“Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</p>
 
 <p class="quotation last">“Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.”</p>  
 <p class="quotation author">Jason Diller: VP of Engineering, Georgias</p>
