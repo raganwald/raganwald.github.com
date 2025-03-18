@@ -20,9 +20,6 @@
   font-size:0.8em;
   text-align:right;
   font-style: normal;
-  ::before {
-    content: "—";
-  }
 }
 
 sup:before {
