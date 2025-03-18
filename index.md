@@ -31,18 +31,12 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 Any growing organization would be fortunate to add Reg to its team.</p>
 <p class="quotation author">Jonathan Poehlman, Senior Technical Recruiter, Elastic</p>
 
-### What I believe about strategy
+I am guided by my beliefs that:
 
-- I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.
-- I believe that improving productivity is the [faster horses] of enterprise software. I believe that transforming the way customers think about their work, communicate with each other about their work, and do their work together is fundamental to creating and dominating entirely new markets.
+- All software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.
+- Improving productivity is the [faster horses] of enterprise software. I believe that transforming the way customers think about their work, communicate with each other about their work, and do their work together is fundamental to creating and dominating entirely new markets.
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
-
-### what I believe about shipping
-
-- Shipping forces us to confront our constraints. Only when shipping are we forced to make uncomfortable but necessary choices.
-- Shipping also forces us to confront external reality. Only when we ship do we receive authentic feedback and data from the market.
-- To leverage the value of shipping, our product lifecycle must optimize for shipping continuously. Thus making necessary choices continuously, ingesting feedback and data continuously, and updating our plans and priorities continuously, all in alignment with what we learn.
 
 ---
 
