@@ -5,8 +5,10 @@ layout: default
 ---
 
 <style>
-  ul li:not(:last-child) {
-    margin-bottom: 20px;
+  ul, ol {
+    li:not(:last-child) {
+      margin-bottom: 20px;
+    }
   }
 </style>
 
@@ -14,7 +16,8 @@ layout: default
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
-- During my nine years (2015&thinsp;-&thinsp;2024) as a PagerDuty Principal Engineer, I served in Applications, Incident Management, and then in the CTO's Office.
+During my nine years (2015&thinsp;-&thinsp;2024) as a PagerDuty Principal Engineer, I served in Applications, Incident Management, and then in the CTO's Office. In addition:
+
 - I have led teams from four to forty-five people; I've led through growth in size and complexity from startup to IPO and globally distributed teams; I've led engineering-wide changes to structure, process, tooling, and platforms.
 - I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup id="fnref:creative-works" role="doc-noteref"><a href="#fn:creative-works" class="footnote" rel="footnote">1</a></sup>
 - I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.<sup id="fnref:sitraka-quest" role="doc-noteref"><a href="#fn:sitraka-quest" class="footnote" rel="footnote">2</a></sup><sup id="fnref:PDNYSE" role="doc-noteref"><a href="#fn:PDNYSE" class="footnote" rel="footnote">3</a></sup>
@@ -29,10 +32,18 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 Any growing organization would be fortunate to add Reg to its team.</p>
 <p class="quotation author">Jonathan Poehlman, Senior Technical Recruiter, Elastic</p>
 
+### What I believe about strategy
+
 - I believe that all software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.
 - I believe that improving productivity is the [faster horses] of enterprise software. I believe that transforming the way customers think about their work, communicate with each other about their work, and do their work together is fundamental to creating and dominating entirely new markets.
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
+
+### what I believe about shipping
+
+- Shipping forces us to confront our constraints. Only when shipping are we forced to make uncomfortable but necessary choices.
+- Shipping is a confrontation with reality. Only when we ship do we receive authentic feedback and data from the market, as well as learning what is and isn't feasible to ship.
+- To leverage the value of shipping, our product lifecycle must optimize for shipping continuously, ingesting feedback and data continuously, and  updating our plans and priorities continuously in accordance with what we learn.
 
 ---
 
@@ -125,14 +136,14 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 <p class="quotation last">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.”</p>  
 <p class="quotation author">Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
-I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect." And I have experienced both the highs and the lows of the startup trajectory, and I guide my teams through them all with a steady hand on the tiller.
+I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. I have experienced both the highs and the lows of the startup trajectory, and I guide my teams with a steady hand on the tiller. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 ### I'm available for work.
 
 <p class="quotation last">“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”</p>  
 <p class="quotation author">Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
-I recently completed a sabbatical wherein I learned to fly. I'm refreshed and enthusiastic about playing a meaningful role in another breakout success. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
+I'm enthusiastic about playing a meaningful role in another breakout success. I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
 
 ---
 
