@@ -13,8 +13,10 @@
 .quotation.author {
   font-size:0.8em;
   text-align:right;
-  prefix: "—";
   font-style: normal;
+  ::before {
+    content: "—";
+  }
 }
 
 sup:before {
