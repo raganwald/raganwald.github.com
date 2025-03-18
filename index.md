@@ -4,6 +4,12 @@ subtitle: Principal Engineer & Technical Product Manager
 layout: default
 ---
 
+<style>
+  ul li:not(:last-child) {
+    margin-bottom: 20px;
+  }
+</style>
+
 ## Who I Am
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
@@ -128,15 +134,6 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 ---
 
 ## Footnotes
-
-[^creative-works]: My books, essays, and conference talks are available on my [creative works page].
-[^sitraka-quest]: KL/Group/Sitraka was aquired by Quest Software in 2002.
-[^PDNYSE]: PagerDuty went public on the NYSE in 2019.
-[^tableau]: I was a one-person ISV, doing everything writing Tableau's [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston).
-[^mumps]: Ask me about [MUMPS] and JDBC.
-[^more]: I've written commercial software using Turbo Pascal, Lightspeed C, NewtonScript, C++, HyperCard, Fourth Dimension, Excel, Hypercard, Filemaker, C++, Java, Ruby, JavaScript, WebObjects, MUMPS, CoffeeScript, Backbone, Ember, React, and TypeScript; I've written commercial software on MP/M, Windows, MacintoshOS, NewtonOS, Unix, and for the last two decades, the Open Web.
-[^pd-growth]: During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO.
-
 
 1. <a id="fn:creative-works" role="doc-endnote"/>My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
 1. <a id="fn:sitraka-quest" role="doc-endnote"/>KL/Group/Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a><br/><br/>
