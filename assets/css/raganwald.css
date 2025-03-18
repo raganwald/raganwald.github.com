@@ -6,7 +6,7 @@
   font-style: italic;
 }
 
-.quotation:last-child {
+.quotation:not(.author):last-child {
   margin-bottom: 0px;
 }
 
