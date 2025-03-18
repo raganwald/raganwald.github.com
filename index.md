@@ -29,9 +29,9 @@ My experience is itemized in more detail on [LinkedIn]; my personal email is [ra
 
 ### I am technical
 
-<p class="quotation butlast">“<em>Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</em></p>
+<p class="quotation butlast">“Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</em></p>
 
-<p class="quotation last">“<em>Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</em>”</p>  
+<p class="quotation last">“Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.”</p>  
 <p class="quotation author">—Jason Diller: VP of Engineering, Georgias and former Director of Engineering, PagerDuty</p>
 
 I have designed and built software for paying customers since the 1990s:
@@ -66,7 +66,7 @@ I have designed and built software for paying customers since the 1990s:
 
 ### I ship products
 
-<p class="quotation last">“<em>Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases. By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become KL's major source of revenue.</em>”</p>  
+<p class="quotation last">“Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases. By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become KL's major source of revenue.”</p>  
 <p class="quotation author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
 
 My career-long focus is the complete product strategy and development workflow around the technical work:
@@ -81,7 +81,7 @@ My career-long focus is the complete product strategy and development workflow a
 
 ### I lead engineering growth
 
-<p class="quotation last">“<em>You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</em>”</p>  
+<p class="quotation last">“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”</p>  
 <p class="quotation author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
 I grow engineering in headcount, in scale of operations, in process maturity, and in tooling sophistication. 
@@ -92,7 +92,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 ### I foster collaboration
 
-<p class="quotation last">“<em>Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</em>”</p>  
+<p class="quotation last">“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”</p>  
 <p class="quotation author">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</p>
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
@@ -111,14 +111,14 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ### This is not my first rodeo
 
-<p class="quotation last">“<em>Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.</em>”</p>  
+<p class="quotation last">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced experienced comfortable and build their confidence (empowerment) at the same time. Your communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. You talk to, and get respect, from the Interns to the C-Level.”</p>  
 <p class="quotation author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
 I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama. My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
 ### I'm available for work.
 
-<p class="quotation last">“<em>You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</em>”</p>  
+<p class="quotation last">“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”</p>  
 <p class="quotation author">—Michael Cucci: Investor, Startup Advisor, and former VP Product and Marketing, PagerDuty</p>
 
 I recently completed nine years as a Principal Engineer with PagerDuty. I've shipped for PagerDuty, GitHub, devTopia, Unspace Interactive, and KL Group/Sitraka amongst others. I'm available to play a meaningful part in another breakout success.
