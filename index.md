@@ -21,7 +21,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 - I wrote a respected [book](/creative-works.html#books) about JavaScript; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup id="fnref:creative-works" role="doc-noteref"><a href="#fn:creative-works" class="footnote" rel="footnote">1</a></sup>
 - I shipped products and features that contributed to KL Group/Sitraka's and PagerDuty's successful exits.<sup id="fnref:sitraka-quest" role="doc-noteref"><a href="#fn:sitraka-quest" class="footnote" rel="footnote">2</a></sup><sup id="fnref:PDNYSE" role="doc-noteref"><a href="#fn:PDNYSE" class="footnote" rel="footnote">3</a></sup>
 
-My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
+My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com]. More about [What I Believe](#what-i-believe), [What I Do](#what-i-do), and [What's Next?](#whats-next) can be found below.
 
 ---
 
