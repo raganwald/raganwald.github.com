@@ -88,9 +88,7 @@ My career-long focus is the complete product strategy and development workflow a
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
 - At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from comeatitors and complements.
-- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].
-
-Not everything I championed ended up shipping. Ask me about schedules, automation, and collaboration.
+- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">6</a></sup>
 
 [schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
 
@@ -103,7 +101,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 - I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.
-- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">6</a></sup>
+- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">7</a></sup>
 
 ### I foster collaboration
 
@@ -155,4 +153,5 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. <a id="fn:PDNYSE" role="doc-endnote"/>PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:tableau" role="doc-endnote"/>I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:mumps" role="doc-endnote"/>Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:tilting-at-windmills" role="doc-endnote"/>Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:pd-growth" role="doc-endnote"/>During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
