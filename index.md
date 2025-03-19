@@ -87,8 +87,10 @@ My career-long focus is the complete product strategy and development workflow a
 - As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
-- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for the company's Scheduling and Workflow features, identifying feasible and compelling features to establish strong differentiation from compatitors and complements.
-- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer]. Ask me about [schedules].
+- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from comeatitors and complements.
+- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].
+
+Not everything I championed ended up shipping. Ask me about schedules, automation, and collaboration.
 
 [schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
 
