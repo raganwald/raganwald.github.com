@@ -79,7 +79,8 @@ I have designed and built software for paying customers since the 1990s:
 
 ### I ship products
 
-<p class="quotation">“Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases. By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.”</p>  
+<p class="quotation">“Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases. By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.</p>
+<p class="quotation">“By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.”</p>
 <p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
 
 My career-long focus is the complete product strategy and development workflow around the technical work:
