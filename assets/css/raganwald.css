@@ -18,7 +18,7 @@
 
 /* first quotation in a row under an h3, can't rely on child math */
 :not(.quotation) + .quotation {
-  background-color: bisque;
+  background-color: lightgray;
 }
 
 /* 20px between multiple quotations, none between last and author */
@@ -29,7 +29,7 @@
 /* last quotation in a row under an h3, can't rely on child math */
 .quotation:not(:has(+ .quotation)) {
   margin-bottom: 0px;
-  background-color: lightgray;
+  color: green;
 }
 
 /* quotation styling */
