@@ -24,7 +24,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 ---
 
-<p class="quotation">Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</p>  
+<p class="quotation">“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”</p>  
 <p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 ---
@@ -54,8 +54,8 @@ I have designed and built software for paying customers since the 1990s:
 
 ---
 
-<p class="quotation">Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</p>
-<p class="quotation">Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</p>  
+<p class="quotation">“Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</p>
+<p class="quotation">“Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.”</p>  
 <p class="author">—Jason Diller: VP of Engineering, Georgias</p>
 
 ---
@@ -92,8 +92,8 @@ My career-long focus is the complete product strategy and development workflow a
 
 ---
 
-<p class="quotation">Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
-<p class="quotation">By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.</p>
+<p class="quotation">“Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
+<p class="quotation">“By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.”</p>
 <p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
 
 ---
@@ -110,7 +110,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 ---
 
-<p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
+<p class="quotation">“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”</p>  
 <p class="author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
 ---
@@ -129,8 +129,8 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ---
 
-<p class="quotation">Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
-<p class="quotation">Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.</p>  
+<p class="quotation">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
+<p class="quotation">“Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.”</p>  
 <p class="author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
 ---
@@ -162,7 +162,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ---
 
-<p class="quotation">You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</p>  
+<p class="quotation">“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”</p>  
 <p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 ---
