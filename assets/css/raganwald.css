@@ -28,7 +28,7 @@
 
 /* quotation styling */
 
-.quotation:first-child::before {
+.quotation:has(+ .quotation)::before { /* breaks for a three-paragraph quote */
   content: open-quote;
   top: 0;
   left: 0;
@@ -40,7 +40,7 @@
   right: 0;
 }
 
-.quotation:first-child::before,
+.quotation:has(+ .quotation)::before,
 .author::after {
   background-color: #cccccc;
   display: block;
