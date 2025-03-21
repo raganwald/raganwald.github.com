@@ -21,24 +21,6 @@
 /* first quotation in a row */
 :not(.quotation) + .quotation::before {
   content: '“';
-  top: 0;
-  left: -1en;
-  text-align: right;
-  position: absolute;
-  display: block;
-  width: 1en;
-
-/*
-  background-color: #cccccc;
-  display: block;
-  width: 60px;
-  height: 60px;
-  line-height: 1.618;
-  font-size: 3em;
-  border-radius: 100%;
-  text-align: center;
-  position: absolute;
-*/
 }
 
 /* but-last quotations in a row */
