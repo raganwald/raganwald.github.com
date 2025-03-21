@@ -42,7 +42,7 @@
 
 /* last quotation in a row */
 .quotation:not(:has(+ .quotation)) {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 /* footnote markers */
