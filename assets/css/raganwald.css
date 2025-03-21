@@ -13,7 +13,7 @@
   margin-top: 0px;
   margin-right: 40px;
   margin-left: 0px;
-  padding-left: 80px;
+  padding-left: 60px;
   padding-right: 0px;
   position: relative;
 }
@@ -22,7 +22,7 @@
 :not(.quotation) + .quotation::before {
   content: '“';
   top: 0;
-  left: -30px;
+  left: -15px;
 
   background-color: #cccccc;
   display: block;
