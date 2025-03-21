@@ -16,8 +16,13 @@
   position: relative;
 }
 
-/* 20px between multiple quotations, none between last and author */
+/* first quotation under an h3, can't rely on child math? */
 
+:not(.quotation) + .quotation {
+  background-color: lightgray;
+}
+
+/* 20px between multiple quotations, none between last and author */
 .quotation:has(+ .quotation) {
   margin-bottom: 20px;
 }
@@ -28,7 +33,7 @@
 
 /* quotation styling */
 
-.quotation:has(+ .quotation)::before { /* breaks for a three-paragraph quote */
+/* .quotation:has(+ .quotation)::before {
   content: open-quote;
   top: 0;
   left: 0;
@@ -51,7 +56,7 @@
   border-radius: 100%;
   text-align: center;
   position: absolute;
-}
+} */
 
 /* footnote markers */
 
