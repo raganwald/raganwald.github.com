@@ -7,6 +7,8 @@ layout: default
 <style>
   ul,
   ol {
+    padding-left: 1em;
+    
     li:not(:last-child) {
       margin-bottom: 20px;
     }
