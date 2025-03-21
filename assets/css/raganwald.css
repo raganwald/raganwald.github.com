@@ -42,6 +42,8 @@
 
 /* last quotation in a row */
 .quotation:not(:has(+ .quotation)) {
+  content: '”';
+
   margin-bottom: 5px;
 }
 
