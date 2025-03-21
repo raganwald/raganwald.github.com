@@ -37,8 +37,8 @@
   right: 0;
 }
 
-/* :not(.quotation) + .quotation,
-.quotation:not(:has(+ .quotation)) {
+:not(.quotation) + .quotation::before,
+.quotation:not(:has(+ .quotation))::after {
   background-color: #cccccc;
   display: block;
   width: 60px;
@@ -48,7 +48,7 @@
   border-radius: 100%;
   text-align: center;
   position: absolute;
-} */
+}
 
 /* footnote markers */
 
