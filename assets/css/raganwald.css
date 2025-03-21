@@ -22,7 +22,7 @@
 :not(.quotation) + .quotation::before {
   content: '“';
   top: 0;
-  left: -50%;
+  left: -30px;
 
   background-color: #cccccc;
   display: block;
