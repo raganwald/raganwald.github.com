@@ -1,26 +1,27 @@
 .quotation {
-  margin-top: 0px;
-  margin-right: 40px;
-  margin-left: 20px;
   font-style: italic;
-  position: relative;
 }
 
 .author {
-  margin-top: 0px;
-  margin-right: 40px;
-  margin-left: 20px;
   font-size:0.8em;
   text-align:right;
   font-style: normal;
+}
+
+.quotation,
+.author {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-left: 0px;
+  padding-left: 80px;
+  padding-right: 80px;
   position: relative;
 }
 
 /* first quotation in a row under an h3, can't rely on child math */
 /* this one has a left quote ::before */
-:not(.quotation) + .quotation {
-  padding-left: 80px;
-}
+/* :not(.quotation) + .quotation {
+} */
 
 :not(.quotation) + .quotation::before {
   content: open-quote;
@@ -37,7 +38,6 @@
 /* this one has a right quote ::after */
 .quotation:not(:has(+ .quotation)) {
   margin-bottom: 10px;
-  padding-right: 80px;
 }
 
 .quotation:not(:has(+ .quotation))::after {
