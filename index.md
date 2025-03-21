@@ -39,14 +39,6 @@ I am guided by my beliefs that:
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
----
-
-<p class="quotation">“Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</p>
-<p class="quotation">“Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.”</p>  
-<p class="author">—Jason Diller: VP of Engineering, Georgias</p>
-
----
-
 ## What I Do
 
 ### I am technical
@@ -60,6 +52,14 @@ I have designed and built software for paying customers since the 1990s:
 - In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<sup id="fnref:mumps" role="doc-noteref"><a href="#fn:mumps" class="footnote" rel="footnote">5</a></sup>
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].
 - In 2015, I was hired as the Principal Engineer for Incident Management. I was PagerDuty's hands-on lead for the [insights] and [operational review] features, and the launch of features such as [response mobilizer]. I wrote prototypes for features such as [recent changes].
+
+---
+
+<p class="quotation">“Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</p>
+<p class="quotation">“Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.”</p>  
+<p class="author">—Jason Diller: VP of Engineering, Georgias</p>
+
+---
 
 [ING]: https://www.ing.com/Newsroom/News/Press-releases/PROld/ING-to-sell-ING-Direct-USA-to-Capital-One.htm
 [MUMPS]: https://en.wikipedia.org/wiki/MUMPS
@@ -81,14 +81,6 @@ I have designed and built software for paying customers since the 1990s:
 [manuals]: /assets/images/tableau-manuals.jpg
 [reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
 
----
-
-<p class="quotation">“Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
-<p class="quotation">“By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.”</p>
-<p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
-
----
-
 ### I ship products
 
 My career-long focus is the complete product strategy and development workflow around the technical work:
@@ -99,14 +91,15 @@ My career-long focus is the complete product strategy and development workflow a
 - At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from comeatitors and complements.
 - At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<sup id="fnref:tilting-at-windmills" role="doc-noteref"><a href="#fn:tilting-at-windmills" class="footnote" rel="footnote">6</a></sup>
 
+---
+
+<p class="quotation">“Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
+<p class="quotation">“By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.”</p>
+<p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
+
+---
+
 [schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
-
----
-
-<p class="quotation">“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”</p>  
-<p class="author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
-
----
 
 ### I lead engineering growth
 
@@ -118,8 +111,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 ---
 
-<p class="quotation">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
-<p class="quotation">“Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.”</p>  
+<p class="quotation">“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”</p>  
 <p class="author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
 ---
@@ -138,8 +130,9 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ---
 
-<p class="quotation">“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”</p>  
-<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
+<p class="quotation">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
+<p class="quotation">“Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.”</p>  
+<p class="author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
 
 ---
 
@@ -154,7 +147,7 @@ I bring forty years of product- and customer- centric business and technical exp
 
 ---
 
-<p class="quotation">“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”</p>  
+<p class="quotation">“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”</p>  
 <p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 ---
@@ -166,6 +159,11 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 - My résumé is available upon [request][raganwald@gmail.com].
 - My personal email is [raganwald@gmail.com].
 - I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
+
+---
+
+<p class="quotation">“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”</p>  
+<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 ---
 
