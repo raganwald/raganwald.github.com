@@ -11,10 +11,10 @@
 .quotation,
 .author {
   margin-top: 0px;
-  margin-right: 0px;
+  margin-right: 40px;
   margin-left: 0px;
   padding-left: 80px;
-  padding-right: 80px;
+  padding-right: 0px;
   position: relative;
 }
 
@@ -24,7 +24,7 @@
 } */
 
 :not(.quotation) + .quotation::before {
-  content: open-quote;
+  content: '“';
   top: 0;
   left: 0;
 }
@@ -40,11 +40,11 @@
   margin-bottom: 10px;
 }
 
-.quotation:not(:has(+ .quotation))::after {
+/* .quotation:not(:has(+ .quotation))::after {
   content: close-quote;
   bottom: 0;
   right: 0;
-}
+} */
 
 :not(.quotation) + .quotation::before,
 .quotation:not(:has(+ .quotation))::after {
