@@ -6,14 +6,6 @@
   position: relative;
 }
 
-.quotation:has(+ .quotation) {
-  margin-bottom: 20px;
-}
-
-.quotation:has(+ .author) {
-  margin-bottom: 0px;
-}
-
 .author {
   margin-top: 0px;
   margin-right: 40px;
@@ -23,6 +15,32 @@
   font-style: normal;
   position: relative;
 }
+
+/* 20px between multiple quotations, none between last and author */
+
+.quotation:has(+ .quotation) {
+  margin-bottom: 20px;
+}
+
+.quotation:has(+ .author) {
+  margin-bottom: 0px;
+}
+
+/* quotation styling */
+
+.quotation:first-child::before {
+  content: open-quote;
+  top: 0;
+  left: 0;
+}
+
+.author::after {
+  content: close-quote;
+  bottom: 0;
+  right: 0;
+}
+
+/* footnote markers */
 
 sup:before {
   content: ' (';
