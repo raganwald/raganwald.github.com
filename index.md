@@ -24,11 +24,13 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 ---
 
-## What I Believe
-
 <p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
 Any growing organization would be fortunate to add Reg to its team.</p>
 <p class="author">—Jonathan Poehlman, Senior Technical Recruiter, Elastic</p>
+
+---
+
+## What I Believe
 
 I am guided by my beliefs that:
 
@@ -39,13 +41,15 @@ I am guided by my beliefs that:
 
 ---
 
-## What I Do
-
-### I am technical
-
 <p class="quotation">“Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</p>
 <p class="quotation">“Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.”</p>  
 <p class="author">—Jason Diller: VP of Engineering, Georgias</p>
+
+---
+
+## What I Do
+
+### I am technical
 
 I have designed and built software for paying customers since the 1990s:
 
@@ -77,11 +81,15 @@ I have designed and built software for paying customers since the 1990s:
 [manuals]: /assets/images/tableau-manuals.jpg
 [reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
 
-### I ship products
+---
 
 <p class="quotation">“Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
 <p class="quotation">“By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.”</p>
 <p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
+
+---
+
+### I ship products
 
 My career-long focus is the complete product strategy and development workflow around the technical work:
 
@@ -93,10 +101,14 @@ My career-long focus is the complete product strategy and development workflow a
 
 [schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
 
-### I lead engineering growth
+---
 
 <p class="quotation">“You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!”</p>  
 <p class="author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
+
+---
+
+### I lead engineering growth
 
 I grow engineering in headcount, in scale of operations, in process maturity, and in tooling sophistication. 
 
@@ -104,11 +116,15 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.
 - I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">7</a></sup>
 
-### I foster collaboration
+---
 
 <p class="quotation">“Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
 <p class="quotation">“Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.”</p>  
 <p class="author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
+
+---
+
+### I foster collaboration
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
@@ -122,22 +138,28 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ---
 
+<p class="quotation">“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”</p>  
+<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
+
+---
+
 ## What's Next?
 
 ### This is not my first rodeo
-
-<p class="quotation">“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”</p>  
-<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama:
 
 - I have experienced both the highs and the lows of the startup trajectory, and I guide my teams with a steady hand on the tiller.
 - My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
 
-### I'm available for work.
+---
 
 <p class="quotation">“You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.”</p>  
 <p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
+
+---
+
+### I'm available for work.
 
 If you are looking for a veteran to play a meaningful role in your breakout success:
 
