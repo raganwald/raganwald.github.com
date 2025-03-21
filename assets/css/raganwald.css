@@ -3,6 +3,7 @@
   margin-right: 40px;
   margin-left: 20px;
   font-style: italic;
+  position: relative;
 }
 
 .quotation:has(+ .quotation) {
@@ -20,6 +21,7 @@
   font-size:0.8em;
   text-align:right;
   font-style: normal;
+  position: relative;
 }
 
 sup:before {
