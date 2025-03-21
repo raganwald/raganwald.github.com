@@ -24,9 +24,8 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 ---
 
-<p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
-Any growing organization would be fortunate to add Reg to its team.</p>
-<p class="author">—Jonathan Poehlman, Senior Technical Recruiter, Elastic</p>
+<p class="quotation">“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”</p>  
+<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 ---
 
@@ -147,8 +146,9 @@ I bring forty years of product- and customer- centric business and technical exp
 
 ---
 
-<p class="quotation">“Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.”</p>  
-<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
+<p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
+Any growing organization would be fortunate to add Reg to its team.</p>
+<p class="author">—Jonathan Poehlman, Senior Technical Recruiter, Elastic</p>
 
 ---
 
