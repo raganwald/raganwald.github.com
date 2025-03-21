@@ -16,10 +16,9 @@
   position: relative;
 }
 
-/* first quotation under an h3, can't rely on child math? */
-
+/* first quotation in a row under an h3, can't rely on child math */
 :not(.quotation) + .quotation {
-  background-color: lightgray;
+  background-color: bisque;
 }
 
 /* 20px between multiple quotations, none between last and author */
@@ -27,8 +26,10 @@
   margin-bottom: 20px;
 }
 
-.quotation:has(+ .author) {
+/* last quotation in a row under an h3, can't rely on child math */
+.quotation:not(:has(+ .quotation)) {
   margin-bottom: 0px;
+  background-color: lightgray;
 }
 
 /* quotation styling */
