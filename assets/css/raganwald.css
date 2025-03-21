@@ -17,6 +17,11 @@
 }
 
 /* first quotation in a row under an h3, can't rely on child math */
+/* this one has a left quote ::before */
+:not(.quotation) + .quotation {
+  padding-left: 80px;
+}
+
 :not(.quotation) + .quotation::before {
   content: open-quote;
   top: 0;
@@ -29,8 +34,10 @@
 }
 
 /* last quotation in a row under an h3, can't rely on child math */
+/* this one has a right quote ::after */
 .quotation:not(:has(+ .quotation)) {
   margin-bottom: 10px;
+  padding-right: 80px;
 }
 
 .quotation:not(:has(+ .quotation))::after {
