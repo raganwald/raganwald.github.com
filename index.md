@@ -21,7 +21,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I've led through growth from startup, to IPO, to annual revenues in excess of $450 million.
-- I shipped the key products and features that led to successful exits for Sitraka and PagerDuty.<sup id="fnref:sitraka-quest" role="doc-noteref"><a href="#fn:sitraka-quest" class="footnote" rel="footnote">1</a></sup><sup id="fnref:PDNYSE" role="doc-noteref"><a href="#fn:PDNYSE" class="footnote" rel="footnote">2</a></sup>
+- I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<sup id="fnref:sitraka-quest" role="doc-noteref"><a href="#fn:sitraka-quest" class="footnote" rel="footnote">1</a></sup><sup id="fnref:PDNYSE" role="doc-noteref"><a href="#fn:PDNYSE" class="footnote" rel="footnote">2</a></sup>
 - I wrote a [programming book]; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup id="fnref:creative-works" role="doc-noteref"><a href="#fn:creative-works" class="footnote" rel="footnote">3</a></sup>
 - My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
 
@@ -92,7 +92,7 @@ My career-long focus is the complete product strategy and development workflow a
 - As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
-- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from comeatitors and complements.
+- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from our competitors and value complements.
 - At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<sup id="fnref:tilting-at-windmills" role="doc-noteref"><a href="#fn:tilting-at-windmills" class="footnote" rel="footnote">6</a></sup>
 
 ---
