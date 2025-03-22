@@ -38,8 +38,8 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 I am guided by my beliefs that:
 
-- All software is social software. I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.
-- Improving productivity is the [faster horses] of enterprise software. I believe that transforming the way customers think about their work, communicate with each other about their work, and do their work together is fundamental to creating and dominating entirely new markets.
+- All software is social software: I believe that to thrive, software must become the comunications medium or load-bearing source of truth for a critical process.
+- Improving productivity is the [faster horses] of enterprise software: I believe that transforming the way customers think about their work is fundamental to creating and dominating entirely new markets.
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
@@ -87,7 +87,7 @@ I have designed and built software for paying customers since the 1990s:
 
 ### I ship products
 
-My career-long focus is the complete product strategy and development workflow around the technical work:
+My career-long focus is the complete product strategy and development process around the technical work:
 
 - As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
