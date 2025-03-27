@@ -39,7 +39,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 I am guided by my beliefs that:
 
 - All software is social software: I believe that to thrive, software must become the load-bearing source of truth for a critical process.
-- Improving productivity is the [faster horses] of enterprise software: I believe that a tool that doesn't change the way customers think about their work isn't worth building.<sup id="fnref:perlisism" role="doc-noteref"><a href="#fn:perlisism" class="footnote" rel="footnote">4</a></sup>
+- Improving productivity is building [faster horses]: I believe that a tool that doesn't change the way customers think about their work isn't worth building.<sup id="fnref:perlisism" role="doc-noteref"><a href="#fn:perlisism" class="footnote" rel="footnote">4</a></sup>
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
@@ -177,7 +177,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. <a id="fn:sitraka-quest" role="doc-endnote"/>Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:PDNYSE" role="doc-endnote"/>PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:creative-works" role="doc-endnote"/>My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:perlisism" role="doc-endnote"/>My belief is a generalization of Dr. Alan Kay's observtion that [A language that doesn't affect the way you think about programming, is not worth knowing.](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing.). <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:perlisism" role="doc-endnote"/>My belief is a generalization of Dr. Alan Kay's observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:tableau" role="doc-endnote"/>I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:mumps" role="doc-endnote"/>Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:tilting-at-windmills" role="doc-endnote"/>Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
