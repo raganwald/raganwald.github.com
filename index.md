@@ -130,7 +130,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
-- I was awarded PagerDuty's *Breakthrough* leadership award in 2019 and the *Inclusively Leading and Learning* award in 2022.
+- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones%20for%20the%20Breakthrough%20and%20Inclusively%20Learning%20and%20Leading%20awards." class="footnote" rel="footnote" title="PagerDuty’s revenue growth">10</a>
 - I developed an internal capability supporting refined product management shipping strategies.
 - I ideated and prototyped features and products in partnership with my Product and Leadership colleagues.
 - I led our own Incident Management practice.
@@ -189,3 +189,4 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. <a id="fn:tilting-at-windmills" role="doc-endnote"/>Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:tooling" role="doc-endnote"/>Ask me about my experience adopting or migrating to Ember, React, JavaScript, TypeScript, Elixir, Java, and Copilot.<a href="#fnref:tooling" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:pd-growth" role="doc-endnote"/>During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:awards" role="doc-endnote"/>I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
