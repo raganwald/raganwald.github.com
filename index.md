@@ -30,7 +30,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I've led through growth from startup, to IPO, to annual revenues in excess of $450 million.
-- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span  class="footnote"><a href="#:~:text=Sitraka%20was%20aquired%20by%20Quest%20Software%20in%202002." rel="footnote">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public%20on%20the%20NYSE%20in%202019." rel="footnote">2</a></span>
+- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20aquired%20by%20Quest%20Software%20in%202002." rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public%20on%20the%20NYSE%20in%202019." rel="footnote" title="PagerDuty’s exit">2</a></span>
 - <a id="fnref:creative-works" role="doc-noteref"/>I wrote a [programming book]; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<a href="#:~:text=My%20books%2C%20essays%2C%20and%20conference%20talks%20are%20available%20on%20my%20creative%20works%20page." class="footnote" rel="footnote">3</a>
 - My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
 
