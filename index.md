@@ -21,8 +21,8 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I've led through growth from startup, to IPO, to annual revenues in excess of $450 million.
-- I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<sup id="fnref:sitraka-quest" role="doc-noteref"><a href="#fn:sitraka-quest" class="footnote" rel="footnote">1</a></sup><sup id="fnref:PDNYSE" role="doc-noteref"><a href="#fn:PDNYSE" class="footnote" rel="footnote">2</a></sup>
-- I wrote a [programming book]; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup id="fnref:creative-works" role="doc-noteref"><a href="#fn:creative-works" class="footnote" rel="footnote">3</a></sup>
+- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<sup><a href="#fn:sitraka-quest" class="footnote" rel="footnote">1</a></sup><sup><a href="#fn:PDNYSE" class="footnote" rel="footnote">2</a></sup>
+- <a id="fnref:creative-works" role="doc-noteref"/>I wrote a [programming book]; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup><a href="#fn:creative-works" class="footnote" rel="footnote">3</a></sup>
 - My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
 
 [programming book]: /creative-works.html#books
@@ -36,10 +36,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 ## What I Believe
 
-I am guided by my beliefs that:
-
-- All software is social software: I believe that to thrive, software must become the load-bearing source of truth for a critical process.
-- Improving productivity is building [faster horses]: I believe that a tool that doesn't change the way customers think about their work isn't worth building.<sup id="fnref:perlisism" role="doc-noteref"><a href="#fn:perlisism" class="footnote" rel="footnote">4</a></sup>
+<a id="fnref:perlisism" role="doc-noteref"/>I am guided by my belief that improving productivity is building [faster horses]: I believe that a tool that doesn't change the way customers think about their work isn't worth building.<sup><a href="#fn:perlisism" class="footnote" rel="footnote">4</a></sup>
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
@@ -49,11 +46,11 @@ I am guided by my beliefs that:
 
 I have designed and built software for paying customers since the 1990s:
 
-- In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<sup id="fnref:tableau" role="doc-noteref"><a href="#fn:tableau" class="footnote" rel="footnote">5</a></sup>
+- <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<sup><a href="#fn:tableau" class="footnote" rel="footnote">5</a></sup>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
 - In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
 - As Program Manager for the [JProbe Suite], I wrote a little code, such as designing and shipping the suite's first configuration tool.
-- In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<sup id="fnref:mumps" role="doc-noteref"><a href="#fn:mumps" class="footnote" rel="footnote">6</a></sup>
+- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<sup><a href="#fn:mumps" class="footnote" rel="footnote">6</a></sup>
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].
 - In 2015, I joined PagerDuty as the Principal Engineer for Applications. I was the hands-on lead for the [insights] and [operational review] features, and launched features such as [response mobilizer]. I created prototypes for features such as [recent changes].
 
@@ -93,7 +90,7 @@ My career-long focus is the product strategy and development process around both
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
 - At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from our competitors and value complements.
-- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<sup id="fnref:tilting-at-windmills" role="doc-noteref"><a href="#fn:tilting-at-windmills" class="footnote" rel="footnote">7</a></sup>
+- <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<sup><a href="#fn:tilting-at-windmills" class="footnote" rel="footnote">7</a></sup>
 
 ---
 
@@ -111,7 +108,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 - I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.
-- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">8</a></sup>
+- <a id="fnref:pd-growth" role="doc-noteref"/>I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup><a href="#fn:pd-growth" class="footnote" rel="footnote">8</a></sup>
 
 ---
 
