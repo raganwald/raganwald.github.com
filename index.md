@@ -30,7 +30,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I've led through growth from startup, to IPO, to annual revenues in excess of $450 million.
-- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<sup><a href="#:~:text=Sitraka%20was%20aquired%20by%20Quest%20Software%20in%202002." class="footnote" rel="footnote">1</a></sup><sup><a href="#:~:text-start=fn:PDNYSE-start" class="footnote" rel="footnote">2</a></sup>
+- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<sup><a href="#:~:text=Sitraka%20was%20aquired%20by%20Quest%20Software%20in%202002." class="footnote" rel="footnote">1</a></sup><sup><a href="#:~:text=PDNYSEstart,PDNYSEend" class="footnote" rel="footnote">2</a></sup>
 - <a id="fnref:creative-works" role="doc-noteref"/>I wrote a [programming book]; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup><a href="#:~:text=My%20books%2C%20essays%2C%20and%20conference%20talks%20are%20available%20on%20my%20creative%20works%20page." class="footnote" rel="footnote">3</a></sup>
 - My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
 
@@ -181,7 +181,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 ## Footnotes
 
 1. <a id="fn:sitraka-quest" role="doc-endnote"/>Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:PDNYSE" role="doc-endnote"/><span class="start">fn:PDNYSE-start</span>PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:PDNYSE" role="doc-endnote"/><span class="start">PDNYSEstart</span>PagerDuty went public on the NYSE in 2019.<span class="start">PDNYSEend</span> <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:creative-works" role="doc-endnote"/>My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:perlisism" role="doc-endnote"/>My belief is a generalization of Dr. Alan Kay's observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:tableau" role="doc-endnote"/>I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
