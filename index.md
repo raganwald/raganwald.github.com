@@ -39,7 +39,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 I am guided by my beliefs that:
 
 - All software is social software: I believe that to thrive, software must become the load-bearing source of truth for a critical process.
-- Improving productivity is the [faster horses] of enterprise software: I believe that a tool that doesn't change the way customers think about their work isn't worth building.
+- Improving productivity is the [faster horses] of enterprise software: I believe that a tool that doesn't change the way customers think about their work isn't worth building.<sup id="fnref:perlisism" role="doc-noteref"><a href="#fn:perlisism" class="footnote" rel="footnote">4</a></sup>
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
@@ -49,11 +49,11 @@ I am guided by my beliefs that:
 
 I have designed and built software for paying customers since the 1990s:
 
-- In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<sup id="fnref:tableau" role="doc-noteref"><a href="#fn:tableau" class="footnote" rel="footnote">4</a></sup>
+- In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<sup id="fnref:tableau" role="doc-noteref"><a href="#fn:tableau" class="footnote" rel="footnote">5</a></sup>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
 - In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
 - As Program Manager for the [JProbe Suite], I wrote a little code, such as designing and shipping the suite's first configuration tool.
-- In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<sup id="fnref:mumps" role="doc-noteref"><a href="#fn:mumps" class="footnote" rel="footnote">5</a></sup>
+- In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<sup id="fnref:mumps" role="doc-noteref"><a href="#fn:mumps" class="footnote" rel="footnote">6</a></sup>
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].
 - In 2015, I joined PagerDuty as the Principal Engineer for Applications. I was the hands-on lead for the [insights] and [operational review] features, and launched features such as [response mobilizer]. I created prototypes for features such as [recent changes].
 
@@ -93,7 +93,7 @@ My career-long focus is the product strategy and development process around both
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
 - At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from our competitors and value complements.
-- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<sup id="fnref:tilting-at-windmills" role="doc-noteref"><a href="#fn:tilting-at-windmills" class="footnote" rel="footnote">6</a></sup>
+- At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<sup id="fnref:tilting-at-windmills" role="doc-noteref"><a href="#fn:tilting-at-windmills" class="footnote" rel="footnote">7</a></sup>
 
 ---
 
@@ -111,7 +111,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 - I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.
 - As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.
-- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">7</a></sup>
+- I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<sup id="fnref:pd-growth" role="doc-noteref"><a href="#fn:pd-growth" class="footnote" rel="footnote">8</a></sup>
 
 ---
 
@@ -177,6 +177,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. <a id="fn:sitraka-quest" role="doc-endnote"/>Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:PDNYSE" role="doc-endnote"/>PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:creative-works" role="doc-endnote"/>My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
+1. <a id="fn:perlisism" role="doc-endnote"/>My belief is a generalization of Dr. Alan Kay's observtion that [A language that doesn't affect the way you think about programming, is not worth knowing.](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing.). <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:tableau" role="doc-endnote"/>I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:mumps" role="doc-endnote"/>Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
 1. <a id="fn:tilting-at-windmills" role="doc-endnote"/>Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
