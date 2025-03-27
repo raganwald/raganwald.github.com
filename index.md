@@ -15,7 +15,7 @@ layout: default
   }
 
   ::target-text {
-    background-color: white;
+    background-color: transparent;
   }
 </style>
 
