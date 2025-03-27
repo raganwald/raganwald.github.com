@@ -15,7 +15,7 @@ layout: default
   }
 
   ::target-text {
-    /* background-color: mustard; */
+    background-color: white;
   }
 </style>
 
