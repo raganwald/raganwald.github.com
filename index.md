@@ -36,7 +36,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 ## What I Believe
 
-<a id="fnref:perlisism" role="doc-noteref"/>My aspirations are guided by my belief that improving productivity is building [faster horses]: I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<sup><a href="#fn:perlisism" class="footnote" rel="footnote">4</a></sup>
+<a id="fnref:perlisism" role="doc-noteref"/>My aspirations are guided by my belief that improving productivity is building [faster horses]. I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<sup><a href="#fn:perlisism" class="footnote" rel="footnote">4</a></sup>
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
