@@ -13,6 +13,10 @@ layout: default
       margin-bottom: 20px;
     }
   }
+
+  ::target-text {
+    background-color: mustard;
+  }
 </style>
 
 ## Who I Am
@@ -22,7 +26,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I've led through growth from startup, to IPO, to annual revenues in excess of $450 million.
 - <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<sup><a href="#fn:sitraka-quest" class="footnote" rel="footnote">1</a></sup><sup><a href="#fn:PDNYSE" class="footnote" rel="footnote">2</a></sup>
-- <a id="fnref:creative-works" role="doc-noteref"/>I wrote a [programming book]; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup><a href="#fn:creative-works" class="footnote" rel="footnote">3</a></sup>
+- <a id="fnref:creative-works" role="doc-noteref"/>I wrote a [programming book]; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<sup><a href="#:~:text=My%20books%2C%20essays%2C%20and%20conference%20talks%20are%20available%20on%20my%20creative%20works%20page." class="footnote" rel="footnote">3</a></sup>
 - My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
 
 [programming book]: /creative-works.html#books
