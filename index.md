@@ -58,7 +58,7 @@ I have designed and built software for paying customers since the 1990s:
 - <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=I%20was%20a%20one%2Dperson%20ISV%2C%20doing%20everything%20writing%20Tableau’s%20manuals%20to%20marketing%20the%20product%20at%20tradeshows%20(Guy%20Kawasaki%20very%20generously%20posed%20for%20a%20picture%20with%20me%20at%20MacWorld%20Boston)." class="footnote" rel="footnote" title="More about Tableau">5</a>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
 - In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
-- As Program Manager for the [JProbe Suite], I wrote a little code, such as designing and shipping the suite's first configuration tool.
+- While serving as Program Manager for the [JProbe Suite], I also wrote code such as designing and shipping the suite's first configuration tool.
 - <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC." class="footnote" rel="footnote" title="More about legacy technologies">6</a>
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].
 - In 2015, I joined PagerDuty as the Principal Engineer for Applications. I was the hands-on lead for the [insights] and [operational review] features, and launched features such as [response mobilizer]. I created prototypes for features such as [recent changes].
@@ -180,13 +180,18 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ## Footnotes
 
-1. <a id="fn:sitraka-quest" role="doc-endnote"/>Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:PDNYSE" role="doc-endnote"/>PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:creative-works" role="doc-endnote"/>My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:perlisism" role="doc-endnote"/>My belief is a generalization of Dr. Alan Perlis’ observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:tableau" role="doc-endnote"/>I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:mumps" role="doc-endnote"/>Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:tilting-at-windmills" role="doc-endnote"/>Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:tooling" role="doc-endnote"/>Ask me about my experience adopting or migrating to Ember, React, JavaScript, TypeScript, Elixir, Java, and Copilot.<a href="#fnref:tooling" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:pd-growth" role="doc-endnote"/>During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a id="fn:awards" role="doc-endnote"/>I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
+<!--
+  Warning: Footnote links are text highlights, therefore any edits to the body of the
+  footnotse belo mutch have matching edits to the footnote links above
+-->
+
+1. Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
+1. PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
+1. My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
+1. My belief is a generalization of Dr. Alan Perlis’ observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
+1. I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
+1. Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
+1. Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
+1. >Ask me about my experience adopting or migrating to Ember, React, JavaScript, TypeScript, Elixir, Java, and Copilot.<a href="#fnref:tooling" class="reversefootnote" role="doc-backlink">↩</a>
+1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
+1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
