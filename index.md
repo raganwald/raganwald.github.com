@@ -186,7 +186,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
 1. My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
 1. My belief is a generalization of Dr. Alan Perlis’ observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
-1. I was a one-person ISV, writing Tableau’s code in [4th Dimension], writing [manuals], sales, and marketing the product at [tradeshows][reg-at-macworld]. <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
+1. I wrote Tableau in [4th Dimension], the [manuals] in PageMaker, did my own sales, and marketed the product at [MacWorld][reg-at-macworld]. <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
 1. I can be pragmatic: The configuration tool was written in [MetaCard] and [compiled] for both Windows and HP-UX users. <a href="#fnref:hypercard" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
 1. Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
