@@ -30,8 +30,8 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I've led through growth from startup, to IPO, to annual revenues in excess of $400 million.
-- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20aquired%20by%20Quest%20Software%20in%202002." rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public%20on%20the%20NYSE%20in%202019." rel="footnote" title="PagerDuty’s exit">2</a></span>
-- <a id="fnref:creative-works" role="doc-noteref"/>I wrote a [programming book]; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<a href="#:~:text=My%20books%2C%20essays%2C%20and%20conference%20talks%20are%20available%20on%20my%20creative%20works%20page." class="footnote" rel="footnote" title="My creative works">3</a>
+- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20aquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
+- <a id="fnref:creative-works" role="doc-noteref"/>I wrote a [programming book]; I write technical documentation and essays; and I speak at both tech conferences and company-wide events.<a href="#:~:text=My%20books%2C%20essays,↩" class="footnote" rel="footnote" title="My creative works">3</a>
 - My experience is itemized in more detail on [LinkedIn]; my personal email is [raganwald@gmail.com]; and my résumé is available upon [request][raganwald@gmail.com].
 
 [programming book]: /creative-works.html#books
@@ -45,7 +45,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 ## What I Believe
 
-<a id="fnref:perlisism" role="doc-noteref"/>My aspirations are guided by my belief that improving productivity is building [faster horses]. I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<a href="#:~:text=My%20belief%20is%20a%20generalization%20of%20Dr.%20Alan%20Perlis’%20observation%20that%20“a%20language%20that%20doesn’t%20affect%20the%20way%20you%20think%20about%20programming%2C%20is%20not%20worth%20knowing.”" class="footnote" rel="footnote" title="Source">4</a>
+<a id="fnref:perlisism" role="doc-noteref"/>My aspirations are guided by my belief that improving productivity is building [faster horses]. I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<a href="#:~:text=My%20belief%20is%20a%20generalization,↩”" class="footnote" rel="footnote" title="Source">4</a>
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
@@ -57,8 +57,8 @@ I have designed and built software for paying customers since the 1990s:
 
 - <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=I%20was%20a%20one%2Dperson%20ISV,↩" class="footnote" rel="footnote" title="More about Tableau">5</a>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
-- <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=I%20can%20be%20pragmatic%3A%20The%20configuration%20tool%20was%20written%20in%20MetaCard%20and%20compiled%20for%20both%20Windows%20and%20HP-UX%20users." class="footnote" rel="footnote" title="Threadalyzer's code and architecture">6</a>
-- <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic%3A%20The%20configuration%20tool%20was%20written%20in%20MetaCard%20and%20compiled%20for%20both%20Windows%20and%20HP-UX%20users." class="footnote" rel="footnote" title="An unexpected software platform">7</a>
+- <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">6</a>
+- <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">7</a>
 - <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC." class="footnote" rel="footnote" title="More about legacy technologies">8</a>
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].
 - In 2015, I joined PagerDuty as the Principal Engineer for Applications. I was the hands-on lead for the [insights] and [operational review] features, and launched features such as [response mobilizer]. I created prototypes for features such as [recent changes].
@@ -96,7 +96,7 @@ My career-long focus is the product strategy and development process around both
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
 - At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from our competitors and value complements.
-- <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<a href="#:~:text=Not%20everything%20I%20championed%20ended%20up%20shipping.%20Ask%20me%20about%20Schedules%2C%20Automation%2C%20and%20Collaboration." class="footnote" rel="footnote" title="Windmills I tilted at">9</a>
+- <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<a href="#:~:text=Not%20everything%20I%20championed,↩" class="footnote" rel="footnote" title="Windmills I tilted at">9</a>
 
 ---
 
@@ -113,8 +113,8 @@ My career-long focus is the product strategy and development process around both
 I grow engineering in headcount, in scale of operations, in process maturity, and in tooling sophistication. 
 
 - I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.
-- <a id="fnref:tooling" role="doc-noteref"/>As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting%20or%20migrating%20to%20Ember%2C%20React%2C%20JavaScript%2C%20TypeScript%2C%20Elixir%2C%20Java%2C%20and%20Copilot." class="footnote" rel="footnote" title="Tooling initiatives">10</a>
-- <a id="fnref:pd-growth" role="doc-noteref"/>I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<a href="#:~:text=During%20my%20tenure%2C%20PagerDuty%20grew%20from%20approximately%20twenty%2Dfive%20million%20in%20ARR%20to%20over%20400%20million%20in%20ARR%20in%20the%20years%20following%20its%20IPO." class="footnote" rel="footnote" title="PagerDuty’s revenue growth">11</a>
+- <a id="fnref:tooling" role="doc-noteref"/>As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting,↩" class="footnote" rel="footnote" title="Tooling initiatives">10</a>
+- <a id="fnref:pd-growth" role="doc-noteref"/>I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<a href="#:~:text=During%20my%20tenure%2C%20PagerDuty,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">11</a>
 
 ---
 
@@ -127,7 +127,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
-- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones%20for%20the%20Breakthrough%20and%20Inclusively%20Learning%20and%20Leading%20awards." class="footnote" rel="footnote" title="PagerDuty’s revenue growth">12</a>
+- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">12</a>
 - I developed an internal capability supporting refined product management shipping strategies.
 - I ideated and prototyped features and products in partnership with my Product and Leadership colleagues.
 - I led our own Incident Management practice.
@@ -187,7 +187,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
 1. My belief is a generalization of Dr. Alan Perlis’ observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
 1. I wrote Tableau in [4th Dimension], the [manuals] in PageMaker, did my own sales, and marketed the product at [MacWorld][reg-at-macworld]. <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
-1. <a href="#fnref:ceeplusplus" class="reversefootnote" role="doc-backlink">↩</a>
+1. Threadalyzer was written in C++, Java+Swing, and used an instrumented custom JVM. It had a client-server architecture with plug-in analuyzers for extensibility. <a href="#fnref:ceeplusplus" class="reversefootnote" role="doc-backlink">↩</a>
 1. I can be pragmatic: The configuration tool was written in [MetaCard] and [compiled] for both Windows and HP-UX users. <a href="#fnref:hypercard" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
 1. Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
