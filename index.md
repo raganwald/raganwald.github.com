@@ -88,9 +88,6 @@ I have designed and built software for paying customers since the 1990s:
 [raganwald@gmail.com]: mailto:raganwald@gmail.com
 [creative works page]: /creative-works.html
 
-[manuals]: /assets/images/tableau-manuals.jpg
-[reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
-
 ### I ship products
 
 My career-long focus is the product strategy and development process around both technical and business tools:
@@ -189,7 +186,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
 1. My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
 1. My belief is a generalization of Dr. Alan Perlis’ observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
-1. I was a one-person ISV, doing everything writing Tableau’s [manuals] to marketing the product at tradeshows (Guy Kawasaki very generously posed for a [picture][reg-at-macworld] with me at MacWorld Boston). <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
+1. I was a one-person ISV, writing Tableau’s code in [4th Dimension], writing [manuals], sales, and marketing the product at [tradeshows][reg-at-macworld]. <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
 1. I can be pragmatic: The configuration tool was written in [MetaCard] and [compiled] for both Windows and HP-UX users. <a href="#fnref:hypercard" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
 1. Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
@@ -197,5 +194,6 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
 1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 
+[4th Dimension]: https://en.wikipedia.org/wiki/4th_Dimension_(software)
 [MetaCard]: https://en.wikipedia.org/wiki/MetaCard
 [compiled]: https://en.wikipedia.org/wiki/Revolution_(software_platform)
