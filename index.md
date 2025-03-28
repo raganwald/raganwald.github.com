@@ -55,7 +55,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 
 I have designed and built software for paying customers since the 1990s:
 
-- <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=I%20was%20a%20one%2Dperson%20ISV%2C%20doing%20everything%20writing%20Tableau’s%20manuals%20to%20marketing%20the%20product%20at%20tradeshows%20(Guy%20Kawasaki%20very%20generously%20posed%20for%20a%20picture%20with%20me%20at%20MacWorld%20Boston)." class="footnote" rel="footnote" title="More about Tableau">5</a>
+- <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=I%20was%20a%20one%2Dperson%20ISV,↩" class="footnote" rel="footnote" title="More about Tableau">5</a>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
 - In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.
 - <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic%3A%20The%20configuration%20tool%20was%20written%20in%20MetaCard%20and%20compiled%20for%20both%20Windows%20and%20HP-UX%20users." class="footnote" rel="footnote" title="An unexpected software platform">6</a>
