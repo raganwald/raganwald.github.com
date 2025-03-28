@@ -194,6 +194,8 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
 1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 
+[manuals]: /assets/images/tableau-manuals.jpg
+[reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
 [4th Dimension]: https://en.wikipedia.org/wiki/4th_Dimension_(software)
 [MetaCard]: https://en.wikipedia.org/wiki/MetaCard
 [compiled]: https://en.wikipedia.org/wiki/Revolution_(software_platform)
