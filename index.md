@@ -173,7 +173,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | devtopia            | 2005&thinsp;&ndash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
 | Opalis Software     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
 | Information Balance | 2002&thinsp;&ndash;&thinsp;2003 | Senior Developer |
-| Novator e-Commerce  | 2002                            | Director of Software Development |
+| Novator             | 2002                            | Director of Software Development |
 | Conversagent        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
 | Sitraka             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite; |
 |                     |                                 | Technical Product Manager, JProbe Threadalyzer |
