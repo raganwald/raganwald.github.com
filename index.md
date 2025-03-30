@@ -179,7 +179,9 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1988 | Channel Sales, Computer Products |
 | <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates%20sold,↩" rel="footnote" title="Bonar Associates was my first professional software gig">18</a> | 1986&thinsp;&ndash;&thinsp;1987 | Contract Software Development<br/>Business Development |
 
-<span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, Conversagent, BusinessWorld, and Computer Connection are no longer active.
+———
+
+<span class="footnote">&dagger;</span>&nbsp;No longer active.
 
 [Career Break]: https://www.sosaglidingclub.com
 [PagerDuty]: https://www.pagerduty.com
