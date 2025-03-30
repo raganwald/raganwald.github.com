@@ -15,7 +15,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 - I have shipped software at B2C scale (millions of active users) and B2B scale (thousands of customers with as many as thousands of users each).
 - <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20aquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
 - <a id="fnref:creative-works" role="doc-noteref"/>I have written a popular [programming book]; I have written technical documentation and essays; and I have keynoted technical conferences and company-wide events.<a href="#:~:text=My%20books%2C%20essays,↩" class="footnote" rel="footnote" title="My creative works">3</a>
-- My [recent experience](#Recent-experience) is detailed on [LinkedIn]; I'm [raganwald@gmail.com].
+- My [recent experience](#recent-experience) is detailed on [LinkedIn]; I'm [raganwald@gmail.com].
 
 [programming book]: /creative-works.html#books
 
@@ -145,11 +145,7 @@ Any growing organization would be fortunate to add Reg to its team.</p>
 
 ### I'm available for work.
 
-If you are looking for a veteran to play a meaningful role in your breakout success:
-
-- My résumé is available upon [request][raganwald@gmail.com].
-- My personal email is [raganwald@gmail.com].
-- I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus.
+If you are looking for a veteran to play a meaningful role in your breakout success, I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus. I'm [raganwald@gmail.com].
 
 ---
 
