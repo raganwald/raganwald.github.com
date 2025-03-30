@@ -173,7 +173,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Conversagent<span class="footnote">&dagger;</span>        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
 | <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, JProbe Threadalyzer |
 
-<span class="footnote">&dagger;</span>&nbsp;Unspace Interactive, Information Balance, Novator, and Conversagent are no longer active.
+<span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, and Conversagent are no longer active.
 
 [Career Break]: https://www.sosaglidingclub.com
 [PagerDuty]: https://www.pagerduty.com
@@ -191,7 +191,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
   footnotse belo mutch have matching edits to the footnote links above
 -->
 
-1. Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
+1. Sitraka was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
 1. PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
 1. My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
 1. My belief is a generalization of Dr. Alan Perlis’ observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
@@ -205,7 +205,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
 1. Opalis software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
-1. Sitraka Software was aquired by Quest Software in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
+1. Sitraka Software was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
 
 [manuals]: /assets/images/tableau-manuals.jpg
 [reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
@@ -213,3 +213,4 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 [MetaCard]: https://en.wikipedia.org/wiki/MetaCard
 [compiled]: https://en.wikipedia.org/wiki/Revolution_(software_platform)
 [Upland Software]: https://uplandsoftware.com/mobile-commons/
+[Quest Software]: https://www.quest.com
