@@ -24,20 +24,20 @@ table {
   border-collapse: collapse;
   /* border: 1px solid black; */
 
+  font-weight: normal;
+
   thead {
     th:nth-child(1) {
       width: 25%;
-      font-weight: bold;
     }
 
     th:nth-child(2) {
       width: 17%;
-      font-weight: normal;
     }
 
     th:nth-child(3) {
       width: 58%;
-      font-weight: normal;
+      
       font-style: italic;
     }
   }
@@ -47,16 +47,7 @@ table {
       margin-bottom: 0.5 lh;
     }
 
-    td:nth-child(1) {
-      font-weight: bold;
-    }
-
-    td:nth-child(2) {
-      font-weight: normal;
-    }
-
     td:nth-child(3) {
-      font-weight: normal;
       font-style: italic;
     }
   }
