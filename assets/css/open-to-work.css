@@ -26,7 +26,7 @@ table {
 }
 
 thead th:nth-child(1) {
-  width: 35%;
+  width: 25%;
 }
 
 thead th:nth-child(2) {
@@ -39,5 +39,5 @@ thead th:nth-child(3) {
 
 th,
 td {
-  padding: 20px;
+  padding: 10px;
 }
