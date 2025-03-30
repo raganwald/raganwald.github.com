@@ -25,15 +25,18 @@ table {
   /* border: 1px solid black; */
 }
 
-thead th:nth-child(1) {
+thead th:nth-child(1),
+tbody tr:nth-child(1) {
   width: 25%;
 }
 
-thead th:nth-child(2) {
+thead th:nth-child(2),
+tbody tr:nth-child(2) {
   width: 15%;
 }
 
-thead th:nth-child(3) {
+thead th:nth-child(3),
+tbody tr:nth-child(3) {
   width: 60%;
 }
 
