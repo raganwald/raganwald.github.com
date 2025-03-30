@@ -37,6 +37,8 @@ tbody tr:nth-child(1) {
 thead th:nth-child(2),
 tbody tr:nth-child(2) {
   width: 17%;
+
+  font-weight: normal;
 }
 
 /* Role(s) */
@@ -44,11 +46,6 @@ thead th:nth-child(3),
 tbody tr:nth-child(3) {
   width: 58%;
 
-  font-style: italic;
-}
-
-th,
-td {
-  /* padding: 10px; */
   font-weight: normal;
+  font-style: italic;
 }
