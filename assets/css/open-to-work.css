@@ -38,13 +38,13 @@ table {
     }
 
     th:nth-child(1) {
-      width: 30%;
+      width: 19%;
 
       font-weight: 500;
     }
 
     th:nth-child(2) {
-      width: 11%;
+      width: 17%;
     }
 
     th:nth-child(3) {
