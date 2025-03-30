@@ -46,13 +46,9 @@ table {
   }
 
   tbody {
-    tr {
-      border-collapse: separate;
-      border-spacing: 0 1lh;
-    }
-
     td:nth-child(3) {
       font-style: italic;
+      margin-bottom: 1lh;
     }
   }
 }
