@@ -32,12 +32,12 @@ tbody tr:nth-child(1) {
 
 thead th:nth-child(2),
 tbody tr:nth-child(2) {
-  width: 15%;
+  width: 20%;
 }
 
 thead th:nth-child(3),
 tbody tr:nth-child(3) {
-  width: 60%;
+  width: 55%;
 }
 
 th,
