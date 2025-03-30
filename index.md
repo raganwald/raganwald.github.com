@@ -172,6 +172,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Novator<span class="footnote">&dagger;</span>             | 2002                            | Director of Software Development |
 | Conversagent<span class="footnote">&dagger;</span>        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
 | <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, JProbe Threadalyzer |
+| <a id="fnref:codestorm" role="doc-noteref"/>CodeStorm<a class="footnote" href="#:~:text=CodeStorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">15</a> | 1994&thinsp;&ndash;&thinsp;1998 | Partner |
 
 <span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, and Conversagent are no longer active.
 
@@ -204,8 +205,9 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
 1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
-1. Opalis software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
+1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
 1. Sitraka Software was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
+1. Codestorm is now [AIgility Solutions]. <a href="#fnref:codestorm" class="reversefootnote" role="doc-backlink">↩</a>
 
 [manuals]: /assets/images/tableau-manuals.jpg
 [reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
@@ -214,3 +216,4 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 [compiled]: https://en.wikipedia.org/wiki/Revolution_(software_platform)
 [Upland Software]: https://uplandsoftware.com/mobile-commons/
 [Quest Software]: https://www.quest.com
+[AIgility Solutions]: https://www.aigility.solutions
