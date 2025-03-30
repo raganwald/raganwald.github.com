@@ -158,7 +158,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ### Recent experience
 
-| Career break        | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
+| Career Break        | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
 | PagerDuty           | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
 | raganwald.com       | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
