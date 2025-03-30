@@ -22,19 +22,19 @@ table {
   table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 thead th:nth-child(1) {
-  width: 15%;
+  width: 25%;
 }
 
 thead th:nth-child(2) {
-  width: 10%;
+  width: 15%;
 }
 
 thead th:nth-child(3) {
-  width: 75%;
+  width: 60%;
 }
 
 th,
