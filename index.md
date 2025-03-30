@@ -181,9 +181,6 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 <span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, Conversagent, BusinessWorld, and Computer Connection are no longer active.
 
-<span class="footnote">&#8225;</span> 
-
-
 [Career Break]: https://www.sosaglidingclub.com
 [PagerDuty]: https://www.pagerduty.com
 [raganwald.com]: https://raganwald.com
