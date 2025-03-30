@@ -162,7 +162,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ## Chronology
 
-| &nbsp;              | &nbsp;                          | &nbsp; |
+|               |                           |  |
 |:--------------------|:--------------------------------|:-------|
 | PagerDuty           | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer |
 | raganwald.com       | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
