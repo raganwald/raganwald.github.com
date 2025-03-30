@@ -32,6 +32,8 @@ table {
 
     th:nth-child(1) {
       width: 25%;
+
+      font-weight: 500;
     }
 
     th:nth-child(2) {
@@ -47,6 +49,10 @@ table {
   }
 
   tbody {
+    td:nth-child(1) {
+      font-weight: 500;
+    }
+
     td:nth-child(3) {
       font-style: italic;
       padding-bottom: 0.5lh;
