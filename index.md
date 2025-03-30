@@ -164,7 +164,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | [raganwald.com]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
 | Unspace Interactive | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
-| Mdlogix             | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
+| [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
 | Mobile Commons      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
 | devtopia            | 2005&thinsp;&ndash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
 | Opalis Software     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
@@ -177,6 +177,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 [PagerDuty]: https://www.pagerduty.com
 [raganwald.com]: https://raganwald.com
 [GitHub]: https://github.com
+[mdlogix]: https://mdlogix.com/
 
 ---
 
