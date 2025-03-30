@@ -2,7 +2,7 @@
 title: Reginald Braithwaite
 subtitle: Principal Engineer & Technical Product Manager
 layout: default
-tags: open-to-work
+tags: [open-to-work]
 ---
 
 ## Who I Am
