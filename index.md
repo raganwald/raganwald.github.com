@@ -172,7 +172,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Novator<span class="footnote">&dagger;</span>             | 2002                            | Director of Software Development |
 | Conversagent<span class="footnote">&dagger;</span>        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
 | <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, JProbe Threadalyzer |
-| <a id="fnref:codestorm" role="doc-noteref"/>CodeStorm<a class="footnote" href="#:~:text=CodeStorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">15</a> | 1994&thinsp;&ndash;&thinsp;1998 | Partner |
+| <a id="fnref:codestorm" role="doc-noteref"/>CodeStorm<a class="footnote" href="#:~:text=CodeStorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">16</a> | 1994&thinsp;&ndash;&thinsp;1998 | Partner |
 
 <span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, and Conversagent are no longer active.
 
