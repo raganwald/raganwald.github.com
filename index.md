@@ -173,10 +173,10 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Conversagent<span class="footnote">&dagger;</span>        | 2000&thinsp;&ndash;&thinsp;2001 | Vice-President of Development |
 | <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, JProbe Threadalyzer |
 | <a id="fnref:codestorm" role="doc-noteref"/>CodeStorm<a class="footnote" href="#:~:text=CodeStorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">16</a> | 1994&thinsp;&ndash;&thinsp;1998 | Partner |
-| BusinessWorld/Primax&#8225; | 1991&thinsp;&ndash;&thinsp;1993 | Marketing Associate<br/>Sales Training and Systems<br/>Sales |
-| Computer Connection&#8225; | 1989&thinsp;&ndash;&thinsp;1990 | Major Account Sales, Apple Products |
+| BusinessWorld/Primax<span class="footnote">&#8225;</span> | 1991&thinsp;&ndash;&thinsp;1993 | Marketing Associate<br/>Sales Training and Systems<br/>Sales |
+| Computer Connection<span class="footnote">&#8225;</span> | 1989&thinsp;&ndash;&thinsp;1990 | Major Account Sales, Apple Products |
 | [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1989 | Channel Sales, Computer Products |
-| Bonar Associates&#8225; | 1985&thinsp;&ndash;&thinsp;1986 | Contract Software Development<br/>Business Development |
+| Bonar Associates<span class="footnote">&#8225;</span> | 1985&thinsp;&ndash;&thinsp;1986 | Contract Software Development<br/>Business Development |
 
 
 <span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, and Conversagent are no longer active.

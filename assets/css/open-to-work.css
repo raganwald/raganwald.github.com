@@ -38,17 +38,17 @@ table {
     }
 
     th:nth-child(1) {
-      width: 28%;
+      width: 30%;
 
       font-weight: 500;
     }
 
     th:nth-child(2) {
-      width: 17%;
+      width: 11%;
     }
 
     th:nth-child(3) {
-      width: 55%;
+      width: 54%;
 
       font-style: italic;
       padding-bottom: 0.5lh;
