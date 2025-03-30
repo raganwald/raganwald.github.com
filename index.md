@@ -163,15 +163,17 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
 | [raganwald.com]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
-| <a id="fnref:unspace" role="doc-noteref"/>Unspace Interactive<a class="footnote" href="#:~:text=Unspace%20Interactive,↩" rel="footnote" title="Unspace Interactive">13</a> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
+| Unspace Interactive&dagger; | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
-| <a id="fnref:mobile-commons" role="doc-noteref"/> Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">14</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
+| <a id="fnref:mobile-commons" role="doc-noteref"/>Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">13</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
 | [devtopia]          | 2005&thinsp;&ndash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
-| Opalis Software     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
-| Information Balance | 2002&thinsp;&ndash;&thinsp;2003 | Lead Software Developer |
-| Novator             | 2002                            | Director of Software Development |
-| Conversagent        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
-| Sitraka             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, JProbe Threadalyzer |
+| <a id="fnref:opalis" role="doc-noteref"/>Opalis Software<a class="footnote" href="#:~:text=Opalis%20Software,↩" rel="footnote" title="Opalis Software was acquired by Micosoft">14</a>     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
+| Information Balance&dagger; | 2002&thinsp;&ndash;&thinsp;2003 | Lead Software Developer |
+| Novator&dagger;             | 2002                            | Director of Software Development |
+| Conversagent&dagger;        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
+| <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, JProbe Threadalyzer |
+
+&dagger;&nbsp;Unspace Interactive, Information Balance, Novator, and Conversagent are no longer active.
 
 [Career Break]: https://www.sosaglidingclub.com
 [PagerDuty]: https://www.pagerduty.com
@@ -201,8 +203,9 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. Ask me about my experience adopting or migrating to Ember, React, JavaScript, TypeScript, Elixir, Java, and Copilot.<a href="#fnref:tooling" class="reversefootnote" role="doc-backlink">↩</a>
 1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
 1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
-1. Unspace Interactive is no longer in operation. <a href="#fnref:unspace" class="reversefootnote" role="doc-backlink">↩</a>
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
+1. Opalis software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
+1. Sitraka was aquired by Quest Software in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
 
 [manuals]: /assets/images/tableau-manuals.jpg
 [reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
