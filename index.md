@@ -182,8 +182,21 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 ## Chronology
 
 | Year(s) | Employer | Title |
-|---------|----------|-------|
-| 2015&thinsp;–&thinksp;2024 | PagerDuty | Principal Engineer |
+|:-------:|:---------|:------|
+| PagerDuty           | 2015&thinsp;&endash;&thinsp;2024 | Principal Engineer |
+| raganwald.com       | 2011&thinsp;&endash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
+| GitHub              | 2013&thinsp;&endash;&thinsp;2015 | Software Engineer, Documentation and Front-End Flow |
+| Unspace Interactive | 2009&thinsp;&endash;&thinsp;2012 | Technical Lead and Business Development |
+| Mdlogix             | 2008&thinsp;&endash;&thinsp;2009 | Architect and Senior Developer |
+| Mobile Commons      | 2007&thinsp;&endash;&thinsp;2008 | Contract Developer |
+| devtopia            | 2005&thinsp;&endash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
+| Opalis Software     | 2004&thinsp;&endash;&thinsp;2005 | Director of Software Development |
+| Information Balance | 2002&thinsp;&endash;&thinsp;2003 | Senior Developer |
+| Novator e-Commerce  | 2002                             | Director of Software Development |
+| Conversagent        | 2001&thinsp;&endash;&thinsp;2002 | Vice-President of Development |
+| Sitraka             | 1999&thinsp;&endash;&thinsp;2000 | Program Manager, JProbe Suite |
+|                     | 1998&thinsp;&endash;&thinsp;1999 | Technical Product Manager, JProbe Threadalyzer |
+
 
 ## Footnotes
 
