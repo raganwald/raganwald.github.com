@@ -170,11 +170,18 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | <a id="fnref:opalis" role="doc-noteref"/>Opalis Software<a class="footnote" href="#:~:text=Opalis%20Software,↩" rel="footnote" title="Opalis Software was acquired by Micosoft">14</a>     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
 | Information Balance<span class="footnote">&dagger;</span> | 2002&thinsp;&ndash;&thinsp;2003 | Lead Software Developer |
 | Novator<span class="footnote">&dagger;</span>             | 2002                            | Director of Software Development |
-| Conversagent<span class="footnote">&dagger;</span>        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
+| Conversagent<span class="footnote">&dagger;</span>        | 2000&thinsp;&ndash;&thinsp;2001 | Vice-President of Development |
 | <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, JProbe Threadalyzer |
 | <a id="fnref:codestorm" role="doc-noteref"/>CodeStorm<a class="footnote" href="#:~:text=CodeStorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">16</a> | 1994&thinsp;&ndash;&thinsp;1998 | Partner |
+| BusinessWorld/Primax&#8225; | 1991&thinsp;&ndash;&thinsp;1993 | Marketing Associate<br/>Sales Training and Systems<br/>Sales |
+| Computer Connection&#8225; | 1989&thinsp;&ndash;&thinsp;1990 | Major Account Sales, Apple Products |
+| [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1989 | Channel Sales, Computer Products |
+| Bonar Associates&#8225; | 1985&thinsp;&ndash;&thinsp;1986 | Contract Software Development<br/>Business Development |
+
 
 <span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, and Conversagent are no longer active.
+
+<span class="footnote">&#8225;</span>BusinessWorld/Primax, Computer Connection, and Bonar Associates are no longer active.
 
 [Career Break]: https://www.sosaglidingclub.com
 [PagerDuty]: https://www.pagerduty.com
@@ -182,6 +189,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 [GitHub]: https://github.com
 [mdlogix]: https://mdlogix.com/
 [devtopia]: https://www.linkedin.com/company/devtopia/
+[Future Electronics]: https://www.futureelectronics.com
 
 ---
 
