@@ -30,17 +30,16 @@ thead th:nth-child(1) {
 }
 
 thead th:nth-child(2) {
-  width: 5%;
-  border: 1px solid white;
+  width: 10%;
 }
 
 thead th:nth-child(3) {
-  width: 80%;
+  width: 75%;
 }
 
-th {
-  display: none;
-}
+/* th {
+  height: 0px;
+} */
 
 /* th,
 td {
