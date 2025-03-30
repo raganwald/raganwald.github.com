@@ -181,7 +181,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 <span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, Conversagent, BusinessWorld, Computer Connection, and Bonar Associates are no longer active.
 
-<span class="footnote">&#8225;</span> Publishing Revenue Partners was my one-man ISV for selling Tableau, a classified advertising app for desktop publishers. I bootstrapped it by consulting.
+<span class="footnote">&#8225;</span> Publishing Revenue Partners was my one-man ISV for selling Tableau, a classified advertising app for desktop publishers. I bootstrapped it with consulting and training, including working as a mentor for first-time entrepreneurs through thge YMCA's Enterprise Program and as a Financial Analyst for a boutique investment bank specializing in the food and beverage industry.
 
 [Career Break]: https://www.sosaglidingclub.com
 [PagerDuty]: https://www.pagerduty.com
