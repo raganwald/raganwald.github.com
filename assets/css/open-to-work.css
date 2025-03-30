@@ -29,7 +29,7 @@ table {
     th {
       font-weight: normal;
     }
-    
+
     th:nth-child(1) {
       width: 25%;
     }
@@ -47,7 +47,8 @@ table {
 
   tbody {
     tr {
-      margin-bottom: 1.0lh;
+      border-collapse: separate;
+      border-spacing: 0 1lh;
     }
 
     td:nth-child(3) {
