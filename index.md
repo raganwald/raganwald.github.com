@@ -158,11 +158,11 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ### Recent experience
 
-| Career Break        | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
+| [Career Break]      | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
-| PagerDuty           | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
-| raganwald.com       | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
-| GitHub              | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
+| [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
+| [raganwald.com]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
+| [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
 | Unspace Interactive | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | Mdlogix             | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
 | Mobile Commons      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
@@ -172,6 +172,11 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Novator             | 2002                            | Director of Software Development |
 | Conversagent        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
 | Sitraka             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, JProbe Threadalyzer |
+
+[Career Break]: https://www.sosaglidingclub.com
+[PagerDuty]: https://www.pagerduty.com
+[raganwald.com]: https://raganwald.com
+[GitHub]: https://github.com
 
 ---
 
