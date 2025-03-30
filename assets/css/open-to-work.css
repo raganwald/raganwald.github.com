@@ -26,15 +26,15 @@ table {
 }
 
 thead th:nth-child(1) {
-  width: 25%;
+  width: 20%;
 }
 
 thead th:nth-child(2) {
-  width: 25%;
+  width: 10%;
 }
 
 thead th:nth-child(3) {
-  width: 50%;
+  width: 70%;
 }
 
 th {
