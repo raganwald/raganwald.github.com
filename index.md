@@ -177,6 +177,14 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ---
 
+# Appendices
+
+## Chronology
+
+| Year(s) | Employer | Title |
+|---------|----------|-------|
+| 2015&thinsp;–&thinksp;2024 | PagerDuty | Principal Engineer |
+
 ## Footnotes
 
 <!--
