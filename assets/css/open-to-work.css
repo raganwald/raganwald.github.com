@@ -48,7 +48,7 @@ table {
   tbody {
     td:nth-child(3) {
       font-style: italic;
-      margin-bottom: 1lh;
+      padding-bottom: 1lh;
     }
   }
 }
