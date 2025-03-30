@@ -25,16 +25,19 @@ table {
   /* border: 1px solid black; */
 }
 
+/* Employer */
 thead th:nth-child(1),
 tbody tr:nth-child(1) {
-  width: 17%;
-}
-
-thead th:nth-child(2),
-tbody tr:nth-child(2) {
   width: 25%;
 }
 
+/* Year range */
+thead th:nth-child(2),
+tbody tr:nth-child(2) {
+  width: 17%;
+}
+
+/* Role(s) */
 thead th:nth-child(3),
 tbody tr:nth-child(3) {
   width: 58%;
