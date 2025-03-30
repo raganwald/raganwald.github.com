@@ -27,7 +27,7 @@ table {
   thead {
     th:nth-child(1) {
       width: 25%;
-      font-weight: 400;
+      font-weight: bold;
     }
 
     th:nth-child(2) {
@@ -48,7 +48,7 @@ table {
     }
 
     td:nth-child(1) {
-      font-weight: 400;
+      font-weight: bold;
     }
 
     td:nth-child(2) {
