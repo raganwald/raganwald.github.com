@@ -26,26 +26,26 @@ table {
 }
 
 /* Employer */
-thead th:nth-child(1),
-tbody tr:nth-child(1) {
+thead th:nth-child(1) {
   width: 25%;
-
+}
+tbody td:nth-child(1) {
   font-weight: 400;
 }
 
 /* Year range */
-thead th:nth-child(2),
-tbody tr:nth-child(2) {
+thead th:nth-child(2) {
   width: 17%;
-
+}
+tbody td:nth-child(2) {
   font-weight: normal;
 }
 
 /* Role(s) */
-thead th:nth-child(3),
-tbody tr:nth-child(3) {
+thead th:nth-child(3) {
   width: 58%;
-
+}
+tbody td:nth-child(3) {
   font-weight: normal;
   font-style: italic;
 }
