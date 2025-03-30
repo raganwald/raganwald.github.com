@@ -7,7 +7,7 @@ ol {
   }
 }
 
-.footnote {
+a.footnote {
   font-size: .83em;
   vertical-align: super
 }
