@@ -24,9 +24,10 @@ table {
   border-collapse: collapse;
   /* border: 1px solid black; */
 
-  font-weight: normal;
-
   thead {
+
+    font-weight: normal;
+    
     th:nth-child(1) {
       width: 25%;
     }
