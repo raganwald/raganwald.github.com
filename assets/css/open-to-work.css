@@ -37,14 +37,14 @@ table {
 
     th:nth-child(3) {
       width: 58%;
-      
+
       font-style: italic;
     }
   }
 
   tbody {
     tr {
-      margin-bottom: 0.5 lh;
+      margin-bottom: 1.0lh;
     }
 
     td:nth-child(3) {
