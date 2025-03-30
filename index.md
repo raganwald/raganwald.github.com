@@ -164,15 +164,18 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 | Career break        | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
-| PagerDuty           | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer |
+| PagerDuty           | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office; |
+|                     |                                 | Principal Engineer, Incident Management;  |
+|                     |                                 | Principal Engineer, Applications  |
 | raganwald.com       | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
-| GitHub              | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Documentation and Front-End Flow |
+| GitHub              | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow |
+|                     |                                 | Software Engineer, Documentation Tools;  |
 | Unspace Interactive | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | Mdlogix             | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
 | Mobile Commons      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
 | devtopia            | 2005&thinsp;&ndash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
 | Opalis Software     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
-| Information Balance | 2002&thinsp;&ndash;&thinsp;2003 | Senior Developer |
+| Information Balance | 2002&thinsp;&ndash;&thinsp;2003 | Lead Software Developer |
 | Novator             | 2002                            | Director of Software Development |
 | Conversagent        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
 | Sitraka             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite; |
