@@ -37,11 +37,8 @@ thead th:nth-child(3) {
   width: 75%;
 }
 
-/* th {
-  height: 0px;
-} */
-
-/* th,
+th,
 td {
-  padding: 10px;
-} */
+  /* padding: 10px; */
+  font-weight: normal;
+}
