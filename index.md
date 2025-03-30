@@ -2,27 +2,8 @@
 title: Reginald Braithwaite
 subtitle: Principal Engineer & Technical Product Manager
 layout: default
+tags: open-to-work
 ---
-
-<style>
-  ul,
-  ol {
-    padding-left: 1em;
-    
-    li:not(:last-child) {
-      margin-bottom: 20px;
-    }
-  }
-
-  .footnote {
-    font-size: .83em;
-    vertical-align: super
-  }
-
-  ::target-text {
-    background-color: transparent;
-  }
-</style>
 
 ## Who I Am
 
@@ -192,7 +173,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | devtopia            | 2005&thinsp;&ndash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
 | Opalis Software     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
 | Information Balance | 2002&thinsp;&ndash;&thinsp;2003 | Senior Developer |
-| Novator e-Commerce  | 2002                             | Director of Software Development |
+| Novator e-Commerce  | 2002                            | Director of Software Development |
 | Conversagent        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
 | Sitraka             | 1999&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite |
 |                     | 1998&thinsp;&ndash;&thinsp;1999 | Technical Product Manager, JProbe Threadalyzer |

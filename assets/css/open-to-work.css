@@ -1,0 +1,18 @@
+ul,
+ol {
+  padding-left: 1em;
+  
+  li:not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
+
+.footnote {
+  font-size: .83em;
+  vertical-align: super
+}
+
+::target-text {
+  background-color: transparent;
+}
+
