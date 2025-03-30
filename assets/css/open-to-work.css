@@ -42,13 +42,14 @@ table {
       width: 58%;
 
       font-style: italic;
+      padding-bottom: 0.5lh;
     }
   }
 
   tbody {
     td:nth-child(3) {
       font-style: italic;
-      padding-bottom: 1lh;
+      padding-bottom: 0.5lh;
     }
   }
 }
