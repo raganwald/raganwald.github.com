@@ -23,33 +23,43 @@ table {
   width: 100%;
   border-collapse: collapse;
   /* border: 1px solid black; */
+
+  thead {
+    th:nth-child(1) {
+      width: 25%;
+      font-weight: 400;
+    }
+
+    th:nth-child(2) {
+      width: 17%;
+      font-weight: normal;
+    }
+
+    th:nth-child(3) {
+      width: 58%;
+      font-weight: normal;
+      font-style: italic;
+    }
+  }
+
+  tbody {
+    tr {
+      margin-bottom: 0.5 lh;
+    }
+
+    td:nth-child(1) {
+      font-weight: 400;
+    }
+
+    td:nth-child(2) {
+      font-weight: normal;
+    }
+
+    td:nth-child(3) {
+      font-weight: normal;
+      font-style: italic;
+    }
+  }
 }
 
-/* Employer */
-thead th:nth-child(1) {
-  width: 25%;
-  font-weight: 400;
-}
-tbody td:nth-child(1) {
-  font-weight: 400;
-}
 
-/* Year range */
-thead th:nth-child(2) {
-  width: 17%;
-  font-weight: normal;
-}
-tbody td:nth-child(2) {
-  font-weight: normal;
-}
-
-/* Role(s) */
-thead th:nth-child(3) {
-  width: 58%;
-  font-weight: normal;
-  font-style: italic;
-}
-tbody td:nth-child(3) {
-  font-weight: normal;
-  font-style: italic;
-}
