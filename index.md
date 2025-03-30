@@ -173,15 +173,15 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Conversagent<span class="footnote">&dagger;</span>        | 2000&thinsp;&ndash;&thinsp;2001 | Vice-President of Development |
 | <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, JProbe Threadalyzer |
 | <a id="fnref:codestorm" role="doc-noteref"/>CodeStorm<a class="footnote" href="#:~:text=CodeStorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">16</a> | 1994&thinsp;&ndash;&thinsp;1998 | Partner |
-| BusinessWorld/Primax<span class="footnote">&#8225;</span> | 1991&thinsp;&ndash;&thinsp;1993 | Marketing Associate<br/>Sales Training and Systems<br/>Sales |
-| Computer Connection<span class="footnote">&#8225;</span> | 1989&thinsp;&ndash;&thinsp;1990 | Major Account Sales, Apple Products |
-| [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1989 | Channel Sales, Computer Products |
-| Bonar Associates<span class="footnote">&#8225;</span> | 1985&thinsp;&ndash;&thinsp;1986 | Contract Software Development<br/>Business Development |
+| Publishing Revenue Partners<span class="footnote">&#8225;</span> | 1991&thinsp;&ndash;&thinsp;1994 | Founder |
+| BusinessWorld/Primax<span class="footnote">&dagger;</span> | 1989&thinsp;&ndash;&thinsp;1991 | Marketing Associate<br/>Sales Training and Systems<br/>Sales |
+| Computer Connection<span class="footnote">&dagger;</span> | 1988&thinsp;&ndash;&thinsp;1989 | Major Account Sales, Apple Products |
+| [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1988 | Channel Sales, Computer Products |
+| Bonar Associates<span class="footnote">&dagger;</span> | 1986&thinsp;&ndash;&thinsp;1987 | Contract Software Development<br/>Business Development |
 
+<span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, Conversagent, BusinessWorld/Primax, Computer Connection, and Bonar Associates are no longer active.
 
-<span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, and Conversagent are no longer active.
-
-<span class="footnote">&#8225;</span>BusinessWorld/Primax, Computer Connection, and Bonar Associates are no longer active.
+<span class="footnote">&#8225;</span> Publishing Revenue Partners was my one-man ISV for selling Tableau, a classified advertising app for desktop publishers. I bootstrapped it by consulting.
 
 [Career Break]: https://www.sosaglidingclub.com
 [PagerDuty]: https://www.pagerduty.com
