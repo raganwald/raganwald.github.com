@@ -173,15 +173,16 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Conversagent<span class="footnote">&dagger;</span>        | 2000&thinsp;&ndash;&thinsp;2001 | Vice-President of Development |
 | <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, Threadalyzer |
 | <a id="fnref:codestorm" role="doc-noteref"/>CodeStorm<a class="footnote" href="#:~:text=CodeStorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">16</a> | 1994&thinsp;&ndash;&thinsp;1998 | Partner |
-| Solo Founder<span class="footnote">&#8225;</span> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
+| <a id="fnref:solo-founder" role="doc-noteref"/>Solo Founder<a class="footnote" href="#:~:text=Publishing%20Revenue%20Partners,↩" rel="footnote" title="Founder, Publishing Revenue Partners">17</a> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
 | BusinessWorld<span class="footnote">&dagger;</span> | 1989&thinsp;&ndash;&thinsp;1991 | Marketing Associate<br/>Sales Training and Systems<br/>Sales |
 | Computer Connection<span class="footnote">&dagger;</span> | 1988&thinsp;&ndash;&thinsp;1989 | Major Account Sales, Apple Products |
 | [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1988 | Channel Sales, Computer Products |
-| Bonar Associates<span class="footnote">&dagger;</span> | 1986&thinsp;&ndash;&thinsp;1987 | Contract Software Development<br/>Business Development |
+| <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates,↩" rel="footnote" title="Bonar Associates was my first professional software gig">18</a> | 1986&thinsp;&ndash;&thinsp;1987 | Contract Software Development<br/>Business Development |
 
-<span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, Conversagent, BusinessWorld, Computer Connection, and Bonar Associates are no longer active.
+<span class="footnote">&dagger;</span>&nbsp;Unspace, Information Balance, Novator, Conversagent, BusinessWorld, and Computer Connection are no longer active.
 
-<span class="footnote">&#8225;</span> Publishing Revenue Partners was my one-man ISV for selling Tableau, a classified advertising app for desktop publishers. I bootstrapped it with consulting and training, including working as a mentor for first-time entrepreneurs through thge YMCA's Enterprise Program and as a Financial Analyst for a boutique investment bank specializing in the food and beverage industry.
+<span class="footnote">&#8225;</span> 
+
 
 [Career Break]: https://www.sosaglidingclub.com
 [PagerDuty]: https://www.pagerduty.com
@@ -216,6 +217,8 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
 1. Sitraka Software was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
 1. Codestorm is now [AIgility Solutions]. <a href="#fnref:codestorm" class="reversefootnote" role="doc-backlink">↩</a>
+1. Publishing Revenue Partners was my one-man ISV for selling Tableau, a classified advertising app for desktop publishers. I bootstrapped it with consulting and training, including working as a mentor for first-time entrepreneurs through thge YMCA's Enterprise Program and as a Financial Analyst for a boutique investment bank specializing in the food and beverage industry. <a href="#fnref:solo-founder" class="reversefootnote" role="doc-backlink">↩</a>
+1. Bonar Associates solf turnkey mini-computer-based classified avdertising systems to large “penny-savers,” print newspapers that were primarily classified ads. Its code was written for its first user, I was hired to make it customizable so that it could be sold at scale. It was written in TurboPascal with BTrieve, running on an MP/M-based tightly-coupled network. It supported as many as 16 simultaneous users. <a href="#fnref:bonar-associates" class="reversefootnote" role="doc-backlink">↩</a>
 
 [manuals]: /assets/images/tableau-manuals.jpg
 [reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
