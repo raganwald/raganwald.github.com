@@ -181,8 +181,8 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ## Chronology
 
-| Year(s) | Employer | Title |
-|:-------:|:---------|:------|
+| With Whom           | When                             | Role |
+|:--------------------|:---------------------------------|:------|
 | PagerDuty           | 2015&thinsp;&endash;&thinsp;2024 | Principal Engineer |
 | raganwald.com       | 2011&thinsp;&endash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
 | GitHub              | 2013&thinsp;&endash;&thinsp;2015 | Software Engineer, Documentation and Front-End Flow |
@@ -197,6 +197,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Sitraka             | 1999&thinsp;&endash;&thinsp;2000 | Program Manager, JProbe Suite |
 |                     | 1998&thinsp;&endash;&thinsp;1999 | Technical Product Manager, JProbe Threadalyzer |
 
+---
 
 ## Footnotes
 
