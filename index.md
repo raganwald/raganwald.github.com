@@ -162,8 +162,8 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ## Chronology
 
-| Where           | When                             | Role |
-|:--------------------|:---------------------------------|:------|
+| &nbsp;              | &nbsp;                          | &nbsp; |
+|:--------------------|:--------------------------------|:-------|
 | PagerDuty           | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer |
 | raganwald.com       | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
 | GitHub              | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Documentation and Front-End Flow |

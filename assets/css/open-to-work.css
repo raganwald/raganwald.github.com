@@ -22,7 +22,7 @@ table {
   table-layout: fixed;
   width: 100%;
   border-collapse: collapse;
-  border: 3px solid black;
+  border: 1px solid black;
 }
 
 thead th:nth-child(1) {
@@ -35,6 +35,10 @@ thead th:nth-child(2) {
 
 thead th:nth-child(3) {
   width: 50%;
+}
+
+th {
+  display: none;
 }
 
 th,
