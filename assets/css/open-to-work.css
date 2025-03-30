@@ -29,6 +29,8 @@ table {
 thead th:nth-child(1),
 tbody tr:nth-child(1) {
   width: 25%;
+
+  font-weight: 400;
 }
 
 /* Year range */
@@ -41,6 +43,8 @@ tbody tr:nth-child(2) {
 thead th:nth-child(3),
 tbody tr:nth-child(3) {
   width: 58%;
+
+  font-style: italic;
 }
 
 th,
