@@ -175,8 +175,8 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Information Balance | 2002&thinsp;&ndash;&thinsp;2003 | Senior Developer |
 | Novator e-Commerce  | 2002                            | Director of Software Development |
 | Conversagent        | 2001&thinsp;&ndash;&thinsp;2002 | Vice-President of Development |
-| Sitraka             | 1999&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite |
-|                     | 1998&thinsp;&ndash;&thinsp;1999 | Technical Product Manager, JProbe Threadalyzer |
+| Sitraka             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite; |
+|                     |                                 | Technical Product Manager, JProbe Threadalyzer |
 
 ---
 
