@@ -163,9 +163,9 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
 | [raganwald.com]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
-| <a id="fnref:unspace" role="doc-noteref"/>Unspace Interactive<a class="footnote" href="#:~:text=Unspace%Interactive,↩" rel="footnote" title="Unspace Interactive">13</a> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
+| <a id="fnref:unspace" role="doc-noteref"/>Unspace Interactive<a class="footnote" href="#:~:text=Unspace%20Interactive,↩" rel="footnote" title="Unspace Interactive">13</a> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
-| <a id="fnref:mobile-commons" role="doc-noteref"/> Mobile Commons<a class="footnote" href="#:~:text=Mobile%Commons,↩" rel="footnote" title="Mobile Commons">14</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
+| <a id="fnref:mobile-commons" role="doc-noteref"/> Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">14</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
 | [devtopia]          | 2005&thinsp;&ndash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
 | Opalis Software     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
 | Information Balance | 2002&thinsp;&ndash;&thinsp;2003 | Lead Software Developer |
