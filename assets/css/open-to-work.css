@@ -24,6 +24,13 @@ table {
   border-collapse: collapse;
   /* border: 1px solid black; */
 
+  a {
+    color: #3d3d3d;
+  }
+  a:hover {
+    color: #3d3d3d;
+  }
+
   thead {
 
     th {
