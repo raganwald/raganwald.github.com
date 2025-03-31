@@ -164,7 +164,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ---
 
-<p class="quotation">“Reg was an incredible asset at PagerDuty, having been there early days in 2015 through the IPO. He helped level me and several other members of the sales team on the product and was always willing to hop on calls to help articulate value to them. Can’t wait to work with him again one day.</p>
+<p class="quotation">Reg was an incredible asset at PagerDuty, having been there early days in 2015 through the IPO. He helped level me and several other members of the sales team on the product and was always willing to hop on calls to help articulate value to them. Can’t wait to work with him again one day.</p>
 <p class="author">—Radz Mpofu, Head of Business Development, XGEN AI</p>
 
 ---
