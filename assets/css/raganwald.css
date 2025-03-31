@@ -55,5 +55,8 @@ div.sidebar {
   border: 1px solid;
   padding: .5em;
   font-size: .83em;
-  text-align: right;
+  
+  p {
+    text-align: right;
+  }
 }

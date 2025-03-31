@@ -6,7 +6,11 @@ tags: [open-to-work]
 ---
 
 <div class="sidebar">
-  Velit ab harum delectus sit perferendis ab. Ex voluptates labore omnis quis ut et consequatur cupiditate. Accusantium ullam quidem recusandae. 
+  <p>
+    Velit ab harum delectus sit perferendis ab.
+    Ex voluptates labore omnis quis ut et consequatur cupiditate.
+    Accusantium ullam quidem recusandae.
+  </p>
 </div>
 
 ## Who I Am
