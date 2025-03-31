@@ -5,6 +5,10 @@ layout: default
 tags: [open-to-work]
 ---
 
+<div class="sidebar">
+  <p>&ldquo;Why, hello there!&rdquo;&mdash;Obi-Wan Kenobi</p>
+</div>
+
 ## Who I Am
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration).

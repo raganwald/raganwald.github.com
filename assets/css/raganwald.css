@@ -46,9 +46,9 @@ sup:after {
 /* a floating frame that goes where the leanpub ads go */
 
 div.sidebar {
-  position:relative;
-  float:right;
-  left:180px;
-  top:{{ top }}px;
+  position: relative;
+  float: right;
+  left: 180px;
+  top: 0px;
   margin-left: -160px;
 }
