@@ -147,10 +147,10 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 | <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">16</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, Threadalyzer |
 | <a id="fnref:Codestorm" role="doc-noteref"/>Codestorm<a class="footnote" href="#:~:text=Codestorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">17</a> | 1994&thinsp;&ndash;&thinsp;1998 | Managing Partner |
 | <a id="fnref:solo-founder" role="doc-noteref"/>Solo Founder<a class="footnote" href="#:~:text=Publishing%20Revenue%20Partners%20was%20my%20one-man%20ISV,↩" rel="footnote" title="Founder, Publishing Revenue Partners">18</a> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
-| BusinessWorld<span class="footnote">&dagger;</span> | 1989&thinsp;&ndash;&thinsp;1991 | Marketing Associate<br/>Sales Training and Systems<br/>Sales |
+| BusinessWorld<span class="footnote">&dagger;</span> | 1989&thinsp;&ndash;&thinsp;1991 | Marketing Associate<br/>Sales, Sales Training, and Systems |
 | Computer Connection<span class="footnote">&dagger;</span> | 1988&thinsp;&ndash;&thinsp;1989 | Major Account Sales, Apple Products |
 | [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1988 | Channel Sales, Computer Products |
-| <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates%20sold,↩" rel="footnote" title="Bonar Associates was my first professional software gig">19</a> | 1986&thinsp;&ndash;&thinsp;1987 | Contract Software Development<br/>Business Development |
+| <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates%20sold,↩" rel="footnote" title="Bonar Associates was my first professional software gig">19</a> | 1986&thinsp;&ndash;&thinsp;1987 | Contract Software Development and Business Development |
 
 ---
 
