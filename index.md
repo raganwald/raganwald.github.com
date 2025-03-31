@@ -40,10 +40,10 @@ I have designed and built software for paying customers since the 1990s:
 
 - <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=I%20wrote%20Tableau%20in,↩" class="footnote" rel="footnote" title="More about Tableau">5</a>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
-- In 1998, I shipped Java-based and Lisp-flavoured server-side [templates](assets/images/lisp-based-template-language.png) for web pages.
-- <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">6</a>
-- <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">7</a>
-- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC." class="footnote" rel="footnote" title="More about legacy technologies">8</a>
+- <a id="fnref:templates" role="doc-noteref"/>In the late 1990s, I shipped a server-side template language for Java.<a href="#:~:text=The%20templating%20language%20was,↩" class="footnote" rel="footnote" title="More about the language">6</a>
+- <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">7</a>
+- <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">8</a>
+- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC." class="footnote" rel="footnote" title="More about legacy technologies">9</a>
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].
 - In 2015, I joined PagerDuty as the Principal Engineer for Applications. I was the hands-on lead for the [insights] and [operational review] features, and launched features such as [response mobilizer]. I created prototypes for features such as [recent changes].
 
@@ -80,7 +80,7 @@ My career-long focus is the product strategy and development process around both
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
 - At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from our competitors and value complements.
-- <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<a href="#:~:text=Not%20everything%20I%20championed,↩" class="footnote" rel="footnote" title="Windmills I tilted at">9</a>
+- <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<a href="#:~:text=Not%20everything%20I%20championed,↩" class="footnote" rel="footnote" title="Windmills I tilted at">10</a>
 
 ---
 
@@ -97,8 +97,8 @@ My career-long focus is the product strategy and development process around both
 I grow engineering in headcount, in scale of operations, in process maturity, and in tooling sophistication. 
 
 - I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.
-- <a id="fnref:tooling" role="doc-noteref"/>As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting,↩" class="footnote" rel="footnote" title="Tooling initiatives">10</a>
-- <a id="fnref:pd-growth" role="doc-noteref"/>I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<a href="#:~:text=During%20my%20tenure%2C%20PagerDuty,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">11</a>
+- <a id="fnref:tooling" role="doc-noteref"/>As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting,↩" class="footnote" rel="footnote" title="Tooling initiatives">11</a>
+- <a id="fnref:pd-growth" role="doc-noteref"/>I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictible scaling phase.<a href="#:~:text=During%20my%20tenure%2C%20PagerDuty,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">12</a>
 
 ---
 
@@ -111,7 +111,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
-- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">12</a>
+- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">13</a>
 - I developed an internal capability supporting refined product management shipping strategies.
 - I ideated and prototyped features and products in partnership with my Product and Leadership colleagues.
 - I led our own Incident Management practice.
@@ -166,19 +166,19 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others;<br/>Conference speaker |
 | Unspace Interactive<span class="footnote">&dagger;</span> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
-| <a id="fnref:mobile-commons" role="doc-noteref"/>Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">13</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
+| <a id="fnref:mobile-commons" role="doc-noteref"/>Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">14</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
 | [devtopia]          | 2005&thinsp;&ndash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
-| <a id="fnref:opalis" role="doc-noteref"/>Opalis Software<a class="footnote" href="#:~:text=Opalis%20Software,↩" rel="footnote" title="Opalis Software was acquired by Micosoft">14</a>     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
+| <a id="fnref:opalis" role="doc-noteref"/>Opalis Software<a class="footnote" href="#:~:text=Opalis%20Software,↩" rel="footnote" title="Opalis Software was acquired by Micosoft">15</a>     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
 | Information Balance<span class="footnote">&dagger;</span> | 2002&thinsp;&ndash;&thinsp;2003 | Lead Software Developer |
 | Novator<span class="footnote">&dagger;</span>             | 2002                            | Director of Software Development |
 | Conversagent<span class="footnote">&dagger;</span>        | 2000&thinsp;&ndash;&thinsp;2001 | Vice-President of Development |
-| <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, Threadalyzer |
-| <a id="fnref:Codestorm" role="doc-noteref"/>Codestorm<a class="footnote" href="#:~:text=Codestorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">16</a> | 1994&thinsp;&ndash;&thinsp;1998 | Managing Partner |
-| <a id="fnref:solo-founder" role="doc-noteref"/>Solo Founder<a class="footnote" href="#:~:text=Publishing%20Revenue%20Partners,↩" rel="footnote" title="Founder, Publishing Revenue Partners">17</a> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
+| <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">16</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, Threadalyzer |
+| <a id="fnref:Codestorm" role="doc-noteref"/>Codestorm<a class="footnote" href="#:~:text=Codestorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">17</a> | 1994&thinsp;&ndash;&thinsp;1998 | Managing Partner |
+| <a id="fnref:solo-founder" role="doc-noteref"/>Solo Founder<a class="footnote" href="#:~:text=Publishing%20Revenue%20Partners,↩" rel="footnote" title="Founder, Publishing Revenue Partners">18</a> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
 | BusinessWorld<span class="footnote">&dagger;</span> | 1989&thinsp;&ndash;&thinsp;1991 | Marketing Associate<br/>Sales Training and Systems<br/>Sales |
 | Computer Connection<span class="footnote">&dagger;</span> | 1988&thinsp;&ndash;&thinsp;1989 | Major Account Sales, Apple Products |
 | [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1988 | Channel Sales, Computer Products |
-| <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates%20sold,↩" rel="footnote" title="Bonar Associates was my first professional software gig">18</a> | 1986&thinsp;&ndash;&thinsp;1987 | Contract Software Development<br/>Business Development |
+| <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates%20sold,↩" rel="footnote" title="Bonar Associates was my first professional software gig">19</a> | 1986&thinsp;&ndash;&thinsp;1987 | Contract Software Development<br/>Business Development |
 
 ---
 
@@ -207,6 +207,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. My belief is a generalization of Dr. Alan Perlis’ observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
 1. I wrote Tableau in [4th Dimension], the [manuals] in PageMaker, did my own sales, and marketed the product at [MacWorld][reg-at-macworld]. <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
 1. Threadalyzer was written in C++, Java+Swing, and used an instrumented custom JVM. It had a client-server architecture with plug-in analuyzers for extensibility. <a href="#fnref:ceeplusplus" class="reversefootnote" role="doc-backlink">↩</a>
+1. The templating language was loosely based on [Scheme], while borrowing some syntactic sugar from Smalltalk., and its defining feature was that HTML could contain code, and code could contain HTML, and so forth [all the way down]().
 1. I can be pragmatic: The configuration tool was written in [MetaCard] and [compiled] for both Windows and HP-UX users. <a href="#fnref:hypercard" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
 1. Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
@@ -228,3 +229,4 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 [Upland Software]: https://uplandsoftware.com/mobile-commons/
 [Quest Software]: https://www.quest.com
 [AIgility Solutions]: https://www.aigility.solutions
+[Scheme]: https://www.scheme.org/
