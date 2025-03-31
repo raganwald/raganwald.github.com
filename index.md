@@ -161,8 +161,8 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | [Career Break]      | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
-| [raganwald.com]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
+| [raganwald.com]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others |
 | Unspace Interactive<span class="footnote">&dagger;</span> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
 | <a id="fnref:mobile-commons" role="doc-noteref"/>Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">13</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
@@ -172,7 +172,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | Novator<span class="footnote">&dagger;</span>             | 2002                            | Director of Software Development |
 | Conversagent<span class="footnote">&dagger;</span>        | 2000&thinsp;&ndash;&thinsp;2001 | Vice-President of Development |
 | <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">15</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, Threadalyzer |
-| <a id="fnref:codestorm" role="doc-noteref"/>CodeStorm<a class="footnote" href="#:~:text=CodeStorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">16</a> | 1994&thinsp;&ndash;&thinsp;1998 | Partner |
+| <a id="fnref:Codestorm" role="doc-noteref"/>Codestorm<a class="footnote" href="#:~:text=Codestorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">16</a> | 1994&thinsp;&ndash;&thinsp;1998 | Partner |
 | <a id="fnref:solo-founder" role="doc-noteref"/>Solo Founder<a class="footnote" href="#:~:text=Publishing%20Revenue%20Partners,↩" rel="footnote" title="Founder, Publishing Revenue Partners">17</a> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
 | BusinessWorld<span class="footnote">&dagger;</span> | 1989&thinsp;&ndash;&thinsp;1991 | Marketing Associate<br/>Sales Training and Systems<br/>Sales |
 | Computer Connection<span class="footnote">&dagger;</span> | 1988&thinsp;&ndash;&thinsp;1989 | Major Account Sales, Apple Products |
@@ -215,7 +215,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
 1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
 1. Sitraka Software was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
-1. Codestorm is now [AIgility Solutions]. <a href="#fnref:codestorm" class="reversefootnote" role="doc-backlink">↩</a>
+1. Codestorm is now [AIgility Solutions]. Codestor<a href="#fnref:Codestorm" class="reversefootnote" role="doc-backlink">↩</a>
 1. Publishing Revenue Partners was my one-man ISV for selling Tableau, a classified advertising app for desktop publishers. I bootstrapped it with consulting and training, including working as a mentor for first-time entrepreneurs through thge YMCA's Enterprise Program and as a Financial Analyst for a boutique investment bank specializing in the food and beverage industry. <a href="#fnref:solo-founder" class="reversefootnote" role="doc-backlink">↩</a>
 1. Bonar Associates sold turnkey mini-computer-based classified avdertising systems to large “penny-savers,” print newspapers that were primarily classified ads. I was hired to make its software customizable so that it could be sold at scale. It was written in TurboPascal with BTrieve, running on an MP/M-based tightly-coupled network. It supported as many as 16 simultaneous users. <a href="#fnref:bonar-associates" class="reversefootnote" role="doc-backlink">↩</a>
 
