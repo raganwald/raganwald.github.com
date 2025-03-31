@@ -15,7 +15,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 - I have shipped software at B2C scale (millions of active users) and B2B scale (thousands of customers with as many as thousands of users each).
 - <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20aquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
 - <a id="fnref:creative-works" role="doc-noteref"/>I have written a popular [programming book]; I have written technical documentation and essays; and I have keynoted technical conferences and company-wide events.<a href="#:~:text=My%20books%2C%20essays,↩" class="footnote" rel="footnote" title="My creative works">3</a>
-- My [recent experience](#recent-experience) is detailed on [LinkedIn]; I'm [raganwald@gmail.com].
+- My [industry experience](#industry-experience) is detailed on [LinkedIn]; I'm [raganwald@gmail.com].
 
 [programming book]: /creative-works.html#books
 
@@ -40,6 +40,7 @@ I have designed and built software for paying customers since the 1990s:
 
 - <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=I%20wrote%20Tableau%20in,↩" class="footnote" rel="footnote" title="More about Tableau">5</a>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
+- In 1998, I shipped a Java-based [web page templating system based on Lisp](assets/images/lisp-based-template-language.png).
 - <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">6</a>
 - <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">7</a>
 - <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC." class="footnote" rel="footnote" title="More about legacy technologies">8</a>
@@ -156,7 +157,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ## Appendices
 
-### Recent experience
+### Industry experience
 
 | [Career Break]      | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
@@ -179,7 +180,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 | [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1988 | Channel Sales, Computer Products |
 | <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates%20sold,↩" rel="footnote" title="Bonar Associates was my first professional software gig">18</a> | 1986&thinsp;&ndash;&thinsp;1987 | Contract Software Development<br/>Business Development |
 
-———
+---
 
 <span class="footnote">&dagger;</span>&nbsp;No longer active.
 
@@ -197,7 +198,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 <!--
   Warning: Footnote links are text highlights, therefore any edits to the body of the
-  footnotse belo mutch have matching edits to the footnote links above
+  footnotes below must have matching edits to the links above.
 -->
 
 1. Sitraka was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
@@ -215,9 +216,9 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
 1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
 1. Sitraka Software was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
-1. Codestorm is now [AIgility Solutions]. Codestor<a href="#fnref:Codestorm" class="reversefootnote" role="doc-backlink">↩</a>
+1. Codestorm is now [AIgility Solutions]. Our core business at the time was client-server business process automation for the financial services industry. <a href="#fnref:Codestorm" class="reversefootnote" role="doc-backlink">↩</a>
 1. Publishing Revenue Partners was my one-man ISV for selling Tableau, a classified advertising app for desktop publishers. I bootstrapped it with consulting and training, including working as a mentor for first-time entrepreneurs through thge YMCA's Enterprise Program and as a Financial Analyst for a boutique investment bank specializing in the food and beverage industry. <a href="#fnref:solo-founder" class="reversefootnote" role="doc-backlink">↩</a>
-1. Bonar Associates sold turnkey mini-computer-based classified avdertising systems to large “penny-savers,” print newspapers that were primarily classified ads. I was hired to make its software customizable so that it could be sold at scale. It was written in TurboPascal with BTrieve, running on an MP/M-based tightly-coupled network. It supported as many as 16 simultaneous users. <a href="#fnref:bonar-associates" class="reversefootnote" role="doc-backlink">↩</a>
+1. Bonar Associates sold turnkey mini-computer-based classified avdertising systems to large “penny-savers,” print newspapers that were primarily classified ads. I made its software customizable so that it could be sold at scale. It was written in TurboPascal with BTrieve, running on an MP/M-based tightly-coupled network. It supported as many as 16 simultaneous users. <a href="#fnref:bonar-associates" class="reversefootnote" role="doc-backlink">↩</a>
 
 [manuals]: /assets/images/tableau-manuals.jpg
 [reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
