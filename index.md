@@ -5,9 +5,9 @@ layout: default
 tags: [open-to-work]
 ---
 
-<div class="sidebar">
+<!-- <div class="sidebar">
   Velit ab harum delectus sit perferendis ab. Ex voluptates labore omnis quis ut et consequatur cupiditate. Accusantium ullam quidem recusandae. 
-</div>
+</div> -->
 
 ## Who I Am
 
