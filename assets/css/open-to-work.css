@@ -25,11 +25,12 @@ table {
   /* border: 1px solid black; */
 
   a {
-    color: #3d3d3d;
+    color: #d5000d;
   }
   a:hover {
-    color: #3d3d3d;
+    color: #c5000c;
   }
+  
 
   thead {
 

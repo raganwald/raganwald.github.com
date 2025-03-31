@@ -159,7 +159,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 ### Industry experience
 
-| [Career Break]      | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
+| Career Break      | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
