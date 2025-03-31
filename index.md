@@ -135,7 +135,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 |:--------------------|:--------------------------------|:-------|
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
-| [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others;<br/>Conference speaker |
+| [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others;<br/>Conference Speaker |
 | Unspace Interactive<span class="footnote">&dagger;</span> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
 | <a id="fnref:mobile-commons" role="doc-noteref"/>Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">14</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
@@ -165,7 +165,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 ---
 
 <p class="quotation">“Reg was an incredible asset at PagerDuty, having been there early days in 2015 through the IPO. He helped level me and several other members of the sales team on the product and was always willing to hop on calls to help articulate value to them. Can’t wait to work with him again one day.</p>
-<p class="author">Radz Mpofu, Head of Business Development, XGEN AI</p>
+<p class="author">—Radz Mpofu, Head of Business Development, XGEN AI</p>
 
 ---
 
