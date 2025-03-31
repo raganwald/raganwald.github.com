@@ -7,7 +7,7 @@ tags: [open-to-work]
 
 ## Who I Am
 
-I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
+I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration). I have four decades of [industry experience](#industry-experience): This is [not my first rodeo](#this-is-not-my-first-rodeo). I'm [available for work](#im-available-for-work).
 
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I have led through growth from startup, to IPO, to annual revenues in excess of $400 million.
@@ -15,7 +15,7 @@ I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [
 - I have shipped software at B2C scale (millions of active users) and B2B scale (thousands of customers with as many as thousands of users each).
 - <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20aquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
 - <a id="fnref:creative-works" role="doc-noteref"/>I have written a popular [programming book]; I have written technical documentation and essays; and I have keynoted technical conferences and company-wide events.<a href="#:~:text=My%20books%2C%20essays,↩" class="footnote" rel="footnote" title="My creative works">3</a>
-- My [industry experience](#industry-experience) is detailed on [LinkedIn]; I'm [raganwald@gmail.com].
+- I am on [LinkedIn], and I'm [raganwald@gmail.com].
 
 [programming book]: /creative-works.html#books
 
@@ -127,36 +127,6 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ---
 
-## What's Next?
-
-### This is not my first rodeo
-
-I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama:
-
-- I have experienced both the highs and the lows of the startup trajectory, and I guide my teams with a steady hand on the tiller.
-- My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
-
----
-
-<p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
-Any growing organization would be fortunate to add Reg to its team.</p>
-<p class="author">—Jonathan Poehlman, Senior Technical Recruiter, Elastic</p>
-
----
-
-### I'm available for work.
-
-If you are looking for a veteran to play a meaningful role in your breakout success, I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus. I'm [raganwald@gmail.com].
-
----
-
-<p class="quotation">You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</p>  
-<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
-
----
-
-## Appendices
-
 ### Industry experience
 
 | Career Break      | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
@@ -192,9 +162,35 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 [devtopia]: https://www.linkedin.com/company/devtopia/
 [Future Electronics]: https://www.futureelectronics.com
 
+## What's Next?
+
+### This is not my first rodeo
+
+I bring forty years of product- and customer- centric business and technical experience to shipping on time, without drama:
+
+- I have experienced both the highs and the lows of the startup trajectory, and I guide my teams with a steady hand on the tiller.
+- My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+
 ---
 
-### Footnotes
+<p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
+Any growing organization would be fortunate to add Reg to its team.</p>
+<p class="author">—Jonathan Poehlman, Senior Technical Recruiter, Elastic</p>
+
+---
+
+### I'm available for work.
+
+If you are looking for a veteran to play a meaningful role in your breakout success, I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus. I'm [raganwald@gmail.com].
+
+---
+
+<p class="quotation">You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</p>  
+<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
+
+---
+
+## Footnotes
 
 <!--
   Warning: Footnote links are text highlights, therefore any edits to the body of the
