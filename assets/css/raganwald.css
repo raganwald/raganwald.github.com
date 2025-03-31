@@ -53,4 +53,6 @@ div.sidebar {
   margin-left: -160px;
   width: 160px;
   border: 1px solid;
+  padding: .5em;
+  font-size: .83em;
 }
