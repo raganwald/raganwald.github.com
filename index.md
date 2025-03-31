@@ -9,7 +9,7 @@ tags: [open-to-work]
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration).
 
-I have four decades of [industry experience](#industry-experience). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
+I have four decades of [industry experience](#i-have-industry-experience). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
 
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I have led through growth from startup, to IPO, to annual revenues in excess of $400 million.
@@ -129,7 +129,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ---
 
-### Industry experience
+### I have industry experience
 
 | Career Break      | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
