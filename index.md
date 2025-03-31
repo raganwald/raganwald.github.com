@@ -6,7 +6,7 @@ tags: [open-to-work]
 ---
 
 <div class="sidebar">
-  <p>&ldquo;Why, hello there!&rdquo;&mdash;Obi-Wan Kenobi</p>
+  <!-- content -->
 </div>
 
 ## Who I Am
