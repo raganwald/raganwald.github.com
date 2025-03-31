@@ -52,4 +52,5 @@ div.sidebar {
   top: 0px;
   margin-left: -160px;
   width: 160px;
+  border: 1px solid;
 }
