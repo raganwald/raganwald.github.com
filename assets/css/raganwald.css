@@ -62,8 +62,9 @@ div.navigation {
   }
 
   a {
+    font-size: .83em;
     font-family: 'TheoVanDoesburg';
-    letter-spacing: 3px;
+    letter-spacing: 2px;
     font-weight: normal;
     font-style: normal;
   }
