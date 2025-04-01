@@ -5,16 +5,6 @@ layout: default
 tags: [open-to-work]
 ---
 
-{% if page.tags contains 'navigation' %}
-  <div class="sidebar">
-    <p>
-      Velit ab harum delectus sit perferendis ab.
-      Ex voluptates labore omnis quis ut et consequatur cupiditate.
-      Accusantium ullam quidem recusandae.
-    </p>
-  </div>
-{% endif %}
-
 ## Who I Am
 
 I am [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). And I foster [collaboration](#i-foster-collaboration).

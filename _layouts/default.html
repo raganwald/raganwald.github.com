@@ -9,6 +9,10 @@
 
         {% include header_div.html %}
 
+        {% if page.tags contains 'navigation' %}
+          {% include navigation_div.html %}
+        {% endif %}
+
         <hr>
 
         <section id="main_content">

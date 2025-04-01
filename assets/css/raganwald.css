@@ -45,7 +45,7 @@ sup:after {
 
 /* a floating frame that goes where the leanpub ads go */
 
-div.sidebar {
+div.navigation {
   position: relative;
   float: right;
   left: 180px;
@@ -56,7 +56,8 @@ div.sidebar {
   padding: .5em;
   font-size: .83em;
   
-  p {
+  p,
+  h3 {
     text-align: right;
   }
 }
