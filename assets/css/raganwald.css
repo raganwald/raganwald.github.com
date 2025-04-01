@@ -52,12 +52,19 @@ div.navigation {
   top: 0px;
   margin-left: -160px;
   width: 160px;
-  border: 1px solid;
+  /* border: 1px solid; */
   padding: .5em;
   font-size: .83em;
   
   p,
   h3 {
     text-align: right;
+  }
+
+  a {
+    font-family: 'TheoVanDoesburg';
+    letter-spacing: 3px;
+    font-weight: normal;
+    font-style: normal;
   }
 }
