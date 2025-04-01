@@ -1,9 +1,9 @@
       <div id="header">
-        {% if page.homelink != "none" %} <!-- never used? gate on nagigation? -->
+        {% if page.tags contains 'navigation' %}
+          <!-- home title and link is the the side bar -->
+        {% else %}
           <h3><a href="/">RAGANWALD.COM</a></h3>
           <hr/>
-        {% else %}
-          <h3>&nbsp;</h3>
         {% endif %}
         <h1>{{ page.title }}</h1>
         {% if page.subtitle %}
