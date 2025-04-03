@@ -143,14 +143,14 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 | <a id="fnref:opalis" role="doc-noteref"/>Opalis Software<a class="footnote" href="#:~:text=Opalis%20Software,↩" rel="footnote" title="Opalis Software was acquired by Micosoft">16</a>     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
 | Information Balance<span class="footnote">&dagger;</span> | 2002&thinsp;&ndash;&thinsp;2003 | Lead Software Developer |
 | Novator<span class="footnote">&dagger;</span>             | 2002                            | Director of Software Development |
-| Conversagent<span class="footnote">&dagger;</span>        | 2000&thinsp;&ndash;&thinsp;2001 | Vice-President of Development |
-| <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">17</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, Threadalyzer |
-| <a id="fnref:Codestorm" role="doc-noteref"/>Codestorm<a class="footnote" href="#:~:text=Codestorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">18</a> | 1994&thinsp;&ndash;&thinsp;1998 | Managing Partner |
-| <a id="fnref:solo-founder" role="doc-noteref"/>Solo Founder<a class="footnote" href="#:~:text=Publishing%20Revenue%20Partners%20was%20my%20one-man%20ISV,↩" rel="footnote" title="Founder, Publishing Revenue Partners">19</a> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
+| <a id="fnref:Conversagent" role="doc-noteref"/>Conversagent<a class="footnote" href="#:~:text=Conversagent%20is%20no,↩" rel="footnote" title="Conversagent">17</a> | 2000&thinsp;&ndash;&thinsp;2001 | Vice-President of Development |
+| <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">18</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, Threadalyzer |
+| <a id="fnref:Codestorm" role="doc-noteref"/>Codestorm<a class="footnote" href="#:~:text=Codestorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">19</a> | 1994&thinsp;&ndash;&thinsp;1998 | Managing Partner |
+| <a id="fnref:solo-founder" role="doc-noteref"/>Solo Founder<a class="footnote" href="#:~:text=Publishing%20Revenue%20Partners%20was%20my%20one-man%20ISV,↩" rel="footnote" title="Founder, Publishing Revenue Partners">20</a> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
 | BusinessWorld<span class="footnote">&dagger;</span> | 1989&thinsp;&ndash;&thinsp;1991 | Marketing Associate;<br/>Sales, Sales Training, and Systems |
 | Computer Connection<span class="footnote">&dagger;</span> | 1988&thinsp;&ndash;&thinsp;1989 | Major Account Sales, Apple Products |
 | [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1988 | Channel Sales, Computer Products |
-| <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates%20sold,↩" rel="footnote" title="Bonar Associates was my first professional software gig">20</a> | 1986&thinsp;&ndash;&thinsp;1987 | Technical Lead and Business Development |
+| <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates%20sold,↩" rel="footnote" title="Bonar Associates was my first professional software gig">21</a> | 1986&thinsp;&ndash;&thinsp;1987 | Technical Lead and Business Development |
 
 <span class="footnote">&dagger;</span>&nbsp;No longer active.
 
@@ -219,6 +219,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
 1. All that appears to remain of Devtopia is [a page on LinkedIn](https://www.linkedin.com/company/devtopia/).<a href="#fnref:devtopia" class="reversefootnote" role="doc-backlink">↩</a>
 1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
+1. Conversagent is no longer active, however I retained this [intervew with the founder](assets/images/conversagent.jpg).
 1. Sitraka Software was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
 1. Codestorm is now [AIgility Solutions]. Our core business at the time was client-server business process automation for the financial services industry. <a href="#fnref:Codestorm" class="reversefootnote" role="doc-backlink">↩</a>
 1. Publishing Revenue Partners was my one-man ISV for selling Tableau, a classified advertising app for desktop publishers. I bootstrapped it with consulting and training, including working as a mentor for first-time entrepreneurs through thge YMCA's Enterprise Program and as a Financial Analyst for a boutique investment bank specializing in the food and beverage industry. <a href="#fnref:solo-founder" class="reversefootnote" role="doc-backlink">↩</a>
