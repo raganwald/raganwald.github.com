@@ -105,7 +105,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 ---
 
 <p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
-<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne<a/>: Senior Talent Partner, PagerDuty</p>
+<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
 
 ---
 
