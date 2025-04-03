@@ -24,7 +24,9 @@ I have four decades of [industry experience](#i-have-industry-experience). This 
 ---
 
 <p class="quotation">Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</p>  
-<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
+<p class="author">—[Michael Cucchi]: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
+
+[Michael Cucchi]: https://www.linkedin.com/in/cucchi
 
 ---
 
@@ -53,7 +55,9 @@ I have designed and built software for paying customers since the 1990s:
 
 <p class="quotation">Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</p>
 <p class="quotation">Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</p>  
-<p class="author">—Jason Diller: VP of Engineering, Georgias</p>
+<p class="author">—[Jason Diller]: VP of Engineering, Georgias</p>
+
+[Jason Diller]: https://www.linkedin.com/in/jasonadiller/
 
 ---
 
@@ -105,7 +109,9 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 ---
 
 <p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
-<p class="author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
+<p class="author">—[Richard Hartshorne]: Senior Talent Partner, PagerDuty</p>
+
+[Richard Hartshorne]: https://www.linkedin.com/in/rahartshorne/
 
 ---
 
@@ -125,7 +131,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 <p class="quotation">Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
 <p class="quotation">Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.</p>  
-<p class="author">—Richard Hartshorne: Senior Talent Partner, PagerDuty</p>
+<p class="author">—[Richard Hartshorne]: Senior Talent Partner, PagerDuty</p>
 
 ---
 
@@ -165,7 +171,9 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 ---
 
 <p class="quotation">Reg was an incredible asset at PagerDuty, having been there early days in 2015 through the IPO. He helped level me and several other members of the sales team on the product and was always willing to hop on calls to help articulate value to them. Can’t wait to work with him again one day.</p>
-<p class="author">—Radz Mpofu, Head of Business Development, XGEN AI</p>
+<p class="author">—[Radz Mpofu], Head of Business Development, XGEN AI</p>
+
+[Radz Mpofu]: https://www.linkedin.com/in/radzmpofu/
 
 ---
 
@@ -182,7 +190,9 @@ I bring forty years of product- and customer- centric business and technical exp
 
 <p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
 Any growing organization would be fortunate to add Reg to its team.</p>
-<p class="author">—Jonathan Poehlman, Senior Technical Recruiter, Elastic</p>
+<p class="author">—[Jonathan Poehlman], Senior Technical Recruiter, Elastic</p>
+
+[Jonathan Poehlman]: https://www.linkedin.com/in/jonathanpoehlman/
 
 ---
 
@@ -193,7 +203,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 ---
 
 <p class="quotation">You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</p>  
-<p class="author">—Michael Cucci: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
+<p class="author">—[Michael Cucchi]: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 ---
 
