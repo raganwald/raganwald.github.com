@@ -139,7 +139,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 | Unspace Interactive<span class="footnote">&dagger;</span> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
 | <a id="fnref:mobile-commons" role="doc-noteref"/>Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">14</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
-| <a id="fnref:devtopia" role="doc-noteref"/>devtopia<a class="footnote" href="#:~:text=All%20that%20appears%20to%20remain%20of%20Devtopia,↩" rel="footnote" title="Devtopia is no longer active">16</a>  | 2005&thinsp;&ndash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
+| <a id="fnref:devtopia" role="doc-noteref"/>devtopia<a class="footnote" href="#:~:text=All%20that%20appears%20to%20remain%20of%20Devtopia,↩" rel="footnote" title="Devtopia is no longer active">15</a>  | 2005&thinsp;&ndash;&thinsp;2007 | Contract Team Lead, Web Banking, ING Direct |
 | <a id="fnref:opalis" role="doc-noteref"/>Opalis Software<a class="footnote" href="#:~:text=Opalis%20Software,↩" rel="footnote" title="Opalis Software was acquired by Micosoft">16</a>     | 2004&thinsp;&ndash;&thinsp;2005 | Director of Software Development |
 | Information Balance<span class="footnote">&dagger;</span> | 2002&thinsp;&ndash;&thinsp;2003 | Lead Software Developer |
 | Novator<span class="footnote">&dagger;</span>             | 2002                            | Director of Software Development |
