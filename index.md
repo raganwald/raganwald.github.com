@@ -78,11 +78,11 @@ I have written and shipped software products and services since the 1990s:
 
 My career-long focus is the product strategy and development process around both technical and business tools:
 
-- As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.
-- As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
-- At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
-- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from our competitors and value complements.
 - <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, my teams ideated, developed, and shipped [insights] and [operational review] features, and launched [response mobilizer].<a href="#:~:text=Not%20everything%20I%20championed,↩" class="footnote" rel="footnote" title="Windmills I tilted at">10</a>
+- At PagerDuty—working with Product Mangement and Marketing Strategy—I wrote the technical road map for [schedules], identifying feasible and compelling features to establish strong differentiation from our competitors and value complements.
+- At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
+- As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
+- As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.
 
 ---
 
