@@ -40,10 +40,7 @@ I have four decades of [industry experience](#i-have-industry-experience). This 
 
 I been coding and shipping software products since the 1990s:
 
-- In 2015, I joined PagerDuty as the hands-on Principal Engineer for Applications.
-  - I co-wrote features such as [insights];
-  - Under my leadership, PagerDuty launched features such as [operational review] and [response mobilizer];
-  - I created prototypes for features that would go on to ship, such as [recent changes].
+- In 2015, I joined PagerDuty as the hands-on Principal Engineer for Applications: I co-wrote features such as [insights]; Under my leadership, PagerDuty launched features such as [operational review] and [response mobilizer]; and working with fellow mavericks I conceived and created prototypes for features such as [recent changes].
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].
 - <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC." class="footnote" rel="footnote" title="More about legacy technologies">9</a>
 - <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">8</a>
