@@ -40,7 +40,7 @@ I have four decades of [industry experience](#i-have-industry-experience). This 
 
 I have written and shipped software products and services since the 1990s:
 
-- <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], and [round-robin scheduling].<br/><span style="line-height: 2.0;" >I made feature toggles fancy.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">5</a></span> 
+- <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><span style="line-height: 2.0;" >I made feature toggles fancy.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">5</a></span> 
 - In 2013, I joined GitHub's documentation tooling team and then transitioned to front-end flow: I shipped features such as [rich prose diffs].
 - <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with and extending the functionality of legacy systems.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC,↩" class="footnote" rel="footnote" title="More about legacy technologies">6</a>
 - <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">7</a>
@@ -79,10 +79,12 @@ I have written and shipped software products and services since the 1990s:
 
 My career-long focus is the product strategy and development process around both technical and business tools:
 
-- <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, I partnered with Product on the ideation, business objectives, design, roadmap, and launch of [operational reviews][operational review] and [response mobilizer]. I wrote the technical road map for [schedules], identifying compelling features to establish strong differentiation from our competitors and value complements. Working with fellow mavericks in Product, I conceived and created prototypes for features such as [recent changes]. <a href="#:~:text=Not%20everything%20I%20championed,↩" class="footnote" rel="footnote" title="Windmills I tilted at">11</a>
+- <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, I partnered with Product to launch [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling]. I wrote the technical road map for [schedules]. Working with Product, I created prototypes for features such as [recent changes]. <a href="#:~:text=Not%20everything%20I%20championed,↩" class="footnote" rel="footnote" title="Windmills I tilted at">11</a>
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.
+
+[stakeholder communications]: https://support.pagerduty.com/main/docs/communicate-with-stakeholders
 
 ---
 
