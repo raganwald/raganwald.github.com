@@ -38,16 +38,19 @@ I have four decades of [industry experience](#i-have-industry-experience). This 
 
 ### I am technical
 
-I have designed and built software for paying customers since the 1990s:
+I been coding and shipping software products since the 1990s:
 
-- <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=I%20wrote%20Tableau%20in,↩" class="footnote" rel="footnote" title="More about Tableau">5</a>
-- In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
-- <a id="fnref:templates" role="doc-noteref"/>In the late 1990s, I shipped a server-side templating language for Java.<a href="#:~:text=The%20templating%20language%20was,↩" class="footnote" rel="footnote" title="More about the language">6</a>
-- <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">7</a>
-- <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">8</a>
-- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC." class="footnote" rel="footnote" title="More about legacy technologies">9</a>
+- In 2015, I joined PagerDuty as the hands-on Principal Engineer for Applications.
+  - I co-wrote features such as [insights];
+  - Under my leadership, PagerDuty launched features such as [operational review] and [response mobilizer];
+  - I created prototypes for features that would go on to ship, such as [recent changes].
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].
-- In 2015, I joined PagerDuty as the Principal Engineer for Applications. I was the hands-on lead for the [insights] and [operational review] features, and launched features such as [response mobilizer]. I created prototypes for features such as [recent changes].
+- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I personally wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with legacy systems and extending their functionality.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC." class="footnote" rel="footnote" title="More about legacy technologies">9</a>
+- <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">8</a>
+- <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">7</a>
+- <a id="fnref:templates" role="doc-noteref"/>In the late 1990s, I shipped a server-side templating language for Java.<a href="#:~:text=The%20templating%20language%20was,↩" class="footnote" rel="footnote" title="More about the language">6</a>
+- In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
+- <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=I%20wrote%20Tableau%20in,↩" class="footnote" rel="footnote" title="More about Tableau">5</a>
 
 ---
 
