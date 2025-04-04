@@ -38,7 +38,7 @@ I have four decades of [industry experience](#i-have-industry-experience). This 
 
 ### I am technical
 
-I been coding and shipping software products since the 1990s:
+I have written and shipped software products and services since the 1990s:
 
 - In 2015, I joined PagerDuty as the hands-on Principal Engineer for Applications: I co-wrote features such as [insights]; Under my leadership, PagerDuty launched features such as [operational review] and [response mobilizer]; and working with fellow mavericks I conceived and created prototypes for features such as [recent changes].
 - As a member of GitHub's documentation tools and front-end flow teams in the early 2010s, I shipped features such as [rich prose diffs].
