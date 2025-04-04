@@ -47,7 +47,7 @@ I have written and shipped software products and services since the 1990s:
 - <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">7</a>
 - <a id="fnref:templates" role="doc-noteref"/>In the late 1990s, I shipped a server-side templating language for Java.<a href="#:~:text=The%20templating%20language%20was,↩" class="footnote" rel="footnote" title="More about the language">6</a>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
-- <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=I%20wrote%20Tableau%20in,↩" class="footnote" rel="footnote" title="More about Tableau">5</a>
+- <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold Tableau, classified advertising management for desktop publishers.<a href="#:~:text=Long%20before%20Tableau,↩" class="footnote" rel="footnote" title="More about Tableau">5</a>
 
 ---
 
