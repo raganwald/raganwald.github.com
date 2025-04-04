@@ -40,8 +40,8 @@ I have four decades of [industry experience](#i-have-industry-experience). This 
 
 I have written and shipped software products and services since the 1990s:
 
-- In 2015, I joined PagerDuty as Principal Engineer for Applications: I co-wrote features such as [insights]; Under my hands-on leadership, PagerDuty launched features such as [operational reviews][operational review] and [response mobilizer].
-- In 2013, I joined GitHub's documentation tooling team and then transitioned to Front-End Flow: I shipped features such as [rich prose diffs].
+- In 2015, I joined PagerDuty as Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], and [round-robin scheduling]. I worked on a variety of internal tools.
+- In 2013, I joined GitHub's documentation tooling team and then transitioned to front-end flow: I shipped features such as [rich prose diffs].
 - <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with and extending the functionality of legacy systems.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC." class="footnote" rel="footnote" title="More about legacy technologies">5</a>
 - <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">6</a>
 - <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">7</a>
@@ -60,6 +60,7 @@ I have written and shipped software products and services since the 1990s:
 [ING]: https://www.ing.com/Newsroom/News/Press-releases/PROld/ING-to-sell-ING-Direct-USA-to-Capital-One.htm
 [MUMPS]: https://en.wikipedia.org/wiki/MUMPS
 
+[round-robin scheduling]: https://support.pagerduty.com/main/docs/round-robin-scheduling
 [insights]: https://support.pagerduty.com/main/docs/insights
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
 [response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
