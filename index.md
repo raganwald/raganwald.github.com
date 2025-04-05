@@ -221,7 +221,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
 1. All that appears to remain of Devtopia is [a page on LinkedIn](https://www.linkedin.com/company/devtopia/).<a href="#fnref:devtopia" class="reversefootnote" role="doc-backlink">↩</a>
-1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
+1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). Ask me about engineering hygiene and [The Inner Osbourne Effect]. <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
 1. Conversagent is no longer active, however I retained this [intervew with the founder](assets/images/conversagent.jpg). The title of “Vice-President” was largely ceremonial: I was the head of development, but this was a team of three engineers and a product manager. Our incubator insisted that we needed a VP, so I got the title.<a href="#fnref:Conversagent" class="reversefootnote" role="doc-backlink">↩</a>
 1. Sitraka Software was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
 1. Codestorm is now [AIgility Solutions]. Our core business at the time was client-server business process automation for the financial services industry. <a href="#fnref:Codestorm" class="reversefootnote" role="doc-backlink">↩</a>
@@ -230,6 +230,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 
 [Tableau Corporation]: https://www.tableau.com
 
+[The Inner Osbourne Effect]: https://raganwald.com/2021/10/28/the-inner-osborne-effect.html
 [manuals]: /assets/images/tableau-manuals.jpg
 [reg-at-macworld]: /assets/images/reg-at-macworld.jpeg
 [4th Dimension]: https://en.wikipedia.org/wiki/4th_Dimension_(software)
