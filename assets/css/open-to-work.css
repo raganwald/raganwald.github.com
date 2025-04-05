@@ -8,7 +8,7 @@ ol {
 }
 
 .footnote {
-  font-size: .5em;
+  font-size: .83em;
   vertical-align: super
 }
 
@@ -38,13 +38,13 @@ table {
     }
 
     th:nth-child(1) {
-      width: 28%;
+      width: 30%;
 
       font-weight: 500;
     }
 
     th:nth-child(2) {
-      width: 17%;
+      width: 15%;
     }
 
     th:nth-child(3) {

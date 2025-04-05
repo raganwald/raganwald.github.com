@@ -133,7 +133,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ### I have industry experience
 
-| Career Break      | 2024&thinsp;&ndash;&thinsp;current | Glider pilot training | 
+| Career Break      | 2024&thinsp;&ndash; | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
