@@ -34,7 +34,9 @@ I have four decades of [industry experience](#i-have-industry-experience). This 
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
-<a id="fnref:table-stakes" role="doc-noteref"/>I believe that users compare product features to similar features in mass-market products, not just other B2B tools. _e.g._ Text editing must be judged in comparison to Goodle Docs, and calendars/schedules must be judged in comparison to Google Calendar. “Table stakes” are defined by user expectations, not matching competitors.<a href="#:~:text=Yes%20this%20does%20mean%20thinking%20hard%20about%20supporting,↩" class="footnote" rel="footnote" title="Source">5</a>
+<a id="fnref:table-stakes" role="doc-noteref"/>I believe that users compare product features to similar features in mass-market products, not just other B2B tools. Text editing must be judged in comparison to Google Docs; calendars/schedules must be judged in comparison to Google Calendar.
+
+“Table stakes” are defined by user expectations, not by competition.<a href="#:~:text=Yes%20this%20does%20mean%20thinking%20hard%20about%20supporting,↩" class="footnote" rel="footnote" title="Source">5</a>
 
 ## What I Do
 
