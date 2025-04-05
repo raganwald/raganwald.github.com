@@ -34,6 +34,8 @@ I have four decades of [industry experience](#i-have-industry-experience). This 
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
+I believe that users compare product features to similar features in mass-market products, not just other B2B tools. This drives my belief that the quality and completeness of features like fields that accept text editing must be judged in comparison to what users experience using tools like Goodle Docs. And that anything involving calendars must be at least as functional as Google Calendar. This means thinking hard about supporting functionality like undo/redo stacks, real-time collaborative editing, comments, full-text search, full time zone support, flexible notification preferences, and other affordances that are table stakes for B2C applications.
+
 ## What I Do
 
 ### I am technical
@@ -220,7 +222,7 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
 1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
-1. All that appears to remain of Devtopia is [a page on LinkedIn](https://www.linkedin.com/company/devtopia/).<a href="#fnref:devtopia" class="reversefootnote" role="doc-backlink">↩</a>
+1. All that appears to remain of Devtopia is a [page on LinkedIn](https://www.linkedin.com/company/devtopia/).<a href="#fnref:devtopia" class="reversefootnote" role="doc-backlink">↩</a>
 1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). Ask me about engineering hygiene and [The Inner Osbourne Effect]. <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [The Mouse Trap]. <a href="#fnref:information-balance" class="reversefootnote" role="doc-backlink">↩</a>
 1. I retained this [intervew with the founder](assets/images/conversagent.jpg). The title of “Vice-President” was largely ceremonial: I was the head of development, but this was a team of three engineers and a product manager. Our incubator insisted that we needed a VP, so I got the title.<a href="#fnref:Conversagent" class="reversefootnote" role="doc-backlink">↩</a>
