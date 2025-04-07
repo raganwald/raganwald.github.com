@@ -7,7 +7,7 @@ tags: [open-to-work]
 
 ## Who I Am
 
-I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I foster [collaboration](#i-foster-collaboration). And I [grow engineering](#i-grow-engineering).
+I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I am a strong [communicator][#i-am-a-strong-communicator]. I foster [collaboration](#i-foster-collaboration). And I [grow engineering](#i-grow-engineering).
 
 This is [not my first rodeo](#this-is-not-my-first-rodeo):
 
@@ -16,9 +16,8 @@ This is [not my first rodeo](#this-is-not-my-first-rodeo):
 - I have shipped software in organizations with dozens to thousands of employees worldwide.
 - I have shipped software at B2C scale (millions of active users) and B2B scale (thousands of customers with as many as thousands of users each).
 - <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20aquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
-- <a id="fnref:creative-works" role="doc-noteref"/>I have written a popular [programming book]; I have written technical documentation and essays; and I have keynoted technical conferences and company-wide events.<a href="#:~:text=My%20books%2C%20essays,↩" class="footnote" rel="footnote" title="My creative works">3</a>
 
-I'm [available for work](#im-available-for-work): I'm [raganwald@gmail.com], and I'm on [LinkedIn].
+I'm [available for work](#im-available-for-work).
 
 [programming book]: /creative-works.html#books
 
@@ -98,6 +97,29 @@ My approach to product strategy is informed by my beliefs:
 
 [schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
 
+### I am a strong communicator
+
+I foster a culture of writing and structured communication in both my work and my personal pursuits:
+
+- I write technical documentation;
+- I write technical and product road maps;
+- I write white papers and other marketecture pieces;
+- I write pull requests and design review documents;
+- I wrote [JavaScript Allongé] and other books about programming;
+- I have creates sales and software development training materials;
+- I have delivered technical training to my colleagues and at technical conferences;
+- I have been an essayist since 2004.
+
+My personal books, essays, and talks are available on my [creative works page].
+
+---
+
+<p class="quotation">Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
+<p class="quotation">Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.</p>  
+<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
+
+---
+
 ### I foster collaboration
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
@@ -112,9 +134,9 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ---
 
-<p class="quotation">Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
-<p class="quotation">Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.</p>  
-<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
+<p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
+Any growing organization would be fortunate to add Reg to its team.</p>
+<p class="author">—<a href="https://www.linkedin.com/in/jonathanpoehlman/">Jonathan Poehlman</a>, Senior Technical Recruiter, Elastic</p>
 
 ---
 
