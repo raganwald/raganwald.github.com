@@ -1,6 +1,6 @@
 ---
 title: Reginald Braithwaite
-subtitle: Principal Engineer & Technical Product Manager
+subtitle: Engineering Leadership & Technical Product Management
 layout: default
 tags: [open-to-work]
 ---
@@ -35,7 +35,7 @@ I'm [available for work](#im-available-for-work).
 
 I have written and shipped software products and services since the 1990s:
 
-- <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><span style="line-height: 2.0;" >I made feature toggles fancy.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">3</a></span> 
+- <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as its first Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><span style="line-height: 2.0;" >I made the incident page live and feature toggles fancy.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">3</a></span> 
 - In 2013, I joined GitHub's documentation tooling team and then transitioned to front-end flow: I shipped features such as [rich prose diffs].
 - <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with and extending the functionality of legacy systems.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC,↩" class="footnote" rel="footnote" title="More about legacy technologies">4</a>
 - <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">5</a>
@@ -175,7 +175,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 | <a id="fnref:Codestorm" role="doc-noteref"/>Codestorm<a class="footnote" href="#:~:text=Codestorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">22</a> | 1994&thinsp;&ndash;&thinsp;1998 | Managing Partner |
 | <a id="fnref:solo-founder" role="doc-noteref"/>Solo Founder<a class="footnote" href="#:~:text=Publishing%20Revenue%20Partners%20was%20my%20one-man%20ISV,↩" rel="footnote" title="Founder, Publishing Revenue Partners">23</a> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
 | BusinessWorld<span class="footnote">&dagger;</span> | 1989&thinsp;&ndash;&thinsp;1991 | Marketing Associate;<br/>Sales and Sales Training |
-| Computer Connection<span class="footnote">&dagger;</span> | 1988&thinsp;&ndash;&thinsp;1989 | Major Account Sales, Apple Products |
+| Computer Connection<span class="footnote">&dagger;</span> | 1988&thinsp;&ndash;&thinsp;1989 | Major Account Sales |
 | [Future Electronics] | 1987&thinsp;&ndash;&thinsp;1988 | Channel Sales, Computer Products |
 | <a id="fnref:bonar-associates" role="doc-noteref"/>Bonar Associates<a class="footnote" href="#:~:text=Bonar%20Associates%20sold,↩" rel="footnote" title="Bonar Associates was my first professional software gig">24</a> | 1986&thinsp;&ndash;&thinsp;1987 | Technical Lead and Business Development |
 
