@@ -11,7 +11,7 @@ I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I foster 
 
 This is [not my first rodeo](#this-is-not-my-first-rodeo):
 
-- I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
+- I have led teams with as many as fourteen members. I have led development groups with as many as forty-five.
 - I have led through growth from startup, to IPO, to annual revenues in excess of $400 million.
 - I have shipped software in organizations with dozens to thousands of employees worldwide.
 - I have shipped software at B2C scale (millions of active users) and B2B scale (thousands of customers with as many as thousands of users each).
@@ -28,16 +28,6 @@ I'm [available for work](#im-available-for-work): I'm [raganwald@gmail.com], and
 <p class="author">—<a href="https://www.linkedin.com/in/cucchi">Michael Cucchi</a>: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 ---
-
-## What I Believe
-
-<a id="fnref:perlisism" role="doc-noteref"/>My aspirations are guided by my belief that improving productivity is building [faster horses]. I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<a href="#:~:text=My%20belief%20is%20a%20generalization,↩" class="footnote" rel="footnote" title="Source">4</a>
-
-[faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
-
-<a id="fnref:table-stakes" role="doc-noteref"/>I believe that users compare product features to similar features in mass-market products, not just other B2B tools. Text editing must be judged in comparison to Google Docs; calendars/schedules must be judged in comparison to Google Calendar.
-
-“Table stakes” are defined by user expectations, not by competition.<a href="#:~:text=Yes%20this%20does%20mean%20thinking%20hard%20about%20supporting,↩" class="footnote" rel="footnote" title="Source">5</a>
 
 ## What I Do
 
@@ -90,6 +80,13 @@ My career-long focus is the product strategy and development process around both
 - As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.
 
 [stakeholder communications]: https://support.pagerduty.com/main/docs/communicate-with-stakeholders
+
+My approach to product strategy is informed by my beliefs:
+
+- <a id="fnref:perlisism" role="doc-noteref"/>My aspirations are guided by my belief that improving productivity is building [faster horses]. I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<a href="#:~:text=My%20belief%20is%20a%20generalization,↩" class="footnote" rel="footnote" title="Source">4</a>
+- <a id="fnref:table-stakes" role="doc-noteref"/>I believe that "table stakes" for product functionality is defined by similar features in mass-market products, not by market competitors. Text editing must be judged in comparison to Google Docs; calendars/schedules must be judged in comparison to Google Calendar.<a href="#:~:text=Yes%20this%20does%20mean%20thinking%20hard%20about%20supporting,↩" class="footnote" rel="footnote" title="Source">5</a>
+
+[faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
 ---
 
