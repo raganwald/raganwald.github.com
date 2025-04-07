@@ -15,6 +15,7 @@ This is [not my first rodeo](#this-is-not-my-first-rodeo):
 - I have led through growth from startup, to IPO, to annual revenues in excess of $400 million.
 - I have shipped software in organizations with dozens to thousands of employees worldwide.
 - I have shipped software at B2C scale (millions of active users) and B2B scale (thousands of customers with as many as thousands of users each).
+- I have customer-facing experience in Sales, Marketing, Financial Analysis, Consulting, and Customer Engineering.
 - <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20aquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
 
 I'm [available for work](#im-available-for-work).
@@ -220,7 +221,7 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 
 1. Sitraka was acquired by [Quest Software] in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
 1. PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
-1. My books, essays, and conference talks are available on my [creative works page]. <a href="#fnref:creative-works" class="reversefootnote" role="doc-backlink">↩</a>
+1. This footnote intentionally blank.
 1. Expression toggles are a domain-specific language for composing feature gating criteria. As the company's launch process became more sophisticated, so did the complexity and configuration required to gate functionality through the entire launch cycle. Expression toggles are easily accessible to product and launch contributors, and sophisticated enough to grow with the company's needs. <a href="#fnref:expression-toggles" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
 1. I wrote the configuration tool in [MetaCard] and [compiled] it for both Windows and HP-UX users over a long weekend. This freed the teams to focus on core functionality. <a href="#fnref:hypercard" class="reversefootnote" role="doc-backlink">↩</a>
