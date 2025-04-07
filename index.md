@@ -9,7 +9,7 @@ tags: [open-to-work]
 
 I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I foster [collaboration](#i-foster-collaboration). And I [grow engineering](#i-grow-engineering).
 
-I have extensive [industry experience](#i-have-industry-experience). This is [not my first rodeo](#this-is-not-my-first-rodeo). And I'm [available for work](#im-available-for-work).
+This is [not my first rodeo](#this-is-not-my-first-rodeo):
 
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I have led through growth from startup, to IPO, to annual revenues in excess of $400 million.
@@ -17,7 +17,8 @@ I have extensive [industry experience](#i-have-industry-experience). This is [no
 - I have shipped software at B2C scale (millions of active users) and B2B scale (thousands of customers with as many as thousands of users each).
 - <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20aquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
 - <a id="fnref:creative-works" role="doc-noteref"/>I have written a popular [programming book]; I have written technical documentation and essays; and I have keynoted technical conferences and company-wide events.<a href="#:~:text=My%20books%2C%20essays,↩" class="footnote" rel="footnote" title="My creative works">3</a>
-- I'm on [LinkedIn], and via [raganwald@gmail.com].
+
+I'm [available for work](#im-available-for-work): I'm [raganwald@gmail.com], and I'm on [LinkedIn].
 
 [programming book]: /creative-works.html#books
 
@@ -135,7 +136,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 ---
 
-### I have industry experience
+### This is not my first rodeo
 
 | Career Break      | 2024&thinsp;&ndash; | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
@@ -174,26 +175,15 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 
 ---
 
-## What's Next?
-
-### This is not my first rodeo
+## I'm available for work.
 
 I bring forty years of product- and customer-centric business and technical experience to shipping on time, without drama:
 
 - I have experienced both the highs and the lows of the startup trajectory, and I guide my teams with a steady hand on the tiller.
 - My teams know how to ship "good" without being seduced by "sufficient" or derailed by "perfect."
+- I'm ready to apply my experience and proven skills to growing another success.
 
----
-
-<p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
-Any growing organization would be fortunate to add Reg to its team.</p>
-<p class="author">—<a href="https://www.linkedin.com/in/jonathanpoehlman/">Jonathan Poehlman</a>, Senior Technical Recruiter, Elastic</p>
-
----
-
-### I'm available for work.
-
-If you are looking for a veteran to play a meaningful role in your breakout success, I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus. I'm [raganwald@gmail.com].
+I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my technical and product focus. I'm [raganwald@gmail.com], and I'm on [LinkedIn].
 
 ---
 
