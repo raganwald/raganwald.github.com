@@ -7,7 +7,7 @@ tags: [open-to-work]
 
 ## Who I Am
 
-I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I am a strong [communicator][#i-am-a-strong-communicator]. I foster [collaboration](#i-foster-collaboration). And I [grow engineering](#i-grow-engineering).
+I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I am a strong [communicator](#i-am-a-strong-communicator). I foster [collaboration](#i-foster-collaboration). And I [grow engineering](#i-grow-engineering).
 
 This is [not my first rodeo](#this-is-not-my-first-rodeo):
 
