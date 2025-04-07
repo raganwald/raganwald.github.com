@@ -106,12 +106,12 @@ I foster a culture of writing and structured communication in both my work and m
 - I write technical and product road maps;
 - I write white papers and other marketecture pieces;
 - I write pull requests and design review documents;
-- I wrote [JavaScript Allongé] and other books about programming;
+- I wrote [JavaScript Allongé](assets/javascriptallongesix.pdf) and [other books](https://leanpub.com/u/raganwald) about programming;
 - I have creates sales and software development training materials;
 - I have delivered technical training to my colleagues and at technical conferences;
 - I have been an essayist since 2004.
 
-My personal books, essays, and talks are available on my [creative works page].
+My books, essays, and talks are available on my [creative works page].
 
 ---
 
