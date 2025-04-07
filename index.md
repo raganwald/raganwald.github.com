@@ -7,9 +7,9 @@ tags: [open-to-work]
 
 ## Who I Am
 
-I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I lead [engineering growth](#i-lead-engineering-growth). I foster [collaboration](#i-foster-collaboration).
+I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I foster [collaboration](#i-foster-collaboration). And I [grow engineering](#i-grow-engineering).
 
-I have four decades of [industry experience](#i-have-industry-experience). This is [not my first rodeo](#this-is-not-my-first-rodeo), and I'm [available for work](#im-available-for-work).
+I have extensive [industry experience](#i-have-industry-experience). This is [not my first rodeo](#this-is-not-my-first-rodeo). And I'm [available for work](#im-available-for-work).
 
 - I have led teams with as many as fourteen members. I have led product groups with as many as forty-five.
 - I have led through growth from startup, to IPO, to annual revenues in excess of $400 million.
@@ -100,26 +100,11 @@ My career-long focus is the product strategy and development process around both
 
 [schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
 
-### I lead engineering growth
-
-I grow engineering in headcount, in scale of operations, in process maturity, and in tooling sophistication. 
-
-- I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.
-- <a id="fnref:tooling" role="doc-noteref"/>As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting,↩" class="footnote" rel="footnote" title="Tooling initiatives">13</a>
-- <a id="fnref:pd-growth" role="doc-noteref"/>I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictable scaling phase.<a href="#:~:text=During%20my%20tenure%2C%20PagerDuty,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">14</a>
-
----
-
-<p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
-<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
-
----
-
 ### I foster collaboration
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
-- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">15</a>
+- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">13</a>
 - I developed an internal capability supporting refined product management shipping strategies.
 - I ideated and prototyped features and products in partnership with my Product and Leadership colleagues.
 - I led our own Incident Management practice.
@@ -131,6 +116,21 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 <p class="quotation">Extraordinary communication skills... Able to mentor and coach other engineers and make those less experienced comfortable and build their confidence (empowerment) at the same time.</p>
 <p class="quotation">Reg's communication skills transcended engineering to other parts of the businesses (Product and Executive leadership). And, it is natural leadership... Not forced in any way. He talks to, and gets respect from, the Interns to the C-Level.</p>  
+<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
+
+---
+
+### I grow engineering
+
+I grow engineering in headcount, in scale of operations, in process maturity, and in tooling sophistication. 
+
+- I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.
+- <a id="fnref:tooling" role="doc-noteref"/>As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting,↩" class="footnote" rel="footnote" title="Tooling initiatives">14</a>
+- <a id="fnref:pd-growth" role="doc-noteref"/>I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictable scaling phase.<a href="#:~:text=During%20my%20tenure%2C%20PagerDuty,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">15</a>
+
+---
+
+<p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
 <p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
 
 ---
@@ -221,9 +221,9 @@ If you are looking for a veteran to play a meaningful role in your breakout succ
 1. The templating language was loosely based on [Scheme], while borrowing some syntactic sugar from Smalltalk. Its defining feature was that HTML could contain code, code could contain HTML, and so forth [all the way down](https://raganwald.com/assets/images/lisp-based-template-language.png). <a href="#fnref:templates" class="reversefootnote" role="doc-backlink">↩</a>
 1. Long before [Tableau from Salesforce][Tableau Corporation] existed, I wrote a classified ad application for desktop publishers. I wrote the code in [4th Dimension] and the [manuals] in PageMaker. I did my own sales, and marketed the product at [MacWorld][reg-at-macworld]. The product was named after [Tableau I](assets/images/Tableau-I.png), a 1921 painting by De Stijl cofounder Piet Mondrian. <a href="#fnref:tableau" class="reversefootnote" role="doc-backlink">↩</a>
 1. Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
+1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about my experience adopting or migrating to Ember, React, JavaScript, TypeScript, Elixir, Java, and Copilot.<a href="#fnref:tooling" class="reversefootnote" role="doc-backlink">↩</a>
 1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
-1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
 1. All that appears to remain of Devtopia is a [page on LinkedIn](https://www.linkedin.com/company/devtopia/).<a href="#fnref:devtopia" class="reversefootnote" role="doc-backlink">↩</a>
 1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). Ask me about engineering hygiene and [The Inner Osbourne Effect]. <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
