@@ -35,14 +35,14 @@ I'm [available for work](#im-available-for-work).
 
 I have written and shipped software products and services since the 1990s:
 
-- <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><span style="line-height: 2.0;" >I made feature toggles fancy.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">4</a></span> 
+- <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><span style="line-height: 2.0;" >I made feature toggles fancy.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">3</a></span> 
 - In 2013, I joined GitHub's documentation tooling team and then transitioned to front-end flow: I shipped features such as [rich prose diffs].
-- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with and extending the functionality of legacy systems.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC,↩" class="footnote" rel="footnote" title="More about legacy technologies">5</a>
-- <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">6</a>
-- <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">7</a>
-- <a id="fnref:templates" role="doc-noteref"/>In the late 1990s, I shipped a server-side templating language for Java.<a href="#:~:text=The%20templating%20language%20was,↩" class="footnote" rel="footnote" title="More about the language">8</a>
+- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with and extending the functionality of legacy systems.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC,↩" class="footnote" rel="footnote" title="More about legacy technologies">4</a>
+- <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">5</a>
+- <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">6</a>
+- <a id="fnref:templates" role="doc-noteref"/>In the late 1990s, I shipped a server-side templating language for Java.<a href="#:~:text=The%20templating%20language%20was,↩" class="footnote" rel="footnote" title="More about the language">7</a>
 - In 1994, I shipped [nCrypt Light], a message encryption tool for the Apple Newton.
-- <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold my own classified ad management application for desktop publishers.<a href="#:~:text=Long%20before%20Tableau,↩" class="footnote" rel="footnote" title="Tableau I">9</a>
+- <a id="fnref:tableau" role="doc-noteref"/>In the early 90s, I wrote and sold my own classified ad management application for desktop publishers.<a href="#:~:text=Long%20before%20Tableau,↩" class="footnote" rel="footnote" title="Tableau I">8</a>
 
 ---
 
@@ -74,7 +74,7 @@ I have written and shipped software products and services since the 1990s:
 
 My career-long focus is the product strategy and development process around both technical and business tools:
 
-- <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, I partnered with Product to launch [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling]. I wrote the technical road map for [schedules]. Working with Product, I created prototypes for features such as [recent changes]. <a href="#:~:text=Not%20everything%20I%20championed,↩" class="footnote" rel="footnote" title="Windmills I tilted at">10</a>
+- <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, I partnered with Product to launch [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling]. I wrote the technical road map for [schedules]. Working with Product, I created prototypes for features such as [recent changes]. <a href="#:~:text=Not%20everything%20I%20championed,↩" class="footnote" rel="footnote" title="Windmills I tilted at">9</a>
 - At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.
@@ -83,8 +83,8 @@ My career-long focus is the product strategy and development process around both
 
 My approach to product strategy is informed by my beliefs:
 
-- <a id="fnref:perlisism" role="doc-noteref"/>I believe that improving productivity is building [faster horses]. I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<a href="#:~:text=My%20belief%20is%20a%20generalization,↩" class="footnote" rel="footnote" title="Source">11</a>
-- <a id="fnref:table-stakes" role="doc-noteref"/>I believe that "table stakes" for product functionality is defined by similar features in mass-market products, not by market competitors. Text editing must be judged in comparison to Google Docs; calendars/schedules must be judged in comparison to Google Calendar.<a href="#:~:text=Yes%20this%20does%20mean%20thinking%20hard%20about%20supporting,↩" class="footnote" rel="footnote" title="Source">12</a>
+- <a id="fnref:perlisism" role="doc-noteref"/>I believe that improving productivity is building [faster horses]. I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<a href="#:~:text=My%20belief%20is%20a%20generalization,↩" class="footnote" rel="footnote" title="Source">10</a>
+- <a id="fnref:table-stakes" role="doc-noteref"/>I believe that "table stakes" for product functionality is defined by similar features in mass-market products, not by market competitors. Text editing must be judged in comparison to Google Docs; calendars/schedules must be judged in comparison to Google Calendar.<a href="#:~:text=Yes%20this%20does%20mean%20thinking%20hard%20about%20supporting,↩" class="footnote" rel="footnote" title="Source">11</a>
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
@@ -125,7 +125,7 @@ My books, essays, and talks are available on my [creative works page].
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
-- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">13</a>
+- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">12</a>
 - I developed an internal capability supporting refined product management shipping strategies.
 - I ideated and prototyped features and products in partnership with my Product and Leadership colleagues.
 - I led our own Incident Management practice.
@@ -221,7 +221,6 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 
 1. Sitraka was acquired by [Quest Software] in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
 1. PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
-1. This footnote intentionally blank.
 1. Expression toggles are a domain-specific language for composing feature gating criteria. As the company's launch process became more sophisticated, so did the complexity and configuration required to gate functionality through the entire launch cycle. Expression toggles are easily accessible to product and launch contributors, and sophisticated enough to grow with the company's needs. <a href="#fnref:expression-toggles" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
 1. I wrote the configuration tool in [MetaCard] and [compiled] it for both Windows and HP-UX users over a long weekend. This freed the teams to focus on core functionality. <a href="#fnref:hypercard" class="reversefootnote" role="doc-backlink">↩</a>
@@ -232,6 +231,7 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 1. My belief is a generalization of Dr. Alan Perlis’ observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
 1. Yes this does mean thinking hard about supporting functionality like undo/redo stacks, real-time collaborative editing, comments, full-text search, full time zone support, flexible notification preferences, and other affordances that are table stakes for B2C applications. <a href="#fnref:table-stakes" class="reversefootnote" role="doc-backlink">↩</a>
 1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
+1. **Triskaidekaphobia** (_TRIS-kye-DEK-ə-FOH-bee-ə_ from Ancient Greek τρεισκαίδεκα (treiskaídeka) 'thirteen' and Ancient Greek φόβος (phóbos) 'fear') is fear or avoidance of the number 13.
 1. Ask me about my experience adopting or migrating to Ember, React, JavaScript, TypeScript, Elixir, Java, and Copilot.<a href="#fnref:tooling" class="reversefootnote" role="doc-backlink">↩</a>
 1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
