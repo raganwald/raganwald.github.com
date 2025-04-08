@@ -27,7 +27,7 @@ One of the nice things about markdown is that it is what it is. There's very lit
 
 ### and now...
 
-In the last twelve months or so, I've been embracing [Github Pages](http://pages.github.com) for some projects. In exchange for fiddling with a domain registrar, I can host things on my own domains. I took the plunge and moved all of my writing from 2013 over to [https://raganwald.com](https://raganwald.com). I'm now using Jekyll to publish my "bloggy thing" to Github. I get the same lame lack of ability to format my posts, but I can now waste time with layouts.
+In the last twelve months or so, I've been embracing [Github Pages](http://pages.github.com) for some projects. In exchange for fiddling with a domain registrar, I can host things on my own domains. I took the plunge and moved all of my writing from 2013 over to [https://raganwald.com/creative-works.html](https://raganwald.com/creative-works.html). I'm now using Jekyll to publish my "bloggy thing" to Github. I get the same lame lack of ability to format my posts, but I can now waste time with layouts.
 
 And I get my own domain, that's a win. And the layouts let me do things like pimp my books on every page without doing a global search-and-replace. Or add analytics to the blog. We'll see if I do much more than just post.
 
