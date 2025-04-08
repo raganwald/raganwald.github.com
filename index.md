@@ -219,7 +219,7 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
   footnotes below must have matching edits to the links above.
 -->
 
-1. Sitraka was acquired by [Quest Software] in 2002. <a href="#fnref:sitraka-who-i-am" class="reversefootnote" role="doc-backlink">↩ Who I am</a> <a href="#fnref:sitraka-this-is-not-my-first-rodeo" class="reversefootnote" role="doc-backlink"> ↩This is not my first rodeo</a>
+1. Sitraka was acquired by [Quest Software] in 2002. <a href="#fnref:sitraka-who-i-am" class="reversefootnote" role="doc-backlink">Who I am ↩</a> <a href="#fnref:sitraka-this-is-not-my-first-rodeo" class="reversefootnote" role="doc-backlink">This is not my first rodeo ↩</a>
 1. PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
 1. Expression toggles are a domain-specific language for composing feature gating criteria. As the company's launch process became more sophisticated, so did the complexity and configuration required to gate functionality through the entire launch cycle. Expression toggles are easily accessible to product and launch contributors, and sophisticated enough to grow with the company's needs. <a href="#fnref:expression-toggles" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
