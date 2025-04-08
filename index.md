@@ -16,7 +16,7 @@ This is [not my first rodeo](#this-is-not-my-first-rodeo):
 - I have shipped software in organizations with dozens to thousands of employees worldwide.
 - I have shipped software at B2C scale (millions of active users) and B2B scale (thousands of customers with as many as thousands of users each).
 - I have customer-facing experience in Sales, Marketing, Financial Analysis, Consulting, and Customer Engineering.
-- <a id="fnref:sitraka-who-i-am" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20acquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
+- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20acquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
 
 I'm [available for work](#im-available-for-work).
 
@@ -171,7 +171,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 | <a id="fnref:information-balance" role="doc-noteref"/>Information Balance<span class="footnote">&dagger;,&thinsp;</span><a class="footnote" href="#:~:text=Ask%20me%20about%20The%20Mouse%20Trap,↩" rel="footnote" title="Ask me about The Mouse Trap">19</a> | 2002&thinsp;&ndash;&thinsp;2003 | Lead Software Developer |
 | Novator<span class="footnote">&dagger;</span>             | 2002                            | Director of Software Development |
 | <a id="fnref:Conversagent" role="doc-noteref"/>Conversagent<span class="footnote">&dagger;,&thinsp;</span><a class="footnote" href="#:~:text=I%20retained%20this%20interview%20with%20the%20founder,↩" rel="footnote" title="Conversagent">20</a>| 2000&thinsp;&ndash;&thinsp;2001 | Vice-President of Development |
-| <a id="fnref:sitraka-this-is-not-my-first-rodeo" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20was%20acquired,↩" rel="footnote" title="Sitraka was acquired by Quest">1</a> | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, Threadalyzer |
+| <a id="fnref:sitraka2" role="doc-noteref"/>Sitraka<a class="footnote" href="#:~:text=Sitraka%20Software,↩" rel="footnote" title="Sitraka was acquired by Quest">21</a>             | 1998&thinsp;&ndash;&thinsp;2000 | Program Manager, JProbe Suite;<br/>Technical Product Manager, Threadalyzer |
 | <a id="fnref:Codestorm" role="doc-noteref"/>Codestorm<a class="footnote" href="#:~:text=Codestorm%20is%20now,↩" rel="footnote" title="Codestorm is now AIgility Solutions">22</a> | 1994&thinsp;&ndash;&thinsp;1998 | Managing Partner |
 | <a id="fnref:solo-founder" role="doc-noteref"/>Solo Founder<a class="footnote" href="#:~:text=Publishing%20Revenue%20Partners%20was%20my%20one-man%20ISV,↩" rel="footnote" title="Founder, Publishing Revenue Partners">23</a> | 1991&thinsp;&ndash;&thinsp;1994 | Founder, Publishing Revenue Partners |
 | BusinessWorld<span class="footnote">&dagger;</span> | 1989&thinsp;&ndash;&thinsp;1991 | Marketing Associate;<br/>Sales and Sales Training |
@@ -219,7 +219,7 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
   footnotes below must have matching edits to the links above.
 -->
 
-1. Sitraka was acquired by [Quest Software] in 2002. <a href="#fnref:sitraka-who-i-am" class="reversefootnote" role="doc-backlink">Who I am ↩</a> <a href="#fnref:sitraka-this-is-not-my-first-rodeo" class="reversefootnote" role="doc-backlink">This is not my first rodeo ↩</a>
+1. Sitraka was acquired by [Quest Software] in 2002. <a href="#fnref:sitraka-quest" class="reversefootnote" role="doc-backlink">↩</a>
 1. PagerDuty went public on the NYSE in 2019. <a href="#fnref:PDNYSE" class="reversefootnote" role="doc-backlink">↩</a>
 1. Expression toggles are a domain-specific language for composing feature gating criteria. As the company's launch process became more sophisticated, so did the complexity and configuration required to gate functionality through the entire launch cycle. Expression toggles are easily accessible to product and launch contributors, and sophisticated enough to grow with the company's needs. <a href="#fnref:expression-toggles" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [MUMPS] and JDBC. <a href="#fnref:mumps" class="reversefootnote" role="doc-backlink">↩</a>
@@ -239,7 +239,7 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). Ask me about engineering hygiene and [The Inner Osbourne Effect]. <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
 1. Ask me about [The Mouse Trap]. <a href="#fnref:information-balance" class="reversefootnote" role="doc-backlink">↩</a>
 1. I retained this [interview with the founder](assets/images/conversagent.jpg). The title of “Vice-President” was largely ceremonial: I was the head of development, but this was a team of three engineers and a product manager. Our incubator insisted that we needed a VP, so I got the title.<a href="#fnref:Conversagent" class="reversefootnote" role="doc-backlink">↩</a>
-1. This footnote temporarily blank.
+1. Sitraka Software was aquired by [Quest Software] in 2002. <a href="#fnref:sitraka2" class="reversefootnote" role="doc-backlink">↩</a>
 1. Codestorm is now [AIgility Solutions]. Our core business at the time was client-server business process automation for the financial services industry. <a href="#fnref:Codestorm" class="reversefootnote" role="doc-backlink">↩</a>
 1. Publishing Revenue Partners was my one-man ISV for selling Tableau, a classified advertising app for desktop publishers. I bootstrapped it with consulting and training, including working as a mentor for first-time entrepreneurs through the YMCA's Enterprise Program and as a Financial Analyst for a boutique investment bank specializing in the food and beverage industry. <a href="#fnref:solo-founder" class="reversefootnote" role="doc-backlink">↩</a>
 1. Bonar Associates sold turnkey mini-computer-based classified advertising systems to large “penny-savers,” print newspapers that were primarily classified ads. I made its software customizable so that it could be sold at scale. It was written in TurboPascal with BTrieve, running on an MP/M-based tightly-coupled network. It supported as many as 16 simultaneous users. <a href="#fnref:bonar-associates" class="reversefootnote" role="doc-backlink">↩</a>
