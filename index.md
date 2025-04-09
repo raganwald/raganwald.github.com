@@ -99,12 +99,11 @@ My approach to product strategy is informed by my beliefs:
 ---
 
 <p class="quotation">Loved the unique and always well researched and thoughtful invites that Reg brought to deep technical conversations and especially the way he showed up as a person, engineer and colleague. Easily one of those rare people that can go wide and deep on a topic. Reg supercharged an organization’s most elite thinkers and helps everyone do and get better.</p>
-<p class="author">—[Ravi Singh]: Serial Founder and ex-Senior Director of Engineering, PagerDuty</p>
+<p class="author">—<a href="https://www.linkedin.com/in/ravi-singh-0007889/">Ravi Singh</a>: Serial Founder and ex-Senior Director of Engineering, PagerDuty</p>
 
 ---
 
 [schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
-[Ravi Singh]: https://www.linkedin.com/in/ravi-singh-0007889/
 
 ### I am a strong communicator
 
