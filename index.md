@@ -239,7 +239,7 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 1. Yes this does mean thinking hard about supporting functionality like undo/redo stacks, real-time collaborative editing, comments, full-text search, full time zone support, flexible notification preferences, and other affordances that are table stakes for B2C applications. <a href="#fnref:table-stakes" class="reversefootnote" role="doc-backlink">↩</a>
 1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 1. **Triskaidekaphobia** (_TRIS-kye-DEK-ə-FOH-bee-ə_ from Ancient Greek τρεισκαίδεκα (treiskaídeka) 'thirteen' and Ancient Greek φόβος (phóbos) 'fear') is fear or avoidance of the number 13.
-1. Ask me about my experience adopting or migrating to Ember, React, JavaScript, TypeScript, Elixir, Java, and Copilot.<a href="#fnref:tooling" class="reversefootnote" role="doc-backlink">↩</a>
+1. Ask me about my experience adopting or migrating to Ember, React, JavaScript, TypeScript, Elixir, and Java. When you ask about evaluating and adopting AI tooling such as Copilot, be sure I cover the [Hawthorne Effect]. <a href="#fnref:tooling" class="reversefootnote" role="doc-backlink">↩</a>
 1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
 1. All that appears to remain of Devtopia is a [page on LinkedIn](https://www.linkedin.com/company/devtopia/).<a href="#fnref:devtopia" class="reversefootnote" role="doc-backlink">↩</a>
@@ -263,3 +263,4 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 [Quest Software]: https://www.quest.com
 [AIgility Solutions]: https://www.aigility.solutions
 [Scheme]: https://www.scheme.org/
+[Hawthorne Effect]: https://en.wikipedia.org/wiki/Hawthorne_effect
