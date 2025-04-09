@@ -81,6 +81,14 @@ My career-long focus is the product strategy and development process around both
 
 [stakeholder communications]: https://support.pagerduty.com/main/docs/communicate-with-stakeholders
 
+---
+
+<p class="quotation">Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
+<p class="quotation">By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.</p>
+<p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
+
+---
+
 My approach to product strategy is informed by my beliefs:
 
 - <a id="fnref:perlisism" role="doc-noteref"/>I believe that improving productivity is building [faster horses]. I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<a href="#:~:text=My%20belief%20is%20a%20generalization,↩" class="footnote" rel="footnote" title="Source">10</a>
@@ -90,9 +98,8 @@ My approach to product strategy is informed by my beliefs:
 
 ---
 
-<p class="quotation">Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
-<p class="quotation">By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.</p>
-<p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
+<p class="quotation">Loved the unique and always well researched and thoughtful invites that Reg brought to deep technical conversations and especially the way he showed up as a person, engineer and colleague. Easily one of those rare people that can go wide and deep on a topic. Reg supercharged an organization’s most elite thinkers and helps everyone do and get better.</p>
+<p class="author">Ravi Singh: Serial Founder and ex-Senior Director of Engineering, PagerDuty</p>
 
 ---
 
