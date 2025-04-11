@@ -44,7 +44,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - *The best discussion of functional programming in js I've found so far.*—Nicholas Faiz
 - *I think it’s one of the best tech books I’ve read since Sedgewick’s* Algorithms in C.—Andrey Sidorov
 
-[JavaScript Allongé]: https://leanpub.com/javascriptallongesix
+[JavaScript Allongé, The Six Edition]: https://leanpub.com/javascriptallongesix
 [pdf]: /assets/javascriptallongesix.pdf
 [podcast]: https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/
 [acjohnson55]: https://news.ycombinator.com/item?id=6480649
