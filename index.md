@@ -169,7 +169,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 |:--------------------|:--------------------------------|:-------|
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
-| [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book] and others;<br/>Conference Speaker |
+| [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book];<br/>Author, [Kestrels, Quirky Birds and Hopeless Egocentricity] and [others](https://leanpub.com/u/raganwald);<br/>Conference Speaker |
 | Unspace Interactive<span class="footnote">&dagger;</span> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
 | <a id="fnref:mobile-commons" role="doc-noteref"/>Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">16</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
@@ -264,3 +264,13 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 [AIgility Solutions]: https://www.aigility.solutions
 [Scheme]: https://www.scheme.org/
 [Hawthorne Effect]: https://en.wikipedia.org/wiki/Hawthorne_effect
+
+<!--
+I know I joke about you and I being older than many (possibly most) of the engineers at PagerDuty, but I think it's more about being able to relate to one another. You have a long career in technology, and when you, or I, talk about a topic or trend in the industry, I feel we can both relate to one another. You and I are also able to look at what's happening now and make comparisons to what we've seen in the industry over the years.
+
+On that note, I also valued your ability to explain topics in way that others could understand, often through stories, anecdotes, or thought experiments. I found this refreshing, as I've come across Architects and Principal Engineers in the past that simply expected others to understand and looked down on them if they didn't.
+
+I also learned quite a bit from you, not just about PagerDuty or the technologies we used, but about how to be a better technical leader. Some specific areas where I learned from you include looking beyond the obvious or what's right in front of me, communication skills, and the many phrases, sayings, and principles that I had not come across in the past.
+
+—James Nuzzi
+-->

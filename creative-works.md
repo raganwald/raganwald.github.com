@@ -101,7 +101,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 - [JavaScript Allongé (ES5)](https://leanpub.com/javascript-allonge) ([podcast](https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/))
 - [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([pdf](/assets/coffeescript-ristretto.pdf))
-- [Kestrels, Quirky Birds, and Hopeless Egocentricity](https://leanpub.com/combinators)
+- [Kestrels, Quirky Birds, and Hopeless Egocentricity](https://leanpub.com/combinators) ([pdf](/assets/kestrels-quirky-birds-and-hopeless-egocentricity.pdf))
 
 ### talks
 
