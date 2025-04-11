@@ -37,8 +37,8 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 ## 2015 - 2019
 
 ### books
-
-[JavaScript Allongé] ([pdf], [podcast]) *is as close to capturing the true soul of JavaScript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.*—acjohnson55
+<a id="Books2015-219"/>&nbsp;
+[JavaScript Allongé, The Six Edition] ([pdf], [podcast]) *is as close to capturing the true soul of JavaScript as anything I've read. The examples are very well thought out, and the writing style is a joy to read.*—acjohnson55
 
 - *This book is awesome and blowing my mind in a great way.”*—Johnathan Mukai
 - *The best discussion of functional programming in js I've found so far.*—Nicholas Faiz
@@ -98,7 +98,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - [oscin.es](https://github.com/raganwald/oscin.es), a library for playing with combinatorial logic puzzles such as those found in [To Mock a Mockingbird](https://en.wikipedia.org/wiki/To_Mock_a_Mockingbird)
 
 ### books
-
+<a id="Books2000-2014"/>&nbsp;
 - [JavaScript Allongé (ES5)](https://leanpub.com/javascript-allonge) ([podcast](https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/))
 - [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([pdf](/assets/coffeescript-ristretto.pdf))
 - [Kestrels, Quirky Birds, and Hopeless Egocentricity](https://leanpub.com/combinators) ([pdf](/assets/kestrels-quirky-birds-and-hopeless-egocentricity.pdf))

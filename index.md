@@ -20,8 +20,6 @@ This is [not my first rodeo](#this-is-not-my-first-rodeo):
 
 I'm [available for work](#im-available-for-work).
 
-[programming book]: /creative-works.html#books
-
 ---
 
 <p class="quotation">Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</p>  
@@ -169,7 +167,7 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 |:--------------------|:--------------------------------|:-------|
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>Principal Engineer, Applications |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
-| [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][programming book];<br/>Author, [Kestrels, Quirky Birds and Hopeless Egocentricity] and [others](https://leanpub.com/u/raganwald);<br/>Conference Speaker |
+| [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][ja6];<br/>Author, [Kestrels, Quirky Birds and Hopeless Egocentricity][kqbhe] and [others](https://leanpub.com/u/raganwald);<br/>Conference Speaker |
 | Unspace Interactive<span class="footnote">&dagger;</span> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
 | <a id="fnref:mobile-commons" role="doc-noteref"/>Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">16</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
@@ -194,6 +192,9 @@ I grow engineering in headcount, in scale of operations, in process maturity, an
 [GitHub]: https://github.com
 [mdlogix]: https://mdlogix.com/
 [Future Electronics]: https://www.futureelectronics.com
+
+[ja6]: /creative-works.html#Books2015-219
+[kqbhe]: /creative-works.html#Books2000-2014
 
 ---
 
