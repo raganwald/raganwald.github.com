@@ -45,7 +45,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - *I think it’s one of the best tech books I’ve read since Sedgewick’s* Algorithms in C.—Andrey Sidorov
 
 [JavaScript Allongé, The Six Edition]: https://leanpub.com/javascriptallongesix
-[pdf]: /assets/javascriptallongesix.pdf
+[pdf]: /assets/books/javascriptallongesix.pdf
 [podcast]: https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/
 [acjohnson55]: https://news.ycombinator.com/item?id=6480649
 
@@ -100,8 +100,8 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 ### books
 <a id="Books2000-2014"/>
 - [JavaScript Allongé (ES5)](https://leanpub.com/javascript-allonge) ([podcast](https://topenddevs.com/podcasts/javascript-jabber/episodes/070-jsj-book-club-javascript-allonge-with-reginald-braithwaite/))
-- [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([pdf](/assets/coffeescript-ristretto.pdf))
-- [Kestrels, Quirky Birds, and Hopeless Egocentricity](https://leanpub.com/combinators) ([pdf](/assets/kestrels-quirky-birds-and-hopeless-egocentricity.pdf))
+- [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([pdf](/assets/books/coffeescript-ristretto.pdf))
+- [Kestrels, Quirky Birds, and Hopeless Egocentricity](https://leanpub.com/combinators) ([pdf](/assets/books/kestrels-quirky-birds-and-hopeless-egocentricity.pdf))
 
 ### talks
 

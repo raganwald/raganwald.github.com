@@ -48,7 +48,7 @@ One day we had a field trip to the University of Toronto's High-Speed Job Stream
 To run a job, you typed out your program, one line per card, and then stuck a header on the front that told the batch job what kind of interpreter or compiler to use. Those cards were brightly coloured, and had words like [WATFIV] or [SNOBOL] printed on them in huge letters.
 
 [WATFIV]: https://en.wikipedia.org/wiki/WATFIV
-[SNOBOL]: /assets/snobol-green-book.pdf
+[SNOBOL]: /assets/books/snobol-green-book.pdf
 
 You put header plus program into the hopper at the back, waited, and when it emerged from the reader, collected your punch cards and headed over to the large and noisy line printer. When the IBM 360 got around to actually running your job, it would print the results for you, and you would head over to a table to review the output and--nearly all of the time for me--find the typo or bug, update your program, and start all over again.
 
