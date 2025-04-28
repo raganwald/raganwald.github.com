@@ -7,9 +7,9 @@ tags: [open-to-work]
 
 ## Who I Am
 
-I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I am a strong [communicator](#i-am-a-strong-communicator). I foster [collaboration](#i-foster-collaboration). And I recognize when [what got us here, won't get us there](#i-recognize-when-what-got-us-here-wont-get-us-there).
+I'm [technical](#i-am-technical); I ship [products](#i-ship-products); I recognize when [what got us here, won't get us there](#i-recognize-when-what-got-us-here-wont-get-us-there); I am a strong [communicator](#i-am-a-strong-communicator); and I foster [collaboration](#i-foster-collaboration).
 
-This is [not my first rodeo](#this-is-not-my-first-rodeo):
+Crucially, this is [not my first rodeo](#this-is-not-my-first-rodeo):
 
 - I have led teams as a technical lead and technical product manager; I have led development groups as a program manager and director of development.
 - I have introduced and implemented radical changes to software development processes, languages, tools, and culture.
@@ -102,6 +102,22 @@ My approach to product strategy is informed by my beliefs:
 
 [schedules]: https://www.pagerduty.com/resources/learn/call-rotations-schedules/
 
+### I recognize when what got us here, won't get us there
+
+I lead incremental and continuous refinement of engineering and product development. I also recognize when “what got us here, won't get us there,” and when that happens, I introduce change:
+
+- In the late 1990s, software products exploded in size and complexity, leading to higher development risks. Managing those risks with increasingly rigid BDUF+Waterfall became counterproductive. Recognizing when “what got us there won't get us there,” I adapted SCRUM from the consulting world to product development at Sitraka, delivering on-time and highly successful releases for Threadalyzer and then the JProbe Suite by focusing on delivering iterations of the complete product on a fixed cadence with continuous update of the plan.
+- In the 2000s through 2010s, the business benefits of iterative development were gated by the ability of developers to complete bigger and bigger features in shorter and shorter cycles. Recognizing when “what got us here won't get us there,” I was an early adopter and public champion of moving from strongly typed languages like C++ and Java to lightweight but expressive languages like Ruby and JavaScript, driving faster and cheaper product/market fit validation and thus lowering rinway exhaustion risk.
+- <a id="fnref:pd-growth" role="doc-noteref"/><a id="fnref:tooling" role="doc-noteref"/>More recently, I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictable scaling phase.<br/><br/>Recognizing—in conjunction with my Architecture Strategy Team and Front-End Architecture Strategy Team colleagues—that as we changed phases, “what got us here won't get us there,” I led or co-led the adoption of tooling, process, and language choices that supported refactoring and scaling engineering across the organization.<span class="footnote"><a href="#:~:text=During%20my%20tenure%2C%20PagerDuty,↩" rel="footnote" title="PagerDuty’s revenue growth">12</a>, <a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting,↩" rel="footnote" title="Tooling initiatives">14</a></span>
+
+---
+
+<p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
+Any growing organization would be fortunate to add Reg to its team.</p>
+<p class="author">—<a href="https://www.linkedin.com/in/jonathanpoehlman/">Jonathan Poehlman</a>, Senior Technical Recruiter, Elastic</p>
+
+---
+
 ### I am a strong communicator
 
 I foster a culture of writing and structured communication in both my work and my personal pursuits:
@@ -129,7 +145,7 @@ My books, essays, and talks are available on my [creative works page].
 
 At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
 
-- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">12</a>
+- <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">15</a>
 - I developed an internal capability supporting refined product management shipping strategies.
 - I ideated and prototyped features and products in partnership with my Product and Leadership colleagues.
 - I led our own Incident Management practice.
@@ -141,22 +157,6 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 <p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
 <p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
-
----
-
-### I recognize when what got us here, won't get us there
-
-I lead incremental and continuous refinement of engineering and product development. I also recognize when “what got us here, won't get us there,” and when that happens, I introduce change:
-
-- In the late 1990s, software products exploded in size and complexity, leading to higher development risks. Managing those risks with increasingly rigid BDUF+Waterfall became counterproductive. Recognizing when “what got us there won't get us there,” I adapted SCRUM from the consulting world to product development at Sitraka, delivering on-time and highly successful releases for Threadalyzer and then the JProbe Suite by focusing on delivering iterations of the complete product on a fixed cadence with continuous update of the plan.
-- In the 2000s through 2010s, the business benefits of iterative development were gated by the ability of developers to complete bigger and bigger features in shorter and shorter cycles. Recognizing when “what got us here won't get us there,” I was an early adopter and public champion of moving from strongly typed languages like C++ and Java to lightweight but expressive languages like Ruby and JavaScript, driving faster and cheaper product/market fit validation and thus lowering rinway exhaustion risk.
-- <a id="fnref:pd-growth" role="doc-noteref"/><a id="fnref:tooling" role="doc-noteref"/>More recently, I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictable scaling phase.<br/><br/>Recognizing—in conjunction with my Architecture Strategy Team and Front-End Architecture Strategy Team colleagues—that as we changed phases, “what got us here won't get us there,” I led or co-led the adoption of tooling, process, and language choices that supported refactoring and scaling engineering across the organization.<span class="footnote"><a href="#:~:text=During%20my%20tenure%2C%20PagerDuty,↩" rel="footnote" title="PagerDuty’s revenue growth">14</a>, <a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting,↩" rel="footnote" title="Tooling initiatives">15</a></span>
-
----
-
-<p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
-Any growing organization would be fortunate to add Reg to its team.</p>
-<p class="author">—<a href="https://www.linkedin.com/in/jonathanpoehlman/">Jonathan Poehlman</a>, Senior Technical Recruiter, Elastic</p>
 
 ---
 
@@ -237,10 +237,10 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 1. Not everything I championed ended up shipping. Ask me about Schedules, Automation, and Collaboration.<a href="#fnref:tilting-at-windmills" class="reversefootnote" role="doc-backlink">↩</a>
 1. My belief is a generalization of Dr. Alan Perlis’ observation that “[a language that doesn't affect the way you think about programming, is not worth knowing](https://www.cs.yale.edu/homes/perlis-alan/quotes.html#:~:text=A%20language%20that%20doesn't%20affect%20the%20way%20you%20think%20aboutprogramming%2C%20is%20not%20worth%20knowing).” <a href="#fnref:perlisism" class="reversefootnote" role="doc-backlink">↩</a>
 1. Yes this does mean thinking hard about supporting functionality like undo/redo stacks, real-time collaborative editing, comments, full-text search, full time zone support, flexible notification preferences, and other affordances that are table stakes for B2C applications. <a href="#fnref:table-stakes" class="reversefootnote" role="doc-backlink">↩</a>
-1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
-1. **Triskaidekaphobia** (_TRIS-kye-DEK-ə-FOH-bee-ə_ from Ancient Greek τρεισκαίδεκα (treiskaídeka) 'thirteen' and Ancient Greek φόβος (phóbos) 'fear') is fear or avoidance of the number 13.
 1. During my tenure, PagerDuty grew from approximately twenty-five million in ARR to over 400 million in ARR in the years following its IPO. <a href="#fnref:pd-growth" class="reversefootnote" role="doc-backlink">↩</a>
+1. **Triskaidekaphobia** (_TRIS-kye-DEK-ə-FOH-bee-ə_ from Ancient Greek τρεισκαίδεκα (treiskaídeka) 'thirteen' and Ancient Greek φόβος (phóbos) 'fear') is fear or avoidance of the number 13.
 1. Ask me about my experience adopting or migrating to Ember, React, JavaScript, TypeScript, Elixir, and Java. When you ask about evaluating and adopting AI tooling such as Copilot, be sure I cover the [Hawthorne Effect]. <a href="#fnref:tooling" class="reversefootnote" role="doc-backlink">↩</a>
+1. I treasure the tombstones for the [Breakthrough](assets/images/breakthrough.png "Photograph of the Breakthrough Award for FY2019") and [Inclusively Learning and Leading](assets/images/leading-and-learning.jpeg "Photograph of the Inclusively Learning and Leading Award for FY2022") awards. <a href="#fnref:awards" class="reversefootnote" role="doc-backlink">↩</a>
 1. Mobile Commons is now part of [Upland Software]. <a href="#fnref:mobile-commons" class="reversefootnote" role="doc-backlink">↩</a>
 1. All that appears to remain of Devtopia is a [page on LinkedIn](https://www.linkedin.com/company/devtopia/).<a href="#fnref:devtopia" class="reversefootnote" role="doc-backlink">↩</a>
 1. Opalis Software was [acquired by Microsoft](https://techcommunity.microsoft.com/blog/virtualization/microsoft-acquires-opalis-software/381689). Ask me about engineering hygiene and [The Inner Osbourne Effect]. <a href="#fnref:opalis" class="reversefootnote" role="doc-backlink">↩</a>
