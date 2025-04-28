@@ -7,11 +7,12 @@ tags: [open-to-work]
 
 ## Who I Am
 
-I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I am a strong [communicator](#i-am-a-strong-communicator). I foster [collaboration](#i-foster-collaboration). And I [grow engineering](#i-grow-engineering).
+I'm [technical](#i-am-technical). I ship [products](#i-ship-products). I am a strong [communicator](#i-am-a-strong-communicator). I foster [collaboration](#i-foster-collaboration). And [I recognize when what got us here, won't get us there](#i-recognize-when-what-got-us-here-wont-get-us-there).
 
 This is [not my first rodeo](#this-is-not-my-first-rodeo):
 
 - I have led teams as a technical lead and technical product manager; I have led development groups as a program manager and director of development.
+- I have introduced and implemented radical changes to software development processes, languages, tools, and culture.
 - I have led through growth from startup, to IPO, to annual revenues in excess of $400 million at B2B and B2C scale.
 - I have customer-facing experience in Sales, Marketing, Financial Analysis, Consulting, and Customer Engineering.
 - <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20acquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
@@ -138,24 +139,25 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ---
 
+<p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
+<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
+
+---
+
+### I recognize when what got us here, won't get us there
+
+I lead incremental and continuous refinement of engineering and product development. I also recognize when “what got us here, won't get us there,” and when that happens, I introduce change:
+
+- In the late 1990s, software products exploded in size and complexity, leading to higher development risks. Managing those risks with increasingly rigid BDUF+Waterfall became counterproductive. Recognizing that “what got us there won't get us there,” I adapted SCRUM from the consulting world to product development at Sitraka, delivering on-time and highly successful releases for Threadalyzer and then the JProbe Suite by focusing on delivering iterations of the complete product on a fixed cadence with continuous update of the plan.
+- In the 2000s through 2010s, the business benefits of iterative development were gated by the ability of developers to complete bigger and bigger features in shorter and shorter cycles. Recognizing that “what got us here won't get us there,” I was an early adopter and public champion of moving from strongly typed languages like C++ and Java to lightweight but expressive languages like Ruby and JavaScript, driving faster and cheaper product/market fit validation and thus lowering rinway exhaustion risk.
+- <a id="fnref:pd-growth" role="doc-noteref"/>More recently, I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictable scaling phase.<a href="#:~:text=During%20my%20tenure%2C%20PagerDuty,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">15</a>
+- <a id="fnref:tooling" role="doc-noteref"/>As we scaled, our engineering and product development needs changed. Recognizing—in conjunction with my Architecture Strategy Team and Front-End Architecture Strategy Team colleagues—that “what got us here won't get us there,  I led or co-led the adoption of tooling, process, and language choices that supported refactoring and scaling engineering across the organization.”<a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting,↩" class="footnote" rel="footnote" title="Tooling initiatives">14</a>
+
+---
+
 <p class="quotation">Reg is one of the finest software engineering professionals I have ever worked with. He has great vision for product development, a strong sense of cultural fit for complex companies, and the vision to help scale an engineering group.
 Any growing organization would be fortunate to add Reg to its team.</p>
 <p class="author">—<a href="https://www.linkedin.com/in/jonathanpoehlman/">Jonathan Poehlman</a>, Senior Technical Recruiter, Elastic</p>
-
----
-
-### I grow engineering
-
-I grow engineering in headcount, in scale of operations, in process maturity, and in tooling sophistication. 
-
-- I've led technical interviews throughout my career and partnered with Talent on initiatives. At PagerDuty, I was recognized for using the interview process to close senior hires.
-- <a id="fnref:tooling" role="doc-noteref"/>As a member of PagerDuty's Architecture Strategy and Front-End Architecture Strategy teams, I led or co-led the adoption of tooling, process, and language choices that supported scaling engineering capacity.<a href="#:~:text=Ask%20me%20about%20my%20experience%20adopting,↩" class="footnote" rel="footnote" title="Tooling initiatives">14</a>
-- <a id="fnref:pd-growth" role="doc-noteref"/>I helped PagerDuty's engineering successfully navigate the product/market fit refinement phase, a rapid sales growth phase, and a post-IPO transition to efficient and predictable scaling phase.<a href="#:~:text=During%20my%20tenure%2C%20PagerDuty,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">15</a>
-
----
-
-<p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
-<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
 
 ---
 
