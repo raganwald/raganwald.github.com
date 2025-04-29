@@ -104,7 +104,7 @@ My approach to product strategy is informed by my beliefs:
 
 ### I recognize when what got us here, won't get us there
 
-I lead incremental and continuous refinement of engineering and product development. I also recognize when “what got us here, won't get us there” in both an industry context and a scaling the organization context:
+I lead incremental and continuous refinement of engineering and product development. I'm conservative about changing horses in mid-stream, however I also recognize when factors combine to create a situation where “what got us here, won't get us there.” When that happens, I embrace change that is both comprehensive and necessarily disruptive.
 
 - In the late 1990s, software products exploded in size and complexity, leading to higher development risks. Managing those risks with increasingly rigid BDUF+Waterfall became counterproductive. Accordingly, I adapted SCRUM from the consulting world to product development at Sitraka, delivering on-time and highly successful releases for Threadalyzer and then the JProbe Suite by focusing on delivering iterations of the complete product on a fixed cadence with continuous update of the plan.
 - In the 2000s through 2010s, the business benefits of iterative development were gated by the ability of developers to complete bigger and bigger features in shorter and shorter cycles. Accordingly, I was an early adopter and public champion of moving from strongly typed languages like C++ and Java to lightweight but expressive languages like Ruby and JavaScript, driving faster and cheaper product/market fit validation and thus lowering runway exhaustion risk.
