@@ -68,7 +68,7 @@ Obviously, it's a benefit to find bugs and fix them before my readers find them 
 
 The downside is that the snippets become quite a bit longer thanks to the expectations. In my stories, I use a little JavaScript to hide the snippets and readers can click a link to expand them. I now use a similar approach to hiding the expectations in any post with a special `hide-specs` tag.
 
-But in the mean time, I find that when I'm writing CoffeeScript, it's a win to be able to run my expectations right in my posts. If you're blogging with Markdown, consider setting up your own Literate CoffeeScript workflow. It's a time-saver and make sit easy to get the code right.
+But in the mean time, I find that when I'm writing CoffeeScript, it's a win to be able to run my expectations right in my posts. If you're blogging with Markdown, consider setting up your own Literate CoffeeScript workflow. It's a time-saver and makes it easy to get the code right.
 
 And if you aren't using CoffeeScript... Why not use Literate CoffeeScript as an excuse to give it a try?
 
