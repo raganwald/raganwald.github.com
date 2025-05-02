@@ -9,7 +9,7 @@ tags: [open-to-work]
 
 I'm [technical](#i-am-technical); I ship [products](#i-ship-products); I recognize when [what got us here, won't get us there](#i-recognize-when-what-got-us-here-wont-get-us-there); I am a strong [communicator](#i-am-a-strong-communicator); and I foster [collaboration](#i-foster-collaboration).
 
-Crucially, this is [not my first rodeo](#this-is-not-my-first-rodeo):
+This is [not my first rodeo](#this-is-not-my-first-rodeo):
 
 - I have led teams as a technical lead and technical product manager; I have led development groups as a program manager and director of development.
 - I have introduced and implemented radical changes to software development processes, languages, tools, and culture.
@@ -21,8 +21,9 @@ I'm [available for work](#im-available-for-work).
 
 ---
 
-<p class="quotation">Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</p>  
-<p class="author">—<a href="https://www.linkedin.com/in/cucchi">Michael Cucchi</a>: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
+<p class="quotation">Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
+<p class="quotation">By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.</p>
+<p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
 
 ---
 
@@ -34,7 +35,7 @@ I have written and shipped software products and services since the 1990s:
 
 - <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as its first Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><span style="line-height: 2.0;" >I made the incident page live and feature toggles fancy.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">3</a></span>
 - In 2013, I joined GitHub's documentation tooling team and then transitioned to front-end flow: I shipped features such as [rich prose diffs].
-- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns for integration with and extending the functionality of legacy systems.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC,↩" class="footnote" rel="footnote" title="More about legacy technologies">4</a>
+- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns to integrate with and extend the functionality of legacy systems.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC,↩" class="footnote" rel="footnote" title="More about legacy technologies">4</a>
 - <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20can%20be%20pragmatic,↩" class="footnote" rel="footnote" title="An unexpected software platform">5</a>
 - <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">6</a>
 - <a id="fnref:templates" role="doc-noteref"/>In the late 1990s, I shipped a server-side templating language for Java.<a href="#:~:text=The%20templating%20language%20was,↩" class="footnote" rel="footnote" title="More about the language">7</a>
@@ -80,9 +81,9 @@ My career-long focus is the product strategy and development process around both
 
 ---
 
-<p class="quotation">Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
-<p class="quotation">By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.</p>
-<p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
+<p class="quotation">Reg is one of those exceptional colleagues who makes an extraordinary contribution not only to his team, but also to his teammates as individuals. Working with Reg made me a better product manager, and I saw how he was similarly committed to the growth of everyone on the team.</p>
+<p class="quotation">To his deep wealth of experience, Reg brings unique creativity and infectious enthusiasm. He is that rare product leader who can share his vision effectively, lay out a clear plan to achieve it, and then go on the journey with his team step by step until they get there.</p>
+<p class="author"><a href="https://www.linkedin.com/in/jeremybourque/">Jeremy Bourque</a>: Head of Product at Gradle Inc.</a>
 
 ---
 
@@ -214,7 +215,8 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 
 ---
 
-<p class="quotation">You were a huge asset to PagerDuty, and wherever you land next will be lucky to have you.</p>  
+<p class="quotation">Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</p>  
+<p class="quotation">He was a huge asset to PagerDuty, and wherever he lands next will be lucky to have him s.</p>  
 <p class="author">—<a href="https://www.linkedin.com/in/cucchi">Michael Cucchi</a>: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 ---
@@ -273,4 +275,10 @@ On that note, I also valued your ability to explain topics in way that others co
 I also learned quite a bit from you, not just about PagerDuty or the technologies we used, but about how to be a better technical leader. Some specific areas where I learned from you include looking beyond the obvious or what's right in front of me, communication skills, and the many phrases, sayings, and principles that I had not come across in the past.
 
 —James Nuzzi
+-->
+
+<!--
+<p class="quotation">Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
+<p class="quotation">By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.</p>
+<p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
 -->
