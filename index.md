@@ -83,7 +83,7 @@ My career-long focus is the product strategy and development process around both
 
 <p class="quotation">Reg is one of those exceptional colleagues who makes an extraordinary contribution not only to his team, but also to his teammates as individuals. Working with Reg made me a better product manager, and I saw how he was similarly committed to the growth of everyone on the team.</p>
 <p class="quotation">To his deep wealth of experience, Reg brings unique creativity and infectious enthusiasm. He is that rare product leader who can share his vision effectively, lay out a clear plan to achieve it, and then go on the journey with his team step by step until they get there.</p>
-<p class="author"><a href="https://www.linkedin.com/in/jeremybourque/">Jeremy Bourque</a>: Head of Product at Gradle Inc.</a>
+<p class="author"><a href="https://www.linkedin.com/in/jeremybourque/">Jeremy Bourque</a>: Head of Product at Gradle Inc.</p>
 
 ---
 
