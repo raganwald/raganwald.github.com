@@ -9,7 +9,7 @@ twentytentwentyfourteen: ["2014", "2013", "2012", "2011", "2010"]
 earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 ---
 
-_Note: If you are interested in being notified when I publish new programming-specific essays, or wish to discuss any of my creative works online, please follow <a rel="me" href="https://functional.cafe/@raganwald">@raganwald@functional.cafe<a/>. No hobbies, careering, or social commentary._
+<em>Note: If you are interested in being notified when I publish new programming-specific essays, or wish to discuss any of my creative works online, please follow <a rel="me" href="https://functional.cafe/@raganwald">@raganwald@functional.cafe<a/>. No hobbies, careering, or social commentary.</em>
 
 ## Recent
 
