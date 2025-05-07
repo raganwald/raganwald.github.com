@@ -5,7 +5,7 @@ layout: default
 tags: [open-to-work]
 ---
 
-**Note**: My books, my blog posts, and videos of my talks are on my*\ [creative works page].
+**Note**: My books, blog posts, and talks are on my [creative works page].
 
 ---
 
