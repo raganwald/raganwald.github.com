@@ -7,6 +7,8 @@ tags: [open-to-work]
 
 *Note: My books, my blog posts, and videos of my talks are on my [creative works page].*
 
+---
+
 ## Who I Am
 
 I'm [technical](#i-am-technical); I ship [products](#i-ship-products); I recognize when [what got us here, won't get us there](#i-recognize-when-what-got-us-here-wont-get-us-there); I am a strong [communicator](#i-am-a-strong-communicator); and I foster [collaboration](#i-foster-collaboration).
