@@ -5,18 +5,19 @@ layout: default
 tags: [open-to-work]
 ---
 
+*Note: My books, my blog posts, and videos of my talks are on my [creative works page].*
+
 ## Who I Am
 
 I'm [technical](#i-am-technical); I ship [products](#i-ship-products); I recognize when [what got us here, won't get us there](#i-recognize-when-what-got-us-here-wont-get-us-there); I am a strong [communicator](#i-am-a-strong-communicator); and I foster [collaboration](#i-foster-collaboration).
 
 This is [not my first rodeo](#this-is-not-my-first-rodeo):
 
+- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I shipped the features and products that led to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20acquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
 - I have led teams as a technical lead and technical product manager; I have led development groups as a program manager and director of development.
-- I have introduced and implemented radical changes to software development processes, languages, tools, and culture.
 - I have led through growth from startup, to IPO, to annual revenues in excess of $400 million at B2B and B2C scale.
+- I have introduced and implemented radical change to software development processes, languages, tools, and culture.
 - I have customer-facing experience in Sales, Marketing, Financial Analysis, Consulting, and Customer Engineering.
-- <a id="fnref:sitraka-quest" role="doc-noteref"/><a id="fnref:PDNYSE" role="doc-noteref"/>I have shipped features and products that were material to successful exits for Sitraka and PagerDuty.<span class="footnote"><a href="#:~:text=Sitraka%20was%20acquired,↩" rel="footnote" title="Sitraka's exit">1</a>,&nbsp;<a href="#:~:text=PagerDuty%20went%20public,↩" rel="footnote" title="PagerDuty’s exit">2</a></span>
-
 I'm [available for work](#im-available-for-work).
 
 ---
