@@ -20,6 +20,7 @@ This is [not my first rodeo](#this-is-not-my-first-rodeo):
 - I have led through growth from startup, to IPO, to annual revenues in excess of $400 million at B2B and B2C scale.
 - I have introduced and implemented radical change to software development processes, languages, tools, and culture.
 - I have customer-facing experience in Sales, Marketing, Financial Analysis, Consulting, and Customer Engineering.
+
 I'm [available for work](#im-available-for-work).
 
 ---
