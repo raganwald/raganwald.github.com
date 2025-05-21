@@ -167,7 +167,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ### This is not my first rodeo
 
-| Career Break      | 2024&thinsp;&ndash; | Glider pilot training | 
+| Career Break      | 2024&thinsp;&ndash;&thinsp;2025 | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>SDE IV, Applications |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
