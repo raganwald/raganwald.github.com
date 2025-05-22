@@ -171,7 +171,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 |:--------------------|:--------------------------------|:-------|
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, Incident Management;<br/>SDE IV, Applications |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
-| [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][ja6];<br/>Author, [Kestrels, Quirky Birds and Hopeless Egocentricity][kqbhe] and [others](https://leanpub.com/u/raganwald);<br/>Conference Speaker |
+| [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][ja6]; [Kestrels, Quirky Birds and Hopeless Egocentricity][kqbhe]; and [others](https://leanpub.com/u/raganwald);<br/>Conference Speaker |
 | Unspace Interactive<span class="footnote">&dagger;</span> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
 | [Mdlogix]           | 2008&thinsp;&ndash;&thinsp;2009 | Architect and Senior Developer |
 | <a id="fnref:mobile-commons" role="doc-noteref"/>Mobile Commons<a class="footnote" href="#:~:text=Mobile%20Commons,↩" rel="footnote" title="Mobile Commons">16</a>      | 2007&thinsp;&ndash;&thinsp;2008 | Contract Developer |
