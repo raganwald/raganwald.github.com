@@ -169,7 +169,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 | Career Break      | 2024&thinsp;&ndash;&thinsp;2025 | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
-| [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, CTO's Office;<br/>Principal Engineer, Incident Management;<br/>SDE IV, Applications |
+| [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, Incident Management;<br/>SDE IV, Applications |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
 | [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][ja6];<br/>Author, [Kestrels, Quirky Birds and Hopeless Egocentricity][kqbhe] and [others](https://leanpub.com/u/raganwald);<br/>Conference Speaker |
 | Unspace Interactive<span class="footnote">&dagger;</span> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
