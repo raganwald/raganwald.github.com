@@ -37,9 +37,9 @@ I'm [available for work](#im-available-for-work).
 
 I have written and shipped software products and services since the 1990s:
 
-- <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as its first Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><span style="line-height: 2.0;" >I made the incident page live and feature toggles fancy.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">3</a></span>
-- In 2013, I joined GitHub's documentation tooling team and then transitioned to front-end flow: I shipped features such as [rich prose diffs].
-- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I wrote features such as its first ATM and Café locator. I used Enterprise Architectural Patterns to integrate with and extend the functionality of legacy systems.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC,↩" class="footnote" rel="footnote" title="More about legacy technologies">4</a>
+- <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as its first Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><span style="line-height: 2.0;" >Amongst many refactorings and re-architectings, I refactored the core logic of one of our services into a state machine; I brought real-time live updates to incident management; and I created a set operations-based domain-specific language for feature toggles.</span>
+- At GitHub, I wrote features such as [rendered prose diffs] “end-to-end.” In prose diff’s case, I wrote a custom HTML diff algorithm in a Ruby gem as well as the front-end UX in JavaScript. 
+- <a id="fnref:mumps" role="doc-noteref"/>In the mid 2000s, I led the web banking team for [ING Direct (USA)][ING], with more than three million active users. I wrote features such as its first online ATM and Café locator, and shipped online banking features within a WebSphere, Oracle, Java, and era-appropriate front-end technology environment. I know how to move fast without breaking people’s life savings.<a href="#:~:text=Ask%20me%20about%20MUMPS%20and%20JDBC,↩" class="footnote" rel="footnote" title="More about legacy technologies">4</a>
 - <a id="fnref:hypercard" role="doc-noteref"/>While serving as Program Manager for the [JProbe Suite], I designed and coded the suite's first configuration tool.<a href="#:~:text=I%20wrote%20the%20configuration%20tool%20in MetaCard,↩" class="footnote" rel="footnote" title="An unexpected software platform">5</a>
 - <a id="fnref:ceeplusplus" role="doc-noteref"/>In the early 2000s, I was the hands-on Technical Product Manager for [JProbe Threadalyzer], the first tool to perform predictive and actual deadlock and data race detection on Java servers.<a href="#:~:text=Threadalyzer%20was%20written%20in%20C,↩" class="footnote" rel="footnote" title="Threadalyzer's code and architecture">6</a>
 - <a id="fnref:templates" role="doc-noteref"/>In the late 1990s, I shipped a server-side templating language for Java.<a href="#:~:text=The%20templating%20language%20was,↩" class="footnote" rel="footnote" title="More about the language">7</a>
@@ -62,7 +62,7 @@ I have written and shipped software products and services since the 1990s:
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
 [response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
 [recent changes]: https://support.pagerduty.com/main/docs/recent-changes
-[rich prose diffs]: https://github.blog/news-insights/rendered-prose-diffs/
+[rendered prose diffs]: https://github.blog/news-insights/rendered-prose-diffs/
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 
 [JProbe Suite]: https://www.javaperformancetuning.com/tools/jprobe/
@@ -77,7 +77,7 @@ I have written and shipped software products and services since the 1990s:
 My career-long focus is the product strategy and development process around both technical and business tools:
 
 - <a id="fnref:tilting-at-windmills" role="doc-noteref"/>At PagerDuty, I partnered with Product to launch [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling]. I wrote the technical road map for [schedules]. Working with Product, I created prototypes for features such as [recent changes]. <a href="#:~:text=Not%20everything%20I%20championed,↩" class="footnote" rel="footnote" title="Windmills I tilted at">9</a>
-- At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rich prose diffs].
+- At Github, I created the prose-specific heuristics, designed and developed the user experience, and shipped [rendered prose diffs].
 - As the Program Manager for the JProbe Suite, I collaborated with Sales and Marketing Product Management on prioritization and positioning, acted as the media contact for feature-detailed interviews and demos, and manned the booth at JavaOne.
 - As the Technical Product Manager for JProbe Threadalyzer, I performed user research, developed the value proposition, and designed the product.
 
