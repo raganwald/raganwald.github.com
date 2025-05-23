@@ -9,6 +9,12 @@ tags: [open-to-work]
 
 ---
 
+<p class="quotation">Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</p>
+<p class="quotation">Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</p>  
+<p class="author">—<a href="https://www.linkedin.com/in/jasonadiller/">Jason Diller</a>: VP of Engineering, Georgias</p>
+
+---
+
 ## Who I Am
 
 I'm [technical](#i-am-technical); I ship [products](#i-ship-products); I recognize when [what got us here, won't get us there](#i-recognize-when-what-got-us-here-wont-get-us-there); I am a strong [communicator](#i-am-a-strong-communicator); and I foster [collaboration](#i-foster-collaboration).
@@ -47,9 +53,8 @@ I have written and shipped software products and services since the 1990s, inclu
 
 ---
 
-<p class="quotation">Reg was always my ‘secret weapon’ for getting a new initiative off the ground. He understood our code and our product and what it was capable of, and he understood our customers and their needs.</p>
-<p class="quotation">Reg was exceptional at translating a product manager’s vision for a new feature into an actionable technical plan and architecture given all of the constraints inherent in adapting working software to new capabilities, then getting the rest of the team on-board and executing.</p>  
-<p class="author">—<a href="https://www.linkedin.com/in/jasonadiller/">Jason Diller</a>: VP of Engineering, Georgias</p>
+<p class="quotation">Reg has a knack for taking a large, complex problem in which each stakeholder has a different perspective on what to do and distilling it down to a clear set of options and strategies that everyone can rally around. His friendly and sociable approach makes him especially effective at building alignment on these sorts of large, organization-spanning challenges.</p>
+<p class="author">—Christopher Micacchi, Senior Engineering Manager, PagerDuty</p>
 
 ---
 
@@ -158,8 +163,8 @@ At PagerDuty, in addition to my [product](#i-ship-products) and [change](#i-reco
 
 ---
 
-<p class="quotation">Reg has a knack for taking a large, complex problem in which each stakeholder has a different perspective on what to do and distilling it down to a clear set of options and strategies that everyone can rally around. His friendly and sociable approach makes him especially effective at building alignment on these sorts of large, organization-spanning challenges.</p>
-<p class="author">Christopher Micacchi, Senior Engineering Manager, PagerDuty</p>
+<p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
+<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
 
 ---
 
@@ -280,7 +285,6 @@ I also learned quite a bit from you, not just about PagerDuty or the technologie
 -->
 
 <!--
-<p class="quotation">Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
-<p class="quotation">By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.</p>
-<p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
+<p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
+<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
 -->
