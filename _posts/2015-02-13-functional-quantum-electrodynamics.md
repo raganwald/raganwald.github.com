@@ -2,6 +2,8 @@
 layout: default
 title: "The Quantum Electrodynamics of Functional JavaScript"
 tags: [allonge]
+quote: While this was an entertaining read, I feel like it's in the realm of party tricks.
+quoteauthor: inmatarian
 ---
 
 ![Coffee served at the CERN particle accelerator](/assets/images/cern-coffee.jpg)
