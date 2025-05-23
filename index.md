@@ -131,12 +131,12 @@ I foster a culture of writing and structured communication in both my work and m
 - I write technical and product road maps;
 - I write white papers and other marketecture pieces;
 - I write pull requests and design review documents;
-- I wrote [JavaScript Allongé](assets/books/javascriptallongesix.pdf) and [other books](https://leanpub.com/u/raganwald) about programming;
 - I have created sales and software development training materials;
-- I have delivered technical training to my colleagues and at technical conferences;
-- I have been an essayist since 2004.
+- I have delivered technical and sales training to my colleagues.
 
-My books, essays, and talks are available on my [creative works page].
+I also [JavaScript Allongé](assets/books/javascriptallongesix.pdf) and [other books](https://leanpub.com/u/raganwald) about programming. I have delivered conference keynotes and technical sessions at conferences in Canada, Sweden, Norway, Poland, and Spain. I have been an essayist since 2004 and have been featured on [Hacker News](https://news.ycombinator.com/from?site=raganwald.com), and has been selcted for publication in [Hacker Monthly](https://www.magcloud.com/browse/Magazine/79699).
+
+My books, my essays, and videos of my talks are available on my [creative works page].
 
 ---
 
@@ -169,7 +169,7 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 | Career Break      | 2024&thinsp;&ndash;&thinsp;2025 | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
-| [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer, Incident Management;<br/>SDE IV, Applications |
+| [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
 | [Author &amp; Speaker][creative works page]     | 2011&thinsp;&ndash;&thinsp;2016 | Author, [JavaScript Allongé][ja6]; [Kestrels, Quirky Birds and Hopeless Egocentricity][kqbhe]; and [others](https://leanpub.com/u/raganwald);<br/>Conference Speaker |
 | Unspace Interactive<span class="footnote">&dagger;</span> | 2009&thinsp;&ndash;&thinsp;2012 | Technical Lead and Business Development |
