@@ -93,7 +93,7 @@ My career-long focus is the product strategy and development process around both
 My approach to product strategy is informed by my beliefs:
 
 - <a id="fnref:perlisism" role="doc-noteref"/>I believe that improving productivity is building [faster horses]. I believe that a tool that doesn't redefine the way customers think about their work, isn't worth building.<a href="#:~:text=My%20belief%20is%20a%20generalization,↩" class="footnote" rel="footnote" title="Source">10</a>
-- <a id="fnref:table-stakes" role="doc-noteref"/>I believe that "table stakes" for product functionality is defined by similar features in mass-market products, not by market competitors. Text editing must be judged in comparison to Google Docs; calendars/schedules must be judged in comparison to Google Calendar.<a href="#:~:text=Yes%20this%20does%20mean%20thinking%20hard%20about%20supporting,↩" class="footnote" rel="footnote" title="Source">11</a>
+- <a id="fnref:table-stakes" role="doc-noteref"/>I believe that "table stakes" for product functionality is defined by similar features in mass-market products, not by B2B competitors. Text editing must be judged in comparison to Google Docs; calendars/schedules must be judged in comparison to Google Calendar.<a href="#:~:text=Yes%20this%20does%20mean%20thinking%20hard%20about%20supporting,↩" class="footnote" rel="footnote" title="Source">11</a>
 
 [faster horses]: https://hbr.org/2011/08/henry-ford-never-said-the-fast
 
