@@ -35,7 +35,7 @@ I'm [available for work](#im-available-for-work).
 
 ### I am technical
 
-I have written and shipped software products and services since the 1990s:
+I have written and shipped software products and services since the 1990s, including:
 
 - <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as its first Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><br>I also led and/or collaborated upon the rearchitecting of our front-end code from CoffeeScript/Backbone to JavaScript/Ember and then supported our transition to TypeScript/React. I personally restructured our incident management code, such as refactoring the core logic of one of our services into a state machine to make it extensible with out drama.<br/><br>I rewrote our scheduling engine’s core to handle a large customer’s requirement to handle complexity mmany orders of magnitude more than previously encountered, I brought real-time live updates to incident management, and I created a domain-specific expression language for feature toggles based on set operations.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">3</a>
 - At GitHub, I wrote features such as [rendered prose diffs], for which I wrote a custom HTML diff algorithm in a Ruby gem as well as the front-end UX in JavaScript.
