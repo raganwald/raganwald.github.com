@@ -24,7 +24,6 @@ This is [not my first rodeo](#this-is-not-my-first-rodeo):
 I'm [available for work](#im-available-for-work).
 
 ---
-
 <p class="quotation">Reg and I worked together for a year and a half. During that time, he spearheaded the effort to produce JProbe Threadalyzer, and then shepherded the entire JProbe suite through two subsequent upgrade releases.</p>
 <p class="quotation">By that time, Threadalyzer had all but eliminated its competition in the Java thread analysis space, and JProbe had become the company's major source of revenue.</p>
 <p class="author">—Christian Jaekl: Software Engineer and Concurrency Domain Expert</p>
@@ -148,10 +147,9 @@ My books, my essays, and videos of my talks are available on my [creative works 
 
 ### I foster collaboration
 
-At PagerDuty, in addition to the [product](#i-ship-products) and [engineering growth](#i-lead-engineering-growth) outcomes above, I also collaborated across group and functional lines:
+At PagerDuty, in addition to my [product](#i-ship-products) and [change](#i-recognize-when-what-got-us-here-wont-get-us-there) leadership, I also foster collaboration across teams and groups:
 
 - <a id="fnref:awards" role="doc-noteref"/>I was recognized with two leadership awards at PagerDuty.<a href="#:~:text=I%20treasure%20the%20tombstones,↩" class="footnote" rel="footnote" title="PagerDuty’s revenue growth">15</a>
-- I developed an internal capability supporting refined product management shipping strategies.
 - I ideated and prototyped features and products in partnership with my Product and Leadership colleagues.
 - I led our own Incident Management practice.
 - I have MC'd the company's annual kickoff, and co-hosted the company's [IPO Breakfast Party](/assets/images/ipo-breakfast.jpg).
@@ -160,8 +158,8 @@ At PagerDuty, in addition to the [product](#i-ship-products) and [engineering gr
 
 ---
 
-<p class="quotation">You were such an anchor and leader at PD! Thank you for the countless interviews, for the always interesting insights, for mentoring so many, and for shaping PD and just being a great person! You are a true PD Hall of Famer and Legend!</p>  
-<p class="author">—<a href="https://www.linkedin.com/in/rahartshorne/">Richard Hartshorne</a>: Senior Talent Partner, PagerDuty</p>
+<p class="quotation">Reg has a knack for taking a large, complex problem in which each stakeholder has a different perspective on what to do and distilling it down to a clear set of options and strategies that everyone can rally around. His friendly and sociable approach makes him especially effective at building alignment on these sorts of large, organization-spanning challenges.</p>
+<p class="author">Christopher Micacchi, Senior Engineering Manager, PagerDuty</p>
 
 ---
 
