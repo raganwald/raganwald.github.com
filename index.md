@@ -138,7 +138,7 @@ I foster a culture of writing and structured communication in both my work and m
 - I have created sales and software development training materials;
 - I have delivered technical and sales training to my colleagues.
 
-I also [JavaScript Allongé](assets/books/javascriptallongesix.pdf) and [other books](https://leanpub.com/u/raganwald) about programming. I have delivered conference keynotes and technical sessions at conferences in Canada, Sweden, Norway, Poland, and Spain. I have been an essayist since 2004 and have been featured on [Hacker News](https://news.ycombinator.com/from?site=raganwald.com), and has been selcted for publication in [Hacker Monthly](https://www.magcloud.com/browse/Magazine/79699).
+I also [JavaScript Allongé](assets/books/javascriptallongesix.pdf) and [other books](https://leanpub.com/u/raganwald) about programming. I have delivered conference keynotes and technical sessions at conferences in Canada, Sweden, Norway, Poland, and Spain. I have been an essayist since 2004 and have been featured on [Hacker News](https://news.ycombinator.com/from?site=raganwald.com), and has been selected for publication in [Hacker Monthly](https://www.magcloud.com/browse/Magazine/79699).
 
 My books, my essays, and videos of my talks are available on my [creative works page].
 
