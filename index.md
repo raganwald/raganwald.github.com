@@ -1,6 +1,6 @@
 ---
 title: Reginald Braithwaite
-subtitle: Engineering Leadership & Technical Product Management
+subtitle: Product Engineering Leadership & Technical Product Management
 layout: default
 tags: [open-to-work]
 ---
@@ -40,7 +40,7 @@ I'm [available for work](#im-available-for-work).
 
 ### I am technical
 
-I have written and shipped software products and services since the 1990s, including:
+I have designed, written and shipped software products and services since the 1990s, including:
 
 - <a id="fnref:expression-toggles" role="doc-noteref"/>In 2015, I joined PagerDuty as its first Principal Engineer for Applications: I co-wrote features such as [insights]. I designed and wrote foundational code for [response mobilizer], [operational reviews][operational review], [stakeholder communications], and [round-robin scheduling].<br/><br>I also led and/or collaborated upon the rearchitecting of our front-end code from CoffeeScript/Backbone to JavaScript/Ember and then supported our transition to TypeScript/React. I personally restructured our incident management code, such as refactoring the core logic of one of our services into a state machine to make it extensible with out drama.<br/><br>I rewrote our scheduling engine’s core to handle a large customer’s requirement to handle complexity mmany orders of magnitude more than previously encountered, I brought real-time live updates to incident management, and I created a domain-specific expression language for feature toggles based on set operations.<a href="#:~:text=Expression%20toggles%20are,↩" class="footnote" rel="footnote" title="Expression Toggles">3</a>
 - At GitHub, I wrote features such as [rendered prose diffs], for which I wrote a custom HTML diff algorithm in a Ruby gem as well as the front-end UX in JavaScript.
@@ -113,7 +113,7 @@ My approach to product strategy is informed by my beliefs:
 
 ### I recognize when what got us here, won't get us there
 
-I lead incremental and continuous refinement of engineering and product development. I'm conservative about changing horses in mid-stream, however I also recognize when factors combine to create a situation where “what got us here, won't get us there.” When that happens, I embrace change that is both comprehensive and necessarily disruptive.
+I have succeeded over three decades in our rapidly changing industry by embracing and leading change:
 
 - In the late 1990s, software products exploded in size and complexity, leading to higher development risks. Managing those risks with increasingly rigid BDUF+Waterfall became counterproductive. Accordingly, I adapted SCRUM from the consulting world to product development at Sitraka, delivering on-time and highly successful releases for Threadalyzer and then the JProbe Suite by focusing on delivering iterations of the complete product on a fixed cadence with continuous update of the plan.
 - In the 2000s through 2010s, the business benefits of iterative development were gated by the ability of developers to complete bigger and bigger features in shorter and shorter cycles. Accordingly, I was an early adopter and public champion of moving from strongly typed languages like C++ and Java to lightweight but expressive languages like Ruby and JavaScript, driving faster and cheaper product/market fit validation and thus lowering runway exhaustion risk.
@@ -138,7 +138,7 @@ I foster a culture of writing and structured communication in both my work and m
 - I have created sales and software development training materials;
 - I have delivered technical and sales training to my colleagues.
 
-I also [JavaScript Allongé](assets/books/javascriptallongesix.pdf) and [other books](https://leanpub.com/u/raganwald) about programming. I have delivered conference keynotes and technical sessions at conferences in Canada, Sweden, Norway, Poland, and Spain. I have been an essayist since 2004. My essays have hit the top of [Hacker News](https://news.ycombinator.com/from?site=raganwald.com), and have been published in [Hacker Monthly](https://www.magcloud.com/browse/Magazine/79699).
+I also wrote [JavaScript Allongé](assets/books/javascriptallongesix.pdf) and [other books](https://leanpub.com/u/raganwald) about programming. I have delivered conference keynotes and technical sessions at conferences in North America and Europe. My essays have hit the top of [Hacker News](https://news.ycombinator.com/from?site=raganwald.com), and have been published in [Hacker Monthly](https://www.magcloud.com/browse/Magazine/79699).
 
 My books, my essays, and videos of my talks are available on my [creative works page].
 
