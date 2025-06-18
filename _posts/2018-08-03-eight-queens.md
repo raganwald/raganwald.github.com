@@ -86,7 +86,7 @@ Saving programs on disc was not allowed. The teletypes had paper tape interfaces
 
 [David Ahl]: https://en.wikipedia.org/wiki/David_H._Ahl
 
-In defiance of all regulation, I would go in late, pick the cupboard's lock, remove the disc I wanted, and boot up single-user mode. I could then work on customizing Super Star Trek or write programs to solve puzzles. Curiously, I never tampered with the student records. I was a morally vacant vessel at that pointy in my life: I'm not going to tell you that I had a moral code about these things. I think the truth is that I just didn't care about marks.
+In defiance of all regulation, I would go in late, pick the cupboard's lock, remove the disc I wanted, and boot up single-user mode. I could then work on customizing Super Star Trek or write programs to solve puzzles. Curiously, I never tampered with the student records. I was a morally vacant vessel at that point in my life: I'm not going to tell you that I had a moral code about these things. I think the truth is that I just didn't care about marks.
 
 ---
 
@@ -838,7 +838,7 @@ I wish I'd thought of this approach in 1977!
 
 ### bonus: exploiting symmetry
 
-Something else comes to mind when thinking about reducing the size of the tree to search. There is symmetry to the queen makes, and as a consequence, the positions we find have rotational symmetry, and they also have reflective symmetry on either horizontal or vertical axes.
+Something else comes to mind when thinking about reducing the size of the tree to search. There is symmetry to the queen moves, and as a consequence, the positions we find have rotational symmetry, and they also have reflective symmetry on either horizontal or vertical axes.
 
 One way to exploit this begins with noting that every valid arrangement also has another valid arrangement that is symmetrical under vertical reflection, like these two mirror images of each other:
 
