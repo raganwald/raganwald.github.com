@@ -906,11 +906,7 @@ class NestedQuotes extends DeterministicPushdownAutomaton {
   }
 
   opening(token) {
-    if (token === '\'') {
-      return this.push(token);
-    } else if (token === '"') {
-      return this.push(token);
-    } else if (token === '\'' && this.top() === '\'') {
+    if (token === '\'' && this.top() === '\'') {
       return this
         .pop()
         .transitionTo('closing');
@@ -918,6 +914,10 @@ class NestedQuotes extends DeterministicPushdownAutomaton {
       return this
         .pop()
         .transitionTo('closing');
+    } else if (token === '\'') {
+      return this.push(token);
+    } else if (token === '"') {
+      return this.push(token);
     }
   }
 
