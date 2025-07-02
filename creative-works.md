@@ -188,7 +188,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 From 2008&thinsp;–&thinsp;2013, I wrote essays in Mardown formatted text in a Github repo as I do now. But instead of publishing them as an HTML blog, I shared links directly to the `.md` files in the repo, relying on Github's preview rendering to serve human-readable essays. Some of the essays were republished here and appear above, but the entire blog remains archived online.
 
-- [Homoiconic: An experiment in publishing code and words about code on a small scale](https://github.com/raganwald-deprecated/homoiconic).
+- [Homoiconic:](https://github.com/raganwald-deprecated/homoiconic) _An experiment in publishing code and words about code on a small scale_.
 
 ---
 
