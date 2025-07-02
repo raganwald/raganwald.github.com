@@ -184,6 +184,12 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
   </ul>
 </div>
 
+### Homoiconic
+
+From 2008&thinsp;–&thinsp;2013, I wrote essays in Markdown in a Github repo, relying on its Markdown rendering to serve human-readable essays.
+
+ [Homoiconic: An experiment in publishing code and words about code on a small scale.](https://github.com/raganwald-deprecated/homoiconic).
+
 ---
 
 These creative works are licensed under a <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a> except where copyright is otherwise asserted.
