@@ -186,9 +186,9 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ### Homoiconic
 
-From 2008&thinsp;–&thinsp;2013, I wrote essays in Markdown in a Github repo, relying on its Markdown rendering to serve human-readable essays.
+From 2008&thinsp;–&thinsp;2013, I wrote essays in Markdown in a Github repo, relying on its Markdown rendering to serve human-readable essays. Some of the essays were republished here and appear above, but the entire blog remains archied online.
 
- [Homoiconic: An experiment in publishing code and words about code on a small scale.](https://github.com/raganwald-deprecated/homoiconic).
+- [Homoiconic: An experiment in publishing code and words about code on a small scale.](https://github.com/raganwald-deprecated/homoiconic).
 
 ---
 
