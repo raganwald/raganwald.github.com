@@ -79,7 +79,7 @@ What makes formal regular expressions powerful, is that we have operators for al
 
 [Kleene Star]: https://en.wikipedia.org/wiki/Kleene_star
 
-Before we add the last rule for regular expressions, let's clarify these three rules with some examples. Given the constants `a`, `b`, and `c`, resolving to the languages `{ 'a' }`, `{ 'b' }`, and `{ 'b' }`:
+Before we add the last rule for regular expressions, let's clarify these three rules with some examples. Given the constants `a`, `b`, and `c`, resolving to the languages `{ 'a' }`, `{ 'b' }`, and `{ 'c' }`:
 
 - The expression `b|c` describes the language `{ 'b', 'c' }`, by rule 1.
 - The expression `ab` describes the language `{ 'ab' }` by rule 2.
