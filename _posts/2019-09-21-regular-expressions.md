@@ -95,7 +95,7 @@ As with the algebraic notation we are familiar with, we can use parentheses:
 
 - Given a regular expression _x_, the expression `(`_x_`)` describes the language described by _x_.
 
-This allows us to alter the way the operators are combined. As we have seen, the expression `b|c*` describes the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`. But the expression `(b|c)*` describes the language `{ '', 'b', 'c', 'bb', 'cc', 'bbb', 'ccc', ... }`.
+This allows us to alter the way the operators are combined. As we have seen, the expression `b|c*` describes the language `{ '', 'b', 'c', 'cc', 'ccc', ... }`. But the expression `(b|c)*` describes the language `{ '', 'b', 'c', 'bb', 'bc', 'cb', 'cc', 'bbb', 'bbc', 'bcb', 'bcc', 'cbb', ... }`.
 
 It is quite obvious that regexen borrowed a lot of their syntax and semantics from regular expressions. Leaving aside the mechanism of capturing and extracting portions of a match, almost every regular expressions is also a regex. For example, `/reggiee*/` is a regular expression that matches words like `reggie`, `reggiee`, and `reggieee` anywhere in a string.
 
