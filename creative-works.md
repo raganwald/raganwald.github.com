@@ -110,7 +110,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 ### books
 
 <a id="Books2000-2014"/>
-- [JavaScript Allongé (ES5)](https://leanpub.com/javascript-allonge)
+- [JavaScript Allongé](https://leanpub.com/javascript-allonge)
 - [CoffeeScript Ristretto](https://leanpub.com/coffeescript-ristretto) ([pdf](/assets/books/coffeescript-ristretto.pdf))
 - [Kestrels, Quirky Birds, and Hopeless Egocentricity](https://leanpub.com/combinators) ([pdf](/assets/books/kestrels-quirky-birds-and-hopeless-egocentricity.pdf))
 
