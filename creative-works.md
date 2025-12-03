@@ -13,7 +13,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ---
 
-## Recent Work
+## Recent Work 
 
 ### essays
 
