@@ -58,7 +58,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - [Optimism and the Growth Mindset](https://www.youtube.com/embed/Zh_2OHgYdvg), [NDC Conferences][NDC]
 - [Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4), [DevDay](https://devday.pl)
 - [Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc), [Nordic Ruby](nordicruby.org)
-- [First-Class Commands, the 2017 Edition]([https://vimeo.com/157132267](https://www.youtube.com/watch?v=dATVOTBOl6c) (2017), [NDC Conferences][NDC]
+- [First-Class Commands, the 2017 Edition](https://www.youtube.com/watch?v=dATVOTBOl6c) (2017), [NDC Conferences][NDC]
 - [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44), [DevDay](https://devday.pl)
 - [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877), [NDC Conferences][NDC]
 - [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) (2016), [NDC Conferences][NDC]
