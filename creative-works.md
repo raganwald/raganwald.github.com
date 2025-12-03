@@ -55,12 +55,18 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ### talks
 
-- [Optimism and the Growth Mindset](https://www.youtube.com/embed/Zh_2OHgYdvg) from [NDC Conferences][NDC]
-- [Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4) from [DevDay](https://devday.pl)
-- [Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc) from [Nordic Ruby](nordicruby.org)
-- [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44) from [DevDay](https://devday.pl)
-- [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877) from [NDC Conferences][NDC]
-- [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) from [NDC Conferences][NDC]
+- [Optimism and the Growth Mindset](https://www.youtube.com/embed/Zh_2OHgYdvg), [NDC Conferences][NDC]
+- [Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4), [DevDay](https://devday.pl)
+- [Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc), [Nordic Ruby](nordicruby.org)
+- [First-Class Commands, the 2017 Edition]([https://vimeo.com/157132267](https://www.youtube.com/watch?v=dATVOTBOl6c) (2017), [NDC Conferences][NDC]
+- [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44), [DevDay](https://devday.pl)
+- [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877), [NDC Conferences][NDC]
+- [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) (2016), [NDC Conferences][NDC]
+
+### podcasts
+
+- [Magic, intentionality and learning hard things](https://www.youtube.com/watch?v=gbL4NDOLs3c)
+- [JavaScript Community Dynamics](https://www.youtube.com/watch?v=wRd9mz8AUHs)
 
 [NDC]: https://vimeo.com/ndcconferences
 
@@ -109,13 +115,14 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ### talks
 
-- [The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](https://www.youtube.com/watch?v=hp7sgLVepF8) from [Nordic JS](https://nordicjs.com).
-- [Javascript Combinators](https://vimeo.com/97408202) from [NDC Conferences][NDC]
-- [The Art of the Javascript Metaobject Protocol](https://vimeo.com/97415345) from [NDC Conferences][NDC]
-- [Invent the future, don't recreate the past](https://www.youtube.com/watch?v=uYcAjr2J_rU) from [Future JS](https://fullstackfest.com)
-- [The Not-So-Big Software Design](https://www.youtube.com/watch?v=arsK-CN5YDg) from [wroc_love.rb](https://www.wrocloverb.com).
-- [I have a good feeling about this - Why tooling is poised to make the jump to hyperspace](https://youtube.com/watch?v=Re2SKhaK73I) from [Web Rebels](https://www.webrebels.org)
-- [The Rebellion Imperative](https://vimeo.com/53265664) from [Øredev](https://vimeo.com/user4280938)
+- [The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](https://www.youtube.com/watch?v=hp7sgLVepF8) and a [post-talk interview](https://www.youtube.com/watch?v=RfMWgtix5A4) (2014), [Nordic JS](https://nordicjs.com)
+- _Javascript Combinators_, [NDC Conferences][NDC]
+- _The Art of the Javascript Metaobject Protocol_, [NDC Conferences][NDC]
+- [Invent the future, don't recreate the past](https://www.youtube.com/watch?v=uYcAjr2J_rU) (2014), [Future JS](https://fullstackfest.com)
+- [The Not-So-Big Software Design](https://www.youtube.com/watch?v=arsK-CN5YDg) (2013), [wroc_love.rb](https://www.wrocloverb.com)
+- [What Developing With Ruby Can Teach Us About Developing Ruby](https://www.youtube.com/watch?v=WWKN-fjn4E4) (2013), BaRuCo
+- [I have a good feeling about this - Why tooling is poised to make the jump to hyperspace](https://youtube.com/watch?v=Re2SKhaK73I) (2013), [Web Rebels](https://www.webrebels.org)
+- [The Rebellion Imperative](https://vimeo.com/53265664) (2012), [Øredev](https://vimeo.com/user4280938)
 
 ### essays
 
