@@ -223,7 +223,7 @@ I'm open to 100% remote or Greater Toronto Area hybrid roles that leverage my te
 ---
 
 <p class="quotation">Reg crossed role and organizational lines to constantly better the company and increase in scale our impact on the market, our products, and customers.</p>  
-<p class="quotation">He was a huge asset to PagerDuty, and wherever he lands next will be lucky to have him s.</p>  
+<p class="quotation">He was a huge asset to PagerDuty, and wherever he lands next will be lucky to have him.</p>  
 <p class="author">—<a href="https://www.linkedin.com/in/cucchi">Michael Cucchi</a>: Investor, Startup Advisor, ex-VP of Product and Marketing, PagerDuty</p>
 
 ---
