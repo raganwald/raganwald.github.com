@@ -66,7 +66,7 @@ I have designed, written and shipped software products and services since the 19
 [operational review]: https://support.pagerduty.com/main/docs/operational-reviews
 [response mobilizer]: https://www.pagerduty.com/blog/2016-year-review/#:~:text=Response%20Orchestration
 [recent changes]: https://support.pagerduty.com/main/docs/recent-changes
-[task lists]: 
+[task lists]: https://github.blog/news-insights/the-library/collaborating-with-lists/
 [rendered prose diffs]: https://github.blog/news-insights/rendered-prose-diffs/
 [JProbe Threadalyzer]: http://tan.com/jprobe?lang=en#:~:text=JProbe%20Theadalyzer,-:%20Detect%20Deadlocks%2C%20Stalls
 
