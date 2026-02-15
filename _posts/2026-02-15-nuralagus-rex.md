@@ -65,8 +65,8 @@ So these linked lists fit that description:
     d["3"]
     d2["3"]
     Empty["🚫"]
-    Empty2@{ shape: cross-circ }
-    Empty3@{ shape: cross-circ }
+    Empty2["🚫"]
+    Empty3["🚫"]
 
     Empty
 
