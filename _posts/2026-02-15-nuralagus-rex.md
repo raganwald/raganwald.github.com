@@ -214,4 +214,4 @@ The first solution Konge offered—maintaining a set of links already visited—
 
 Konge thougt about it on the subway home, and had an "Aha!" He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
 
-The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented Brent's Cycle Dectection Algorithm, which is based on exponential search.
+The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://www.geeksforgeeks.org/dsa/brents-cycle-detection-algorithm/), which is based on exponential search.
