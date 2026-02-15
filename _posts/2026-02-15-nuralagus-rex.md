@@ -23,7 +23,7 @@ Here is one common way to diagram a linked list:
     b["1"]
     c["2"]
     d["3"]
-    Empty["🚫"]
+    Empty(("🚫"))
 
     b-->c-->d-->Empty
 </div>
@@ -34,7 +34,7 @@ We need a way to diagram an empty list, and a crossed circle is what we choose t
 
 <div class="mermaid">
   graph LR
-    Empty["🚫"]
+    Empty(("🚫"))
 </div>
 
 Linked lists support a primitive operation of prepending a new node to the beginning of the list, in constant time. So if we prepending "3" to the list, we get:
@@ -42,7 +42,7 @@ Linked lists support a primitive operation of prepending a new node to the begin
 <div class="mermaid">
   graph LR
     d["3"]
-    Empty["🚫"]
+    Empty(("🚫"))
 
     d-->Empty
 </div>
@@ -64,9 +64,9 @@ So these linked lists fit that description:
     c["2"]
     d["3"]
     d2["3"]
-    Empty["🚫"]
-    Empty2["🚫"]
-    Empty3["🚫"]
+    Empty(("🚫"))
+    Empty2(("🚫"))
+    Empty3(("🚫"))
 
     Empty
 
@@ -146,7 +146,7 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     b["1"]
     c["2"]
     d["3"]
-    Empty["🚫"]
+    Empty(("🚫"))
 
     b-->c-->d-->Empty
     tortoise3-->b
@@ -179,7 +179,7 @@ For the other two lists, their pointers do not point to the same node, so we con
     b["1"]
     c["2"]
     d["3"]
-    Empty["🚫"]
+    Empty(("🚫"))
 
     b-->c-->d-->Empty
     tortoise3-->c
