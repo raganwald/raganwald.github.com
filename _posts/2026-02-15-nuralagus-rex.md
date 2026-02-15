@@ -4,9 +4,9 @@ published: true
 tags: [noindex, allonge, mermaid]
 ---
 
-Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies aorund this practice, from [it's a quick way to filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming) to a pretext for "having a conversation about what is important in programming."
+Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies aorund this practice, from it's a quick way to [filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming) to a pretext for "having a conversation about what is important in programming."
 
-Twenty years ago, a programmer named Konge got an interview with a Toronto Bank. His interviewer asked Konge to write a function that would determine whether a linked list has a cycle or not. Konge had never heard of this problem, but he had dabbled in Lisp and was very familiar witrh cons cells, so he tried to think hard about how to detect a cycle while the clock ticked and the interviewer started at him.
+Twenty years ago, a programmer named Konge got an interview with a Toronto Bank. His interviewer asked Konge to write a function that would determine whether a linked list has a cycle or not. Konge had never heard of this problem, but he had dabbled in Lisp and was familiar with cons cells, so he tried to think hard about how to detect a cycle while the clock ticked and the interviewer started at him.
 
 No pressure!
 
@@ -110,7 +110,7 @@ In all of these cases, attempting to enumerate the list by following the links b
 
 ### floyd's cycle detection
 
-The solution the interviewer as looking for is called Floyd's Cycle-Finding Algorithm, or, "The Tortoise and the Hare" more colloquially. I prefer The Tortoise and the Hare because it describes exactly what the algorithm does.
+The solution the interviewer as looking for is called [Floyd's Cycle-Finding Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare), or, ["The Tortoise and the Hare" more colloquially.
 
 The Tortoise and the Hare uses two pointers or cursors, each of which advances through the linked list. We will demonstrate the alorithm on three linked lists. We beging by placing the tortoise pointer on the first node in the list, and the hare pointer on the second. To place the hare pointer on the second node, we have to follow the link, which may lead us to Empty, or if there is just one node that links to itself, it remains on the only node.
 
@@ -212,4 +212,4 @@ The first solution Konge offered—maintaining a set of links already visited—
 
 Konge thougt about it on the subway home, and had an "Aha!" He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
 
-The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://www.geeksforgeeks.org/dsa/brents-cycle-detection-algorithm/), which is based on exponential search.
+The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search.
