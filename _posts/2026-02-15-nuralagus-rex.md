@@ -16,7 +16,7 @@ No pressure!
 
 > “A linked list is a sequence of nodes that contain two fields: data, and a link to the next node. The last node is linked to a terminator used to signify the end of the list.”--[Wikipedia](https://en.wikipedia.org/wiki/Linked_list)
 
-Here is one common way to diagram a linked list:
+Here is one way to diagram a linked list:
 
 <div class="mermaid">
   graph LR
@@ -28,9 +28,7 @@ Here is one common way to diagram a linked list:
     b-->c-->d-->Empty
 </div>
 
-We can see that there are three nodes. The "data" for the nodes are the numbers 1, 2, and 3 respectively. The links between them are shown as arrows. The third and last node in the list does not link to another node. We show this as an arrow to a crossed circle, which signifies "empty."
-
-We need a way to diagram an empty list, and a crossed circle is what we choose to use. So if we have an empty list, we show it like this:
+We can see that there are three nodes. The "data" for the nodes are the numbers 1, 2, and 3 respectively. The links between them are shown as arrows. The third and last node in the list does not link to another node. We show this as an arrow to a circular node, which signifies "empty." If we have an empty list, we show it like this:
 
 <div class="mermaid">
   graph LR
