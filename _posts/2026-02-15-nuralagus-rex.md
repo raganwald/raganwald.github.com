@@ -1,7 +1,7 @@
 ---
 title: Detecting whether a linked list has a cycle
 published: true
-tags: [noindex, allonge]
+tags: [noindex, allonge, mermaid]
 ---
 
 Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies aorund this practice, from [it's a quick way to filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming) to a pretext for "having a conversation about what is important in programming."
