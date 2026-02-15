@@ -10,6 +10,8 @@ Twenty years ago, a programmer named Konge got an interview with a Toronto Bank.
 
 No pressure!
 
+---
+
 # Linked Lists
 
 > “A linked list is a sequence of nodes that contain two fields: data, and a link to the next node. The last node is linked to a terminator used to signify the end of the list.”--[Wikipedia](https://en.wikipedia.org/wiki/Linked_list)
@@ -104,9 +106,11 @@ It is possible to wire nodes together in a way that does not match this definiti
 
 In all of these cases, attempting to enumerate the list by following the links between nodes will never halt. And thus, detecting whether a purported linked list contains a cycle is a useful tool to have.
 
-# Detecting Cycles in Linked Lists
+---
 
-# floyd's cycle detection
+# Detecting Cycles
+
+### floyd's cycle detection
 
 The solution the interviewer as looking for is called Floyd's Cycle-Finding Algorithm, or, "The Tortoise and the Hare" more colloquially. I prefer The Tortoise and the Hare because it describes exactly what the algorithm does.
 
@@ -204,7 +208,7 @@ This time the tortoise advances from `9` to `A`, while the hare advances from `B
 
 And that is [The Tortoise and the Hare](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare). As it happens, that's what the interviewer wanted to Konge to come up with.
 
-# brent's cycle detection algorithm
+### brent's cycle detection algorithm
 
 The first solution Konge offered—maintaining a set of links already visited—was rejected. He was told that the problem can be solved in constant space. During the interview, Konge couldn't solve the problem in constant space, and the interview ended.
 
