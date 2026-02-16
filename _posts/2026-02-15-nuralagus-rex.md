@@ -110,7 +110,9 @@ In all of these cases, attempting to enumerate the list by following the links b
 
 # Detecting Cycles
 
-### floyd's cycle detection
+![A tortoise beats a hare in a race](/assets/images/cycles/tortoise-and-hare.png)
+
+## The Tortoise and the Hare
 
 The solution the interviewer was looking for is called [Floyd's Cycle-Finding Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare), or more colloquially, "The Tortoise and the Hare."
 
@@ -210,7 +212,7 @@ Remember Konge? The interviewer had clearly hoped Konge would either have alread
 
 But what of Konge?
 
-### brent's cycle detection algorithm
+## Brent's Algorithm
 
 Konge thought about linked lists and cycles on the subway home, and then he had an "Aha!" moment. He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
 
@@ -232,7 +234,7 @@ Konge's solution also used two pointers. The first pointer, the base pointer, is
     search-.-|"2"|f
 </div>
 
-We compare the two pointers, they do not match. Now we move the search pointer one node forward adn decfrement the counter:
+We compare the two pointers, they do not match. Then we move the search pointer one node forward, and decrement its counter:
 
 <div class="mermaid">
   graph LR
