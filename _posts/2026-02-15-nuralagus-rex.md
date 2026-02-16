@@ -212,7 +212,9 @@ Remember Konge? The interviewer had clearly hoped Konge would either have alread
 
 But what of Konge?
 
-## Brent's Algorithm
+![Exponential Search](/assets/images/cycles/exponential-search.png)
+
+## Exponential Search
 
 Konge thought about linked lists and cycles on the subway home, and then he had an "Aha!" moment. He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
 
