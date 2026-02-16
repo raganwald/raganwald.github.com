@@ -214,7 +214,7 @@ But what of Konge?
 
 Konge thougt about linked lists and cycles on the subway home, and then he had an "Aha!" moment. He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
 
-Konge's solution also used two pointers. The first pointer, the base pointer, is placed on the first element of the list, and the second pointer, the search pointer, is placed on the second element of the list:
+Konge's solution also used two pointers. The first pointer, the base pointer, is placed on the first element of the list, and the second pointer, the search pointer, is placed on the second element of the list. And there is a third addition: A search counter, which we show as the number two on the arc from search to node:
 
 <div class="mermaid">
   graph LR
@@ -229,7 +229,69 @@ Konge's solution also used two pointers. The first pointer, the base pointer, is
 
     e-->f-->g-->h-->i-->g
     base-->e
-    search-->f
+    search--2-->f
 </div>
 
-The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search.
+We compare the two pointers, they do not match. Now we move the search pointer one node forward adn decfrement the counter:
+
+<div class="mermaid">
+  graph LR
+    
+    base["⛺️"]
+    search["🔍"]
+    e["8"]
+    f["9"]
+    g["A"]
+    h["B"]
+    i["C"]
+
+    e-->f-->g-->h-->i-->g
+    base-->e
+    search--1-->g
+</div>
+
+We compare the base and search pointers, and again they do not match. But now when we move the search pointer forward and decrement the counter, it becomes zero:
+
+<div class="mermaid">
+  graph LR
+    
+    base["⛺️"]
+    search["🔍"]
+    e["8"]
+    f["9"]
+    g["A"]
+    h["B"]
+    i["C"]
+
+    e-->f-->g-->h-->i-->g
+    base-->e
+    search--0-->i
+</div>
+
+When the counter reaches zero, we do three things:
+
+1. We bring the base pointer up to point at the same cell as the search pointer;
+2. We move the search pointer one node forward;
+3. We double the counter's inital value: Since we started with 2, it now becomes 4. The next time it would become 8, the time after 16, and so forth.
+
+<div class="mermaid">
+  graph LR
+    
+    base["⛺️"]
+    search["🔍"]
+    e["8"]
+    f["9"]
+    g["A"]
+    h["B"]
+    i["C"]
+
+    e-->f-->g-->h-->i-->g
+    base-->i
+    search--4-->g
+</div>
+
+Having done this, we compare, see that the two nodes don't match, and increment teh search pointer while decrementing the count:
+
+
+
+<!-- The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search. -->
