@@ -16,7 +16,11 @@ We'll look at
 
 # Linked Lists
 
+---
+
 > “A linked list is a sequence of nodes that contain two fields: data, and a link to the next node. The last node is linked to a terminator used to signify the end of the list.”--[Wikipedia](https://en.wikipedia.org/wiki/Linked_list)
+
+---
 
 Here is one way to diagram a linked list:
 
@@ -110,7 +114,11 @@ In all of these cases, attempting to enumerate the list by following the links b
 
 # Detecting Cycles
 
+---
+
 [![A tortoise beats a hare in a race](/assets/images/cycles/tortoise-and-hare.png)](https://www.flickr.com/photos/88394234@N04/8139271342/)
+
+---
 
 ## The Tortoise and the Hare
 
@@ -212,7 +220,11 @@ Remember Konge? The interviewer had clearly hoped Konge would either have alread
 
 But what of Konge?
 
+---
+
 ![Exponential Search](/assets/images/cycles/exponential-search.png)
+
+---
 
 ## Exponential Search
 
