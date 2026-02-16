@@ -27,7 +27,7 @@ Here is one way to diagram a linked list:
     d["3"]
     Empty(("🚫"))
 
-    b==>c==>d==>Empty
+    b-->c-->d-->Empty
 </div>
 
 We can see that there are three nodes. The "data" for the nodes are the numbers 1, 2, and 3 respectively. The links between them are shown as arrows. The third and last node in the list does not link to another node. We show this as an arrow to a circular node, which signifies `Empty`. If we have an empty list, we show it like this:
@@ -44,7 +44,7 @@ Linked lists support a primitive operation of prepending a new node to the begin
     d["3"]
     Empty(("🚫"))
 
-    d==>Empty
+    d-->Empty
 </div>
 
 `3` is now the head of the list, and it links to `Empty`, not to another node.
@@ -70,9 +70,9 @@ So these linked lists fit that description:
 
     Empty
 
-    d2==> Empty2
+    d2--> Empty2
 
-    b==>c==>d==>Empty3
+    b-->c-->d-->Empty3
 </div>
 
 Provided such a list has a finite set of nodes, it can be traversed in finite time by starting at the head and following the links from node to node until we reach `Empty` at the end.
@@ -85,13 +85,13 @@ It is possible to wire nodes together in a way that does not match this definiti
   graph LR
     a["4"]
 
-    a==>a
+    a-->a
 
     b["5"]
     c["6"]
     d["7"]
 
-    b==>c==>d==>b
+    b-->c-->d-->b
 
     e["8"]
     f["9"]
@@ -99,7 +99,7 @@ It is possible to wire nodes together in a way that does not match this definiti
     h["B"]
     i["C"]
 
-    e==>f==>g==>h==>i==>g
+    e-->f-->g-->h-->i-->g
 </div>
 
 `4` is a node that links to itself. It is its own head, and has no link to `Empty`. `5-6-7` is a "cicular" list, the last node links back to the first, and there is no link to `Empty`. `8-9-A-B-C` is not a cycle, but `8` is its head, which links to `9`, which links to `A`, which forms a cycle with `B` and `C`.
@@ -125,7 +125,7 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     hare2["🐰"]
     a["4"]
 
-    a==>a
+    a-->a
     tortoise2-.->a
     hare2-.->a
     
@@ -137,7 +137,7 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     h["B"]
     i["C"]
 
-    e==>f==>g==>h==>i==>g
+    e-->f-->g-->h-->i-->g
     tortoise-.->e
     hare-.->f
 
@@ -148,7 +148,7 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     d["3"]
     Empty(("🚫"))
 
-    b==>c==>d==>Empty
+    b-->c-->d-->Empty
     tortoise3-.->b
     hare3-.->c
 </div>
@@ -162,7 +162,7 @@ And then we compare to see if both pointers point to the same node. This is the 
     hare2["🐰"]
     a["4"]
 
-    a==>a
+    a-->a
     tortoise2-.->a
     hare2-.->a
 </div>
@@ -181,7 +181,7 @@ For the other two lists, their pointers do not point to the same node, so we con
     d["3"]
     Empty(("🚫"))
 
-    b==>c==>d==>Empty
+    b-->c-->d-->Empty
     tortoise3-.->c
     hare3-.->Empty
 </div>
@@ -199,7 +199,7 @@ The remaining list has its pointers pointing to different nodes, neither of whic
     h["B"]
     i["C"]
 
-    e==>f==>g==>h==>i==>g
+    e-->f-->g-->h-->i-->g
     tortoise-.->g
     hare-.->g
 </div>
@@ -212,7 +212,7 @@ But what of Konge?
 
 ### brent's cycle detection algorithm
 
-Konge thougt about linked lists and cycles on the subway home, and then he had an "Aha!" moment. He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
+Konge thought about linked lists and cycles on the subway home, and then he had an "Aha!" moment. He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
 
 Konge's solution also used two pointers. The first pointer, the base pointer, is placed on the first element of the list, and the second pointer, the search pointer, is placed on the second element of the list. And there is a third addition: A search counter, which we show as the number two on the arc from search to node:
 
@@ -227,9 +227,9 @@ Konge's solution also used two pointers. The first pointer, the base pointer, is
     h["B"]
     i["C"]
 
-    e==>f==>g==>h==>i==>g
+    e-->f-->g-->h-->i-->g
     base-.-e
-    search-..-|"2"|f
+    search-.-|"2"|f
 </div>
 
 We compare the two pointers, they do not match. Now we move the search pointer one node forward adn decfrement the counter:
@@ -245,9 +245,9 @@ We compare the two pointers, they do not match. Now we move the search pointer o
     h["B"]
     i["C"]
 
-    e==>f==>g==>h==>i==>g
+    e-->f-->g-->h-->i-->g
     base-.-e
-    search-..-|"1"|g
+    search-.-|"1"|g
 </div>
 
 We compare the base and search pointers, and again they do not match. But now when we move the search pointer forward and decrement the counter, it becomes zero:
@@ -263,9 +263,9 @@ We compare the base and search pointers, and again they do not match. But now wh
     h["B"]
     i["C"]
 
-    e==>f==>g==>h==>i==>g
+    e-->f-->g-->h-->i-->g
     base-.-e
-    search-..-|"0"|h
+    search-.-|"0"|h
 </div>
 
 When the counter reaches zero, we do three things:
@@ -285,13 +285,13 @@ When the counter reaches zero, we do three things:
     h["B"]
     i["C"]
 
-    e==>f==>g==>h==>i==>g
+    e-->f-->g-->h-->i-->g
     base-.-h
-    search-..-|"4"|i
+    search-.-|"4"|i
 </div>
 
 Having done this, we compare, see that the two nodes don't match, and increment teh search pointer while decrementing the count:
 
 
 
-<!-- The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search. ==>
+<!-- The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search. -->
