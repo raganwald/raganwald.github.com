@@ -265,7 +265,7 @@ We compare the base and search pointers, and again they do not match. But now wh
 
     e-->f-->g-->h-->i-->g
     base-->e
-    search--0-->i
+    search--0-->h
 </div>
 
 When the counter reaches zero, we do three things:
@@ -286,8 +286,8 @@ When the counter reaches zero, we do three things:
     i["C"]
 
     e-->f-->g-->h-->i-->g
-    base-->i
-    search--4-->g
+    base-->h
+    search--4-->i
 </div>
 
 Having done this, we compare, see that the two nodes don't match, and increment teh search pointer while decrementing the count:
