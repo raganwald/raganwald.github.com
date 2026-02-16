@@ -220,13 +220,7 @@ Remember Konge? The interviewer had clearly hoped Konge would either have alread
 
 But what of Konge?
 
----
-
-![Exponential Search](/assets/images/cycles/exponential-search.png)
-
----
-
-## Exponential Search
+## Konge's Solution
 
 Konge thought about linked lists and cycles on the subway home, and then he had an "Aha!" moment. He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
 
@@ -290,6 +284,8 @@ When the counter reaches zero, we do three things:
 2. We move the search pointer one node forward;
 3. We double the counter's inital value: Since we started with 2, it now becomes 4. The next time it would become 8, the time after 16, and so forth.
 
+Here's what we have after bringing the base pointer up, advancing teh search pointer, and doubling its initial value:
+
 <div class="mermaid">
   graph LR
     
@@ -306,8 +302,50 @@ When the counter reaches zero, we do three things:
     search-.-|"4"|i
 </div>
 
-Having done this, we compare, see that the two nodes don't match, and increment teh search pointer while decrementing the count:
+We compare, see that the two nodes don't match, and increment the search pointer while decrementing the count as we did before:
 
+<div class="mermaid">
+  graph LR
+    
+    base["⛺️"]
+    search["🔍"]
+    e["8"]
+    f["9"]
+    g["A"]
+    h["B"]
+    i["C"]
 
+    e-->f-->g-->h-->i-->g
+    base-.-h
+    search-.-|"3"|g
+</div>
+
+The nodes do not match, so we do it again:
+
+<div class="mermaid">
+  graph LR
+    
+    base["⛺️"]
+    search["🔍"]
+    e["8"]
+    f["9"]
+    g["A"]
+    h["B"]
+    i["C"]
+
+    e-->f-->g-->h-->i-->g
+    base-.-h
+    search-.-|"2"|h
+</div>
+
+And now they match, so we report that the linked list does contain a cycle.
+
+---
+
+![Exponential Search](/assets/images/cycles/exponential-search.png)
+
+---
+
+## Exponential Search
 
 <!-- The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search. -->
