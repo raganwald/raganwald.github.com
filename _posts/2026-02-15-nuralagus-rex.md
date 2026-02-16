@@ -126,8 +126,8 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     a["4"]
 
     a-->a
-    tortoise2-.-a
-    hare2-.-a
+    tortoise2-.->a
+    hare2-.->a
     
     tortoise["🐢"]
     hare["🐰"]
@@ -138,8 +138,8 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     i["C"]
 
     e-->f-->g-->h-->i-->g
-    tortoise-.-e
-    hare-.-f
+    tortoise-.->e
+    hare-.->f
 
     tortoise3["🐢"]
     hare3["🐰"]
@@ -149,8 +149,8 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     Empty(("🚫"))
 
     b-->c-->d-->Empty
-    tortoise3-.-b
-    hare3-.-c
+    tortoise3-.->b
+    hare3-.->c
 </div>
 
 And then we compare to see if both pointers point to the same node. This is the case for one of the three lists:
@@ -163,8 +163,8 @@ And then we compare to see if both pointers point to the same node. This is the 
     a["4"]
 
     a-->a
-    tortoise2-.-a
-    hare2-.-a
+    tortoise2-.->a
+    hare2-.->a
 </div>
 
 We can report that this list has a cycle and stop.
@@ -182,8 +182,8 @@ For the other two lists, their pointers do not point to the same node, so we con
     Empty(("🚫"))
 
     b-->c-->d-->Empty
-    tortoise3-.-c
-    hare3-.-Empty
+    tortoise3-.->c
+    hare3-.->Empty
 </div>
 
 The remaining list has its pointers pointing to different nodes, neither of which are `Empty`. So we advance the tortoise one and the hare two nodes again.
@@ -200,8 +200,8 @@ The remaining list has its pointers pointing to different nodes, neither of whic
     i["C"]
 
     e-->f-->g-->h-->i-->g
-    tortoise-.-g
-    hare-.-g
+    tortoise-.->g
+    hare-.->g
 </div>
 
 This time the tortoise advances from `9` to `A`, while the hare advances from `B` to `C` and then to `A`. Bingo! Both pointers point to the same node, so this also contains a cycle. And that is The Tortoise and the Hare.
@@ -228,8 +228,8 @@ Konge's solution also used two pointers. The first pointer, the base pointer, is
     i["C"]
 
     e-->f-->g-->h-->i-->g
-    base-->e
-    search--2-->f
+    base-.-e
+    search-..-|"2"|f
 </div>
 
 We compare the two pointers, they do not match. Now we move the search pointer one node forward adn decfrement the counter:
@@ -246,8 +246,8 @@ We compare the two pointers, they do not match. Now we move the search pointer o
     i["C"]
 
     e-->f-->g-->h-->i-->g
-    base-->e
-    search--1-->g
+    base-.-e
+    search-..-|"1"|g
 </div>
 
 We compare the base and search pointers, and again they do not match. But now when we move the search pointer forward and decrement the counter, it becomes zero:
@@ -264,8 +264,8 @@ We compare the base and search pointers, and again they do not match. But now wh
     i["C"]
 
     e-->f-->g-->h-->i-->g
-    base-->e
-    search--0-->h
+    base-.-e
+    search-..-|"0"|h
 </div>
 
 When the counter reaches zero, we do three things:
@@ -286,8 +286,8 @@ When the counter reaches zero, we do three things:
     i["C"]
 
     e-->f-->g-->h-->i-->g
-    base-->h
-    search--4-->i
+    base-.-h
+    search-..-|"4"|i
 </div>
 
 Having done this, we compare, see that the two nodes don't match, and increment teh search pointer while decrementing the count:
