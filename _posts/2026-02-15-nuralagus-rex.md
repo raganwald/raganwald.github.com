@@ -110,7 +110,7 @@ In all of these cases, attempting to enumerate the list by following the links b
 
 # Detecting Cycles
 
-![A tortoise beats a hare in a race](/assets/images/cycles/tortoise-and-hare.png)
+[![A tortoise beats a hare in a race](/assets/images/cycles/tortoise-and-hare.png)](https://www.flickr.com/photos/88394234@N04/8139271342/)
 
 ## The Tortoise and the Hare
 
