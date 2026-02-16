@@ -4,11 +4,13 @@ published: true
 tags: [noindex, allonge, mermaid]
 ---
 
-Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies aorund this practice, from it's a quick way to [filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming) to a pretext for "having a conversation about what is important in programming."
+Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies aorund this practice, one was that it was “A quick way to [filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming).”
 
 Twenty years ago, a programmer named Konge got an interview with a Toronto Bank. His interviewer asked Konge to write a function that would determine whether a linked list has a cycle or not. Konge had never heard of this problem, but he had dabbled in Lisp and was familiar with cons cells, so he tried to think hard about how to detect a cycle while the clock ticked and the interviewer started at him.
 
-No pressure!
+The first solution Konge offered—maintaining a set of links already visited—was rejected. He was told that the problem can be solved in constant space. During the interview, Konge couldn't solve the problem in constant space, and the interview ended.
+
+We'll look at 
 
 ---
 
@@ -28,7 +30,7 @@ Here is one way to diagram a linked list:
     b-->c-->d-->Empty
 </div>
 
-We can see that there are three nodes. The "data" for the nodes are the numbers 1, 2, and 3 respectively. The links between them are shown as arrows. The third and last node in the list does not link to another node. We show this as an arrow to a circular node, which signifies "empty." If we have an empty list, we show it like this:
+We can see that there are three nodes. The "data" for the nodes are the numbers 1, 2, and 3 respectively. The links between them are shown as arrows. The third and last node in the list does not link to another node. We show this as an arrow to a circular node, which signifies `Empty`. If we have an empty list, we show it like this:
 
 <div class="mermaid">
   graph LR
@@ -45,13 +47,13 @@ Linked lists support a primitive operation of prepending a new node to the begin
     d-->Empty
 </div>
 
-`3` is now the head of the list, and it links to empty, not to another node.
+`3` is now the head of the list, and it links to `Empty`, not to another node.
 
 ### well-formed linked lists
 
 A well-formed linked list consists of:
 
-1. Empty by itself
+1. `Empty` by itself, or;
 2. A head node that links to the head node of a well-formed linked list, becoming the new head node of the result.
 
 So these linked lists fit that description:
@@ -73,7 +75,7 @@ So these linked lists fit that description:
     b-->c-->d-->Empty3
 </div>
 
-Provided such a list has a finite set of nodes, it can be traversed in finite time by starting at the head and following the links from node to node until we reach Empty at the end.
+Provided such a list has a finite set of nodes, it can be traversed in finite time by starting at the head and following the links from node to node until we reach `Empty` at the end.
 
 ### cycles in linked lists
 
@@ -100,7 +102,7 @@ It is possible to wire nodes together in a way that does not match this definiti
     e-->f-->g-->h-->i-->g
 </div>
 
-`4` is a node that links to itself. It is its own head, and has no link to Empty `5-6-7` is a "cicular" list, the last node links back to the first. Any of these nodes could be used as a head, and again, no link to Empty. And `8-9-A-B-C` is not a cycle, but `8` is its head, which links to `9`, which links to `A`. `A`, `B`, and `C` form a cycle.
+`4` is a node that links to itself. It is its own head, and has no link to `Empty`. `5-6-7` is a "cicular" list, the last node links back to the first, and there is no link to `Empty`. `8-9-A-B-C` is not a cycle, but `8` is its head, which links to `9`, which links to `A`, which forms a cycle with `B` and `C`.
 
 In all of these cases, attempting to enumerate the list by following the links between nodes will never halt. And thus, detecting whether a purported linked list contains a cycle is a useful tool to have.
 
@@ -110,9 +112,9 @@ In all of these cases, attempting to enumerate the list by following the links b
 
 ### floyd's cycle detection
 
-The solution the interviewer as looking for is called [Floyd's Cycle-Finding Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare), or, ["The Tortoise and the Hare" more colloquially.
+The solution the interviewer was looking for is called [Floyd's Cycle-Finding Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare), or more colloquially, "The Tortoise and the Hare."
 
-The Tortoise and the Hare uses two pointers or cursors, each of which advances through the linked list. We will demonstrate the alorithm on three linked lists. We beging by placing the tortoise pointer on the first node in the list, and the hare pointer on the second. To place the hare pointer on the second node, we have to follow the link, which may lead us to Empty, or if there is just one node that links to itself, it remains on the only node.
+The Tortoise and the Hare uses two pointers or cursors, each of which advances through the linked list. We will demonstrate the algorithm on three linked lists. We begin by placing the tortoise pointer on the first node in the list, and the hare pointer on the second. To place the hare pointer on the second node, we have to follow the link, which may lead us to `Empty`, or if there is just one node that links to itself, it remains on the only node.
 
 (We will not show it here, but in the degenerate case where the list is empty, we report it does not contain a cycle).
 
@@ -167,7 +169,7 @@ And then we compare to see if both pointers point to the same node. This is the 
 
 We can report that this list has a cycle and stop.
 
-For the other two lists, their pointers do not point to the same node, so we continue as follows: We simultaneously advance the tortoise by one step, and the hare by two. For one of our two lists, the hare now points to Empty, so we can report that this list does _not_ have a cycle, and stop:
+For the other two lists, their pointers do not point to the same node, so we continue as follows: We simultaneously advance the tortoise by one step, and the hare by two. For one of our two lists, the hare now points to `Empty`, so we can report that this list does _not_ have a cycle, and stop:
 
 <div class="mermaid">
   graph LR
@@ -184,7 +186,7 @@ For the other two lists, their pointers do not point to the same node, so we con
     hare3-->Empty
 </div>
 
-The remaining list has its pointers pointing to different nodes, neither of which are empty. So we advance the tortoise one and the hare two nodes again. In fact, we will repeat advancing the tortoise on and the hare two until we detect a cycle or exhaust the list.
+The remaining list has its pointers pointing to different nodes, neither of which are `Empty`. So we advance the tortoise one and the hare two nodes again.
 
 <div class="mermaid">
   graph LR
@@ -202,14 +204,32 @@ The remaining list has its pointers pointing to different nodes, neither of whic
     hare-->g
 </div>
 
-This time the tortoise advances from `9` to `A`, while the hare advances from `B` to `C` and then to `A`. Bingo! Both pointers point to the same node, so this also contains a cycle.
+This time the tortoise advances from `9` to `A`, while the hare advances from `B` to `C` and then to `A`. Bingo! Both pointers point to the same node, so this also contains a cycle. And that is The Tortoise and the Hare.
 
-And that is [The Tortoise and the Hare](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare). As it happens, that's what the interviewer wanted to Konge to come up with.
+Remember Konge? The interviewer had clearly hoped Konge would either have already known about or invent in real time The Tortoise and the Hare. Whether it is realistic to expect stressed interviewees to replicate in 30 minutes what the Old Gods of Computer Science took months, years, or decades to discover is a matter for another essay.
+
+But what of Konge?
 
 ### brent's cycle detection algorithm
 
-The first solution Konge offered—maintaining a set of links already visited—was rejected. He was told that the problem can be solved in constant space. During the interview, Konge couldn't solve the problem in constant space, and the interview ended.
+Konge thougt about linked lists and cycles on the subway home, and then he had an "Aha!" moment. He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
 
-Konge thougt about it on the subway home, and had an "Aha!" He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
+Konge's solution also used two pointers. The first pointer, the base pointer, is placed on the first element of the list, and the second pointer, the search pointer, is placed on the second element of the list:
+
+<div class="mermaid">
+  graph LR
+    
+    base["⛺️"]
+    search["🔍"]
+    e["8"]
+    f["9"]
+    g["A"]
+    h["B"]
+    i["C"]
+
+    e-->f-->g-->h-->i-->g
+    base-->e
+    search-->f
+</div>
 
 The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search.
