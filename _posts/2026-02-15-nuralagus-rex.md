@@ -348,4 +348,19 @@ And now they match, so we report that the linked list does contain a cycle.
 
 ## Exponential Search
 
+> In computer science, an [exponential search](https://en.wikipedia.org/wiki/Exponential_search) (also called doubling search or galloping search or Struzik search) is an algorithm, created by Jon Bentley and Andrew Chi-Chih Yao in 1976, for searching sorted, unbounded/infinite lists.
+
+We won't diagram it here, but as we are given a sorted, infinite list of integers, we have indexed access: It takes the same time to obtain the 76,345th integre as it does the first. That is very different from working with linked lists.
+
+If we had a finite list of sorted integers and we wanted to know if a "target" integer was included in the list, we would use [binary search](https://en.wikipedia.org/wiki/Binary_search). But binary search does not work on an infinite list.
+
+If we could find an integer in the set that is less than the target integer, and another greater than the target inteer, we could use a binary search on that finite range of integers, even if the entire set is infinite. So exponential search is a two step process:
+
+1. Find the indices for an integer less than the target and another greater than the target, then;
+2. Do a binary search on that range of indices.
+
+The "exponential" idea is to start by checking the first integer, the one at index `0`. If that is too high, we know the integer is not present in the set. If it is the target integer, we know that it *is* present in the set. But if the first integer is less than the target integer, we then count two forward, to index `2`. If that integer is higher than the taregt integer, we can search the range `[1..2]`. Let's say it's not there.
+
+Well, we move forward and search indices `[3..6]` the same way: Check whether the integer at index `6` is higher than the target. We know that index `2` is les sthan the taret, so we can do a binary search And then `[7..14]`, and so forth, doubling the size of the range we check every time we don't find it and can't rule it out. Eventually, perhaps 
+
 <!-- The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search. -->
