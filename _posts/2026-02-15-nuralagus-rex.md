@@ -22,7 +22,7 @@ We have more time than Kóngur, so let's take a look at the problem for ourelves
 
 ### graphs
 
-We begin by defining a "graph" as a finite collection of nodes that are directly or ondirectly connected by each node's links, regardless of link direction. So this is a graph:
+We begin by defining a "graph" as a finite collection of nodes that are directly or indirectly connected by each node's links, regardless of link direction. So this is a graph:
 
 <div class="mermaid">
   graph LR
@@ -170,7 +170,7 @@ It is important to note that a node in a linked list can have many inbound links
 
 ### cycles in linked lists
 
-It is possible create a graph of nodes in a way that does not match the definition of a well-formed linked list. For example, a chain of one or more nodes that links back to its head forms a cycle:
+It is possible to create a graph of nodes that does not match the definition of a well-formed linked list. For example, a chain of one or more nodes that links back to its head forms a cycle:
 
 <div class="mermaid">
   graph LR
@@ -221,6 +221,7 @@ Here are a few things to can work out for yourself before moving on. (Recall tha
 - Can a graph contain more than one `Empty`?
 - Can a graph contain more than one cycle?
 - Can a graph contain both `Empty` _and_ a cycle?
+- Given a graph of nodes that contains `Empty`, which nodes in that graph form a linked list?
 
 And, let's say two distinct graphs each contain `Empty`. Does it matter whether we consider them two separate graphs, like this:
 
@@ -252,10 +253,6 @@ Or if we consider them the same graph, since there is only one `Empty`?
 </div>
 
 Does that change whether `1`, `2`, `3`, or `Empty` are linked lists?
-
-:
-
-Given a graph of nodes that contains `Empty`, which nodes in that graph form a linked list?
 
 ---
 
