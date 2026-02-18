@@ -32,7 +32,7 @@ Here is one way to diagram a linked list:
     b-->c-->d-->Empty
 </div>
 
-We can see that there are three nodes. The "data" for the nodes are the numbers 1, 2, and 3 respectively. The links between them are shown as arrows. The third and last node in the list does not link to another node. We show this as an arrow to a circular node, which signifies `Empty`. If we have an empty list, we show it like this:
+We can see that there is one graph with three nodes. The "data" for the nodes are the numbers 1, 2, and 3 respectively. The links between them are shown as arrows. The third and last node in the list does not link to another node. We show this as an arrow to a circular node, which signifies `Empty`. If we have an empty list, we show it like this:
 
 <div class="mermaid">
   graph LR
@@ -58,7 +58,7 @@ A well-formed linked list consists of:
 1. `Empty` by itself, or;
 2. A head node that links to the head node of a well-formed linked list, becoming the new head node of the result.
 
-So these linked lists fit that description:
+Here are three graphs, each of which is a linked list:
 
 <div class="mermaid">
   graph LR
@@ -77,7 +77,7 @@ So these linked lists fit that description:
     b-->c-->d-->Empty3
 </div>
 
-Provided such a list has a finite set of nodes, it can be traversed in finite time by starting at the head and following the links from node to node until we reach `Empty` at the end.
+Every linked list contains `Empty`.
 
 ### linked lists that don't look like linked lists
 
@@ -152,7 +152,9 @@ It is possible to wire nodes together in a way that does not match the definitio
     b-->c-->d-->b
 </div>
 
-Cycles can also be a part of larger graphs of nodes. So we must also consider the case where one or more nodes link in sequence to a cycle:
+Recall that many nodes can link to a node, but each node can only link to `Empty` or one other node. A cycle requires that each node link to another node in the cycle, therefore there can be no links from a cycle to any node not in the cycle.
+
+But there can be other nodes that link to a cycle. So we must also consider the case where one or more nodes link in sequence to a cycle:
 
 <div class="mermaid">
   graph LR
@@ -165,12 +167,12 @@ Cycles can also be a part of larger graphs of nodes. So we must also consider th
 
 In the first example, `z` and `y` form a chain that leads to `x`, which forms a cycle by linking to itself. Likewise `w` and `v` form a chain that leads to `u`, which forms a cycle with `t` and `s`.
 
-We now have two cases:
+We now have two cases for graphs containing cycles:
 
 1. A cycle can be present by itself.
-3. A  chain of nodes can link to a cycle.
+3. A chain of nodes can link to a cycle.
 
-We can draw more complicated graphs, but from the perspective of any one node in the graph, these are the only cases we must handle. For example, starting from _any_ of the nodes in this diagram is covered by one of the four cases:
+We can draw more complicated graphs, but from the perspective of any one node in the graph, these are the only cases we must handle. For example, starting from `A`, `B`, `C`, or `D` is covered by "A cycle can be present by itself," and starting from `e`, `f`, `g`, `h`, `i`, or `j` is covered by "A chain of nodes can link to a cycle:"
 
 <div class="mermaid">
   graph LR
@@ -185,9 +187,10 @@ We can draw more complicated graphs, but from the perspective of any one node in
     i-->j-->B
 </div>
 
-### suummary
+We will not prove it here, but two things we can infer are:
 
-We've seen that linked lists are either `Empty`, or a node with a link to a linked list. We've also seen that graphs of nodes can look like trees but contain many linked lists, and we've also seen that graphs of nodes can look like a linked list, but contain a cycle.
+1. Every graph containing `Empty` consists of linked lists, and;
+2. Every graph that does not contain `Empty` must contain a cycle.
 
 ---
 
