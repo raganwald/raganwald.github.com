@@ -4,19 +4,19 @@ published: true
 tags: [noindex, allonge, mermaid]
 ---
 
-Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies aorund this practice, one was that it was “A quick way to [filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming).”
+Twenty years ago, a programmer named Kóngur got an interview with a Toronto Bank. An interviewer asked Kóngur to write a function that would determine whether a linked list has a cycle or not, using constant space.
 
-Twenty years ago, a programmer named Konge got an interview with a Toronto Bank. His interviewer asked Konge to write a function that would determine whether a linked list has a cycle or not. Konge had never heard of this problem, but he had dabbled in Lisp and was familiar with cons cells, so he tried to think hard about how to detect a cycle while the clock ticked and the interviewer started at him.
+> “A linked list is a sequence of nodes that contain two fields: data, and a link to the next node. The last node is linked to a terminator used to signify the end of the list.”--[Wikipedia](https://en.wikipedia.org/wiki/Linked_list)
 
-The first solution Konge offered—maintaining a set of links already visited—was rejected. He was told that the problem can be solved in constant space. During the interview, Konge couldn't solve the problem in constant space, and the interview ended.
+Kóngur had never heard of this problem, but he had dabbled in Lisp and was familiar with cons cells, so he tried to think hard about how to detect a cycle while the clock ticked and the interviewer started at him. But Kóngur did not come up with a solution, and the interview ended.
+
+Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies around this practice, such as it being a quick way to [filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming).
+
+We have more time than Kóngur, so let's take a look at the problem for ourelves.
 
 ---
 
 # Linked Lists
-
----
-
-> “A linked list is a sequence of nodes that contain two fields: data, and a link to the next node. The last node is linked to a terminator used to signify the end of the list.”--[Wikipedia](https://en.wikipedia.org/wiki/Linked_list)
 
 ---
 
@@ -279,15 +279,15 @@ The remaining list has its pointers pointing to different nodes, neither of whic
 
 This time the tortoise advances from `9` to `A`, while the hare advances from `B` to `C` and then to `A`. Bingo! Both pointers point to the same node, so this also contains a cycle. And that is The Tortoise and the Hare.
 
-Remember Konge? The interviewer had clearly hoped Konge would either have already known about or invent in real time The Tortoise and the Hare. Whether it is realistic to expect stressed interviewees to replicate in 30 minutes what the Old Gods of Computer Science took months, years, or decades to discover is a matter for another essay.
+Remember Kóngur? The interviewer had clearly hoped Kóngur would either have already known about or invent in real time The Tortoise and the Hare. Whether it is realistic to expect stressed interviewees to replicate in 30 minutes what the Old Gods of Computer Science took months, years, or decades to discover is a matter for another essay.
 
-But what of Konge?
+But what of Kóngur?
 
-## Konge's Solution
+## Kóngur's Solution
 
-Konge thought about linked lists and cycles on the subway home, and then he had an "Aha!" moment. He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
+Kóngur thought about linked lists and cycles on the subway home, and then he had an "Aha!" moment. He wrote up his solution in Java and emailed it to the interviewer. The interviewer emailed right back: "Sorry, that is not the answer I was looking for."
 
-Konge's solution also used two pointers. The first pointer, the base pointer, is placed on the first element of the list, and the second pointer, the search pointer, is placed on the second element of the list. And there is a third addition: A search counter, which we show as the number two on the arc from search to node:
+Kóngur's solution also used two pointers. The first pointer, the base pointer, is placed on the first element of the list, and the second pointer, the search pointer, is placed on the second element of the list. And there is a third addition: A search counter, which we show as the number two on the arc from search to node:
 
 <div class="mermaid">
   graph LR
@@ -426,4 +426,4 @@ The "exponential" idea is to start by checking the first integer, the one at ind
 
 Well, we move forward and search indices `[3..6]` the same way: Check whether the integer at index `6` is higher than the target. We know that index `2` is les sthan the taret, so we can do a binary search And then `[7..14]`, and so forth, doubling the size of the range we check every time we don't find it and can't rule it out. Eventually, perhaps 
 
-<!-- The interviewer was looking for The Tortoise and the Hare, but Konge had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search. -->
+<!-- The interviewer was looking for The Tortoise and the Hare, but Kóngur had unwittingly reinvented [Brent's Cycle Dectection Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Brent's_algorithm), which is based on exponential search. -->
