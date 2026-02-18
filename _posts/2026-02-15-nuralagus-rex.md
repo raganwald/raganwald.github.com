@@ -143,20 +143,29 @@ It is important to note that a node in a linked list can have many inbound links
 
 ### cycles in linked lists
 
-It is possible to wire nodes together in a way that does not match the definition of a well-formed linked list. One such way is to introduce a cycle or loop into the list. Here are a few examples
+It is possible to wire nodes together in a way that does not match the definition of a well-formed linked list. A chain of one or more nodes that links back to its head forms a cycle:
 
 <div class="mermaid">
   graph LR
     a-->a
 
-    b-->c-->d-->d
-
-    e-->f-->e
-
-    g-->h-->i-->j-->i
+    b-->c-->d-->b
 </div>
 
-These are the cases we have to consider: A degenerate cycle with a node that links to itself, a cycle with two or more nodes forming a ring, a list of one or more nodes that leads to a degenerate cycle, and a list of one or more nodes that leads to a cycle.
+Cycles can also be a part of larger graphs of nodes. We must consider the case where one or more nodes link in sequence to a cycle:
+
+<div class="mermaid">
+  graph LR
+    z-->y-->x-->x
+
+    w-->v-->u-->t-->s-->u
+</div>
+
+We can see two distinct cases:
+
+1. A cycle can be formed by a node that links to itself;
+2. A cycle can be formed by two or more nodes in a chain that links back to its start, like an ouroborous.
+3. A cycle is present in a chain of nodes that links to a cycle
 
 We can draw more complicated graphs, but from the perspective of any one node in the graph, these are the only cases we must handle. Feel free to satisfy yourself that starting from any of the nodes in this diagram is covered by one of the four cases:
 
