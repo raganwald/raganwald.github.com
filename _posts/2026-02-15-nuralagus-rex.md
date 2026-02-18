@@ -152,7 +152,7 @@ It is possible to wire nodes together in a way that does not match the definitio
     b-->c-->d-->b
 </div>
 
-Cycles can also be a part of larger graphs of nodes. We must consider the case where one or more nodes link in sequence to a cycle:
+Cycles can also be a part of larger graphs of nodes. So we must also consider the case where one or more nodes link in sequence to a cycle:
 
 <div class="mermaid">
   graph LR
@@ -163,13 +163,14 @@ Cycles can also be a part of larger graphs of nodes. We must consider the case w
     w-->v-->u-->t-->s-->u
 </div>
 
-We can see two distinct cases:
+In the first example, `z` and `y` form a chain that leads to `x`, which forms a cycle by linking to itself. Likewise `w` and `v` form a chain that leads to `u`, which forms a cycle with `t` and `s`.
 
-1. A cycle can be formed by a node that links to itself;
-2. A cycle can be formed by two or more nodes in a chain that links back to its start, like an ouroborous.
-3. A cycle is present in a chain of nodes that links to a cycle
+We now have two cases:
 
-We can draw more complicated graphs, but from the perspective of any one node in the graph, these are the only cases we must handle. Feel free to satisfy yourself that starting from any of the nodes in this diagram is covered by one of the four cases:
+1. A cycle can be present by itself.
+3. A  chain of nodes can link to a cycle.
+
+We can draw more complicated graphs, but from the perspective of any one node in the graph, these are the only cases we must handle. For example, starting from _any_ of the nodes in this diagram is covered by one of the four cases:
 
 <div class="mermaid">
   graph LR
@@ -183,6 +184,10 @@ We can draw more complicated graphs, but from the perspective of any one node in
     
     i-->j-->B
 </div>
+
+### suummary
+
+We've seen that linked lists are either `Empty`, or a node with a link to a linked list. We've also seen that graphs of nodes can look like trees but contain many linked lists, and we've also seen that graphs of nodes can look like a linked list, but contain a cycle.
 
 ---
 
