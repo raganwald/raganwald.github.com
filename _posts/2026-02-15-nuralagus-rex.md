@@ -4,13 +4,13 @@ published: true
 tags: [noindex, allonge, mermaid]
 ---
 
-Twenty years ago, a programmer named Kóngur got an interview with a Toronto Bank. An interviewer asked Kóngur to write a function that would determine whether a linked list has a cycle or not, using constant space.
-
 > “A linked list is a sequence of nodes that contain two fields: data, and a link to the next node. The last node is linked to a terminator used to signify the end of the list.”--[Wikipedia](https://en.wikipedia.org/wiki/Linked_list)
+
+Twenty years ago, a programmer named Kóngur attended a job interview on which he was asked to write a function that would determine whether a graph of singly linked nodes whas a cycle or not, using constant space.
 
 Kóngur had never heard of this problem, but he had dabbled in Lisp and was familiar with cons cells, so he tried to think hard about how to detect a cycle while the clock ticked and the interviewer started at him. But Kóngur did not come up with a solution, and the interview ended.
 
-Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies around this practice, such as it being a quick way to [filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming).
+<!-- Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies around this practice, such as it being a quick way to [filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming). -->
 
 We have more time than Kóngur, so let's take a look at the problem for ourelves.
 
@@ -20,7 +20,34 @@ We have more time than Kóngur, so let's take a look at the problem for ourelves
 
 ---
 
-Here is one way to diagram a linked list:
+# graphs
+
+We begin by defining a "graph" as a finite collection of nodes that are directly or ondirectly connected by each node's links, regardless of link direction. So this is a graph:
+
+<div class="mermaid">
+  graph LR
+    b["1"]
+    c["2"]
+    d["3"]
+    Empty(("🚫"))
+
+    b-->d-->Empty
+    c-->d
+</div>
+
+You can see that `1`, `2`, and `3`, are all connected, even though we can't actually traverse against the direction of links. This is a single graph. But these are two graphs, not a single graph:
+
+<div class="mermaid">
+  graph LR
+    Empty(("🚫"))
+
+    a-->b-->Empty
+    c-->d-->c
+</div>
+
+### lists
+
+Here is a graph which is also a linked list. 
 
 <div class="mermaid">
   graph LR
@@ -51,7 +78,7 @@ Linked lists support a primitive operation of prepending a new node to the begin
 
 `3` is now the head of the list, and it links to `Empty`, not to another node.
 
-### well-formed linked lists
+### defining linked lists
 
 A well-formed linked list consists of:
 
@@ -81,7 +108,7 @@ Every linked list contains `Empty`.
 
 ### linked lists that don't look like linked lists
 
-Some linked lists look like trees. How many linked lists does this diagram contain?
+Some graphs look like trees, but contain linked lists. How many linked lists does this graph contain?
 
 <div class="mermaid">
   graph LR
@@ -92,7 +119,7 @@ Some linked lists look like trees. How many linked lists does this diagram conta
     D-->F
 </div>
 
-Any node that is the head of a linked list identifies the beginning of a linked list. And thus, the following seven well-formed linked lists appear in the above diagram:
+Any node that is the head of a linked list identifies the beginning of a linked list. And thus, the following seven well-formed linked lists appear in the above graph:
 
 <div class="mermaid">
   graph LR
@@ -139,11 +166,11 @@ Any node that is the head of a linked list identifies the beginning of a linked 
     D7-->F7-->Empty7
 </div>
 
-It is important to note that a node in a linked list can have many inbound links, but only one outbound link. And thus, even though a diagram like the above looks like a "tree" to us, each of the nodes in the diagram looks like a linked list: You start at the node and follow the links to `Empty` without ever interacting with other nodes in the “tree.”
+It is important to note that a node in a linked list can have many inbound links, but only one outbound link. And thus, even though a graph like the above looks like a "tree" to us, each of the nodes in the graph looks like a linked list: You start at the node and follow the links to `Empty` without ever interacting with other nodes in the “tree.”
 
 ### cycles in linked lists
 
-It is possible to wire nodes together in a way that does not match the definition of a well-formed linked list. A chain of one or more nodes that links back to its head forms a cycle:
+It is possible create a graph of nodes in a way that does not match the definition of a well-formed linked list. For example, a chain of one or more nodes that links back to its head forms a cycle:
 
 <div class="mermaid">
   graph LR
@@ -187,10 +214,42 @@ We can draw more complicated graphs, but from the perspective of any one node in
     i-->j-->B
 </div>
 
-We will not prove it here, but two things we can infer are:
+### exercises
 
-1. Every graph containing `Empty` consists of linked lists, and;
-2. Every graph that does not contain `Empty` must contain a cycle.
+Here are a few things to can work out for yourself before moving on. Recall that a graph is a collection of nodes and/or `Empty` where all nodes in teh graph are directly or indirectly 
+
+- Can a graph contain more than one `Empty`?
+- Can a graph contain more than one cycle?
+- Can a graph contain both `Empty` _and_ a cycle?
+
+And, let's say two distinct graphs each contain `Empty`. Does it matter whether we consider them two separate graphs, like this:
+
+<div class="mermaid">
+  graph LR
+    b["1"]
+    c["2"]
+    d["3"]
+    Empty(("🚫"))
+    Empty2(("🚫"))
+
+    b-->d-->Empty
+
+    c-->Empty2
+</div>
+
+Or if we consider them the same graph, since there is onlyone `Empty`?
+
+<div class="mermaid">
+  graph LR
+    b["1"]
+    c["2"]
+    d["3"]
+    Empty(("🚫"))
+
+    b-->d-->Empty
+
+    c-->Empty
+</div>
 
 ---
 
