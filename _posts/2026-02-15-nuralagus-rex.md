@@ -156,7 +156,9 @@ Cycles can also be a part of larger graphs of nodes. We must consider the case w
 
 <div class="mermaid">
   graph LR
-    z-->y-->x-->x
+    ex["x"]
+
+    z-->y-->ex-->ex
 
     w-->v-->u-->t-->s-->u
 </div>
