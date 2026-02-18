@@ -10,8 +10,6 @@ Twenty years ago, a programmer named Konge got an interview with a Toronto Bank.
 
 The first solution Konge offered—maintaining a set of links already visited—was rejected. He was told that the problem can be solved in constant space. During the interview, Konge couldn't solve the problem in constant space, and the interview ended.
 
-We'll look at 
-
 ---
 
 # Linked Lists
@@ -81,38 +79,103 @@ So these linked lists fit that description:
 
 Provided such a list has a finite set of nodes, it can be traversed in finite time by starting at the head and following the links from node to node until we reach `Empty` at the end.
 
-### cycles in linked lists
+### linked lists that don't look like linked lists
 
-It is possible to wire nodes together in a way that does not match this definition. One such way is to introduce a cycle or loop into the list. Here are a few examples
+Some linked lists look like trees. How many linked lists does this diagram contain?
 
 <div class="mermaid">
   graph LR
-    a["4"]
+    Empty(("🚫"))
 
-    a-->a
-
-    b["5"]
-    c["6"]
-    d["7"]
-
-    b-->c-->d-->b
-
-    e["8"]
-    f["9"]
-    g["A"]
-    h["B"]
-    i["C"]
-
-    e-->f-->g-->h-->i-->g
+    A-->E-->F-->Empty
+    B-->C-->E
+    D-->F
 </div>
 
-`4` is a node that links to itself. It is its own head, and has no link to `Empty`. `5-6-7` is a "cicular" list, the last node links back to the first, and there is no link to `Empty`. `8-9-A-B-C` is not a cycle, but `8` is its head, which links to `9`, which links to `A`, which forms a cycle with `B` and `C`.
+Any node that is the head of a linked list identifies the beginning of a linked list. And thus, the following seven well-formed linked lists appear in the above diagram:
 
-In all of these cases, attempting to enumerate the list by following the links between nodes will never halt. And thus, detecting whether a purported linked list contains a cycle is a useful tool to have.
+<div class="mermaid">
+  graph LR
+    Empty1(("🚫"))
+
+    F2["F"]
+    Empty2(("🚫"))
+
+    F2-->Empty2
+
+    E3["E"]
+    F3["F"]
+    Empty3(("🚫"))
+
+    E3-->F3-->Empty3
+
+
+    A4["A"]
+    E4["E"]
+    F4["F"]
+    Empty4(("🚫"))
+
+    A4-->E4-->F4-->Empty4
+
+    C5["C"]
+    E5["E"]
+    F5["F"]
+    Empty5(("🚫"))
+
+    C5-->E5-->F5-->Empty5
+
+    B6["B"]
+    C6["C"]
+    E6["E"]
+    F6["F"]
+    Empty6(("🚫"))
+
+    B6-->C6-->E6-->F6-->Empty6
+
+    D7["D"]
+    F7["F"]
+    Empty7(("🚫"))
+
+    D7-->F7-->Empty7
+</div>
+
+It is important to note that a node in a linked list can have many inbound links, but only one outbound link. And thus, even though a diagram like the above looks like a "tree" to us, each of the nodes in the diagram looks like a linked list: You start at the node and follow the links to `Empty` without ever interacting with other nodes in the “tree.”
+
+### cycles in linked lists
+
+It is possible to wire nodes together in a way that does not match the definition of a well-formed linked list. One such way is to introduce a cycle or loop into the list. Here are a few examples
+
+<div class="mermaid">
+  graph LR
+    a-->a
+
+    b-->c-->d-->d
+
+    e-->f-->e
+
+    g-->h-->i-->j-->i
+</div>
+
+These are the cases we have to consider: A degenerate cycle with a node that links to itself, a cycle with two or more nodes forming a ring, a list of one or more nodes that leads to a degenerate cycle, and a list of one or more nodes that leads to a cycle.
+
+We can draw more complicated graphs, but from the perspective of any one node in the graph, these are the only cases we must handle. Feel free to satisfy yourself that starting from any of the nodes in this diagram is covered by one of the four cases:
+
+<div class="mermaid">
+  graph LR
+    A-->B-->C-->D-->A
+
+    e-->f-->A
+
+    g-->f
+
+    h-->A
+    
+    i-->j-->B
+</div>
 
 ---
 
-# Detecting Cycles
+# Detecting Cycles in Linked Lists
 
 ---
 
@@ -136,8 +199,8 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     a["4"]
 
     a-->a
-    tortoise2-.->a
-    hare2-.->a
+    tortoise2-.-a
+    hare2-.-a
     
     tortoise["🐢"]
     hare["🐰"]
@@ -148,8 +211,8 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     i["C"]
 
     e-->f-->g-->h-->i-->g
-    tortoise-.->e
-    hare-.->f
+    tortoise-.-e
+    hare-.-f
 
     tortoise3["🐢"]
     hare3["🐰"]
@@ -159,8 +222,8 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     Empty(("🚫"))
 
     b-->c-->d-->Empty
-    tortoise3-.->b
-    hare3-.->c
+    tortoise3-.-b
+    hare3-.-c
 </div>
 
 And then we compare to see if both pointers point to the same node. This is the case for one of the three lists:
@@ -173,8 +236,8 @@ And then we compare to see if both pointers point to the same node. This is the 
     a["4"]
 
     a-->a
-    tortoise2-.->a
-    hare2-.->a
+    tortoise2-.-a
+    hare2-.-a
 </div>
 
 We can report that this list has a cycle and stop.
@@ -192,8 +255,8 @@ For the other two lists, their pointers do not point to the same node, so we con
     Empty(("🚫"))
 
     b-->c-->d-->Empty
-    tortoise3-.->c
-    hare3-.->Empty
+    tortoise3-.-c
+    hare3-.-Empty
 </div>
 
 The remaining list has its pointers pointing to different nodes, neither of which are `Empty`. So we advance the tortoise one and the hare two nodes again.
@@ -210,8 +273,8 @@ The remaining list has its pointers pointing to different nodes, neither of whic
     i["C"]
 
     e-->f-->g-->h-->i-->g
-    tortoise-.->g
-    hare-.->g
+    tortoise-.-g
+    hare-.-g
 </div>
 
 This time the tortoise advances from `9` to `A`, while the hare advances from `B` to `C` and then to `A`. Bingo! Both pointers point to the same node, so this also contains a cycle. And that is The Tortoise and the Hare.
