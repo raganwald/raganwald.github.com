@@ -20,7 +20,7 @@ We have more time than Kóngur, so let's take a look at the problem for ourelves
 
 ---
 
-# graphs
+### graphs
 
 We begin by defining a "graph" as a finite collection of nodes that are directly or ondirectly connected by each node's links, regardless of link direction. So this is a graph:
 
@@ -216,7 +216,7 @@ We can draw more complicated graphs, but from the perspective of any one node in
 
 ### exercises
 
-Here are a few things to can work out for yourself before moving on. Recall that a graph is a collection of nodes and/or `Empty` where all nodes in teh graph are directly or indirectly 
+Here are a few things to can work out for yourself before moving on. (Recall that a graph is a collection of nodes and/or `Empty` where all nodes in the graph are directly or indirectly connected via their links.)
 
 - Can a graph contain more than one `Empty`?
 - Can a graph contain more than one cycle?
@@ -237,7 +237,7 @@ And, let's say two distinct graphs each contain `Empty`. Does it matter whether 
     c-->Empty2
 </div>
 
-Or if we consider them the same graph, since there is onlyone `Empty`?
+Or if we consider them the same graph, since there is only one `Empty`?
 
 <div class="mermaid">
   graph LR
@@ -250,6 +250,12 @@ Or if we consider them the same graph, since there is onlyone `Empty`?
 
     c-->Empty
 </div>
+
+Does that change whether `1`, `2`, `3`, or `Empty` are linked lists?
+
+:
+
+Given a graph of nodes that contains `Empty`, which nodes in that graph form a linked list?
 
 ---
 
