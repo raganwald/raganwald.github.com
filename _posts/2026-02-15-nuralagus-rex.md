@@ -40,7 +40,7 @@ And here are two more:
 
 ### linked lists
 
-A _linked list_ is formed by taking any node in a digraph and all the other nodes that can be reached by following their outlinks in order. Here are three digraphs, each of which is a linked list. Consider this digraph:
+A _linked list_ consists of taking any node in a digraph that we shall call the _head_, plus all the other nodes that can be reached by following outlinks in order from teh head. There are seven linked lists in this digraph:
 
 <div class="mermaid">
   graph LR
@@ -51,7 +51,7 @@ A _linked list_ is formed by taking any node in a digraph and all the other node
     D-->F
 </div>
 
-There are seven linked lists in the above digraph:
+Here they are:
 
 <div class="mermaid">
   graph LR
@@ -97,8 +97,6 @@ There are seven linked lists in the above digraph:
 
     D7-->F7-->Empty7
 </div>
-
-It is important to note that a node in a linked list can have many inbound links, but only one outbound link. And thus, even though a digraph like the above looks like a "tree" to us, each of the nodes in the digraph looks like a linked list: You start at the node and follow the links to `Empty` without ever interacting with other nodes in the “tree.”
 
 ### cycles in linked lists
 
