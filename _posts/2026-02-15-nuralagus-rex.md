@@ -12,9 +12,11 @@ tags: [noindex, allonge, mermaid]
 
 ---
 
+Before we discuss detecting whether linked lists can have a cycle, a quick review of what a linked list *is*, using graphs
+
 ### digraphs, nodes, and links
 
-A [digraph](https://en.wikipedia.org/wiki/Directed_graph) is a finite collection of vertices we will call _nodes_, connected to each other with directed edges we will call _links_. Our digraphs will have the following properties:
+A [digraph](https://en.wikipedia.org/wiki/Directed_graph) (an abbreviation of “directed graph”) is a finite collection of vertices we will call _nodes_, connected to each other with directed edges we will call _links_. Our digraphs will have the following properties:
 
 - There are a finite number of nodes;
 - Nodes have labels that help us identify them in discussions;
@@ -26,7 +28,7 @@ Here is how we will diagram nodes and the links between them. This is a digraph:
 
 <div class="mermaid">
   graph LR
-    star-->lisa-->macintosh-->Empty(("🚫"))
+    star-->lisa-->macintosh-->Empty(("∅"))
     next-->macintosh
 </div>
 
@@ -34,7 +36,7 @@ And here are two more:
 
 <div class="mermaid">
   graph LR
-    ipod-->iphone-->ipad-->Empty(("🚫"))
+    ipod-->iphone-->ipad-->Empty(("∅"))
 
     eat-->sleep-->wake-->eat
 </div>
@@ -45,7 +47,7 @@ A [linked list](https://en.wikipedia.org/wiki/Linked_list) consists of taking an
 
 <div class="mermaid">
   graph LR
-    Empty(("🚫"))
+    Empty(("∅"))
 
     A-->E-->F-->Empty
     B-->C-->E
@@ -56,16 +58,16 @@ Here they are:
 
 <div class="mermaid">
   graph LR
-    Empty1(("🚫"))
+    Empty1(("∅"))
 
     F2["F"]
-    Empty2(("🚫"))
+    Empty2(("∅"))
 
     F2-->Empty2
 
     E3["E"]
     F3["F"]
-    Empty3(("🚫"))
+    Empty3(("∅"))
 
     E3-->F3-->Empty3
 
@@ -73,14 +75,14 @@ Here they are:
     A4["A"]
     E4["E"]
     F4["F"]
-    Empty4(("🚫"))
+    Empty4(("∅"))
 
     A4-->E4-->F4-->Empty4
 
     C5["C"]
     E5["E"]
     F5["F"]
-    Empty5(("🚫"))
+    Empty5(("∅"))
 
     C5-->E5-->F5-->Empty5
 
@@ -88,18 +90,20 @@ Here they are:
     C6["C"]
     E6["E"]
     F6["F"]
-    Empty6(("🚫"))
+    Empty6(("∅"))
 
     B6-->C6-->E6-->F6-->Empty6
 
     D7["D"]
     F7["F"]
-    Empty7(("🚫"))
+    Empty7(("∅"))
 
     D7-->F7-->Empty7
 </div>
 
 Trivially, every node in a digraph is the head of some linked list.
+
+Diagramming all the linked lists in a digraph can become tedious, so we will use a linear notation for linked lists. The seven lists above can also be written inline as `∅`, `F→∅`, `E→F→∅`, `A→E→F→∅`, `C→E→F→∅`, `B→C→E→F→∅`, `D→F→∅`.
 
 ### cycles
 
@@ -111,6 +115,8 @@ Not all linked lists end with `Empty`. For example, a chain of one or more nodes
 
     b-->c-->d-->b
 </div>
+
+We can write these inline as `
 
 Cycles are also linked lists. Cycles can have any indegree, but cycles always have no outdegrees, because all the nodes in the cycle link to other nodes in the cycle.
 
@@ -125,9 +131,10 @@ Here are two cycles that have an indegree of one:
     w-->v-->u-->t-->s-->u
 </div>
 
-In the first example, `z` and `y` form a chain that leads to `x`, which forms a cycle by linking to itself. Likewise `w` and `v` form a chain that leads to `u`, which forms a cycle with `t` and `s`.
+In the first example, `z` and `y` form a chain that leads to `x`, which forms a cycle by linking to itself. Likewise `w` and `v` form a chain that leads to `u`, which forms a cycle with `t` and `s`. Since every node in a diagraph is the head of a linked list, and every node that can be reached from the head by following links belongs to that head's linked list, it follows that `y
 
-Linked lists that start with a node and link to a cycle are also linked lists. There are ten linked lists in this digraph, and they all end in a cycle:
+
+There are ten linked lists in this digraph, and they all end in a cycle:
 
 <div class="mermaid">
   graph LR
@@ -142,12 +149,13 @@ Linked lists that start with a node and link to a cycle are also linked lists. T
     i-->j-->B
 </div>
 
-We will list them rather than drawing them, so  that we can use a notation to show a cycle inlin: `ABCDA...`, `BCDAB...`, `CDABC...`, `DABCD...`, `fABCDA...`, `efABCDA...`, `gfABCDA...`, `hABCDA...`, `jBCDAB...`, and `ijBCDAB...`
+We will list them rather than drawing them, so  that we can use a notation to show a cycle inline: `ABCDA...`, `BCDAB...`, `CDABC...`, `DABCD...`, `fABCDA...`, `efABCDA...`, `gfABCDA...`, `hABCDA...`, `jBCDAB...`, and `ijBCDAB...`
 
 ### exercises
 
 Here are a few things to can work out for yourself before moving on.
 
+- Must a linked list contain `Empty` or a cycle?
 - Can a linked list contain more than one `Empty`?
 - Can a linked list contain more than one cycle?
 - Can a linked list contain both `Empty` _and_ a cycle?
@@ -198,7 +206,7 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
     b["1"]
     c["2"]
     d["3"]
-    Empty(("🚫"))
+    Empty(("∅"))
 
     b-->c-->d-->Empty
     tortoise3-.-b
@@ -231,7 +239,7 @@ For the other two lists, their pointers do not point to the same node, so we con
     b["1"]
     c["2"]
     d["3"]
-    Empty(("🚫"))
+    Empty(("∅"))
 
     b-->c-->d-->Empty
     tortoise3-.-c
