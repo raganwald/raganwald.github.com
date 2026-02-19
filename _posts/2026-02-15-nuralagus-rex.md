@@ -103,11 +103,11 @@ Here they are:
 
 Trivially, every node in a digraph is the head of some linked list.
 
-Diagramming all the linked lists in a digraph can become tedious, so we will use a linear notation for linked lists. The seven lists above can also be written inline as `∅`, `F→∅`, `E→F→∅`, `A→E→F→∅`, `C→E→F→∅`, `B→C→E→F→∅`, `D→F→∅`.
+Diagramming all the linked lists in a digraph can become tedious, so we will use a linear notation for linked lists from now on. The seven lists above can also be written inline as `∅`, `F→∅`, `E→F→∅`, `A→E→F→∅`, `C→E→F→∅`, `B→C→E→F→∅`, `D→F→∅`.
 
 ### cycles
 
-Not all linked lists end with `Empty`. For example, a chain of one or more nodes that links back to its head forms a cycle:
+Not all linked lists end with `Empty`. For example, a chain of one or more nodes that links back to its head forms a _cycle_:
 
 <div class="mermaid">
   graph LR
@@ -116,40 +116,24 @@ Not all linked lists end with `Empty`. For example, a chain of one or more nodes
     b-->c-->d-->b
 </div>
 
-We can write these inline as `
+Cycles are also linked lists that start at any node. There are four linked lists in the above two digraphs. We notate these as `a⋯`, `b→c→d→b⋯`, `c→d→b→c⋯`, and `d→b→c→d⋯`. Cycles can have any indegree, but cycles always have no outdegrees, because all the nodes in the cycle link to other nodes in the cycle.
 
-Cycles are also linked lists. Cycles can have any indegree, but cycles always have no outdegrees, because all the nodes in the cycle link to other nodes in the cycle.
-
-Here are two cycles that have an indegree of one:
+Here is a digraph containing a cycle that has an indegree of one:
 
 <div class="mermaid">
   graph LR
     ex["x"]
 
-    z-->y-->ex-->ex
-
-    w-->v-->u-->t-->s-->u
+    w-->ex-->y-->z-->ex
 </div>
 
-In the first example, `z` and `y` form a chain that leads to `x`, which forms a cycle by linking to itself. Likewise `w` and `v` form a chain that leads to `u`, which forms a cycle with `t` and `s`. Since every node in a diagraph is the head of a linked list, and every node that can be reached from the head by following links belongs to that head's linked list, it follows that `y
-
+We notate the four linked lists in this digraph as `x→y→z→x⋯`, `y→z→x→y⋯`, `z→x→y→z⋯`, and `w→x→y→z→x⋯`.
 
 There are ten linked lists in this digraph, and they all end in a cycle:
 
-<div class="mermaid">
-  graph LR
-    A-->B-->C-->D-->A
 
-    e-->f-->A
 
-    g-->f
-
-    h-->A
-    
-    i-->j-->B
-</div>
-
-We will list them rather than drawing them, so  that we can use a notation to show a cycle inline: `ABCDA...`, `BCDAB...`, `CDABC...`, `DABCD...`, `fABCDA...`, `efABCDA...`, `gfABCDA...`, `hABCDA...`, `jBCDAB...`, and `ijBCDAB...`
+We will list them rather than drawing them, so  that we can use a notation to show a cycle inline: `ABCDA⋯`, `BCDAB⋯`, `CDABC⋯`, `DABCD⋯`, `fABCDA⋯`, `efABCDA⋯`, `gfABCDA⋯`, `hABCDA⋯`, `jBCDAB⋯`, and `ijBCDAB⋯`
 
 ### exercises
 
@@ -159,6 +143,17 @@ Here are a few things to can work out for yourself before moving on.
 - Can a linked list contain more than one `Empty`?
 - Can a linked list contain more than one cycle?
 - Can a linked list contain both `Empty` _and_ a cycle?
+
+How many linked lists are there in this digraph, and how are they notated?
+
+<div class="mermaid">
+  graph LR
+    A-->B-->C-->D-->A
+    e-->f-->A
+    g-->f
+    h-->A
+    i-->j-->B
+</div>
 
 ---
 
