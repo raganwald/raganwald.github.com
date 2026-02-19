@@ -12,7 +12,7 @@ tags: [noindex, allonge, mermaid]
 
 ---
 
-### introduction: digraphs, nodes, and links
+### digraphs, nodes, and links
 
 For the purpose of this discussion, a _digraph_ is a finite collection of vertices that we will call _nodes_, which are connected to each other with directed edges we will call _links_. Our digraphs will have the following properties:
 
@@ -25,7 +25,7 @@ For the purpose of this discussion, a _digraph_ is a finite collection of vertic
 Here is how we will diagram nodes and the links between them. This is a digraph:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     star-->lisa-->macintosh-->Empty(("🚫"))
     next-->macintosh
 </div>
@@ -33,7 +33,7 @@ Here is how we will diagram nodes and the links between them. This is a digraph:
 And here are two more:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     ipod-->iphone-->ipad-->Empty(("🚫"))
     eat-->sleep-->wake-->eat
 </div>
@@ -43,7 +43,7 @@ And here are two more:
 A _linked list_ is formed by taking any node in a digraph and all the other nodes that can be reached by following their outlinks in order. Here are three digraphs, each of which is a linked list. Consider this digraph:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     Empty(("🚫"))
 
     A-->E-->F-->Empty
@@ -54,7 +54,7 @@ A _linked list_ is formed by taking any node in a digraph and all the other node
 There are seven linked lists in the above digraph:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     Empty1(("🚫"))
 
     F2["F"]
@@ -105,7 +105,7 @@ It is important to note that a node in a linked list can have many inbound links
 It is possible to create a digraph of nodes that does not match the definition of a well-formed linked list. For example, a chain of one or more nodes that links back to its head forms a cycle:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     a-->a
 
     b-->c-->d-->b
@@ -116,7 +116,7 @@ Recall that many nodes can link to a node, but each node can only link to `Empty
 But there can be other nodes that link to a cycle. So we must also consider the case where one or more nodes link in sequence to a cycle:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     ex["x"]
 
     z-->y-->ex-->ex
@@ -134,7 +134,7 @@ We now have two cases for digraphs containing cycles:
 We can draw more complicated digraphs, but from the perspective of any one node in the digraph, these are the only cases we must handle. For example, starting from `A`, `B`, `C`, or `D` is covered by "A cycle can be present by itself," and starting from `e`, `f`, `g`, `h`, `i`, or `j` is covered by "A chain of nodes can link to a cycle:"
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     A-->B-->C-->D-->A
 
     e-->f-->A
@@ -158,7 +158,7 @@ Here are a few things to can work out for yourself before moving on. (Recall tha
 And, let's say two distinct digraphs each contain `Empty`. Does it matter whether we consider them two separate digraphs, like this:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     b["1"]
     c["2"]
     d["3"]
@@ -173,7 +173,7 @@ And, let's say two distinct digraphs each contain `Empty`. Does it matter whethe
 Or if we consider them the same digraph, since there is only one `Empty`?
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     b["1"]
     c["2"]
     d["3"]
@@ -205,7 +205,7 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
 (We will not show it here, but in the degenerate case where the list is empty, we report it does not contain a cycle).
 
 <div class="mermaid">
-  digraph LR
+  graph LR
 
     tortoise2["🐢"]
     hare2["🐰"]
@@ -242,7 +242,7 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
 And then we compare to see if both pointers point to the same node. This is the case for one of the three lists:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
 
     tortoise2["🐢"]
     hare2["🐰"]
@@ -258,7 +258,7 @@ We can report that this list has a cycle and stop.
 For the other two lists, their pointers do not point to the same node, so we continue as follows: We simultaneously advance the tortoise by one step, and the hare by two. For one of our two lists, the hare now points to `Empty`, so we can report that this list does _not_ have a cycle, and stop:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     
     tortoise3["🐢"]
     hare3["🐰"]
@@ -275,7 +275,7 @@ For the other two lists, their pointers do not point to the same node, so we con
 The remaining list has its pointers pointing to different nodes, neither of which are `Empty`. So we advance the tortoise one and the hare two nodes again.
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     
     tortoise["🐢"]
     hare["🐰"]
@@ -303,7 +303,7 @@ Kóngur thought about linked lists and cycles on the subway home, and then he ha
 Kóngur's solution also used two pointers. The first pointer, the base pointer, is placed on the first element of the list, and the second pointer, the search pointer, is placed on the second element of the list. And there is a third addition: A search counter, which we show as the number two on the arc from search to node:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     
     base["⛺️"]
     search["🔍"]
@@ -321,7 +321,7 @@ Kóngur's solution also used two pointers. The first pointer, the base pointer, 
 We compare the two pointers, they do not match. Then we move the search pointer one node forward, and decrement its counter:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     
     base["⛺️"]
     search["🔍"]
@@ -339,7 +339,7 @@ We compare the two pointers, they do not match. Then we move the search pointer 
 We compare the base and search pointers, and again they do not match. But now when we move the search pointer forward and decrement the counter, it becomes zero:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     
     base["⛺️"]
     search["🔍"]
@@ -363,7 +363,7 @@ When the counter reaches zero, we do three things:
 Here's what we have after bringing the base pointer up, advancing teh search pointer, and doubling its initial value:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     
     base["⛺️"]
     search["🔍"]
@@ -381,7 +381,7 @@ Here's what we have after bringing the base pointer up, advancing teh search poi
 We compare, see that the two nodes don't match, and increment the search pointer while decrementing the count as we did before:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     
     base["⛺️"]
     search["🔍"]
@@ -399,7 +399,7 @@ We compare, see that the two nodes don't match, and increment the search pointer
 The nodes do not match, so we do it again:
 
 <div class="mermaid">
-  digraph LR
+  graph LR
     
     base["⛺️"]
     search["🔍"]
