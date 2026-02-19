@@ -14,12 +14,12 @@ tags: [noindex, allonge, mermaid]
 
 ### digraphs, nodes, and links
 
-For the purpose of this discussion, a _digraph_ is a finite collection of vertices that we will call _nodes_, which are connected to each other with directed edges we will call _links_. Our digraphs will have the following properties:
+A [digraph](https://en.wikipedia.org/wiki/Directed_graph) is a finite collection of vertices we will call _nodes_, connected to each other with directed edges we will call _links_. Our digraphs will have the following properties:
 
 - There are a finite number of nodes;
 - Nodes have labels that help us identify them in discussions;
-- All nodes have an indegree of zero or more;
-- There is one special node, which we will label `Empty`, that has as outdegree of zero;
+- All nodes have an [indegree](https://en.wikipedia.org/wiki/Directed_graph#Indegree_and_outdegree) of zero or more;
+- There is one special node, which we will label `Empty`, that has as [outdegree](https://en.wikipedia.org/wiki/Directed_graph#Indegree_and_outdegree) of zero;
 - All other nodes will have an outdegree of one.
 
 Here is how we will diagram nodes and the links between them. This is a digraph:
@@ -35,12 +35,13 @@ And here are two more:
 <div class="mermaid">
   graph LR
     ipod-->iphone-->ipad-->Empty(("🚫"))
+
     eat-->sleep-->wake-->eat
 </div>
 
 ### linked lists
 
-A _linked list_ consists of taking any node in a digraph that we shall call the _head_, plus all the other nodes that can be reached by following outlinks in order from teh head. There are seven linked lists in this digraph:
+A [linked list](https://en.wikipedia.org/wiki/Linked_list) consists of taking any node in a digraph that we shall call the _head_, plus all the other nodes that can be reached by following outlinks in order from the head. There are seven linked lists in this digraph:
 
 <div class="mermaid">
   graph LR
