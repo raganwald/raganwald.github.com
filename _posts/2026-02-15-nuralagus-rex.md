@@ -112,9 +112,9 @@ Not all linked lists end with `Empty`. For example, a chain of one or more nodes
     b-->c-->d-->b
 </div>
 
-Recall that many nodes can link to a node, but each node can only link to `Empty` or one other node. A cycle requires that each node link to another node in the cycle, therefore there can be no links from a cycle to any node not in the cycle: **Cycles can have any indegree, but cycles always have no outdegrees, because all the nodes in the cycle link to other nodes in the cycle.**
+Cycles are also linked lists. Cycles can have any indegree, but cycles always have no outdegrees, because all the nodes in the cycle link to other nodes in the cycle.
 
-Here are two cycles that
+Here are two cycles that have an indegree of one:
 
 <div class="mermaid">
   graph LR
@@ -127,12 +127,7 @@ Here are two cycles that
 
 In the first example, `z` and `y` form a chain that leads to `x`, which forms a cycle by linking to itself. Likewise `w` and `v` form a chain that leads to `u`, which forms a cycle with `t` and `s`.
 
-We now have two cases for digraphs containing cycles:
-
-1. A cycle can be present by itself.
-3. A chain of nodes can link to a cycle.
-
-We can draw more complicated digraphs, but from the perspective of any one node in the digraph, these are the only cases we must handle. For example, starting from `A`, `B`, `C`, or `D` is covered by "A cycle can be present by itself," and starting from `e`, `f`, `g`, `h`, `i`, or `j` is covered by "A chain of nodes can link to a cycle:"
+Linked lists that start with a node and link to a cycle are also linked lists. There are ten linked lists in this digraph, and they all end in a cycle:
 
 <div class="mermaid">
   graph LR
@@ -147,45 +142,15 @@ We can draw more complicated digraphs, but from the perspective of any one node 
     i-->j-->B
 </div>
 
+We will list them rather than drawing them, so  that we can use a notation to show a cycle inlin: `ABCDA...`, `BCDAB...`, `CDABC...`, `DABCD...`, `fABCDA...`, `efABCDA...`, `gfABCDA...`, `hABCDA...`, `jBCDAB...`, and `ijBCDAB...`
+
 ### exercises
 
-Here are a few things to can work out for yourself before moving on. (Recall that a digraph is a collection of nodes and/or `Empty` where all nodes in the digraph are directly or indirectly connected via their links.)
+Here are a few things to can work out for yourself before moving on.
 
-- Can a digraph contain more than one `Empty`?
-- Can a digraph contain more than one cycle?
-- Can a digraph contain both `Empty` _and_ a cycle?
-- Given a digraph of nodes that contains `Empty`, which nodes in that digraph form a linked list?
-
-And, let's say two distinct digraphs each contain `Empty`. Does it matter whether we consider them two separate digraphs, like this:
-
-<div class="mermaid">
-  graph LR
-    b["1"]
-    c["2"]
-    d["3"]
-    Empty(("🚫"))
-    Empty2(("🚫"))
-
-    b-->d-->Empty
-
-    c-->Empty2
-</div>
-
-Or if we consider them the same digraph, since there is only one `Empty`?
-
-<div class="mermaid">
-  graph LR
-    b["1"]
-    c["2"]
-    d["3"]
-    Empty(("🚫"))
-
-    b-->d-->Empty
-
-    c-->Empty
-</div>
-
-Does that change whether `1`, `2`, `3`, or `Empty` are linked lists?
+- Can a linked list contain more than one `Empty`?
+- Can a linked list contain more than one cycle?
+- Can a linked list contain both `Empty` _and_ a cycle?
 
 ---
 
