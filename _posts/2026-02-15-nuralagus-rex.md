@@ -99,9 +99,11 @@ Here they are:
     D7-->F7-->Empty7
 </div>
 
-### cycles in linked lists
+Trivially, every node in a digraph is the head of some linked list.
 
-It is possible to create a digraph of nodes that does not match the definition of a well-formed linked list. For example, a chain of one or more nodes that links back to its head forms a cycle:
+### cycles
+
+Not all linked lists end with `Empty`. For example, a chain of one or more nodes that links back to its head forms a cycle:
 
 <div class="mermaid">
   graph LR
@@ -110,9 +112,9 @@ It is possible to create a digraph of nodes that does not match the definition o
     b-->c-->d-->b
 </div>
 
-Recall that many nodes can link to a node, but each node can only link to `Empty` or one other node. A cycle requires that each node link to another node in the cycle, therefore there can be no links from a cycle to any node not in the cycle.
+Recall that many nodes can link to a node, but each node can only link to `Empty` or one other node. A cycle requires that each node link to another node in the cycle, therefore there can be no links from a cycle to any node not in the cycle: **Cycles can have any indegree, but cycles always have no outdegrees, because all the nodes in the cycle link to other nodes in the cycle.**
 
-But there can be other nodes that link to a cycle. So we must also consider the case where one or more nodes link in sequence to a cycle:
+Here are two cycles that
 
 <div class="mermaid">
   graph LR
