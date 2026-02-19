@@ -6,112 +6,44 @@ tags: [noindex, allonge, mermaid]
 
 > “A linked list is a sequence of nodes that contain two fields: data, and a link to the next node. The last node is linked to a terminator used to signify the end of the list.”--[Wikipedia](https://en.wikipedia.org/wiki/Linked_list)
 
-Twenty years ago, a programmer named Kóngur attended a job interview on which he was asked to write a function that would determine whether a graph of singly linked nodes whas a cycle or not, using constant space.
-
-Kóngur had never heard of this problem, but he had dabbled in Lisp and was familiar with cons cells, so he tried to think hard about how to detect a cycle while the clock ticked and the interviewer started at him. But Kóngur did not come up with a solution, and the interview ended.
-
-<!-- Once upon a time, it was common in software job interviews to be asked to write code to solve some small problem. There were various philosophies around this practice, such as it being a quick way to [filter out those with no programming ability whatsoever](https://en.wikipedia.org/wiki/Fizz_buzz#Programming). -->
-
-We have more time than Kóngur, so let's take a look at the problem for ourelves.
-
 ---
 
 # Linked Lists
 
 ---
 
-### graphs
+### introduction: digraphs, nodes, and links
 
-We begin by defining a "graph" as a finite collection of nodes that are directly or indirectly connected by each node's links, regardless of link direction. So this is a graph:
+For the purpose of this discussion, a _digraph_ is a finite collection of vertices that we will call _nodes_, which are connected to each other with directed edges we will call _links_. Our digraphs will have the following properties:
+
+- There are a finite number of nodes;
+- Nodes have labels that help us identify them in discussions;
+- All nodes have an indegree of zero or more;
+- There is one special node, which we will label `Empty`, that has as outdegree of zero;
+- All other nodes will have an outdegree of one.
+
+Here is how we will diagram nodes and the links between them. This is a digraph:
 
 <div class="mermaid">
-  graph LR
-    b["1"]
-    c["2"]
-    d["3"]
-    Empty(("🚫"))
-
-    b-->d-->Empty
-    c-->d
+  digraph LR
+    star-->lisa-->macintosh-->Empty(("🚫"))
+    next-->macintosh
 </div>
 
-You can see that `1`, `2`, and `3`, are all connected, even though we can't actually traverse against the direction of links. This is a single graph. But these are two graphs, not a single graph:
+And here are two more:
 
 <div class="mermaid">
-  graph LR
-    Empty(("🚫"))
-
-    a-->b-->Empty
-    c-->d-->c
+  digraph LR
+    ipod-->iphone-->ipad-->Empty(("🚫"))
+    eat-->sleep-->wake-->eat
 </div>
 
-### lists
+### linked lists
 
-Here is a graph which is also a linked list. 
-
-<div class="mermaid">
-  graph LR
-    b["1"]
-    c["2"]
-    d["3"]
-    Empty(("🚫"))
-
-    b-->c-->d-->Empty
-</div>
-
-We can see that there is one graph with three nodes. The "data" for the nodes are the numbers 1, 2, and 3 respectively. The links between them are shown as arrows. The third and last node in the list does not link to another node. We show this as an arrow to a circular node, which signifies `Empty`. If we have an empty list, we show it like this:
+A _linked list_ is formed by taking any node in a digraph and all the other nodes that can be reached by following their outlinks in order. Here are three digraphs, each of which is a linked list. Consider this digraph:
 
 <div class="mermaid">
-  graph LR
-    Empty(("🚫"))
-</div>
-
-Linked lists support a primitive operation of prepending a new node to the beginning of the list, in constant time. So if we prepending "3" to the list, we get:
-
-<div class="mermaid">
-  graph LR
-    d["3"]
-    Empty(("🚫"))
-
-    d-->Empty
-</div>
-
-`3` is now the head of the list, and it links to `Empty`, not to another node.
-
-### defining linked lists
-
-A well-formed linked list consists of:
-
-1. `Empty` by itself, or;
-2. A head node that links to the head node of a well-formed linked list, becoming the new head node of the result.
-
-Here are three graphs, each of which is a linked list:
-
-<div class="mermaid">
-  graph LR
-    b["1"]
-    c["2"]
-    d["3"]
-    d2["3"]
-    Empty(("🚫"))
-    Empty2(("🚫"))
-    Empty3(("🚫"))
-
-    Empty
-
-    d2--> Empty2
-
-    b-->c-->d-->Empty3
-</div>
-
-Every linked list contains `Empty`.
-
-### linked lists that don't look like linked lists
-
-Some graphs look like trees, but contain linked lists. How many linked lists does this graph contain?
-
-<div class="mermaid">
-  graph LR
+  digraph LR
     Empty(("🚫"))
 
     A-->E-->F-->Empty
@@ -119,10 +51,10 @@ Some graphs look like trees, but contain linked lists. How many linked lists doe
     D-->F
 </div>
 
-Any node that is the head of a linked list identifies the beginning of a linked list. And thus, the following seven well-formed linked lists appear in the above graph:
+There are seven linked lists in the above digraph:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     Empty1(("🚫"))
 
     F2["F"]
@@ -166,14 +98,14 @@ Any node that is the head of a linked list identifies the beginning of a linked 
     D7-->F7-->Empty7
 </div>
 
-It is important to note that a node in a linked list can have many inbound links, but only one outbound link. And thus, even though a graph like the above looks like a "tree" to us, each of the nodes in the graph looks like a linked list: You start at the node and follow the links to `Empty` without ever interacting with other nodes in the “tree.”
+It is important to note that a node in a linked list can have many inbound links, but only one outbound link. And thus, even though a digraph like the above looks like a "tree" to us, each of the nodes in the digraph looks like a linked list: You start at the node and follow the links to `Empty` without ever interacting with other nodes in the “tree.”
 
 ### cycles in linked lists
 
-It is possible to create a graph of nodes that does not match the definition of a well-formed linked list. For example, a chain of one or more nodes that links back to its head forms a cycle:
+It is possible to create a digraph of nodes that does not match the definition of a well-formed linked list. For example, a chain of one or more nodes that links back to its head forms a cycle:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     a-->a
 
     b-->c-->d-->b
@@ -184,7 +116,7 @@ Recall that many nodes can link to a node, but each node can only link to `Empty
 But there can be other nodes that link to a cycle. So we must also consider the case where one or more nodes link in sequence to a cycle:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     ex["x"]
 
     z-->y-->ex-->ex
@@ -194,15 +126,15 @@ But there can be other nodes that link to a cycle. So we must also consider the 
 
 In the first example, `z` and `y` form a chain that leads to `x`, which forms a cycle by linking to itself. Likewise `w` and `v` form a chain that leads to `u`, which forms a cycle with `t` and `s`.
 
-We now have two cases for graphs containing cycles:
+We now have two cases for digraphs containing cycles:
 
 1. A cycle can be present by itself.
 3. A chain of nodes can link to a cycle.
 
-We can draw more complicated graphs, but from the perspective of any one node in the graph, these are the only cases we must handle. For example, starting from `A`, `B`, `C`, or `D` is covered by "A cycle can be present by itself," and starting from `e`, `f`, `g`, `h`, `i`, or `j` is covered by "A chain of nodes can link to a cycle:"
+We can draw more complicated digraphs, but from the perspective of any one node in the digraph, these are the only cases we must handle. For example, starting from `A`, `B`, `C`, or `D` is covered by "A cycle can be present by itself," and starting from `e`, `f`, `g`, `h`, `i`, or `j` is covered by "A chain of nodes can link to a cycle:"
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     A-->B-->C-->D-->A
 
     e-->f-->A
@@ -216,17 +148,17 @@ We can draw more complicated graphs, but from the perspective of any one node in
 
 ### exercises
 
-Here are a few things to can work out for yourself before moving on. (Recall that a graph is a collection of nodes and/or `Empty` where all nodes in the graph are directly or indirectly connected via their links.)
+Here are a few things to can work out for yourself before moving on. (Recall that a digraph is a collection of nodes and/or `Empty` where all nodes in the digraph are directly or indirectly connected via their links.)
 
-- Can a graph contain more than one `Empty`?
-- Can a graph contain more than one cycle?
-- Can a graph contain both `Empty` _and_ a cycle?
-- Given a graph of nodes that contains `Empty`, which nodes in that graph form a linked list?
+- Can a digraph contain more than one `Empty`?
+- Can a digraph contain more than one cycle?
+- Can a digraph contain both `Empty` _and_ a cycle?
+- Given a digraph of nodes that contains `Empty`, which nodes in that digraph form a linked list?
 
-And, let's say two distinct graphs each contain `Empty`. Does it matter whether we consider them two separate graphs, like this:
+And, let's say two distinct digraphs each contain `Empty`. Does it matter whether we consider them two separate digraphs, like this:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     b["1"]
     c["2"]
     d["3"]
@@ -238,10 +170,10 @@ And, let's say two distinct graphs each contain `Empty`. Does it matter whether 
     c-->Empty2
 </div>
 
-Or if we consider them the same graph, since there is only one `Empty`?
+Or if we consider them the same digraph, since there is only one `Empty`?
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     b["1"]
     c["2"]
     d["3"]
@@ -273,7 +205,7 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
 (We will not show it here, but in the degenerate case where the list is empty, we report it does not contain a cycle).
 
 <div class="mermaid">
-  graph LR
+  digraph LR
 
     tortoise2["🐢"]
     hare2["🐰"]
@@ -310,7 +242,7 @@ The Tortoise and the Hare uses two pointers or cursors, each of which advances t
 And then we compare to see if both pointers point to the same node. This is the case for one of the three lists:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
 
     tortoise2["🐢"]
     hare2["🐰"]
@@ -326,7 +258,7 @@ We can report that this list has a cycle and stop.
 For the other two lists, their pointers do not point to the same node, so we continue as follows: We simultaneously advance the tortoise by one step, and the hare by two. For one of our two lists, the hare now points to `Empty`, so we can report that this list does _not_ have a cycle, and stop:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     
     tortoise3["🐢"]
     hare3["🐰"]
@@ -343,7 +275,7 @@ For the other two lists, their pointers do not point to the same node, so we con
 The remaining list has its pointers pointing to different nodes, neither of which are `Empty`. So we advance the tortoise one and the hare two nodes again.
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     
     tortoise["🐢"]
     hare["🐰"]
@@ -371,7 +303,7 @@ Kóngur thought about linked lists and cycles on the subway home, and then he ha
 Kóngur's solution also used two pointers. The first pointer, the base pointer, is placed on the first element of the list, and the second pointer, the search pointer, is placed on the second element of the list. And there is a third addition: A search counter, which we show as the number two on the arc from search to node:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     
     base["⛺️"]
     search["🔍"]
@@ -389,7 +321,7 @@ Kóngur's solution also used two pointers. The first pointer, the base pointer, 
 We compare the two pointers, they do not match. Then we move the search pointer one node forward, and decrement its counter:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     
     base["⛺️"]
     search["🔍"]
@@ -407,7 +339,7 @@ We compare the two pointers, they do not match. Then we move the search pointer 
 We compare the base and search pointers, and again they do not match. But now when we move the search pointer forward and decrement the counter, it becomes zero:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     
     base["⛺️"]
     search["🔍"]
@@ -431,7 +363,7 @@ When the counter reaches zero, we do three things:
 Here's what we have after bringing the base pointer up, advancing teh search pointer, and doubling its initial value:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     
     base["⛺️"]
     search["🔍"]
@@ -449,7 +381,7 @@ Here's what we have after bringing the base pointer up, advancing teh search poi
 We compare, see that the two nodes don't match, and increment the search pointer while decrementing the count as we did before:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     
     base["⛺️"]
     search["🔍"]
@@ -467,7 +399,7 @@ We compare, see that the two nodes don't match, and increment the search pointer
 The nodes do not match, so we do it again:
 
 <div class="mermaid">
-  graph LR
+  digraph LR
     
     base["⛺️"]
     search["🔍"]
