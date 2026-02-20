@@ -21,8 +21,8 @@ A [digraph](https://en.wikipedia.org/wiki/Directed_graph) (an abbreviation of �
 - There are a finite number of nodes;
 - Nodes have labels that help us identify them in discussions;
 - All nodes have an [indegree](https://en.wikipedia.org/wiki/Directed_graph#Indegree_and_outdegree) of zero or more;
-- There is one special node, which we will label `Empty`, that has as [outdegree](https://en.wikipedia.org/wiki/Directed_graph#Indegree_and_outdegree) of zero;
-- All other nodes will have an outdegree of one.
+- There is one special node, which we will label `∅` ("empty"), that has an [outdegree](https://en.wikipedia.org/wiki/Directed_graph#Indegree_and_outdegree) of zero;
+- All other nodes have an outdegree of one.
 
 Here is how we will diagram nodes and the links between them. This is a digraph:
 
@@ -107,7 +107,7 @@ Diagramming all the linked lists in a digraph can become tedious, so we will use
 
 ### cycles
 
-Not all linked lists end with `Empty`. For example, a chain of one or more nodes that links back to its head forms a _cycle_:
+Not all linked lists end with `∅`. For example, a chain of one or more nodes that links back to its head forms a _cycle_:
 
 <div class="mermaid">
   graph LR
@@ -129,27 +129,20 @@ Here is a digraph containing a cycle that has an indegree of one:
 
 We notate the four linked lists in this digraph as `x→y→z→x⋯`, `y→z→x→y⋯`, `z→x→y→z⋯`, and `w→x→y→z→x⋯`.
 
-There are ten linked lists in this digraph, and they all end in a cycle:
-
-
-
-We will list them rather than drawing them, so  that we can use a notation to show a cycle inline: `ABCDA⋯`, `BCDAB⋯`, `CDABC⋯`, `DABCD⋯`, `fABCDA⋯`, `efABCDA⋯`, `gfABCDA⋯`, `hABCDA⋯`, `jBCDAB⋯`, and `ijBCDAB⋯`
-
 ### exercises
 
-Here are a few things to can work out for yourself before moving on.
+Here are a few things to work out for yourself before moving on.
 
-- Must a linked list contain `Empty` or a cycle?
-- Can a linked list contain more than one `Empty`?
+- Must a linked list contain `∅` or a cycle?
+- Can a linked list contain more than one `∅`?
 - Can a linked list contain more than one cycle?
-- Can a linked list contain both `Empty` _and_ a cycle?
+- Can a linked list contain both `∅` _and_ a cycle?
 
 How many linked lists are there in this digraph, and how are they notated?
 
 <div class="mermaid">
   graph LR
-    A-->B-->C-->D-->A
-    e-->f-->A
+    e-->f-->A-->B-->C-->D-->A
     g-->f
     h-->A
     i-->j-->B
@@ -169,7 +162,7 @@ How many linked lists are there in this digraph, and how are they notated?
 
 The solution the interviewer was looking for is called [Floyd's Cycle-Finding Algorithm](https://en.wikipedia.org/wiki/Cycle_detection#Floyd's_tortoise_and_hare), or more colloquially, "The Tortoise and the Hare."
 
-The Tortoise and the Hare uses two pointers or cursors, each of which advances through the linked list. We will demonstrate the algorithm on three linked lists. We begin by placing the tortoise pointer on the first node in the list, and the hare pointer on the second. To place the hare pointer on the second node, we have to follow the link, which may lead us to `Empty`, or if there is just one node that links to itself, it remains on the only node.
+The Tortoise and the Hare uses two pointers or cursors, each of which advances through the linked list. We will demonstrate the algorithm on three linked lists. We begin by placing the tortoise pointer on the first node in the list, and the hare pointer on the second. To place the hare pointer on the second node, we have to follow the link, which may lead us to `∅`, or if there is just one node that links to itself, it remains on the only node.
 
 (We will not show it here, but in the degenerate case where the list is empty, we report it does not contain a cycle).
 
@@ -224,7 +217,7 @@ And then we compare to see if both pointers point to the same node. This is the 
 
 We can report that this list has a cycle and stop.
 
-For the other two lists, their pointers do not point to the same node, so we continue as follows: We simultaneously advance the tortoise by one step, and the hare by two. For one of our two lists, the hare now points to `Empty`, so we can report that this list does _not_ have a cycle, and stop:
+For the other two lists, their pointers do not point to the same node, so we continue as follows: We simultaneously advance the tortoise by one step, and the hare by two. For one of our two lists, the hare now points to `∅`, so we can report that this list does _not_ have a cycle, and stop:
 
 <div class="mermaid">
   graph LR
@@ -241,7 +234,7 @@ For the other two lists, their pointers do not point to the same node, so we con
     hare3-.-Empty
 </div>
 
-The remaining list has its pointers pointing to different nodes, neither of which are `Empty`. So we advance the tortoise one and the hare two nodes again.
+The remaining list has its pointers pointing to different nodes, neither of which are `∅`. So we advance the tortoise one and the hare two nodes again.
 
 <div class="mermaid">
   graph LR
