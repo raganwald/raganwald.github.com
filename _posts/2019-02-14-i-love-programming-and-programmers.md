@@ -1510,7 +1510,7 @@ Here are the three families of languages and automata that we reviewed:
 
 An obvious question is, _Do you need to know the difference between a regular language and a context-free language if all you want to do is write some code that recognizes balanced parentheses?_
 
-The answer is, _Probably not_. Consider cooking. A [food scientist][food science] knows all sorts of things about why certain recipes do what they do. A [chef de cuisine] (or "chef") knows how to cook and improvise recipes. Good chefs end up acquiring a fair bit of food science in their careers, and they know how to apply it, but they spend most of their time cooking, not thinking about what is going on inside the food when it cooks.
+The answer is, _probably not_. Consider cooking. A [food scientist][food science] knows all sorts of things about why certain recipes do what they do. A [chef de cuisine] (or "chef") knows how to cook and improvise recipes. Good chefs end up acquiring a fair bit of food science in their careers, and they know how to apply it, but they spend most of their time cooking, not thinking about what is going on inside the food when it cooks.
 
 [food science]: https://en.wikipedia.org/wiki/Food_science
 [chef de cuisine]: https://en.wikipedia.org/wiki/Chef
@@ -1521,7 +1521,7 @@ There are some areas where at least a smattering of familiarity with this partic
 
 But on a day-to-day basis, if asked to recognize balanced parentheses?
 
-The very best answer is probably `/^(?'balanced'(?:\(\g'balanced'\))*)$/x` for those whose tools support recursive regular expressions, or a simple loop with a counter or a stack.
+The very best answer is probably `/^(?'balanced'(?:\(\g'balanced'\))*)$/x` for those whose tools support recursive regular expressions, a simple loop with a counter, or a stack.
 
 ---
 
@@ -1550,32 +1550,6 @@ For those comfortable with code examples written in Ruby, the general subject of
 ---
 
 [![Beinecke Rare Book & Manuscript Library Interior](/assets/images/pushdown/beinecke-interior.jpg)](https://www.flickr.com/photos/gnrklk/33574585673)
-
----
-
-### a bonus problem
-
-Enthusiastic readers can try their hand at writing a function or generator that prints/generates all possible valid balanced parentheses strings. Yes, such a function will obviously run to infinity if left unchecked, a generator will be easier to work with.
-
-The main thing to keep in mind is that such a generator must be arranged so that every finite balanced parentheses string must be output after a finite number of iterations. The following pseudo-code will not work:
-
-```javascript
-function * balanced () {
-  yield ''; // the only valid string with no top-level pairs
-
-  for (let p = 0, true; ++p) {
-    // yield every balanced parentheses string with p top-level parentheses
-  }
-}
-```
-
-A generator function written with this structure would first yield an infinite number of strings with a single top-level pair of balanced parentheses, e.g. `(), (()), ((())), (((()))), ...`. Therefore, strings like `()()` and `()()()`, which are both valid, would not appear within a finite number of iterations.
-
-It's an interesting exercise, and very much related to grammars and production rules.
-
----
-
-[![Birmingham Central Library](/assets/images/pushdown/birmingham.jpg)](https://www.flickr.com/photos/frmark/5308847783)
 
 ---
 
