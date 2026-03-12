@@ -8,15 +8,45 @@ tags: [noindex, allonge, mermaid]
 
 ---
 
-# Linked Lists
+# What is a Linked List?
 
 ---
 
-Before we discuss detecting whether linked lists can have a cycle, a quick review of what a linked list *is*, using graphs
+A linked list is a [digraph](https://en.wikipedia.org/wiki/Directed_graph) consisting of one or more vertices—which we will call _nodes_—connected by directed arcs—which we will call _links_. Linked Lists are often used to represent ordered collections.
 
-### digraphs, nodes, and links
+A linked list represents an ordered collection as 
 
-A [digraph](https://en.wikipedia.org/wiki/Directed_graph) (an abbreviation of “directed graph”) is a finite collection of vertices we will call _nodes_, connected to each other with directed edges we will call _links_. Our digraphs will have the following properties:
+The simplest linked list is a special value, and it is the only type of linked list to have only one node. This is used to represent an empty list, and we will call it `∅`, after the empty set.
+
+<div class="mermaid">
+  graph LR
+    empty(("∅"))
+</div>
+
+All linked lists have a head node, and thus `∅` is its own head node. We will show the head node in diagrams with a box caption connected to the head node by a dashed line:
+
+<div class="mermaid">
+  graph LR
+    head{{head}}-.-empty(("∅"))
+</div>
+
+A linked list can also have one or more values connected linearly, ending with `∅`. Each value is represented by a node that contains the value, and a link to the next node. The last node in the list links to `∅`. Here are three linked lists with one, two, and three values respectively:
+
+<div class="mermaid">
+  graph LR
+    head{{head}}-.-a((a))-->empty(("∅"))
+    head2{{head}}-.-alpha((alpha))-->beta((beta))-->empty2(("∅"))
+    head3{{head}}-.-yabba((yabba))-->dabba((dabba))-->doo((doo))-->empty3(("∅"))
+</div>
+
+
+The principle feature of a linked list is that all of the nodes are interconnected by single links, and thus there is an ordering from _head_ to _tail_:
+
+<div class="mermaid">
+  graph LR
+    star-->lisa-->macintosh-->Empty(("∅"))
+    next-->macintosh
+</div>
 
 - There are a finite number of nodes;
 - Nodes have labels that help us identify them in discussions;
@@ -43,7 +73,16 @@ And here are two more:
 
 ### linked lists
 
-A [linked list](https://en.wikipedia.org/wiki/Linked_list) consists of taking any node in a digraph that we shall call the _head_, plus all the other nodes that can be reached by following outlinks in order from the head. There are seven linked lists in this digraph:
+A [linked list](https://en.wikipedia.org/wiki/Linked_list) is a digraph that consists of a "head" node, along with every node reachable from the head node. These are linked lists:
+
+<div class="mermaid">
+  graph LR
+    Empty(("∅"))
+
+    A-->E-->F-->Empty
+    B-->C-->E
+    D-->F
+</div>
 
 <div class="mermaid">
   graph LR

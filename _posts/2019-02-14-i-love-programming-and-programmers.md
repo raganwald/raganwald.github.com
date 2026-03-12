@@ -450,7 +450,7 @@ Contradiction! Therefore, our original assumption—that `B` exists—is false. 
 
 We now know that "balanced parentheses" cannot be recognized with one of the simplest possible computing machines, a finite state automaton. This leads us to ask, "What is the simplest form of machine that can recognize balanced parentheses?" Computer scientists have studied this and related problems, and there are a few ideal machines that are more powerful than a DFA, but less powerful than a Turing Machine.
 
-All of them have some mechanism for encoding an infinite number of states by adding some form of "external state" to the machine's existing "internal state."This is very much like a program in a von Neumann machine. Leaving out self-modifying code, the position of the program counter is a program's internal state, while memory that it reads and writes is its external state.[^inf]
+All of them have some mechanism for encoding an infinite number of states by adding some form of "external state" to the machine's existing "internal state." This is very much like a program in a von Neumann machine. Leaving out self-modifying code, the position of the program counter is a program's internal state, while memory that it reads and writes is its external state.[^inf]
 
 [^inf]: No matter how a machine is organized, if it has a finite number of states, it cannot recognized balanced parenthese by our proof above. Fr example, if we modify our DFA to allow an on/off flag for each state, and we have a finite number of states, our machine is not more powerful than a standard DFA, it is just more compact: Its definition is `log2` the size of a standard DFA, but it still has a finite number of possible different states.
 
