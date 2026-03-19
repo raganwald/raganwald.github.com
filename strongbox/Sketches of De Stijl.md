@@ -1,33 +1,5 @@
----
-title: Balanced Parentheses in de Stijl of Hilbert
-published: true
-tags: [noindex, allonge, mermaid]
----
 
-![Side table and roodblaustoel, design by Gerrit Rietveld](/assets/de-stijl/side-table-and-roodblaustoel.jpg)
 
----
-
-# Balanced Parentheses
-
----
-
-In [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata], we looked at a few types of grammars, and the formal machines capable of recognizing languages with those grammars. One of the languages we looked at was balanced parenetheses, a simple [Dyck Language].
-
-Here are some examples of strings containing simple--`(` and `)`--parentheses, along with whether or not they are balanced:
-
-|Input|Balanced?|Comment|
-|:----|:-----|:------|
-|`''`|`true`|the empty string is balanced|
-|`'()'`|`true`||
-|`'(())'`|`true`|parentheses can nest|
-|`'()()'`|`true`|multiple pairs are acceptable|
-|`'(()()())()'`|`true`|multiple pairs can nest|
-|`'((()'`|`false`|missing closing parentheses|
-|`'()))'`|`false`|missing opening parentheses|
-|`')('`|`false`|close before open|
-
-<br/>
 
 ### types and alphabets
 
@@ -61,10 +33,10 @@ For the remainder of our discussion, we'll use standard parentheses, but everyth
 Dyck languages have a few interesting properties:
 
 1. Dyck languages have [context-sensitive grammars][A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata].
-1. Dyck languages can be recognized with both [pushdown automata][A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata] and [recursive regular expressions][A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata].
-1. Dyck languages are *concatenative*: If `A₁` and `A₂` are words in the Dyck language with vocabulary `Vᴬ`, then the word `A₁A₂` is also a word in the Dyck language with alphabet `Vᴬ`.
-1. Likewise, if `D` is a word in the Dyck language with alphabet `Vᴰ`, and `E` is a word in the Dyck language with alphabet `Vᴱ`, then the word`DE` will be a word in the Dyck language with alphabet `Vᴰ ∪ Vᴱ`, the *union* of the two alphabets.
-1. There are several ways to express the grammar of Dyck languages, but we will use `S → ε | "(" S ")" S` for Dyck-1 languages, and `S → ε | "(" S ")" S | "[" S "]" S | "{" S "}" S` for Dyck-3 languages.
+2. Dyck languages can be recognized with both [pushdown automata][A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata] and [recursive regular expressions][A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata].
+3. Dyck languages are *concatenative*: If `A₁` and `A₂` are words in the Dyck language with vocabulary `Vᴬ`, then the word `A₁A₂` is also a word in the Dyck language with alphabet `Vᴬ`.
+4. Likewise, if `D` is a word in the Dyck language with alphabet `Vᴰ`, and `E` is a word in the Dyck language with alphabet `Vᴱ`, then the word`DE` will be a word in the Dyck language with alphabet `Vᴰ ∪ Vᴱ`, the *union* of the two alphabets.
+5. There are several ways to express the grammar of Dyck languages, but we will use `S → ε | "(" S ")" S` for Dyck-1 languages, and `S → ε | "(" S ")" S | "[" S "]" S | "{" S "}" S` for Dyck-3 languages.
 
 Now that we've reviewed balanced parentheses, we're ready to solve some problems.
 
@@ -102,11 +74,6 @@ There are a few ways to define "balanced parentheses." The one we will use as th
 2. Given any two balanced strings b<sub>x</sub> and b<sub>y</sub>, The string `(`b<sub>x</sub>`)`b<sub>x</sub> is balanced.
 
 The second of these two rules defines a composition operation for balanced strings: For any two balanced strings, there is a third balanced string that composes them together.
-
-
-[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
-
-[Dyck Language]: https://en.wikipedia.org/wiki/Dyck_language
 
 
 
@@ -151,3 +118,10 @@ It's an interesting exercise, and very much related to grammars and production r
 ---
 
 [![Birmingham Central Library](/assets/images/pushdown/birmingham.jpg)](https://www.flickr.com/photos/frmark/5308847783)
+
+[Pattern Matching and Recursion]: https://raganwald.com/2018/10/17/recursive-pattern-matching.html
+
+
+[A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
+
+[Dyck Language]: https://en.wikipedia.org/wiki/Dyck_language

@@ -6,3 +6,6 @@ assets/.DS_Store
 assets/.DS_Store
 
 *.icloud
+/.obsidian
+.obsidian/core-plugins.json
+.obsidian/workspace.json
