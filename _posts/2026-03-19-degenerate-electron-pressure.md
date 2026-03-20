@@ -27,7 +27,7 @@ Here are some examples of strings containing simple—`(` and `)`—parentheses,
 <br/>
 
 When there is only one pair of parentheses, it is an *untyped* balanced parentheses language. 
-### introducing problem-solution-isomorphism
+### problem-solution-isomorphism
 
 “Problem-solution isomorphism” is a fancy way of saying “Make the solution resemble the problem as you define it.” The most commonly given solution for untyped balanced parentheses uses a counter to keep track of how many unclosed left parentheses it encounters as it scans the word from left to right:
 
@@ -62,19 +62,21 @@ test("untypedRecognizerWithCounter", () => {
 });
 ```
 
-This works, but it doesn't seem very close in structure to the way the problem was (clumsily) framed. As it happens, there are formal definitions for untyped Dyck languages, and one of them describes words in Dyck languages in terms of prefixes:
+This works, but it doesn't seem very close in structure to the way the problem was (clumsily) framed. As it happens, there are formal definitions for untyped Dyck languages, and one of them describes words in Dyck languages in terms of differences and prefixes:
 
 > A word is a valid member of the balanced parentheses language if and only if:
 > 
 > 1. The difference between the number of `(s` and the number of `)s` in the entire word is zero, and;
 > 2. The difference between the number of `(s` and the number of `)s` in every prefix of the word is at least zero.
 
-While our solution does not closely resemble the colloquial problem statement, it exactly matches this formal definition of the problem, which defines a balanced word in terms of differences and prefixes.
+While the counter solution does not closely resemble the colloquial problem statement, it exactly matches this formal definition of the problem, which defines a balanced word in terms of differences and prefixes.
 
 We'll now look at some other problems concerning Dyck languages, each time developing solutions that map to this well-understood formalism.
 
 ---
-## A most unusual solution
+# A most unusual solution
+
+Here's a [cheeky][absd] function that recognizes balanced parentheses:
 
 ```typescript
 function untypedRecognizerWithRemove (candidate: string): boolean {
@@ -91,45 +93,47 @@ function untypedRecognizerWithRemove (candidate: string): boolean {
 }
 ```
 
-This always works. Before reading on... Why?
+This always works. Before reading on... Will this always work? If so, why and how?
 
 ---
-### why the unusual solution works
+## Why the unusual solution works
 
 To show why the unusual solution works to recognize a word in an untyped balanced parentheses language ("balanced word"), we will establish that:
 
-1. Every non-empty balanced word contains at least one pair of parentheses with nothing enclosed—`()`;
-2. Removing any `()` from a balanced word leaves behind a balanced word.
+1. lorem
+2. ipsum
 
-##### Every non-empty balanced word has a zero prefix that is balanced. The first zero prefix is its own first zero prefix.
+##### Every non-empty balanced word has at least one zero prefix; all zero prefixes are balanced; and the first zero prefix is its own first zero prefix.
 Since every prefix of a non-empty balanced word must have at least as many lefts and rights, and since the first character is a prefix, *The first character of a non-empty balanced word must be a left.* Since the cumulative difference for a balanced word is zero, and since a left increases the difference, *The last character of a non-empty balanced word must be a right.*
  
 Every prefix of a balanced word has a difference greater than or equal to zero. At least one prefix (the entire word) has a difference of zero. One of the prefixes with a difference of zero will be the shortest or "first zero" prefix. For example, with the string `(()())()`, the first zero prefix is `(()())`:
 
-| Prefix     | Difference |
-| ---------- | ---------- |
-| `(`        | 1          |
-| `((`       | 2          |
-| `(()`      | 1          |
-| `(()(`     | 2          |
-| `(()()`    | 1          |
-| `(()())`   | 0          |
-| `(()())(`  | 1          |
-| `(()())()` | 0          |
+| Prefix       | Difference | Zero prefix? |
+| ------------ | ---------- | ------------ |
+| `(`          | 1          | no           |
+| `((`         | 2          | no           |
+| `(()`        | 1          | no           |
+| `(()(`       | 2          | no           |
+| `(()()`      | 1          | no           |
+| **`(()())`** | **0**      | **yes**      |
+| `(()())(`    | 1          | no           |
+| **`(()())()`**   | **0**          | **yes**          |
 
 As a word unto itself, the first zero prefix has an equal number of lefts and rights, and all of its own prefixes have a difference greater than or equal to zero. *The first zero prefix of a balanced word is balanced, and it is its own first zero prefix*.[^inferdef]
 ##### Every non-empty balanced word begins with a pair of parentheses enclosing a balanced word
-First and most obviously, if the first zero prefix is `()`, it is a pair of parentheses enclosing the empty string, a balanced word. Also, our non-empty balanced word contains `()`, and our case can be closed.
+First and most obviously, if the first zero prefix is `()`, it is a pair of parentheses enclosing the empty string, a balanced word. We now consider the case when the first zero prefix is longer than `()`.
 
-We now consider the case when the first zero prefix is longer than `()`. Since the first zero prefix  is not `()`, it must be of the form `(a...a')`. We will show that the word `a...a'` is balanced.
+Since the first zero prefix  is not `()`, it must be of the form `(a...a')`. We will show that the word `a...a'` is balanced.
 
-In our example word above, the first zero prefix is `(()())`. The word `a...a'` is `()()`.
+*In our example word above, the first zero prefix is `(()())`. The word `a...a'` is `()()`.*
 
 What do we know about parenthesis `a`? We know it cannot be a right! If it was a right, the cumulative sum would have been zero, which contradicts `(a...a')` being the first zero prefix. Likewise, 'a' cannot be a left. *Any first zero prefix longer than `()` must be of the form `(a...a')` where `a` is `(` and `a'` is `)`.*
 
 Since `(a...a')` has a cumulative total of zero, and the first and last parentheses cancel each other out, *The word `a...a'` has a difference of zero.* 
 
 If any prefixes of `(a...a')` has a negative difference, that would mean that some prefix of `(a...a')`—`(a...b'` where `b'` is a `)`—has a difference of zero. Since the first zero prefix is by definition its own first zero prefix, every prefix of `a...a'` must have a difference that is greater than or equal to zero. Since the word `a...a'` has a difference of zero and every one of its prefixes is greater than or equal to zero, *The word `a...a'` is balanced.*
+
+> In our example  above, the first zero prefix is `(()())` the word `a...a'` is `()()`, and as expected, `a` is `(`, `a'` is `)`, and `...` is `)(`. `(()())` is balanced, as is `()()`.
 
 Thus, *every non-empty balanced word begins with a pair of parentheses enclosing an inner balanced word, and if that inner balanced word is empty, the outer balanced word contains `()`.*
 
@@ -154,3 +158,5 @@ Every balanced string contains a `()`, and since `()` is a balanced string, remo
 [A Brutal Look at Balanced Parentheses, Computing Machines, and Pushdown Automata]: https://raganwald.com/2019/02/14/i-love-programming-and-programmers.html
 
 [Dyck Language]: https://en.wikipedia.org/wiki/Dyck_language
+
+[absd]: https://raganwald.com/2018/11/14/dyck-joke.html "Alice and Bobbie and Sharleen and Dyck"
