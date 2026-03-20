@@ -108,16 +108,16 @@ Since every prefix of a non-empty balanced word must have at least as many lefts
  
 Every prefix of a balanced word has a difference greater than or equal to zero. At least one prefix (the entire word) has a difference of zero. One of the prefixes with a difference of zero will be the shortest or "first zero" prefix. For example, with the string `(()())()`, the first zero prefix is `(()())`:
 
-| Prefix       | Difference | Zero prefix? |
-| ------------ | ---------- | ------------ |
-| `(`          | 1          | no           |
-| `((`         | 2          | no           |
-| `(()`        | 1          | no           |
-| `(()(`       | 2          | no           |
-| `(()()`      | 1          | no           |
-| **`(()())`** | **0**      | **yes**      |
-| `(()())(`    | 1          | no           |
-| **`(()())()`**   | **0**          | **yes**          |
+| Prefix         | Difference | Zero prefix? |
+| :----------- --| :--------- | :----------- |
+| `(`            | 1          | no           |
+| `((`           | 2          | no           |
+| `(()`          | 1          | no           |
+| `(()(`         | 2          | no           |
+| `(()()`        | 1          | no           |
+| **`(()())`**   | **0**      | **yes**      |
+| `(()())(`      | 1          | no           |
+| **`(()())()`** | **0**      | **yes**      |
 
 As a word unto itself, the first zero prefix has an equal number of lefts and rights, and all of its own prefixes have a difference greater than or equal to zero. *The first zero prefix of a balanced word is balanced, and it is its own first zero prefix*.[^inferdef]
 ##### Every non-empty balanced word begins with a pair of parentheses enclosing a balanced word
