@@ -33,32 +33,32 @@ When there is only one pair of parentheses, it is an *untyped* balanced parenthe
 
 ```typescript
 function untypedRecognizerWithCounter (candidate: string): boolean {
-	let openCount: number = 0;
+  let openCount: number = 0;
 
-	for (let cursor = 0; cursor < candidate.length; ++cursor) {
-		const paren = candidate[cursor];
-		if (paren === '(') {
-			openCount++;
-		}
-		else if (paren === ')' && openCount == 0) {
-			return false;
-		}
-		else {
-			openCount--;
-		}
-	}
+  for (let cursor = 0; cursor < candidate.length; ++cursor) {
+    const paren = candidate[cursor];
+    if (paren === '(') {
+      openCount++;
+    }
+    else if (paren === ')' && openCount == 0) {
+      return false;
+    }
+    else {
+      openCount--;
+    }
+  }
 
-	return openCount === 0;
+  return openCount === 0;
 }
 
 test("untypedRecognizerWithCounter", () => {
-	expect(untypedRecognizerWithCounter('')).toEqual(true);
-	expect(untypedRecognizerWithCounter('(')).toEqual(false);
-	expect(untypedRecognizerWithCounter('()')).toEqual(true);
-	expect(untypedRecognizerWithCounter('(()')).toEqual(false);
-	expect(untypedRecognizerWithCounter('(())')).toEqual(true);
-	expect(untypedRecognizerWithCounter('(())(')).toEqual(false);
-	expect(untypedRecognizerWithCounter('(())()')).toEqual(true);
+  expect(untypedRecognizerWithCounter('')).toEqual(true);
+  expect(untypedRecognizerWithCounter('(')).toEqual(false);
+  expect(untypedRecognizerWithCounter('()')).toEqual(true);
+  expect(untypedRecognizerWithCounter('(()')).toEqual(false);
+  expect(untypedRecognizerWithCounter('(())')).toEqual(true);
+  expect(untypedRecognizerWithCounter('(())(')).toEqual(false);
+  expect(untypedRecognizerWithCounter('(())()')).toEqual(true);
 });
 ```
 
@@ -74,16 +74,16 @@ While our solution does not closely resemble the colloquial problem statement, i
 
 ```typescript
 function untypedRecognizerWithRemove (candidate: string): boolean {
-	let wip = candidate;
-	let lastLength;
-	
-	do {
-		lastLength = wip.length;
-		wip = wip.replaceAll('()', '');
-	}
-	while(wip.length < lastLength);
+  let wip = candidate;
+  let lastLength;
+  
+  do {
+    lastLength = wip.length;
+    wip = wip.replaceAll('()', '');
+  }
+  while(wip.length < lastLength);
 
-	return wip === '';
+  return wip === '';
 }
 ```
 
