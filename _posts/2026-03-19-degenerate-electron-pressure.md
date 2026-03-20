@@ -20,18 +20,19 @@ As often posed, the problem statement is:
 
 > Given a string that consists of open and closed parentheses, write a function that determines whether the parentheses in the string are **balanced**. “Balanced” parentheses means that each opening symbol has a corresponding closing symbol and the pairs of parentheses are properly nested.
 
-And here are some examples of strings containing simple--`(` and `)`--parentheses, along with whether or not they are balanced:
+And here are some examples of strings containing simple—`(` and `)`—parentheses, along with whether or not they are balanced:
 
-|Input|Balanced?|Comment|
-|:----|:-----|:------|
-|`''`|`true`|the empty string is balanced|
-|`'()'`|`true`||
-|`'(())'`|`true`|parentheses can nest|
-|`'()()'`|`true`|multiple pairs are acceptable|
-|`'(()()())()'`|`true`|multiple pairs can nest|
-|`'((()'`|`false`|missing closing parentheses|
-|`'()))'`|`false`|missing opening parentheses|
-|`')('`|`false`|close before open|
+| Input          | Balanced? | Comment                       |
+| :------------- | :-------- | :---------------------------- |
+| `''`           | `true`    | the empty string is balanced  |
+| `'()'`         | `true`    |                               |
+| `'(())'`       | `true`    | parentheses can nest          |
+| `'()()'`       | `true`    | multiple pairs are acceptable |
+| `'(()()())()'` | `true`    | multiple pairs can nest       |
+| `'((()'`       | `false`   | missing closing parentheses   |
+| `'()))'`       | `false`   | missing opening parentheses   |
+| `')('`         | `false`   | close before open             |
+
 <br/>
 
 When there is only one pair of parentheses, it is an *untyped* balanced parentheses language. 
@@ -127,6 +128,8 @@ First and most obviously, if the first zero prefix is `()`, it is a pair of pare
 
 We now consider the case when the first zero prefix is longer than `()`. Since the first zero prefix  is not `()`, it must be of the form `(a...a')`. We will show that the word `a...a'` is balanced.
 
+In our example word above, the first zero prefix is `(()())`. The word `a...a'` is `()()`.
+
 What do we know about parenthesis `a`? We know it cannot be a right! If it was a right, the cumulative sum would have been zero, which contradicts `(a...a')` being the first zero prefix. Likewise, 'a' cannot be a left. *Any first zero prefix longer than `()` must be of the form `(a...a')` where `a` is `(` and `a'` is `)`.*
 
 Since `(a...a')` has a cumulative total of zero, and the first and last parentheses cancel each other out, *The word `a...a'` has a difference of zero.* 
@@ -140,12 +143,14 @@ Thus, *every non-empty balanced word begins with a pair of parentheses enclosing
 Since every non-empty balanced word begins with a pair of parentheses enclosing an inner balanced word, if that inner balanced word is not empty we know that it also begins with a pair of parentheses enclosing a one-level deeper inner balanced word.
 
 We can recursively apply this level by level, first zero prefix by first zero prefix, until we must reach a first zero prefix of `()`. Our inner strings are successively two parentheses shorter, and since we begin with a finite string. This must reach a two-character balanced string, `()`.
-##### Balanced strings are highly catenative 
+##### Prepending, appending, or inserting balanced words preserve balance
 Given two balanced words `first` and `second` that have differences of zero by definition, the catenation `firstsecond` must have a difference of zero. And since the `first` is balanced, all of its prefixes are greater than or equal to zero. `second` is also balanced, and since its prefixes are greater than or equal to zero and the prefix `first` has a difference of zero, all of the differences of `fristsecond` will be greater than or equal to zero. *The concatenation of two balanced words is a balanced word.*
 
 Next we consider two words, `eentwee` and `drie`, that are balanced. The word `eendrietwee` must have a difference of zero, and since `drie` has a net effect of zero on the differences within `eentwee`, every prefix of the word `eendrietwee` must have a difference greater than or equal to zero. *The insertion of a balanced word anywhere within a balanced word is a balanced word*.
 
-Finally, we consider a word, `firstsecondthird` that is balanced. `second` is also balanced. `firstthird`, the word we get by removing `second` from `firstsecondthird`, must have a difference of zero. And since the net change of `second` is zero on the differences of `first` and `third`, every prefix of the word `firstthird` must be greater than or equal to zero. *The removal of a balanced word from a balanced word leaves a balanced word as a remainder.*
+The net effect of these
+
+Finally, we consider a balanced word, `firstsecondthird`, that contains the balanced word `second`. `firstthird`, the word we get by removing `second` from `firstsecondthird`, must have a difference of zero. And since the net change of `second` is zero on the differences of `first` and `third`, every prefix of the word `firstthird` must be greater than or equal to zero. *The removal of a balanced word from a balanced word leaves a balanced word as a remainder.*
 ##### Removing `()` from a balanced string repeatedly ends with the empty string
 Every balanced string contains a `()`, and since `()` is a balanced string, removing `()` from a balanced string leaves a balanced string that is two characters shorter. Given a finite string, this process must terminate in the empty string or an unbalanced string that does not contain `()`.
 
