@@ -9,9 +9,9 @@ tags:
 
 As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. The problem statement:
 
-> Given a string that consists of open and closed parentheses, write a function that determines whether the parentheses in the string are **balanced**. “Balanced” parentheses means that each opening symbol has a corresponding closing symbol and the pairs of parentheses are properly nested.
+> Given a string that consists of open and closed parentheses, write a function that determines whether the parentheses in the string are **balanced**. “Balanced” parentheses means that each opening symbol has a corresponding closing symbol, and the pairs of parentheses are properly nested.
 
-And here are some examples of strings containing simple—`(` and `)`—parentheses, along with whether or not they are balanced:
+Here are some examples of strings containing simple—`(` and `)`—parentheses, along with whether or not they are balanced:
 
 | Input          | Balanced? | Comment                       |
 | :------------- | :-------- | :---------------------------- |
@@ -69,7 +69,11 @@ This works, but it doesn't seem very close in structure to the way the problem w
 > 1. The difference between the number of `(s` and the number of `)s` in the entire word is zero, and;
 > 2. The difference between the number of `(s` and the number of `)s` in every prefix of the word is at least zero.
 
-While our solution does not closely resemble the colloquial problem statement, it exactly matches one of the formal definitions of the problem. We'll now look at some other problems concerning Dyck languages, each time developing solutions that map to a well-understood formalism.
+While our solution does not closely resemble the colloquial problem statement, it exactly matches this formal definition of the problem, which defines a balanced word in terms of differences and prefixes.
+
+We'll now look at some other problems concerning Dyck languages, each time developing solutions that map to this well-understood formalism.
+
+---
 ## A most unusual solution
 
 ```typescript
