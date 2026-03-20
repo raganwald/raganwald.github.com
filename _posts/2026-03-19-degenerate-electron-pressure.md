@@ -7,16 +7,7 @@ tags:
   - mermaid
 ---
 
----
-# Balanced Parentheses
-
----
-
-As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language].
-
-### recognizing balanced parentheses
-
-As often posed, the problem statement is:
+As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. The problem statement:
 
 > Given a string that consists of open and closed parentheses, write a function that determines whether the parentheses in the string are **balanced**. “Balanced” parentheses means that each opening symbol has a corresponding closing symbol and the pairs of parentheses are properly nested.
 
@@ -24,14 +15,14 @@ And here are some examples of strings containing simple—`(` and `)`—parenthe
 
 | Input          | Balanced? | Comment                       |
 | :------------- | :-------- | :---------------------------- |
-| `''`           | `true`    | the empty string is balanced  |
-| `'()'`         | `true`    |                               |
-| `'(())'`       | `true`    | parentheses can nest          |
-| `'()()'`       | `true`    | multiple pairs are acceptable |
-| `'(()()())()'` | `true`    | multiple pairs can nest       |
-| `'((()'`       | `false`   | missing closing parentheses   |
-| `'()))'`       | `false`   | missing opening parentheses   |
-| `')('`         | `false`   | close before open             |
+| `''`           | `yes`     | the empty string is balanced  |
+| `'()'`         | `yes`     |                               |
+| `'(())'`       | `yes`     | parentheses can nest          |
+| `'()()'`       | `yes`     | multiple pairs are acceptable |
+| `'(()()())()'` | `yes`     | multiple pairs can nest       |
+| `'((()'`       | `no`      | missing closing parentheses   |
+| `'()))'`       | `no`      | missing opening parentheses   |
+| `')('`         | `no`      | close before open             |
 
 <br/>
 
@@ -99,7 +90,7 @@ function untypedRecognizerWithRemove (candidate: string): boolean {
 This always works. Before reading on... Why?
 
 ---
-### Why the unusual solution works
+### why the unusual solution works
 
 To show why the unusual solution works to recognize a word in an untyped balanced parentheses language ("balanced word"), we will establish that:
 
