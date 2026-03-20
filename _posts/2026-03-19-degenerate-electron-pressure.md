@@ -120,6 +120,7 @@ Every prefix of a balanced word has a difference greater than or equal to zero. 
 <br/>
 
 As a word unto itself, the first zero prefix has an equal number of lefts and rights, and all of its own prefixes have a difference greater than or equal to zero. *The first zero prefix of a balanced word is balanced, and it is its own first zero prefix*.[^inferdef]
+
 ### Every non-empty balanced word begins with a pair of parentheses enclosing a balanced word
 First and most obviously, if the first zero prefix is `()`, it is a pair of parentheses enclosing the empty string, a balanced word. We now consider the case when the first zero prefix is longer than `()`.
 
@@ -138,16 +139,20 @@ Thus, *every non-empty balanced word begins with a pair of parentheses enclosing
 ### Every non-empty balanced word contains at least one `()`
 Since every non-empty balanced word begins with a pair of parentheses enclosing an inner balanced word, if that inner balanced word is not empty we know that it also begins with a pair of parentheses enclosing a one-level deeper inner balanced word.
 
-We can recursively apply this level by level, first zero prefix by first zero prefix, until we must reach a first zero prefix of `()`. Our inner strings are successively two parentheses shorter, and since we begin with a finite string... We must reach a two-character balanced string, `()`, in finite time.
+We can recursively apply this level by level, first zero prefix by first zero prefix. Our inner strings are successively two parentheses shorter, and since we begin with a finite string... We must reach a two-character balanced string, `()`, in finite time.
 
 > 1. Our example word `(()())()` begins with a pair of parentheses enclosing an inner balanced word, `(()())`.
 > 2. Since `(()())` is is not `()`, we extract the enclosed word `()()`, that is also balanced. We start over with `()()`.
 > 3. `()()` begins with a pair of parentheses, `()`. It encloses an inner balanced word, the empty string. But we need go no further, we know that  `(()())()` contains `()`, as does *every* non-empty balanced word.
 
-### Prepending, appending, or inserting balanced words preserve balance
-Given two balanced words `first` and `second` that have differences of zero by definition, the catenation `firstsecond` must have a difference of zero. And since the `first` is balanced, all of its prefixes are greater than or equal to zero. `second` is also balanced, and since its prefixes are greater than or equal to zero and the prefix `first` has a difference of zero, all of the differences of `fristsecond` will be greater than or equal to zero. *The concatenation of two balanced words is a balanced word.*
+### "Balance" is preserved through composition
+Consider two balanced words, `first` and `second`. Since they each have have differences of zero by definition, the catenation of the two words—`firstsecond`—must also have a difference of zero. And since the `first` is balanced, all of its prefixes are greater than or equal to zero. `second` is also balanced, and since its prefixes are greater than or equal to zero and the prefix `first` has a difference of zero, all of the differences of `fristsecond` will be greater than or equal to zero. *The concatenation of two balanced words is a balanced word.*
+
+> `()` is balanced, so `()()` is balanced. Likewise, `(()())` is balanced and `()` is balanced, so `(()())()` is balanced.
 
 Next we consider two words, `eentwee` and `drie`, that are balanced. The word `eendrietwee` must have a difference of zero, and since `drie` has a net effect of zero on the differences within `eentwee`, every prefix of the word `eendrietwee` must have a difference greater than or equal to zero. *The insertion of a balanced word anywhere within a balanced word is a balanced word*.
+
+> `()` is balanced, so `(())` is balanced. Likewise since `(())` is balanced, `(()())` is balanced and so it `((()))`.
 
 Finally, we consider a balanced word, `firstsecondthird`, that contains the balanced word `second`. `firstthird`, the word we get by removing `second` from `firstsecondthird`, must have a difference of zero. And since the net change of `second` is zero on the differences of `first` and `third`, every prefix of the word `firstthird` must be greater than or equal to zero. *The removal of a balanced word from a balanced word leaves a balanced word as a remainder.*
 
