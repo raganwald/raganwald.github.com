@@ -62,19 +62,18 @@ test("untypedRecognizerWithCounter", () => {
 
 This works, but it doesn't seem very close in structure to the way the problem was (clumsily) framed. As it happens, there are formal definitions for untyped Dyck languages, and one of them describes words in Dyck languages in terms of differences and prefixes:
 
-> A word is a valid member of the balanced parentheses language if and only if:
-> 
-> 1. The difference between the number of `(s` and the number of `)s` in the entire word is zero, and;
-> 2. The difference between the number of `(s` and the number of `)s` in every prefix of the word is at least zero.
+A word is a valid member of the balanced parentheses language if and only if:
+
+1. The difference between the number of `(s` and the number of `)s` in the entire word is zero, and;
+2. The difference between the number of `(s` and the number of `)s` in every prefix of the word is at least zero.
 
 While the counter solution does not closely resemble the colloquial problem statement, it exactly matches this formal definition of the problem, which defines a balanced word in terms of differences and prefixes.
-
 ### visualizing differences and prefixes
 
 With the balanced word `(()())()`, the prefixes and differences are:
 
 | Prefix     | Difference |
-| :--------- | :--------- |
+| :--------- | ---------: |
 | `(`        | 1          |
 | `((`       | 2          |
 | `(()`      | 1          |
@@ -83,6 +82,7 @@ With the balanced word `(()())()`, the prefixes and differences are:
 | `(()())`   | 0          |
 | `(()())(`  | 1          |
 | `(()())()` | 0          |
+
 Each is greater than or equal to zero, and the difference for the entire string (the longest prefix) is zero, so it is balanced.
 
 We can visualize the differences with a "mountain diagram." To make a mountain diagram, we use `/` and `\` as our "parentheses," instead of `(` and `)`.  So our balanced word becomes `//\/\\/\`.
@@ -95,6 +95,34 @@ Then we "raise" each `/` and "lower" each `\` to make a two-dimensional "mountai
 ```
 
 We can see at a glance that the path traced along the "mountain tops" never drops below the origin point, which is a consequence of the differences never being below zero. And since it ends even with the origin, we know that the difference for the entire word is zero.
+### composing balanced words
+
+We can now infer some rules of composition and decomposition for balanced words. Consider two balanced words, `(()())` and `()`. Their mountain diagrams are:
+
+```
+ /\/\
+/    \     /\
+```
+
+Since they are both balanced, they end at the same level where they begin. What happens if we catenate them? We get our example balanced word:
+
+```
+ /\/\
+/    \/\
+```
+
+This is balanced, because given any two balanced words, they both end with a difference of zero and thus the difference of them together will always be zero. And since all prefixes for both words have differences greater than or equal to zero, the two catenated together have every prefix greater than or equal to zero. Thus, *Concatenating any two balanced words results in a balanced word.*[^cl]
+
+[^cl]: Balanced parentheses is a concatenative language.
+
+Concatenation is not the only way to compose balanced words. We can also **inject** one balanced word into another, anywhere within it. For example instead what if we inject `()` into `(()())` between `((` and `)())`?, producting `((())())`? Let's draw the mountain diagram, lifting the diagram of `()` to reflext the result:
+
+```
+    /\
+ /      \/\
+/          \
+```
+Because we're inserting a word that has a differenec of zero, it has no effect of the differnce of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes after the inertion point. Finally, because its own prefixes are all greater than or equal to zero, the prefixes for the composed word will all be greater than or equal to zero. Therefore, *Inserting a balanced word anywhere within a balanced word produces a balanced word*.
 
 We'll now look at some other problems concerning Dyck languages, each time developing solutions that map to this well-understood formalism.
 
