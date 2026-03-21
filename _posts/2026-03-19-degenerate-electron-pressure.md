@@ -69,6 +69,33 @@ This works, but it doesn't seem very close in structure to the way the problem w
 
 While the counter solution does not closely resemble the colloquial problem statement, it exactly matches this formal definition of the problem, which defines a balanced word in terms of differences and prefixes.
 
+### visualizing differences and prefixes
+
+With the balanced word `(()())()`, the prefixes and differences are:
+
+| Prefix     | Difference |
+| :--------- | :--------- |
+| `(`        | 1          |
+| `((`       | 2          |
+| `(()`      | 1          |
+| `(()(`     | 2          |
+| `(()()`    | 1          |
+| `(()())`   | 0          |
+| `(()())(`  | 1          |
+| `(()())()` | 0          |
+Each is greater than or equal to zero, and the difference for the entire string (the longest prefix) is zero, so it is balanced.
+
+We can visualize the differences with a "mountain diagram." To make a mountain diagram, we use `/` and `\` as our "parentheses," instead of `(` and `)`.  So our balanced word becomes `//\/\\/\`.
+
+Then we "raise" each `/` and "lower" each `\` to make a two-dimensional "mountain range" where the vertical distance represents the difference or level of nesting:
+
+```
+ /\/\
+/    \/\
+```
+
+We can see at a glance that the path traced along the "mountain tops" never drops below the origin point, which is a consequence of the differences never being below zero. And since it ends even with the origin, we know that the difference for the entire word is zero.
+
 We'll now look at some other problems concerning Dyck languages, each time developing solutions that map to this well-understood formalism.
 
 ---
