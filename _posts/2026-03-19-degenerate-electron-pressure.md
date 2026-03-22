@@ -130,7 +130,7 @@ Concatenation is not the only way to compose balanced words. We can also **injec
 /   +     +     \  =>  /      \
 ```
 
-Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the prefixes for the composed word will all be greater than or equal to zero. Therefore, Inserting a balanced word anywhere within a balanced word produces a balanced word.
+Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the prefixes for the composed word will all be greater than or equal to zero. Therefore, *Inserting a balanced word anywhere within a balanced word produces a balanced word*.
 
 If we think of concatenation as insertion at the beginning or end of a word, we have the rule of composing balanced words: *Inserting a balanced word at the beginning, end, or anywhere within another balanced word produces a balanced word.*
 
@@ -160,7 +160,7 @@ Our first example balanced word has one prefix shorter than itself. The second b
 /    \/\
 ```
 
-Notice that valley that comes back to the level of the origin? That's where `(()())` meets `()`. We know that `(()())` is a balanced prefix, and therefore a balanced word itself. But what about the remainder of our example word? We can see at a galce that `()` is also balanced. Must this always be true? Must the reminder of a balanced word be balanced if it has a shorter prefix that is balanced?
+Notice that valley that comes back to the level of the origin? That's where `(()())` meets `()`. We know that `(()())` is a balanced prefix, and therefore a balanced word itself. But what about the remainder of our example word? We can see at a glance that `()` is also balanced. Must this always be true? Must the reminder of a balanced word be balanced if it has a shorter prefix that is balanced?
 
 ```
  /\/\         /\/\        
@@ -183,9 +183,7 @@ Deleting a balanced word from the beginning or the end of a word is the inverse 
 
 As with removing words from the beginning or the end, if we remove a substring of a balanced word that has a difference of zero—such as a balanced word—the remainder must also have a difference of zero, whether the substring we remove is balanced or not. Since what remains has prefixes with differences that are greater than or equal to zero, *If we delete a balanced word from within a balanced word, the remainder must be balanced.*
 
-We have now shown that inserting a balanced word at the beginning, end, or within another balanced word always leaves a balanced remainder. And inversely, deleting a balanced word fromt he beginning, end, or within a balanced word always leaves a balanced reaminder.
-
-*Inserting and removing balanced words are inverse operations. Anything that can be done by inserting can be undone by deleting, and anything that can be done by deleting can be undone by inserting.*
+Inserting a balanced word at the beginning, end, or within another balanced word always leaves a balanced remainder. And inversely, deleting a balanced word from the beginning, end, or within a balanced word always leaves a balanced reaminder. Inserting and removing balanced words are inverse operations. Anything that can be done by inserting can be undone by deleting, and anything that can be done by deleting can be undone by inserting.
 
 ---
 
@@ -214,17 +212,16 @@ This always works. Why?
 
 ---
 
-## Why the unusual solution works
+### Why the cheeky solution works
 
-To show why the unusual solution works to recognize a word in an untyped balanced parentheses language ("balanced word"), we will establish that:
+We already know that if we delete a balanced word from a balanced word, what remains will be a shorter, balanced word. It follows that *If every non-empty balanced word contains at least one `()` substring, then recursively deleting the first `()` of a non-empty balanced word will reach the empty string in finite time and halt.*
 
-1. lorem
-2. ipsum
+#### Every non-empty balanced word has at least one balanced prefix
 
-### Every non-empty balanced word has at least one zero prefix; all zero prefixes are balanced; and the first zero prefix is its own first zero prefix
+Lorem ipsum all balanced prefixes are balanced; and the first balanced prefix is its own first balanced prefix
 Since every prefix of a non-empty balanced word must have at least as many lefts and rights, and since the first character is a prefix, *The first character of a non-empty balanced word must be a left.* Since the cumulative difference for a balanced word is zero, and since a left increases the difference, *The last character of a non-empty balanced word must be a right.*
  
-Every prefix of a balanced word has a difference greater than or equal to zero. At least one prefix (the entire word) has a difference of zero. One of the prefixes with a difference of zero will be the shortest or "first zero" prefix. For example, with the string `(()())()`, the first zero prefix is `(()())`:
+Every prefix of a balanced word has a difference greater than or equal to zero. At least one prefix (the entire word) has a difference of zero. One of the prefixes with a difference of zero will be the shortest or "first zero" prefix. For example, with the string `(()())()`, the first balanced prefix is `(()())`:
 
 | Prefix         | Difference | Zero prefix? |
 | :----------- --| :--------- | :----------- |
@@ -239,27 +236,27 @@ Every prefix of a balanced word has a difference greater than or equal to zero. 
 
 <br/>
 
-As a word unto itself, the first zero prefix has an equal number of lefts and rights, and all of its own prefixes have a difference greater than or equal to zero. *The first zero prefix of a balanced word is balanced, and it is its own first zero prefix*.[^inferdef]
+As a word unto itself, the first balanced prefix has an equal number of lefts and rights, and all of its own prefixes have a difference greater than or equal to zero. *The first balanced prefix of a balanced word is balanced, and it is its own first balanced prefix*.[^inferdef]
 
 ### Every non-empty balanced word begins with a pair of parentheses enclosing a balanced word
-First and most obviously, if the first zero prefix is `()`, it is a pair of parentheses enclosing the empty string, a balanced word. We now consider the case when the first zero prefix is longer than `()`.
+First and most obviously, if the first balanced prefix is `()`, it is a pair of parentheses enclosing the empty string, a balanced word. We now consider the case when the first balanced prefix is longer than `()`.
 
-Since the first zero prefix  is not `()`, it must be of the form `(a...a')`. We will show that the word `a...a'` is balanced.
+Since the first balanced prefix  is not `()`, it must be of the form `(a...a')`. We will show that the word `a...a'` is balanced.
 
-What do we know about parenthesis `a`? We know it cannot be a right! If it was a right, the cumulative sum would have been zero, which contradicts `(a...a')` being the first zero prefix. Likewise, 'a' cannot be a left. Thus, *Any first zero prefix longer than `()` must be of the form `(a...a')` where `a` is `(` and `a'` is `)`.* And since `(a...a')` has a cumulative total of zero, and the first and last parentheses cancel each other out, *The word `a...a'` also has a difference of zero.* 
+What do we know about parenthesis `a`? We know it cannot be a right! If it was a right, the cumulative sum would have been zero, which contradicts `(a...a')` being the first balanced prefix. Likewise, 'a' cannot be a left. Thus, *Any first balanced prefix longer than `()` must be of the form `(a...a')` where `a` is `(` and `a'` is `)`.* And since `(a...a')` has a cumulative total of zero, and the first and last parentheses cancel each other out, *The word `a...a'` also has a difference of zero.* 
 
-If any prefixes of `(a...a')` have a negative difference, that would mean that some prefix of `(a...a')`—`(a...b'` where `b'` is a `)`—has a difference of zero. Since the first zero prefix is by definition its own first zero prefix, every prefix of `a...a'` must have a difference that is greater than or equal to zero. Since the word `a...a'` has a difference of zero and every one of its prefixes is greater than or equal to zero, *The word `a...a'` is also balanced.*
+If any prefixes of `(a...a')` have a negative difference, that would mean that some prefix of `(a...a')`—`(a...b'` where `b'` is a `)`—has a difference of zero. Since the first balanced prefix is by definition its own first balanced prefix, every prefix of `a...a'` must have a difference that is greater than or equal to zero. Since the word `a...a'` has a difference of zero and every one of its prefixes is greater than or equal to zero, *The word `a...a'` is also balanced.*
 
 Thus, *every non-empty balanced word begins with a pair of parentheses enclosing an inner balanced word, and if that inner balanced word is empty, the outer balanced word contains `()`.*
 
-> In our example  above, the first zero prefix is `(()())` the word `a...a'` is `()()`, and as expected, `a` is `(`, `a'` is `)`, and `...` is `)(`. `(()())` is balanced, as is `()()`.
+> In our example  above, the first balanced prefix is `(()())` the word `a...a'` is `()()`, and as expected, `a` is `(`, `a'` is `)`, and `...` is `)(`. `(()())` is balanced, as is `()()`.
 
-[^inferdef]: As an exercise, infer the definition S -> (S)S from the first zero prefix
+[^inferdef]: As an exercise, infer the definition S -> (S)S from the first balanced prefix
 
 ### Every non-empty balanced word contains at least one `()`
 Since every non-empty balanced word begins with a pair of parentheses enclosing an inner balanced word, if that inner balanced word is not empty we know that it also begins with a pair of parentheses enclosing a one-level deeper inner balanced word.
 
-We can recursively apply this level by level, first zero prefix by first zero prefix. Our inner strings are successively two parentheses shorter, and since we begin with a finite string... We must reach a two-character balanced string, `()`, in finite time.
+We can recursively apply this level by level, first balanced prefix by first balanced prefix. Our inner strings are successively two parentheses shorter, and since we begin with a finite string... We must reach a two-character balanced string, `()`, in finite time.
 
 > 1. Our example word `(()())()` begins with a pair of parentheses enclosing an inner balanced word, `(()())`.
 > 2. Since `(()())` is is not `()`, we extract the enclosed word `()()`, that is also balanced. We start over with `()()`.
