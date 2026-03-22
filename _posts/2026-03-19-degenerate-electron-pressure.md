@@ -74,7 +74,7 @@ While the counter solution does not closely resemble the colloquial problem stat
 With the balanced word `(()())()`, the prefixes and differences are:
 
 | Prefix     | Difference |
-|:-----------|-----------:|
+|:-----------|:-----------|
 | `(`        | 1          |
 | `((`       | 2          |
 | `(()`      | 1          |
@@ -83,6 +83,8 @@ With the balanced word `(()())()`, the prefixes and differences are:
 | `(()())`   | 0          |
 | `(()())(`  | 1          |
 | `(()())()` | 0          |
+
+<br/>
 
 Each is greater than or equal to zero, and the difference for the entire string (the longest prefix) is zero, so it is balanced.
 
@@ -134,7 +136,7 @@ If we think of concatenation as insertion at the beginning or end of a word, we 
 We can also decompose balanced words. More specifically, some non-empty balanced words can be decomposed into two or more non-empty balanced words. Which ones? Let's compare two words, `(()())()` and`(()(()))`. The prefixes are:
 
 | Prefix 1   | Difference | Prefix 2   | Difference |
-|:-----------|-----------:|:-----------|-----------:|
+|:-----------|:-----------|:-----------|:-----------|
 | `(`        | 1          | `(`        | 1          |
 | `((`       | 2          | `((`       | 2          |
 | `(()`      | 1          | `(()`      | 1          |
@@ -143,6 +145,8 @@ We can also decompose balanced words. More specifically, some non-empty balanced
 | `(()())`   | 0          | `(()(()`   | 2          |
 | `(()())(`  | 1          | `(()(())`  | 1          |
 | `(()())()` | 0          | `(()(()))` | 0          |
+
+<br/>
 
 Note that `(()())()` has two prefixes with a difference of zero: `(()())` and itself `(()())()`. While `(()(()))` has only one prefix with a differenze of zero, itself. Since both `(()())()`, and `(()(()))` are balanced, we know that every one of their prefixes *must* have a difference greater than or equal to zero. Which tells is that *Every prefix of a balanced word that has a difference of zero must itself be balanced.*
 
