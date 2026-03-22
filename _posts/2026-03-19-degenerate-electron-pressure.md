@@ -7,11 +7,7 @@ tags:
   - mermaid
 ---
 
-As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. The problem statement:
-
-> Given a string that consists of open and closed parentheses, write a function that determines whether the parentheses in the string are **balanced**. “Balanced” parentheses means that each opening symbol has a corresponding closing symbol, and the pairs of parentheses are properly nested.
-
-Here are some examples of strings containing simple—`(` and `)`—parentheses, along with whether or not they are balanced:
+As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. Here are some examples of strings containing simple—`(` and `)`—parentheses, along with whether or not they are balanced:
 
 | Input          | Balanced? | Comment                       |
 | :------------- | :-------- | :---------------------------- |
@@ -25,9 +21,8 @@ Here are some examples of strings containing simple—`(` and `)`—parentheses,
 | `')('`         | `no`      | close before open             |
 
 <br/>
-### problem-solution-isomorphism
 
-“Problem-solution isomorphism” is a fancy way of saying “Make the solution resemble the problem as you define it.” The most commonly given solution for untyped balanced parentheses uses a counter to keep track of how many unclosed left parentheses it encounters as it scans the word from left to right:
+The most commonly given solution for balanced parentheses uses a counter to keep track of the difference between the number of open and closed parentheses it encounters as it scans the word from left to right:
 
 ```typescript
 function untypedRecognizerWithCounter (candidate: string): boolean {
@@ -60,9 +55,7 @@ test("untypedRecognizerWithCounter", () => {
 });
 ```
 
-This works, but it doesn't seem very close in structure to the way the problem was (clumsily) framed. As it happens, there are formal definitions for untyped Dyck languages, and one of them describes words in Dyck languages in terms of differences and prefixes:
-
-A word is a valid member of the balanced parentheses language if and only if:
+This works, but it doesn't seem very close to the way the problem was (clumsily) framed. Let's consider this formal definition instead: A word is a valid member of the balanced parentheses language if and only if:
 
 1. The difference between the number of `(s` and the number of `)s` in the entire word is zero, and;
 2. The difference between the number of `(s` and the number of `)s` in every prefix of the word is at least zero.
@@ -99,9 +92,19 @@ Then we "raise" each `/` and "lower" each `\` to make a two-dimensional "mountai
 
 We can see at a glance that the path traced along the "mountain tops" never drops below the origin point, which is a consequence of the differences never being below zero. And since it ends even with the origin, we know that the difference for the entire word is zero.
 
+---
+
+## Composing and decomposing balanced words
+
+---
+
+Balanced words can be composed through insertion and deletion. If we insert a balanced word at the beginning, end, or anywhere within another balanced word, the result is a balanced word. And if we delete a balanced word from the beginning, end, or from within another balanced word, the remainder will be a balanced word.
+
+These properties of composition and decomposition follow directly from the two diffences and prefixes rules:
+
 ### composing balanced words
 
-We can now infer some rules of composition and decomposition for balanced words. Consider two balanced words, `(()())` and `()`. Their mountain diagrams are:
+Consider two balanced words, `(()())` and `()`. Their mountain diagrams are:
 
 ```
  /\/\
@@ -185,12 +188,15 @@ We have now shown that inserting a balanced word at the beginning, end, or withi
 *Inserting and removing balanced words are inverse operations. Anything that can be done by inserting can be undone by deleting, and anything that can be done by deleting can be undone by inserting.*
 
 ---
-# A most unusual solution
+
+## Further consequences of composition and decomposition
+
+---
 
 Here's a [cheeky][absd] function that recognizes balanced parentheses:
 
 ```typescript
-function untypedRecognizerWithRemove (candidate: string): boolean {
+function untypedRecognizerWithDelete (candidate: string): boolean {
   let wip = candidate;
   let lastLength;
   
@@ -204,9 +210,10 @@ function untypedRecognizerWithRemove (candidate: string): boolean {
 }
 ```
 
-This always works. Before reading on... Will this always work? If so, why and how?
+This always works. Why?
 
 ---
+
 ## Why the unusual solution works
 
 To show why the unusual solution works to recognize a word in an untyped balanced parentheses language ("balanced word"), we will establish that:
