@@ -68,12 +68,13 @@ A word is a valid member of the balanced parentheses language if and only if:
 2. The difference between the number of `(s` and the number of `)s` in every prefix of the word is at least zero.
 
 While the counter solution does not closely resemble the colloquial problem statement, it exactly matches this formal definition of the problem, which defines a balanced word in terms of differences and prefixes.
+
 ### visualizing differences and prefixes
 
 With the balanced word `(()())()`, the prefixes and differences are:
 
 | Prefix     | Difference |
-| :--------- | ---------: |
+|:-----------|-----------:|
 | `(`        | 1          |
 | `((`       | 2          |
 | `(()`      | 1          |
@@ -95,36 +96,89 @@ Then we "raise" each `/` and "lower" each `\` to make a two-dimensional "mountai
 ```
 
 We can see at a glance that the path traced along the "mountain tops" never drops below the origin point, which is a consequence of the differences never being below zero. And since it ends even with the origin, we know that the difference for the entire word is zero.
+
 ### composing balanced words
 
 We can now infer some rules of composition and decomposition for balanced words. Consider two balanced words, `(()())` and `()`. Their mountain diagrams are:
 
 ```
  /\/\
-/    \     /\
+/    \  /\
 ```
 
 Since they are both balanced, they end at the same level where they begin. What happens if we catenate them? We get our example balanced word:
+
+```
+ /\/\               /\/\
+/    \  + /\  =>   /    \/\
+```
+
+This is balanced, because given any two balanced words, they both end with a difference of zero and thus the difference of them together will always be zero. And since all prefixes for both words have differences greater than or equal to zero, the two catenated together have every prefix greater than or equal to zero. Thus, concatenating any two balanced words results in a balanced word.[^cl]
+
+[^cl]: Balanced parentheses is a concatenative language.
+
+Concatenation is not the only way to compose balanced words. We can also **inject** one balanced word into another, anywhere within it. For example, what if we inject `()` into `(()())` between `((` and `)())`, producting `((())())`? Let's draw the mountain diagram, lifting the diagram of `()` to reflect the result:
+
+```
+       /\                /\
+ /           \/\        /  \/\ 
+/   +     +     \  =>  /      \
+```
+
+Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the prefixes for the composed word will all be greater than or equal to zero. Therefore, Inserting a balanced word anywhere within a balanced word produces a balanced word.
+
+If we think of concatenation as insertion at the beginning or end of a word, we have the rule of composing balanced words: *Inserting a balanced word at the beginning, end, or anywhere within another balanced word produces a balanced word.*
+
+### decomposing balanced words
+
+We can also decompose balanced words. More specifically, some non-empty balanced words can be decomposed into two or more non-empty balanced words. Which ones? Let's compare two words, `(()())()` and`(()(()))`. The prefixes are:
+
+| Prefix 1   | Difference | Prefix 2   | Difference |
+|:-----------|-----------:|:-----------|-----------:|
+| `(`        | 1          | `(`        | 1          |
+| `((`       | 2          | `((`       | 2          |
+| `(()`      | 1          | `(()`      | 1          |
+| `(()(`     | 2          | `(()(`     | 2          |
+| `(()()`    | 1          | `(()((`    | 3          |
+| `(()())`   | 0          | `(()(()`   | 2          |
+| `(()())(`  | 1          | `(()(())`  | 1          |
+| `(()())()` | 0          | `(()(()))` | 0          |
+
+Note that `(()())()` has two prefixes with a difference of zero: `(()())` and itself `(()())()`. While `(()(()))` has only one prefix with a differenze of zero, itself. Since both `(()())()`, and `(()(()))` are balanced, we know that every one of their prefixes *must* have a difference greater than or equal to zero. Which tells is that *Every prefix of a balanced word that has a difference of zero must itself be balanced.*
+
+Our first example balanced word has one prefix shorter than itself. The second balanced word does not. Let's look at its mountain diagram again:
 
 ```
  /\/\
 /    \/\
 ```
 
-This is balanced, because given any two balanced words, they both end with a difference of zero and thus the difference of them together will always be zero. And since all prefixes for both words have differences greater than or equal to zero, the two catenated together have every prefix greater than or equal to zero. Thus, *Concatenating any two balanced words results in a balanced word.*[^cl]
-
-[^cl]: Balanced parentheses is a concatenative language.
-
-Concatenation is not the only way to compose balanced words. We can also **inject** one balanced word into another, anywhere within it. For example instead what if we inject `()` into `(()())` between `((` and `)())`?, producting `((())())`? Let's draw the mountain diagram, lifting the diagram of `()` to reflext the result:
+Notice that valley that comes back to the level of the origin? That's where `(()())` meets `()`. We know that `(()())` is a balanced prefix, and therefore a balanced word itself. But what about the remainder of our example word? We can see at a galce that `()` is also balanced. Must this always be true? Must the reminder of a balanced word be balanced if it has a shorter prefix that is balanced?
 
 ```
-    /\
- /      \/\
-/          \
+ /\/\         /\/\        
+/    \/\  -  /    \  => /\
 ```
-Because we're inserting a word that has a differenec of zero, it has no effect of the differnce of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes after the inertion point. Finally, because its own prefixes are all greater than or equal to zero, the prefixes for the composed word will all be greater than or equal to zero. Therefore, *Inserting a balanced word anywhere within a balanced word produces a balanced word*.
 
-We'll now look at some other problems concerning Dyck languages, each time developing solutions that map to this well-understood formalism.
+If the prefix `(()())` has a difference of zero, and if the entire word has a prefix of zero, then the remainder must also have a difference of zero. And since it begins from zero, it must have prefixes itself that are greater than or equal to zero.
+
+If a word has a balanced prefix, the remainder of the word following the prefix is also balanced. Which means, *If we delete a balanced word from the beginning of a balanced word, what remains is a balanced word.*
+
+Deleting a balanced word from the beginning or the end of a word is the inverse of concatenating two words. Can we delete balanced words from within balanced words? And if so, must what remains be balanced?
+
+```
+ /\/\        \/      /\   
+/    \/\  -      => /  \/\
+
+ /\/\        /\/\       
+/    \/\  -        => /\/\
+```
+
+As with removing words from the beginning or the end, if we remove a substring of a balanced word that has a difference of zero—such as a balanced word—the remainder must also have a difference of zero, whether the substring we remove is balanced or not. Since what remains has prefixes with differences that are greater than or equal to zero, *If we delete a balanced word from within a balanced word, the remainder must be balanced.*
+
+We have now shown that inserting a balanced word at the beginning, end, or within another balanced word always leaves a balanced remainder. And inversely, deleting a balanced word fromt he beginning, end, or within a balanced word always leaves a balanced reaminder.
+
+*Inserting and removing balanced words are inverse operations. Anything that can be done by inserting can be undone by deleting, and anything that can be done by deleting can be undone by inserting.*
 
 ---
 # A most unusual solution
