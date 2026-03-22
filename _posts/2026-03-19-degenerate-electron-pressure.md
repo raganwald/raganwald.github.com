@@ -225,7 +225,7 @@ The first balanced prefix is the shortest balanced prefix, thus there are no sho
 #### The first and last symbols of a non-empty balanced word are `(` and `)`
 The first symbol of a non-empty balanced word is its shortest prefix. Since every prefix must have a difference greater than or equal to zero, the first symbol cannot be a `)` as that would give the first prefix a negative difference. Thus, the first prefix's symbol must be `(` and the first prefix's difference must be one. The difference of the last prefix of a nonempty balanced word must be zero, and the difference of the penultimate prefix cannot be negative one, therefore the last symbol difference of the penultimate prefix must be one, and the last symbol of a non-empty balanced word must be `)`.
 
-We can see this is true with our example word `(()())()`. The first and last symbols are `(` and `)`, the difference of the first prefix is one, and the difference of the penultimate prefix ``(()())(` is also one.
+We can see this is true with our example word `(()())()`. The first and last symbols are `(` and `)`, the difference of the first prefix is one, and the difference of the penultimate prefix `(()())(` is also one.
 
 #### The difference of the enclosed interior of a non-empty balanced word must be zero
 The enclosed interior of a non-empty balanced word is the word formed by the symbols between the opening `(` and the closing `)`. In our example `(()())()`, the enclosed interior is `()())(`. The difference of the complete word is zero, the enclosing `(` and `)` cancel each other out, therefore the difference of the enclosed interior of a non-empty balanced word must be zero.
@@ -267,16 +267,16 @@ If a balanced word is its own balanced prefix, its enclosed interior will have a
 - That first balanced prefix consists of a `(` followed by its enclosed interior, followed by `)`
 - That enclosed interior is a balanced word.
 
-### Every non-empty balanced word contains at least one `()`
+#### Every non-empty balanced word contains at least one `()`
 Every non-empty balanced word has a first balanced prefix that consists of a `(` and a `)` enclosing a balanced word. If the enclosed interior of the first balanced prefix is empty, then our original non-empty balanced word begins with `()`.
 
 But if that first-balanced prefix encloses a non-empty balanced word, then we can recursively apply this level by level, first balanced prefix by first balanced prefix. Our inner strings are successively two parentheses shorter, and since we begin with a finite string... We must reach a two-character balanced string, `()`, in finite time.
 
-> 1. Our example word `(()())()` begins with a pair of parentheses enclosing an inner balanced word, `(()())`.
-> 2. Since `(()())` is is not `()`, we extract the enclosed word `()()`, that is also balanced. We start over with `()()`.
-> 3. `()()` begins with a pair of parentheses, `()`. It encloses an inner balanced word, the empty string. But we need go no further, we know that  `(()())()` contains `()`, as does *every* non-empty balanced word.
+1. Our example word `(()())()` begins with a pair of parentheses enclosing an inner balanced word, `(()())`.
+2. Since `(()())` is is not `()`, we extract the enclosed word `()()`, that is also balanced. We start over with `()()`.
+3. `()()` begins with a pair of parentheses, `()`. It encloses an inner balanced word, the empty string. But we need go no further, we know that  `(()())()` contains `()`, as does *every* non-empty balanced word.
 
-### Removing `()` from a balanced string repeatedly ends with the empty string
+#### Removing `()` from a balanced string repeatedly ends with the empty string
 Every balanced string contains a `()`, and since `()` is a balanced string, removing `()` from a balanced string leaves a balanced string that is two characters shorter. Given a finite string, this process must terminate in the empty string or an unbalanced string that does not contain `()`.
 
 [Pattern Matching and Recursion]: https://raganwald.com/2018/10/17/recursive-pattern-matching.html
