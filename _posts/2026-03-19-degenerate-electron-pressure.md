@@ -102,7 +102,7 @@ Balanced words can be composed through insertion and deletion. If we insert a ba
 
 These properties of composition and decomposition follow directly from the two diffences and prefixes rules:
 
-### composing balanced words
+#### Concatenating balanced words results in a balanced word.
 
 Consider two balanced words, `(()())` and `()`. Their mountain diagrams are:
 
@@ -122,7 +122,8 @@ This is balanced, because given any two balanced words, they both end with a dif
 
 [^cl]: Balanced parentheses is a concatenative language.
 
-Concatenation is not the only way to compose balanced words. We can also **inject** one balanced word into another, anywhere within it. For example, what if we inject `()` into `(()())` between `((` and `)())`, producting `((())())`? Let's draw the mountain diagram, lifting the diagram of `()` to reflect the result:
+#### Inserting a balanced word anywhere within a balanced word produces a balanced word
+Concatenation is not the only way to compose balanced words. We can also insert one balanced word into another, anywhere within it. For example, what if we inject `()` into `(()())` between `((` and `)())`, producting `((())())`? Let's draw the mountain diagram, lifting the diagram of `()` to reflect the result:
 
 ```
        /\                /\
@@ -134,9 +135,8 @@ Because we're inserting a word that has a difference of zero, it has no effect o
 
 If we think of concatenation as insertion at the beginning or end of a word, we have the rule of composing balanced words: *Inserting a balanced word at the beginning, end, or anywhere within another balanced word produces a balanced word.*
 
-### decomposing balanced words
-
-We can also decompose balanced words. More specifically, some non-empty balanced words can be decomposed into two or more non-empty balanced words. Which ones? Let's compare two words, `(()())()` and`(()(()))`. The prefixes are:
+#### Every prefix of a balanced word that has a difference of zero must itself be a balanced word
+Here are two words, `(()())()` and`(()(()))`. The prefixes are:
 
 | Prefix 1   | Difference | Prefix 2   | Difference |
 |:-----------|:-----------|:-----------|:-----------|
@@ -153,6 +153,7 @@ We can also decompose balanced words. More specifically, some non-empty balanced
 
 Note that `(()())()` has two prefixes with a difference of zero: `(()())` and itself `(()())()`. While `(()(()))` has only one prefix with a differenze of zero, itself. Since both `(()())()`, and `(()(()))` are balanced, we know that every one of their prefixes *must* have a difference greater than or equal to zero. Which tells is that *Every prefix of a balanced word that has a difference of zero must itself be a balanced word.*
 
+#### If we delete a balanced word from the beginning of a balanced word, what remains is a balanced word
 Our first example balanced word has one prefix shorter than itself. The second balanced word does not. Let's look at its mountain diagram again:
 
 ```
@@ -171,12 +172,10 @@ If the prefix `(()())` has a difference of zero, and if the entire word has a pr
 
 If a word has a balanced prefix, the remainder of the word following the prefix is also balanced. Which means, *If we delete a balanced word from the beginning of a balanced word, what remains is a balanced word.*
 
+#### If we delete a balanced word from within a balanced word, the remainder must be balanced
 Deleting a balanced word from the beginning or the end of a word is the inverse of concatenating two words. Can we delete balanced words from within balanced words? And if so, must what remains be balanced?
 
 ```
- /\/\        \/      /\   
-/    \/\  -      => /  \/\
-
  /\/\        /\/\       
 /    \/\  -        => /\/\
 ```
@@ -216,7 +215,7 @@ This always works. Why?
 
 We already know that if we delete a balanced word from a balanced word, what remains will be a shorter, balanced word. It follows that *If every non-empty balanced word contains at least one `()` substring, then recursively deleting the first `()` of a non-empty balanced word will reach the empty string in finite time and halt.*
 
-#### every non-empty balanced word has a first balanced prefix
+#### Every non-empty balanced word has a first balanced prefix
 A non-empty balanced word is its own last prefix, therefore every non-empty balanced word has at least one balanced prefix, which by definition is itself a balanced word. One, the shortest, is its first balanced prefix. For our example word `(()())()`, the first balanced prefix is `(()())`.
 
 #### The first balanced prefix is its own first balanced prefix
