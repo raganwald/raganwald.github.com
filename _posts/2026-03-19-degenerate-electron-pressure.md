@@ -4,7 +4,6 @@ published: true
 tags:
   - noindex
   - allonge
-  - mermaid
 ---
 
 As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. Here are some examples of strings containing simple—`(` and `)`—parentheses, along with whether or not they are balanced:
@@ -55,10 +54,13 @@ test("untypedRecognizerWithCounter", () => {
 });
 ```
 
-This works, but it doesn't seem very close to the way the problem was (clumsily) framed. Let's consider this formal definition instead: A word is a valid member of the balanced parentheses language if and only if:
+This works, but it doesn't seem very close to the way the problem was (clumsily) framed. Let's consider this formal definition instead: A non-empty string is a balanced word if:
 
-1. The difference between the number of `(s` and the number of `)s` in the entire word is zero, and;
-2. The difference between the number of `(s` and the number of `)s` in every prefix of the word is at least zero.
+	1. Each of its symbols are from the alphabet `(, )', and;
+	1. It has an equal number of left and right parentheses, and;
+	1. None of its prefixes have more right than left parentheses.
+
+n.b. *This definition includes the empty string.* 
 
 While the counter solution does not closely resemble the colloquial problem statement, it exactly matches this formal definition of the problem, which defines a balanced word in terms of differences and prefixes.
 
@@ -79,7 +81,7 @@ With the balanced word `(()())()`, the prefixes and differences are:
 
 <br/>
 
-Each is greater than or equal to zero, and the difference for the entire string (the longest prefix) is zero, so it is balanced.
+None are negative, and the difference for the entire string (the longest prefix) is zero, so it is balanced.
 
 We can visualize the differences with a "mountain diagram." To make a mountain diagram, we use `/` and `\` as our "parentheses," instead of `(` and `)`.  So our balanced word becomes `//\/\\/\`.
 
@@ -118,7 +120,7 @@ Since they are both balanced, they end at the same level where they begin. What 
 /    \  + /\  =>   /    \/\
 ```
 
-This is balanced, because given any two balanced words, they both end with a difference of zero and thus the difference of them together will always be zero. And since all prefixes for both words have differences greater than or equal to zero, the two catenated together have every prefix greater than or equal to zero. Thus, concatenating any two balanced words results in a balanced word.[^cl]
+This is balanced, because given any two balanced words, they both end with a difference of zero and thus the difference of them together will always be zero. And since none of the prefixes for either word have negative differences, the prefixes of the two concatenated together will also have no negative differences. Thus, concatenating any two balanced words results in a balanced word.[^cl]
 
 [^cl]: Balanced parentheses is a concatenative language.
 
@@ -131,7 +133,7 @@ Concatenation is not the only way to compose balanced words. We can also insert 
 /   +     +     \  =>  /      \
 ```
 
-Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the prefixes for the composed word will all be greater than or equal to zero. Therefore, *Inserting a balanced word anywhere within a balanced word produces a balanced word*.
+Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the none of the differences for the composed word will be negative. Therefore, *Inserting a balanced word anywhere within a balanced word produces a balanced word*.
 
 If we think of concatenation as insertion at the beginning or end of a word, we have the rule of composing balanced words: *Inserting a balanced word at the beginning, end, or anywhere within another balanced word produces a balanced word.*
 
@@ -151,7 +153,7 @@ Here are two words, `(()())()` and`(()(()))`. The prefixes are:
 
 <br/>
 
-Note that `(()())()` has two prefixes with a difference of zero: `(()())` and itself `(()())()`. While `(()(()))` has only one prefix with a differenze of zero, itself. Since both `(()())()`, and `(()(()))` are balanced, we know that every one of their prefixes *must* have a difference greater than or equal to zero. Which tells is that *Every prefix of a balanced word that has a difference of zero must itself be a balanced word.*
+Note that `(()())()` has two prefixes with a difference of zero: `(()())` and itself `(()())()`. While `(()(()))` has only one prefix with a differenze of zero, itself. Since both `(()())()`, and `(()(()))` are balanced, we know that none of their prefixes will have a negative difference. Which tells is that *Every prefix of a balanced word that has a difference of zero must itself be a balanced word.*
 
 #### If we delete a balanced word from the beginning of a balanced word, what remains is a balanced word
 Our first example balanced word has one prefix shorter than itself. The second balanced word does not. Let's look at its mountain diagram again:
@@ -168,9 +170,18 @@ Notice that valley that comes back to the level of the origin? That's where `(()
 /    \/\  -  /    \  => /\
 ```
 
-If the prefix `(()())` has a difference of zero, and if the entire word has a prefix of zero, then the remainder must also have a difference of zero. And since it begins from zero, it must have prefixes itself that are greater than or equal to zero.
+If the prefix `(()())` has a difference of zero, and if the entire word has a prefix of zero, then the remainder must also have a difference of zero. The remainder's prefixes are shorter than the original prefixes, but the parentheses we remove add up to zero. The prefixes of the remainder as a standalone word are identical to the prefixes of the original word.
 
-If a word has a balanced prefix, the remainder of the word following the prefix is also balanced. Which means, *If we delete a balanced word from the beginning of a balanced word, what remains is a balanced word.*
+In our example word's case:
+
+| Original <br>Prefix | Original<br>Difference | Remainder<br>Prefix | Remainder<br>Difference |
+| :------------------ | ---------------------- | ------------------- | ----------------------- |
+| `(()())(`           | 1                      | `(`                 | 1                       |
+| `(()())()`          | 0                      | `()`                | 0                       |
+
+Since none of the original prefixes of a balanced word can have a negative difference, it follows that none of the prefixes of the remainder after deleting a balanced word can have a negative difference.
+  
+If a word has a balanced prefix, the remainder of the word following the balanced prefix is also balanced. Which means, *If we delete a balanced word from the beginning of a balanced word, what remains is a balanced word.*
 
 #### If we delete a balanced word from within a balanced word, the remainder must be balanced
 Deleting a balanced word from the beginning or the end of a word is the inverse of concatenating two words. Can we delete balanced words from within balanced words? And if so, must what remains be balanced?
@@ -180,7 +191,7 @@ Deleting a balanced word from the beginning or the end of a word is the inverse 
 /    \/\  -        => /\/\
 ```
 
-As with removing words from the beginning or the end, if we remove a substring of a balanced word that has a difference of zero—such as a balanced word—the remainder must also have a difference of zero, whether the substring we remove is balanced or not. Since what remains has prefixes with differences that are greater than or equal to zero, *If we delete a balanced word from within a balanced word, the remainder must be balanced.*
+As with removing words from the beginning or the end, if we remove a substring of a balanced word that has a difference of zero—such as a balanced word—the remainder must also have a difference of zero, whether the substring we remove is balanced or not. Since what remains has no prefixes with negative differences, *If we delete a balanced word from within a balanced word, the remainder must be balanced.*
 
 Inserting a balanced word at the beginning, end, or within another balanced word always leaves a balanced remainder. And inversely, deleting a balanced word from the beginning, end, or within a balanced word always leaves a balanced reaminder. Inserting and removing balanced words are inverse operations. Anything that can be done by inserting can be undone by deleting, and anything that can be done by deleting can be undone by inserting.
 
@@ -222,7 +233,9 @@ A non-empty balanced word is its own last prefix, therefore every non-empty bala
 The first balanced prefix is the shortest balanced prefix, thus there are no shorter balanced prefixes and it is its own first balanced prefix.
 
 #### The first and last symbols of a non-empty balanced word are `(` and `)`
-The first symbol of a non-empty balanced word is its shortest prefix. Since every prefix must have a difference greater than or equal to zero, the first symbol cannot be a `)` as that would give the first prefix a negative difference. Thus, the first prefix's symbol must be `(` and the first prefix's difference must be one. The difference of the last prefix of a nonempty balanced word must be zero, and the difference of the penultimate prefix cannot be negative one, therefore the last symbol difference of the penultimate prefix must be one, and the last symbol of a non-empty balanced word must be `)`.
+The first symbol of a non-empty balanced word is its shortest prefix. Since no prefix may have a negative difference, the first symbol cannot be a `)` as that would give the first prefix a negative difference. Thus, the first prefix's symbol must be `(` and the first prefix's difference must be one.
+
+The difference of the last prefix of a nonempty balanced word must be zero, and the difference of the penultimate prefix cannot be negative one, therefore the last symbol difference of the penultimate prefix must be one, and the last symbol of a non-empty balanced word must be `)`.
 
 We can see this is true with our example word `(()())()`. The first and last symbols are `(` and `)`, the difference of the first prefix is one, and the difference of the penultimate prefix `(()())(` is also one.
 
@@ -235,7 +248,6 @@ The enclosed interior of a non-empty balanced word is the word formed by the sym
 ```
 
 #### Every prefix of the enclosed interior of a non-empty balanced word corresponds to a prefix of the penultimate prefix of that non-empty balanced word
-
 For our example `(()())()`, the penultimate prefix is `(()())(` and the enclosed interior is `()())(`:
 
 | `(()())(`  | Difference | `()())(` | Difference |
@@ -250,16 +262,14 @@ For our example `(()())()`, the penultimate prefix is `(()())(` and the enclosed
 
 <br/>
 
-The difference of every prefix of the enclosed interior is one less than the difference of the corresponding prefix of the penultiate prefix.
+The difference of every prefix of the enclosed interior is one less than the difference of the corresponding prefix of the penultimate prefix.
 
 #### If a balanced word is its own first balanced prefix, its enclosed interior will be balanced
+If a balanced word is its own first balanced prefix, then none of its prefixes up to and including its penultimate prefix ("penultimate prefixes") will be balanced. And If none of its penultimate prefixes are balanced, then none of the penultimate prefixes have a difference of zero.
 
-- All of an enclosed interior's prefixes will have balances greater than or equal to zero iff all of the balances of the enclosingpenultimate prefix are greater than or equal to one.
-- All of the balances of the enclosing penultimate prefix will be greater than or equal to one iff the enclosing penultimate prefix has nobalanced prefixes.
-- The enclosing penultimate prefix will have no balanced prefixes iff the balanced word that encloses it is its own first balanced prefix.
+If the differences of the prefixes of the balanced word's enclosed interior are one less than the differences of the penultimate prefixes of the balanced word, and if none of the penultimate prefixes of the balanced word have a difference of zero, then none of the prefixes of the balanced word's enclosed interior will have a negative difference.
 
-If a balanced word is its own balanced prefix, its enclosed interior will have a difference of zero and all of the prefixes of its enclosed interior will have differences greater than or equal to zero, thus its enclosed interior must be balanced.
-
+If the enclosed interior of a balanced word has a difference of zero, and none of its prefixes have a negative difference, then the enclosed interior of a balanced word must be balanced.
 #### Every non-empty balanced word has a first balanced prefix that consists of a `(` and a `)` enclosing a balanced word
 - Every non-empty balanced word has a first balanced prefix.
 - That first balanced prefix is a balanced word that is its own first balanced prefix.
