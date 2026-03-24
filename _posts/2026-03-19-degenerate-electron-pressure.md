@@ -6,59 +6,47 @@ tags:
   - allonge
 ---
 
-As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. Here are some examples of strings containing simple—`(` and `)`—parentheses, along with whether or not they are balanced:
-
-| Input          | Balanced? | Comment                       |
-| :------------- | :-------- | :---------------------------- |
-| `''`           | `yes`     | the empty string is balanced  |
-| `'()'`         | `yes`     |                               |
-| `'(())'`       | `yes`     | parentheses can nest          |
-| `'()()'`       | `yes`     | multiple pairs are acceptable |
-| `'(()()())()'` | `yes`     | multiple pairs can nest       |
-| `'((()'`       | `no`      | missing closing parentheses   |
-| `'()))'`       | `no`      | missing opening parentheses   |
-| `')('`         | `no`      | close before open             |
-
-<br/>
-
-The most commonly given solution for balanced parentheses uses a counter to keep track of the difference between the number of open and closed parentheses it encounters as it scans the word from left to right:
+As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. The most commonly given solution for balanced parentheses uses a counter to keep track of the difference between the number of open and closed parentheses it encounters as it scans the word from left to right:
 
 ```typescript
-function untypedRecognizerWithCounter (candidate: string): boolean {
-  let openCount: number = 0;
+function isBalanced (candidate: string): boolean {
+  let openCount = 0;
 
-  for (let cursor = 0; cursor < candidate.length; ++cursor) {
-    const paren = candidate[cursor];
-    if (paren === '(') {
-      openCount++;
-    }
-    else if (paren === ')' && openCount == 0) {
+  for (let cursor = 0; cursor < word.length; ++cursor) {
+    if (openCount < 0) {
       return false;
     }
-    else {
-      openCount--;
+    else if (word[cursor] === '(') {
+      openCount++;
     }
+    else if (word[cursor] === ')') {
+			openCount--;
+    }
+    else return false;
   }
 
   return openCount === 0;
 }
 
-test("untypedRecognizerWithCounter", () => {
-  expect(untypedRecognizerWithCounter('')).toEqual(true);
-  expect(untypedRecognizerWithCounter('(')).toEqual(false);
-  expect(untypedRecognizerWithCounter('()')).toEqual(true);
-  expect(untypedRecognizerWithCounter('(()')).toEqual(false);
-  expect(untypedRecognizerWithCounter('(())')).toEqual(true);
-  expect(untypedRecognizerWithCounter('(())(')).toEqual(false);
-  expect(untypedRecognizerWithCounter('(())()')).toEqual(true);
+test("isBalanced", () => {
+  expect(isBalanced('')).toEqual(true);
+  expect(isBalanced('(')).toEqual(false);
+  expect(isBalanced(')')).toEqual(false);
+  expect(isBalanced('()')).toEqual(true);
+  expect(isBalanced('(()')).toEqual(false);
+  expect(isBalanced('())')).toEqual(false);
+  expect(isBalanced('()))')).toEqual(false);
+  expect(isBalanced('(())')).toEqual(true);
+  expect(isBalanced('(())(')).toEqual(false);
+  expect(isBalanced('(())()')).toEqual(true);
 });
 ```
 
 This works, but it doesn't seem very close to the way the problem was (clumsily) framed. Let's consider this formal definition instead: A non-empty string is a balanced word if:
 
-	1. Each of its symbols are from the alphabet `(, )', and;
-	1. It has an equal number of left and right parentheses, and;
-	1. None of its prefixes have more right than left parentheses.
+1. Each of its symbols are from the alphabet `(, )', and;
+1. It has an equal number of left and right parentheses, and;
+1. None of its prefixes have more right than left parentheses.
 
 n.b. *This definition includes the empty string.* 
 
