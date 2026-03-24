@@ -6,7 +6,11 @@ tags:
   - allonge
 ---
 
-As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. The most commonly given solution for balanced parentheses uses a counter to keep track of the difference between the number of open and closed parentheses it encounters as it scans the word from left to right:
+# Introduction
+
+---
+
+As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. The most commonly given solution for balanced parentheses uses a counter to keep track of the difference between the number of open and closed parentheses it encounters as it scans a word from left to right:
 
 ```typescript
 function isBalanced (candidate: string): boolean {
@@ -20,7 +24,7 @@ function isBalanced (candidate: string): boolean {
       openCount++;
     }
     else if (word[cursor] === ')') {
-			openCount--;
+      openCount--;
     }
     else return false;
   }
@@ -42,15 +46,13 @@ test("isBalanced", () => {
 });
 ```
 
-This works, but it doesn't seem very close to the way the problem was (clumsily) framed. Let's consider this formal definition instead: A non-empty string is a balanced word if:
+This approach closely matches the "prefixes and differences" definition of balanced parentheses, *id est* A word is balanced if:
 
-1. Each of its symbols are from the alphabet `(, )', and;
-1. It has an equal number of left and right parentheses, and;
-1. None of its prefixes have more right than left parentheses.
+1. It has no symbols other than `(` or `)`, and;
+1. It has an equal number of `(` and `)`, and;
+1. It has no prefixes with more `)` than `(`.
 
 n.b. *This definition includes the empty string.* 
-
-While the counter solution does not closely resemble the colloquial problem statement, it exactly matches this formal definition of the problem, which defines a balanced word in terms of differences and prefixes.
 
 ### visualizing differences and prefixes
 
@@ -84,7 +86,7 @@ We can see at a glance that the path traced along the "mountain tops" never drop
 
 ---
 
-## Composing and decomposing balanced words
+# Composing and decomposing balanced words
 
 ---
 
@@ -213,6 +215,41 @@ This always works. Why?
 ### Why the cheeky solution works
 
 We already know that if we delete a balanced word from a balanced word, what remains will be a shorter, balanced word. It follows that *If every non-empty balanced word contains at least one `()` substring, then recursively deleting the first `()` of a non-empty balanced word will reach the empty string in finite time and halt.*
+
+We will prove that that every non-empty balanced word contains at least one `()` substring by contradiction:
+
+1. The first symbol of a non-empty balanced word must be a `(`, and;
+2. A balanced word that begins with `(` must contain at least one `()`, and;
+3. Recursively deleting `()` from a balanced word halts when we reach the empty string.
+
+
+#### The first symbol of a non-empty balanced word must be a `(`.
+The first symbol of a non-empty balanced word is its shortest prefix. Since no prefix may have a negative difference, the first symbol cannot be a `)` as that would give the first prefix a negative difference. Thus, the first prefix's symbol must be `(`:
+
+```
+(...
+```
+
+#### A balanced word that begins with `(` must contain at least one `()`
+Now let's assume that a balanced word exists that does **not** contain a `()` substring. What is this word's second symbol? It can't be a `)`, because then it would begin with `()`, contradicting our claim that this word does not contain a `()`. So the second symbol must also be a `(`:
+
+```
+((...
+```
+
+How about the third symbol? The foruth? The 19,620,614th? This can continue to infinity, but in a finite word we eventually have to start including some `)))` to bring the difference down to zero, and when we do so, we must introduce a `()`. This establishes a contradiction, therefore it is not possible for a balanced word to not have at least one `()`, thus *Every non-empty balanced word contains at least one `()`*.
+
+#### Recursively deleting `()` from a balanced word halts when we reach the empty string
+Every balanced string contains a `()`, and since `()` is a balanced string, removing `()` from a balanced string leaves a balanced string that is two characters shorter. Given a finite string, this process must terminate in the empty string or an unbalanced string that does not contain `()`.
+
+---
+
+## Sw!pe File
+
+#### The first and last symbols of every non-empty balanced word are `(` and `)`
+The first symbol of a non-empty balanced word is its shortest prefix. Since no prefix may have a negative difference, the first symbol cannot be a `)` as that would give the first prefix a negative difference. Thus, the first prefix's symbol must be `(` and the first prefix's difference must be one.
+
+The difference of the last prefix of a nonempty balanced word must be zero, and the difference of the penultimate prefix cannot be negative one, therefore the last symbol difference of the penultimate prefix must be one, and the last symbol of a non-empty balanced word must be `)`. We can see this is true with our example word `(()())()`. The first and last symbols are `(` and `)`, the difference of the first prefix is one, and the difference of the penultimate prefix `(()())(` is also one.
 
 #### Every non-empty balanced word has a first balanced prefix
 A non-empty balanced word is its own last prefix, therefore every non-empty balanced word has at least one balanced prefix, which by definition is itself a balanced word. One, the shortest, is its first balanced prefix. For our example word `(()())()`, the first balanced prefix is `(()())`.
