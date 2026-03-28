@@ -10,7 +10,7 @@ tags:
 
 ---
 
-As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. The most commonly given solution for balanced parentheses uses a counter to keep track of the difference between the number of open and closed parentheses it encounters as it scans a word from left to right:
+As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. A fast solution uses a counter to keep track of the difference between the number of open and closed parentheses it encounters as it scans a word from left to right:
 
 ```typescript
 function isBalanced (candidate: string): boolean {
@@ -56,26 +56,22 @@ The code above closely matches a "prefixes and differences" definition of balanc
 1. It has an equal number of `(` and `)`, and;
 1. It has no prefixes with more `)` than `(`.
 
-With the balanced word `(()())()`, we can list the prefixes, differences, and a "difference string" representing the differences within each prefix:
+With the balanced word `(()())()`, we can list the prefixes and differences:
 
-| Prefix     | Difference | Difference String |
-| :--------- | :--------- | ----------------- |
-| `(`        | 1          | 1                 |
-| `((`       | 2          | 12                |
-| `(()`      | 1          | 121               |
-| `(()(`     | 2          | 1212              |
-| `(()()`    | 1          | 12121             |
-| `(()())`   | 0          | 121210            |
-| `(()())(`  | 1          | 1212101           |
-| `(()())()` | 0          | 12121010          |
+| Prefix     | Difference |
+| :--------- | :--------- |
+| `(`        | 1          |
+| `((`       | 2          |
+| `(()`      | 1          |
+| `(()(`     | 2          |
+| `(()()`    | 1          |
+| `(()())`   | 0          |
+| `(()())(`  | 1          |
+| `(()())()` | 0          |
 
 <br/>
 
-With a difference string, a word is balanced if none of its differences are negative and if the last difference is zero.
-
-We can also visualize a word's differences with a "mountain diagram." To make a mountain diagram, we use `/` and `\` as our "parentheses," instead of `(` and `)`.  So our balanced word becomes `//\/\\/\`.
-
-Then we "raise" each `/` and "lower" each `\` to make a two-dimensional "mountain range" where the vertical distance represents the difference or level of nesting:
+We can also visualize a word's differences with a "mountain diagram." To make a mountain diagram, we use `/` and `\` as our "parentheses," instead of `(` and `)`.  Then we "raise" each `/` and "lower" each `\` to make a two-dimensional "mountain range" where the vertical distance represents the difference or level of nesting:
 
 ```
  /\/\
@@ -92,9 +88,12 @@ We can see at a glance that the path traced along the "mountain tops" never drop
 
 Balanced words can be composed through insertions and removals. If we insert a balanced word at the beginning, end, or anywhere within another balanced word, the result is a balanced word. And if we remove a balanced word from the beginning, end, or from within another balanced word, the remainder will be a balanced word.
 
-These properties of composition and decomposition follow directly from the differences and prefixes definition of balanced words:
+*Balance is preserved through both insertion and removal.*
 
-#### Concatenating balanced words results in a balanced word.
+These properties of composition and decomposition follow directly from the differences and prefixes definition of balanced words.
+
+### Why balance is preserved through both insertion and removal
+#### Concatenation preserves balance
 Consider two balanced words, `(()())` and `()`. Their mountain diagrams are:
 
 ```
@@ -102,18 +101,20 @@ Consider two balanced words, `(()())` and `()`. Their mountain diagrams are:
 /    \  /\
 ```
 
-Since they are both balanced, they end at the same level where they begin. What happens if we catenate them? We get our example balanced word:
+Since they are both balanced, they end at the same level where they begin. What happens if we concatenate them? We get our example balanced word:
 
 ```
  /\/\               /\/\
 /    \  + /\  =>   /    \/\
 ```
 
-This is balanced, because given any two balanced words, they both end with a difference of zero and thus the difference of them together will always be zero. And since none of the prefixes for either word have negative differences, the prefixes of the two concatenated together will also have no negative differences. Thus, concatenating any two balanced words results in a balanced word.[^cl]
+This is balanced, because given any two balanced words, they both end with a difference of zero and thus the difference of them together will always be zero. And since none of the prefixes for either word have negative differences, the prefixes of the two concatenated together will also have no negative differences. Thus, concatenating any two balanced words results in a balanced word, preserving balance.[^cl]
 
 [^cl]: Balanced parentheses is a concatenative language.
-#### Inserting a balanced word at the beginning, end, or anywhere within another balanced word produces a balanced word
-Concatenation is not the only way to compose balanced words. We can also insert one balanced word into another, anywhere within it. For example, what if we inject `()` into `(()())` between `((` and `)())`, producting `((())())`? Let's draw the mountain diagram, lifting the diagram of `()` to reflect the result:
+#### Insertion preserves balance
+Concatenation is *outer insertion*, insertion that is either before or after another word. Outer insertion preserves balance.
+
+Inserting one balanced word into another, anywhere within it is *inner insertion*. For example, we can insert `()` into `(()())` between the `((` and `)())`, producing `((())())`:
 
 ```
        /\                /\
@@ -121,9 +122,7 @@ Concatenation is not the only way to compose balanced words. We can also insert 
 /   +     +     \  =>  /      \
 ```
 
-Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the none of the differences for the composed word will be negative. Therefore, *Inserting a balanced word anywhere within a balanced word produces a balanced word*.
-
-If we think of concatenation as insertion at the beginning or end of a word, we have the rule of composing balanced words: *Inserting a balanced word at the beginning, end, or anywhere within another balanced word produces a balanced word.*
+	Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the none of the differences for the composed word will be negative. Therefore, inserting a balanced word anywhere within a balanced word produces a balanced word, and thus, inner insertion preserves balance.
 
 ```typescript
 function insert (insertion: string, index: number, word: string) {
@@ -248,7 +247,11 @@ test("remove", () => {
 });
 ```
 
-Inserting a balanced word at the beginning, end, or within another balanced word always leaves a balanced remainder. And inversely, removing a balanced word from the beginning, end, or within a balanced word always leaves a balanced remainder. Inserting and removing balanced words are inverse operations. Anything that can be done by inserting can be undone by removing, and anything that can be done by removing can be undone by inserting.
+Inserting a balanced word at the beginning, end, or within another balanced word always leaves a balanced remainder. And inversely, removing a balanced word from the beginning, end, or within a balanced word always leaves a balanced remainder.
+
+#### Insert and remove are inverse operations.
+
+If we insert some balanced word *x* into balanced word *y* at position *i*, we end up with *z*, a word that contains *x* and *y*, although *y* may be split into two halves. Removing *x* from *y* at the same index restores *w*.
 
 ---
 
@@ -332,7 +335,7 @@ The removals demonstrate that the balanced word `(()())()` can be reduced to the
 
 #### Every Balanced Word can be created by repeatedly inserting `()`
 
-Since every balanced word can be reduced to the empty string with removals, every balanced word can also be created with insertions. This follows logically, but given a balanced word, can we find the necessary insertions to create it? Certainly, using the same approach as the recognizer:
+Since every balanced word can be reduced to the empty string with repeated removals, every balanced word can also be created with repeated insertions. This follows logically, but given a balanced word, can we find the necessary insertions to create it? Certainly, using the same approach as the recognizer:
 
 ```typescript
 function insertionsFor (word: string): number[] {
