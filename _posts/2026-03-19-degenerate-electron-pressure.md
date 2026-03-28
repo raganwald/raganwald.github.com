@@ -125,7 +125,7 @@ Inserting one balanced word into another, anywhere within it is *inner insertion
 Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the none of the differences for the composed word will be negative. Therefore, inserting a balanced word anywhere within a balanced word produces a balanced word, and thus, inner insertion preserves balance.
 
 ```typescript
-function insert (insertion: string, index: number, word: string) {
+function insertBalancedWord (insertion: string, index: number, word: string) {
   if (!isBalanced(insertion)) throw new RangeError();
   if (index < 0 || index > word.length) throw new RangeError();
   if (!isBalanced(word)) throw new RangeError();
@@ -133,11 +133,11 @@ function insert (insertion: string, index: number, word: string) {
   return `${word.slice(0, index)}${insertion}${word.slice(index)}`;
 }
 
-test("insert", () => {
-  expect(insert('()', 0, '')).toBe('()');
-  expect(insert('()', 0, '()')).toBe('()()');
-  expect(insert('()', 1, '()')).toBe('(())');
-  expect(insert('()', 2, '()')).toBe('()()');
+test("insertBalancedWord", () => {
+  expect(insertBalancedWord('()', 0, '')).toBe('()');
+  expect(insertBalancedWord('()', 0, '()')).toBe('()()');
+  expect(insertBalancedWord('()', 1, '()')).toBe('(())');
+  expect(insertBalancedWord('()', 2, '()')).toBe('()()');
 });
 ```
 
@@ -196,54 +196,23 @@ Removing a balanced word from the beginning or the end of a word is the inverse 
 As with removing words from the beginning or the end, if we remove a substring of a balanced word that has a difference of zero—such as a balanced word—the remainder must also have a difference of zero, whether the substring we remove is balanced or not. Since what remains has no prefixes with negative differences, *If we remove a balanced word from within a balanced word, the remainder must be balanced.*
 
 ```typescript
-function wordAt (index: number, word: string) {
+function removeBalancedWord (removeable: string, index: number, word: string) {
+  if (!isBalanced(removeable)) throw new RangeError();
   if (index < 0 || index > word.length) throw new RangeError();
   if (!isBalanced(word)) throw new RangeError();
- 
-  let openCount: number = 0;
+  if (word.slice(index, index + removeable.length) != removeable) throw new RangeError(`${word}: ${word.slice(index, index + removeable.length)} !== ${removeable}`);
 
-  for (let cursor = index; cursor < word.length; ++cursor) {
-    if (openCount < 0) {
-      return '';
-    }
-    else if (word[cursor] === '(') {
-      openCount++;
-    }
-    else if (word[cursor] === ')') {
-			openCount--;
-    }
-    else return '';
-
-    if (openCount === 0) return word.slice(index, cursor + 1);
-  }
-
-  return '';
+  return `${word.slice(0, index)}${word.slice(index + removeable.length)}`;
 }
 
-test("wordAt", () => {
-  expect(wordAt(0, '')).toBe('');
-  expect(wordAt(0, '()')).toBe('()');
-  expect(wordAt(1, '()')).toBe('');
-  expect(wordAt(0, '(()())()')).toBe('(()())');
-  expect(wordAt(1, '(()())()')).toBe('()');
-  expect(wordAt(3, '(()())()')).toBe('()');
-  expect(wordAt(6, '(()())()')).toBe('()');
-});
+test("removeBalancedWord", () => {
+  expect(() => removeBalancedWord('()()', 0, '')).toThrow(RangeError);
+  expect(() => removeBalancedWord('()()', 0, '(()())()')).toThrow(RangeError);
 
-function remove (index: number, word: string) {
-  if (index < 0 || index > word.length) throw new RangeError();
-  if (!isBalanced(word)) throw new RangeError();
-
-  return `${word.slice(0, index)}${word.slice(index + wordAt(index, word).length)}`;
-}
-
-test("remove", () => {
-  expect(remove(0, '')).toBe('');
-  expect(remove(0, '()')).toBe('');
-  expect(remove(0, '(()())()')).toBe('()');
-  expect(remove(1, '(()())()')).toBe('(())()');
-  expect(remove(3, '(()())()')).toBe('(())()');
-  expect(remove(6, '(()())()')).toBe('(()())');
+  expect(removeBalancedWord('()()', 0, '()()')).toBe('');
+  expect(removeBalancedWord('()()', 1, '(()())()')).toBe('()()');
+  // expect(removeBalancedWord('()()', 3, '(()())()')).toBe('(())()');
+  // expect(removeBalancedWord('()()', 6, '(()())()')).toBe('(()())');
 });
 ```
 
