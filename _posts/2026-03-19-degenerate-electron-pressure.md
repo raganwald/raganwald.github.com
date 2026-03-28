@@ -6,25 +6,25 @@ tags:
   - allonge
 ---
 
-# Introduction
+# Balanced Parentheses
 
 ---
 
-As discussed in [Pattern Matching and Recursion], a one-time popular programming problem was to write a function that would recognize “Balanced Parentheses,” a [Dyck Language]. A fast solution uses a counter to keep track of the difference between the number of open and closed parentheses it encounters as it scans a word from left to right:
+"Balanced Parentheses" is a colloquial expression for a language (in the mathematical sense) consisting of the words containing no characters other than `(` or `)`, that are properly nested. Here's a function that recognizes whether a string is balanced, using a counter to keep track of the difference between the number of open and closed parentheses it encounters as it scans a string from left to right:
 
 ```typescript
-function isBalanced (candidate: string): boolean {
-  let openCount = 0;
+function isBalanced (candidate: string): boolean {   
+  let openCount: number = 0;
 
-  for (let cursor = 0; cursor < word.length; ++cursor) {
+  for (let cursor = 0; cursor < candidate.length; ++cursor) {
     if (openCount < 0) {
       return false;
     }
-    else if (word[cursor] === '(') {
+    else if (candidate[cursor] === '(') {
       openCount++;
     }
-    else if (word[cursor] === ')') {
-      openCount--;
+    else if (candidate[cursor] === ')') {
+			openCount--;
     }
     else return false;
   }
@@ -49,17 +49,19 @@ test("isBalanced", () => {
 ---
 
 ### Differences and Prefixes
+A more rigorous way to define balanced parentheses is that a string is a word in the balanced parentheses language ("is balanced") if and only if:
 
-The code above closely matches a "prefixes and differences" definition of balanced parentheses. A word is balanced if:
-
-1. It has no symbols other than `(` or `)`, and;
+1. It has no symbols other than `(` or `)`;
 1. It has an equal number of `(` and `)`, and;
-1. It has no prefixes with more `)` than `(`.
+1. It has no [prefixes][prefix] with more `)` than `(`.
+
+[prefix]: https://en.wikipedia.org/wiki/Substring#Prefix
 
 With the balanced word `(()())()`, we can list the prefixes and differences:
 
 | Prefix     | Difference |
 | :--------- | :--------- |
+| ε (empty)  | 0          |
 | `(`        | 1          |
 | `((`       | 2          |
 | `(()`      | 1          |
@@ -71,6 +73,16 @@ With the balanced word `(()())()`, we can list the prefixes and differences:
 
 <br/>
 
+*Question*: On the basis of these three rules—no symbols other than `(` or `)`, an equal number of `(` and `)`, and no prefixes with more `)` than `(`—is the [empty string] (ε) balanced?
+
+*Answer*: The empty string (ε) is balanced: It has no symbols other than `(` or `)` because it has no symbols at all, zero `(`s is equal to zero `)`s, and its only prefix—itself—has a difference of zero. And since ε is balanced, ε is a word in the balanced parentheses language despite not having any symbols at all.
+
+[empty string]: https://en.wikipedia.org/wiki/Empty_string
+
+---
+
+### mountain diagrams
+
 We can also visualize a word's differences with a "mountain diagram." To make a mountain diagram, we use `/` and `\` as our "parentheses," instead of `(` and `)`.  Then we "raise" each `/` and "lower" each `\` to make a two-dimensional "mountain range" where the vertical distance represents the difference or level of nesting:
 
 ```
@@ -78,13 +90,87 @@ We can also visualize a word's differences with a "mountain diagram." To make a 
 /    \/\
 ```
 
-We can see at a glance that the path traced along the "mountain tops" never drops below the origin point, which is a consequence of the differences never being below zero. And since it ends even with the origin, we know that the difference for the entire word is zero.
+The origin can be considered a kind of "sea level." We can see at a glance that the path traced along the "mountain tops" never drops below sea level, which is a consequence of the differences never being below zero. And since it ends at sea level, we know that the difference for the entire word is zero.
+
+Equipped with the "differences and prefixes" definition of Balanced Parentheses as well as the illustrative technique of drawing mountain diagrams, we can now explore an "algebra" of balanced parentheses.
 
 ---
 
-# Composing and decomposing balanced words
+# An Algebra of Balanced Parentheses
 
 ---
+
+#### Insertion and removal are operations that preserve balance
+Given any two balanced words *a* and *b*, a third balanced word *c* can be created by inserting *a* before, within, or after *b*.
+
+```typescript
+function insertBalancedWord (insertion: string, index: number, word: string) {
+  if (!isBalanced(insertion)) throw new RangeError();
+  if (index < 0 || index > word.length) throw new RangeError();
+  if (!isBalanced(word)) throw new RangeError();
+
+  return `${word.slice(0, index)}${insertion}${word.slice(index)}`;
+}
+
+test("insertBalancedWord", () => {
+  expect(() => insertBalancedWord('()', -1, '')).toThrow(RangeError);
+  expect(() => insertBalancedWord('()', 5, '()()')).toThrow(RangeError);
+  expect(() => insertBalancedWord('()', 0, ')()')).toThrow(RangeError);
+
+  expect(insertBalancedWord('()', 0, '')).toBe('()');
+  expect(insertBalancedWord('()', 0, '()')).toBe('()()');
+  expect(insertBalancedWord('()', 1, '()')).toBe('(())');
+  expect(insertBalancedWord('()', 2, '()')).toBe('()()');
+  expect(insertBalancedWord('()()', 1, `()()`)).toBe(`(()())()`);
+  expect(insertBalancedWord('(()())', 2, `()`)).toBe(`()(()())`); 
+});
+```
+
+And given a balanced word *x* and a balanced word *y* that is a substring of *x*, a third balanced word *z* can be created by removing *y* from *x*.
+
+```typescript
+function removeBalancedWord (removeable: string, index: number, word: string) {
+  if (!isBalanced(removeable)) throw new RangeError();
+  if (index < 0 || index > word.length) throw new RangeError();
+  if (!isBalanced(word)) throw new RangeError();
+  if (word.slice(index, index + removeable.length) != removeable) throw new RangeError();
+
+  return `${word.slice(0, index)}${word.slice(index + removeable.length)}`;
+}
+
+test("removeBalancedWord", () => {
+  expect(() => removeBalancedWord('()()', 0, '')).toThrow(RangeError);
+  expect(() => removeBalancedWord('()()', 0, '(()())()')).toThrow(RangeError);
+  expect(() => removeBalancedWord(')(', 2, '(()())()')).toThrow(RangeError);
+
+  expect(removeBalancedWord('()()', 0, '()()')).toBe('');
+  expect(removeBalancedWord('()()', 1, '(()())()')).toBe('()()');
+  expect(removeBalancedWord('(()())()', 0, '(()())()')).toBe('');
+  expect(removeBalancedWord('()', 6, '(()())()')).toBe('(()())');
+});
+```
+
+#### The empty string (ε) is an identity element for insertion and removal
+Inserting ε before, within, or after a balanced word leaves the balanced word unchanged. Inserting a balanced word before or after ε also results in the unchanged balanced word. Likewise, removing ε fom the beginning, within, or the end of a balanced word leaves the balanced word unchanged.
+
+```typescript
+test("ε", () => {
+  expect(insertBalancedWord('', 0, '(()())()')).toBe('(()())()');
+  expect(insertBalancedWord('', 3, '(()())()')).toBe('(()())()');
+  expect(insertBalancedWord('', 6, '(()())()')).toBe('(()())()');
+  expect(insertBalancedWord('', 8, '(()())()')).toBe('(()())()');
+
+  expect(insertBalancedWord('()', 0, '')).toBe('()');
+  expect(insertBalancedWord('(()())', 0, '')).toBe('(()())');
+
+  expect(removeBalancedWord('', 0, '(()())()')).toBe('(()())()');
+  expect(removeBalancedWord('', 3, '(()())()')).toBe('(()())()');
+  expect(removeBalancedWord('', 6, '(()())()')).toBe('(()())()');
+  expect(removeBalancedWord('', 8, '(()())()')).toBe('(()())()');
+});
+```
+
+The empty string (ε) is the identity element for insertion and removal.
 
 Balanced words can be composed through insertions and removals. If we insert a balanced word at the beginning, end, or anywhere within another balanced word, the result is a balanced word. And if we remove a balanced word from the beginning, end, or from within another balanced word, the remainder will be a balanced word.
 
@@ -124,21 +210,7 @@ Inserting one balanced word into another, anywhere within it is *inner insertion
 
 Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the none of the differences for the composed word will be negative. Therefore, inserting a balanced word anywhere within a balanced word produces a balanced word, and thus, inner insertion preserves balance.
 
-```typescript
-function insertBalancedWord (insertion: string, index: number, word: string) {
-  if (!isBalanced(insertion)) throw new RangeError();
-  if (index < 0 || index > word.length) throw new RangeError();
-  if (!isBalanced(word)) throw new RangeError();
 
-  return `${word.slice(0, index)}${insertion}${word.slice(index)}`;
-}
-
-test("insertBalancedWord", () => {
-  expect(insertBalancedWord('()', 0, '')).toBe('()');
-  expect(insertBalancedWord('()', 0, '()')).toBe('()()');
-  expect(insertBalancedWord('()', 1, '()')).toBe('(())');
-  expect(insertBalancedWord('()', 2, '()')).toBe('()()');
-});
 ```
 
 #### Every prefix of a balanced word that has a difference of zero, must itself be a balanced word
@@ -181,6 +253,8 @@ In our example word's case:
 | :------------------ | :--------------------- | :------------------ | :---------------------- |
 | `(()())(`           | 1                      | `(`                 | 1                       |
 | `(()())()`          | 0                      | `()`                | 0                       |
+
+<br/>
 
 Since none of the original prefixes of a balanced word can have a negative difference, it follows that none of the prefixes of the remainder after removing a balanced word can have a negative difference.
   
@@ -273,7 +347,7 @@ Now let's assume that a balanced word exists that does **not** contain a `()` su
 ((...
 ```
 
-How about the third symbol? The foruth? The 19,620,614th? This can continue to infinity, but in a finite word we eventually have to start including some `)))` to bring the difference down to zero, and when we do so, we must introduce a `()`. This establishes a contradiction, therefore it is not possible for a balanced word to not have at least one `()`, thus *Every non-empty balanced word contains at least one `()`*.
+How about the third symbol? The fourth symbol? The 19,620,614th symbol? This can continue to infinity, but in a finite word we eventually have to start including some `)))` to bring the difference down to zero, and when we do so, we must introduce a `()`. This establishes a contradiction, therefore it is not possible for a balanced word to not have at least one `()`. *Every non-empty balanced word contains at least one `()`*.
 
 #### Recursively removing `()` from a balanced word halts when we reach the empty string
 Every balanced string contains a `()`, and since `()` is a balanced string, removing `()` from a balanced string leaves a balanced string that is two characters shorter. Given a finite string, this process must terminate in the empty string or an unbalanced string that does not contain `()`.
@@ -352,6 +426,8 @@ test("reconstitute", () => {
 - typed recognizer is below
 - the stack-free recognizer using function calls as the stack.
 - bijections and insertion lists
+
+- refactor to explain that balanced parentheses are a category
 
 ## Sw!pe File
 
