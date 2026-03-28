@@ -122,7 +122,7 @@ Inserting one balanced word into another, anywhere within it is *inner insertion
 /   +     +     \  =>  /      \
 ```
 
-	Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the none of the differences for the composed word will be negative. Therefore, inserting a balanced word anywhere within a balanced word produces a balanced word, and thus, inner insertion preserves balance.
+Because we're inserting a word that has a difference of zero, it has no effect of the difference of the result, just as with concatenation. And because it has a difference of zero, it has no effect on the differences of the existing prefixes before or after the insertion point, and thus the none of the differences for the composed word will be negative. Therefore, inserting a balanced word anywhere within a balanced word produces a balanced word, and thus, inner insertion preserves balance.
 
 ```typescript
 function insert (insertion: string, index: number, word: string) {
