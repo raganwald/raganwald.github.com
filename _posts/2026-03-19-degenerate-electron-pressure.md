@@ -178,7 +178,7 @@ If the prefix `(()())` has a difference of zero, and if the entire word has a pr
 In our example word's case:
 
 | Original <br>Prefix | Original<br>Difference | Remainder<br>Prefix | Remainder<br>Difference |
-| :------------------ | ---------------------- | ------------------- | ----------------------- |
+| :------------------ | :--------------------- | :------------------ | :---------------------- |
 | `(()())(`           | 1                      | `(`                 | 1                       |
 | `(()())()`          | 0                      | `()`                | 0                       |
 
