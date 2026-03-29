@@ -6,6 +6,10 @@ tags:
   - allonge
 ---
 
+[![Gerrit Thomas Rietveld, Chauffeur’s workhome, ©Pedro Kok](/assets/de-stijl/gerrit-rietveld-chauffeur-house-pedro-kok-3.jpg.webp)](https://marcelogardinetti.wordpress.com/2013/01/07/gerrit-rietveld-casa-del-chofer/#jp-carousel-2644)
+*Gerrit Thomas Rietveld, Chauffeur’s workhome, ©Pedro Kok*
+
+
 # Balanced Parentheses
 
 ---
@@ -48,7 +52,7 @@ test("isBalanced", () => {
 
 ---
 
-### Differences and Prefixes
+### differences and prefixes
 A more rigorous way to define balanced parentheses is that a string is a word in the balanced parentheses language ("is balanced") if and only if:
 
 1. It has no symbols other than `(` or `)`;
@@ -96,11 +100,15 @@ Equipped with the "differences and prefixes" definition of Balanced Parentheses 
 
 ---
 
+![Side table and roodblaustoel, design by Gerrit Rietveld](/assets/de-stijl/side-table-and-roodblaustoel.jpg)
+
+---
+
 # An Algebra of Balanced Parentheses
 
 ---
 
-#### Insertion and removal are operations that preserve balance
+#### The insertion and removal operations preserve balance
 Given any two balanced words *a* and *b*, a third balanced word *c* can be created by inserting *a* before, within, or after *b*.
 
 ```typescript
@@ -150,7 +158,7 @@ test("removeBalancedWord", () => {
 });
 ```
 
-#### The empty string (ε) is an identity element for insertion and removal
+#### The empty string (ε) is the identity element for insertion and removal
 Inserting ε before, within, or after a balanced word leaves the balanced word unchanged. Inserting a balanced word before or after ε also results in the unchanged balanced word. Likewise, removing ε fom the beginning, within, or the end of a balanced word leaves the balanced word unchanged.
 
 ```typescript
@@ -171,6 +179,8 @@ test("ε", () => {
 ```
 
 The empty string (ε) is the identity element for insertion and removal.
+
+#### insertion and removal are inverse operations of each other.
 
 Balanced words can be composed through insertions and removals. If we insert a balanced word at the beginning, end, or anywhere within another balanced word, the result is a balanced word. And if we remove a balanced word from the beginning, end, or from within another balanced word, the remainder will be a balanced word.
 
