@@ -125,7 +125,6 @@ test("insertBalancedWord", () => {
   expect(() => insertBalancedWord('()', 5, '()()')).toThrow(RangeError);
   expect(() => insertBalancedWord('()', 0, ')()')).toThrow(RangeError);
 
-  expect(insertBalancedWord('()', 0, '')).toBe('()');
   expect(insertBalancedWord('()', 0, '()')).toBe('()()');
   expect(insertBalancedWord('()', 1, '()')).toBe('(())');
   expect(insertBalancedWord('()', 2, '()')).toBe('()()');
@@ -141,7 +140,7 @@ function removeBalancedWord (removeable: string, index: number, word: string) {
   if (!isBalanced(removeable)) throw new RangeError();
   if (index < 0 || index > word.length) throw new RangeError();
   if (!isBalanced(word)) throw new RangeError();
-  if (word.slice(index, index + removeable.length) != removeable) throw new RangeError();
+  if (word.slice(index, index + removeable.length) != removeable) throw new RangeError(`${word}: ${word.slice(index, index + removeable.length)} !== ${removeable}`);
 
   return `${word.slice(0, index)}${word.slice(index + removeable.length)}`;
 }
@@ -163,18 +162,18 @@ Inserting ε before, within, or after a balanced word leaves the balanced word u
 
 ```typescript
 test("ε", () => {
-  expect(insertBalancedWord('', 0, '(()())()')).toBe('(()())()');
-  expect(insertBalancedWord('', 3, '(()())()')).toBe('(()())()');
-  expect(insertBalancedWord('', 6, '(()())()')).toBe('(()())()');
-  expect(insertBalancedWord('', 8, '(()())()')).toBe('(()())()');
+  expect(insertBalancedWord(ε, 0, '(()())()')).toBe('(()())()');
+  expect(insertBalancedWord(ε, 3, '(()())()')).toBe('(()())()');
+  expect(insertBalancedWord(ε, 6, '(()())()')).toBe('(()())()');
+  expect(insertBalancedWord(ε, 8, '(()())()')).toBe('(()())()');
 
-  expect(insertBalancedWord('()', 0, '')).toBe('()');
-  expect(insertBalancedWord('(()())', 0, '')).toBe('(()())');
+  expect(insertBalancedWord('()', 0, ε)).toBe('()');
+  expect(insertBalancedWord('(()())', 0, ε)).toBe('(()())');
 
-  expect(removeBalancedWord('', 0, '(()())()')).toBe('(()())()');
-  expect(removeBalancedWord('', 3, '(()())()')).toBe('(()())()');
-  expect(removeBalancedWord('', 6, '(()())()')).toBe('(()())()');
-  expect(removeBalancedWord('', 8, '(()())()')).toBe('(()())()');
+  expect(removeBalancedWord(ε, 0, '(()())()')).toBe('(()())()');
+  expect(removeBalancedWord(ε, 3, '(()())()')).toBe('(()())()');
+  expect(removeBalancedWord(ε, 6, '(()())()')).toBe('(()())()');
+  expect(removeBalancedWord(ε, 8, '(()())()')).toBe('(()())()');
 });
 ```
 
