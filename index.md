@@ -171,7 +171,7 @@ At PagerDuty, in addition to my [product](#i-ship-products) and [change](#i-reco
 
 ### This is not my first rodeo
 
-| Career Break      | 2024&thinsp;&ndash;&thinsp;present | Glider pilot training | 
+| Career Break      | 2025&thinsp;&ndash; | Glider pilot training | 
 |:--------------------|:--------------------------------|:-------|
 | [PagerDuty]         | 2015&thinsp;&ndash;&thinsp;2024 | Principal Engineer |
 | [GitHub]            | 2013&thinsp;&ndash;&thinsp;2015 | Software Engineer, Front-End Flow;<br/>Software Engineer, Documentation Tools  |
