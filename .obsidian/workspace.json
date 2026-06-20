@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "05b06cc4cf008378",
+        "id": "146a5d377de43c72",
         "type": "tabs",
         "children": [
           {
-            "id": "66c4846fb8266e63",
+            "id": "29e2db07a0f3793f",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "index.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "index"
+              "title": "New tab"
             }
           }
         ]
@@ -160,6 +156,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "bases:Create new base": false,
       "switcher:Open quick switcher": false,
       "graph:Open graph view": false,
       "canvas:Create new canvas": false,
@@ -168,10 +165,22 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "66c4846fb8266e63",
+  "active": "29e2db07a0f3793f",
   "lastOpenFiles": [
-    "_posts/2025-03-20-potsticker-engineer.md",
+    "_posts/2026-03-19-degenerate-electron-pressure.md",
+    "strongbox/Sketches of De Stijl.md",
+    "creative-works.md",
+    "Untitled 1.md",
+    "hashlife.md",
+    "ideaistic.jpg",
+    "Untitled.base",
+    "Untitled.canvas",
+    "Untitled.md",
+    "strongbox/readme.md",
+    "2026-03-19.md",
+    "_posts/2026-02-25-de-stijl.md",
     "index.md",
+    "_posts/2025-03-20-potsticker-engineer.md",
     "_posts/2008-02-21-mouse-trap.md",
     "_posts/weblog/Untitled.md"
   ]
