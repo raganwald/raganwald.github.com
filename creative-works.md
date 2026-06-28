@@ -120,10 +120,10 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - _Javascript Combinators_, [NDC Conferences][NDC]
 - _The Art of the Javascript Metaobject Protocol_, [NDC Conferences][NDC]
 - [Invent the future, don't recreate the past](https://www.youtube.com/watch?v=uYcAjr2J_rU) (2014), [Future JS](https://fullstackfest.com)
-- [The Not-So-Big Software Design](https://www.youtube.com/watch?v=arsK-CN5YDg) (2013), [wroc_love.rb](https://www.wrocloverb.com)
+- The Not-So-Big Software Design ([wroc_love.rb](https://www.wrocloverb.com), 2013): [video](https://www.youtube.com/watch?v=arsK-CN5YDg), [slides](https://www.slideshare.net/slideshow/the-not-sobig-software-design/17138537)
 - [What Developing With Ruby Can Teach Us About Developing Ruby](https://www.youtube.com/watch?v=WWKN-fjn4E4) (2013), BaRuCo
 - [I have a good feeling about this - Why tooling is poised to make the jump to hyperspace](https://youtube.com/watch?v=Re2SKhaK73I) (2013), [Web Rebels](https://www.webrebels.org)
-- [The Rebellion Imperative](https://vimeo.com/53265664) (2012), [Øredev](https://vimeo.com/user4280938)
+- The Rebellion Imperative ([Øredev](https://vimeo.com/user4280938), 2012): [video](https://vimeo.com/53265664), [slides](https://www.slideshare.net/slideshow/the-rebellion-imperative/15138965), 
 
 ### podcasts
 
