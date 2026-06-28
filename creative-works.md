@@ -62,6 +62,8 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44), [DevDay](https://devday.pl)
 - [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877), [NDC Conferences][NDC]
 - [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) (2016), [NDC Conferences][NDC]
+- *What We Lost in the Fire* (2015): [slides](https://www.slideshare.net/slideshow/what-we-lost-in-the-fire/17961825), [slides](https://www.haikudeck.com/what-we-lost-in-the-fire-science-and-technology-presentation-2YXMMZkJP5)
+- *Languages: It’s Time For Change* (2015): [slides](https://www.haikudeck.com/languages-its-time-for-change-science-and-technology-presentation-oqsvmTYuvj)
 
 ### podcasts
 
@@ -116,11 +118,11 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 ### talks
 
-- [The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](https://www.youtube.com/watch?v=hp7sgLVepF8) and a [post-talk interview](https://www.youtube.com/watch?v=RfMWgtix5A4) (2014), [Nordic JS](https://nordicjs.com)
-- _Javascript Combinators_, [NDC Conferences][NDC]
+- *The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern* ([Nordic JS](https://nordicjs.com), 2014): [video](https://www.youtube.com/watch?v=hp7sgLVepF8), [interview](https://www.youtube.com/watch?v=RfMWgtix5A4)
+- _Javascript Combinators_ ([NDC Conferences][NDC], ), 
 - _The Art of the Javascript Metaobject Protocol_, [NDC Conferences][NDC]
 - *Invent the future, don't recreate the past* ([Future JS](https://fullstackfest.com), 2014): [video](https://www.youtube.com/watch?v=uYcAjr2J_rU), [slides](https://www.haikudeck.com/invent-the-future-science-and-technology-presentation-wfIKm7QRaz)
-- *La Hermosa Vida* (SpainJS): [slides](https://www.haikudeck.com/la-hermosa-vida-science-and-technology-presentation-x2kAbNDLL9)
+- *La Hermosa Vida* (SpainJS, 2013): [slides](https://www.haikudeck.com/la-hermosa-vida-science-and-technology-presentation-x2kAbNDLL9)
 - *The Not-So-Big Software Design* ([wroc_love.rb](https://www.wrocloverb.com), 2013): [video](https://www.youtube.com/watch?v=arsK-CN5YDg), [slides](https://www.slideshare.net/slideshow/the-not-sobig-software-design/17138537)
 - *What Developing With Ruby Can Teach Us About Developing Ruby* (BaRuCo, 2013): [video](https://www.youtube.com/watch?v=WWKN-fjn4E4), [slides](https://www.haikudeck.com/what-developing-with-ruby-can-teach-us-about-developing-ruby-science-and-technology-presentation-5wkHW2Mu1M)
 - Rubyvärldens Förestående Kollaps (Nordic Ruby, 2013): [slides](https://www.haikudeck.com/rubyvrldens-frestende-kollaps-science-and-technology-presentation-ZZZZtHRk3c)
