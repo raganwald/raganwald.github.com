@@ -59,11 +59,10 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - [Optimism II](https://www.youtube.com/watch?v=wYPp4nG7qw4), [DevDay](https://devday.pl)
 - [Optimism](https://www.youtube.com/watch?v=8xjntzo-mYc), [Nordic Ruby](nordicruby.org)
 - [First-Class Commands, the 2017 Edition](https://www.youtube.com/watch?v=dATVOTBOl6c) (2017), [NDC Conferences][NDC]
-- [JavaScript Combinators](https://www.youtube.com/watch?v=3t75HPU2c44), [DevDay](https://devday.pl)
-- [JavaScript Combinators, The Six Edition](https://player.vimeo.com/video/153097877), [NDC Conferences][NDC]
+- *JavaScript Combinators* ([DevDay](https://devday.pl), 2016): [video](https://www.youtube.com/watch?v=3t75HPU2c44), [slides](https://www.youtube.com/watch?v=3t75HPU2c44) 
+- *JavaScript Combinators, The Six Edition* ([NDC Conferences][NDC]): [video](https://player.vimeo.com/video/153097877), [slides](https://www.slideshare.net/slideshow/javascript-combinators-the-six-edition/57014558)
 - [First-Class Commands: An unexpectedly fertile design pattern](https://vimeo.com/157132267) (2016), [NDC Conferences][NDC]
 - *What We Lost in the Fire* (2015): [slides](https://www.slideshare.net/slideshow/what-we-lost-in-the-fire/17961825), [slides](https://www.haikudeck.com/what-we-lost-in-the-fire-science-and-technology-presentation-2YXMMZkJP5)
-- *Languages: It’s Time For Change* (2015): [slides](https://www.haikudeck.com/languages-its-time-for-change-science-and-technology-presentation-oqsvmTYuvj)
 
 ### podcasts
 
@@ -125,9 +124,11 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - *La Hermosa Vida* (SpainJS, 2013): [slides](https://www.haikudeck.com/la-hermosa-vida-science-and-technology-presentation-x2kAbNDLL9)
 - *The Not-So-Big Software Design* ([wroc_love.rb](https://www.wrocloverb.com), 2013): [video](https://www.youtube.com/watch?v=arsK-CN5YDg), [slides](https://www.slideshare.net/slideshow/the-not-sobig-software-design/17138537)
 - *What Developing With Ruby Can Teach Us About Developing Ruby* (BaRuCo, 2013): [video](https://www.youtube.com/watch?v=WWKN-fjn4E4), [slides](https://www.haikudeck.com/what-developing-with-ruby-can-teach-us-about-developing-ruby-science-and-technology-presentation-5wkHW2Mu1M)
-- Rubyvärldens Förestående Kollaps (Nordic Ruby, 2013): [slides](https://www.haikudeck.com/rubyvrldens-frestende-kollaps-science-and-technology-presentation-ZZZZtHRk3c)
+- _Rubyvärldens Förestående Kollaps_ (Nordic Ruby, 2013): [slides](https://www.haikudeck.com/rubyvrldens-frestende-kollaps-science-and-technology-presentation-ZZZZtHRk3c)
 - *I have a good feeling about this - Why tooling is poised to make the jump to hyperspace* ([Web Rebels](https://www.webrebels.org), 2013): [video](https://youtube.com/watch?v=Re2SKhaK73I), [slides](https://www.slideshare.net/slideshow/i-have-a-good-feeling-about-this/22016658), [slides](https://www.haikudeck.com/i-have-a-good-feeling-about-this-science-and-technology-presentation-pjz03GUWZb) 
 - *The Rebellion Imperative* (Øredev, 2012): [video](https://vimeo.com/53265664), [slides](https://www.slideshare.net/slideshow/the-rebellion-imperative/15138965)
+- *Languages: It’s Time For Change* (2013): [slides](https://www.slideshare.net/slideshow/languages-its-time-for-change/17512828), [slides](https://www.haikudeck.com/languages-its-time-for-change-science-and-technology-presentation-oqsvmTYuvj)
+
 
 ### podcasts
 
