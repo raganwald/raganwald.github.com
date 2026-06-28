@@ -119,10 +119,10 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - [The Art of the JavaScript Metaobject Protocol: Duck Typing, Compatibility, and the Adaptor Pattern](https://www.youtube.com/watch?v=hp7sgLVepF8) and a [post-talk interview](https://www.youtube.com/watch?v=RfMWgtix5A4) (2014), [Nordic JS](https://nordicjs.com)
 - _Javascript Combinators_, [NDC Conferences][NDC]
 - _The Art of the Javascript Metaobject Protocol_, [NDC Conferences][NDC]
-- *Invent the future, don't recreate the past* ([Future JS](https://fullstackfest.com), 2014): [video]](https://www.youtube.com/watch?v=uYcAjr2J_rU), [slides](https://www.haikudeck.com/invent-the-future-science-and-technology-presentation-wfIKm7QRaz)
+- *Invent the future, don't recreate the past* ([Future JS](https://fullstackfest.com), 2014): [video](https://www.youtube.com/watch?v=uYcAjr2J_rU), [slides](https://www.haikudeck.com/invent-the-future-science-and-technology-presentation-wfIKm7QRaz)
 - *The Not-So-Big Software Design* ([wroc_love.rb](https://www.wrocloverb.com), 2013): [video](https://www.youtube.com/watch?v=arsK-CN5YDg), [slides](https://www.slideshare.net/slideshow/the-not-sobig-software-design/17138537)
 - *What Developing With Ruby Can Teach Us About Developing Ruby* (BaRuCo, 2013): [video](https://www.youtube.com/watch?v=WWKN-fjn4E4), [slides](https://www.haikudeck.com/what-developing-with-ruby-can-teach-us-about-developing-ruby-science-and-technology-presentation-5wkHW2Mu1M)
-- [I have a good feeling about this - Why tooling is poised to make the jump to hyperspace](https://youtube.com/watch?v=Re2SKhaK73I) (2013), [Web Rebels](https://www.webrebels.org)
+- *I have a good feeling about this - Why tooling is poised to make the jump to hyperspace* ([Web Rebels](https://www.webrebels.org), 2013): [video](https://youtube.com/watch?v=Re2SKhaK73I), [slides](https://www.slideshare.net/slideshow/i-have-a-good-feeling-about-this/22016658), [slides](https://www.haikudeck.com/i-have-a-good-feeling-about-this-science-and-technology-presentation-pjz03GUWZb) 
 - *The Rebellion Imperative* (Øredev, 2012): [video](https://vimeo.com/53265664), [slides](https://www.slideshare.net/slideshow/the-rebellion-imperative/15138965)
 
 ### podcasts
@@ -172,6 +172,7 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 
 - [Beautiful Failure](https://vimeo.com/9967063) from [CUSEC](https://vimeo.com/cusec)
 - [Bullshit](https://vimeo.com/22957263) from [Unspace Interactive](https://vimeo.com/user6029958)
+- Vital JavaScript: [slides](https://www.haikudeck.com/vital-javascript-science-and-technology-presentation-YcBOeaVWOh), [slides](https://www.slideshare.net/slideshow/vital-js/24459726)
 
 ### essays
 
