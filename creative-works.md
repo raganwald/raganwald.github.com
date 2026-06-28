@@ -120,9 +120,10 @@ earlyyears: ["2009", "2008", "2007", "2006", "2005", "2004"]
 - _Javascript Combinators_, [NDC Conferences][NDC]
 - _The Art of the Javascript Metaobject Protocol_, [NDC Conferences][NDC]
 - *Invent the future, don't recreate the past* ([Future JS](https://fullstackfest.com), 2014): [video](https://www.youtube.com/watch?v=uYcAjr2J_rU), [slides](https://www.haikudeck.com/invent-the-future-science-and-technology-presentation-wfIKm7QRaz)
-- La Hermosa Vida (SpainJS): [slides](https://www.haikudeck.com/la-hermosa-vida-science-and-technology-presentation-x2kAbNDLL9)
+- *La Hermosa Vida* (SpainJS): [slides](https://www.haikudeck.com/la-hermosa-vida-science-and-technology-presentation-x2kAbNDLL9)
 - *The Not-So-Big Software Design* ([wroc_love.rb](https://www.wrocloverb.com), 2013): [video](https://www.youtube.com/watch?v=arsK-CN5YDg), [slides](https://www.slideshare.net/slideshow/the-not-sobig-software-design/17138537)
 - *What Developing With Ruby Can Teach Us About Developing Ruby* (BaRuCo, 2013): [video](https://www.youtube.com/watch?v=WWKN-fjn4E4), [slides](https://www.haikudeck.com/what-developing-with-ruby-can-teach-us-about-developing-ruby-science-and-technology-presentation-5wkHW2Mu1M)
+- Rubyvärldens Förestående Kollaps (Nordic Ruby, 2013): [slides](https://www.haikudeck.com/rubyvrldens-frestende-kollaps-science-and-technology-presentation-ZZZZtHRk3c)
 - *I have a good feeling about this - Why tooling is poised to make the jump to hyperspace* ([Web Rebels](https://www.webrebels.org), 2013): [video](https://youtube.com/watch?v=Re2SKhaK73I), [slides](https://www.slideshare.net/slideshow/i-have-a-good-feeling-about-this/22016658), [slides](https://www.haikudeck.com/i-have-a-good-feeling-about-this-science-and-technology-presentation-pjz03GUWZb) 
 - *The Rebellion Imperative* (Øredev, 2012): [video](https://vimeo.com/53265664), [slides](https://www.slideshare.net/slideshow/the-rebellion-imperative/15138965)
 
