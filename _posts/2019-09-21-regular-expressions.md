@@ -3526,7 +3526,7 @@ And best of all, we know that whatever formal regular expression we devise, we c
 
 In [Part II], we will go beyond formal regular expressions, exploring other features of regexen that still compile to finite-state recognizers. We'll also look at features not commonly found in regexen, but are nevertheless highly useful. And we'll use two different constructive demonstrations that pattern-matching expressions built with those features are still equivalent in power to formal regular expressions.
 
-In this essay, we demonstrated that for every formal regular expression, there is an equivalent finite-state recognizer (more on that in our summary below). In Part II, we'll demonstrate the converse: That for every finite-state recognizer, there is an equivalent formal regular expression.
+In this essay, we demonstrated that for every formal regular expression, there is an equivalent finite-state recognizer (more on that in our summary below). In [Part II], we'll demonstrate the converse: That for every finite-state recognizer, there is an equivalent formal regular expression.
 
 But before we move on, let's recapitulate what we've established so far.
 
